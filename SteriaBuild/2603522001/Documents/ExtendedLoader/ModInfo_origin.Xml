@@ -1,0 +1,57 @@
+<ModInfo>
+  <ClothInfo>
+    <Name>安吉莉卡</Name>
+    <!-- Example that without Extended Loader -->
+    <!-- 不使用Extend Loader的范例 -->
+    <Default>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Default>
+    <Guard>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Guard>
+    <Evade>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Evade>
+    <Damaged>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Damaged>
+    <Slash>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash>
+    <Penetrate>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Penetrate>
+    <Hit>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Hit>
+    <Move>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Move>
+    <Fire>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Fire>
+    <Aim>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Aim>
+  </ClothInfo>
+</ModInfo>

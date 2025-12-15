@@ -1,0 +1,2 @@
+putting this into your mod's folder will make Basemod IGNORE your files and don't try to load them
+use if you (for whatever reason) want to use Basemod's exact folder naming scheme but don't want Basemod to load your files

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<localize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <text id="BaseMod_ReMoveUnloadSave">有来自未激活的Mod的设置信息，您希望删除它们吗？</text>
+</localize>

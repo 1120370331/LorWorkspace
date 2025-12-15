@@ -1,0 +1,90 @@
+Thanks for Ü's help to this Document.
+Here is a series of extension methods for BattleUnitBuf operations,which need refer the BaseMod namespace (using BaseMod;).
+Extension methods are methods that can be used as normal methods of the class.
+BattleUnitBuf is a class that inherits BattleUnitBuf.
+Example：
+public class TestBuf : BattleUnitBuf
+{
+	protected override string keywordId
+	{
+		get
+		{
+			return "TestBuf";
+		}
+	}
+
+	protected override string keywordIconId
+	{
+		get
+		{
+			return "TestBuf";
+		}
+	}
+	
+	public override bool independentBufIcon
+	{
+		get
+		{
+			return false;
+		}
+	}
+}
+keywordId is used to indicate the description text of the Buff. keywordIconId is used to indicate the icon of the Buff, if keywordIconId is not filled, it is the same as the keywordId.
+We will find the image with the same name as the keywordIconId from the Artwork folder to generate the Buff's icon.
+independentBufIcon: Used to indicate whether the Buff has an independent icon. If true, an independent Buff will be generated when the Buff is applied multiple times instead of add stack.
+
+The following instructions use TestBuf as an example.
+
+About Add Buff:
+AddBufBy, AddBufStack and SetBufStack are DEPRECATED workarounds.
+Please use AutoKeywordUtil to properly integrate with original KeywordBuf system. Documentation is included.
+
+About Find or Get Buff:
+public static TResult FindBuf<TResult>(this BattleUnitBufListDetail unitBufListDetail, BufReadyType readyType = BufReadyType.ThisRound) where TResult : BattleUnitBuf{}
+The extension method of BattleUnitBufListDetail, finds the Buf of type TResult and has not been destroyed from the Buff list at the specified time and returns it (returns null if no conditions are met).
+The parameters are: <Buff Type>, the specified time (such as the current scene, the next scene, and the next next scene, if not filled, it is the current scene).
+Returns an instance of this Buff.
+Example：
+TestBuf testBuf = owner.bufListDetail.FindBuf<TestBuf>(BufReadyType.NextRound);
+if(testBuf != null)
+{
+	owner.cardSlotDetail.RecoverPlayPointByCard(1);
+}
+(If owner has a TestBuf in the next scene, restore 1 light through the combat page)
+
+public static List<TResult> FindAllBuf<TResult>(this BattleUnitBufListDetail unitBufListDetail, BufReadyType readyType = BufReadyType.ThisRound) where TResult : BattleUnitBuf
+The extension method of BattleUnitBufListDetail, Find all Bufs of a certain Type that have not been destroyed from the specified  Buff list and return their List (returns an empty List if no conditions are met).
+The parameters are: <Buff type>, the specified time (such as the current act, the next act, and the next act, optional, if not filled, it is the current act).
+Returns a List of instances of Buffs of this type.
+The parameters are: <Buff Type>, the specified time (such as the current scene, the next scene, and the next next scene, if not filled, it is the current scene).
+Returns a List of this Buff.
+Example：
+List<TestBuf> testBufs = owner.bufListDetail.FindAllBuf<TestBuf>(BufReadyType.ThisRound);
+foreach(TestBuf testBuf in testBufs)
+{
+	testBuf.stack = 2;
+}
+(Set the stacks of all TestBufs in this scene to 2)
+
+public static List<BattleUnitBuf> FindList(this BattleUnitBufListDetail unitBufListDetail, BufReadyType readyType = BufReadyType.ThisRound){}
+The extension method of BattleUnitBufListDetail, Returns a list of owner's Buffs at the specified time (useless, just for some neatness).
+The parameters are: the specified time (such as the current scene, the next scene, and the next next scene, if not filled, it is the current scene).
+Returns a List of BattleUnitBuf.
+Example：
+List<BattleUnitBuf> bufs = owner.bufListDetail.FindList(BufReadyType.ThisRound);
+
+public static BattleUnitBuf FindMatch(this BattleUnitBuf buf, BufReadyType readyType){}
+The extension method of BattleUnitBufListDetail, Useless, Search owner's Buff list at the specified time and returns the same type of Buff that has not been destroyed.
+The parameters are: the specified time (such as the current scene, the next scene, and the next next scene, if not filled, it is the current scene).
+Returns an instance of BattleUnitBuf, or null if it has no owner or cannot add this buff to this unit.
+If there is no undestroyed Buff of this type (or independentBufIcon is true), Init the instance, add it to the Buff list and return.
+Example：
+TestBuf testBuf = new TestBuf();
+testBuf.stack = 2;
+BattleUnitBuf buf = testBuf.FindMatch(BufReadyType.ThisRound); 
+if (buf != testBuf && buf != null)
+{
+    testBuf.Init(owner);
+	owner.bufListDetail.FindList(BufReadyType.NextRound).Add(testBuf);
+}
+(In this scene, add 2 stacks of TestBuf to owner, if there is already a TestBuf, change to the next scene)

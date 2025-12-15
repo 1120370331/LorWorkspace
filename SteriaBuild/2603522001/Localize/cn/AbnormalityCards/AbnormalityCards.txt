@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbnormalityCardsRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Sephirah SephirahType="Yesod">
+    <AbnormalityCard ID="Butterfly_White">
+      <Abnormality>亡蝶葬仪</Abnormality>
+      <CardName>安息</CardName>
+      <AbilityDesc>[选择一名司书]
+该司书击中目标时，若其体力不高于当前体力最低的司书，则使伤害+2~7，混乱伤害+2~5</AbilityDesc>
+      <FlaborText>人死后会化作有着小小翅膀的美妙存在，着实荒谬。</FlaborText>
+      <Dialogues>
+        <Dialogue ID="1">永恒的长眠……愿你安息。</Dialogue>
+        <Dialogue ID="2">我相信，人死后会化作有着小小翅膀的美妙存在。</Dialogue>
+        <Dialogue ID="3">请不要再折磨自己了，我会帮你解脱。</Dialogue>
+        <Dialogue ID="4">带着得来的一切，满怀希望地回归安息之所。</Dialogue>
+        <Dialogue ID="5">死亡再可怖，会比这现实更可怖吗？死后唯有解脱。</Dialogue>
+      </Dialogues>
+    </AbnormalityCard>
+    <AbnormalityCard ID="Butterfly_Fly">
+      <Abnormality>亡蝶葬仪</Abnormality>
+      <CardName>哀悼</CardName>
+      <AbilityDesc>[选择一名司书]
+所有拥有负面状态的角色被击中时所受伤害+2~4
+每一幕开始时若该司书拥有负面状态，则获得1~2层“强壮”。</AbilityDesc>
+      <FlaborText>身负重担的悼念者，
+前来此地救赎众生。</FlaborText>
+      <Dialogues>
+        <Dialogue ID="1">向那些深陷悲伤的可怜灵魂……致以深切的哀悼。</Dialogue>
+        <Dialogue ID="2">向逝者寄托哀思，向生者致以哀悼。</Dialogue>
+        <Dialogue ID="3">悲伤的泪水，只是无谓地浸透翅膀。</Dialogue>
+        <Dialogue ID="4">葬礼只消肃穆，无需招摇。</Dialogue>
+        <Dialogue ID="5">这里连一朵像样的鲜花都不曾拥有。</Dialogue>
+      </Dialogues>
+    </AbnormalityCard>
+    <AbnormalityCard ID="Matan_Flame">
+      <Abnormality>魔弹射手</Abnormality>
+      <CardName>黑焰</CardName>
+      <AbilityDesc>[选择一名司书]
+每一幕开始时使所有角色的“耐性”或“抵抗”攻击抗性将变为“脆弱”或“致命”(仅限本舞台)
+每一幕开始时该司书将获得1~2层“迅捷”与2~4层“强壮”。</AbilityDesc>
+      <FlaborText>射手察觉，那终日如影随形的恶魔此刻竟已离他而去。他试着追寻原因，而后意识到自己的灵魂从一开始便已堕入地狱。</FlaborText>
+      <Dialogues>
+        <Dialogue ID="1">恶魔窥觑着绝望。</Dialogue>
+        <Dialogue ID="2">我的灵魂徐徐燃烧，而后堕入地狱。</Dialogue>
+        <Dialogue ID="3">察觉到眼前空无一物的那一瞬间，灵魂便已随之死去。</Dialogue>
+        <Dialogue ID="4">绝望的心无法焚毁，只是冰冷地燃烧。</Dialogue>
+        <Dialogue ID="5">绝望永远伴我左右，不离不弃。</Dialogue>
+      </Dialogues>
+    </AbnormalityCard>
+  </Sephirah>
+  <Sephirah SephirahType="Binah">
+    <AbnormalityCard ID="ApocalypseBird_LongArm">
+      <Abnormality>终末鸟</Abnormality>
+      <CardName>长臂</CardName>
+      <AbilityDesc>[选择一名司书]
+该司书将免疫负面状态伤害。
+(烧伤，流血，妖灵，罪孽)
+      </AbilityDesc>
+      <FlaborText>长臂掩藏了时间。</FlaborText>
+      <Dialogues>
+        <Dialogue ID="1">掩藏时间。</Dialogue>
+        <Dialogue ID="2">哪怕将你定罪，罪孽仍会再度堆积，无穷无尽。</Dialogue>
+        <Dialogue ID="3">自此以后，审判高台再无公平之日。</Dialogue>
+        <Dialogue ID="4">用公正的天秤来评判谁更凶狠。</Dialogue>
+      </Dialogues>
+    </AbnormalityCard>
+  </Sephirah>
+  <Sephirah SephirahType="Hokma">
+    <AbnormalityCard ID="WhiteNight_Guard">
+      <Abnormality>白夜</Abnormality>
+      <CardName>护卫</CardName>
+      <AbilityDesc>[选择一名司书]
+若有其他司书存活则该司书将无法被指定为攻击目标。
+接待结束时每名来宾转化的书籍数+1(若该司书已死亡则无法生效)</AbilityDesc>
+      <FlaborText>您是神的儿子，您生来为王。</FlaborText>
+      <Dialogues>
+        <Dialogue ID="1">欢呼吧，满怀恩宠之人，我与你们同在。</Dialogue>
+        <Dialogue ID="2">将每个人引向乐园。</Dialogue>
+        <Dialogue ID="3">我与你们同在，摆脱对死亡的恐惧。</Dialogue>
+        <Dialogue ID="4">谁也不会离去，我们将一同沐浴在永恒的幸福之中。</Dialogue>
+      </Dialogues>
+    </AbnormalityCard>
+  </Sephirah>
+</AbnormalityCardsRoot>

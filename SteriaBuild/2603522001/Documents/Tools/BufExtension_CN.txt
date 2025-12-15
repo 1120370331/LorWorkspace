@@ -1,0 +1,89 @@
+感谢Ü对此文档的帮助。
+这里给出了一系列对BattleUnitBuf操作的扩展方法，需要引用BaseMod命名空间（using BaseMod;）。
+扩展方法是近似可以当做正常的该类的方法使用的方法。
+BattleUnitBuf是继承了BattleUnitBuf的类
+例如：
+public class TestBuf : BattleUnitBuf
+{
+	protected override string keywordId
+	{
+		get
+		{
+			return "TestBuf";
+		}
+	}
+
+	protected override string keywordIconId
+	{
+		get
+		{
+			return "TestBuf";
+		}
+	}
+	
+	public override bool independentBufIcon
+	{
+		get
+		{
+			return false;
+		}
+	}
+}
+keywordId用于指示Buff的说明文本；keywordIconId用于指示Buff的图标，若不填则与keywordId相同。
+我们会从Artwork文件夹中寻找与keywordIconId名称相同的图片文件来生成Buff的图标。
+independentBufIcon：用于指示Buff是否有独立的图标（叠加）若为true，则在多次施加该Buff时会生成一个独立的Buff而非单纯叠加层数。
+
+下面的说明以TestBuf为例。
+关于添加Buff：
+AddBufBy、AddBufStack和SetBufStack是弃用的解决方法。
+请使用AutoKeywordUtil与原始KeywordBuf系统正确集成。包括文件。
+
+
+关于寻找/获取Buff：
+public static TResult FindBuf<TResult>(this BattleUnitBufListDetail unitBufListDetail, BufReadyType readyType = BufReadyType.ThisRound) where TResult : BattleUnitBuf{}
+BattleUnitBufListDetail的扩展方法，从自身指定时间的Buff列表中寻找类型为TResult且未被摧毁的Buf并将其返回(若无符合条件则返回null)。
+参数为：<Buff的类型>，指定的时间（比如当幕、下一幕以及下下幕，可选，不填则为当幕）。
+返回该类型的Buff的实例。
+范例：
+TestBuf testBuf = owner.bufListDetail.FindBuf<TestBuf>(BufReadyType.NextRound);
+if(testBuf != null)
+{
+	owner.cardSlotDetail.RecoverPlayPointByCard(1);
+}
+（若自身下一幕中有TestBuf则通过书页恢复1点光芒）
+
+public static List<TResult> FindAllBuf<TResult>(this BattleUnitBufListDetail unitBufListDetail, BufReadyType readyType = BufReadyType.ThisRound) where TResult : BattleUnitBuf
+BattleUnitBufListDetail的扩展方法，从自身指定时间的Buff列表中寻找所有类型为TResult且未被摧毁的Buf并返回它们的List(若无符合条件则返回一个空的List)。
+参数为：<Buff的类型>，指定的时间（比如当幕、下一幕以及下下幕，可选，不填则为当幕）。
+返回该类型的Buff的实例的List。
+范例：
+List<TestBuf> testBufs = owner.bufListDetail.FindAllBuf<TestBuf>(BufReadyType.ThisRound);
+foreach(TestBuf testBuf in testBufs)
+{
+	testBuf.stack = 2;
+}
+（将自身这一幕中所有TestBuf类型的Buff层数直接设为2）
+
+public static List<BattleUnitBuf> FindList(this BattleUnitBufListDetail unitBufListDetail, BufReadyType readyType = BufReadyType.ThisRound){}
+BattleUnitBufListDetail的扩展方法，返回自身指定时间的Buff列表（似乎没什么用，只是为了一些地方整齐）。
+参数为：指定的时间（比如当幕、下一幕以及下下幕，可选，不填则为当幕）。
+返回BattleUnitBuf的实例的List。
+范例：
+List<BattleUnitBuf> bufs = owner.bufListDetail.FindList(BufReadyType.ThisRound);
+
+public static BattleUnitBuf FindMatch(this BattleUnitBuf buf, BufReadyType readyType){}
+BattleUnitBuf的扩展方法，从此Buff的拥有者的指定时间的Buff列表中寻找类型与该Buff一致且未被摧毁的的Buf并将其返回。基本没用。
+参数为：指定的时间（比如当幕、下一幕以及下下幕，可选，不填则为当幕）。
+返回一个BattleUnitBuf的实例，若没有拥有者或免疫此Buff则返回null。
+若未存在该类型的未被摧毁的Buff（或者independentBufIcon为true）则将该实例Init，添加至Buff列表中并返回。
+范例：
+TestBuf testBuf = new TestBuf();
+testBuf.stack = 2;
+BattleUnitBuf buf = testBuf.FindMatch(BufReadyType.ThisRound); 
+if (buf != testBuf && buf != null)
+{
+    testBuf.Init(owner);
+	owner.bufListDetail.FindList(BufReadyType.NextRound).Add(testBuf);
+}
+（这一幕中对自身施加2层TestBuf，若已有TestBuf则改为下一幕）
+

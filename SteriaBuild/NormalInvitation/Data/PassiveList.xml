@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PassiveXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Passive ID="9000001">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>8</Cost>
+    <Name>神脉：职业等级（安希尔）</Name>
+    <Desc>+15最大体力，+15最大混乱抗性，速度骰子最大值+1，造成伤害与混乱伤害+30%，每场战斗开始时恢复15点体力。</Desc>
+  </Passive>
+  <Passive ID="9000002">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>8</Cost>
+    <Name>神脉：汐与梦（司流-自我之流）</Name>
+    <Desc>首次受到单方面攻击时，回复等同于伤害值50%的体力，且下一幕开始时获得3层[流]；每使用3点光芒获得1层[流]。</Desc>
+  </Passive>
+  <Passive ID="9000003">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>true</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>回忆燃烧</Name>
+    <Desc>一幕中若累计弃掉2张及以上书页，则下一幕开始时获得1层[强壮]与[守护]。</Desc>
+  </Passive>
+  <Passive ID="9000004">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>true</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>6</Cost>
+    <Name>回忆结晶</Name>
+    <Desc>自第2幕起，每经过5幕，所有进攻型骰子威力+1（最多叠加3次）。</Desc>
+  </Passive>
+  <Passive ID="9000005">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>不会忘记的那个梦想</Name>
+    <Desc>每消耗3层[流]时，获得1层[守护]并将1张[珍贵的回忆]置入手牌。</Desc>
+  </Passive>
+
+  <!-- Slazeya Passives -->
+  <Passive ID="9002001">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>true</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>8</Cost>
+    <Name>神脉：梦之汐</Name>
+    <Desc>[PLACEHOLDER] 与梦境和潮流相关的强大神脉能力。</Desc>
+  </Passive>
+  <Passive ID="9002002">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>true</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>6</Cost>
+    <Name>梦想教皇</Name>
+    <Desc>[PLACEHOLDER] 操控梦想的力量，强化自身或削弱敌人。</Desc>
+  </Passive>
+
+  <!-- Shared/Cultist Passives -->
+  <Passive ID="9002003">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>true</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>御风司流</Name>
+    <Desc>[PLACEHOLDER] 利用风与流的力量进行战斗。</Desc>
+  </Passive>
+  <Passive ID="9002004">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Uncommon</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>3</Cost>
+    <Name>司流者</Name>
+    <Desc>[PLACEHOLDER] 司流教团成员的基础能力。</Desc>
+  </Passive>
+</PassiveXmlRoot>

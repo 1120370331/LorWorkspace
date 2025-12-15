@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BattleCardAbilityDescRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <BattleCardAbility ID="forbidReuseDice">
+    <Desc>使目标当前骰子无法再次投掷</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="blackSilenceSpecial">
+    <Desc>本书页仅限9种[漆黑噤默书页]全部用毕后方可使用</Desc>
+    <Desc>[命中时]下一幕中对目标施加5层[流血]3层[束缚]与[易损]</Desc>
+  </BattleCardAbility>
+  
+</BattleCardAbilityDescRoot>
+
+

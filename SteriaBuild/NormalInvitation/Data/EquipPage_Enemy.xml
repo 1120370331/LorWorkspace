@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BookXmlRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Version>1.1</Version>
+
+  <Book ID="1"> <!-- Changed from MyDLL.Anxier ID for consistency -->
+    <Name>安希尔</Name>
+    <TextId>-1</TextId>
+    <BookIcon />
+    <EquipEffect>
+      <HpReduction>0</HpReduction>
+      <HP>400</HP>
+      <DeadLine>0</DeadLine>
+      <Break>102</Break>
+      <SpeedMin>3</SpeedMin>
+      <Speed>7</Speed>
+      <SpeedDiceNum>2</SpeedDiceNum> <!-- Kept SpeedDiceNum here as it affects stats -->
+      <SResist>Endure</SResist>
+      <PResist>Normal</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Endure</SBResist>
+      <PBResist>Normal</PBResist>
+      <HBResist>Normal</HBResist>
+      <MaxPlayPoint>4</MaxPlayPoint>
+      <StartPlayPoint>4</StartPlayPoint>
+      <AddedStartDraw>0</AddedStartDraw>
+      <Passive Pid="@origin">10008</Passive> <!-- Assuming 10008 is base game -->
+      <Passive>9000001</Passive>
+      <Passive>9000002</Passive>
+      <Passive>9000003</Passive>
+      <Passive>9000004</Passive>
+      <Passive>9000005</Passive>
+    </EquipEffect>
+    <Rarity>Common</Rarity>
+    <CharacterSkin>Bada</CharacterSkin>
+    <CharacterSkinType>Lor</CharacterSkinType>
+    <SkinGender>N</SkinGender>
+    <Chapter>1</Chapter> <!-- Check if correct Chapter -->
+    <Episode>-1</Episode>
+    <RangeType>Hybrid</RangeType>
+    <NotEquip>false</NotEquip>
+    <RandomFace>false</RandomFace>
+  </Book>
+
+  <Book ID="2"> <!-- Changed from MyDLL.Slazeya ID -->
+    <Name>斯拉泽雅</Name>
+    <TextId>-1</TextId> <!-- Assuming -1, check if needed -->
+    <BookIcon />
+    <EquipEffect>
+      <HP>700</HP>
+      <Break>200</Break>
+      <SpeedMin>3</SpeedMin>
+      <Speed>7</Speed>
+      <SpeedDiceNum>3</SpeedDiceNum>
+      <StartPlayPoint>3</StartPlayPoint>
+      <MaxPlayPoint>5</MaxPlayPoint>
+      <Passive Pid="@origin">10008</Passive> <!-- Assuming 10008 is base game -->
+      <Passive>9002001</Passive>
+      <Passive>9002002</Passive>
+      <Passive>9002003</Passive>
+      <Passive>9002004</Passive>
+      <!-- Add Resists if needed, copying Anxier's for now -->
+      <SResist>Endure</SResist>
+      <PResist>Endure</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Endure</SBResist>
+      <PBResist>Normal</PBResist>
+      <HBResist>Normal</HBResist>
+    </EquipEffect>
+    <Rarity>Unique</Rarity> <!-- Check Rarity -->
+    <CharacterSkin>Bada</CharacterSkin> <!-- Using consistent skin for test -->
+    <CharacterSkinType>Lor</CharacterSkinType>
+    <SkinGender>N</SkinGender> <!-- Using consistent gender for test -->
+    <Chapter>6</Chapter> <!-- Check Chapter -->
+    <Episode>-1</Episode> <!-- Check Episode -->
+    <!-- Add RangeType, NotEquip, RandomFace, SuccessionPossibleNumber if needed -->
+  </Book>
+
+  <Book ID="3"> <!-- Changed from MyDLL.Cultist ID -->
+    <Name>司流者教徒</Name>
+    <TextId>-1</TextId> <!-- Assuming -1 -->
+    <BookIcon />
+    <EquipEffect>
+      <Hp>102</Hp>
+      <Break>100</Break>
+      <SpeedMin>3</SpeedMin>
+      <Speed>5</Speed>
+      <SpeedDiceNum>2</SpeedDiceNum>
+      <StartPlayPoint>3</StartPlayPoint>
+      <MaxPlayPoint>5</MaxPlayPoint>
+      <Passive Pid="@origin">10008</Passive> <!-- Assuming 10008 is base game -->
+      <Passive>9002004</Passive>
+
+       <!-- Add Resists if needed, copying Anxier's for now -->
+      <SResist>Endure</SResist>
+      <PResist>Normal</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Endure</SBResist>
+      <PBResist>Normal</PBResist>
+      <HBResist>Normal</HBResist>
+    </EquipEffect>
+     <Rarity>Rare</Rarity> <!-- Changed from Object to Rare -->
+    <CharacterSkin>Bada</CharacterSkin> <!-- Using consistent skin for test -->
+    <CharacterSkinType>Lor</CharacterSkinType> <!-- Changed back to Lor based on reference -->
+    <SkinGender>N</SkinGender> <!-- Using consistent gender for test -->
+    <Chapter>6</Chapter> <!-- Check Chapter -->
+     <Episode>-1</Episode> <!-- Check Episode -->
+     <!-- Add RangeType, NotEquip, RandomFace, SuccessionPossibleNumber if needed -->
+  </Book>
+
+</BookXmlRoot>

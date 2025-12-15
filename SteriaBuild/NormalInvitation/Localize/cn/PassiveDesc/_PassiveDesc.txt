@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PassiveDescRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <!-- MyDLL Mod 被动描述 -->
+  <PassiveDesc ID="9000001">
+    <Name>神脉：职业等级（安希尔）</Name>
+    <Desc>+15 最大生命、+15 混乱抗性、+1 最大速度、+30% 伤害、+30% 混乱伤害</Desc> 
+  </PassiveDesc>
+  <PassiveDesc ID="9000002">
+    <Name>神脉：汐与梦（司流-自我之流）</Name>
+    <Desc>每回合第一次受到单方面攻击时，下回合获得3层"流"，并恢复50%的（本次受到的）伤害。每消耗3点光芒，便获得1层"流"。</Desc>
+  </PassiveDesc>
+  <PassiveDesc ID="9000003">
+    <Name>回忆燃烧</Name>
+    <Desc>在一回合丢弃2张书页后：下回合获得1层"强壮、守护"（每回合至多1次）。</Desc>
+  </PassiveDesc>
+  <PassiveDesc ID="9000004">
+    <Name>回忆结晶</Name>
+    <Desc>舞台每经过5幕，便使自身骰子威力+1（至多+3）。</Desc>
+  </PassiveDesc>
+  <PassiveDesc ID="9000005">
+    <Name>不会忘记的那个梦想</Name>
+    <Desc>每消耗5层"流"，便在下回合获得一层"守护"，并将一张"珍贵的回忆"置于手牌。</Desc>
+  </PassiveDesc>
+
+  <!-- 新增测试被动描述 -->
+  <PassiveDesc ID="9000000">
+    <Name>测试</Name>
+    <Desc>每一幕开始时恢复所有光芒</Desc>
+  </PassiveDesc>
+
+</PassiveDescRoot> 

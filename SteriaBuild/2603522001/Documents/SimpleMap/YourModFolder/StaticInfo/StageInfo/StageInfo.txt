@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<StageXmlRoot>
+  <Stage id="19650001">
+    <MapInfo>Custom_YouMapName</MapInfo>
+  </Stage>
+  
+</StageXmlRoot>

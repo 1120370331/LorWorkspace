@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2792EEBF-2D7D-4886-BCCA-D8C58E301912}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>BaseMod</RootNamespace>
+    <AssemblyName>BaseMod</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\Libs\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="10EnumExtender" />
+    <Reference Include="1ExtendedLoader" />
+    <Reference Include="Assembly-CSharp" />
+    <Reference Include="BaseBridge" />
+    <Reference Include="LorIdExtensions" />
+    <Reference Include="MyJsonTool" />
+    <Reference Include="NAudio">
+      <HintPath>..\Libs\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="spine-unity" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.TextMeshPro" />
+    <Reference Include="UnityEngine.AnimationModule" />
+    <Reference Include="UnityEngine.AudioModule" />
+    <Reference Include="UnityEngine.CoreModule" />
+    <Reference Include="UnityEngine.ImageConversionModule" />
+    <Reference Include="UnityEngine.TextRenderingModule" />
+    <Reference Include="UnityEngine.UI" />
+    <Reference Include="UnityEngine.UIModule" />
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule" />
+    <Reference Include="UnityEngine.UnityWebRequestModule" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddTracker.cs" />
+    <Compile Include="BaseModInitialize.cs" />
+    <Compile Include="BaseModInitializer.cs" />
+    <Compile Include="BuffExtension.cs" />
+    <Compile Include="CardBuffExtension.cs" />
+    <Compile Include="CustomGiftAppearance.cs" />
+    <Compile Include="CustomMapManager.cs" />
+    <Compile Include="EffectTypoData_New.cs" />
+    <Compile Include="GTMDProjectMoon\AbnormalityCardsRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BasemodConfig.cs" />
+    <Compile Include="GTMDProjectMoon\BattleCardDescRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BattleCardDesc_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BattleDialogCharacter_New.cs" />
+    <Compile Include="GTMDProjectMoon\BattleDialogCharacter_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BattleDialogRelationRoot.cs" />
+    <Compile Include="GTMDProjectMoon\BattleDialogRelationRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BattleDialogRelationWithBookID_New.cs" />
+    <Compile Include="GTMDProjectMoon\BattleDialogRelationWithBookID_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BattleDialogRoot.cs" />
+    <Compile Include="GTMDProjectMoon\BattleDialogRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BookDescRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BookDesc_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BookEquipEffect_New.cs" />
+    <Compile Include="GTMDProjectMoon\BookEquipEffect_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BookSoulCardInfo_New.cs" />
+    <Compile Include="GTMDProjectMoon\BookUseXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BookXmlInfo_New.cs" />
+    <Compile Include="GTMDProjectMoon\BookXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\BookXmlRoot.cs" />
+    <Compile Include="GTMDProjectMoon\BookXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\CardDropTableXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\CharacterName_V2.cs" />
+    <Compile Include="GTMDProjectMoon\CharactersNameRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\DeckXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\DiceCardXmlInfo_New.cs" />
+    <Compile Include="GTMDProjectMoon\DiceCardXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\DiceCardXmlRoot.cs" />
+    <Compile Include="GTMDProjectMoon\DiceCardXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\EgoCardDetail.cs" />
+    <Compile Include="GTMDProjectMoon\EmotionCardXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\EmotionCardXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\EmotionEgoXmlInfo_New.cs" />
+    <Compile Include="GTMDProjectMoon\EmotionEgoXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\EmotionEgoXmlRoot.cs" />
+    <Compile Include="GTMDProjectMoon\EmotionEgoXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\EmotionSetInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\EnemyDropItemTable_New.cs" />
+    <Compile Include="GTMDProjectMoon\EnemyDropItemTable_V2.cs" />
+    <Compile Include="GTMDProjectMoon\EnemyDropItem_New.cs" />
+    <Compile Include="GTMDProjectMoon\EnemyDropItem_ReNew.cs" />
+    <Compile Include="GTMDProjectMoon\EnemyUnitClassInfo_New.cs" />
+    <Compile Include="GTMDProjectMoon\EnemyUnitClassInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\EnemyUnitClassRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\FloorLevelXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\FloorLevelXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\FormationXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\FormationXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\GiftPriorityOrder.cs" />
+    <Compile Include="GTMDProjectMoon\GiftXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\GiftXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\IIdInjectable.cs" />
+    <Compile Include="GTMDProjectMoon\OrcTools.cs" />
+    <Compile Include="GTMDProjectMoon\PassiveDescRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\PassiveXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\PassiveXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\QuestMissionXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\QuestXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\QuestXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\Sephirah_V2.cs" />
+    <Compile Include="GTMDProjectMoon\StageClassInfo_New.cs" />
+    <Compile Include="GTMDProjectMoon\StageClassInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\StageExtraCondition_New.cs" />
+    <Compile Include="GTMDProjectMoon\StageExtraCondition_V2.cs" />
+    <Compile Include="GTMDProjectMoon\StageWaveInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\StageXmlRoot.cs" />
+    <Compile Include="GTMDProjectMoon\StageXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\TitleListRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\TitleXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\TitleXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\ToolTipXmlInfo_V2.cs" />
+    <Compile Include="GTMDProjectMoon\ToolTipXmlRoot_V2.cs" />
+    <Compile Include="GTMDProjectMoon\XmlRoot.cs" />
+    <Compile Include="Harmony_Patch.cs" />
+    <Compile Include="LocalizedTextLoader_New.cs" />
+    <Compile Include="ModSettingTool\InitGameObject.cs" />
+    <Compile Include="ModSettingTool\ModSaveTool.cs" />
+    <Compile Include="ModSettingTool\OptionEvent.cs" />
+    <Compile Include="NativeClasses.cs" />
+    <Compile Include="OptimizedReplacer.cs" />
+    <Compile Include="PassiveAbilityExtension.cs" />
+    <Compile Include="PatchType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shortcut.cs" />
+    <Compile Include="SimpleMapManager.cs" />
+    <Compile Include="SkeletonJSON_new.cs" />
+    <Compile Include="SplitTrackerDict.cs" />
+    <Compile Include="StaticDataLoader_New.cs" />
+    <Compile Include="StorySerializer_new.cs" />
+    <Compile Include="SummonLiberation\ButtonColor.cs" />
+    <Compile Include="SummonLiberation\Harmony_Patch.cs" />
+    <Compile Include="SummonLiberation\StageButtonTool.cs" />
+    <Compile Include="System\Runtime\CompilerServices\IgnoresAccessChecksToAttribute.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="TrackerDict.cs" />
+    <Compile Include="UIPanelTool.cs" />
+    <Compile Include="UtilTools.cs" />
+    <Compile Include="WAV.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

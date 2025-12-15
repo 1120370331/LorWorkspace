@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<BookXmlRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Book ID="19650001">
+    <CharacterSkinType>CUSTOM</CharacterSkinType>
+    <CharacterSkin>Custom_SkinName</CharacterSkin>
+    <SkinGender>F</SkinGender><!-- or <SkinGender>M</SkinGender> -->
+  </Book>
+  
+</BookXmlRoot>

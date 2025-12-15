@@ -1,0 +1,70 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"build",
+				"C:/Users/rog/WorkSpace/projects/games/lor/MyDLL/MyDLL.csproj" 
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "copy-to-mod-assemblies",
+			"type": "shell",
+			// Changed command to Copy-Item using PowerShell
+			"command": "Copy-Item -Path 'C:/Users/rog/WorkSpace/projects/games/lor/MyDLL/bin/Debug/net472/MyDLL.dll', 'C:/Users/rog/WorkSpace/projects/games/lor/MyDLL/bin/Debug/net472/MyDLL.pdb' -Destination 'C:/Users/rog/WorkSpace/projects/games/lor/MyDLL/NormalInvitation/Assemblies/' -Force",
+			"windows": { // Added windows shell options for PowerShell
+				"options": {
+					"shell": {
+						"executable": "powershell.exe",
+						"args": [ "-Command" ]
+					}
+				}
+			},
+			"args": [], // Removed robocopy args
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"clear": false
+			}
+		},
+		{
+			"label": "deploy-to-game-mods",
+			"type": "shell",
+			"command": "Copy-Item -Path 'C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\MyDLL\\NormalInvitation\\*' -Destination 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\NormalInvitation' -Recurse -Force", 
+
+			"windows": {
+				"options": {
+					"shell": {
+						"executable": "powershell.exe",
+						"args": [ "-Command" ]
+					}
+				}
+			},
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"clear": false
+			}
+		},
+		{
+			"label": "Build and Copy",
+			"dependsOn": [
+				"build",
+				"copy-to-mod-assemblies",
+				"deploy-to-game-mods"
+			],
+			"dependsOrder": "sequence",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		}
+	]
+}

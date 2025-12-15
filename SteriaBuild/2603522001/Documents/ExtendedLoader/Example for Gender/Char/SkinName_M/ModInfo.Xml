@@ -1,0 +1,375 @@
+<ModInfo Extended="true"> <!-- If you want to use extraloader then write Extended="true" -->
+  <FaceInfo><!-- All content here will read at its original size -->
+    <Front_FrontHair>Front_FrontHair</Front_FrontHair>
+	<Front_RearHair>Front_RearHair</Front_RearHair>
+    <Front_Mouth_Normal>Front_Mouth_Normal</Front_Mouth_Normal>
+    <Front_Mouth_Attack>Front_Mouth_Attack</Front_Mouth_Attack>
+    <Front_Mouth_Hit>Front_Mouth_Hit</Front_Mouth_Hit>
+    <Front_Brow_Normal>Front_Brow_Normal</Front_Brow_Normal>
+    <Front_Brow_Attack>Front_Brow_Attack</Front_Brow_Attack>
+    <Front_Brow_Hit>Front_Brow_Hit</Front_Brow_Hit>
+    <Side_FrontHair>Side_FrontHair</Side_FrontHair>
+	<Side_RearHair_Front>Side_RearHair</Side_RearHair_Front>
+	<Side_RearHair_Rear>Side_RearHair</Side_RearHair_Rear>
+    <Front_Eye>Front_Eye</Front_Eye>
+    <Side_Eye>Side_Eye</Side_Eye>
+  </FaceInfo>
+  <ClothInfo>
+    <Name>安吉莉卡</Name>
+	<!-- Fill in the size and resolution(quality) you want your character image to be scaled to, usually fill in your png file size and 50 -->
+	<!-- quality actually influence the scale of character image -->
+    <Default size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Default>
+    <Guard size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Guard>
+    <Evade size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Evade>
+    <Damaged size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Damaged>
+    <Slash size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash>
+    <Slash2 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash2>
+    <Penetrate size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Penetrate>
+    <Penetrate2 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Penetrate2>
+    <Hit size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Hit>
+    <Hit2 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Hit2>
+    <Move size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Move>
+    <NONE size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </NONE>
+    <Fire size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Fire>
+    <Aim size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Aim>
+    <Special size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Special>
+    <S1 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S1>
+    <S2 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="-6.899994" head_y="312.8" rotation="0" head_enable="False" />
+    </S2>
+    <S3 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S3>
+    <S4 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S4>
+    <S5 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S5>
+    <S6 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S6>
+    <S7 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S7>
+    <S8 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S8>
+    <S9 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S9>
+    <S10 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S10>
+    <S11 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S11>
+    <S12 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S12>
+    <S13 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S13>
+    <S14 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S14>
+    <S15 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S15>
+	<!-- If you want your motionsound to follow the apperance and not the equippage then fill it here -->
+	<!-- External true means that you need to place the ogg file or wav file to read -->
+	<!-- Put the files in "YourModFolder"/Char/"YouSkinName"/MotionSound/ -->
+	<!-- if External false, it will read the original sound effect -->
+	<SoundList>
+		<SoundInfo Motion="E" WinExternal="true" Win="Evasion.wav" LoseExternal="false" Lose=""/><!-- Position -->
+		<SoundInfo Motion="G" WinExternal="true" Win="Guard.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="H" WinExternal="true" Win="Hit.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="H2" WinExternal="true" Win="Hit.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="J" WinExternal="true" Win="Slash.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="J2" WinExternal="true" Win="Slash.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="Z" WinExternal="true" Win="Penetrate.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="Z2" WinExternal="true" Win="Penetrate.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="N" WinExternal="true" Win="Slash.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="F" WinExternal="true" Win="Gun2.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S" WinExternal="true" Win="S9.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S1" WinExternal="true" Win="Slash.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S2" WinExternal="true" Win="S12.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S3" WinExternal="true" Win="S3.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S4" WinExternal="true" Win="S4.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S5" WinExternal="true" Win="S5.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S6" WinExternal="true" Win="S6.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S7" WinExternal="true" Win="S7.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S8" WinExternal="true" Win="S8.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S9" WinExternal="true" Win="S9.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S10" WinExternal="true" Win="S10.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S11" WinExternal="true" Win="Slash.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S12" WinExternal="true" Win="S12.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S13" WinExternal="true" Win="S12.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S14" WinExternal="true" Win="Gun.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S15" WinExternal="true" Win="S12.wav" LoseExternal="false" Lose=""/>
+	</SoundList>
+    <AtkEffectPivotInfo>
+	<!-- Used to indicate where the attack effect is occured from, which makes it more appropriate for characters to use vanilla cards -->
+      <atkEffectRoot>
+		<localPosition x="0" y="1.94" z="0"/><!-- Position -->
+		<localScale x="1" y="1" z="1"/><!-- Size -->
+		<localEulerAngles x="0" y="0" z="0"/><!-- Rotation -->
+	  </atkEffectRoot>
+      <atkEffectPivot_H>
+		<localPosition x="0.8" y="2.85" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_H>
+      <atkEffectPivot_J>
+		<localPosition x="-1.4" y="-0.6" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="8"/>
+	  </atkEffectPivot_J>
+      <atkEffectPivot_Z>
+		<localPosition x="-6.4" y="0.85" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_Z>
+      <atkEffectPivot_G>
+		<localPosition x="-0.5" y="-0.1" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_G>
+      <atkEffectPivot_E>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_E>
+      <atkEffectPivot_S>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_S>
+      <atkEffectPivot_F>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_F>
+    </AtkEffectPivotInfo>
+    <SpecialMotionPivotInfo><!-- The same as AtkEffectPivotInfo -->
+      <Evade><!-- GloveTrail -->
+		<localPosition x="0.7" y="1.8" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </Evade>
+      <Move><!-- GloveTrail -->
+		<localPosition x="0.7" y="1.8" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </Move>
+      <Special><!-- FX_PC_RolRang_XSlash_Main S11 -->
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="0" y="0" z="0"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </Special>
+      <Damaged><!-- Gauntlet1 S11 -->
+		<localPosition x="-4.1" y="4.2" z="0"/>
+		<localScale x="-0.8" y="-0.8" z="1"/>
+		<localEulerAngles x="0" y="0" z="357"/>
+      </Damaged>
+      <Penetrate><!-- Gauntlet2 S11 -->
+		<localPosition x="1.3" y="1.5" z="0"/>
+		<localScale x="0.8" y="0.8" z="1"/>
+		<localEulerAngles x="0" y="0" z="357"/>
+      </Penetrate>
+      <Hit><!-- Mace 2 Special -->
+		<localPosition x="-4.8" y="0.9" z="0"/>
+		<localScale x="0.6" y="0.6" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </Hit>
+	  <Slash><!-- Axe 2 Special -->
+		<localPosition x="-3.55" y="0.25" z="0"/>
+		<localScale x="0.6" y="0.6" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </Slash>
+      <Slash2><!-- Shadow Slash Slash2 -->
+		<localPosition x="19" y="2.7" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </Slash2>
+      <Hit2><!-- Hammer 2 Hit2 -->
+		<localPosition x="-0.5" y="-0.7" z="0"/>
+		<localScale x="0.7" y="-1.5" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </Hit2>
+      <Penetrate2><!-- Penetrate2 -->
+		<localPosition x="3" y="6" z="0"/>
+		<localScale x="1.6" y="1.6" z="1"/>
+		<localEulerAngles x="0" y="0" z="357"/>
+      </Penetrate2>
+      <S1><!-- Crystal1 S1 -->
+		<localPosition x="-0.6" y="1.2" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="10"/>
+      </S1>
+      <S2><!-- Crystal2 S2 -->
+		<localPosition x="0.7" y="2.1" z="0"/>
+		<localScale x="1.3" y="1.1" z="1"/>
+		<localEulerAngles x="0" y="0" z="4"/>
+      </S2>
+      <S3>
+		<localPosition x="0" y="1.94" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S3>
+      <S4>
+		<localPosition x="-1.4" y="3.03" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S4>
+      <S5>
+		<localPosition x="2.8" y="2.2" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S5>
+      <S6>
+		<localPosition x="0.9" y="2.8" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S6>
+      <S7>
+		<localPosition x="13" y="1.32" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S7>
+      <S8>
+		<localPosition x="-4" y="1.04" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S8>
+      <S9>
+		<localPosition x="1.4" y="-1.35" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S9>
+      <S10>
+		<localPosition x="-0.2" y="1.84" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S10>
+      <S11>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S11>
+      <S12>
+		<localPosition x="-1.4" y="4.44" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S12>
+      <S13>
+		<localPosition x="-0.74" y="1.71" z="0"/>
+		<localScale x="1.1" y="1.1" z="1.1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S13>
+      <S14>
+		<localPosition x="-1" y="1.65" z="0"/>
+		<localScale x="1.1" y="1.1" z="1.1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S14>
+	  <!-- FX_PC_RolRang_XSlash_Main_NoUnAtk DualWield1 Slash -->
+      <S15>
+		<localPosition x="0" y="1.94" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S15>
+    </SpecialMotionPivotInfo>
+  </ClothInfo>
+</ModInfo>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<localize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <text id="ui_invitation_customtoggle">创意工坊</text>
+  <text id="ui_invitation_customtitle">可选接待</text>
+  <text id="ui_alarm_loadinvaliderror">存档中包含来自未激活的Mod的战斗书页，核心书页或书籍，您希望删除这些书籍吗？</text>
+</localize>

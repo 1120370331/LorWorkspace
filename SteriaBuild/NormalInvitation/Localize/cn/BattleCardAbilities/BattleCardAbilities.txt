@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BattleCardAbilityDescRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  
+    <!-- Card 9001001: 拙劣控流 -->
+    <BattleCardAbility ID="AnhierCard001">
+      <!-- No direct card ability, description comes from dice -->
+    </BattleCardAbility>
+    <BattleCardAbility ID="AnhierFlow1">
+      <Desc>[命中时] 获得1层[流]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9001002: 回忆侧斩 -->
+    <BattleCardAbility ID="AnhierDiscardRandom1">
+      <Desc>[使用时] 随机弃置1张书页</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AnhierDraw1">
+      <Desc>[命中时] 抽取1张书页</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9001003: 奥塔尔的荣耀 -->
+    <BattleCardAbility ID="AnhierDiscardAllDraw">
+      <Desc>[使用时] 丢弃手中所有书页，并抽取等量的书页</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AnhierClashWinDraw1">
+      <Desc>[拼点胜利] 抽取1张书页</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AnhierGainLight2">
+      <Desc>[命中时] 恢复2点光芒</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9001004: 回忆协奏之刃 -->
+    <BattleCardAbility ID="AnhierDiscardAllPowerUp">
+       <Desc>[使用时] 丢弃手中所有书页，并使本书页所有骰子威力+X(X为弃牌数)</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9001005: 攫取回忆 -->
+    <BattleCardAbility ID="AnhierCard005">
+       <!-- No direct card ability, description comes from dice -->
+    </BattleCardAbility>
+    <BattleCardAbility ID="AnhierGrabDraw1">
+       <Desc>[命中时] 抽取1张书页</Desc>
+    </BattleCardAbility>
+    <!-- Second behaviour also uses DiceCardAbility_AnhierGrabDraw1, description is already covered -->
+
+    <!-- Card 9001006: 珍贵的回忆 -->
+    <BattleCardAbility ID="AnhierPreciousDiscard">
+       <Desc>[佚亡] [被弃置时] 摧毁本书页，并抽取2张书页并在下一幕开始时获得1层[强壮]</Desc> 
+    </BattleCardAbility>
+
+    <!-- Card 9001007: 内调之流 -->
+    <BattleCardAbility ID="AnhierGainFlow5Draw2NextTurn">
+       <Desc>[使用时] 获得5层[流]，下一幕开始时抽取2张书页</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9001001: 拙劣控流 - Added On Use Desc -->
+    <BattleCardAbility ID="AnhierRecoverLight1">
+        <Desc>[使用时] 恢复1点光芒</Desc>
+    </BattleCardAbility>
+
+</BattleCardAbilityDescRoot> 

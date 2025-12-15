@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiceCardXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Version>1.1</Version>
+  <!-- 拙劣控流 -->
+  <Card ID="9001001" workshopID="NormalInvitation">
+    <Name>拙劣控流</Name>
+    <TextId>-1</TextId>
+    <Artwork>1741532454052.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>AnhierRecoverLight1</Script>
+    <ScriptDesc />
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="" Script="AnhierFlow1" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 回忆侧斩 -->
+  <Card ID="9001002" workshopID="NormalInvitation">
+    <Name>回忆侧斩</Name>
+    <TextId>-1</TextId>
+    <Artwork>1741532454052.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>AnhierDiscardRandom1</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierDiscardRandom1" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 奥塔尔的荣耀 -->
+  <Card ID="9001003" workshopID="NormalInvitation">
+    <Name>奥塔尔的荣耀</Name>
+    <TextId>-1</TextId>
+    <Artwork>1741532454052.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AnhierDiscardAllDraw</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierDiscardAllDraw" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="10" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="AnhierClashWinDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierGainLight2" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 回忆协奏之刃 -->
+  <Card ID="9001004" workshopID="NormalInvitation">
+    <Name>回忆协奏之刃</Name>
+    <TextId>-1</TextId>
+    <Artwork>1741532454052.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="4" />
+    <Script>AnhierDiscardAllPowerUp</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierDiscardAllPowerUp" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 攫取回忆 -->
+  <Card ID="9001005" workshopID="NormalInvitation">
+    <Name>攫取回忆</Name>
+    <TextId>-1</TextId>
+    <Artwork>1741532454052.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>AnhierCard005</Script>
+    <ScriptDesc />
+    <AbilityList />
+    <BehaviourList>
+      <Behaviour Min="3" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 珍贵的回忆 -->
+  <Card ID="9001006" workshopID="NormalInvitation">
+    <Name>珍贵的回忆</Name>
+    <TextId>-1</TextId>
+    <Artwork>1741532454052.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Keyword>Discard</Keyword>
+    <Keyword>ExhaustOnUse</Keyword>
+    <Script>AnhierPreciousDiscard</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierPreciousDiscard" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 内调之流 -->
+  <Card ID="9001007" workshopID="NormalInvitation">
+    <Name>内调之流</Name>
+    <TextId>-1</TextId>
+    <Artwork>1741532454052.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AnhierGainFlow5Draw2NextTurn</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierGainFlow5Draw2NextTurn" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="10" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Slazeya Cards Start -->
+  <!-- 逐梦随流 -->
+  <Card ID="9002001" workshopID="NormalInvitation">
+    <Name>逐梦随流</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>SlazeyaGainFlow3NextTurn</Script>
+    <AbilityList>
+      <Ability Script="SlazeyaGainFlow3NextTurn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="SlazeyaGainLight1" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SlazeyaClashWinGainFlow2NextTurn" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 川流不息 -->
+  <Card ID="9002002" workshopID="NormalInvitation">
+    <Name>川流不息</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="1" />
+    <Script>SlazeyaGainFlow3NextTurn</Script>
+    <AbilityList>
+      <Ability Script="SlazeyaGainFlow3NextTurn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="6" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="SlazeyaClashLosePowerUpNextDice" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="SlazeyaDraw2" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 万物之流 -->
+  <Card ID="9002003" workshopID="NormalInvitation">
+    <Name>万物之流</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Far" Cost="2" />
+    <Script>SlazeyaGainFlow5OnRoundStart</Script>
+    <AbilityList>
+      <Ability Script="SlazeyaGainFlow5OnRoundStart"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="SlazeyaGainFlow1OnHit" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 风暴分流 -->
+  <Card ID="9002004" workshopID="NormalInvitation">
+    <Name>风暴分流</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>SlazeyaFlowBonusX2</Script>
+    <AbilityList>
+      <Ability Script="SlazeyaFlowBonusX2"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="18" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="SlazeyaRepeatOnFlow5" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 倾覆万千之流 -->
+  <Card ID="9002005" workshopID="NormalInvitation">
+    <Name>倾覆万千之流</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarArea" Cost="7" />
+    <Script>SlazeyaMassAttackTeamLightGain</Script>
+    <AbilityList>
+      <Ability Script="SlazeyaMassAttackTeamLightGain"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="12" Dice="25" Type="Atk" Detail="Slash" Motion="S1" EffectRes="" Script="SlazeyaMassAttackBonusDamage" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>9000</Priority>
+    <Option>OnlyPage</Option>
+  </Card>
+  <!-- Slazeya Cards End -->
+
+  <!-- Cultist Cards Start -->
+  <!-- 虔诚司流 -->
+  <Card ID="9003001" workshopID="NormalInvitation">
+    <Name>虔诚司流</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>CultistGainFlow3NextTurn</Script>
+    <AbilityList>
+      <Ability Script="CultistGainFlow3NextTurn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="CultistDraw1" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 遵循流转 -->
+  <Card ID="9003002" workshopID="NormalInvitation">
+    <Name>遵循流转</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="1" />
+    <Script>CultistFlow2CheckGainLightDraw</Script>
+    <AbilityList>
+      <Ability Script="CultistFlow2CheckGainLightDraw"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="5" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 洋流汇聚 -->
+  <Card ID="9003003" workshopID="NormalInvitation">
+    <Name>洋流汇聚</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Far" Cost="2" />
+    <Script>CultistGainFlowAllyCountNextTurn</Script>
+    <AbilityList>
+      <Ability Script="CultistGainFlowAllyCountNextTurn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="9" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="CultistGainFlow3" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 逆转洋流 -->
+  <Card ID="9003004" workshopID="NormalInvitation">
+    <Name>逆转洋流</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>CultistFlowBonusX2</Script>
+    <AbilityList>
+      <Ability Script="CultistFlowBonusX2"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="10" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="J" EffectRes="" Script="" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- Cultist Cards End -->
+</DiceCardXmlRoot>

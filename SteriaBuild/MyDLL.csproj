@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <!-- 
+    <PostBuildEvent>xcopy "$(TargetDir)MyDLL.*" "$(ProjectDir)NormalInvitation\Assemblies\" /Y /I /D</PostBuildEvent>
+    -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>Libs\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.UnitTest">
+        <HintPath>Libs\MonoMod.UnitTest.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+        <HintPath>Libs\MonoMod.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour">
+        <HintPath>Libs\MonoMod.RuntimeDetour.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Common">
+        <HintPath>Libs\MonoMod.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+        <HintPath>Libs\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+        <HintPath>Libs\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+        <HintPath>Libs\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+        <HintPath>Libs\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="0Harmony">
+         <HintPath>Libs\0Harmony.dll</HintPath>
+     </Reference>
+    <Reference Include="BaseMod">
+      <HintPath>Libs\BaseMod.dll</HintPath>
+     </Reference>
+    <Reference Include="UnityEngine">
+       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\UnityEngine.dll</HintPath>
+       <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\UnityEngine.UI.dll</HintPath>
+        <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>Libs\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- 忽略反编译的游戏代码文件夹 -->
+  <ItemGroup>
+    <Compile Remove="Assembly-CSharp\**" />
+    <EmbeddedResource Remove="Assembly-CSharp\**" />
+    <None Remove="Assembly-CSharp\**" />
+  </ItemGroup>
+    <ItemGroup>
+    <Compile Remove="BaseMod\**" />
+    <EmbeddedResource Remove="BaseMod\**" />
+    <None Remove="BaseMod\**" />
+  </ItemGroup>
+
+</Project>

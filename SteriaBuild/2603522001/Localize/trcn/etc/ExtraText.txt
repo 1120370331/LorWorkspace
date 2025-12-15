@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<localize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <text id="BaseMod_ReMoveUnloadSave">비활성 MOD 설정이 있지만 삭제하시겠습니까?</text>
+</localize>

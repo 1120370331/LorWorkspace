@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+这是一个游戏《废墟图书馆》的mod项目。
+在实现相关功能时，你需要先阅读 [note.md](mdc:note.md)
+如果发现没有相关的功能，则查找 @Assembly-Csharp文件夹
+这是《废墟图书馆》的核心dll，在里面查找相关功能
+并添加到 [note.md](mdc:note.md)
+@NormalInvitation 文件夹是mod的主体文件夹，直接可以添加到客户端
+里面有各种配置文件，你需要对其进行修改以实现功能（比如XML）
+@ReferenceMod 文件夹是一个成熟的市场上mod（别人的，不可更改），你不知道如何写之前去看看别人怎么写的。
+你不仅要满足结构要求，一些xml内部内容也应该符合规范。你可以去参考项目里查询怎么写。
+

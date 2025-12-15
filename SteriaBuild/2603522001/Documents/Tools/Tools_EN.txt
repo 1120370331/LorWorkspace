@@ -1,0 +1,73 @@
+The Tools Class under BaseMod namespace provides some convenient methods. Need to reference BaseMod namespace (using BaseMod;)
+The following are explanations and usage examples of these methods.
+
+Method：
+public static LorId MakeLorId(int id){}
+Enter an int type number, find the location of the assembly (dll) file that calls this Method, and obtain the ModId of the directory where it is located to generate a LorId and return it.
+Usage：
+owner.personalEgoDetail.AddCard(Tools.MakeLorId(19650010));
+
+Method：
+public static void ExhaustCardAnyWhere(this BattleAllyCardDetail cardDetail, BattleDiceCardModel card){}
+ExtensionMethod,Exhaust a card regardless some effect that forbid exhaust such as "Sufficient Ammo".
+Usage：
+BattleDiceCardModel card;
+owner.allyCardDetail.ExhaustCardAnyWhere(card);
+
+Method：
+public static BattleDiceCardModel DrawCardSpecified(this BattleAllyCardDetail cardDetail, Predicate<BattleDiceCardModel> match){}
+ExtensionMethod,Draw a card that match the specified condition and return it,(if can't find,return null).Will add discarded piles to deck,can't draw card over _maxDrawHand.
+Usage：
+owner.allyCardDetail.DrawCardSpecified(x => x.GetCost()>2);
+
+Method：
+public static void SetAbilityData(this BattleCardBehaviourResult battleCardBehaviourResult, EffectTypoData effectTypoData){}
+ExtensionMethod,Create a popup identifies the activated ability during combat(like "Stigma Workshop Weaponry").We will update it later to custom icon and color.
+Usage：
+if (owner.battleCardResultLog != null)
+{
+	base.owner.battleCardResultLog.CurbehaviourResult.SetAbilityData(new EffectTypoData(EffectTypoCategory.Strength, TextDataModel.GetText("ZRoland_Fury_Desc", Array.Empty<object>()), TextDataModel.GetText("ZRoland_Fury_Title", Array.Empty<object>())));
+}
+
+Method：
+public static void SetAlarmText(string alarmtype, UIAlarmButtonType btnType = UIAlarmButtonType.Default, ConfirmEvent confirmFunc = null, params object[] args){}
+Used to create a popup window with speciftc text.Can add YesNo Button.
+Parameters：alarmtype,args:TextDataModel.GetData(alarmtype,args);btnType:Type of Popup,btnType.YesNo contains Yes or No choice;confirmFunc:only valid when btnType.YesNo,is an option event.
+Usage：
+Tools.SetAlarmText("CheatersToolKit_ClearCard", UIAlarmButtonType.YesNo, delegate(bool flag)
+{
+	if (flag)
+	{
+		Harmony_Patch.ClearCards();
+	}
+}, Array.Empty<object>());
+
+Method：
+public static AudioClip GetAudio(string path){}
+public static AudioClip GetAudio(string path, string Name = ""){}
+Used to create a AudioClip from mp3,wav or ogg files,please make sure the file type is correct.
+Usage：
+Tools.GetAudio(Harmony_Patch.ModPath + "/CustomEffect/CryForAngelicaDeath.wav", "CryForAngelicaDeath");
+
+Method：
+public static string GetModId(Assembly callingAssembly){}
+Used to get the Mod's Id that call this method。
+Usage：
+Tools.GetModId(Assembly.GetExecutingAssembly());
+
+Method:
+public static T GetScript<T>(this BattleDiceCardModel cardModel) where T : DiceCardSelfAbilityBase
+Used to obtain the "main" script of the card (the one that runs OnRoundStart, OnRoundEnd, and some other methods).
+
+Here is a series of ExtensionMethod related to custom Category (BookCategory) values, cooperated with card's and equip's Category in the xml (values other than the original are now supported!).
+public static bool ContainsCategory(this BookModel book, string category){}
+public static bool ContainsCategory(this BookXmlInfo book, string category){}
+public static bool ContainsCategory(this BattleDiceCardModel card, string category){}
+public static bool ContainsCategory(this DiceCardXmlInfo card, string category){}
+Usage：
+if(diceCardXmlInfo.ContainsCategory("ZAngelicaBlackSilence")){}
+if(battleDiceCardModel.ContainsCategory("ZAngelicaBlackSilence")){}
+if(book.ContainsCategory("ZBlackSilence")){}
+if(bookClassInfo.ContainsCategory("ZBlackSilence")){}
+
+The same as the former also exists for ContainsOption (BookOption for equips / CardOption for cards; both set as Option in xml).

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DeckXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Version>1.1</Version>
+  
+  <!-- 之前的安希尔卡组 (ID 1) -->
+  <Deck ID="1">
+    <Card>9001001</Card> <!-- 拙劣控流 -->
+    <Card>9001002</Card> <!-- 回忆侧斩 -->
+    <Card>9001003</Card> <!-- 奥塔尔的荣耀 -->
+    <Card>9001004</Card> <!-- 回忆协奏之刃 -->
+    <Card>9001005</Card> <!-- 攫取回忆 -->
+    <Card>9001006</Card> <!-- 珍贵的回忆 -->
+    <Card>9001007</Card> <!-- 内调之流 -->
+  </Deck>
+
+  <!-- 斯拉泽雅卡组 (对应 Book ID 2) -->
+  <Deck ID="2">
+    <Card>9002001</Card> <!-- 逐梦随流 -->
+    <Card>9002001</Card>
+    <Card>9002002</Card> <!-- 川流不息 -->
+    <Card>9002002</Card>
+    <Card>9002003</Card> <!-- 万物之流 -->
+    <Card>9002003</Card>
+    <Card>9002004</Card> <!-- 风暴分流 -->
+    <Card>9002004</Card>
+    <Card>9002005</Card> <!-- 倾覆万千之流 -->
+  </Deck>
+
+  <!-- 司流者教徒卡组 (对应 Book ID 3) -->
+  <Deck ID="3">
+    <Card>9003001</Card> <!-- 虔诚司流 -->
+    <Card>9003001</Card>
+    <Card>9003001</Card>
+    <Card>9003002</Card> <!-- 遵循流转 -->
+    <Card>9003002</Card>
+    <Card>9003003</Card> <!-- 洋流汇聚 -->
+    <Card>9003003</Card>
+    <Card>9003004</Card> <!-- 逆转洋流 -->
+    <Card>9003004</Card>
+  </Deck>
+  
+  <!-- 可以添加更多 Deck 条目，用不同的 ID -->
+  <!-- 
+  <Deck ID="MyDLL.EnemyDeck2">
+    ...
+  </Deck>
+  -->
+  
+</DeckXmlRoot>

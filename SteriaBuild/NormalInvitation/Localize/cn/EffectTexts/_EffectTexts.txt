@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BattleEffectTextRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <effectTextList>
+    <BattleEffectText ID="SteriaFlow">
+      <Name>流</Name>
+      <Desc>使用书页时，消耗X层使书页上的X颗骰子威力+1。若层数多于骰子数，则从第一颗骰子开始重复分配加成，直至层数归零。</Desc>
+    </BattleEffectText>
+    
+    <BattleEffectText ID="MyDLL.Anxier.OnlyPageKeyword">
+        <Name>安希尔专用</Name>
+        <Desc>仅限"安希尔"核心书页装备者使用。</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="MemCrystalPassive">
+      <Name>回忆结晶</Name>
+      <Desc>所有骰子威力+{0}</Desc>
+    </BattleEffectText>
+  </effectTextList>
+</BattleEffectTextRoot> 

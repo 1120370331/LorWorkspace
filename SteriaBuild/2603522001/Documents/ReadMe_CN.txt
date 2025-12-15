@@ -1,0 +1,14 @@
+现在只要ArtWork中有对应于keywordIconid的png，将自动赋值buff图标。
+BaseMod工具能够帮助作者以最小的工作量将旧的Mod转移至创意工坊，并为新作者提供常用功能的统一支持，例如原版Xml解包、自定义战斗背景与MapManager、Mod自定义数据存储与读取、几乎全部特殊动作的导入、自定义饰品、自定义情感书页、简洁的书页图标修改以及便捷LorId生成等。我们会慢慢撰写教程。
+旧Mod迁移的注意事项：
+作者需要将原本Mod内的所有文件(Story除外，Story部分由于月亮本身的制作器功能更好故使用月亮的存放方式)复制入新Mod的根目录内，并修改Xml（涉及引用原版被动能力、书籍的部分）以及Dll（将原本的数字id转化为LorId）中的关于id的部分。最后使用BaseMod目录内的上传工具上次即可。
+需要针对Xml以及Dll中的关于id的部分进行修复(对齐LorId)，之后将原本Mod内的所有文件(Story除外)复制入新Mod的根目录内并使用工具上传即可。Story文件请按照创意工坊格式存放，若需添加多语言的剧情文本，请在\NormalInvitation\Data\StoryText目录下创建新的语言文件夹并存放，如\NormalInvitation\Data\StoryText\cn\Story1，在剧情文件读取中，填入的<Story Condition="Start">Story1</Story>中的条目将直接对应文件名（xml或txt格式均可）。
+Xml中所有项目默认被识别为当前Mod的内容，未经注明的子条目将统一识别为当前Mod的内容，若需要添加原版内容请参照如下格式：<Book Pid="@origin">31</Book>，目前需要特别注意的子条目有：
+CardDropTable：Card
+Deck：Card
+DropBook：DropItem
+EquipPage：Episode，EquipEffect_Passive，EquipEffect_OnlyCard
+Stage：Condition_Stage，Wave_Unit，Invitation_Book
+Xml解包：位于\Library Of Ruina\LibraryOfRuina_Data\Managed\BaseMod目录下。
+现在如果Mod的id以"@origin"结尾，那么这个mod中的内容（如战斗书页、核心书页等）会被识别为原版内容，如果id发生重合则会覆盖原版内容。这也可以用于旧Mod的快速迁移（这样就不需要修改xml和dll中有关id的部分了，但过时的方法引用仍然需要修改）
+此外修复了关于ReadyBuf的一点瑕疵，并开放了大部分情况下的单位容纳上限（每一方至多99名，侧边栏UI各显示8名）。

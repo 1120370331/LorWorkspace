@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EnemyUnitClassRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Version>1.1</Version>
+  <Enemy ID="1">
+    <Name>安希尔</Name>
+    <FaceType>Skin</FaceType>
+    <NameID>-1</NameID>
+    <MinHeight>170</MinHeight>
+    <MaxHeight>170</MaxHeight>
+    <Unknown>false</Unknown>
+    <Gender>F</Gender>
+    <Retreat>false</Retreat>
+    <BookId>1</BookId>
+    <BodyId>0</BodyId>
+    <Exp>0</Exp>
+    <DropBonus>0</DropBonus>
+    <DropTable Level="0">
+      <DropItem Prob="1">1</DropItem>
+    </DropTable>
+    <AiScript />
+  </Enemy>
+
+  <!-- Slazeya Enemy Definition -->
+  <Enemy ID="2">
+    <Name>斯拉泽雅</Name>
+    <FaceType>Skin</FaceType>
+    <NameID>-1</NameID>
+    <MinHeight>175</MinHeight>
+    <MaxHeight>175</MaxHeight>
+    <Unknown>false</Unknown>
+    <Gender>F</Gender>
+    <Retreat>false</Retreat>
+    <BookId>2</BookId>
+    <BodyId>0</BodyId>
+    <Exp>0</Exp>
+    <DropBonus>0</DropBonus>
+    <DropTable Level="0">
+      <DropItem Prob="1">2</DropItem>
+    </DropTable>
+    <AiScript />
+  </Enemy>
+
+  <!-- Cultist Enemy Definition -->
+  <Enemy ID="3">
+    <Name>司流者教徒</Name>
+    <FaceType>Skin</FaceType>
+    <NameID>-1</NameID>
+    <MinHeight>170</MinHeight>
+    <MaxHeight>170</MaxHeight>
+    <Unknown>false</Unknown>
+    <Gender>M</Gender>
+    <Retreat>false</Retreat>
+    <BookId>3</BookId>
+    <BodyId>0</BodyId>
+    <Exp>0</Exp>
+    <DropBonus>0</DropBonus>
+    <DropTable Level="0">
+      <DropItem Prob="1">3</DropItem>
+    </DropTable>
+    <AiScript />
+  </Enemy>
+</EnemyUnitClassRoot>

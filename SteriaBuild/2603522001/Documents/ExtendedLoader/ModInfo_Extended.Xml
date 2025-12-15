@@ -1,0 +1,376 @@
+<ModInfo Extended="true"> 
+<!-- If you want to use extraloader then write Extended="true" -->
+<!-- 如果要使用扩展功能，这里需要加上 Extended="true" -->
+  <FaceInfo>
+  <!-- All content here will read at its original size -->
+  <!-- 这里的内容都会以原本的尺寸来读取 -->
+    <Front_FrontHair>Front_FrontHair</Front_FrontHair>
+	<Front_RearHair>Front_RearHair</Front_RearHair>
+    <Front_Mouth_Normal>Front_Mouth_Normal</Front_Mouth_Normal>
+    <Front_Mouth_Attack>Front_Mouth_Attack</Front_Mouth_Attack>
+    <Front_Mouth_Hit>Front_Mouth_Hit</Front_Mouth_Hit>
+    <Front_Brow_Normal>Front_Brow_Normal</Front_Brow_Normal>
+    <Front_Brow_Attack>Front_Brow_Attack</Front_Brow_Attack>
+    <Front_Brow_Hit>Front_Brow_Hit</Front_Brow_Hit>
+    <Side_FrontHair>Side_FrontHair</Side_FrontHair>
+	<Side_RearHair_Front>Side_RearHair</Side_RearHair_Front>
+	<Side_RearHair_Rear>Side_RearHair</Side_RearHair_Rear>
+    <Front_Eye>Front_Eye</Front_Eye>
+    <Side_Eye>Side_Eye</Side_Eye>
+  </FaceInfo>
+  <!-- if character using this skin has IsCustomizable == false (for enemies that means RandomFace == false), load this customization data instead -->
+  <!-- 如果使用此皮肤的角色的IsCustomizable==false（对于表示RandomFace==false的敌人），则改为加载此自定义数据-->
+  <ExtendedFaceInfo>
+    <!-- if you want to reuse the same hair/eye/etc for multiple enemies, put files and names into one xml, then just same names into another -->
+    <!-- you can also use numbers here, if you want to load vanilla customs (0-42 front hair, 0-22 back hair, 0-31 eye, 0-13 brow, 0-13 mouth)-->
+    <!-- 如果您想对多个敌人重复使用相同的hair/eye/etc，请将文件和名称写入一个xml中，然后将相同的名称写入另一个xml-->
+    <!-- 如果你想加载普通定制，你也可以在这里使用数字（0-42前发，0-22后发，0-31眼睛，0-13眉毛，0-13嘴巴）-->
+    <FrontHair>modid_mycustom</FrontHair>
+    <RearHair>modid_mycustom</RearHair>
+    <Eye>modid_mycustom</Eye>
+    <Brow>modid_mycustom</Brow>
+    <Mouth>modid_mycustom</Mouth>
+	<!-- this is just for customization data to load -->
+	<!-- for supported color formats see ColorUtility.TryParseHtmlString -->
+    <!-- 这只是为了加载自定义数据 -->
+	<!-- 有关支持的颜色格式，请参阅ColorUtility.TryParseHtmlString -->
+    <HairColor>cyan</HairColor>
+    <EyeColor>black</EyeColor>
+    <SkinColor>#97BBB1</SkinColor>
+  </ExtendedFaceInfo>
+  <ClothInfo>
+    <Name>安吉莉卡</Name>
+	<!-- Fill in the size and resolution(quality) you want your character image to be scaled to -->
+	<!-- if not filled in, default quality is 50 (can be changed to same value for all motions by putting quality into ClothInfo) -->
+	<!-- if not filled in, default resolution is 512x512 (can be changed to native image size for all motions by putting size_dynamic="true" into ClothInfo) -->
+	<!-- note that quality influences the scale of character images -->
+    <!-- 填写您希望角色图像缩放到的大小和分辨率（质量） -->
+	<!-- 如果未填写，默认质量为50（可以通过将质量放入ClothInfo中，将所有动作更改为相同的值） -->
+	<!-- 如果未填写，默认分辨率为512x512（可以通过在ClothInfo中输入size_dynamic=“true”将所有运动更改为原始图像大小） -->
+	<!-- 分辨率会直观地影响角色大小 -->
+	<!-- the following skin layers (file names) are supported: 
+               支持以下皮肤分层（文件名）：
+		Motion                  (or Motion_mid)                    -  default layer - under head but over rear hair
+		Motion_skin             (or Motion_mid_skin)               -  just over default layer (but still under head), will be colored or disabled according to customization
+		Motion_front                                               -  default front layer - over head
+		Motion_front_skin                                          -  just over default front layer, will be colored or disabled according to customization
+		Motion_rear             (or Motion if Motion_mid exists)   -  new rearmost layer - under rear hair
+		Motion_rear_skin   (or Motion_skin if Motion_mid exists)   -  over rearmost layer (but still under rear hair), will be colored or disabled according to customization
+		Motion_effect                                              -  set to Effect layer (over the rest of the skin)
+	-->
+    <Default size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+	  <!-- if head enabled, can also use complex format (see below) -->
+      <!-- 如果启用了头，也可以使用复杂格式（请参阅下文）-->
+	  
+	  <!-- the following will be stored in additionalPivotList in CharacterMotion, to be used by custom scripts if needed -->
+	  <!-- see e.g. Distorted Yan's chain attachment points -->
+      <!-- 以下内容将存储在CharacterMotion中的其他数据透视列表中，以便在需要时由自定义脚本使用-->
+      <!-- 参见下面示例的扭曲阳的链连接点-->
+	  <AdditionalPivot x="80" y="200" rotation="30" /> <!-- simple format --> <!-- 可使用普通格式 -->
+	  <AdditionalPivot>
+	    <!-- complex format (note that position in complex format is 1/100 of simple format) -->
+	    <!-- 或复杂格式（若有需要的话）（请注意，复杂格式中的位置是简单格式的1/100）-->
+		<localPosition x="0.8" y="2" z="0"/> <!-- Position 位置 -->
+		<localScale x="1" y="1" z="1"/> <!-- Scale 缩放 -->
+		<localEulerAngles x="0" y="0" z="30"/> <!-- Rotation 旋转 -->
+	  </AdditionalPivot>
+    </Default>
+    <Guard size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Guard>
+    <Evade size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Evade>
+    <Damaged size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Damaged>
+    <Slash size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash>
+    <Slash2 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash2>
+    <Penetrate size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Penetrate>
+    <Penetrate2 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Penetrate2>
+    <Hit size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Hit>
+    <Hit2 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Hit2>
+    <Move size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Move>
+    <NONE size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </NONE>
+    <Fire size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Fire>
+    <Aim size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Aim>
+    <Special size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Special>
+    <S1 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S1>
+    <S2 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="-6.899994" head_y="312.8" rotation="0" head_enable="False" />
+    </S2>
+    <S3 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S3>
+    <S4 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S4>
+    <S5 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S5>
+    <S6 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S6>
+    <S7 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S7>
+    <S8 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S8>
+    <S9 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S9>
+    <S10 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S10>
+    <S11 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S11>
+    <S12 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S12>
+    <S13 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S13>
+    <S14 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S14>
+    <S15 size_x="1330" size_y="1330" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-34.58" pivot_y="-619.78" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S15>
+	<!-- 如果你想让你的动作声音跟随皮肤而不是核心书页，那么填写这里 -->
+	<!-- External true表示您需要放置ogg文件或wav文件进行读取 -->
+	<!-- 将文件放在“你的皮肤的名字”/MotionSound/中，如果要对多个皮肤重复使用相同的声音，则放在“Resource/MotionSound/”中 -->
+	<!-- 如果External为false，它将读取原始音效 -->
+	<!-- If you want your motionsound to follow the appearance and not the equippage then fill it here -->
+	<!-- External true means that you need to place the ogg file or wav file to read -->
+	<!-- Put the files in "YouSkinName"/MotionSound/, or in Resource/MotionSound/ if you want to reuse the same sounds for multiple skins -->
+	<!-- if External false, it will read the original sound effect -->
+	<SoundList>
+		<SoundInfo Motion="E" WinExternal="true" Win="Evasion.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="G" WinExternal="true" Win="Guard.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="H" WinExternal="true" Win="Hit.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="J" WinExternal="true" Win="Slash.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="Z" WinExternal="true" Win="Penetrate.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="F" WinExternal="true" Win="Gun.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S1" WinExternal="true" Win="Gun.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S2" WinExternal="true" Win="S2.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S3" WinExternal="true" Win="S3.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S4" WinExternal="true" Win="S4.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S5" WinExternal="true" Win="S5.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S6" WinExternal="true" Win="S6.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S7" WinExternal="true" Win="S7.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S8" WinExternal="true" Win="S8.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S9" WinExternal="true" Win="S9.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S10" WinExternal="true" Win="S10.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S11" WinExternal="true" Win="Guard.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S12" WinExternal="true" Win="S12.wav" LoseExternal="false" Lose=""/>
+		<SoundInfo Motion="S13" WinExternal="true" Win="S12.wav" LoseExternal="false" Lose=""/>
+	</SoundList>
+    <AtkEffectPivotInfo>
+	<!-- Used to indicate where the attack effect is occured from, which makes it more appropriate for characters to use vanilla cards -->
+	<!-- 用来指示特效生成的位置，这会让皮肤在使用原版特效时表现更好 -->
+      <atkEffectRoot>
+		<localPosition x="0" y="1.94" z="0"/><!-- Position 位置 -->
+		<localScale x="1" y="1" z="1"/><!-- Scale 缩放 -->
+		<localEulerAngles x="0" y="0" z="0"/><!-- Rotation 旋转 -->
+	  </atkEffectRoot>
+	  <!-- supports simple format too --> <!-- 也可以使用普通格式 -->
+      <atkEffectPivot_H x="150" y="230" rotation="0" />
+	  <!-- normally atkEffectPivots are created as children of atkEffectRoot (inheriting its transform), but you can use nested="false" to create them independently -->
+	  <!-- you can also put nested="false" in atkEffectRoot itself, to create all atkEffectPivots independently -->
+      <!-- 通常，atkEffectPivot是作为atkEffectRoot（继承其变换）的子级创建的，但您可以使用nested="false"独立创建它们-->
+      <!-- 您也可以将nested="false"放在atkEffectRoot中，以独立创建所有atkEffectPivot-->
+      <atkEffectPivot_J nested="false">
+		<localPosition x="-2" y="-0.8" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_J>
+      <atkEffectPivot_Z>
+		<localPosition x="-6.4" y="0.8" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_Z>
+      <atkEffectPivot_G>
+		<localPosition x="-2.8" y="-0.1" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_G>
+      <atkEffectPivot_E>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_E>
+      <atkEffectPivot_S>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_S>
+      <atkEffectPivot_F>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+	  </atkEffectPivot_F>
+    </AtkEffectPivotInfo>
+    <SpecialMotionPivotInfo>
+	<!-- The same as AtkEffectPivotInfo (supports simple format too)-->
+    <!-- 与 AtkEffectPivotInfo 相同，不过这里会通过一个单独的方法读取（例如罗兰的大多数特效位置） -->
+      <S1>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S1>
+      <S2 x="0" y="0" rotation="0" />
+      <S3>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S3>
+      <S4>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S4>
+      <S5>
+		<localPosition x="2.5" y="1.1" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S5>
+      <S6>
+		<localPosition x="0.9" y="1.17" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S6>
+      <S7>
+		<localPosition x="12" y="-0.6" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S7>
+      <S8>
+		<localPosition x="-4" y="-0.9" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S8>
+      <S9>
+		<localPosition x="1.2" y="-3.3" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S9>
+      <S10>
+		<localPosition x="-0.2" y="-0.1" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S10>
+      <S11>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S11>
+      <S12>
+		<localPosition x="-1.4" y="2.5" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S12>
+      <S13>
+		<localPosition x="-0.74" y="1.71" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S13>
+      <S14>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S14>
+      <S15>
+		<localPosition x="0" y="0" z="0"/>
+		<localScale x="1" y="1" z="1"/>
+		<localEulerAngles x="0" y="0" z="0"/>
+      </S15>
+    </SpecialMotionPivotInfo>
+  </ClothInfo>
+</ModInfo>

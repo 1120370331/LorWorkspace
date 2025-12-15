@@ -1,0 +1,23 @@
+# 工具软件
+AssetStudio.net472.v0.16.47/
+AssetStudio.net472.v0.16.47.zip
+dnspy/
+
+# 参考项目/前置模组
+寒昼事务所V4.0/
+
+# 游戏本体解包
+SteriaBuild/Assembly-CSharp/
+
+# 参考模组
+SteriaBuild/ReferenceMod/
+
+# Visual Studio
+.vs/
+bin/
+obj/
+*.user
+*.suo
+
+# 其他
+*.log

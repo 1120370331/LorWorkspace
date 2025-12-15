@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CardDescXmlRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <cardDescList>
+    <!-- Slazeya Cards -->
+    <BattleCardDesc ID="9002001">
+      <Name>逐梦随流</Name>
+      <Desc>使用时：下回合获得3层"流"</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9002002">
+      <Name>川流不息</Name>
+      <Desc>使用时：下回合获得3层"流"</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9002003">
+      <Name>万物之流</Name>
+      <Desc>回合开始时：获得5层"流"</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9002004">
+      <Name>风暴分流</Name>
+      <Desc>本书页受"流"加成x2</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9002005">
+      <Name>倾覆万千之流</Name>
+      <Desc>使用时：本书页每消耗5层流，下回合为所有友方单位恢复1点光芒</Desc>
+    </BattleCardDesc>
+    <!-- Cultist Cards -->
+    <BattleCardDesc ID="9003001">
+      <Name>虔诚司流</Name>
+      <Desc>使用时：下回合获得3层"流"</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9003002">
+      <Name>遵循流转</Name>
+      <Desc>使用时：如果本书页消耗至少了2层流，则下回合恢复2点光芒并抽取1张书页</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9003003">
+      <Name>洋流汇聚</Name>
+      <Desc>下回合开始时：获得存活友方单位数量层"流"</Desc> <!-- Adjusted based on setting -->
+    </BattleCardDesc>
+    <BattleCardDesc ID="9003004">
+      <Name>逆转洋流</Name>
+      <Desc>本书页受"流"加成x2</Desc>
+    </BattleCardDesc>
+  </cardDescList>
+</CardDescXmlRoot> 

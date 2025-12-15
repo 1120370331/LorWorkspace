@@ -1,0 +1,77 @@
+BaseMod下的Tools类提供了一些方便使用的扩展方法。需要引用BaseMod命名空间（using BaseMod;）
+以下是关于这些扩展方法的讲解与使用范例。
+
+方法：
+public static LorId MakeLorId(int id){}
+传入一个int类型的数字，寻找调用此方法的程序集（dll）文件的位置并获取所在目录的ModId，用以生成一个LorId并返回。
+范例：
+owner.personalEgoDetail.AddCard(Tools.MakeLorId(19650010));
+添加1张本Mod中ID为19650010的个人EGO
+owner.allyCardDetail.AddNewCard(Tools.MakeLorId(19650010));
+向手中置入1张本Mod中ID为19650010的书页
+
+方法：
+public static void ExhaustCardAnyWhere(this BattleAllyCardDetail cardDetail, BattleDiceCardModel card){}
+扩展方法，从指定的allycarddetail中移除一张特定的战斗书页，用以无视一些阻止佚亡的效果。
+范例：
+BattleDiceCardModel card;
+owner.allyCardDetail.ExhaustCardAnyWhere(card);
+
+方法：
+public static BattleDiceCardModel DrawCardSpecified(this BattleAllyCardDetail cardDetail, Predicate<BattleDiceCardModel> match){}
+扩展方法，从指定的allycarddetail中抽取1张符合指定条件的战斗书页，返回此书页(若无符合条件则返回null)。会将弃牌堆加入牌堆，会受到抽牌上限(_maxDrawHand)限制。
+范例：
+owner.allyCardDetail.DrawCardSpecified(x => x.GetCost()>2);
+
+方法：
+public static void SetAbilityData(this BattleCardBehaviourResult battleCardBehaviourResult, EffectTypoData effectTypoData){}
+扩展方法，用以生成一个用于标识战斗时发动的能力的气泡（如烙印工造）。未来我们会更新这个功能来支持自定义的图标与颜色等。
+范例：
+if (owner.battleCardResultLog != null)
+{
+	base.owner.battleCardResultLog.CurbehaviourResult.SetAbilityData(new EffectTypoData(EffectTypoCategory.Strength, TextDataModel.GetText("ZRoland_Fury_Desc", Array.Empty<object>()), TextDataModel.GetText("ZRoland_Fury_Title", Array.Empty<object>())));
+}
+
+方法：
+public static void SetAlarmText(string alarmtype, UIAlarmButtonType btnType = UIAlarmButtonType.Default, ConfirmEvent confirmFunc = null, params object[] args){}
+用以生成一个确认的对话框气泡，用来显示信息，也可以选择是否生成“是”“否”选项。
+参数：alarmtype，args：用于从TextDataModel获取的索引（即TextDataModel.GetData(alarmtype,args)）；btnType：确认类型，YesNo为带有是否选择的对话框；confirmFunc：仅在btnType.YesNo时有效，为选项事件。
+范例：
+Tools.SetAlarmText("CheatersToolKit_ClearCard", UIAlarmButtonType.YesNo, delegate(bool flag)
+{
+	if (flag)
+	{
+		Harmony_Patch.ClearCards();
+	}
+}, Array.Empty<object>());
+
+方法：
+public static AudioClip GetAudio(string path){}
+public static AudioClip GetAudio(string path, string Name = ""){}
+用以将目标的音频文件（mp3、wav以及ogg）生成一个AudioClip，请确认文件格式是否正确。
+范例：
+Tools.GetAudio(Harmony_Patch.ModPath + "/CustomEffect/CryForAngelicaDeath.wav", "CryForAngelicaDeath");
+
+方法：
+public static string GetModId(Assembly callingAssembly){}
+用以获取当前程序集（dll）所来自的Mod的Id。
+范例：
+Tools.GetModId(Assembly.GetExecutingAssembly());
+
+方法：
+public static T GetScript<T>(this BattleDiceCardModel cardModel) where T : DiceCardSelfAbilityBase
+用于获取书页的“main”脚本（运行OnRoundStart、OnRoundEnd和其他一些方法的脚本）。
+
+
+以下是一系列关于CustomCategory的扩展方法，用于与战斗书页/核心书页中的CustomCategory配合
+public static bool ContainsCategory(this BookModel book, string category){}
+public static bool ContainsCategory(this BookXmlInfo book, string category){}
+public static bool ContainsCategory(this BattleDiceCardModel card, string category){}
+public static bool ContainsCategory(this DiceCardXmlInfo card, string category){}
+范例：
+if(diceCardXmlInfo.ContainsCategory("ZAngelicaBlackSilence")){}
+if(battleDiceCardModel.ContainsCategory("ZAngelicaBlackSilence")){}
+if(book.ContainsCategory("ZBlackSilence")){}
+if(bookClassInfo.ContainsCategory("ZBlackSilence")){}
+
+ContainsOption也存在与前者相同的情况（装备核心书页的BookOption/战斗书页的CardOption；两者都在xml中设置为Option）
