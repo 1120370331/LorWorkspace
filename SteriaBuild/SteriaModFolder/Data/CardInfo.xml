@@ -136,6 +136,26 @@
     <Priority>0</Priority>
   </Card>
 
+  <!-- 清司风流 -->
+  <Card ID="9001008" workshopID="NormalInvitation">
+    <Name>清司风流</Name>
+    <TextId>-1</TextId>
+    <Artwork>1741532454052.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>AnhierQingSiFengLiu</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierQingSiFengLiu" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="12" Dice="20" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
   <!-- Slazeya Cards Start -->
   <!-- 逐梦随流 -->
   <Card ID="9002001" workshopID="NormalInvitation">

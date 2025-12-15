@@ -7,65 +7,9 @@ using System.Threading.Tasks;
 using UnityEngine; // Needed for Debug.Log if used
 // Assuming BaseMod is used for BattleObjectManager or other utilities if needed
 using BaseMod; // Added for BattleObjectManager reference
-using MyDLL; // Added to access HarmonyHelpers
+using Steria; // Added to access HarmonyHelpers
 
-// --- Flow Buff Placeholder ---
-// NOTE: You need to implement this properly! Based on AnhierAbilities.cs
-public class BattleUnitBuf_Flow : BattleUnitBuf
-{
-    // Corrected access modifiers based on reference and error
-    // Updated keyword IDs to match existing localization
-    protected override string keywordId => "SteriaFlow";
-    protected override string keywordIconId => "SteriaFlow";
-    // Removed keywordTemplateId override
-
-    public override BufPositiveType positiveType => BufPositiveType.Positive;
-
-    // Basic stack adding
-    public override void OnAddBuf(int addedStack)
-    {
-        this.stack += addedStack;
-        this.stack = Mathf.Max(0, this.stack); // Prevent negative stacks
-        // Optional: Add UI update logic if needed
-    }
-
-    // Consume Flow logic (Placeholder - Actual consumption likely needs Harmony patches)
-    public int ConsumeFlow(int amount) {
-        int consumed = Mathf.Min(this.stack, amount);
-        this.stack -= consumed;
-         this.stack = Mathf.Max(0, this.stack); // Ensure stack doesn't go below 0 after consumption
-        if (this.stack <= 0) {
-            this.Destroy();
-        }
-        return consumed;
-    }
-
-     public override void OnRoundEnd()
-     {
-          // Example: Reset flow every round if needed by design
-          // this.Destroy();
-     }
-
-      // Helper to consume flow and apply bonus to dice
-      // This needs to be called from a Harmony patch on dice rolling/power calculation
-      // This function itself likely won't be called directly, but its logic integrated into patches.
-      public void ConsumeFlowForDiceBonus(BattleDiceBehavior behavior, int diceCount, int flowToConsume)
-      {
-           // This is complex logic based on 设定.md and needs careful implementation within a patch.
-           // "消耗X流并使书页X颗骰子威力+1"
-           // "如果流>书页骰子数量，则从头开始再次分配流，直到流等于0"
-           if (behavior == null || this.stack <= 0 || diceCount <= 0 || flowToConsume <= 0) return;
-
-           int flowConsumed = 0;
-           int diceApplied = 0;
-           int currentDiceIndex = 0; // Assuming behaviors are processed in order by the game
-
-           // This logic needs to happen *before* the dice roll, likely in a patch
-           // that iterates through the card's behaviors. This buff method is not the right place.
-           Debug.LogWarning("BattleUnitBuf_Flow.ConsumeFlowForDiceBonus logic needs to be integrated into Harmony patches, not called directly here.");
-      }
-}
-
+// NOTE: BattleUnitBuf_Flow is defined in BattleUnitBuf_Flow.cs (MyDLL namespace)
 
 // --- Slazeya Card Abilities ---
 
@@ -88,7 +32,7 @@ public class DiceCardSelfAbility_SlazeyaGainFlow5OnRoundStart : DiceCardSelfAbil
     // Per setting "回合开始时：获得5层"流"", assuming this means when the card action starts
     public override void OnStartBattle()
     {
-         MyDLL.CardAbilityHelper.AddFlowStacks(owner, 5);
+         Steria.CardAbilityHelper.AddFlowStacks(owner, 5);
     }
 }
 
@@ -191,7 +135,7 @@ public class DiceCardAbility_SlazeyaGainFlow1OnHit : DiceCardAbilityBase
     public static string Desc = "[On Hit] Gain 1 Flow";
     public override void OnSucceedAttack()
     {
-       MyDLL.CardAbilityHelper.AddFlowStacks(owner, 1);
+       Steria.CardAbilityHelper.AddFlowStacks(owner, 1);
     }
 }
 
@@ -333,7 +277,7 @@ public class DiceCardAbility_CultistGainFlow3 : DiceCardAbilityBase
     public static string Desc = "[On Hit] Gain 3 Flow";
     public override void OnSucceedAttack()
     {
-       MyDLL.CardAbilityHelper.AddFlowStacks(owner, 3);
+       Steria.CardAbilityHelper.AddFlowStacks(owner, 3);
     }
 }
 
@@ -350,7 +294,7 @@ public class BattleUnitBuf_SlazeyaFlowNextTurn : BattleUnitBuf
     public override void OnRoundStart()
     {
         if (_owner == null) { this.Destroy(); return; }
-        MyDLL.CardAbilityHelper.AddFlowStacks(_owner, this.stack);
+        Steria.CardAbilityHelper.AddFlowStacks(_owner, this.stack);
         _owner.bufListDetail.RemoveBuf(this);
     }
 }
@@ -379,29 +323,36 @@ public class BattleUnitBuf_DrawNextTurn : BattleUnitBuf
 
 // --- CardAbilityHelper Class (Copied from AnhierCards.cs) ---
 // Ensure this class is defined within the scope or accessible
-// Added namespace MyDLL for consistency and potential future conflicts avoidance
-namespace MyDLL 
+// Added namespace Steria for consistency and potential future conflicts avoidance
+namespace Steria 
 {
     public static class CardAbilityHelper
     {
         // Helper to add Flow stacks safely
         public static void AddFlowStacks(BattleUnitModel owner, int amount)
         {
-            if (owner == null || amount <= 0) return;
-            // Ensure BattleUnitBuf_Flow is accessible (assuming it's in MyDLL namespace too)
+            SteriaLogger.Log($"CardAbilityHelper.AddFlowStacks called: owner={owner?.UnitData?.unitData?.name}, amount={amount}");
+
+            if (owner == null || amount <= 0)
+            {
+                SteriaLogger.LogWarning($"CardAbilityHelper.AddFlowStacks: Early return (owner null or amount <= 0)");
+                return;
+            }
+
             BattleUnitBuf_Flow existingFlow = owner.bufListDetail.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
+            SteriaLogger.Log($"CardAbilityHelper.AddFlowStacks: existingFlow = {(existingFlow != null ? "found" : "null")}");
+
             if (existingFlow != null)
             {
-                 existingFlow.stack += amount;
-                 // Make sure OnAddBuf is called if it has logic beyond stack increase
-                 // existingFlow.OnAddBuf(amount); // Call only if needed
-                 Debug.Log($"[MyDLL][CardAbilityHelper] Added {amount} Flow to {owner.UnitData.unitData.name}. New stack: {existingFlow.stack}");
+                existingFlow.stack += amount;
+                SteriaLogger.Log($"CardAbilityHelper.AddFlowStacks: Updated existing Flow. New stack: {existingFlow.stack}");
             }
             else
             {
-                BattleUnitBuf_Flow newFlow = new BattleUnitBuf_Flow { stack = amount }; // Directly set stack
-                owner.bufListDetail.AddBuf(newFlow); // AddBuf should handle Init and internal logic
-                Debug.Log($"[MyDLL][CardAbilityHelper] Added new Flow buff ({amount} stacks) to {owner.UnitData.unitData.name}.");
+                BattleUnitBuf_Flow newFlow = new BattleUnitBuf_Flow();
+                newFlow.stack = amount;
+                owner.bufListDetail.AddBuf(newFlow);
+                SteriaLogger.Log($"CardAbilityHelper.AddFlowStacks: Created new Flow buff with {amount} stacks");
             }
         }
     }

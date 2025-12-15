@@ -7,7 +7,7 @@ using BaseMod; // Required for PassiveAbilityBase and potentially Tools
 using UnityEngine; // Required for Debug.Log and Singleton
 using System.Reflection;
 
-namespace MyDLL
+namespace Steria
 {
     // --- Moved Harmony Helper Methods and Storage Here ---
     public static class HarmonyHelpers // Renamed from partial HarmonyPatches to avoid confusion
@@ -80,34 +80,160 @@ namespace MyDLL
                 Debug.Log("[MyDLL] Cleared Flow Consumption Tracking dictionaries (including repeat set).");
          }
 
+        // 存储每颗骰子的威力加成（由流分配）- 使用卡牌实例+骰子索引作为键
+        private static Dictionary<BattlePlayingCardDataInUnitModel, Dictionary<int, int>> _flowPowerBonusPerCard =
+            new Dictionary<BattlePlayingCardDataInUnitModel, Dictionary<int, int>>();
+
+        // 不消耗流、只获得加成的卡牌ID集合（可复用）
+        // 添加新卡牌时只需在此集合中添加对应ID即可
+        private static readonly HashSet<int> _flowBonusOnlyCardIds = new HashSet<int>
+        {
+            9001001,  // 拙劣控流
+            9001008,  // 清司风流
+            // 在此添加更多具有相同效果的卡牌ID...
+        };
+
+        /// <summary>
+        /// 检查卡牌是否具有"只获得流加成而不消耗流"的效果
+        /// </summary>
+        public static bool IsFlowBonusOnlyCard(int cardId)
+        {
+            return _flowBonusOnlyCardIds.Contains(cardId);
+        }
+
+        /// <summary>
+        /// 注册新的"只获得流加成而不消耗流"的卡牌ID（运行时动态添加）
+        /// </summary>
+        public static void RegisterFlowBonusOnlyCard(int cardId)
+        {
+            _flowBonusOnlyCardIds.Add(cardId);
+            SteriaLogger.Log($"Registered card ID {cardId} as FlowBonusOnly card");
+        }
+
         // Method called when a card is about to be used
+        // 新逻辑：所有书页都会消耗流，在使用时一次性分配威力加成
+        // 特殊：_flowBonusOnlyCardIds 中的卡牌只获得加成而不消耗流
         public static void RegisterCardUsage(BattlePlayingCardDataInUnitModel card)
         {
             if (card == null || card.owner == null || card.card == null) return;
 
-            // Check if the card has the relevant ability (e.g., SlazeyaFlow)
-            bool consumesFlow = card.card.XmlData.Keywords.Contains("SlazeyaFlowKeyword"); // Example: Check for a keyword
+            // 获取当前流的层数
+            BattleUnitBuf_Flow flowBuf = card.owner.bufListDetail.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
+            int flowStacks = flowBuf?.stack ?? 0;
 
-            if (consumesFlow)
+            SteriaLogger.Log($"RegisterCardUsage: Card={card.card.GetID()}, Owner={card.owner.UnitData.unitData.name}, Flow={flowStacks}, CardHash={card.GetHashCode()}");
+
+            if (flowStacks <= 0)
             {
-                // Correctly get Flow stack by finding the custom buff instance
-                BattleUnitBuf_Flow flowBufGet = card.owner.bufListDetail.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-                int initialFlow = flowBufGet?.stack ?? 0; // Use null-conditional access and default to 0
+                SteriaLogger.Log("RegisterCardUsage: No flow to consume");
+                return;
+            }
 
-                _flowConsumingCards[card] = new FlowCardData
+            // 获取书页的骰子数量（从XML数据获取，而不是运行时实例）
+            int diceCount = card.card.XmlData.DiceBehaviourList?.Count ?? 0;
+            if (diceCount == 0)
+            {
+                SteriaLogger.Log("RegisterCardUsage: No dice in card XML data");
+                return;
+            }
+
+            // 检查是否是"流转"卡牌（不受流影响：不获得加成也不消耗流）
+            bool isFlowTransfer = IsFlowBonusOnlyCard(card.card.GetID().id);
+            if (isFlowTransfer)
+            {
+                SteriaLogger.Log($"RegisterCardUsage: [流转] card detected (ID: {card.card.GetID().id}) - not affected by flow");
+                return; // 流转卡牌完全不受流影响，直接返回
+            }
+
+            SteriaLogger.Log($"RegisterCardUsage: Distributing {flowStacks} flow to {diceCount} dice");
+
+            // 分配流到骰子：循环分配，每1层流给1颗骰子+1威力
+            Dictionary<int, int> powerBonusMap = new Dictionary<int, int>();
+            for (int i = 0; i < flowStacks; i++)
+            {
+                int diceIndex = i % diceCount;
+                if (!powerBonusMap.ContainsKey(diceIndex))
+                    powerBonusMap[diceIndex] = 0;
+                powerBonusMap[diceIndex]++;
+            }
+
+            // 存储威力加成映射
+            _flowPowerBonusPerCard[card] = powerBonusMap;
+            foreach (var kvp in powerBonusMap)
+            {
+                SteriaLogger.Log($"RegisterCardUsage: Dice index {kvp.Key} will get +{kvp.Value} power from flow");
+            }
+
+            // 消耗所有流
+            int totalConsumed = flowStacks;
+            flowBuf.stack = 0;
+            flowBuf.Destroy();
+            SteriaLogger.Log($"RegisterCardUsage: Consumed all {totalConsumed} flow");
+
+            // 通知 PassiveAbility_9000005
+            var passive9000005 = card.owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9000005) as PassiveAbility_9000005;
+            if (passive9000005 != null)
+            {
+                SteriaLogger.Log($"RegisterCardUsage: Notifying PassiveAbility_9000005 of {totalConsumed} flow consumed");
+                passive9000005.OnFlowConsumed(totalConsumed);
+            }
+        }
+
+        // 获取骰子的流威力加成（通过卡牌和骰子索引）
+        public static int GetFlowPowerBonusForDice(BattlePlayingCardDataInUnitModel card, int diceIndex)
+        {
+            if (card != null && _flowPowerBonusPerCard.TryGetValue(card, out var bonusMap))
+            {
+                if (bonusMap.TryGetValue(diceIndex, out int bonus))
                 {
-                    ShouldConsumeFlow = true,
-                    InitialFlowAvailable = initialFlow,
-                    CurrentFlowRemaining = initialFlow // Start with the initial amount
-                };
-                Debug.Log($"[MyDLL] Registered Card Usage: ID={card.card.GetID()}, Hash={card.GetHashCode()}, Owner={card.owner.UnitData.unitData.name}. Consumes Flow: True. Initial Flow: {initialFlow}");
+                    return bonus;
+                }
             }
-            else
+            return 0;
+        }
+
+        // 清除骰子的流威力加成记录
+        public static void ClearFlowPowerBonusForDice(BattlePlayingCardDataInUnitModel card, int diceIndex)
+        {
+            if (card != null && _flowPowerBonusPerCard.TryGetValue(card, out var bonusMap))
             {
-                 // Optionally track non-consuming cards if needed for debugging
-                 // _flowConsumingCards[card] = new FlowCardData { ShouldConsumeFlow = false };
-                 Debug.Log($"[MyDLL] Registered Card Usage: ID={card.card.GetID()}, Hash={card.GetHashCode()}, Owner={card.owner.UnitData.unitData.name}. Consumes Flow: False.");
+                bonusMap.Remove(diceIndex);
+                if (bonusMap.Count == 0)
+                {
+                    _flowPowerBonusPerCard.Remove(card);
+                }
             }
+        }
+
+        // 清除卡牌的所有流威力加成记录
+        public static void ClearAllFlowPowerBonusForCard(BattlePlayingCardDataInUnitModel card)
+        {
+            if (card != null)
+            {
+                _flowPowerBonusPerCard.Remove(card);
+            }
+        }
+
+        // 检查卡牌是否有流威力加成记录
+        public static bool HasFlowBonusForCard(BattlePlayingCardDataInUnitModel card)
+        {
+            return card != null && _flowPowerBonusPerCard.ContainsKey(card);
+        }
+
+        // 调试用：输出当前所有流威力加成记录
+        public static void DebugLogAllFlowBonuses()
+        {
+            SteriaLogger.Log($"=== Flow Bonus Dictionary Debug ===");
+            SteriaLogger.Log($"Total cards in dictionary: {_flowPowerBonusPerCard.Count}");
+            foreach (var kvp in _flowPowerBonusPerCard)
+            {
+                SteriaLogger.Log($"  Card Hash={kvp.Key.GetHashCode()}, CardID={kvp.Key.card?.GetID()}");
+                foreach (var diceKvp in kvp.Value)
+                {
+                    SteriaLogger.Log($"    Dice {diceKvp.Key}: +{diceKvp.Value} power");
+                }
+            }
+            SteriaLogger.Log($"=== End Debug ===");
         }
 
         // Method called after a card has finished its action
@@ -149,56 +275,65 @@ namespace MyDLL
         // public static class PassiveAbilityBase_OnRoundStart_TestPatch { ... } // Removed
         // --- END OF REMOVED TEST PATCH ---
 
-        // --- Helper method specific to Precious Memory discard notification ---
-        private static void NotifyPreciousMemoryDiscard(BattleUnitModel owner, LorId discardedCardId)
-        {
-            if (owner == null || discardedCardId == null) return;
-            LorId preciousMemoryId = new LorId("SteriaBuilding", 9001006);
-            if (discardedCardId == preciousMemoryId)
-            {
-                Debug.Log($"[MyDLL] Precious Memory card (ID: {discardedCardId}) discarded for {owner.UnitData.unitData.name}! Triggering effects.");
-                
-                // Apply effects: Add Flow, Draw Card
-                 BattleUnitBuf_Flow existingFlow = owner.bufListDetail.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-                 if (existingFlow != null && !existingFlow.IsDestroyed()) {
-                     existingFlow.stack += 3; 
-                     existingFlow.OnAddBuf(3); 
-                 } else {
-                     BattleUnitBuf_Flow newFlow = new BattleUnitBuf_Flow { stack = 3 };
-                     owner.bufListDetail.AddBuf(newFlow);
-                 }
-                owner.allyCardDetail.DrawCards(1);
-
-                // ---- Corrected Exhaust Logic ----
-                try 
-                {
-                     // Use ExhaustCard(LorId id) which handles removing the card from all piles (hand, deck, discard, etc.)
-                    owner.allyCardDetail.ExhaustCard(preciousMemoryId); 
-                    Debug.Log($"[MyDLL] Successfully triggered exhaustion of Precious Memory (ID: {preciousMemoryId}) using ExhaustCard(LorId).");
-                }
-                catch (Exception ex) 
-                {
-                     Debug.LogError($"[MyDLL] Error trying to exhaust Precious Memory card with ID {preciousMemoryId}: {ex}");
-                }
-                // ---- End of Corrected Exhaust Logic ----
-            }
-        }
-
-        // Helper to notify Passive 9000003 about discard events
+        // --- Helper to notify Passive 9000003 about discard events ---
         private static void NotifyPassive9000003(BattleUnitModel owner)
         {
-             if (owner?.passiveDetail?.PassiveList == null) return;
-             var passive = owner.passiveDetail.PassiveList.FirstOrDefault(p => p is PassiveAbility_9000003) as PassiveAbility_9000003;
-             passive?.Notify_CardDiscarded();
+            if (owner?.passiveDetail?.PassiveList == null) return;
+            var passive = owner.passiveDetail.PassiveList.FirstOrDefault(p => p is PassiveAbility_9000003) as PassiveAbility_9000003;
+            passive?.Notify_CardDiscarded();
         }
 
+        // --- Helper to handle 珍贵的回忆 被弃置时的效果 ---
+        private const int PRECIOUS_MEMORY_NUMERIC_ID = 9001006;
+        private const string MOD_PACKAGE_ID = "SteriaBuilding";
 
-        // --- Patches for Discard Handling --- 
-        // [HarmonyPatch(typeof(BattleAllyCardDetail), nameof(BattleAllyCardDetail.DiscardACardByAbility), new Type[] { typeof(BattleDiceCardModel) })]
-        // public static class BattleAllyCardDetail_DiscardACardByAbility_Patch { ... } // Removed
-        // [HarmonyPatch(typeof(BattleAllyCardDetail), "DisCardACardRandom")] 
-        // public static class BattleAllyCardDetail_DisCardACardRandom_Patch { ... } // Removed
-        // Add patches for other discard methods if needed, calling NotifyPassive9000003
+        private static void HandlePreciousMemoryDiscard(BattleUnitModel owner, BattleDiceCardModel card)
+        {
+            if (owner == null || card == null || card.GetID() == null)
+            {
+                SteriaLogger.LogWarning("HandlePreciousMemoryDiscard: null owner/card/ID");
+                return;
+            }
+
+            LorId cardId = card.GetID();
+            SteriaLogger.Log($"HandlePreciousMemoryDiscard: Card='{card.GetName()}', ID={cardId.id}, PkgId='{cardId.packageId}'");
+
+            // 检查是否是珍贵的回忆 (同时检查 packageId 和 id)
+            bool isPreciousMemory =
+                cardId.id == PRECIOUS_MEMORY_NUMERIC_ID &&
+                (string.IsNullOrEmpty(cardId.packageId) || cardId.packageId == MOD_PACKAGE_ID);
+
+            if (!isPreciousMemory)
+                return;
+
+            SteriaLogger.Log("珍贵的回忆 被弃置! 触发效果: 抽2张牌 + 下一幕获得1层[强壮]");
+
+            // 抽2张牌
+            owner.allyCardDetail.DrawCards(2);
+            SteriaLogger.Log("抽取了2张牌");
+
+            // 添加一个临时Buff，下回合开始时再实际给予1层强壮
+            try
+            {
+                owner.bufListDetail.AddBuf(new BattleUnitBuf_PreciousMemoryStrength());
+                SteriaLogger.Log("添加了 PreciousMemoryStrength 临时Buff（下一幕开始时获得1层强壮）");
+            }
+            catch (Exception ex)
+            {
+                SteriaLogger.LogError($"添加 PreciousMemoryStrength Buff 失败: {ex.Message}");
+            }
+
+            // 消耗这张牌（从所有牌堆中移除）
+            try
+            {
+                owner.allyCardDetail.ExhaustCard(cardId);
+                SteriaLogger.Log("消耗了珍贵的回忆");
+            }
+            catch (Exception ex)
+            {
+                SteriaLogger.LogError($"消耗珍贵的回忆失败: {ex.Message}");
+            }
+        }
 
 
         // --- Patches for Passive 9000001 (神脉：职业等级) --- 
@@ -262,99 +397,104 @@ namespace MyDLL
             }
         }
 
-        // --- Patches for Passive 9000003 (回忆燃烧) already handled in Discard patches above --- 
+        // --- Patches for Passive 9000003 (回忆燃烧) 以及 珍贵的回忆 弃置触发 ---
 
+        [HarmonyPatch(typeof(BattleUnitModel), nameof(BattleUnitModel.OnDiscardByAbility))]
+        public static class BattleUnitModel_OnDiscardByAbility_Patch
+        {
+            [HarmonyPostfix]
+            public static void Postfix(BattleUnitModel __instance, List<BattleDiceCardModel> cards)
+            {
+                try
+                {
+                    if (__instance == null || cards == null || cards.Count == 0)
+                        return;
+
+                    foreach (BattleDiceCardModel card in cards)
+                    {
+                        HandlePreciousMemoryDiscard(__instance, card);
+                    }
+
+                    // 通知 回忆燃烧 被动本幕有弃牌发生
+                    NotifyPassive9000003(__instance);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[MyDLL] Error in BattleUnitModel_OnDiscardByAbility_Patch Postfix: {ex}");
+                }
+            }
+        }
+
+        // --- Patch for BattleAllyCardDetail.DiscardACardByAbility (单张弃牌) ---
+        [HarmonyPatch(typeof(BattleAllyCardDetail), nameof(BattleAllyCardDetail.DiscardACardByAbility))]
+        public static class BattleAllyCardDetail_DiscardACardByAbility_Patch
+        {
+            [HarmonyPostfix]
+            public static void Postfix(BattleAllyCardDetail __instance, BattleDiceCardModel card)
+            {
+                try
+                {
+                    if (__instance == null || card == null)
+                        return;
+
+                    // 获取 owner
+                    var ownerField = AccessTools.Field(typeof(BattleAllyCardDetail), "_owner");
+                    BattleUnitModel owner = ownerField?.GetValue(__instance) as BattleUnitModel;
+
+                    if (owner == null)
+                    {
+                        SteriaLogger.LogWarning("DiscardACardByAbility_Patch: Could not get owner");
+                        return;
+                    }
+
+                    SteriaLogger.Log($"DiscardACardByAbility_Patch: Card='{card.GetName()}', Owner={owner.UnitData?.unitData?.name}");
+                    HandlePreciousMemoryDiscard(owner, card);
+                    NotifyPassive9000003(owner);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Error in BattleAllyCardDetail_DiscardACardByAbility_Patch Postfix: {ex}");
+                }
+            }
+        }
+
+        // --- Patch for BattleAllyCardDetail.DisCardACardRandom (随机弃牌) ---
+        [HarmonyPatch(typeof(BattleAllyCardDetail), nameof(BattleAllyCardDetail.DisCardACardRandom))]
+        public static class BattleAllyCardDetail_DisCardACardRandom_Patch
+        {
+            [HarmonyPostfix]
+            public static void Postfix(BattleAllyCardDetail __instance, BattleDiceCardModel __result)
+            {
+                try
+                {
+                    if (__instance == null || __result == null)
+                        return;
+
+                    // 获取 owner
+                    var ownerField = AccessTools.Field(typeof(BattleAllyCardDetail), "_owner");
+                    BattleUnitModel owner = ownerField?.GetValue(__instance) as BattleUnitModel;
+
+                    if (owner == null)
+                    {
+                        SteriaLogger.LogWarning("DisCardACardRandom_Patch: Could not get owner");
+                        return;
+                    }
+
+                    SteriaLogger.Log($"DisCardACardRandom_Patch: Card='{__result.GetName()}', Owner={owner.UnitData?.unitData?.name}");
+                    HandlePreciousMemoryDiscard(owner, __result);
+                    NotifyPassive9000003(owner);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Error in BattleAllyCardDetail_DisCardACardRandom_Patch Postfix: {ex}");
+                }
+            }
+        }
 
         // --- REMOVED PATCH for Passive 9000004 (回忆结晶) ---
         // [HarmonyPatch(typeof(StageController), nameof(StageController.SetCurrentWave))]
         // public static class StageController_SetCurrentWave_Patch { ... } // Removed
         // --- END OF REMOVED PATCH for Passive 9000004 ---
-
-        // --- Add Patches below ---
-
-        [HarmonyPatch]
-        public static class BattleAllyCardDetail_Discard_Patch
-        {
-            private const int PRECIOUS_MEMORY_NUMERIC_ID = 9001006; // Define the numeric ID constant
-
-            // Target the method for discarding a LIST of cards via ability
-            [HarmonyPatch(typeof(BattleAllyCardDetail), nameof(BattleAllyCardDetail.DiscardACardByAbility), new Type[] { typeof(List<BattleDiceCardModel>) })]
-            [HarmonyPostfix]
-            public static void DiscardACardByAbility_List_Postfix(BattleUnitModel ____self, List<BattleDiceCardModel> cardList)
-            {
-                Debug.Log($"[MyDLL] DiscardACardByAbility(List)_Postfix triggered for {cardList?.Count ?? 0} cards.");
-                if (cardList != null && ____self != null)
-                {
-                    // Iterate through the list of discarded cards
-                    foreach (BattleDiceCardModel card in cardList) 
-                    {
-                         HandlePreciousMemoryDiscard(____self, card); // Call helper for each card
-                    }
-                    // Notify Passive 9000003 after handling all cards in the list (if any)
-                    // We notify once per discard *action*, passive counts internally
-                    NotifyPassive9000003(____self); 
-                }
-            }
-
-            // Target the method for discarding a random card (Keep this one)
-            [HarmonyPatch(typeof(BattleAllyCardDetail), "DisCardACardRandom")] 
-            [HarmonyPostfix]
-            public static void DisCardACardRandom_Postfix(BattleUnitModel ____self, BattleDiceCardModel __result) 
-            {
-                Debug.Log($"[MyDLL] DisCardACardRandom_Postfix triggered, discarded card: {__result?.GetID()?.ToString() ?? "null"}");
-                if (__result != null && ____self != null)
-                {
-                    HandlePreciousMemoryDiscard(____self, __result);
-                    // Notify Passive 9000003 after handling the discarded card
-                    NotifyPassive9000003(____self);
-                }
-            }
-            
-            // --- Helper function to handle the logic ---
-            private static void HandlePreciousMemoryDiscard(BattleUnitModel owner, BattleDiceCardModel card)
-            {
-                if (owner == null || card == null || card.GetID() == null)
-                {
-                    Debug.LogWarning($"[MyDLL] HandlePreciousMemoryDiscard called with null owner, card, or card ID. Owner: {owner?.Book?.owner?.name}, Card: {card?.GetName()}");
-                    return;
-                }
-
-                // More detailed log
-                Debug.Log($"[MyDLL] HandlePreciousMemoryDiscard entered for owner {owner.Book.owner.name}. Card Name='{card.GetName()}', Card LorId='{card.GetID().ToString()}', ID Only='{card.GetID().id}', PkgId='{card.GetID().packageId}'"); 
-
-                if (card.GetID().id == PRECIOUS_MEMORY_NUMERIC_ID) // Check if it's Precious Memory
-                {
-                    Debug.Log($"[MyDLL] Precious Memory (Numeric ID: {PRECIOUS_MEMORY_NUMERIC_ID}) discarded! Triggering effect for {owner.Book.owner.name}.");
-
-                    // --- Draw 2 cards --- 
-                    owner.allyCardDetail.DrawCards(2);
-                    Debug.Log($"[MyDLL] Drew 2 cards for {owner.Book.owner.name} via Precious Memory discard.");
-
-                    // --- Directly add Strength (likely permanent) --- 
-                    try
-                    {
-                        owner.bufListDetail.AddKeywordBufByEtc(KeywordBuf.Strength, 1, owner); 
-                        Debug.Log($"[MyDLL] Directly added 1 Strength (permanent) to {owner.Book.owner.name} via Precious Memory discard.");
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Debug.LogError($"[MyDLL] Error directly adding Strength KeywordBuf: {ex.Message}");
-                    }
-                    
-                    // --- Re-add card exhaustion logic --- 
-                    try 
-                    {
-                        // Use ExhaustCard(LorId id) which handles removing the card from all piles
-                        owner.allyCardDetail.ExhaustCard(card.GetID()); 
-                        Debug.Log($"[MyDLL] Exhausted Precious Memory card (ID: {card.GetID()}) after discard.");
-                    }
-                    catch (Exception ex) 
-                    {
-                        Debug.LogError($"[MyDLL] Error trying to exhaust Precious Memory card with ID {card.GetID()}: {ex}");
-                    }
-                }
-            }
-        }
 
         // --- REMOVED BattleUnitModel_OnWaveStart_Patch Class ---
 
@@ -456,8 +596,7 @@ namespace MyDLL
         [HarmonyPrefix]
         public static void BattlePlayingCardDataInUnitModel_OnUseCard_Prefix(BattlePlayingCardDataInUnitModel __instance)
         {
-            // Log card usage with unique hash code
-            Debug.Log($"[MyDLL] Card Usage Start Prefix: ID={__instance.card?.GetID()}, Hash={__instance.GetHashCode()}, Owner={__instance.owner?.UnitData.unitData.name}");
+            Debug.Log($"[Steria] Card Usage Start: ID={__instance.card?.GetID()}, Hash={__instance.GetHashCode()}, Owner={__instance.owner?.UnitData.unitData.name}");
             HarmonyHelpers.RegisterCardUsage(__instance);
         }
 
@@ -470,136 +609,36 @@ namespace MyDLL
             HarmonyHelpers.CleanupCardUsage(__instance);
         }
 
-        [HarmonyPatch(typeof(BattleDiceBehavior), "RollDice")]
+        // 新的简化流消耗逻辑：在 RollDice 时应用预先计算好的威力加成
+        [HarmonyPatch(typeof(BattleDiceBehavior), nameof(BattleDiceBehavior.RollDice))]
         [HarmonyPrefix]
-        public static bool BattleDiceBehavior_RollDice_FlowPatch(BattleDiceBehavior __instance, ref int ___behaviourPower)
+        public static void BattleDiceBehavior_RollDice_FlowPatch(BattleDiceBehavior __instance)
         {
-            if (__instance.card?.card == null || __instance.owner == null) return true; // Skip if card data or owner is missing
+            // 添加调试日志 - 每次 RollDice 都输出
+            SteriaLogger.Log($"RollDice Patch TRIGGERED: Card={__instance.card?.card?.GetID()}, DiceIndex={__instance.Index}, CardHash={__instance.card?.GetHashCode()}");
 
-            BattlePlayingCardDataInUnitModel currentCard = __instance.card;
-            // Log the start of the process for this specific card instance
-            Debug.Log($"[MyDLL] FlowPatch: Processing RollDice for card {currentCard.card.GetID()} (Instance Hash: {currentCard.GetHashCode()}). Initial behaviorPower: {___behaviourPower}, Dice Index: {__instance.DiceVanillaValue}");
-
-            // Apply power bonuses from passives/buffers BEFORE calculating flow consumption for this dice
-            // Restore the IsLorEffect check and the Stage State check
-             if (__instance.owner.cardSlotDetail.PlayPoint >= 1 && !(__instance.abilityList?.Any(a => a.card == null) ?? false))
+            if (__instance.card?.card == null || __instance.owner == null)
             {
-                List<BattleUnitModel> aliveList = BattleObjectManager.instance.GetAliveList(__instance.owner.faction);
-                aliveList.Remove(__instance.owner);
-                 // Restore the stage state check
-                if (aliveList.Count > 0 && Singleton<StageController>.Instance.State == StageController.StageState.Battle)
-                {
-                    foreach (BattleUnitModel battleUnitModel in aliveList)
-                    {
-                        battleUnitModel.passiveDetail.OnRollDice(__instance);
-                        foreach (BattleUnitBuf battleUnitBuf in battleUnitModel.bufListDetail.GetActivatedBufList())
-                            battleUnitBuf.OnRollDice(__instance);
-                    }
-                }
-                __instance.owner.passiveDetail.OnRollDice(__instance);
-                foreach (BattleUnitBuf battleUnitBuf in __instance.owner.bufListDetail.GetActivatedBufList())
-                {
-                    battleUnitBuf.OnRollDice(__instance);
-                }
-                // Log after potential power modifications by buffs/passives
-                Debug.Log($"[MyDLL] FlowPatch: BehaviorPower after buffs/passives for behavior (Hash: {__instance.GetHashCode()}, Index: {__instance.Index}): {___behaviourPower}");
+                SteriaLogger.Log("RollDice Patch: card or owner is null, skipping");
+                return;
             }
 
-            // Check if flow should be consumed for this dice roll based on the card's rules (from _flowConsumingCards)
-            if (HarmonyHelpers._flowConsumingCards.TryGetValue(currentCard, out var cardData) && cardData.ShouldConsumeFlow)
+            // 检查字典中是否有这个卡牌的记录
+            bool hasCardInDict = HarmonyHelpers.HasFlowBonusForCard(__instance.card);
+            SteriaLogger.Log($"RollDice Patch: HasFlowBonusForCard={hasCardInDict}");
+
+            // 使用卡牌实例和骰子索引来查找威力加成
+            int diceIndex = __instance.Index;
+            int flowBonus = HarmonyHelpers.GetFlowPowerBonusForDice(__instance.card, diceIndex);
+            SteriaLogger.Log($"RollDice Patch: DiceIndex={diceIndex}, FlowBonus={flowBonus}");
+
+            if (flowBonus > 0)
             {
-                int availableFlow = cardData.CurrentFlowRemaining; // Use remaining flow for this action
-                BattleDiceBehavior targetBehavior = __instance;
-
-                // Log before applying power from flow
-                Debug.Log($"[MyDLL] FlowPatch: Attempting flow power for behavior (Hash: {targetBehavior.GetHashCode()}, Index: {targetBehavior.Index}). Available flow for card action: {availableFlow}");
-
-                // --- Flow Consumption Logic ---
-                // Consume flow equal to the dice's *current* power, but no more than available flow.
-                // Let's assume flow is consumed *after* other power buffs are applied, as the goal is to power up the dice *using* flow.
-                // We will add power directly here based on consumed flow.
-
-                int flowToConsume = Math.Max(0, ___behaviourPower); // Consume based on current power (min 0)
-                flowToConsume = Math.Min(flowToConsume, availableFlow); // Cap consumption by available flow
-
-                if (flowToConsume > 0)
-                {
-                    // Correctly consume Flow by finding the buff and modifying its stack
-                    bool consumedSuccessfully = false; // Initialize as false
-                    BattleUnitBuf_Flow flowBufUse = __instance.owner.bufListDetail.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-
-                    if (flowBufUse != null && flowBufUse.stack >= flowToConsume)
-                    {
-                        flowBufUse.stack -= flowToConsume;
-                        // Optional: Check if stack reaches zero and destroy the buff
-                        if (flowBufUse.stack <= 0)
-                        {
-                             flowBufUse.Destroy();
-                        }
-                        consumedSuccessfully = true;
-                        Debug.Log($"[MyDLL] FlowPatch: Successfully reduced Flow stack by {flowToConsume} for unit {__instance.owner.UnitData.unitData.name}. New stack: {flowBufUse?.stack ?? 0}"); // Use null-conditional for safety
-                    }
-                    else
-                    {
-                         Debug.LogWarning($"[MyDLL] FlowPatch: Failed to consume {flowToConsume} Flow. Buff not found or insufficient stack ({flowBufUse?.stack ?? 0}) for unit {__instance.owner.UnitData.unitData.name}.");
-                    }
-
-                    if (consumedSuccessfully)
-                    {
-                        // Calculate the power bonus
-                        int bonusPower = flowToConsume;
-
-                        // Check for the Flow Bonus x2 Marker
-                        // Note: Assumes the marker buff class is defined in CardAbilities.cs and accessible here
-                        // If not, you might need to define it within this file or ensure accessibility.
-                        if (__instance.owner.bufListDetail.GetActivatedBufList().Any(b => b is DiceCardSelfAbility_SlazeyaFlowBonusX2.BattleUnitBuf_FlowBonusX2Marker))
-                        {
-                             bonusPower *= 2;
-                             Debug.Log($"[MyDLL] FlowPatch: Flow Bonus x2 marker active! Doubling bonus power to {bonusPower}.");
-                        }
-
-                        // Apply power bonus equal to the (potentially doubled) flow consumed
-                         DiceStatBonus flowBonus = new DiceStatBonus { power = bonusPower };
-                         targetBehavior.ApplyDiceStatBonus(flowBonus);
-                         // Log the power modification
-                         Debug.Log($"[MyDLL] FlowPatch: Consumed {flowToConsume} Flow. Added +{bonusPower} power to behavior (Hash: {targetBehavior.GetHashCode()}, Index: {targetBehavior.Index}). New behaviorPower: {___behaviourPower}");
-
-                        // Record the *actual* consumption for this specific dice behavior instance (NOT doubled)
-                        HarmonyHelpers.RecordFlowConsumptionForDice(targetBehavior, targetBehavior.Index, flowToConsume); // Use behavior's index
-
-                        // Update remaining flow *for this card action* in our tracker
-                        cardData.CurrentFlowRemaining -= flowToConsume;
-                        Debug.Log($"[MyDLL] FlowPatch: Recorded flow consumption for behavior (Hash: {targetBehavior.GetHashCode()}, Index: {targetBehavior.Index}): {flowToConsume}. Remaining flow for card action: {cardData.CurrentFlowRemaining}");
-                    }
-                    else
-                    {
-                         Debug.LogWarning($"[MyDLL] FlowPatch: Failed to consume {flowToConsume} Flow via custom logic for behavior (Hash: {targetBehavior.GetHashCode()}, Index: {targetBehavior.Index}). Not adding power or recording consumption."); // Updated log message
-                        // Record zero consumption if the game couldn't consume it
-                        HarmonyHelpers.RecordFlowConsumptionForDice(targetBehavior, targetBehavior.Index, 0);
-                    }
-                }
-                else
-                {
-                    Debug.Log($"[MyDLL] FlowPatch: No flow to consume for behavior (Hash: {targetBehavior.GetHashCode()}, Index: {targetBehavior.Index}). Available: {availableFlow}, Dice Power: {___behaviourPower}. Recording zero consumption.");
-                    // Still record zero consumption for this dice if it was eligible but had no power/flow
-                     HarmonyHelpers.RecordFlowConsumptionForDice(targetBehavior, targetBehavior.Index, 0);
-                }
+                SteriaLogger.Log($"RollDice FlowPatch: Applying +{flowBonus} power from flow to dice index {diceIndex}");
+                __instance.ApplyDiceStatBonus(new DiceStatBonus { power = flowBonus });
+                // 清除记录，避免重复应用
+                HarmonyHelpers.ClearFlowPowerBonusForDice(__instance.card, diceIndex);
             }
-            else
-            {
-                 // Log if the card doesn't consume flow or wasn't found in the dictionary
-                 if (!cardData.ShouldConsumeFlow)
-                     Debug.Log($"[MyDLL] FlowPatch: Card {currentCard.card.GetID()} does not consume flow. Skipping flow logic for behavior (Hash: {__instance.GetHashCode()}, Index: {__instance.Index}).");
-                 else // ShouldConsumeFlow was true, but TryGetValue failed (shouldn't happen if Register/Cleanup is correct)
-                     Debug.LogWarning($"[MyDLL] FlowPatch: Card {currentCard.card.GetID()} was expected to consume flow but was not found in _flowConsumingCards. Skipping flow logic for behavior (Hash: {__instance.GetHashCode()}, Index: {__instance.Index}).");
-                 // Record zero consumption for this dice if the card doesn't use flow
-                 HarmonyHelpers.RecordFlowConsumptionForDice(__instance, __instance.Index, 0);
-            }
-
-
-            // No need to log total flow consumed here as it's handled by the helper methods and overall card consumption tracking.
-
-            return true; // Continue to original RollDice method
         }
 
 
@@ -666,13 +705,13 @@ namespace MyDLL
                      {
                          HarmonyHelpers._repeatTriggeredDice.Remove(__instance); // Remove immediately to prevent potential infinite loops
 
-                         // --- Trigger the Repeat using SetBonusAttackDice --- 
-                         // This adds the *same* behavior instance as a bonus attack.
-                         // The _triggered flag within the ability instance *should* prevent the bonus attack 
-                         // from re-triggering the repeat marking if OnSucceedAttack runs again for it. 
+                         // --- Trigger the Repeat by setting isBonusAttack flag ---
+                         // This marks the dice for a bonus attack.
+                         // The _triggered flag within the ability instance *should* prevent the bonus attack
+                         // from re-triggering the repeat marking if OnSucceedAttack runs again for it.
                          // The removal from _repeatTriggeredDice is the main safeguard.
-                         Debug.Log($"[MyDLL] BattleDiceBehavior_GiveDamage_RepeatPatch: Repeating dice behavior (Hash: {__instance.GetHashCode()}, Index: {__instance.Index}) via SetBonusAttackDice.");
-                         __instance.SetBonusAttackDice(__instance);
+                         Debug.Log($"[MyDLL] BattleDiceBehavior_GiveDamage_RepeatPatch: Repeating dice behavior (Hash: {__instance.GetHashCode()}, Index: {__instance.Index}) via isBonusAttack.");
+                         __instance.isBonusAttack = true;
                      }
                  }
                  catch (Exception ex)

@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
+    <AssemblyName>Steria</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ImplicitUsings>disable</ImplicitUsings>
-    <!-- 
-    <PostBuildEvent>xcopy "$(TargetDir)MyDLL.*" "$(ProjectDir)NormalInvitation\Assemblies\" /Y /I /D</PostBuildEvent>
+    <!--
+    <PostBuildEvent>xcopy "$(TargetDir)Steria.*" "$(ProjectDir)SteriaModFolder\Assemblies\" /Y /I /D</PostBuildEvent>
     -->
   </PropertyGroup>
 

@@ -15,5 +15,10 @@
       <Name>回忆结晶</Name>
       <Desc>所有骰子威力+{0}</Desc>
     </BattleEffectText>
+
+    <BattleEffectText ID="SteriaFlowTransfer">
+      <Name>流转</Name>
+      <Desc>本书页不受[流]影响。</Desc>
+    </BattleEffectText>
   </effectTextList>
 </BattleEffectTextRoot> 

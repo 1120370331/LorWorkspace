@@ -11,7 +11,7 @@ using System.Xml.Serialization; // Added for XML Deserialization
 using LOR_XML; // Added for BattleEffectTextRoot/BattleEffectText
 using System.Linq; // Needed for Linq
 
-namespace MyDLL
+namespace Steria
 {
     // 主要的 Mod 初始化类
     // 改回继承 BaseMod.BaseModInitializer
@@ -27,27 +27,31 @@ namespace MyDLL
         public override void OnInitializeMod() // Changed method name based on BaseModInitializer source
         {
             base.OnInitializeMod(); // Call base class initializer FIRST
-            Debug.Log("[MyDLL] === ModInitializer.OnInitializeMod() START ==="); // Added START log
+
+            // 初始化日志系统
+            SteriaLogger.Initialize();
+            SteriaLogger.Log("=== ModInitializer.OnInitializeMod() START ===");
+
             if (_initialized)
             {
-                 Debug.Log("[MyDLL] Mod already initialized, skipping."); // Added skip log
-                 return; 
+                 SteriaLogger.Log("Mod already initialized, skipping.");
+                 return;
             }
 
-            Debug.Log("[MyDLL] Initializing..."); // Added initializing log
+            SteriaLogger.Log("Initializing Steria Mod...");
             try
             {
-                // --- Initialize Harmony and Apply ALL Patches --- 
+                // --- Initialize Harmony and Apply ALL Patches ---
                 try
-            {
+                {
                     // Create a unique ID for this mod's Harmony instance
-                    string harmonyId = "MyDLL.Harmony." + Guid.NewGuid().ToString(); 
+                    string harmonyId = "Steria.Harmony." + Guid.NewGuid().ToString();
                     HarmonyInstance = new Harmony(harmonyId);
-                    Debug.Log($"[MyDLL] Created Harmony instance with ID: {harmonyId}");
+                    Debug.Log($"[Steria] Created Harmony instance with ID: {harmonyId}");
 
-                    // Apply all patches defined within this assembly (MyDLL.dll)
+                    // Apply all patches defined within this assembly
                     HarmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
-                    Debug.Log("[MyDLL] Harmony PatchAll(Assembly) executed.");
+                    Debug.Log("[Steria] Harmony PatchAll executed.");
                     
                     // --- REMOVED Explicit patch application block ---
                     // try { ... explicit patch for BattleUnitModel_OnWaveStart_Patch ... } catch { ... }

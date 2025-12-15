@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CardDescXmlRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <cardDescList>
+    <!-- Anhier Cards -->
+    <BattleCardDesc ID="9001001">
+      <Name>拙劣控流</Name>
+      <Desc>[流转]
+使用时：恢复1点光芒</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001002">
+      <Name>回忆侧斩</Name>
+      <Desc>使用时：从手中随机丢弃1张书页</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001003">
+      <Name>奥塔尔的荣耀</Name>
+      <Desc>使用时：丢弃手中所有书页，并抽取等量的书页</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001004">
+      <Name>回忆协奏之刃</Name>
+      <Desc>使用时：丢弃手中所有书页，并使本书页所有骰子威力+丢弃数量</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001005">
+      <Name>攫取回忆</Name>
+      <Desc></Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001006">
+      <Name>珍贵的回忆</Name>
+      <Desc>[佚亡][被弃置时] 摧毁本书页，并抽取2张书页并在下一幕获得1层[强壮]</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001007">
+      <Name>内调之流</Name>
+      <Desc>使用时：抽取2张书页
+下一幕开始时获得3层[流]</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001008">
+      <Name>清司风流</Name>
+      <Desc>[流转]</Desc>
+    </BattleCardDesc>
+  </cardDescList>
+</CardDescXmlRoot>

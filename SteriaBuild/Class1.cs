@@ -1,4 +1,4 @@
-﻿namespace MyDLL
+﻿namespace Steria
 {
     public class Class1
     {
