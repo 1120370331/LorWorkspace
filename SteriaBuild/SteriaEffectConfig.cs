@@ -41,6 +41,17 @@ namespace Steria
     }
 
     /// <summary>
+    /// 攻击类型（用于选择正确的pivot）
+    /// </summary>
+    public enum EffectActionType
+    {
+        None,       // 使用默认atkEffectRoot
+        Slash,      // 斩击 (J)
+        Penetrate,  // 突刺 (Z)
+        Hit         // 打击 (H)
+    }
+
+    /// <summary>
     /// 单个Quad特效的配置
     /// </summary>
     public class QuadEffectConfig
@@ -80,7 +91,8 @@ namespace Steria
         public float FadeOutStart = 0.75f;
         public float MaxAlpha = 1f;
         public EffectTarget Target = EffectTarget.Self;
-        public Vector3 RootOffset = new Vector3(0f, 0.5f, -0.5f);
+        public EffectActionType ActionType = EffectActionType.None;  // 攻击类型，用于选择pivot
+        public Vector3 RootOffset = new Vector3(0f, 0f, -0.5f);  // 改为0,0,-0.5，让pivot决定位置
         public ShakeConfig Shake = ShakeConfig.Medium;
         public QuadEffectConfig[] Quads;
 
@@ -95,14 +107,15 @@ namespace Steria
             Duration = 0.98f,
             MaxAlpha = 1.0f,
             Target = EffectTarget.Self,
-            RootOffset = new Vector3(0f, 0.5f, -0.5f),
+            ActionType = EffectActionType.Slash,  // 使用斩击pivot
+            RootOffset = new Vector3(0f, 0f, -0.5f),
             Shake = new ShakeConfig(0.01f, 0.012f, 40f, 0.3f),
             Quads = new[]
             {
                 new QuadEffectConfig
                 {
                     TextureName = "water_slash",
-                    LocalPosition = new Vector3(-0.8f, 0f, 0f),
+                    LocalPosition = new Vector3(0f, 0f, 0f),  // pivot已经在正确位置
                     RotationZ = 0f,
                     BaseScale = 1.875f,
                     ScaleMultiplierStart = 0.5f,
@@ -124,14 +137,15 @@ namespace Steria
             Duration = 1.0f,
             MaxAlpha = 1.2f,
             Target = EffectTarget.Self,
-            RootOffset = new Vector3(0f, 0.5f, -0.5f),
+            ActionType = EffectActionType.Hit,  // 使用打击pivot
+            RootOffset = new Vector3(0f, 0f, -0.5f),
             Shake = new ShakeConfig(0.012f, 0.015f, 50f, 0.25f),
             Quads = new[]
             {
                 new QuadEffectConfig
                 {
                     TextureName = "water_slash",
-                    LocalPosition = new Vector3(-0.8f, 0f, 0f),
+                    LocalPosition = new Vector3(0f, 0f, 0f),  // pivot已经在正确位置
                     RotationZ = -90f,
                     BaseScale = 3.6f,
                     ScaleMultiplierStart = 0.3f,
@@ -151,14 +165,15 @@ namespace Steria
             Duration = 0.9f,
             MaxAlpha = 1.3f,
             Target = EffectTarget.Self,
-            RootOffset = new Vector3(0f, 0.5f, -0.5f),
+            ActionType = EffectActionType.Penetrate,  // 使用突刺pivot
+            RootOffset = new Vector3(0f, 0f, -0.5f),
             Shake = new ShakeConfig(0.018f, 0.005f, 80f, 0.2f),
             Quads = new[]
             {
                 new QuadEffectConfig
                 {
                     TextureName = "water_slash",
-                    LocalPosition = new Vector3(-0.23f, 0f, 0f),
+                    LocalPosition = new Vector3(0f, 0f, 0f),  // pivot已经在正确位置
                     RotationZ = 5f,
                     BaseScale = 3.96f,
                     AspectRatio = 16f / 9f,
@@ -166,7 +181,7 @@ namespace Steria
                     ScaleMultiplierEnd = 1.2f,
                     AnimateScale = false,
                     AnimatePosition = true,
-                    PositionOffset = new Vector3(-0.345f, 0f, 0f),
+                    PositionOffset = new Vector3(0f, 0f, 0f),  // 不需要位置偏移了
                     Tint = new Color(0.9f, 1f, 1.1f)
                 }
             }

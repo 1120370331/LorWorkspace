@@ -96,7 +96,8 @@ public abstract class DiceAttackEffect_Steria_Base : DiceAttackEffect
         switch (_config.Target)
         {
             case EffectTarget.Self:
-                parent = self.atkEffectRoot;
+                // 根据ActionType选择正确的pivot
+                parent = GetPivotForActionType(self);
                 break;
             case EffectTarget.Target:
                 parent = target?.atkEffectRoot;
@@ -119,6 +120,27 @@ public abstract class DiceAttackEffect_Steria_Base : DiceAttackEffect
             base.transform.position = _config.RootOffset;
             base.transform.rotation = Quaternion.identity;
             base.transform.localScale = Vector3.one;
+        }
+    }
+
+    /// <summary>
+    /// 根据攻击类型获取正确的pivot
+    /// </summary>
+    protected Transform GetPivotForActionType(BattleUnitView view)
+    {
+        if (view?.charAppearance == null)
+            return view?.atkEffectRoot;
+
+        switch (_config.ActionType)
+        {
+            case EffectActionType.Slash:
+                return view.charAppearance.GetAtkEffectPivot(ActionDetail.Slash);
+            case EffectActionType.Penetrate:
+                return view.charAppearance.GetAtkEffectPivot(ActionDetail.Penetrate);
+            case EffectActionType.Hit:
+                return view.charAppearance.GetAtkEffectPivot(ActionDetail.Hit);
+            default:
+                return view.atkEffectRoot;
         }
     }
 
