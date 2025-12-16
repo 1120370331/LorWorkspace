@@ -232,41 +232,9 @@ namespace Steria
                     SteriaEffectSprites.Initialize();
                     SteriaLogger.Log("SteriaEffectSprites initialized");
 
-                    // 手动注册自定义特效
-
-                    // 注册风系斩击特效
-                    if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_WindSlash"))
-                    {
-                        Harmony_Patch.CustomEffects["Steria_WindSlash"] = typeof(DiceAttackEffect_Steria_WindSlash);
-                        SteriaLogger.Log("Manually registered Steria_WindSlash effect");
-                    }
-
-                    // 注册水系斩击特效
-                    if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_WaterSlash"))
-                    {
-                        Harmony_Patch.CustomEffects["Steria_WaterSlash"] = typeof(DiceAttackEffect_Steria_WaterSlash);
-                        SteriaLogger.Log("Manually registered Steria_WaterSlash effect");
-                    }
-
-                    // 注册水系打击特效 (旋转90度)
-                    if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_WaterHit"))
-                    {
-                        Harmony_Patch.CustomEffects["Steria_WaterHit"] = typeof(DiceAttackEffect_Steria_WaterHit);
-                        SteriaLogger.Log("Manually registered Steria_WaterHit effect");
-                    }
-
-                    // 注册水系突刺特效 (横向压缩50%)
-                    if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_WaterPenetrate"))
-                    {
-                        Harmony_Patch.CustomEffects["Steria_WaterPenetrate"] = typeof(DiceAttackEffect_Steria_WaterPenetrate);
-                        SteriaLogger.Log("Manually registered Steria_WaterPenetrate effect");
-                    }
-
-                    SteriaLogger.Log($"CustomEffects count: {Harmony_Patch.CustomEffects.Count}");
-                    foreach (var kvp in Harmony_Patch.CustomEffects)
-                    {
-                        SteriaLogger.Log($"  Registered effect: {kvp.Key} -> {kvp.Value.FullName}");
-                    }
+                    // 初始化自定义特效字典（使用我们自己的Harmony patch）
+                    HarmonyPatches.InitCustomEffects();
+                    SteriaLogger.Log("Custom effects initialized via HarmonyPatches");
                 }
                 catch (Exception effectCheckEx)
                 {

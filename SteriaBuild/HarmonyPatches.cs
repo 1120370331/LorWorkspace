@@ -783,5 +783,77 @@ namespace Steria
              }
         }
 
+        // --- Patch for Custom DiceAttackEffect (like 寒昼事务所) ---
+        // 自定义特效字典
+        public static Dictionary<string, Type> SteriaCustomEffects = new Dictionary<string, Type>();
+
+        // 初始化自定义特效
+        public static void InitCustomEffects()
+        {
+            SteriaCustomEffects.Clear();
+
+            // 注册所有自定义特效
+            SteriaCustomEffects["Steria_WindSlash"] = typeof(DiceAttackEffect_Steria_WindSlash);
+            SteriaCustomEffects["Steria_WaterSlash"] = typeof(DiceAttackEffect_Steria_WaterSlash);
+            SteriaCustomEffects["Steria_WaterHit"] = typeof(DiceAttackEffect_Steria_WaterHit);
+            SteriaCustomEffects["Steria_WaterPenetrate"] = typeof(DiceAttackEffect_Steria_WaterPenetrate);
+
+            SteriaLogger.Log($"Initialized {SteriaCustomEffects.Count} custom effects");
+            foreach (var kvp in SteriaCustomEffects)
+            {
+                SteriaLogger.Log($"  - {kvp.Key} => {kvp.Value.Name}");
+            }
+        }
+
+        [HarmonyPatch(typeof(DiceEffectManager), "CreateBehaviourEffect")]
+        [HarmonyPrefix]
+        public static bool DiceEffectManager_CreateBehaviourEffect_Prefix(
+            DiceEffectManager __instance,
+            ref Battle.DiceAttackEffect.DiceAttackEffect __result,
+            string resource,
+            float scaleFactor,
+            BattleUnitView self,
+            BattleUnitView target,
+            float time = 1f)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(resource))
+                {
+                    __result = null;
+                    return false;
+                }
+
+                // 检查是否是我们的自定义特效
+                if (SteriaCustomEffects.TryGetValue(resource, out Type effectType))
+                {
+                    SteriaLogger.Log($"CreateBehaviourEffect: Creating custom effect '{resource}'");
+
+                    GameObject effectObj = new GameObject(resource);
+                    var effect = effectObj.AddComponent(effectType) as Battle.DiceAttackEffect.DiceAttackEffect;
+
+                    if (effect != null)
+                    {
+                        effect.Initialize(self, target, time);
+                        effect.SetScale(scaleFactor);
+                        __result = effect;
+                        SteriaLogger.Log($"CreateBehaviourEffect: Successfully created '{resource}'");
+                        return false; // 跳过原方法
+                    }
+                    else
+                    {
+                        SteriaLogger.Log($"CreateBehaviourEffect: Failed to create effect component for '{resource}'");
+                        UnityEngine.Object.Destroy(effectObj);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SteriaLogger.Log($"CreateBehaviourEffect ERROR: {ex}");
+            }
+
+            return true; // 继续执行原方法
+        }
+
     } // End of HarmonyPatches class
 } // End of MyDLL namespace
