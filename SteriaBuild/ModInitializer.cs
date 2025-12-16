@@ -233,11 +233,6 @@ namespace Steria
                     SteriaLogger.Log("SteriaEffectSprites initialized");
 
                     // 手动注册自定义特效
-                    if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_Hurricane_F"))
-                    {
-                        Harmony_Patch.CustomEffects["Steria_Hurricane_F"] = typeof(DiceAttackEffect_Steria_Hurricane_F);
-                        SteriaLogger.Log("Manually registered Steria_Hurricane_F effect");
-                    }
 
                     // 注册风系斩击特效
                     if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_WindSlash"))

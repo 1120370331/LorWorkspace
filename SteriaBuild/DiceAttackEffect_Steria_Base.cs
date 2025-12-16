@@ -24,9 +24,6 @@ public abstract class DiceAttackEffect_Steria_Base : DiceAttackEffect
     protected BattleUnitView _selfView;
     protected BattleUnitView _targetView;
 
-    // 朝向：1表示面向右（友方），-1表示面向左（敌方）
-    protected float _directionMultiplier = 1f;
-
     // 时间控制
     protected float _duration;
     protected new float _elapsed = 0f;
@@ -63,16 +60,6 @@ public abstract class DiceAttackEffect_Steria_Base : DiceAttackEffect
         this._self = self.model;
         this._selfView = self;
         this._targetView = target;
-
-        // 检测朝向：Direction.LEFT表示面向左（敌方），需要翻转X坐标
-        if (this._self != null && this._self.direction == Direction.LEFT)
-        {
-            _directionMultiplier = -1f;
-        }
-        else
-        {
-            _directionMultiplier = 1f;
-        }
 
         // 设置挂载点
         SetupTransform(self, target);
@@ -164,22 +151,12 @@ public abstract class DiceAttackEffect_Steria_Base : DiceAttackEffect
             Vector3 startScale = quadConfig.GetStartScale();
             Vector3 endScale = quadConfig.GetEndScale();
 
-            // 根据朝向调整X坐标
-            Vector3 adjustedPosition = new Vector3(
-                quadConfig.LocalPosition.x * _directionMultiplier,
-                quadConfig.LocalPosition.y,
-                quadConfig.LocalPosition.z
-            );
-
-            // 根据朝向调整旋转（翻转Z旋转）
-            float adjustedRotationZ = quadConfig.RotationZ * _directionMultiplier;
-
             GameObject quad = SteriaEffectHelper.CreateEffectQuad(
                 $"{_config.EffectName}_{index}",
                 material,
                 base.transform,
-                adjustedPosition,
-                adjustedRotationZ,
+                quadConfig.LocalPosition,
+                quadConfig.RotationZ,
                 startScale,
                 100 + index
             );
@@ -188,19 +165,12 @@ public abstract class DiceAttackEffect_Steria_Base : DiceAttackEffect
             {
                 var renderer = quad.GetComponent<MeshRenderer>();
 
-                // 根据朝向调整位置偏移
-                Vector3 adjustedOffset = new Vector3(
-                    quadConfig.PositionOffset.x * _directionMultiplier,
-                    quadConfig.PositionOffset.y,
-                    quadConfig.PositionOffset.z
-                );
-
                 _effectQuads.Add(quad);
                 _renderers.Add(renderer);
                 _startScales.Add(startScale);
                 _endScales.Add(endScale);
-                _startPositions.Add(adjustedPosition);
-                _endPositions.Add(adjustedPosition + adjustedOffset);
+                _startPositions.Add(quadConfig.LocalPosition);
+                _endPositions.Add(quadConfig.LocalPosition + quadConfig.PositionOffset);
             }
         }
         catch (Exception ex)
