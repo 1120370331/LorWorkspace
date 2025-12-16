@@ -257,15 +257,35 @@ public class DiceCardSelfAbility_AnhierQingSiFengLiu : DiceCardSelfAbilityBase
 
 #region 清司风流 (ID: 9001008) Dice 1
 // 命中时：若自身流层数>=10则重新投掷本骰子并使流层数-10（可重复触发）
-// 特效由 Harmony 补丁自动触发（基于 EffectRes）
 public class DiceCardAbility_AnhierQingSiFengLiuDice1 : DiceCardAbilityBase
 {
     public static string Desc = "[命中时] 若自身[流]层数>=10，则重新投掷本骰子并使[流]层数-10（可重复触发）";
     public override string[] Keywords => new string[] { "SteriaFlow" };
 
-    public override void OnSucceedAttack()
+    public override void OnSucceedAttack(BattleUnitModel target)
     {
         SteriaLogger.Log("清司风流 Dice1: OnSucceedAttack triggered");
+
+        // 直接创建特效和播放音效
+        try
+        {
+            // 播放音效
+            Sound.SoundEffectPlayer.PlaySound("Battle/Kali_Atk");
+
+            // 创建特效
+            if (this.owner?.view != null && target?.view != null)
+            {
+                SingletonBehavior<DiceEffectManager>.Instance?.CreateBehaviourEffect(
+                    "Kali_Z", 1f, this.owner.view, target.view, 1f);
+            }
+
+            // 屏幕震动
+            SteriaEffectHelper.AddScreenShake(0.02f, 0.01f, 70f, 0.3f);
+        }
+        catch (System.Exception ex)
+        {
+            SteriaLogger.Log($"清司风流 effect error: {ex.Message}");
+        }
 
         // 获取当前流的层数
         BattleUnitBuf_Flow flowBuf = this.owner.bufListDetail.GetActivatedBufList()
