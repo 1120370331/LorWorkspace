@@ -19,10 +19,14 @@
 
     <!-- Card 9001003: 奥塔尔的荣耀 -->
     <BattleCardAbility ID="AnhierDiscardAllDraw">
-      <Desc>[使用时] 丢弃手中所有书页，并抽取等量的书页</Desc>
+      <Desc>[使用时] 丢弃2张手牌来使本书页骰子威力+1
+[被弃置时] 抽1张书页</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AnhierClashWinDraw1">
       <Desc>[拼点胜利] 抽取1张书页</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AnhierGainLight1">
+      <Desc>[命中时] 恢复1点光芒</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AnhierGainLight2">
       <Desc>[命中时] 恢复2点光芒</Desc>
@@ -49,12 +53,25 @@
 
     <!-- Card 9001007: 内调之流 -->
     <BattleCardAbility ID="AnhierGainFlow5Draw2NextTurn">
-       <Desc>[使用时] 获得5层[流]，下一幕开始时抽取2张书页</Desc>
+       <Desc>[流转]
+[使用时] 抽取2张书页，下回合获得5层[流]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9001001: 拙劣控流 - Added On Use Desc -->
     <BattleCardAbility ID="AnhierRecoverLight1">
-        <Desc>[使用时] 恢复1点光芒</Desc>
+        <Desc>[流转]
+[使用时] 恢复1点光芒</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9001009: 以执为攻 -->
+    <BattleCardAbility ID="AnhierBindingNextTurn">
+      <Desc>[命中时] 下回合使其获得1层[束缚]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9001010: 寒地后勤 -->
+    <BattleCardAbility ID="AnhierColdLogistics">
+      <Desc>[使用时] 恢复2点光芒
+[被弃置时] 恢复2点光芒</Desc>
     </BattleCardAbility>
 
 </BattleCardAbilityDescRoot> 

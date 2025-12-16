@@ -216,84 +216,22 @@ target.bufListDetail.AddKeywordBufByEtc(KeywordBuf.Binding, 3, owner);
 
 ## 六、特效系统
 
-### 特效资源包结构
+关于战斗特效的详细制作方法，请参阅 **[10_角色外观与特效系统.md](10_角色外观与特效系统.md)**。
 
-```
-Assemblies/AB/
-├── mymod_effects.ab          # 特效资源包
-└── mymod_effects.manifest    # 清单文件
-```
+### 快速参考
 
-### 在XML中引用特效
+在骰子行为中指定特效：
 
 ```xml
-<Behaviour Min="5" Dice="9" Type="Atk" Detail="Slash" Motion="J"
-           EffectRes="MyMod_SlashEffect" Script="" Desc="" />
+<Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J"
+           EffectRes="Zwei_J" Script="" Desc="" />
 ```
 
-### 自定义ActionScript
-
-```xml
-<Behaviour Min="5" Dice="9" Type="Atk" Detail="Slash" Motion="S1"
-           EffectRes="" Script="" ActionScript="MyMod_SpecialAction" Desc="" />
-```
+自定义特效类命名规则：`DiceAttackEffect_[名称]_[锚点后缀]`
 
 ---
 
-## 七、创建特效资源包
-
-### Unity工程设置
-
-1. 创建Unity项目（版本需与游戏一致）
-2. 导入游戏资源作为参考
-3. 创建特效Prefab
-4. 设置AssetBundle名称
-
-### 导出AssetBundle
-
-```csharp
-// Unity Editor脚本
-using UnityEditor;
-
-public class BuildAssetBundles
-{
-    [MenuItem("Assets/Build AssetBundles")]
-    static void BuildAllAssetBundles()
-    {
-        BuildPipeline.BuildAssetBundles(
-            "Assets/AssetBundles",
-            BuildAssetBundleOptions.None,
-            BuildTarget.StandaloneWindows64
-        );
-    }
-}
-```
-
----
-
-## 八、动态加载特效
-
-### 使用CustomMapUtility加载
-
-```csharp
-// 在ModInitializer中加载
-public class ModInitializer : ModInitializer
-{
-    public override void OnInitializeMod()
-    {
-        // 加载AssetBundle
-        string path = Path.Combine(ModPath, "Assemblies/AB/mymod_effects.ab");
-        AssetBundle bundle = AssetBundle.LoadFromFile(path);
-
-        // 注册特效
-        // ...
-    }
-}
-```
-
----
-
-## 九、护盾系统
+## 七、护盾系统
 
 ### 添加护盾
 
@@ -333,7 +271,7 @@ public class BattleUnitBuf_Shield : BattleUnitBuf
 
 ---
 
-## 十、下一幕生效的Buff
+## 八、下一幕生效的Buff
 
 ```csharp
 public class BattleUnitBuf_StrengthNextTurn : BattleUnitBuf
@@ -355,7 +293,7 @@ owner.bufListDetail.AddBuf(new BattleUnitBuf_StrengthNextTurn() { stack = 3 });
 
 ---
 
-## 十一、条件触发Buff
+## 九、条件触发Buff
 
 ```csharp
 public class BattleUnitBuf_CounterAttack : BattleUnitBuf

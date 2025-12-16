@@ -5,11 +5,12 @@
   <Card ID="9001001" workshopID="NormalInvitation">
     <Name>拙劣控流</Name>
     <TextId>-1</TextId>
-    <Artwork>1741532454052.png</Artwork>
+    <Artwork>9001001.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Far" Cost="0" />
     <Script>AnhierRecoverLight1</Script>
-    <ScriptDesc />
+    <ScriptDesc>[流转]
+使用时：恢复1点光芒</ScriptDesc>
     <BehaviourList>
       <Behaviour Min="3" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="" Script="AnhierFlow1" ActionScript="" Desc="" />
     </BehaviourList>
@@ -22,7 +23,7 @@
   <Card ID="9001002" workshopID="NormalInvitation">
     <Name>回忆侧斩</Name>
     <TextId>-1</TextId>
-    <Artwork>1741532454052.png</Artwork>
+    <Artwork>9001002.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Near" Cost="1" />
     <Script>AnhierDiscardRandom1</Script>
@@ -31,8 +32,8 @@
       <Ability Script="AnhierDiscardRandom1" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="4" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierDraw1" ActionScript="" Desc="" />
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -42,17 +43,18 @@
   <Card ID="9001003" workshopID="NormalInvitation">
     <Name>奥塔尔的荣耀</Name>
     <TextId>-1</TextId>
-    <Artwork>1741532454052.png</Artwork>
+    <Artwork>9001003.png</Artwork>
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="2" />
     <Script>AnhierDiscardAllDraw</Script>
-    <ScriptDesc />
+    <ScriptDesc>使用时：丢弃2张手牌来使本书页骰子威力+1
+[被弃置时] 抽1张书页</ScriptDesc>
     <AbilityList>
       <Ability Script="AnhierDiscardAllDraw" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="5" Dice="10" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="AnhierClashWinDraw1" ActionScript="" Desc="" />
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierGainLight2" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="AnhierClashWinDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierGainLight1" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -61,7 +63,7 @@
   <Card ID="9001004" workshopID="NormalInvitation">
     <Name>回忆协奏之刃</Name>
     <TextId>-1</TextId>
-    <Artwork>1741532454052.png</Artwork>
+    <Artwork>9001004.png</Artwork>
     <Rarity>Unique</Rarity>
     <Spec Range="Near" Cost="4" />
     <Script>AnhierDiscardAllPowerUp</Script>
@@ -82,7 +84,7 @@
   <Card ID="9001005" workshopID="NormalInvitation">
     <Name>攫取回忆</Name>
     <TextId>-1</TextId>
-    <Artwork>1741532454052.png</Artwork>
+    <Artwork>9001005.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Near" Cost="1" />
     <Script>AnhierCard005</Script>
@@ -99,7 +101,7 @@
   <Card ID="9001006" workshopID="NormalInvitation">
     <Name>珍贵的回忆</Name>
     <TextId>-1</TextId>
-    <Artwork>1741532454052.png</Artwork>
+    <Artwork>9001006.png</Artwork>
     <Rarity>Unique</Rarity>
     <Spec Range="Near" Cost="1" />
     <Keyword>Discard</Keyword>
@@ -120,11 +122,13 @@
   <Card ID="9001007" workshopID="NormalInvitation">
     <Name>内调之流</Name>
     <TextId>-1</TextId>
-    <Artwork>1741532454052.png</Artwork>
+    <Artwork>9001007.png</Artwork>
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="2" />
     <Script>AnhierGainFlow5Draw2NextTurn</Script>
-    <ScriptDesc />
+    <ScriptDesc>[流转]
+使用时：抽取2张书页
+下回合获得5层[流]</ScriptDesc>
     <AbilityList>
       <Ability Script="AnhierGainFlow5Draw2NextTurn" />
     </AbilityList>
@@ -140,17 +144,81 @@
   <Card ID="9001008" workshopID="NormalInvitation">
     <Name>清司风流</Name>
     <TextId>-1</TextId>
-    <Artwork>1741532454052.png</Artwork>
+    <Artwork>9001008.png</Artwork>
     <Rarity>Unique</Rarity>
     <Spec Range="Far" Cost="3" />
     <Script>AnhierQingSiFengLiu</Script>
-    <ScriptDesc />
+    <ScriptDesc>[流转]</ScriptDesc>
     <AbilityList>
       <Ability Script="AnhierQingSiFengLiu" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="12" Dice="20" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
-      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc="" />
+      <Behaviour Min="9" Dice="17" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Counter" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 以执为攻 -->
+  <Card ID="9001009" workshopID="NormalInvitation">
+    <Name>以执为攻</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001009.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AnhierDiscardPowerUp</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierDiscardPowerUp" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="" Script="AnhierBindingNextTurn" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 寒地后勤 -->
+  <Card ID="9001010" workshopID="NormalInvitation">
+    <Name>寒地后勤</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001010.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>AnhierColdLogistics</Script>
+    <ScriptDesc>[使用时] 恢复2点光芒
+[被弃置时] 恢复2点光芒</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AnhierColdLogistics" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 自我之流 (EGO装备) -->
+  <Card ID="9001011" workshopID="NormalInvitation">
+    <Name>自我之流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001011.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="1" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>4</MaxCooltimeForEgo>
+    <Script>AnhierSelfFlow</Script>
+    <ScriptDesc>[使用时] 扣除25点生命值，获得10层[流]
+冷却时间：4幕</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AnhierSelfFlow" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>

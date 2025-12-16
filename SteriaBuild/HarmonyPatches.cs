@@ -84,11 +84,36 @@ namespace Steria
         private static Dictionary<BattlePlayingCardDataInUnitModel, Dictionary<int, int>> _flowPowerBonusPerCard =
             new Dictionary<BattlePlayingCardDataInUnitModel, Dictionary<int, int>>();
 
+        // 存储已经应用了流加成的骰子实例（用于防止重复应用，同时允许反击骰子获得加成）
+        private static HashSet<BattleDiceBehavior> _flowBonusAppliedDice = new HashSet<BattleDiceBehavior>();
+
+        // 检查骰子是否已经应用了流加成
+        public static bool HasFlowBonusApplied(BattleDiceBehavior dice)
+        {
+            return dice != null && _flowBonusAppliedDice.Contains(dice);
+        }
+
+        // 标记骰子已经应用了流加成
+        public static void MarkFlowBonusApplied(BattleDiceBehavior dice)
+        {
+            if (dice != null)
+            {
+                _flowBonusAppliedDice.Add(dice);
+            }
+        }
+
+        // 清除已应用流加成的骰子记录
+        public static void ClearFlowBonusAppliedDice()
+        {
+            _flowBonusAppliedDice.Clear();
+        }
+
         // 不消耗流、只获得加成的卡牌ID集合（可复用）
         // 添加新卡牌时只需在此集合中添加对应ID即可
         private static readonly HashSet<int> _flowBonusOnlyCardIds = new HashSet<int>
         {
             9001001,  // 拙劣控流
+            9001007,  // 内调之流
             9001008,  // 清司风流
             // 在此添加更多具有相同效果的卡牌ID...
         };
@@ -113,6 +138,7 @@ namespace Steria
         // Method called when a card is about to be used
         // 新逻辑：所有书页都会消耗流，在使用时一次性分配威力加成
         // 特殊：_flowBonusOnlyCardIds 中的卡牌只获得加成而不消耗流
+        // 注意：Standby 骰子被忽略，不参与流加成分配
         public static void RegisterCardUsage(BattlePlayingCardDataInUnitModel card)
         {
             if (card == null || card.owner == null || card.card == null) return;
@@ -129,11 +155,28 @@ namespace Steria
                 return;
             }
 
-            // 获取书页的骰子数量（从XML数据获取，而不是运行时实例）
-            int diceCount = card.card.XmlData.DiceBehaviourList?.Count ?? 0;
-            if (diceCount == 0)
+            // 获取书页的骰子列表，排除 Standby 骰子
+            var allDice = card.card.XmlData.DiceBehaviourList;
+            if (allDice == null || allDice.Count == 0)
             {
                 SteriaLogger.Log("RegisterCardUsage: No dice in card XML data");
+                return;
+            }
+
+            // 筛选出非 Standby 骰子的索引
+            List<int> nonStandbyIndices = new List<int>();
+            for (int i = 0; i < allDice.Count; i++)
+            {
+                if (allDice[i].Type != BehaviourType.Standby)
+                {
+                    nonStandbyIndices.Add(i);
+                }
+            }
+
+            int diceCount = nonStandbyIndices.Count;
+            if (diceCount == 0)
+            {
+                SteriaLogger.Log("RegisterCardUsage: No non-Standby dice in card");
                 return;
             }
 
@@ -145,16 +188,16 @@ namespace Steria
                 return; // 流转卡牌完全不受流影响，直接返回
             }
 
-            SteriaLogger.Log($"RegisterCardUsage: Distributing {flowStacks} flow to {diceCount} dice");
+            SteriaLogger.Log($"RegisterCardUsage: Distributing {flowStacks} flow to {diceCount} non-Standby dice");
 
-            // 分配流到骰子：循环分配，每1层流给1颗骰子+1威力
+            // 分配流到骰子：循环分配，每1层流给1颗骰子+1威力（只分配给非 Standby 骰子）
             Dictionary<int, int> powerBonusMap = new Dictionary<int, int>();
             for (int i = 0; i < flowStacks; i++)
             {
-                int diceIndex = i % diceCount;
-                if (!powerBonusMap.ContainsKey(diceIndex))
-                    powerBonusMap[diceIndex] = 0;
-                powerBonusMap[diceIndex]++;
+                int targetIndex = nonStandbyIndices[i % diceCount]; // 使用实际的骰子索引
+                if (!powerBonusMap.ContainsKey(targetIndex))
+                    powerBonusMap[targetIndex] = 0;
+                powerBonusMap[targetIndex]++;
             }
 
             // 存储威力加成映射
@@ -244,6 +287,12 @@ namespace Steria
             bool removedConsumption = _flowConsumedByCardAction.Remove(card); // Also clear the total consumed for this card
             Debug.Log($"[MyDLL] Cleaned up Card Usage: ID={card.card?.GetID()}, Hash={card.GetHashCode()}. Removed Rule: {removedRule}, Removed Consumption: {removedConsumption}");
 
+            // 清除流加成记录（包括反击骰子的加成）
+            ClearAllFlowPowerBonusForCard(card);
+            // 清除已应用流加成的骰子记录
+            ClearFlowBonusAppliedDice();
+            SteriaLogger.Log($"CleanupCardUsage: Cleared flow bonus records for card {card.card?.GetID()}");
+
             // Clear dice consumption for behaviors associated with this card - IMPORTANT
              List<BattleDiceBehavior> behaviors = card.GetDiceBehaviorList();
              if (behaviors != null) {
@@ -283,6 +332,12 @@ namespace Steria
             passive?.Notify_CardDiscarded();
         }
 
+        // --- Helper to increment discard count for 以执为攻 (按角色计数) ---
+        private static void IncrementDiscardCountForUnit(BattleUnitModel unit)
+        {
+            DiceCardSelfAbility_AnhierDiscardPowerUp.IncrementDiscardCount(unit);
+        }
+
         // --- Helper to handle 珍贵的回忆 被弃置时的效果 ---
         private const int PRECIOUS_MEMORY_NUMERIC_ID = 9001006;
         private const string MOD_PACKAGE_ID = "SteriaBuilding";
@@ -312,15 +367,15 @@ namespace Steria
             owner.allyCardDetail.DrawCards(2);
             SteriaLogger.Log("抽取了2张牌");
 
-            // 添加一个临时Buff，下回合开始时再实际给予1层强壮
+            // AddKeywordBufByEtc 默认下一幕生效，直接赋予即可
             try
             {
-                owner.bufListDetail.AddBuf(new BattleUnitBuf_PreciousMemoryStrength());
-                SteriaLogger.Log("添加了 PreciousMemoryStrength 临时Buff（下一幕开始时获得1层强壮）");
+                owner.bufListDetail.AddKeywordBufByEtc(KeywordBuf.Strength, 1, owner);
+                SteriaLogger.Log("赋予了1层强壮（下一幕生效）");
             }
             catch (Exception ex)
             {
-                SteriaLogger.LogError($"添加 PreciousMemoryStrength Buff 失败: {ex.Message}");
+                SteriaLogger.LogError($"赋予强壮失败: {ex.Message}");
             }
 
             // 消耗这张牌（从所有牌堆中移除）
@@ -345,8 +400,8 @@ namespace Steria
                 if (attacker?.passiveDetail?.PassiveList.Any(p => p is PassiveAbility_9000001) == true && v > 0 && type == DamageType.Attack)
                 {
                     int originalDmg = v;
-                    v = (int)Math.Round(v * 1.3f);
-                    Debug.Log($"[MyDLL] Passive 9000001 (Attacker: {attacker.UnitData.unitData.name}): Increasing damage to {__instance.UnitData.unitData.name} from {originalDmg} to {v} (+30%)");
+                    v = (int)Math.Round(v * 1.15f);
+                    Debug.Log($"[MyDLL] Passive 9000001 (Attacker: {attacker.UnitData.unitData.name}): Increasing damage to {__instance.UnitData.unitData.name} from {originalDmg} to {v} (+15%)");
                 }
             }
         }
@@ -359,8 +414,8 @@ namespace Steria
                 if (attacker?.passiveDetail?.PassiveList.Any(p => p is PassiveAbility_9000001) == true && damage > 0)
                 {
                     int originalBreakDmg = damage;
-                    damage = (int)Math.Round(damage * 1.3f);
-                    Debug.Log($"[MyDLL] Passive 9000001 (Attacker: {attacker.UnitData.unitData.name}): Increasing break damage to {__instance.UnitData.unitData.name} from {originalBreakDmg} to {damage} (+30%)");
+                    damage = (int)Math.Round(damage * 1.15f);
+                    Debug.Log($"[MyDLL] Passive 9000001 (Attacker: {attacker.UnitData.unitData.name}): Increasing break damage to {__instance.UnitData.unitData.name} from {originalBreakDmg} to {damage} (+15%)");
                 }
             }
         }
@@ -387,8 +442,9 @@ namespace Steria
         {
             public static void Postfix(BattlePlayingCardSlotDetail __instance, int value)
             {
-                var ownerField = AccessTools.Field(typeof(BattlePlayingCardSlotDetail), "_owner");
-                BattleUnitModel owner = ownerField?.GetValue(__instance) as BattleUnitModel;
+                // 字段名是 _self 而不是 _owner
+                var selfField = AccessTools.Field(typeof(BattlePlayingCardSlotDetail), "_self");
+                BattleUnitModel owner = selfField?.GetValue(__instance) as BattleUnitModel;
                 if (owner != null && value > 0)
                 {
                     var passive = owner.passiveDetail.PassiveList.FirstOrDefault(p => p is PassiveAbility_9000002) as PassiveAbility_9000002;
@@ -417,6 +473,8 @@ namespace Steria
 
                     // 通知 回忆燃烧 被动本幕有弃牌发生
                     NotifyPassive9000003(__instance);
+                    // 增加弃牌计数（以执为攻，按角色计数）
+                    IncrementDiscardCountForUnit(__instance);
                 }
                 catch (Exception ex)
                 {
@@ -450,6 +508,7 @@ namespace Steria
                     SteriaLogger.Log($"DiscardACardByAbility_Patch: Card='{card.GetName()}', Owner={owner.UnitData?.unitData?.name}");
                     HandlePreciousMemoryDiscard(owner, card);
                     NotifyPassive9000003(owner);
+                    IncrementDiscardCountForUnit(owner);
                 }
                 catch (Exception ex)
                 {
@@ -483,6 +542,7 @@ namespace Steria
                     SteriaLogger.Log($"DisCardACardRandom_Patch: Card='{__result.GetName()}', Owner={owner.UnitData?.unitData?.name}");
                     HandlePreciousMemoryDiscard(owner, __result);
                     NotifyPassive9000003(owner);
+                    IncrementDiscardCountForUnit(owner);
                 }
                 catch (Exception ex)
                 {
@@ -506,7 +566,7 @@ namespace Steria
         // [HarmonyPatch(typeof(StageController), nameof(StageController.NextWave))]
         // public static class StageController_NextWave_Patch { ... } 
         
-        // --- Patch for Battle Start to Reset Scene Counter for Passive 9000004 --- 
+        // --- Patch for Battle Start to Reset Scene Counter for Passive 9000004 ---
         [HarmonyPatch(typeof(StageController), nameof(StageController.StartBattle))]
         public static class StageController_StartBattle_Patch
         {
@@ -514,64 +574,51 @@ namespace Steria
             public static void Postfix()
             {
                 PassiveAbility_9000004.ResetSceneCounter(); // Resets static counters
+                DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset all discard counts for 以执为攻
+                Debug.Log("[Steria] StartBattle: Reset all counters");
             }
         }
 
-        // --- NEW Patch for Round Start System Phase (via StageController) to Handle Scene Logic for Passive 9000004 ---
-        [HarmonyPatch(typeof(StageController), "RoundStartPhase_System")] // Target the private method by string name
-        public static class StageController_RoundStartPhase_System_Patch // Renamed class
+        // --- Patch for Battle End to Reset Counters ---
+        [HarmonyPatch(typeof(StageController), nameof(StageController.EndBattle))]
+        public static class StageController_EndBattle_ResetCounters_Patch
         {
             [HarmonyPostfix]
             public static void Postfix()
             {
-                try 
-                {
-                    int currentGameScene = Singleton<StageController>.Instance.RoundTurn;
-                    int lastProcessedScene = PassiveAbility_9000004.GetLastProcessedRound();
-
-                    Debug.Log($"[MyDLL] StageController.RoundStartPhase_System Postfix: Current Scene/Round = {currentGameScene}, Last Processed = {lastProcessedScene}");
-
-                    // Check if this round has already been processed by this patch logic
-                    if (currentGameScene > lastProcessedScene)
-                    {
-                        // Mark this scene/round as processed
-                        PassiveAbility_9000004.SetLastProcessedRound(currentGameScene); 
-                        // No need for SetRoundFlag here
-
-                        // Increment the global scene counter
-                        int currentSceneCount = PassiveAbility_9000004.IncrementAndGetSceneCount(); 
-                        
-                        Debug.Log($"[MyDLL] StageController.RoundStartPhase_System Postfix: New scene detected ({currentGameScene}). Incremented global counter to {currentSceneCount}. Notifying units.");
-
-                        // Notify all alive units that have the passive
-                        if (BattleObjectManager.instance != null)
-                        {
-                            foreach (BattleUnitModel unit in BattleObjectManager.instance.GetAliveList())
-                            {
-                                if (unit?.passiveDetail?.PassiveList == null) continue;
-                                var passive = unit.passiveDetail.PassiveList.FirstOrDefault(p => p is PassiveAbility_9000004) as PassiveAbility_9000004;
-                                if (passive != null)
-                                {
-                                    passive.NotifySceneChanged(currentSceneCount); 
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Debug.LogWarning("[MyDLL] StageController.RoundStartPhase_System Postfix: BattleObjectManager instance was null when trying to notify!");
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log($"[MyDLL] StageController.RoundStartPhase_System Postfix: Scene {currentGameScene} already processed or not new (Last Processed: {lastProcessedScene}). Skipping increment/notify.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                     Debug.LogError($"[MyDLL] Error in StageController_RoundStartPhase_System_Patch Postfix: {ex}");
-                }
+                PassiveAbility_9000004.ResetSceneCounter(); // Reset scene counter
+                DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset discard counts
+                Debug.Log("[Steria] EndBattle: Reset all counters");
             }
         }
+
+        // --- Patch for CloseBattleScene to Reset Counters (backup) ---
+        [HarmonyPatch(typeof(StageController), nameof(StageController.CloseBattleScene))]
+        public static class StageController_CloseBattleScene_ResetCounters_Patch
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                PassiveAbility_9000004.ResetSceneCounter(); // Reset scene counter
+                DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset discard counts
+                Debug.Log("[Steria] CloseBattleScene: Reset all counters");
+            }
+        }
+
+        // --- Patch for SetCurrentWave to Reset Discard Counter for 以执为攻 ---
+        [HarmonyPatch(typeof(StageController), nameof(StageController.SetCurrentWave))]
+        public static class StageController_SetCurrentWave_ResetDiscardCount_Patch
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset all discard counts at wave start
+                Debug.Log("[Steria] SetCurrentWave: Reset discard counts for 以执为攻");
+            }
+        }
+
+        // --- RoundStartPhase_System Patch 已移除 ---
+        // 回忆结晶 (PassiveAbility_9000004) 的逻辑现在在 OnRoundStart 中处理
 
         // --- Patch to Clear Flow Consumption Tracking at Round Start ---
         [HarmonyPatch(typeof(StageController), "RoundStartPhase_System")]
@@ -600,26 +647,40 @@ namespace Steria
             HarmonyHelpers.RegisterCardUsage(__instance);
         }
 
-        [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), "OnUseCard")]
+        // 注意：不要在 OnUseCard Postfix 中清除流加成记录
+        // 因为 Standby 骰子是在 OnUseCard 之后才被创建和使用的
+        // 流加成记录应该在 OnEndBattle 中清除
+
+        // Patch for OnEndBattle to cleanup flow bonus records
+        // 在卡牌行动完全结束后清除流加成记录（包括 Standby 骰子使用后）
+        [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), "OnEndBattle")]
         [HarmonyPostfix]
-        public static void BattlePlayingCardDataInUnitModel_OnUseCard_Postfix(BattlePlayingCardDataInUnitModel __instance)
+        public static void BattlePlayingCardDataInUnitModel_OnEndBattle_Postfix(BattlePlayingCardDataInUnitModel __instance)
         {
-            // Log card usage end
-            Debug.Log($"[MyDLL] Card Usage End Postfix: ID={__instance.card?.GetID()}, Hash={__instance.GetHashCode()}");
+            Debug.Log($"[Steria] Card OnEndBattle Postfix: ID={__instance.card?.GetID()}, Hash={__instance.GetHashCode()}");
             HarmonyHelpers.CleanupCardUsage(__instance);
         }
 
         // 新的简化流消耗逻辑：在 RollDice 时应用预先计算好的威力加成
+        // 修改：使用 HashSet 跟踪已应用加成的骰子，而不是立即清除记录
+        // 这样反击骰子（复制的骰子）也能获得相同的加成
         [HarmonyPatch(typeof(BattleDiceBehavior), nameof(BattleDiceBehavior.RollDice))]
         [HarmonyPrefix]
         public static void BattleDiceBehavior_RollDice_FlowPatch(BattleDiceBehavior __instance)
         {
             // 添加调试日志 - 每次 RollDice 都输出
-            SteriaLogger.Log($"RollDice Patch TRIGGERED: Card={__instance.card?.card?.GetID()}, DiceIndex={__instance.Index}, CardHash={__instance.card?.GetHashCode()}");
+            SteriaLogger.Log($"RollDice Patch TRIGGERED: Card={__instance.card?.card?.GetID()}, DiceIndex={__instance.Index}, CardHash={__instance.card?.GetHashCode()}, DiceHash={__instance.GetHashCode()}");
 
             if (__instance.card?.card == null || __instance.owner == null)
             {
                 SteriaLogger.Log("RollDice Patch: card or owner is null, skipping");
+                return;
+            }
+
+            // 检查这个骰子实例是否已经应用了流加成（防止重复应用）
+            if (HarmonyHelpers.HasFlowBonusApplied(__instance))
+            {
+                SteriaLogger.Log($"RollDice Patch: Dice already has flow bonus applied, skipping");
                 return;
             }
 
@@ -636,8 +697,9 @@ namespace Steria
             {
                 SteriaLogger.Log($"RollDice FlowPatch: Applying +{flowBonus} power from flow to dice index {diceIndex}");
                 __instance.ApplyDiceStatBonus(new DiceStatBonus { power = flowBonus });
-                // 清除记录，避免重复应用
-                HarmonyHelpers.ClearFlowPowerBonusForDice(__instance.card, diceIndex);
+                // 标记这个骰子实例已经应用了加成（防止重复应用）
+                // 不清除记录，让反击骰子（复制的骰子）也能获得相同的加成
+                HarmonyHelpers.MarkFlowBonusApplied(__instance);
             }
         }
 

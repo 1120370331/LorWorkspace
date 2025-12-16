@@ -13,7 +13,8 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9001003">
       <Name>奥塔尔的荣耀</Name>
-      <Desc>使用时：丢弃手中所有书页，并抽取等量的书页</Desc>
+      <Desc>使用时：丢弃2张手牌来使本书页骰子威力+1
+[被弃置时] 抽1张书页</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001004">
       <Name>回忆协奏之刃</Name>
@@ -29,12 +30,27 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9001007">
       <Name>内调之流</Name>
-      <Desc>使用时：抽取2张书页
-下一幕开始时获得3层[流]</Desc>
+      <Desc>[流转]
+使用时：抽取2张书页
+下回合获得5层[流]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001008">
       <Name>清司风流</Name>
       <Desc>[流转]</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001009">
+      <Name>以执为攻</Name>
+      <Desc>本舞台中，每弃置5张书页便使本书页骰子威力+1</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001010">
+      <Name>寒地后勤</Name>
+      <Desc>[使用时] 恢复2点光芒
+[被弃置时] 恢复2点光芒</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001011">
+      <Name>自我之流</Name>
+      <Desc>[使用时] 扣除25点生命值，获得10层[流]
+冷却时间：4幕</Desc>
     </BattleCardDesc>
   </cardDescList>
 </CardDescXmlRoot>

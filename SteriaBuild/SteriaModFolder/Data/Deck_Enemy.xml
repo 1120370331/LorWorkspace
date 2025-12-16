@@ -2,16 +2,17 @@
 <DeckXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Version>1.1</Version>
   
-  <!-- 之前的安希尔卡组 (ID 1) -->
+  <!-- 安希尔卡组 (ID 1) -->
   <Deck ID="1">
     <Card>9001001</Card> <!-- 拙劣控流 -->
     <Card>9001002</Card> <!-- 回忆侧斩 -->
     <Card>9001003</Card> <!-- 奥塔尔的荣耀 -->
     <Card>9001004</Card> <!-- 回忆协奏之刃 -->
     <Card>9001005</Card> <!-- 攫取回忆 -->
-    <Card>9001006</Card> <!-- 珍贵的回忆 -->
     <Card>9001007</Card> <!-- 内调之流 -->
     <Card>9001008</Card> <!-- 清司风流 -->
+    <Card>9001009</Card> <!-- 以执为攻 -->
+    <Card>9001010</Card> <!-- 寒地后勤 -->
   </Deck>
 
   <!-- 斯拉泽雅卡组 (对应 Book ID 2) -->

@@ -14,6 +14,9 @@ using Steria; // For SteriaLogger and BattleUnitBuf_Flow
 // 神脉：职业等级（安希尔）(ID: 9000001)
 public class PassiveAbility_9000001 : PassiveAbilityBase
 {
+    private const string MOD_ID = "SteriaBuilding";
+    private const int PRECIOUS_MEMORY_CARD_ID = 9001006; // 珍贵的回忆
+
     // +15 Max HP
     public override int GetMaxHpBonus() => 15;
 
@@ -32,23 +35,108 @@ public class PassiveAbility_9000001 : PassiveAbilityBase
 
     // +30% Damage is handled via Harmony Patch on BattleUnitModel.TakeDamage
     // +30% Stagger Damage is handled via Harmony Patch on BattleUnitModel.TakeBreakDamage
+
+    // AI限制：敌人不会主动使用"珍贵的回忆"
+    public override BattleDiceCardModel OnSelectCardAuto(BattleDiceCardModel origin, int currentDiceSlotIdx)
+    {
+        if (origin == null)
+            return origin;
+
+        // 检查是否是"珍贵的回忆"卡牌
+        LorId cardId = origin.GetID();
+        if (cardId.IsBasic() == false && cardId.packageId == MOD_ID && cardId.id == PRECIOUS_MEMORY_CARD_ID)
+        {
+            SteriaLogger.Log($"Passive 9000001: AI tried to select 珍贵的回忆, finding alternative card");
+
+            // 从手牌中选择另一张卡
+            List<BattleDiceCardModel> hand = this.owner.allyCardDetail.GetHand();
+            foreach (BattleDiceCardModel card in hand)
+            {
+                if (card != origin && card.GetID().id != PRECIOUS_MEMORY_CARD_ID)
+                {
+                    SteriaLogger.Log($"Passive 9000001: Selected alternative card: {card.GetName()}");
+                    return card;
+                }
+            }
+
+            // 如果没有其他卡可选，返回null（不出牌）
+            SteriaLogger.Log($"Passive 9000001: No alternative card found, returning null");
+            return null;
+        }
+
+        return base.OnSelectCardAuto(origin, currentDiceSlotIdx);
+    }
 }
 
 // 神脉：汐与梦（司流-自我之流）(ID: 9000002)
 public class PassiveAbility_9000002 : PassiveAbilityBase
 {
+    private const string MOD_ID = "SteriaBuilding";
+    private const int SELF_FLOW_EGO_CARD_ID = 9001011; // 自我之流 EGO卡牌ID
+    private const int ENEMY_TRIGGER_INTERVAL = 4; // 敌方触发间隔（幕）
+    private const int HP_COST = 25; // 生命值消耗
+    private const int FLOW_GAIN = 10; // 获得的流层数
+
     private bool _attackedOneSideThisTurn = false;
     private bool _addFlowNextRound = false;
     private int _lightSpentSinceLastFlow = 0;
+    private bool _egoCardAdded = false; // 是否已添加EGO卡牌
+    private int _enemyTriggerCounter = 0; // 敌方触发计数器
+
+    // 开幕时添加EGO卡牌（玩家）或初始化敌方计数器
+    public override void OnWaveStart()
+    {
+        base.OnWaveStart();
+        _egoCardAdded = false;
+        _enemyTriggerCounter = 0;
+
+        // 如果是玩家单位，添加EGO卡牌到EGO槽位
+        if (this.owner != null && this.owner.faction == Faction.Player)
+        {
+            LorId egoCardId = new LorId(MOD_ID, SELF_FLOW_EGO_CARD_ID);
+            this.owner.personalEgoDetail.AddCard(egoCardId);
+            _egoCardAdded = true;
+            SteriaLogger.Log($"Passive 9000002: Added 自我之流 EGO card to {this.owner.UnitData?.unitData?.name}");
+        }
+    }
 
     public override void OnRoundStart()
     {
         if (_addFlowNextRound)
         {
-             AddFlowStacks(2);
+             AddFlowStacks(3);
              _addFlowNextRound = false;
         }
         _attackedOneSideThisTurn = false;
+
+        // 敌方单位：每4幕自动触发一次效果
+        if (this.owner != null && this.owner.faction == Faction.Enemy && !this.owner.IsDead())
+        {
+            _enemyTriggerCounter++;
+            SteriaLogger.Log($"Passive 9000002: Enemy trigger counter = {_enemyTriggerCounter}/{ENEMY_TRIGGER_INTERVAL}");
+
+            // 第1幕触发，之后每4幕触发一次（1, 5, 9, 13...）
+            if (_enemyTriggerCounter == 1 || (_enemyTriggerCounter - 1) % ENEMY_TRIGGER_INTERVAL == 0)
+            {
+                TriggerSelfFlowEffect();
+            }
+        }
+    }
+
+    // 触发自我之流效果：扣除25点生命值，获得10层流
+    private void TriggerSelfFlowEffect()
+    {
+        if (this.owner == null || this.owner.IsDead()) return;
+
+        SteriaLogger.Log($"Passive 9000002: Triggering 自我之流 effect for {this.owner.UnitData?.unitData?.name}");
+
+        // 扣除生命值
+        this.owner.LoseHp(HP_COST);
+        SteriaLogger.Log($"Passive 9000002: Lost {HP_COST} HP, current HP: {this.owner.hp}");
+
+        // 获得流层数
+        AddFlowStacks(FLOW_GAIN);
+        SteriaLogger.Log($"Passive 9000002: Added {FLOW_GAIN} Flow stacks");
     }
 
     public override void OnTakeDamageByAttack(BattleDiceBehavior atkDice, int dmg)
@@ -124,37 +212,43 @@ public class PassiveAbility_9000002 : PassiveAbilityBase
 }
 
 // 回忆燃烧 (ID: 9000003)
+// 每丢弃3张书页：下回合获得1层"强壮、守护"，并失去5点混乱抗性
 public class PassiveAbility_9000003 : PassiveAbilityBase
 {
     private int _discardCountThisRound = 0;
-    private bool _buffAppliedThisRound = false;
-    private bool _shouldGainBuffNextRound = false;
+    private int _triggerCountNextRound = 0; // 下回合需要触发的次数
 
      public override void OnRoundStart()
      {
-         if (_shouldGainBuffNextRound)
+         // 根据上回合触发次数，给予对应层数的强壮、守护，并扣除混乱抗性
+         if (_triggerCountNextRound > 0)
          {
-             this.owner.bufListDetail.AddKeywordBufByEtc(KeywordBuf.Strength, 1, this.owner);
-             this.owner.bufListDetail.AddKeywordBufByEtc(KeywordBuf.Protection, 1, this.owner);
-             _shouldGainBuffNextRound = false;
+             this.owner.bufListDetail.AddKeywordBufByEtc(KeywordBuf.Strength, _triggerCountNextRound, this.owner);
+             this.owner.bufListDetail.AddKeywordBufByEtc(KeywordBuf.Protection, _triggerCountNextRound, this.owner);
+             // 失去5点混乱抗性（每次触发）
+             int breakResistLoss = 5 * _triggerCountNextRound;
+             this.owner.breakDetail.TakeBreakDamage(breakResistLoss, DamageType.Passive, this.owner, AtkResist.Normal);
+             SteriaLogger.Log($"回忆燃烧: 获得{_triggerCountNextRound}层强壮和守护，失去{breakResistLoss}点混乱抗性");
+             _triggerCountNextRound = 0;
          }
          _discardCountThisRound = 0;
-         _buffAppliedThisRound = false;
      }
 
      public void Notify_CardDiscarded()
      {
-         if (_buffAppliedThisRound) return;
          _discardCountThisRound++;
-         if (_discardCountThisRound >= 2)
+         // 每丢弃3张书页触发一次
+         if (_discardCountThisRound >= 3)
          {
-             _shouldGainBuffNextRound = true;
-             _buffAppliedThisRound = true;
+             _triggerCountNextRound++;
+             _discardCountThisRound -= 3; // 重置计数，允许继续累积
+             SteriaLogger.Log($"回忆燃烧: 本回合已丢弃3张书页，下回合将触发效果（当前累计{_triggerCountNextRound}次）");
          }
      }
 }
 
 // --- Buff: 回忆结晶能量 ---
+// 注意：这个 Buff 仅用于显示图标和层数，实际的骰子威力加成在被动的 BeforeRollDice 中处理
 public class BattleUnitBuf_CrystalizedPower : BattleUnitBuf
 {
     protected override string keywordId => "MemCrystalPassive";
@@ -162,33 +256,16 @@ public class BattleUnitBuf_CrystalizedPower : BattleUnitBuf
 
     public override BufPositiveType positiveType => BufPositiveType.Positive;
 
-    public override void OnAddBuf(int addedStack)
-    {
-        Debug.Log($"[Steria] BattleUnitBuf_CrystalizedPower ({this._owner?.UnitData?.unitData?.name ?? "Unknown Owner"}): OnAddBuf called. addedStack = {addedStack}, current stack BEFORE adjustment = {this.stack}");
-        this.stack += addedStack;
-        if (this.stack > 3)
-        {
-             Debug.Log($"[Steria] BattleUnitBuf_CrystalizedPower: Stack exceeded 3 ({this.stack}), clamping to 3.");
-             this.stack = 3;
-        }
-         Debug.Log($"[Steria] BattleUnitBuf_CrystalizedPower: OnAddBuf finished. Final stack = {this.stack}");
-    }
-
-    public override void BeforeRollDice(BattleDiceBehavior behavior)
-    {
-        if (this.stack <= 0 || behavior == null)
-            return;
-
-        Debug.Log($"[Steria] BattleUnitBuf_CrystalizedPower ({this._owner.UnitData.unitData.name}): Applying +{this.stack} power to dice type {behavior.Detail} (Buff Stack: {this.stack}).");
-        behavior.ApplyDiceStatBonus(new DiceStatBonus { power = this.stack });
-    }
+    // 不在 Buff 的 BeforeRollDice 中处理骰子加成
+    // 因为 Buff 的 BeforeRollDice 可能会被错误地应用到其他单位
+    // 实际的骰子威力加成在 PassiveAbility_9000004.BeforeRollDice 中处理
 }
 
 // 回忆结晶 (ID: 9000004)
+// 舞台每经过5幕，便使自身骰子威力+1（至多+3）
 public class PassiveAbility_9000004 : PassiveAbilityBase
 {
     private static int _currentSceneCount = 0;
-    private static bool _sceneCounterIncrementedThisRound = false;
     private static int _lastProcessedRound = -1;
 
     private int _currentStacks = 0;
@@ -198,65 +275,102 @@ public class PassiveAbility_9000004 : PassiveAbilityBase
     public override void Init(BattleUnitModel self)
     {
         base.Init(self);
-        Debug.Log($"[Steria] Passive 9000004 ({this.owner?.UnitData?.unitData?.name ?? "Unknown Owner"}): Initializing passive. Initial _currentStacks = {_currentStacks}");
+        _currentStacks = 0;
+        SteriaLogger.Log($"Passive 9000004 ({this.owner?.UnitData?.unitData?.name}): Init, stacks={_currentStacks}");
+    }
+
+    // 只在新战斗开始时重置（当 _currentSceneCount 为 0 时）
+    // 同一场战斗的不同 wave 之间不重置
+    public override void OnWaveStart()
+    {
+        base.OnWaveStart();
+
+        // 只在新战斗开始时重置（静态计数器为0表示是新战斗）
+        if (_currentSceneCount == 0)
+        {
+            _currentStacks = 0;
+
+            // 销毁任何残留的 buff
+            if (this.owner?.bufListDetail != null)
+            {
+                BattleUnitBuf_CrystalizedPower existingBuf = this.owner.bufListDetail.GetActivatedBufList()
+                    .FirstOrDefault(b => b is BattleUnitBuf_CrystalizedPower) as BattleUnitBuf_CrystalizedPower;
+                if (existingBuf != null && !existingBuf.IsDestroyed())
+                {
+                    existingBuf.Destroy();
+                    SteriaLogger.Log($"Passive 9000004 ({this.owner?.UnitData?.unitData?.name}): Destroyed residual buff on new battle start");
+                }
+            }
+            SteriaLogger.Log($"Passive 9000004 ({this.owner?.UnitData?.unitData?.name}): OnWaveStart (new battle), reset _currentStacks to 0");
+        }
+        else
+        {
+            SteriaLogger.Log($"Passive 9000004 ({this.owner?.UnitData?.unitData?.name}): OnWaveStart (same battle), keeping _currentStacks={_currentStacks}, sceneCount={_currentSceneCount}");
+        }
     }
 
     public static void ResetSceneCounter()
     {
         _currentSceneCount = 0;
-        _sceneCounterIncrementedThisRound = false;
         _lastProcessedRound = -1;
-        Debug.Log("[Steria] Passive 9000004: Static counters reset.");
+        SteriaLogger.Log("Passive 9000004: Static counters reset.");
     }
 
-    public static int GetCurrentSceneCount()
-    {
-         return _currentSceneCount;
-    }
-
+    public static int GetCurrentSceneCount() => _currentSceneCount;
+    public static int GetLastProcessedRound() => _lastProcessedRound;
+    public static void SetLastProcessedRound(int round) => _lastProcessedRound = round;
     public static int IncrementAndGetSceneCount()
     {
         _currentSceneCount++;
-        Debug.Log($"[Steria] Passive 9000004 Static Counter: Incremented scene count to {_currentSceneCount}");
+        SteriaLogger.Log($"Passive 9000004: Scene count incremented to {_currentSceneCount}");
         return _currentSceneCount;
     }
 
-    public static void SetRoundFlag(bool value)
+    // 使用 OnRoundStart 来检测新回合
+    public override void OnRoundStart()
     {
-         _sceneCounterIncrementedThisRound = value;
+        int currentRound = Singleton<StageController>.Instance?.RoundTurn ?? 0;
+        SteriaLogger.Log($"Passive 9000004 ({this.owner?.UnitData?.unitData?.name}): OnRoundStart, Round={currentRound}, LastProcessed={_lastProcessedRound}, SceneCount={_currentSceneCount}");
+
+        // 只有当这是新的一幕时才递增计数器（静态变量，所有实例共享）
+        if (currentRound > _lastProcessedRound)
+        {
+            _lastProcessedRound = currentRound;
+            _currentSceneCount++;
+            SteriaLogger.Log($"Passive 9000004: New round detected! SceneCount now = {_currentSceneCount}");
+        }
+
+        // 更新这个单位的buff
+        UpdateCrystalBuff();
     }
 
-    public static void SetLastProcessedRound(int round)
+    // 在被动的 BeforeRollDice 中应用骰子威力加成
+    // 这个方法只会被拥有此被动的单位的骰子调用，不会影响其他单位
+    public override void BeforeRollDice(BattleDiceBehavior behavior)
     {
-         _lastProcessedRound = round;
+        if (_currentStacks <= 0 || behavior == null)
+            return;
+
+        SteriaLogger.Log($"Passive 9000004 ({this.owner?.UnitData?.unitData?.name}): BeforeRollDice - Applying +{_currentStacks} power to dice");
+        behavior.ApplyDiceStatBonus(new DiceStatBonus { power = _currentStacks });
     }
 
-    public static bool GetRoundFlag()
+    private void UpdateCrystalBuff()
     {
-        return _sceneCounterIncrementedThisRound;
-    }
-
-    public static int GetLastProcessedRound()
-    {
-         return _lastProcessedRound;
-    }
-
-    public void NotifySceneChanged(int currentGlobalScene)
-    {
-        Debug.Log($"[Steria] Passive 9000004 ({(this.owner?.UnitData?.unitData?.name ?? "Unknown Owner")}): NotifySceneChanged called for global scene {currentGlobalScene}. Current instance stacks: {_currentStacks}");
+        SteriaLogger.Log($"Passive 9000004 ({this.owner?.UnitData?.unitData?.name}): UpdateCrystalBuff, SceneCount={_currentSceneCount}, CurrentStacks={_currentStacks}");
 
         if (this.owner == null || this.owner.IsDead())
         {
-            Debug.LogWarning($"[Steria] Passive 9000004: Owner is null or dead. Skipping update.");
+            SteriaLogger.LogWarning("Passive 9000004: Owner is null or dead. Skipping update.");
             return;
         }
 
-        int expectedStacks = Mathf.Min(MAX_STACKS, currentGlobalScene / SCENES_PER_STACK);
-        Debug.Log($"[Steria] Passive 9000004 ({this.owner.UnitData.unitData.name}): Calculated expected stacks: {expectedStacks} (based on global scene {currentGlobalScene}).");
+        int expectedStacks = Mathf.Min(MAX_STACKS, _currentSceneCount / SCENES_PER_STACK);
+        SteriaLogger.Log($"Passive 9000004 ({this.owner.UnitData.unitData.name}): Expected stacks={expectedStacks} (scene {_currentSceneCount} / {SCENES_PER_STACK})");
 
         if (expectedStacks != _currentStacks)
         {
-            Debug.Log($"[Steria] Passive 9000004 ({this.owner.UnitData.unitData.name}): Expected stacks ({expectedStacks}) differ from current ({_currentStacks}). Updating.");
+            SteriaLogger.Log($"Passive 9000004: Updating stacks from {_currentStacks} to {expectedStacks}");
             _currentStacks = expectedStacks;
 
             BattleUnitBuf_CrystalizedPower existingBuf = this.owner.bufListDetail.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_CrystalizedPower) as BattleUnitBuf_CrystalizedPower;
@@ -265,28 +379,21 @@ public class PassiveAbility_9000004 : PassiveAbilityBase
             {
                 if (existingBuf != null && !existingBuf.IsDestroyed())
                 {
-                    Debug.Log($"[Steria] Passive 9000004 ({this.owner.UnitData.unitData.name}): Updating existing CrystalizedPower buff stack to {_currentStacks}.");
+                    SteriaLogger.Log($"Passive 9000004: Updating existing buff to stack {_currentStacks}");
                     existingBuf.stack = _currentStacks;
                 }
                 else
                 {
-                    Debug.Log($"[Steria] Passive 9000004 ({this.owner.UnitData.unitData.name}): Adding new CrystalizedPower buff with stack {_currentStacks}.");
+                    SteriaLogger.Log($"Passive 9000004: Adding new buff with stack {_currentStacks}");
                     BattleUnitBuf_CrystalizedPower newBuf = new BattleUnitBuf_CrystalizedPower { stack = _currentStacks };
                     this.owner.bufListDetail.AddBuf(newBuf);
                 }
             }
-            else
+            else if (existingBuf != null && !existingBuf.IsDestroyed())
             {
-                 if (existingBuf != null && !existingBuf.IsDestroyed())
-                 {
-                     Debug.Log($"[Steria] Passive 9000004 ({this.owner.UnitData.unitData.name}): Expected stacks are 0. Removing existing CrystalizedPower buff.");
-                     existingBuf.Destroy();
-                 }
+                SteriaLogger.Log("Passive 9000004: Removing buff (stacks=0)");
+                existingBuf.Destroy();
             }
-        }
-        else
-        {
-             Debug.Log($"[Steria] Passive 9000004 ({this.owner.UnitData.unitData.name}): Expected stacks ({expectedStacks}) match current ({_currentStacks}). No change needed.");
         }
     }
 }
