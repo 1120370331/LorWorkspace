@@ -153,7 +153,7 @@
       <Ability Script="AnhierQingSiFengLiu" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="9" Dice="17" Type="Atk" Detail="Slash" Motion="F" EffectRes="Kali_Z" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
+      <Behaviour Min="9" Dice="17" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WindSlash" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
       <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
