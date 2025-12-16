@@ -1,174 +1,142 @@
-using System;
 using System.Collections.Generic;
 using Battle.DiceAttackEffect;
 using UnityEngine;
 using Steria;
 
 /// <summary>
-/// 清司风流 - 风系斩击特效
-/// 攻击者手边触发1个纵向的，目标周围触发3个角度不一样的横向的
+/// 风系斩击特效 - 攻击者手边1个纵向，目标周围3个横向
 /// </summary>
-public class DiceAttackEffect_Steria_WindSlash : DiceAttackEffect
+public class DiceAttackEffect_Steria_WindSlash : DiceAttackEffect_Steria_Base
 {
-    private List<GameObject> _effectQuads = new List<GameObject>();
-    private List<MeshRenderer> _renderers = new List<MeshRenderer>();
-    private List<Vector3> _startScales = new List<Vector3>();
-    private List<Vector3> _endScales = new List<Vector3>();
-
-    private float _duration = 0.5f;
-    private new float _elapsed = 0f;
-    private float _startAlpha = 1.5f;
-    private float _endAlpha = 0f;
-
-    private BattleUnitView _selfView;
-    private BattleUnitView _targetView;
-
-    public override void Initialize(BattleUnitView self, BattleUnitView target, float destroyTime)
+    // 目标身上的额外Quad配置
+    private static readonly QuadEffectConfig[] TargetQuads = new[]
     {
-        SteriaLogger.Log($"WindSlash: Initialize called, self={self?.name}, target={target?.name}");
-        this._self = self.model;
-        this._selfView = self;
-        this._targetView = target;
+        new QuadEffectConfig
+        {
+            TextureName = "wind_slash",
+            LocalPosition = new Vector3(0f, 0.8f, -0.5f),
+            RotationZ = 15f,
+            BaseScale = 2.5f,
+            ScaleMultiplierStart = 0.3f,
+            ScaleMultiplierEnd = 1.1f,
+            AnimateScale = true
+        },
+        new QuadEffectConfig
+        {
+            TextureName = "wind_slash",
+            LocalPosition = new Vector3(-0.3f, 0.3f, -0.4f),
+            RotationZ = -10f,
+            BaseScale = 2.3f,
+            ScaleMultiplierStart = 0.3f,
+            ScaleMultiplierEnd = 1.1f,
+            AnimateScale = true
+        },
+        new QuadEffectConfig
+        {
+            TextureName = "wind_slash",
+            LocalPosition = new Vector3(0.3f, 0.5f, -0.6f),
+            RotationZ = 25f,
+            BaseScale = 2.0f,
+            ScaleMultiplierStart = 0.3f,
+            ScaleMultiplierEnd = 1.1f,
+            AnimateScale = true
+        }
+    };
 
+    protected override SteriaEffectConfig GetConfig()
+    {
+        return SteriaEffectConfig.WindSlash;
+    }
+
+    protected override void SetupTransform(BattleUnitView self, BattleUnitView target)
+    {
+        // WindSlash不挂载到任何父节点，使用世界坐标
         base.transform.parent = null;
         base.transform.position = Vector3.zero;
         base.transform.rotation = Quaternion.identity;
         base.transform.localScale = Vector3.one;
-
-        this._destroyTime = _duration;
-        this._elapsed = 0f;
-
-        CreateEffects();
-        AddScreenShake();
     }
 
-    private void CreateEffects()
+    protected override void CreateEffects()
     {
-        try
+        // 在攻击者身上创建纵向斩击
+        if (_selfView != null && _selfView.atkEffectRoot != null)
         {
-            if (_selfView != null && _selfView.atkEffectRoot != null)
-            {
-                CreateSlashEffect(_selfView.atkEffectRoot, new Vector3(0.5f, 0.5f, -0.3f), 90f, 1.8f);
-            }
-
-            if (_targetView != null && _targetView.atkEffectRoot != null)
-            {
-                CreateSlashEffect(_targetView.atkEffectRoot, new Vector3(0f, 0.8f, -0.5f), 15f, 2.5f);
-                CreateSlashEffect(_targetView.atkEffectRoot, new Vector3(-0.3f, 0.3f, -0.4f), -10f, 2.3f);
-                CreateSlashEffect(_targetView.atkEffectRoot, new Vector3(0.3f, 0.5f, -0.6f), 25f, 2.0f);
-            }
-
-            Debug.Log($"[Steria] WindSlash effect created: {_effectQuads.Count} slashes");
+            var selfConfig = _config.Quads[0];
+            CreateQuadOnTarget(_selfView.atkEffectRoot, selfConfig, 0);
         }
-        catch (Exception ex)
+
+        // 在目标身上创建3个横向斩击
+        if (_targetView != null && _targetView.atkEffectRoot != null)
         {
-            Debug.LogError($"[Steria] Error creating WindSlash effects: {ex}");
+            for (int i = 0; i < TargetQuads.Length; i++)
+            {
+                CreateQuadOnTarget(_targetView.atkEffectRoot, TargetQuads[i], i + 1);
+            }
         }
+
+        SteriaLogger.Log($"WindSlash: Created {_effectQuads.Count} slashes");
     }
 
-    private void CreateSlashEffect(Transform parent, Vector3 localPos, float rotationZ, float scale)
+    private void CreateQuadOnTarget(Transform parent, QuadEffectConfig config, int index)
     {
-        Material material = SteriaEffectSprites.GetEffectMaterial("wind_slash", true, 0.15f);
+        Material material = SteriaEffectSprites.GetEffectMaterial(config.TextureName, true, config.BrightnessThreshold);
         if (material == null) return;
 
-        GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        quad.name = "WindSlash_" + _effectQuads.Count;
+        GameObject quad = SteriaEffectHelper.CreateEffectQuad(
+            $"WindSlash_{index}",
+            material,
+            parent,
+            config.LocalPosition,
+            config.RotationZ,
+            config.GetStartScale(),
+            100 + index
+        );
 
-        var collider = quad.GetComponent("MeshCollider") as Component;
-        if (collider != null) UnityEngine.Object.Destroy(collider);
-
-        var renderer = quad.GetComponent<MeshRenderer>();
-        renderer.material = new Material(material);
-        renderer.sortingOrder = 100 + _effectQuads.Count;
-
-        quad.transform.SetParent(parent);
-        quad.transform.localPosition = localPos;
-        quad.transform.localRotation = Quaternion.Euler(0f, 0f, rotationZ);
-
-        float aspectRatio = 16f / 9f;
-        Vector3 baseScale = new Vector3(scale * aspectRatio, scale, 1f);
-        Vector3 startScale = baseScale * 0.3f;
-        Vector3 endScale = baseScale * 1.1f;
-
-        quad.transform.localScale = startScale;
-
-        _effectQuads.Add(quad);
-        _renderers.Add(renderer);
-        _startScales.Add(startScale);
-        _endScales.Add(endScale);
-    }
-
-    private void AddScreenShake()
-    {
-        try
+        if (quad != null)
         {
-            BattleCamManager instance = SingletonBehavior<BattleCamManager>.Instance;
-            if (instance != null && instance.EffectCam != null)
-            {
-                var shake = instance.EffectCam.gameObject.AddComponent<CameraFilterPack_FX_EarthQuake>();
-                if (shake != null)
-                {
-                    shake.X = 0.02f;
-                    shake.Y = 0.01f;
-                    shake.Speed = 70f;
+            var renderer = quad.GetComponent<MeshRenderer>();
+            _effectQuads.Add(quad);
+            _renderers.Add(renderer);
+            _startScales.Add(config.GetStartScale());
+            _endScales.Add(config.GetEndScale());
+            _startPositions.Add(config.LocalPosition);
+            _endPositions.Add(config.LocalPosition);
 
-                    var autoDestroy = instance.EffectCam.gameObject.AddComponent<AutoScriptDestruct>();
-                    if (autoDestroy != null)
-                    {
-                        autoDestroy.targetScript = shake;
-                        autoDestroy.time = 0.3f;
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogWarning($"[Steria] Could not add screen shake: {ex.Message}");
+            // 存储配置引用以便更新时使用
+            _quadConfigs.Add(config);
         }
     }
 
-    protected override void Update()
+    // 存储每个Quad的配置
+    private List<QuadEffectConfig> _quadConfigs = new List<QuadEffectConfig>();
+
+    protected override void UpdateQuad(int index, float progress)
     {
-        _elapsed += Time.deltaTime;
-        float progress = Mathf.Clamp01(_elapsed / _duration);
+        if (index >= _effectQuads.Count || _effectQuads[index] == null || _renderers[index] == null)
+            return;
 
-        for (int i = 0; i < _effectQuads.Count; i++)
+        var quad = _effectQuads[index];
+        var renderer = _renderers[index];
+        var config = index < _quadConfigs.Count ? _quadConfigs[index] : _config.Quads[0];
+
+        // 缩放动画
+        float scaleProgress = SteriaEffectHelper.EaseOutQuad(progress);
+        quad.transform.localScale = Vector3.Lerp(_startScales[index], _endScales[index], scaleProgress);
+
+        // 透明度：前30%不变，后70%渐出
+        float alphaProgress = progress < 0.3f ? 0f : (progress - 0.3f) / 0.7f;
+        float currentAlpha = Mathf.Lerp(_config.MaxAlpha, 0f, alphaProgress);
+
+        if (renderer.material != null)
         {
-            if (_effectQuads[i] != null && _renderers[i] != null)
-            {
-                float scaleProgress = EaseOutQuad(progress);
-                _effectQuads[i].transform.localScale = Vector3.Lerp(_startScales[i], _endScales[i], scaleProgress);
-
-                float alphaProgress = progress < 0.3f ? 0f : (progress - 0.3f) / 0.7f;
-                float currentAlpha = Mathf.Lerp(_startAlpha, _endAlpha, alphaProgress);
-
-                if (_renderers[i].material != null)
-                {
-                    Color color = new Color(currentAlpha, currentAlpha, currentAlpha, currentAlpha);
-                    _renderers[i].material.SetColor("_TintColor", color * 0.5f);
-                }
-            }
-        }
-
-        if (_elapsed >= _duration)
-        {
-            UnityEngine.Object.Destroy(base.gameObject);
+            Color color = new Color(currentAlpha, currentAlpha, currentAlpha, currentAlpha);
+            renderer.material.SetColor("_TintColor", color * 0.5f);
         }
     }
 
-    private float EaseOutQuad(float t)
+    protected override void OnCleanup()
     {
-        return 1f - (1f - t) * (1f - t);
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        foreach (var quad in _effectQuads)
-        {
-            if (quad != null) UnityEngine.Object.Destroy(quad);
-        }
-        _effectQuads.Clear();
-        _renderers.Clear();
+        _quadConfigs.Clear();
     }
 }
