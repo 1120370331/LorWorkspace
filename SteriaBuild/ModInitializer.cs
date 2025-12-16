@@ -225,8 +225,62 @@ namespace Steria
 
                 _initialized = true;
 
-                // --- Other Mod Initialization --- 
-                // You can add other setup code here if needed, 
+                // --- Register and check custom effects ---
+                try
+                {
+                    // 初始化特效图片系统
+                    SteriaEffectSprites.Initialize();
+                    SteriaLogger.Log("SteriaEffectSprites initialized");
+
+                    // 手动注册自定义特效
+                    if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_Hurricane_F"))
+                    {
+                        Harmony_Patch.CustomEffects["Steria_Hurricane_F"] = typeof(DiceAttackEffect_Steria_Hurricane_F);
+                        SteriaLogger.Log("Manually registered Steria_Hurricane_F effect");
+                    }
+
+                    // 注册风系斩击特效
+                    if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_WindSlash"))
+                    {
+                        Harmony_Patch.CustomEffects["Steria_WindSlash"] = typeof(DiceAttackEffect_Steria_WindSlash);
+                        SteriaLogger.Log("Manually registered Steria_WindSlash effect");
+                    }
+
+                    // 注册水系斩击特效
+                    if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_WaterSlash"))
+                    {
+                        Harmony_Patch.CustomEffects["Steria_WaterSlash"] = typeof(DiceAttackEffect_Steria_WaterSlash);
+                        SteriaLogger.Log("Manually registered Steria_WaterSlash effect");
+                    }
+
+                    // 注册水系打击特效 (旋转90度)
+                    if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_WaterHit"))
+                    {
+                        Harmony_Patch.CustomEffects["Steria_WaterHit"] = typeof(DiceAttackEffect_Steria_WaterHit);
+                        SteriaLogger.Log("Manually registered Steria_WaterHit effect");
+                    }
+
+                    // 注册水系突刺特效 (横向压缩50%)
+                    if (!Harmony_Patch.CustomEffects.ContainsKey("Steria_WaterPenetrate"))
+                    {
+                        Harmony_Patch.CustomEffects["Steria_WaterPenetrate"] = typeof(DiceAttackEffect_Steria_WaterPenetrate);
+                        SteriaLogger.Log("Manually registered Steria_WaterPenetrate effect");
+                    }
+
+                    SteriaLogger.Log($"CustomEffects count: {Harmony_Patch.CustomEffects.Count}");
+                    foreach (var kvp in Harmony_Patch.CustomEffects)
+                    {
+                        SteriaLogger.Log($"  Registered effect: {kvp.Key} -> {kvp.Value.FullName}");
+                    }
+                }
+                catch (Exception effectCheckEx)
+                {
+                    SteriaLogger.Log($"Error registering custom effects: {effectCheckEx.Message}");
+                }
+                // --- End Register custom effects ---
+
+                // --- Other Mod Initialization ---
+                // You can add other setup code here if needed,
                 // like registering custom keywords, singletons, etc.
 
             }
@@ -253,6 +307,64 @@ namespace Steria
         // public override void OnGameStart() { ... }
     }
 
-    // --- REMOVE ALL CODE BELOW THIS LINE --- 
+    /// <summary>
+    /// Harmony patch for CreateAttackEffect to support custom effects for ranged attacks
+    /// </summary>
+    [HarmonyPatch(typeof(DiceEffectManager), "CreateAttackEffect")]
+    public static class DiceEffectManager_CreateAttackEffect_Patch
+    {
+        public static bool Prefix(ref Battle.DiceAttackEffect.DiceAttackEffect __result, BattleUnitModel unit, float destroyTime)
+        {
+            try
+            {
+                if (unit?.currentDiceAction?.currentBehavior?.behaviourInCard == null)
+                {
+                    return true; // Let original method handle
+                }
 
+                string effectRes = unit.currentDiceAction.currentBehavior.behaviourInCard.EffectRes;
+                if (string.IsNullOrEmpty(effectRes))
+                {
+                    return true;
+                }
+
+                SteriaLogger.Log($"CreateAttackEffect Patch: effectRes={effectRes}");
+
+                Type effectType;
+                if (Harmony_Patch.CustomEffects.TryGetValue(effectRes, out effectType))
+                {
+                    SteriaLogger.Log($"CreateAttackEffect Patch: Found custom effect type {effectType.Name}");
+
+                    // Get scale factor
+                    int dice = unit.currentDiceAction.currentBehavior.behaviourInCard.Dice;
+                    float scaleFactor = (float)unit.currentDiceAction.currentBehavior.DiceResultValue / (float)dice;
+                    scaleFactor = UnityEngine.Mathf.Clamp(scaleFactor, 0f, 1f);
+
+                    // Get self and target views
+                    BattleUnitView selfView = unit.view;
+                    BattleUnitView targetView = unit.currentDiceAction.target?.view;
+
+                    // Create effect
+                    var effectObj = new UnityEngine.GameObject(effectRes);
+                    var effect = effectObj.AddComponent(effectType) as Battle.DiceAttackEffect.DiceAttackEffect;
+
+                    if (effect != null)
+                    {
+                        effect.Initialize(selfView, targetView, destroyTime);
+                        UnityEngine.Vector3 localScale = effect.transform.localScale * (1f + scaleFactor);
+                        effect.transform.localScale = localScale;
+                        __result = effect;
+                        SteriaLogger.Log($"CreateAttackEffect Patch: Created effect successfully");
+                        return false; // Skip original method
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SteriaLogger.Log($"CreateAttackEffect Patch ERROR: {ex}");
+            }
+
+            return true; // Let original method handle
+        }
+    }
 } 

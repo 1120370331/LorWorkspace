@@ -566,16 +566,16 @@ namespace Steria
         // [HarmonyPatch(typeof(StageController), nameof(StageController.NextWave))]
         // public static class StageController_NextWave_Patch { ... } 
         
-        // --- Patch for Battle Start to Reset Scene Counter for Passive 9000004 ---
+        // --- Patch for Battle Start to Reset Discard Counts ---
         [HarmonyPatch(typeof(StageController), nameof(StageController.StartBattle))]
         public static class StageController_StartBattle_Patch
         {
             [HarmonyPostfix]
             public static void Postfix()
             {
-                PassiveAbility_9000004.ResetSceneCounter(); // Resets static counters
+                // PassiveAbility_9000004 现在使用实例变量，Init时自动重置，不需要手动重置
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset all discard counts for 以执为攻
-                Debug.Log("[Steria] StartBattle: Reset all counters");
+                Debug.Log("[Steria] StartBattle: Reset discard counts");
             }
         }
 
@@ -586,9 +586,9 @@ namespace Steria
             [HarmonyPostfix]
             public static void Postfix()
             {
-                PassiveAbility_9000004.ResetSceneCounter(); // Reset scene counter
+                // PassiveAbility_9000004 现在使用实例变量，不需要手动重置
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset discard counts
-                Debug.Log("[Steria] EndBattle: Reset all counters");
+                Debug.Log("[Steria] EndBattle: Reset discard counts");
             }
         }
 
@@ -599,9 +599,9 @@ namespace Steria
             [HarmonyPostfix]
             public static void Postfix()
             {
-                PassiveAbility_9000004.ResetSceneCounter(); // Reset scene counter
+                // PassiveAbility_9000004 现在使用实例变量，不需要手动重置
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset discard counts
-                Debug.Log("[Steria] CloseBattleScene: Reset all counters");
+                Debug.Log("[Steria] CloseBattleScene: Reset discard counts");
             }
         }
 
@@ -782,8 +782,6 @@ namespace Steria
                  }
              }
         }
-
-        // TODO: Add patch for SlazeyaRepeatOnFlow5 (Highly experimental / difficult) - Removed TODO as patch is added above
 
     } // End of HarmonyPatches class
 } // End of MyDLL namespace

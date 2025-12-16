@@ -12,7 +12,7 @@
     <ScriptDesc>[流转]
 使用时：恢复1点光芒</ScriptDesc>
     <BehaviourList>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="" Script="AnhierFlow1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="AnhierFlow1" ActionScript="" Desc="" />
     </BehaviourList>
     <AbilityList />
     <Chapter>1</Chapter>
@@ -32,8 +32,8 @@
       <Ability Script="AnhierDiscardRandom1" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierDraw1" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AnhierDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -54,7 +54,7 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="3" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="AnhierClashWinDraw1" ActionScript="" Desc="" />
-      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierGainLight1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AnhierGainLight1" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -72,9 +72,9 @@
       <Ability Script="AnhierDiscardAllPowerUp" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
       <Behaviour Min="2" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
@@ -91,8 +91,8 @@
     <ScriptDesc />
     <AbilityList />
     <BehaviourList>
-      <Behaviour Min="3" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -133,7 +133,7 @@
       <Ability Script="AnhierGainFlow5Draw2NextTurn" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="4" Dice="10" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="10" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPenetrate" Script="" ActionScript="" Desc="" />
       <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
@@ -153,8 +153,8 @@
       <Ability Script="AnhierQingSiFengLiu" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="9" Dice="17" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
-      <Behaviour Min="2" Dice="6" Type="Counter" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="9" Dice="17" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WindSlash" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -173,8 +173,8 @@
       <Ability Script="AnhierDiscardPowerUp" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="" Script="AnhierBindingNextTurn" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="AnhierBindingNextTurn" ActionScript="" Desc="" />
       <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
@@ -196,7 +196,7 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="2" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -237,7 +237,7 @@
       <Ability Script="SlazeyaGainFlow3NextTurn"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="SlazeyaGainLight1" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaGainLight1" ActionScript="" Desc=""/>
       <Behaviour Min="1" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SlazeyaClashWinGainFlow2NextTurn" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
@@ -256,8 +256,8 @@
       <Ability Script="SlazeyaGainFlow3NextTurn"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="1" Dice="6" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="SlazeyaClashLosePowerUpNextDice" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="SlazeyaDraw2" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="6" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaClashLosePowerUpNextDice" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaDraw2" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -277,7 +277,7 @@
     <BehaviourList>
       <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
       <Behaviour Min="4" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="SlazeyaGainFlow1OnHit" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaGainFlow1OnHit" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -295,9 +295,9 @@
       <Ability Script="SlazeyaFlowBonusX2"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="4" Dice="18" Type="Atk" Detail="Slash" Motion="F" EffectRes="" Script="SlazeyaRepeatOnFlow5" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="18" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaRepeatOnFlow5" ActionScript="" Desc=""/>
       <Behaviour Min="1" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -315,7 +315,7 @@
       <Ability Script="SlazeyaMassAttackTeamLightGain"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="12" Dice="25" Type="Atk" Detail="Slash" Motion="S1" EffectRes="" Script="SlazeyaMassAttackBonusDamage" ActionScript="" Desc=""/>
+      <Behaviour Min="12" Dice="25" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_WaterSlash" Script="SlazeyaMassAttackBonusDamage" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>9000</Priority>
@@ -336,7 +336,7 @@
       <Ability Script="CultistGainFlow3NextTurn"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="CultistDraw1" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPenetrate" Script="CultistDraw1" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -354,8 +354,8 @@
       <Ability Script="CultistFlow2CheckGainLightDraw"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="1" Dice="5" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="5" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPenetrate" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPenetrate" Script="" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -374,7 +374,7 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="4" Dice="9" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="CultistGainFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="9" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPenetrate" Script="CultistGainFlow3" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -392,9 +392,9 @@
       <Ability Script="CultistFlowBonusX2"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="5" Dice="10" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="J" EffectRes="" Script="" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
+      <Behaviour Min="5" Dice="10" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPenetrate" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPenetrate" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPenetrate" Script="" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>

@@ -8,9 +8,9 @@
     <BookIcon />
     <EquipEffect>
       <HpReduction>0</HpReduction>
-      <HP>400</HP>
+      <HP>240</HP>
       <DeadLine>0</DeadLine>
-      <Break>102</Break>
+      <Break>61</Break>
       <SpeedMin>3</SpeedMin>
       <Speed>7</Speed>
       <SpeedDiceNum>2</SpeedDiceNum> <!-- Kept SpeedDiceNum here as it affects stats -->

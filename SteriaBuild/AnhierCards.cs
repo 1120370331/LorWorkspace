@@ -257,6 +257,7 @@ public class DiceCardSelfAbility_AnhierQingSiFengLiu : DiceCardSelfAbilityBase
 
 #region 清司风流 (ID: 9001008) Dice 1
 // 命中时：若自身流层数>=10则重新投掷本骰子并使流层数-10（可重复触发）
+// 特效由 Harmony 补丁自动触发（基于 EffectRes）
 public class DiceCardAbility_AnhierQingSiFengLiuDice1 : DiceCardAbilityBase
 {
     public static string Desc = "[命中时] 若自身[流]层数>=10，则重新投掷本骰子并使[流]层数-10（可重复触发）";
