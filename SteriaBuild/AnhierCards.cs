@@ -386,10 +386,10 @@ public class DiceCardSelfAbility_AnhierColdLogistics : DiceCardSelfAbilityBase
 #endregion
 
 #region 自我之流 (ID: 9001011) EGO装备
-// EGO装备（Instance类型）：装备时扣除25点生命值，获得10层流
+// EGO装备（Instance类型）：装备时扣除12点生命值，获得5层流
 public class DiceCardSelfAbility_AnhierSelfFlow : DiceCardSelfAbilityBase
 {
-    public static string Desc = "[装备时] 扣除25点生命值，获得10层[流]";
+    public static string Desc = "[装备时] 扣除12点生命值，获得5层[流]";
     public override string[] Keywords => new string[] { "SteriaFlow" };
 
     // Instance类型卡牌使用OnUseInstance而不是OnUseCard
@@ -397,13 +397,13 @@ public class DiceCardSelfAbility_AnhierSelfFlow : DiceCardSelfAbilityBase
     {
         SteriaLogger.Log($"自我之流: OnUseInstance triggered for {unit?.UnitData?.unitData?.name}");
 
-        // 扣除25点生命值
-        unit.LoseHp(25);
-        SteriaLogger.Log($"自我之流: Lost 25 HP, current HP: {unit.hp}");
+        // 扣除12点生命值
+        unit.LoseHp(12);
+        SteriaLogger.Log($"自我之流: Lost 12 HP, current HP: {unit.hp}");
 
-        // 获得10层流
-        CardAbilityHelper.AddFlowStacks(unit, 10);
-        SteriaLogger.Log($"自我之流: Added 10 Flow stacks");
+        // 获得5层流
+        CardAbilityHelper.AddFlowStacks(unit, 5);
+        SteriaLogger.Log($"自我之流: Added 5 Flow stacks");
     }
 }
 #endregion

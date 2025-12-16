@@ -72,10 +72,10 @@
       <Ability Script="AnhierDiscardAllPowerUp" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="2" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPenetrate" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="1" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -208,11 +208,11 @@
     <TextId>-1</TextId>
     <Artwork>9001011.png</Artwork>
     <Rarity>Unique</Rarity>
-    <Spec Range="Instance" Cost="1" />
+    <Spec Range="Instance" Cost="0" />
     <Option>EgoPersonal</Option>
     <MaxCooltimeForEgo>4</MaxCooltimeForEgo>
     <Script>AnhierSelfFlow</Script>
-    <ScriptDesc>[使用时] 扣除25点生命值，获得10层[流]
+    <ScriptDesc>[使用时] 扣除12点生命值，获得5层[流]
 冷却时间：4幕</ScriptDesc>
     <AbilityList>
       <Ability Script="AnhierSelfFlow" />

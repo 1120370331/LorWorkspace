@@ -74,8 +74,8 @@ public class PassiveAbility_9000002 : PassiveAbilityBase
     private const string MOD_ID = "SteriaBuilding";
     private const int SELF_FLOW_EGO_CARD_ID = 9001011; // 自我之流 EGO卡牌ID
     private const int ENEMY_TRIGGER_INTERVAL = 4; // 敌方触发间隔（幕）
-    private const int HP_COST = 25; // 生命值消耗
-    private const int FLOW_GAIN = 10; // 获得的流层数
+    private const int HP_COST = 12; // 生命值消耗
+    private const int FLOW_GAIN = 5; // 获得的流层数
 
     private bool _attackedOneSideThisTurn = false;
     private bool _addFlowNextRound = false;
@@ -212,7 +212,7 @@ public class PassiveAbility_9000002 : PassiveAbilityBase
 }
 
 // 回忆燃烧 (ID: 9000003)
-// 每丢弃3张书页：下回合获得1层"强壮、守护"，并失去5点混乱抗性
+// 每丢弃4张书页：下回合获得1层"强壮、守护"，并失去5点混乱抗性
 public class PassiveAbility_9000003 : PassiveAbilityBase
 {
     private int _discardCountThisRound = 0;
@@ -237,12 +237,12 @@ public class PassiveAbility_9000003 : PassiveAbilityBase
      public void Notify_CardDiscarded()
      {
          _discardCountThisRound++;
-         // 每丢弃3张书页触发一次
-         if (_discardCountThisRound >= 3)
+         // 每丢弃4张书页触发一次
+         if (_discardCountThisRound >= 4)
          {
              _triggerCountNextRound++;
-             _discardCountThisRound -= 3; // 重置计数，允许继续累积
-             SteriaLogger.Log($"回忆燃烧: 本回合已丢弃3张书页，下回合将触发效果（当前累计{_triggerCountNextRound}次）");
+             _discardCountThisRound -= 4; // 重置计数，允许继续累积
+             SteriaLogger.Log($"回忆燃烧: 本回合已丢弃4张书页，下回合将触发效果（当前累计{_triggerCountNextRound}次）");
          }
      }
 }
