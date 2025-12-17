@@ -351,29 +351,44 @@ public class PassiveAbility_9000004 : PassiveAbilityBase
 }
 
 // 不会忘记的那个梦想 (ID: 9000005)
+// 每消耗6层流，下回合开始时将1张珍贵的回忆置入手牌
 public class PassiveAbility_9000005 : PassiveAbilityBase
 {
-    private const int FLOW_COST_PER_EFFECT = 3;
+    private const int FLOW_COST_PER_EFFECT = 6;
     private int _internalFlowCounter = 0;
+    private int _cardsToAddNextRound = 0; // 下回合需要添加的卡牌数量
     private const string MOD_ID = "SteriaBuilding";
+
+    public override void OnRoundStart()
+    {
+        base.OnRoundStart();
+
+        // 下回合开始时添加珍贵的回忆
+        if (_cardsToAddNextRound > 0 && this.owner != null && !this.owner.IsDead())
+        {
+            LorId preciousMemoryId = new LorId(MOD_ID, 9001006);
+            for (int i = 0; i < _cardsToAddNextRound; i++)
+            {
+                SteriaLogger.Log($"不会忘记的那个梦想: 将珍贵的回忆置入手牌 ({i + 1}/{_cardsToAddNextRound})");
+                this.owner.allyCardDetail.AddNewCard(preciousMemoryId);
+            }
+            _cardsToAddNextRound = 0;
+        }
+    }
 
     public void OnFlowConsumed(int amountConsumed)
     {
         if (amountConsumed <= 0) return;
 
         _internalFlowCounter += amountConsumed;
-        Debug.Log($"[Steria] Passive 9000005: Flow consumed {amountConsumed}, counter: {_internalFlowCounter}/{FLOW_COST_PER_EFFECT}");
+        SteriaLogger.Log($"不会忘记的那个梦想: 消耗了{amountConsumed}层流，累计{_internalFlowCounter}/{FLOW_COST_PER_EFFECT}");
 
         int cardsToAdd = _internalFlowCounter / FLOW_COST_PER_EFFECT;
         if (cardsToAdd > 0)
         {
-            LorId preciousMemoryId = new LorId(MOD_ID, 9001006);
-            for (int i = 0; i < cardsToAdd; i++)
-            {
-                Debug.Log($"[Steria] Passive 9000005: Adding Precious Memory to hand");
-                this.owner.allyCardDetail.AddNewCard(preciousMemoryId);
-            }
+            _cardsToAddNextRound += cardsToAdd;
             _internalFlowCounter %= FLOW_COST_PER_EFFECT;
+            SteriaLogger.Log($"不会忘记的那个梦想: 下回合将获得{cardsToAdd}张珍贵的回忆（累计{_cardsToAddNextRound}张）");
         }
     }
 }

@@ -4,156 +4,204 @@ using Battle.DiceAttackEffect;
 using UnityEngine;
 using Steria;
 using Sound;
+using LOR_DiceSystem;
 
 /// <summary>
 /// 清司风流 - 风系斩击特效
-/// 在攻击者和目标身上创建风斩视觉效果
 /// </summary>
 public class DiceAttackEffect_Steria_WindSlash : DiceAttackEffect
 {
-    private List<GameObject> _effectQuads = new List<GameObject>();
-    private List<MeshRenderer> _renderers = new List<MeshRenderer>();
+    public Direction atkdir;
+    public GameObject Main;
+    private float time;
+    public BattleUnitModel _target;
+
+    private List<GameObject> _effectObjects = new List<GameObject>();
+    private List<SpriteRenderer> _renderers = new List<SpriteRenderer>();
     private List<Vector3> _startScales = new List<Vector3>();
     private List<Vector3> _endScales = new List<Vector3>();
-
     private float _duration = 0.5f;
-    private new float _elapsed = 0f;
     private float _maxAlpha = 1.5f;
+    private static Sprite _windSlashSprite = null;
 
     public override void Initialize(BattleUnitView self, BattleUnitView target, float destroyTime)
     {
         try
         {
-            SteriaLogger.Log($"WindSlash: Initialize START, self={self?.name}, target={target?.name}");
+            SteriaLogger.Log($"WindSlash Initialize: self={self?.name}, target={target?.name}");
 
-            this._self = self.model;
+            base._bHasDamagedEffect = false;
+            base._self = self.model;
+            _target = target.model;
+            base._selfTransform = self.atkEffectRoot;
+            base._targetTransform = target.atkEffectRoot;
+            atkdir = (Direction)((double)(target.WorldPosition - self.WorldPosition).x > 0.0 ? 1 : 0);
 
-            // 不挂载到任何父节点
-            base.transform.parent = null;
-            base.transform.position = Vector3.zero;
-            base.transform.rotation = Quaternion.identity;
-            base.transform.localScale = Vector3.one;
-
-            this._destroyTime = _duration;
-            this._elapsed = 0f;
-
-            // 创建视觉效果
-            CreateEffects(self, target);
-
-            // 播放音效
-            SoundEffectPlayer.PlaySound("Battle/Kali_Atk");
-
-            // 屏幕震动
-            SteriaEffectHelper.AddScreenShake(0.02f, 0.01f, 70f, 0.3f);
-
-            SteriaLogger.Log($"WindSlash: Initialize END, created {_effectQuads.Count} quads");
+            SteriaLogger.Log($"WindSlash Initialize done, atkdir={atkdir}");
         }
         catch (Exception ex)
         {
-            SteriaLogger.Log($"WindSlash ERROR: {ex}");
+            SteriaLogger.Log($"WindSlash Initialize ERROR: {ex}");
         }
     }
 
-    private void CreateEffects(BattleUnitView self, BattleUnitView target)
+    protected override void Start()
     {
-        // 在攻击者身上创建1个纵向斩击
-        if (self?.atkEffectRoot != null)
+        try
         {
-            CreateSlashQuad(self.atkEffectRoot, new Vector3(0.5f, 0.5f, -0.3f), 90f, 1.8f);
-        }
+            SteriaLogger.Log("WindSlash Start() called");
 
-        // 在目标身上创建3个横向斩击
-        if (target?.atkEffectRoot != null)
+            // 加载Sprite
+            LoadSprite();
+
+            // 创建视觉效果
+            if (_windSlashSprite != null)
+            {
+                // 在攻击者身上创建1个纵向斩击
+                if (base._selfTransform != null)
+                {
+                    CreateSlashSprite(base._selfTransform, new Vector3(0.5f, 0.5f, 0f), 90f, 0.8f);
+                }
+
+                // 在目标身上创建4个斩击，左右左右交替，方向相反
+                if (base._targetTransform != null)
+                {
+                    // 左1 - 向右上斜
+                    CreateSlashSprite(base._targetTransform, new Vector3(-0.4f, 0.9f, 0f), 25f, 1.2f);
+                    // 右1 - 向左上斜（反方向）
+                    CreateSlashSprite(base._targetTransform, new Vector3(0.4f, 0.7f, 0f), -25f, 1.1f);
+                    // 左2 - 向右上斜
+                    CreateSlashSprite(base._targetTransform, new Vector3(-0.3f, 0.4f, 0f), 20f, 1.0f);
+                    // 右2 - 向左上斜（反方向）
+                    CreateSlashSprite(base._targetTransform, new Vector3(0.3f, 0.2f, 0f), -20f, 0.9f);
+                }
+
+                SteriaLogger.Log($"WindSlash: Created {_effectObjects.Count} sprites");
+            }
+            else
+            {
+                SteriaLogger.Log("WindSlash: No sprite available");
+            }
+
+            // 播放斩击音效 - 使用角色的soundInfo
+            try
+            {
+                // MotionDetail: 0=Slash, 1=Penetrate, 2=Hit
+                base._self?.view?.charAppearance?.soundInfo?.PlaySound((MotionDetail)0, true);
+            }
+            catch (Exception soundEx)
+            {
+                SteriaLogger.Log($"WindSlash: Sound error: {soundEx.Message}");
+            }
+
+            // 屏幕震动移到骰子能力的OnSucceedAttack中，避免在拼点时触发
+
+            SteriaLogger.Log("WindSlash Start() completed");
+        }
+        catch (Exception ex)
         {
-            CreateSlashQuad(target.atkEffectRoot, new Vector3(0f, 0.8f, -0.5f), 15f, 2.5f);
-            CreateSlashQuad(target.atkEffectRoot, new Vector3(-0.3f, 0.3f, -0.4f), -10f, 2.3f);
-            CreateSlashQuad(target.atkEffectRoot, new Vector3(0.3f, 0.5f, -0.6f), 25f, 2.0f);
+            SteriaLogger.Log($"WindSlash Start ERROR: {ex}");
         }
     }
 
-    private void CreateSlashQuad(Transform parent, Vector3 localPos, float rotationZ, float scale)
+    private void LoadSprite()
     {
-        Material material = SteriaEffectSprites.GetEffectMaterial("wind_slash", true, 0.15f);
-        if (material == null)
+        if (_windSlashSprite != null) return;
+
+        try
         {
-            SteriaLogger.Log("WindSlash: Failed to get material for wind_slash");
-            return;
+            Texture2D texture = SteriaEffectSprites.GetTexture("wind_slash", true, 0.1f);
+            if (texture != null)
+            {
+                _windSlashSprite = Sprite.Create(
+                    texture,
+                    new Rect(0, 0, texture.width, texture.height),
+                    new Vector2(0.5f, 0.5f),
+                    100f
+                );
+                _windSlashSprite.name = "wind_slash_sprite";
+                SteriaLogger.Log($"WindSlash: Created sprite ({texture.width}x{texture.height})");
+            }
         }
+        catch (Exception ex)
+        {
+            SteriaLogger.Log($"WindSlash LoadSprite ERROR: {ex}");
+        }
+    }
 
-        GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        quad.name = "WindSlash_" + _effectQuads.Count;
+    private void CreateSlashSprite(Transform parent, Vector3 localPos, float rotationZ, float scale)
+    {
+        try
+        {
+            GameObject spriteObj = new GameObject("WindSlash_" + _effectObjects.Count);
+            spriteObj.transform.parent = parent;
+            spriteObj.transform.localPosition = localPos;
+            spriteObj.transform.localRotation = Quaternion.Euler(0f, 0f, rotationZ);
+            spriteObj.layer = 8; // 和寒昼事务所一样使用 layer 8
 
-        // 移除碰撞体
-        var collider = quad.GetComponent("MeshCollider") as Component;
-        if (collider != null) UnityEngine.Object.Destroy(collider);
+            SpriteRenderer sr = spriteObj.AddComponent<SpriteRenderer>();
+            sr.sprite = _windSlashSprite;
+            sr.sortingOrder = 100 + _effectObjects.Count;
 
-        // 设置材质
-        var renderer = quad.GetComponent<MeshRenderer>();
-        renderer.material = new Material(material);
-        renderer.sortingOrder = 100 + _effectQuads.Count;
+            // 设置加法混合材质
+            sr.material = new Material(Shader.Find("Sprites/Default"));
+            sr.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            sr.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
 
-        // 设置变换
-        quad.transform.SetParent(parent);
-        quad.transform.localPosition = localPos;
-        quad.transform.localRotation = Quaternion.Euler(0f, 0f, rotationZ);
+            sr.color = new Color(1f, 1f, 1f, _maxAlpha);
 
-        // 计算缩放
-        float aspectRatio = 16f / 9f;
-        Vector3 baseScale = new Vector3(scale * aspectRatio, scale, 1f);
-        Vector3 startScale = baseScale * 0.3f;
-        Vector3 endScale = baseScale * 1.1f;
+            Vector3 startScale = new Vector3(scale * 0.3f, scale * 0.3f, 1f);
+            Vector3 endScale = new Vector3(scale * 1.2f, scale * 1.2f, 1f);
+            spriteObj.transform.localScale = startScale;
 
-        quad.transform.localScale = startScale;
+            _effectObjects.Add(spriteObj);
+            _renderers.Add(sr);
+            _startScales.Add(startScale);
+            _endScales.Add(endScale);
 
-        _effectQuads.Add(quad);
-        _renderers.Add(renderer);
-        _startScales.Add(startScale);
-        _endScales.Add(endScale);
-
-        SteriaLogger.Log($"WindSlash: Created quad at {localPos}, rotation={rotationZ}, scale={scale}");
+            SteriaLogger.Log($"WindSlash: Created sprite at {localPos}, layer={spriteObj.layer}");
+        }
+        catch (Exception ex)
+        {
+            SteriaLogger.Log($"WindSlash CreateSlashSprite ERROR: {ex}");
+        }
     }
 
     protected override void Update()
     {
-        _elapsed += Time.deltaTime;
-        float progress = Mathf.Clamp01(_elapsed / _duration);
-
-        // 更新所有Quad
-        for (int i = 0; i < _effectQuads.Count; i++)
+        try
         {
-            if (_effectQuads[i] != null && _renderers[i] != null)
+            time += Time.deltaTime;
+            float progress = Mathf.Clamp01(time / _duration);
+
+            // 更新所有Sprite
+            for (int i = 0; i < _effectObjects.Count; i++)
             {
-                // 缩放动画
-                float scaleProgress = SteriaEffectHelper.EaseOutQuad(progress);
-                _effectQuads[i].transform.localScale = Vector3.Lerp(_startScales[i], _endScales[i], scaleProgress);
-
-                // 透明度：前30%不变，后70%渐出
-                float alphaProgress = progress < 0.3f ? 0f : (progress - 0.3f) / 0.7f;
-                float currentAlpha = Mathf.Lerp(_maxAlpha, 0f, alphaProgress);
-
-                if (_renderers[i].material != null)
+                if (_effectObjects[i] != null && _renderers[i] != null)
                 {
-                    Color color = new Color(currentAlpha, currentAlpha, currentAlpha, currentAlpha);
-                    _renderers[i].material.SetColor("_TintColor", color * 0.5f);
+                    float scaleProgress = 1f - (1f - progress) * (1f - progress);
+                    _effectObjects[i].transform.localScale = Vector3.Lerp(_startScales[i], _endScales[i], scaleProgress);
+
+                    float alphaProgress = progress < 0.3f ? 0f : (progress - 0.3f) / 0.7f;
+                    float currentAlpha = Mathf.Lerp(_maxAlpha, 0f, alphaProgress);
+                    _renderers[i].color = new Color(1f, 1f, 1f, currentAlpha);
                 }
             }
-        }
 
-        // 销毁检查
-        if (_elapsed >= _duration)
-        {
-            UnityEngine.Object.Destroy(base.gameObject);
+            // 销毁
+            if (time >= _duration)
+            {
+                foreach (var obj in _effectObjects)
+                {
+                    if (obj != null) UnityEngine.Object.Destroy(obj);
+                }
+                _effectObjects.Clear();
+                _renderers.Clear();
+                UnityEngine.Object.Destroy(base.gameObject);
+            }
         }
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        foreach (var quad in _effectQuads)
+        catch
         {
-            if (quad != null) UnityEngine.Object.Destroy(quad);
         }
-        _effectQuads.Clear();
-        _renderers.Clear();
     }
 }

@@ -397,9 +397,43 @@ public class DiceCardSelfAbility_AnhierSelfFlow : DiceCardSelfAbilityBase
     {
         SteriaLogger.Log($"自我之流: OnUseInstance triggered for {unit?.UnitData?.unitData?.name}");
 
-        // 扣除12点生命值
-        unit.LoseHp(12);
-        SteriaLogger.Log($"自我之流: Lost 12 HP, current HP: {unit.hp}");
+        int damage = 12;
+
+        // 播放受击音效 (H = Hit)
+        try
+        {
+            unit.view?.charAppearance?.soundInfo?.PlaySound(LOR_DiceSystem.MotionDetail.H, true);
+        }
+        catch (Exception ex)
+        {
+            SteriaLogger.Log($"自我之流: Sound error: {ex.Message}");
+        }
+
+        // 播放水系环绕特效
+        try
+        {
+            SingletonBehavior<DiceEffectManager>.Instance?.CreateBehaviourEffect(
+                "Steria_WaterSurround", 1f, unit.view, unit.view, 1.2f);
+        }
+        catch (Exception ex)
+        {
+            SteriaLogger.Log($"自我之流: Effect error: {ex.Message}");
+        }
+
+        // 显示伤害数字
+        try
+        {
+            SingletonBehavior<AttackEffectManager>.Instance?.CreateDamagedTextEffect(
+                damage, BehaviourDetail.Hit, unit, unit, AtkResist.Normal, false, 1);
+        }
+        catch (Exception ex)
+        {
+            SteriaLogger.Log($"自我之流: DamageText error: {ex.Message}");
+        }
+
+        // 扣除生命值
+        unit.SetHp((int)(unit.hp - damage));
+        SteriaLogger.Log($"自我之流: Lost {damage} HP, current HP: {unit.hp}");
 
         // 获得5层流
         CardAbilityHelper.AddFlowStacks(unit, 5);

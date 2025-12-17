@@ -797,6 +797,9 @@ namespace Steria
             SteriaCustomEffects["Steria_WaterSlash"] = typeof(DiceAttackEffect_Steria_WaterSlash);
             SteriaCustomEffects["Steria_WaterHit"] = typeof(DiceAttackEffect_Steria_WaterHit);
             SteriaCustomEffects["Steria_WaterPenetrate"] = typeof(DiceAttackEffect_Steria_WaterPenetrate);
+            SteriaCustomEffects["Steria_WaterFarHit"] = typeof(DiceAttackEffect_Steria_WaterFarHit);
+            SteriaCustomEffects["Steria_WaterPierce"] = typeof(DiceAttackEffect_Steria_WaterPierce);
+            SteriaCustomEffects["Steria_WaterSurround"] = typeof(DiceAttackEffect_Steria_WaterSurround);
 
             SteriaLogger.Log($"Initialized {SteriaCustomEffects.Count} custom effects");
             foreach (var kvp in SteriaCustomEffects)

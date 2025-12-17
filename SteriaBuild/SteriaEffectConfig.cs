@@ -104,7 +104,7 @@ namespace Steria
         public static SteriaEffectConfig WaterSlash => new SteriaEffectConfig
         {
             EffectName = "WaterSlash",
-            Duration = 0.98f,
+            Duration = 0.45f,
             MaxAlpha = 1.0f,
             Target = EffectTarget.Self,
             ActionType = EffectActionType.Slash,  // 使用斩击pivot
@@ -134,7 +134,7 @@ namespace Steria
         public static SteriaEffectConfig WaterHit => new SteriaEffectConfig
         {
             EffectName = "WaterHit",
-            Duration = 1.0f,
+            Duration = 0.45f,
             MaxAlpha = 1.2f,
             Target = EffectTarget.Self,
             ActionType = EffectActionType.Hit,  // 使用打击pivot
@@ -162,7 +162,7 @@ namespace Steria
         public static SteriaEffectConfig WaterPenetrate => new SteriaEffectConfig
         {
             EffectName = "WaterPenetrate",
-            Duration = 0.9f,
+            Duration = 0.4f,
             MaxAlpha = 1.3f,
             Target = EffectTarget.Self,
             ActionType = EffectActionType.Penetrate,  // 使用突刺pivot
@@ -183,6 +183,99 @@ namespace Steria
                     AnimatePosition = true,
                     PositionOffset = new Vector3(0f, 0f, 0f),  // 不需要位置偏移了
                     Tint = new Color(0.9f, 1f, 1.1f)
+                }
+            }
+        };
+
+        /// <summary>
+        /// 水系远程打击配置（拙劣控流用）
+        /// </summary>
+        public static SteriaEffectConfig WaterFarHit => new SteriaEffectConfig
+        {
+            EffectName = "WaterFarHit",
+            Duration = 0.45f,
+            MaxAlpha = 1.2f,
+            Target = EffectTarget.Target,  // 挂载到目标身上
+            ActionType = EffectActionType.Hit,
+            RootOffset = new Vector3(0f, 0f, -0.5f),
+            Shake = new ShakeConfig(0.01f, 0.01f, 40f, 0.2f),
+            Quads = new[]
+            {
+                new QuadEffectConfig
+                {
+                    TextureName = "water_far_hit",
+                    LocalPosition = new Vector3(0f, 0.3f, 0f),
+                    RotationZ = 0f,
+                    BaseScale = 2.5f,
+                    ScaleMultiplierStart = 0.4f,
+                    ScaleMultiplierEnd = 1.2f,
+                    AnimateScale = true,
+                    Tint = new Color(0.9f, 1f, 1.1f)
+                }
+            }
+        };
+
+        /// <summary>
+        /// 水系突刺配置（使用water_pierce图片）
+        /// 从人物向外部渐入渐出
+        /// </summary>
+        public static SteriaEffectConfig WaterPierce => new SteriaEffectConfig
+        {
+            EffectName = "WaterPierce",
+            Duration = 0.4f,
+            FadeInEnd = 0.2f,
+            FadeOutStart = 0.6f,
+            MaxAlpha = 1.3f,
+            Target = EffectTarget.Self,
+            ActionType = EffectActionType.Penetrate,
+            RootOffset = new Vector3(0f, 0f, -0.5f),
+            Shake = new ShakeConfig(0.018f, 0.005f, 80f, 0.2f),
+            Quads = new[]
+            {
+                new QuadEffectConfig
+                {
+                    TextureName = "water_pierce",
+                    LocalPosition = new Vector3(-1.5f, 0f, 0f),  // 起始位置在人物身上
+                    RotationZ = 180f,  // 翻转方向
+                    BaseScale = 3.5f,
+                    AspectRatio = 16f / 9f,
+                    ScaleMultiplierStart = 1f,
+                    ScaleMultiplierEnd = 1f,
+                    AnimateScale = false,
+                    AnimatePosition = true,
+                    PositionOffset = new Vector3(2.5f, 0f, 0f),  // 向外移动
+                    Tint = new Color(0.9f, 1f, 1.1f)
+                }
+            }
+        };
+
+        /// <summary>
+        /// 水系环绕特效（自我之流用）
+        /// 渐入渐出，不放大
+        /// </summary>
+        public static SteriaEffectConfig WaterSurround => new SteriaEffectConfig
+        {
+            EffectName = "WaterSurround",
+            Duration = 0.5f,
+            FadeInEnd = 0.2f,
+            FadeOutStart = 0.7f,
+            MaxAlpha = 1.5f,
+            Target = EffectTarget.Self,
+            ActionType = EffectActionType.None,
+            RootOffset = new Vector3(0f, 0f, -0.5f),
+            Shake = new ShakeConfig(0.015f, 0.015f, 50f, 0.3f),
+            Quads = new[]
+            {
+                new QuadEffectConfig
+                {
+                    TextureName = "water_surround",
+                    LocalPosition = new Vector3(0f, 0.5f, 0f),
+                    RotationZ = 0f,
+                    BaseScale = 4f,
+                    ScaleMultiplierStart = 1f,
+                    ScaleMultiplierEnd = 1f,
+                    AnimateScale = false,
+                    Tint = new Color(0.8f, 0.95f, 1.2f)
                 }
             }
         };
