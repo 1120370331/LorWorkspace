@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CardDescXmlRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <cardDescList>
+    <!-- Velia Cards -->
+    <BattleCardDesc ID="9004001">
+      <Name>和谐共生</Name>
+      <Desc>使用时：恢复1点光芒</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9004002">
+      <Name>传播希望</Name>
+      <Desc>使用时：抽2张牌</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9004003">
+      <Name>振作起来</Name>
+      <Desc>使用时：为血量最低的友方单位恢复5点血量和混乱抗性（每有一层[潮]使此效果+1）</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9004004">
+      <Name>潮雾晨光</Name>
+      <Desc>使用时：下一幕开始时所有友方单位获得1层[强壮]，自身陷入眩晕并获得4层[守护]</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9004005">
+      <Name>潜力观测</Name>
+      <Desc>装备时：提高友方目标目前最高的正面效果等级1级（受[潮]加成）。如果当前没有正面效果，则使其获得1层[强壮]。每回合限使用1次。</Desc>
+    </BattleCardDesc>
+  </cardDescList>
+</CardDescXmlRoot>

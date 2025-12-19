@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <BookXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Version>1.1</Version>
+
   <Book ID="10000001">
     <Name>安希尔</Name>
     <TextId>-1</TextId>
-    <BookIcon />
+    <DropTable>1</DropTable>
     <EquipEffect>
-      <HpReduction>0</HpReduction>
       <HP>85</HP>
-      <DeadLine>0</DeadLine>
       <Break>45</Break>
       <SpeedMin>3</SpeedMin>
       <Speed>7</Speed>
-      <SpeedDiceNum>2</SpeedDiceNum>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
       <SResist>Endure</SResist>
       <PResist>Normal</PResist>
       <HResist>Normal</HResist>
       <SBResist>Endure</SBResist>
       <PBResist>Normal</PBResist>
       <HBResist>Normal</HBResist>
-      <MaxPlayPoint>4</MaxPlayPoint>
-      <StartPlayPoint>4</StartPlayPoint>
-      <AddedStartDraw>0</AddedStartDraw>
       <Passive Pid="@origin">10008</Passive>
       <Passive>9000001</Passive>
       <Passive>9000002</Passive>
@@ -29,96 +26,104 @@
       <Passive>9000004</Passive>
       <Passive>9000005</Passive>
     </EquipEffect>
-    <Rarity>Common</Rarity>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <RangeType>Hybrid</RangeType>
     <CharacterSkin>Bada</CharacterSkin>
     <CharacterSkinType>Lor</CharacterSkinType>
-    <SkinGender>N</SkinGender>
-    <Chapter>6</Chapter>
-    <Episode>-1</Episode>
-    <RangeType>Hybrid</RangeType>
-    <NotEquip>false</NotEquip>
-    <RandomFace>false</RandomFace>
-    <SpeedDiceNum>1</SpeedDiceNum>
-    <SuccessionPossibleNumber>9</SuccessionPossibleNumber>
   </Book>
+
   <Book ID="10000002">
     <Name>斯拉泽雅</Name>
     <TextId>-1</TextId>
-    <BookIcon />
+    <DropTable>2</DropTable>
     <EquipEffect>
-      <HpReduction>0</HpReduction>
-      <HP>85</HP>
-      <DeadLine>0</DeadLine>
-      <Break>45</Break>
+      <HP>103</HP>
+      <Break>54</Break>
       <SpeedMin>3</SpeedMin>
       <Speed>7</Speed>
-      <SpeedDiceNum>2</SpeedDiceNum>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
       <SResist>Endure</SResist>
       <PResist>Normal</PResist>
       <HResist>Normal</HResist>
       <SBResist>Endure</SBResist>
       <PBResist>Normal</PBResist>
       <HBResist>Normal</HBResist>
-      <MaxPlayPoint>4</MaxPlayPoint>
-      <StartPlayPoint>4</StartPlayPoint>
-      <AddedStartDraw>0</AddedStartDraw>
       <Passive Pid="@origin">10008</Passive>
-      <Passive>9000001</Passive>
-      <Passive>9000002</Passive>
-      <Passive>9000003</Passive>
-      <Passive>9000004</Passive>
-      <Passive>9000005</Passive>
+      <Passive Pid="@origin">250009</Passive>
+      <Passive>9002001</Passive>
+      <Passive>9002002</Passive>
+      <Passive>9002003</Passive>
     </EquipEffect>
-    <Rarity>Common</Rarity>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <RangeType>Hybrid</RangeType>
     <CharacterSkin>Bada</CharacterSkin>
     <CharacterSkinType>Lor</CharacterSkinType>
-    <SkinGender>N</SkinGender>
-    <Chapter>6</Chapter>
-    <Episode>-1</Episode>
-    <RangeType>Hybrid</RangeType>
-    <NotEquip>false</NotEquip>
-    <RandomFace>false</RandomFace>
-    <SpeedDiceNum>1</SpeedDiceNum>
-    <SuccessionPossibleNumber>9</SuccessionPossibleNumber>
   </Book>
+
   <Book ID="10000003">
     <Name>司流者教徒</Name>
     <TextId>-1</TextId>
-    <BookIcon />
+    <DropTable>3</DropTable>
     <EquipEffect>
-      <HpReduction>0</HpReduction>
       <HP>85</HP>
-      <DeadLine>0</DeadLine>
       <Break>45</Break>
       <SpeedMin>3</SpeedMin>
       <Speed>7</Speed>
-      <SpeedDiceNum>2</SpeedDiceNum>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
       <SResist>Endure</SResist>
       <PResist>Normal</PResist>
       <HResist>Normal</HResist>
       <SBResist>Endure</SBResist>
       <PBResist>Normal</PBResist>
       <HBResist>Normal</HBResist>
-      <MaxPlayPoint>4</MaxPlayPoint>
-      <StartPlayPoint>4</StartPlayPoint>
-      <AddedStartDraw>0</AddedStartDraw>
       <Passive Pid="@origin">10008</Passive>
-      <Passive>9000001</Passive>
-      <Passive>9000002</Passive>
-      <Passive>9000003</Passive>
-      <Passive>9000004</Passive>
-      <Passive>9000005</Passive>
+      <Passive Pid="@origin">250009</Passive>
+      <Passive>9002004</Passive>
+      <Passive>9002003</Passive>
     </EquipEffect>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
     <Rarity>Common</Rarity>
+    <RangeType>Hybrid</RangeType>
     <CharacterSkin>Bada</CharacterSkin>
     <CharacterSkinType>Lor</CharacterSkinType>
-    <SkinGender>N</SkinGender>
-    <Chapter>6</Chapter>
-    <Episode>-1</Episode>
-    <RangeType>Hybrid</RangeType>
-    <NotEquip>false</NotEquip>
-    <RandomFace>false</RandomFace>
-    <SpeedDiceNum>1</SpeedDiceNum>
-    <SuccessionPossibleNumber>9</SuccessionPossibleNumber>
   </Book>
+
+  <Book ID="10000004">
+    <Name>薇莉亚</Name>
+    <TextId>-1</TextId>
+    <DropTable>4</DropTable>
+    <EquipEffect>
+      <HP>70</HP>
+      <Break>40</Break>
+      <SpeedMin>2</SpeedMin>
+      <Speed>6</Speed>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
+      <SResist>Normal</SResist>
+      <PResist>Weak</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Normal</SBResist>
+      <PBResist>Weak</PBResist>
+      <HBResist>Normal</HBResist>
+      <Passive Pid="@origin">10008</Passive>
+      <Passive Pid="@origin">250009</Passive>
+      <Passive>9004001</Passive>
+      <Passive>9004002</Passive>
+      <Passive>9004003</Passive>
+    </EquipEffect>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Rare</Rarity>
+    <RangeType>Melee</RangeType>
+    <CharacterSkin>Bada</CharacterSkin>
+    <CharacterSkinType>Lor</CharacterSkinType>
+  </Book>
+
 </BookXmlRoot>

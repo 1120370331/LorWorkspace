@@ -3,7 +3,7 @@
   <effectTextList>
     <BattleEffectText ID="SteriaFlow">
       <Name>流</Name>
-      <Desc>使用书页时，消耗X层使书页上的X颗骰子威力+1。若层数多于骰子数，则从第一颗骰子开始重复分配加成，直至层数归零。</Desc>
+      <Desc>使用书页时，每颗骰子最多消耗1层[流]并获得+1威力。</Desc>
     </BattleEffectText>
     
     <BattleEffectText ID="MyDLL.Anxier.OnlyPageKeyword">
@@ -19,6 +19,33 @@
     <BattleEffectText ID="SteriaFlowTransfer">
       <Name>流转</Name>
       <Desc>本书页不受[流]影响。</Desc>
+    </BattleEffectText>
+
+    <!-- 倾诉梦想系列Buff -->
+    <BattleEffectText ID="SteriaDreamVision">
+      <Name>倾诉梦想：远望</Name>
+      <Desc>每消耗3点光芒，下回合获得1层[强壮]。</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="SteriaDreamIllusion">
+      <Name>倾诉梦想：幻梦</Name>
+      <Desc>每使用1张书页，下回合恢复2点体力和混乱抗性。</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="SteriaDreamExecution">
+      <Name>倾诉梦想：奉行</Name>
+      <Desc>造成伤害时，下回合获得1层[流]。</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="SteriaNoFlowConsumption">
+      <Name>流之庇护</Name>
+      <Desc>本幕使用书页时不消耗[流]。</Desc>
+    </BattleEffectText>
+
+    <!-- 薇莉亚相关Buff -->
+    <BattleEffectText ID="SteriaTide">
+      <Name>潮</Name>
+      <Desc>每次使用书页为敌人施加负面效果/为友方施加正面效果时：消耗1层[潮]，并使施加的效果层数+1。</Desc>
     </BattleEffectText>
   </effectTextList>
 </BattleEffectTextRoot> 

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <BattleCardAbilityDescRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  
+
     <!-- Card 9001001: 拙劣控流 -->
     <BattleCardAbility ID="AnhierCard001">
-      <!-- No direct card ability, description comes from dice -->
     </BattleCardAbility>
     <BattleCardAbility ID="AnhierFlow1">
       <Desc>[命中时] 获得1层[流]</Desc>
@@ -19,8 +18,7 @@
 
     <!-- Card 9001003: 奥塔尔的荣耀 -->
     <BattleCardAbility ID="AnhierDiscardAllDraw">
-      <Desc>[使用时] 丢弃2张手牌来使本书页骰子威力+1
-[被弃置时] 抽1张书页</Desc>
+      <Desc>[使用时] 丢弃2张手牌来使本书页骰子威力+1；[被弃置时] 抽1张书页</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AnhierClashWinDraw1">
       <Desc>[拼点胜利] 抽取1张书页</Desc>
@@ -39,28 +37,24 @@
 
     <!-- Card 9001005: 攫取回忆 -->
     <BattleCardAbility ID="AnhierCard005">
-       <!-- No direct card ability, description comes from dice -->
     </BattleCardAbility>
     <BattleCardAbility ID="AnhierGrabDraw1">
        <Desc>[命中时] 抽取1张书页</Desc>
     </BattleCardAbility>
-    <!-- Second behaviour also uses DiceCardAbility_AnhierGrabDraw1, description is already covered -->
 
     <!-- Card 9001006: 珍贵的回忆 -->
     <BattleCardAbility ID="AnhierPreciousDiscard">
-       <Desc>[佚亡] [被弃置时] 摧毁本书页，并抽取2张书页并在下一幕开始时获得1层[强壮]</Desc> 
+       <Desc>[佚亡] [被弃置时] 摧毁本书页，并抽取2张书页并在下一幕开始时获得1层[强壮]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9001007: 内调之流 -->
     <BattleCardAbility ID="AnhierGainFlow5Draw2NextTurn">
-       <Desc>[流转]
-[使用时] 抽取2张书页，下回合获得5层[流]</Desc>
+       <Desc>[流转] [使用时] 抽取2张书页，下回合获得5层[流]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9001001: 拙劣控流 - Added On Use Desc -->
     <BattleCardAbility ID="AnhierRecoverLight1">
-        <Desc>[流转]
-[使用时] 恢复1点光芒</Desc>
+        <Desc>[流转] [使用时] 恢复1点光芒</Desc>
     </BattleCardAbility>
 
     <!-- Card 9001009: 以执为攻 -->
@@ -70,8 +64,175 @@
 
     <!-- Card 9001010: 寒地后勤 -->
     <BattleCardAbility ID="AnhierColdLogistics">
-      <Desc>[使用时] 恢复2点光芒
-[被弃置时] 恢复2点光芒</Desc>
+      <Desc>[使用时] 恢复2点光芒；[被弃置时] 恢复2点光芒</Desc>
     </BattleCardAbility>
 
-</BattleCardAbilityDescRoot> 
+    <!-- Card 9001008: 清司风流 -->
+    <BattleCardAbility ID="AnhierQingSiFengLiu">
+      <Desc>[流转]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9001011: 自我之流 (EGO) -->
+    <BattleCardAbility ID="AnhierSelfFlow">
+      <Desc>[使用时] 扣除12点生命值，获得5层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AnhierQingSiFengLiuDice1">
+      <Desc>[命中时] 使目标下回合获得2层[虚弱]和2层[束缚]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9001009: 以执为攻 -->
+    <BattleCardAbility ID="AnhierDiscardPowerUp">
+      <Desc>[使用时] 本幕每弃置过1张书页，本书页所有骰子威力+1</Desc>
+    </BattleCardAbility>
+
+    <!-- ========== 斯拉泽雅卡牌能力 ========== -->
+
+    <!-- Card 9002001: 逐梦随流 -->
+    <BattleCardAbility ID="SlazeyaGainFlow2NextTurn">
+      <Desc>[流转] [使用时] 下回合获得2层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaGainLight1">
+      <Desc>[命中时] 恢复1点光芒</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaClashWinGainFlow2NextTurn">
+      <Desc>[拼点胜利] 下回合获得2层[流]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9002002: 川流不息 -->
+    <BattleCardAbility ID="SlazeyaGainFlow3NextTurn">
+      <Desc>[流转] [使用时] 下回合获得3层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaClashLosePowerUpNextDice">
+      <Desc>[拼点失败] 将本书页下一颗骰子增加（本骰子基础威力）点威力</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaDraw2">
+      <Desc>[命中时] 抽取2张书页</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9002003: 万物之流 -->
+    <BattleCardAbility ID="SlazeyaGainFlow5OnRoundStart">
+      <Desc>[流转] [战斗开始时] 获得5层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaGainFlow1OnHit">
+      <Desc>[命中时] 获得1层[流]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9002004: 风暴分流 -->
+    <BattleCardAbility ID="SlazeyaFlowBonusX2">
+      <Desc>本书页骰子至多可受5次[流]强化</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaBleed5OnFlow5">
+      <Desc>[命中时] 如果本骰子被[流]强化过至少5次，则施加5层[流血]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9002005: 倾覆万千之流 -->
+    <BattleCardAbility ID="SlazeyaMassAttackTeamLightGain">
+      <Desc>[使用时] 消耗所有[流]（但不提供威力加成）。本书页每消耗5层[流]，下回合为所有友方单位恢复1点光芒</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaMassAttackBonusDamage">
+      <Desc>[命中时] 追加本书页消耗的[流]点伤害</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9002006: 洋流，听我的号令 -->
+    <BattleCardAbility ID="SlazeyaOceanCommand">
+      <Desc>[流转] [使用时] 下回合获得3层[流]并抽取1张书页</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaClashLoseGainFlow3">
+      <Desc>[拼点失败] 立刻获得3层[流]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9002007: 随我流向无尽的尽头 -->
+    <BattleCardAbility ID="SlazeyaEndlessFlow">
+      <Desc>[战斗开始时] 本幕友方所有书页享受[流]加成时不再消耗[流]数量；[使用时] 本书页骰子获得等同自身[流]数量/2威力加成（向上取整）</Desc>
+    </BattleCardAbility>
+
+    <!-- ========== 司流者教徒卡牌能力 ========== -->
+
+    <!-- Card 9003001: 虔诚司流 -->
+    <BattleCardAbility ID="CultistGainFlow3NextTurn">
+      <Desc>[使用时] 下回合获得3层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="CultistDraw1">
+      <Desc>[命中时] 抽取1张书页</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9003002: 遵循流转 -->
+    <BattleCardAbility ID="CultistFlow2CheckGainLightDraw">
+      <Desc>[使用时] 如果本书页消耗至少了2层[流]，则下回合恢复2点光芒并抽取1张书页</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9003003: 洋流汇聚 -->
+    <BattleCardAbility ID="CultistGainFlowAllyCountNextTurn">
+      <Desc>[下回合开始时] 获得存活友方单位数量层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="CultistGainFlow3">
+      <Desc>[命中时] 获得3层[流]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9003004: 逆转洋流 -->
+    <BattleCardAbility ID="CultistFlowBonusX2">
+      <Desc>本书页受[流]加成x2</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="CultistBleed2">
+      <Desc>[命中时] 施加2层[流血]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="CultistBleed1">
+      <Desc>[命中时] 施加1层[流血]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9003005: 顺流而为 -->
+    <BattleCardAbility ID="CultistFlowPowerBonus">
+      <Desc>[流转] 若自身[流]数量不低于5，则本书页骰子威力+1</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9002008: 百川逐风 -->
+    <BattleCardAbility ID="SlazeyaMultiFlowBonus2">
+      <Desc>本书页骰子至多可受2次[流]强化</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaHundredRiversRepeat">
+      <Desc>本书页骰子至多可受2次[流]强化；[使用时] 若自身[流]层数大于10，则随机对另一敌人重复使用本书页（最多触发一次）</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaApplyWeakByFlowBonus">
+      <Desc>[命中时] 施加本骰子受[流]强化层数的[虚弱]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaApplyBleedAndDamageByFlowBonus">
+      <Desc>[命中时] 追加5点伤害并施加本骰子受[流]强化层数的[流血]</Desc>
+    </BattleCardAbility>
+
+    <!-- ========== 薇莉亚卡牌能力 ========== -->
+
+    <!-- Card 9004001: 和谐共生 -->
+    <BattleCardAbility ID="VeliaHarmony">
+      <Desc>[使用时] 恢复1点光芒</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="VeliaHarmonyDice">
+      <Desc>每拥有一层[潮]便使本骰子最小值+1</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9004002: 传播希望 -->
+    <BattleCardAbility ID="VeliaSpreadHope">
+      <Desc>[使用时] 抽2张牌</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9004003: 振作起来 -->
+    <BattleCardAbility ID="VeliaCheerUp">
+      <Desc>[使用时] 为血量最低的友方单位恢复5点血量和混乱抗性（每有一层[潮]使此效果+1）</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9004004: 潮雾晨光 -->
+    <BattleCardAbility ID="VeliaTideMist">
+      <Desc>[使用时] 下一幕开始时所有友方单位获得1层[强壮]，自身陷入眩晕并获得4层[守护]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="VeliaTideMistHealHP">
+      <Desc>[命中时] 为随机一名友方单位恢复2点体力</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="VeliaTideMistHealBP">
+      <Desc>[命中时] 为随机一名友方单位恢复2点混乱抗性</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9004005: 潜力观测 (EGO) -->
+    <BattleCardAbility ID="VeliaPotentialObservation">
+      <Desc>[装备时] 提高友方目标目前最高的正面效果等级1级（受[潮]加成）。如果当前没有正面效果，则使其获得1层[强壮]。每回合限使用1次。</Desc>
+    </BattleCardAbility>
+
+</BattleCardAbilityDescRoot>

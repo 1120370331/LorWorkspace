@@ -25,4 +25,12 @@
     <BookValue>0</BookValue>
     <DropItem Type="Equip">10000003</DropItem>
   </BookUse>
+  <BookUse ID="4">
+    <Name>薇莉亚之书</Name>
+    <TextId />
+    <BookIcon />
+    <Chapter>6</Chapter>
+    <BookValue>0</BookValue>
+    <DropItem Type="Equip">10000004</DropItem>
+  </BookUse>
 </BookUseXmlRoot>

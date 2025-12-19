@@ -14,16 +14,26 @@
     <Card>9001010</Card>
   </DropTable>
   <DropTable ID="2">
-    <Card>9002001</Card>
-    <Card>9002002</Card>
-    <Card>9002003</Card>
-    <Card>9002004</Card>
-    <Card>9002005</Card>
+    <Card>9002001</Card> <!-- 逐梦随流 -->
+    <Card>9002002</Card> <!-- 川流不息 -->
+    <Card>9002003</Card> <!-- 万物之流 -->
+    <Card>9002004</Card> <!-- 风暴分流 -->
+    <Card>9002005</Card> <!-- 倾覆万千之流 -->
+    <Card>9002006</Card> <!-- 洋流，听我的号令 -->
+    <Card>9002007</Card> <!-- 随我流向无尽的尽头 -->
+    <Card>9002008</Card> <!-- 百川逐风 -->
   </DropTable>
   <DropTable ID="3">
-    <Card>9003001</Card>
-    <Card>9003002</Card>
-    <Card>9003003</Card>
-    <Card>9003004</Card>
+    <Card>9003001</Card> <!-- 虔诚司流 -->
+    <Card>9003002</Card> <!-- 遵循流转 -->
+    <Card>9003003</Card> <!-- 洋流汇聚 -->
+    <Card>9003004</Card> <!-- 逆转洋流 -->
+    <Card>9003005</Card> <!-- 顺流而为 -->
+  </DropTable>
+  <DropTable ID="4">
+    <Card>9004001</Card> <!-- 和谐共生 -->
+    <Card>9004002</Card> <!-- 传播希望 -->
+    <Card>9004003</Card> <!-- 振作起来 -->
+    <Card>9004004</Card> <!-- 潮雾晨光 -->
   </DropTable>
 </CardDropTableXmlRoot>

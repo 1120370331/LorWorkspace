@@ -9,8 +9,7 @@
     <Rarity>Common</Rarity>
     <Spec Range="Far" Cost="0" />
     <Script>AnhierRecoverLight1</Script>
-    <ScriptDesc>[流转]
-使用时：恢复1点光芒</ScriptDesc>
+    <ScriptDesc>[流转] 使用时：恢复1点光芒</ScriptDesc>
     <BehaviourList>
       <Behaviour Min="2" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterFarHit" Script="AnhierFlow1" ActionScript="" Desc="" />
     </BehaviourList>
@@ -47,8 +46,7 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="2" />
     <Script>AnhierDiscardAllDraw</Script>
-    <ScriptDesc>使用时：丢弃2张手牌来使本书页骰子威力+1
-[被弃置时] 抽1张书页</ScriptDesc>
+    <ScriptDesc>使用时：丢弃2张手牌来使本书页骰子威力+1；[被弃置时] 抽1张书页</ScriptDesc>
     <AbilityList>
       <Ability Script="AnhierDiscardAllDraw" />
     </AbilityList>
@@ -126,9 +124,7 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="2" />
     <Script>AnhierGainFlow5Draw2NextTurn</Script>
-    <ScriptDesc>[流转]
-使用时：抽取2张书页
-下回合获得5层[流]</ScriptDesc>
+    <ScriptDesc>[流转] 使用时：抽取2张书页，下回合获得5层[流]</ScriptDesc>
     <AbilityList>
       <Ability Script="AnhierGainFlow5Draw2NextTurn" />
     </AbilityList>
@@ -189,8 +185,7 @@
     <Rarity>Common</Rarity>
     <Spec Range="Near" Cost="1" />
     <Script>AnhierColdLogistics</Script>
-    <ScriptDesc>[使用时] 恢复2点光芒
-[被弃置时] 恢复2点光芒</ScriptDesc>
+    <ScriptDesc>[使用时] 恢复2点光芒；[被弃置时] 恢复2点光芒</ScriptDesc>
     <AbilityList>
       <Ability Script="AnhierColdLogistics" />
     </AbilityList>
@@ -212,8 +207,7 @@
     <Option>EgoPersonal</Option>
     <MaxCooltimeForEgo>4</MaxCooltimeForEgo>
     <Script>AnhierSelfFlow</Script>
-    <ScriptDesc>[使用时] 扣除12点生命值，获得5层[流]
-冷却时间：4幕</ScriptDesc>
+    <ScriptDesc>[使用时] 扣除12点生命值，获得5层[流]；冷却时间：4幕</ScriptDesc>
     <AbilityList>
       <Ability Script="AnhierSelfFlow" />
     </AbilityList>
@@ -232,9 +226,10 @@
     <Artwork>Placeholder.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Far" Cost="0" />
-    <Script>SlazeyaGainFlow3NextTurn</Script>
+    <Script>SlazeyaGainFlow2NextTurn</Script>
+    <ScriptDesc>[流转] 使用时：下回合获得2层[流]</ScriptDesc>
     <AbilityList>
-      <Ability Script="SlazeyaGainFlow3NextTurn"/>
+      <Ability Script="SlazeyaGainFlow2NextTurn"/>
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaGainLight1" ActionScript="" Desc=""/>
@@ -252,6 +247,7 @@
     <Rarity>Common</Rarity>
     <Spec Range="Far" Cost="1" />
     <Script>SlazeyaGainFlow3NextTurn</Script>
+    <ScriptDesc>[流转] 使用时：下回合获得3层[流]</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaGainFlow3NextTurn"/>
     </AbilityList>
@@ -271,13 +267,14 @@
     <Rarity>Uncommon</Rarity>
     <Spec Range="Far" Cost="2" />
     <Script>SlazeyaGainFlow5OnRoundStart</Script>
+    <ScriptDesc>[流转] 战斗开始时：获得5层[流]</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaGainFlow5OnRoundStart"/>
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
       <Behaviour Min="4" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaGainFlow1OnHit" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaGainFlow1OnHit" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -291,13 +288,14 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Far" Cost="3" />
     <Script>SlazeyaFlowBonusX2</Script>
+    <ScriptDesc>本书页骰子至多可受5次[流]强化</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaFlowBonusX2"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="4" Dice="18" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaRepeatOnFlow5" ActionScript="" Desc=""/>
+      <Behaviour Min="10" Dice="18" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaBleed5OnFlow5" ActionScript="" Desc=""/>
       <Behaviour Min="1" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -311,15 +309,76 @@
     <Rarity>Unique</Rarity>
     <Spec Range="FarArea" Cost="7" />
     <Script>SlazeyaMassAttackTeamLightGain</Script>
+    <ScriptDesc>使用时：消耗所有[流]（但不提供威力加成）。本书页每消耗5层[流]，下回合为所有友方单位恢复1点光芒</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaMassAttackTeamLightGain"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="12" Dice="25" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_WaterSlash" Script="SlazeyaMassAttackBonusDamage" ActionScript="" Desc=""/>
+      <Behaviour Min="16" Dice="26" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_WaterSlash" Script="SlazeyaMassAttackBonusDamage" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>9000</Priority>
     <Option>OnlyPage</Option>
+  </Card>
+
+  <!-- 洋流，听我的号令 -->
+  <Card ID="9002006" workshopID="NormalInvitation">
+    <Name>洋流，听我的号令</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>SlazeyaOceanCommand</Script>
+    <ScriptDesc>[流转] 使用时：下回合获得3层[流]并抽取1张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaOceanCommand"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 随我流向无尽的尽头 -->
+  <Card ID="9002007" workshopID="NormalInvitation">
+    <Name>随我流向无尽的尽头</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="5" />
+    <Script>SlazeyaEndlessFlow</Script>
+    <ScriptDesc>战斗开始时：本幕友方所有书页享受[流]加成时不再消耗[流]数量；使用时：本书页骰子获得等同自身[流]数量/2威力加成（向上取整）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaEndlessFlow"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Standby" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="6" Type="Standby" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="SlazeyaClashWinGainFlow2NextTurn" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 百川逐风 -->
+  <Card ID="9002008" workshopID="NormalInvitation">
+    <Name>百川逐风</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>SlazeyaHundredRiversRepeat</Script>
+    <ScriptDesc>本书页骰子至多可受2次[流]强化；[使用时] 若自身[流]层数大于10，则消耗10层[流]随机对另一敌人重复使用本书页（每幕最多触发一次）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaHundredRiversRepeat"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="SlazeyaApplyWeakByFlowBonus" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="5" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaApplyBleedAndDamageByFlowBonus" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
   </Card>
   <!-- Slazeya Cards End -->
 
@@ -348,14 +407,14 @@
     <TextId>-1</TextId>
     <Artwork>Placeholder.png</Artwork>
     <Rarity>Common</Rarity>
-    <Spec Range="Far" Cost="1" />
+    <Spec Range="Near" Cost="1" />
     <Script>CultistFlow2CheckGainLightDraw</Script>
     <AbilityList>
       <Ability Script="CultistFlow2CheckGainLightDraw"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="1" Dice="5" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="5" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -367,14 +426,14 @@
     <TextId>-1</TextId>
     <Artwork>Placeholder.png</Artwork>
     <Rarity>Uncommon</Rarity>
-    <Spec Range="Far" Cost="2" />
+    <Spec Range="Near" Cost="2" />
     <Script>CultistGainFlowAllyCountNextTurn</Script>
     <AbilityList>
       <Ability Script="CultistGainFlowAllyCountNextTurn"/>
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="4" Dice="9" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="CultistGainFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="9" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="CultistGainFlow3" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -393,11 +452,129 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="5" Dice="10" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="" IsImmortal="true" BehaviourType="Standby" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="CultistBleed2" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="CultistBleed1" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 顺流而为 -->
+  <Card ID="9003005" workshopID="NormalInvitation">
+    <Name>顺流而为</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>CultistFlowPowerBonus</Script>
+    <ScriptDesc>[流转] 若自身[流]数量不低于5，则本书页骰子威力+1</ScriptDesc>
+    <AbilityList>
+      <Ability Script="CultistFlowPowerBonus"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="CultistBleed2" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="CultistDraw1" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
   </Card>
   <!-- Cultist Cards End -->
+
+  <!-- Velia Cards Start -->
+  <!-- 和谐共生 -->
+  <Card ID="9004001" workshopID="NormalInvitation">
+    <Name>和谐共生</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>VeliaHarmony</Script>
+    <ScriptDesc>使用时：恢复1点光芒</ScriptDesc>
+    <AbilityList>
+      <Ability Script="VeliaHarmony"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="12" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="VeliaHarmonyDice" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 传播希望 -->
+  <Card ID="9004002" workshopID="NormalInvitation">
+    <Name>传播希望</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>VeliaSpreadHope</Script>
+    <ScriptDesc>使用时：抽2张牌</ScriptDesc>
+    <AbilityList>
+      <Ability Script="VeliaSpreadHope"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 振作起来 -->
+  <Card ID="9004003" workshopID="NormalInvitation">
+    <Name>振作起来</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>VeliaCheerUp</Script>
+    <ScriptDesc>使用时：为血量最低的友方单位恢复5点血量和混乱抗性（每有一层[潮]使此效果+1）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="VeliaCheerUp"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 潮雾晨光 (群体交锋) -->
+  <Card ID="9004004" workshopID="NormalInvitation">
+    <Name>潮雾晨光</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarAreaEach" Cost="4" Affection="Team"/>
+    <Script>VeliaTideMist</Script>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealHP" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealBP" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>100</Priority>
+  </Card>
+
+  <!-- 潜力观测 (EGO装备书页) -->
+  <Card ID="9004005" workshopID="NormalInvitation">
+    <Name>潜力观测</Name>
+    <TextId>-1</TextId>
+    <Artwork>Placeholder.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="0" />
+    <Option>EgoPersonal</Option>
+    <Script>VeliaPotentialObservation</Script>
+    <ScriptDesc>装备时：提高友方目标目前最高的正面效果等级1级（受[潮]加成）。如果当前没有正面效果，则使其获得1层[强壮]。每回合限使用1次。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="VeliaPotentialObservation"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- Velia Cards End -->
 </DiceCardXmlRoot>

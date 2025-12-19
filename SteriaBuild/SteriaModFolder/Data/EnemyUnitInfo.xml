@@ -59,4 +59,24 @@
     </DropTable>
     <AiScript />
   </Enemy>
+
+  <!-- Velia Enemy Definition -->
+  <Enemy ID="4">
+    <Name>薇莉亚</Name>
+    <FaceType>Skin</FaceType>
+    <NameID>-1</NameID>
+    <MinHeight>160</MinHeight>
+    <MaxHeight>160</MaxHeight>
+    <Unknown>false</Unknown>
+    <Gender>F</Gender>
+    <Retreat>true</Retreat>
+    <BookId>4</BookId>
+    <BodyId>0</BodyId>
+    <Exp>0</Exp>
+    <DropBonus>0</DropBonus>
+    <DropTable Level="0">
+      <DropItem Prob="1">4</DropItem>
+    </DropTable>
+    <AiScript />
+  </Enemy>
 </EnemyUnitClassRoot>

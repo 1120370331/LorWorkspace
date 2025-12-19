@@ -66,29 +66,118 @@
     <Negative>false</Negative>
     <IsHide>false</IsHide>
     <Rarity>Unique</Rarity>
-    <Lock>true</Lock>
+    <Lock>false</Lock>
     <CanGivePassive>false</CanGivePassive>
     <CanReceivePassive>false</CanReceivePassive>
     <InnerType>-1</InnerType>
     <Cost>8</Cost>
-    <Name>神脉：梦之汐</Name>
-    <Desc>[PLACEHOLDER] 与梦境和潮流相关的强大神脉能力。</Desc>
+    <Name>神脉：梦之汐-司流-倾覆之大流</Name>
+    <Desc>（不可转移的被动）消耗[流]提升的骰子威力变为2。每造成10点伤害，下回合开始时获得1层[流]。每消耗10层[流]，下回合获得1层[强壮]。</Desc>
   </Passive>
   <Passive ID="9002002">
     <Negative>false</Negative>
     <IsHide>false</IsHide>
     <Rarity>Unique</Rarity>
-    <Lock>true</Lock>
+    <Lock>false</Lock>
     <CanGivePassive>false</CanGivePassive>
     <CanReceivePassive>false</CanReceivePassive>
     <InnerType>-1</InnerType>
-    <Cost>6</Cost>
+    <Cost>8</Cost>
     <Name>梦想教皇</Name>
-    <Desc>[PLACEHOLDER] 操控梦想的力量，强化自身或削弱敌人。</Desc>
+    <Desc>每一幕开始时，随机使三名除自己之外的友方单位获得三种不同的"倾诉梦想"效果。
+处于"倾诉梦想：远望"状态下的角色每消耗3点光芒，便在下一回合获得1层[强壮]。
+处于"倾诉梦想：幻梦"状态下的角色每使用1张书页，便在下一回合恢复2点体力和混乱抗性。
+处于"倾诉梦想：奉行"状态下的角色造成伤害时，下回合获得1层[流]。</Desc>
   </Passive>
 
   <!-- Shared/Cultist Passives -->
   <Passive ID="9002003">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Uncommon</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>true</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>3</Cost>
+    <Name>御风司流</Name>
+    <Desc>累计消耗15层[流]后，永久获得1层[守护]。再消耗15层[流]后，永久获得1层[强壮]。</Desc>
+  </Passive>
+  <Passive ID="9002004">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>6</Cost>
+    <Name>司流者</Name>
+    <Desc>每消耗3层[流]，从以下效果中随机获得一种：下回合获得1层[强壮]/[守护]/[忍耐]/[迅捷]。</Desc>
+  </Passive>
+  <Passive ID="9002005">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>8</Cost>
+    <Name>斯拉泽雅司流者</Name>
+    <Desc>每造成10点伤害：下回合获得1层[流]。每消耗10层[流]：下回合获得1层[强壮]。</Desc>
+  </Passive>
+  <Passive ID="9002006">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>变幻莫测</Name>
+    <Desc>每一幕将意图使用的书页置入手中且光芒消耗为0。</Desc>
+  </Passive>
+  <Passive ID="9002007">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>速战速决4</Name>
+    <Desc>初始拥有4颗速度骰子，情感等级达到3后额外获得1颗。</Desc>
+  </Passive>
+
+  <!-- Velia Passives -->
+  <Passive ID="9004001">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>8</Cost>
+    <Name>神脉：梦之汐-司潮-潜力观测</Name>
+    <Desc>（不可转移的被动）每回合开始时：将1张0费装备书页[潜力观测]置入手牌。消耗3点光芒后：下回合获得1层[潮]。</Desc>
+  </Passive>
+  <Passive ID="9004002">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>true</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>斯拉泽雅的挂坠</Name>
+    <Desc>受到的伤害/混乱伤害-5。第一次陷入混乱后：本场战斗中被动失效。</Desc>
+  </Passive>
+  <Passive ID="9004003">
     <Negative>false</Negative>
     <IsHide>false</IsHide>
     <Rarity>Rare</Rarity>
@@ -96,20 +185,20 @@
     <CanGivePassive>true</CanGivePassive>
     <CanReceivePassive>true</CanReceivePassive>
     <InnerType>-1</InnerType>
-    <Cost>4</Cost>
-    <Name>御风司流</Name>
-    <Desc>[PLACEHOLDER] 利用风与流的力量进行战斗。</Desc>
+    <Cost>3</Cost>
+    <Name>为了大家……</Name>
+    <Desc>舞台开始时，获得友方单位数量层[潮]。</Desc>
   </Passive>
-  <Passive ID="9002004">
+  <Passive ID="9004004">
     <Negative>false</Negative>
     <IsHide>false</IsHide>
-    <Rarity>Uncommon</Rarity>
+    <Rarity>Unique</Rarity>
     <Lock>false</Lock>
     <CanGivePassive>false</CanGivePassive>
-    <CanReceivePassive>true</CanReceivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
     <InnerType>-1</InnerType>
-    <Cost>3</Cost>
-    <Name>司流者</Name>
-    <Desc>[PLACEHOLDER] 司流教团成员的基础能力。</Desc>
+    <Cost>1</Cost>
+    <Name>呃……先溜了……</Name>
+    <Desc>（不可转移的被动）若自身体力值低于1，则不会死亡而是免疫所有伤害并离开战局。</Desc>
   </Passive>
 </PassiveXmlRoot>

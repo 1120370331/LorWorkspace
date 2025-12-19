@@ -4,40 +4,53 @@
     <!-- Slazeya Cards -->
     <BattleCardDesc ID="9002001">
       <Name>逐梦随流</Name>
-      <Desc>使用时：下回合获得3层"流"</Desc>
+      <Desc>[流转]
+使用时：下回合获得2层[流]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002002">
       <Name>川流不息</Name>
-      <Desc>使用时：下回合获得3层"流"</Desc>
+      <Desc>[流转]
+使用时：下回合获得3层[流]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002003">
       <Name>万物之流</Name>
-      <Desc>回合开始时：获得5层"流"</Desc>
+      <Desc>[流转]
+战斗开始时：获得5层[流]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002004">
       <Name>风暴分流</Name>
-      <Desc>本书页受"流"加成x2</Desc>
+      <Desc>本书页骰子至多可受5次[流]强化</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002005">
       <Name>倾覆万千之流</Name>
-      <Desc>使用时：本书页每消耗5层流，下回合为所有友方单位恢复1点光芒</Desc>
+      <Desc>使用时：消耗所有[流]（但不提供威力加成）。本书页每消耗5层[流]，下回合为所有友方单位恢复1点光芒</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9002006">
+      <Name>洋流，听我的号令</Name>
+      <Desc>[流转]
+使用时：下回合获得3层[流]并抽取1张书页</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9002007">
+      <Name>随我流向无尽的尽头</Name>
+      <Desc>战斗开始时：本幕友方所有书页享受[流]加成时不再消耗[流]数量
+本书页骰子获得等同自身[流]数量/2威力加成</Desc>
     </BattleCardDesc>
     <!-- Cultist Cards -->
     <BattleCardDesc ID="9003001">
       <Name>虔诚司流</Name>
-      <Desc>使用时：下回合获得3层"流"</Desc>
+      <Desc>使用时：下回合获得3层[流]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9003002">
       <Name>遵循流转</Name>
-      <Desc>使用时：如果本书页消耗至少了2层流，则下回合恢复2点光芒并抽取1张书页</Desc>
+      <Desc>使用时：如果本书页消耗至少2层[流]，则下回合恢复2点光芒并抽取1张书页</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9003003">
       <Name>洋流汇聚</Name>
-      <Desc>下回合开始时：获得存活友方单位数量层"流"</Desc> <!-- Adjusted based on setting -->
+      <Desc>使用时：下回合获得存活友方单位数量层[流]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9003004">
       <Name>逆转洋流</Name>
-      <Desc>本书页受"流"加成x2</Desc>
+      <Desc>本书页骰子至多可受5次[流]强化</Desc>
     </BattleCardDesc>
   </cardDescList>
-</CardDescXmlRoot> 
+</CardDescXmlRoot>
