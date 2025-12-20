@@ -205,7 +205,7 @@
     <Rarity>Unique</Rarity>
     <Spec Range="Instance" Cost="0" />
     <Option>EgoPersonal</Option>
-    <MaxCooltimeForEgo>4</MaxCooltimeForEgo>
+    <MaxCooltimeForEgo>999</MaxCooltimeForEgo>
     <Script>AnhierSelfFlow</Script>
     <ScriptDesc>[使用时] 扣除12点生命值，获得5层[流]；冷却时间：4幕</ScriptDesc>
     <AbilityList>
@@ -287,13 +287,13 @@
     <Artwork>Placeholder.png</Artwork>
     <Rarity>Rare</Rarity>
     <Spec Range="Far" Cost="3" />
-    <Script>SlazeyaFlowBonusX2</Script>
-    <ScriptDesc>本书页骰子至多可受5次[流]强化</ScriptDesc>
+    <Script>SlazeyaFlowBonusX3</Script>
+    <ScriptDesc>本书页骰子至多可受3次[流]强化</ScriptDesc>
     <AbilityList>
-      <Ability Script="SlazeyaFlowBonusX2"/>
+      <Ability Script="SlazeyaFlowBonusX3"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="10" Dice="18" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaBleed5OnFlow5" ActionScript="" Desc=""/>
+      <Behaviour Min="9" Dice="17" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaBleed5OnFlow3" ActionScript="" Desc=""/>
       <Behaviour Min="1" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
       <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc=""/>
     </BehaviourList>
@@ -319,6 +319,7 @@
     <Chapter>6</Chapter>
     <Priority>9000</Priority>
     <Option>OnlyPage</Option>
+    <BookIcon>10000002</BookIcon>
   </Card>
 
   <!-- 洋流，听我的号令 -->
@@ -347,7 +348,7 @@
     <TextId>-1</TextId>
     <Artwork>Placeholder.png</Artwork>
     <Rarity>Unique</Rarity>
-    <Spec Range="Near" Cost="5" />
+    <Spec Range="Near" Cost="3" />
     <Script>SlazeyaEndlessFlow</Script>
     <ScriptDesc>战斗开始时：本幕友方所有书页享受[流]加成时不再消耗[流]数量；使用时：本书页骰子获得等同自身[流]数量/2威力加成（向上取整）</ScriptDesc>
     <AbilityList>
@@ -373,9 +374,9 @@
       <Ability Script="SlazeyaHundredRiversRepeat"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="SlazeyaApplyWeakByFlowBonus" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="SlazeyaApplyWeakByFlowBonus" ActionScript="" Desc=""/>
       <Behaviour Min="1" Dice="5" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaApplyBleedAndDamageByFlowBonus" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaApplyBleedAndDamageByFlowBonus" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -495,7 +496,7 @@
       <Ability Script="VeliaHarmony"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="1" Dice="12" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="VeliaHarmonyDice" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="10" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="VeliaHarmonyDice" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -515,7 +516,7 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="1" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -535,7 +536,7 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="1" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -550,11 +551,11 @@
     <Spec Range="FarAreaEach" Cost="4" Affection="Team"/>
     <Script>VeliaTideMist</Script>
     <BehaviourList>
-      <Behaviour Min="1" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealHP" ActionScript="" Desc=""/>
-      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealBP" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="3" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealHP" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealBP" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
-    <Priority>100</Priority>
+    <Priority>200</Priority>
   </Card>
 
   <!-- 潜力观测 (EGO装备书页) -->
@@ -565,6 +566,7 @@
     <Rarity>Unique</Rarity>
     <Spec Range="Instance" Cost="0" />
     <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>999</MaxCooltimeForEgo>
     <Script>VeliaPotentialObservation</Script>
     <ScriptDesc>装备时：提高友方目标目前最高的正面效果等级1级（受[潮]加成）。如果当前没有正面效果，则使其获得1层[强壮]。每回合限使用1次。</ScriptDesc>
     <AbilityList>

@@ -387,15 +387,29 @@ public class DiceCardSelfAbility_AnhierColdLogistics : DiceCardSelfAbilityBase
 
 #region 自我之流 (ID: 9001011) EGO装备
 // EGO装备（Instance类型）：装备时扣除12点生命值，获得5层流
+// 冷却时间：4幕（使用Steria自定义冷却系统）
 public class DiceCardSelfAbility_AnhierSelfFlow : DiceCardSelfAbilityBase
 {
-    public static string Desc = "[装备时] 扣除12点生命值，获得5层[流]";
+    public static string Desc = "[装备时] 扣除12点生命值，获得5层[流]；冷却时间：4幕";
     public override string[] Keywords => new string[] { "SteriaFlow" };
+
+    // 卡牌ID
+    public const int CARD_ID = 9001011;
+    // 冷却时间常量
+    public const int COOLDOWN_ROUNDS = 4;
 
     // Instance类型卡牌使用OnUseInstance而不是OnUseCard
     public override void OnUseInstance(BattleUnitModel unit, BattleDiceCardModel self, BattleUnitModel targetUnit)
     {
         SteriaLogger.Log($"自我之流: OnUseInstance triggered for {unit?.UnitData?.unitData?.name}");
+
+        // 检查自定义冷却
+        if (Steria.SteriaEgoCooldownManager.IsOnCooldown(unit, CARD_ID))
+        {
+            int remaining = Steria.SteriaEgoCooldownManager.GetRemainingCooldown(unit, CARD_ID);
+            SteriaLogger.Log($"自我之流: On cooldown, {remaining} rounds remaining");
+            return;
+        }
 
         int damage = 12;
 
@@ -438,6 +452,9 @@ public class DiceCardSelfAbility_AnhierSelfFlow : DiceCardSelfAbilityBase
         // 获得5层流
         CardAbilityHelper.AddFlowStacks(unit, 5);
         SteriaLogger.Log($"自我之流: Added 5 Flow stacks");
+
+        // 设置自定义冷却
+        Steria.SteriaEgoCooldownManager.StartCooldown(unit, CARD_ID);
     }
 }
 #endregion

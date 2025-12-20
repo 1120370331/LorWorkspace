@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using BaseMod;
 using Steria;
+using LOR_DiceSystem;
 
 // 薇莉亚的被动技能和Buff实现
 // 这些类需要在全局命名空间中，以便游戏能够找到
@@ -125,18 +126,13 @@ public class PassiveAbility_9004001 : PassiveAbilityBase
         try
         {
             LorId lorId = new LorId(MOD_ID, CARD_POTENTIAL_OBSERVATION);
-            BattleDiceCardModel card = owner.allyCardDetail.AddNewCardToDeck(lorId);
-            if (card != null)
-            {
-                card.SetCostToZero(true);
-                // 设置为EGO卡牌
-                card.SetPriorityAdder(50);
-                SteriaLogger.Log($"神脉-潜力观测: Added Potential Observation card to {owner.UnitData?.unitData?.name}");
-            }
+            // 使用 personalEgoDetail.AddCard 添加到EGO装备区（和安希尔的自我之流一样）
+            owner.personalEgoDetail.AddCard(lorId);
+            SteriaLogger.Log($"神脉-潜力观测: Added Potential Observation EGO card to {owner.UnitData?.unitData?.name}");
         }
         catch (Exception ex)
         {
-            SteriaLogger.LogError($"神脉-潜力观测: Failed to add card: {ex.Message}");
+            SteriaLogger.LogError($"神脉-潜力观测: Failed to add EGO card: {ex.Message}");
         }
     }
 
@@ -162,6 +158,20 @@ public class PassiveAbility_9004001 : PassiveAbilityBase
         ApplyPotentialObservationEffect(target);
     }
 
+    // 认可的正面效果列表
+    private static readonly KeywordBuf[] _validPositiveBuffs = new KeywordBuf[]
+    {
+        KeywordBuf.Strength,    // 强壮
+        KeywordBuf.Protection,  // 守护
+        KeywordBuf.Quickness,   // 迅捷
+        KeywordBuf.Endurance,   // 忍耐（加防御骰子威力）
+        KeywordBuf.BreakProtection, // 振奋（降低混乱伤害）
+        KeywordBuf.SlashPowerUp,     // 斩击威力提升
+        KeywordBuf.PenetratePowerUp, // 突刺威力提升
+        KeywordBuf.HitPowerUp,       // 打击威力提升
+        KeywordBuf.DefensePowerUp,   // 防御威力提升
+    };
+
     /// <summary>
     /// 应用潜力观测效果到目标
     /// </summary>
@@ -182,22 +192,28 @@ public class PassiveAbility_9004001 : PassiveAbilityBase
 
         int totalBonus = 1 + tideBonus;
 
-        // 查找目标当前最高的正面效果
-        var positiveBufs = target.bufListDetail.GetActivatedBufList()
-            .Where(b => b.positiveType == BufPositiveType.Positive && b.stack > 0)
-            .ToList();
-
-        if (positiveBufs.Count == 0)
+        // 只查找认可的正面效果（KeywordBuf类型）
+        var validBufs = new List<BattleUnitBuf>();
+        foreach (var buf in target.bufListDetail.GetActivatedBufList())
         {
-            // 没有正面效果，给予强壮
-            target.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Strength, totalBonus, owner);
-            SteriaLogger.Log($"潜力观测: Granted {totalBonus} Strength to {target.UnitData?.unitData?.name} (no existing positive buffs)");
+            if (buf.stack > 0 && _validPositiveBuffs.Contains(buf.bufType))
+            {
+                validBufs.Add(buf);
+            }
+        }
+
+        if (validBufs.Count == 0)
+        {
+            // 没有认可的正面效果，给予强壮
+            // 注意：传入null作为actor，避免Harmony补丁重复消耗潮（我们已经在上面手动消耗了）
+            target.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Strength, totalBonus, null);
+            SteriaLogger.Log($"潜力观测: Granted {totalBonus} Strength to {target.UnitData?.unitData?.name} (no valid positive buffs)");
         }
         else
         {
             // 找到层数最高的正面效果
-            int maxStack = positiveBufs.Max(b => b.stack);
-            var maxStackBufs = positiveBufs.Where(b => b.stack == maxStack).ToList();
+            int maxStack = validBufs.Max(b => b.stack);
+            var maxStackBufs = validBufs.Where(b => b.stack == maxStack).ToList();
 
             // 如果有多个相同层数的，随机选一个
             var selectedBuf = maxStackBufs[UnityEngine.Random.Range(0, maxStackBufs.Count)];
@@ -446,5 +462,99 @@ public class BattleUnitBuf_TideNextTurn : BattleUnitBuf
             SteriaLogger.Log($"TideNextTurn: Granted {this.stack} Tide to {_owner.UnitData?.unitData?.name}");
         }
         this.Destroy();
+    }
+}
+
+/// <summary>
+/// 提布的预言之石 (ID: 9004005)
+/// 效果：每回合开始时，随机获得0/1/2层"潮"
+/// 消耗：6，品质：Unique
+/// </summary>
+public class PassiveAbility_9004005 : PassiveAbilityBase
+{
+    public override void Init(BattleUnitModel self)
+    {
+        base.Init(self);
+        SteriaLogger.Log($"PassiveAbility_9004005 (提布的预言之石): Init for {self?.UnitData?.unitData?.name}");
+    }
+
+    public override void OnRoundStart()
+    {
+        base.OnRoundStart();
+
+        if (owner == null || owner.IsDead()) return;
+
+        // 随机获得0/1/2层潮
+        int tideAmount = UnityEngine.Random.Range(0, 3); // 0, 1, or 2
+
+        if (tideAmount > 0)
+        {
+            PassiveAbility_9004001.AddTideStacks(owner, tideAmount);
+            SteriaLogger.Log($"提布的预言之石: {owner.UnitData?.unitData?.name} gained {tideAmount} Tide");
+        }
+        else
+        {
+            SteriaLogger.Log($"提布的预言之石: {owner.UnitData?.unitData?.name} gained 0 Tide this round");
+        }
+    }
+}
+
+/// <summary>
+/// 塔尔科斯梦之液 (ID: 9004006)
+/// 效果：
+/// - 自身防御型骰子拼点时：使对方骰子威力-1
+/// - 防御型骰子拼点胜利时：追加1点混乱伤害
+/// 消耗：3，品质：Rare
+/// </summary>
+public class PassiveAbility_9004006 : PassiveAbilityBase
+{
+    public override void Init(BattleUnitModel self)
+    {
+        base.Init(self);
+        SteriaLogger.Log($"PassiveAbility_9004006 (塔尔科斯梦之液): Init for {self?.UnitData?.unitData?.name}");
+    }
+
+    public override void BeforeRollDice(BattleDiceBehavior behavior)
+    {
+        base.BeforeRollDice(behavior);
+
+        // 检查自身骰子是否为防御型（格挡或闪避）
+        if (behavior == null || behavior.TargetDice == null) return;
+
+        if (IsDefenseDice(behavior.Detail))
+        {
+            // 自身使用防御骰子拼点时，使对方骰子威力-1
+            BattleCardTotalResult battleCardResultLog = owner?.battleCardResultLog;
+            if (battleCardResultLog != null)
+            {
+                battleCardResultLog.SetPassiveAbility(this);
+            }
+
+            behavior.TargetDice.ApplyDiceStatBonus(new DiceStatBonus
+            {
+                power = -1
+            });
+
+            SteriaLogger.Log($"塔尔科斯梦之液: {owner?.UnitData?.unitData?.name}'s defense dice reduced opponent's dice power by 1");
+        }
+    }
+
+    public override void OnWinParrying(BattleDiceBehavior behavior)
+    {
+        base.OnWinParrying(behavior);
+
+        // 检查是否是防御型骰子拼点胜利
+        if (behavior == null) return;
+
+        if (IsDefenseDice(behavior.Detail))
+        {
+            // 对敌人追加1点混乱伤害
+            BattleUnitModel target = behavior.card?.target;
+            if (target != null && !target.IsDead())
+            {
+                target.TakeBreakDamage(1, DamageType.Passive, owner, AtkResist.Normal);
+                SteriaLogger.Log($"塔尔科斯梦之液: {owner?.UnitData?.unitData?.name}'s defense dice win added 1 break damage to {target.UnitData?.unitData?.name}");
+            }
+        }
     }
 }

@@ -201,4 +201,29 @@
     <Name>呃……先溜了……</Name>
     <Desc>（不可转移的被动）若自身体力值低于1，则不会死亡而是免疫所有伤害并离开战局。</Desc>
   </Passive>
+  <Passive ID="9004005">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>true</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>6</Cost>
+    <Name>提布的预言之石</Name>
+    <Desc>每回合开始时，随机获得0/1/2层[潮]。</Desc>
+  </Passive>
+  <Passive ID="9004006">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>true</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>3</Cost>
+    <Name>塔尔科斯梦之液</Name>
+    <Desc>自身防御型骰子拼点时：使对方骰子威力-1。
+防御型骰子拼点胜利时：追加1点混乱伤害。</Desc>
+  </Passive>
 </PassiveXmlRoot>

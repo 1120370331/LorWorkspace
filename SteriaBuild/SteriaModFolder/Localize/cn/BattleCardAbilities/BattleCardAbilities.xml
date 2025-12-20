@@ -121,8 +121,14 @@
     <BattleCardAbility ID="SlazeyaFlowBonusX2">
       <Desc>本书页骰子至多可受5次[流]强化</Desc>
     </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaFlowBonusX3">
+      <Desc>本书页骰子至多可受3次[流]强化</Desc>
+    </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaBleed5OnFlow5">
       <Desc>[命中时] 如果本骰子被[流]强化过至少5次，则施加5层[流血]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaBleed5OnFlow3">
+      <Desc>[命中时] 如果本骰子被[流]强化过至少3次，则施加5层[流血]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9002005: 倾覆万千之流 -->

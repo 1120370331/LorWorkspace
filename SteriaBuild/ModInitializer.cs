@@ -47,21 +47,17 @@ namespace Steria
                     // Create a unique ID for this mod's Harmony instance
                     string harmonyId = "Steria.Harmony." + Guid.NewGuid().ToString();
                     HarmonyInstance = new Harmony(harmonyId);
-                    Debug.Log($"[Steria] Created Harmony instance with ID: {harmonyId}");
+                    SteriaLogger.Log($"Created Harmony instance with ID: {harmonyId}");
 
                     // Apply all patches defined within this assembly
                     HarmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
-                    Debug.Log("[Steria] Harmony PatchAll executed.");
-                    
-                    // --- REMOVED Explicit patch application block ---
-                    // try { ... explicit patch for BattleUnitModel_OnWaveStart_Patch ... } catch { ... }
-                    // --- End of REMOVED explicit patch application ---
+                    SteriaLogger.Log("Harmony PatchAll executed successfully.");
                 }
                 catch (Exception harmonyEx)
                 {
-                    Debug.LogError($"[MyDLL] Error during Harmony Initialization or Patching: {harmonyEx}");
+                    SteriaLogger.LogError($"Error during Harmony Initialization or Patching: {harmonyEx}");
                     // Depending on severity, you might want to stop initialization
-                    // return; 
+                    // return;
                 }
                 // --- End of Harmony Initialization and Patching ---
                 
@@ -241,6 +237,27 @@ namespace Steria
                     SteriaLogger.Log($"Error registering custom effects: {effectCheckEx.Message}");
                 }
                 // --- End Register custom effects ---
+
+                // --- Register EGO Card Cooldowns ---
+                try
+                {
+                    // 安希尔 - 自我之流 (ID: 9001011) - 4幕冷却
+                    SteriaEgoCooldownManager.RegisterCardCooldown(
+                        DiceCardSelfAbility_AnhierSelfFlow.CARD_ID,
+                        DiceCardSelfAbility_AnhierSelfFlow.COOLDOWN_ROUNDS);
+
+                    // 薇莉亚 - 潜力观测 (ID: 9004005) - 1幕冷却
+                    SteriaEgoCooldownManager.RegisterCardCooldown(
+                        DiceCardSelfAbility_VeliaPotentialObservation.CARD_ID,
+                        DiceCardSelfAbility_VeliaPotentialObservation.COOLDOWN_ROUNDS);
+
+                    SteriaLogger.Log("EGO card cooldowns registered successfully");
+                }
+                catch (Exception cooldownEx)
+                {
+                    SteriaLogger.LogError($"Error registering EGO card cooldowns: {cooldownEx.Message}");
+                }
+                // --- End Register EGO Card Cooldowns ---
 
                 // --- Other Mod Initialization ---
                 // You can add other setup code here if needed,

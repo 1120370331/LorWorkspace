@@ -615,7 +615,7 @@ namespace Steria
         }
 
 
-        // --- Patches for Passive 9000002 (神脉：汐与梦) + 倾诉梦想：远望 ---
+        // --- Patches for Passive 9000002 (神脉：汐与梦) + 倾诉梦想：远望 + 薇莉亚被动 ---
         [HarmonyPatch(typeof(BattlePlayingCardSlotDetail), nameof(BattlePlayingCardSlotDetail.SpendCost))]
         public static class BattlePlayingCardSlotDetail_SpendCost_Patch
         {
@@ -629,6 +629,10 @@ namespace Steria
                     // 触发 PassiveAbility_9000002 (神脉：汐与梦)
                     var passive = owner.passiveDetail.PassiveList.FirstOrDefault(p => p is PassiveAbility_9000002) as PassiveAbility_9000002;
                     passive?.OnActualLightSpend(value);
+
+                    // 触发 PassiveAbility_9004001 (神脉：梦之汐-司潮-潜力观测) - 薇莉亚耗光给潮
+                    var passive9004001 = owner.passiveDetail.PassiveList.FirstOrDefault(p => p is PassiveAbility_9004001) as PassiveAbility_9004001;
+                    passive9004001?.OnLightSpent(value);
 
                     // 触发 倾诉梦想：远望 Buff
                     var dreamVisionBuf = owner.bufListDetail.GetActivatedBufList()
@@ -669,7 +673,8 @@ namespace Steria
         }
 
         // --- Patch for BattleAllyCardDetail.DiscardACardByAbility (单张弃牌) ---
-        [HarmonyPatch(typeof(BattleAllyCardDetail), nameof(BattleAllyCardDetail.DiscardACardByAbility))]
+        // 指定参数类型以避免重载歧义
+        [HarmonyPatch(typeof(BattleAllyCardDetail), nameof(BattleAllyCardDetail.DiscardACardByAbility), new Type[] { typeof(BattleDiceCardModel) })]
         public static class BattleAllyCardDetail_DiscardACardByAbility_Patch
         {
             [HarmonyPostfix]
@@ -1105,6 +1110,15 @@ namespace Steria
                     {
                         passive9002001.OnDamageDealt(v);
                     }
+
+                    // 检查攻击者是否有 斯拉泽雅司流者 被动 (每造成10点伤害获得1层流)
+                    var passive9002005 = attacker.passiveDetail.PassiveList?
+                        .FirstOrDefault(p => p is PassiveAbility_9002005) as PassiveAbility_9002005;
+
+                    if (passive9002005 != null)
+                    {
+                        passive9002005.OnDamageDealt(v);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1114,25 +1128,23 @@ namespace Steria
         }
 
         // --- Patch for 潮 (Tide) 自动触发机制 ---
-        // 当施加正面效果给友方或负面效果给敌方时，自动消耗潮并增强效果
+        // 简化版：每当施加者有潮时，自动扣1层潮并额外赋予1层buff
 
-        // 认可的正面效果列表
-        private static readonly HashSet<KeywordBuf> _tidePositiveEffects = new HashSet<KeywordBuf>
+        // 认可的buff类型列表（只有这些类型会触发潮加成）
+        private static readonly HashSet<KeywordBuf> _tideValidBuffTypes = new HashSet<KeywordBuf>
         {
+            // 正面效果
             KeywordBuf.Strength,      // 强壮
             KeywordBuf.Protection,    // 守护
             KeywordBuf.Quickness,     // 迅捷
-            KeywordBuf.Endurance,     // 忍耐
+            KeywordBuf.Endurance,     // 忍耐（加防御骰子威力）
+            KeywordBuf.BreakProtection, // 振奋（降低混乱伤害）
             KeywordBuf.DmgUp,         // 威力提升
             KeywordBuf.SlashPowerUp,  // 斩击威力提升
             KeywordBuf.PenetratePowerUp, // 突刺威力提升
             KeywordBuf.HitPowerUp,    // 打击威力提升
             KeywordBuf.DefensePowerUp, // 防御威力提升
-        };
-
-        // 认可的负面效果列表
-        private static readonly HashSet<KeywordBuf> _tideNegativeEffects = new HashSet<KeywordBuf>
-        {
+            // 负面效果
             KeywordBuf.Bleeding,      // 流血
             KeywordBuf.Burn,          // 烧伤
             KeywordBuf.Weak,          // 虚弱
@@ -1143,11 +1155,14 @@ namespace Steria
         };
 
         /// <summary>
-        /// 检查是否应该触发潮加成，并返回加成数量
+        /// 简化版潮加成：只要施加者有潮，就扣1层并额外赋予1层
         /// </summary>
-        private static int CheckAndConsumeTide(BattleUnitModel giver, BattleUnitModel target, KeywordBuf bufType)
+        private static int CheckAndConsumeTideSimple(BattleUnitModel giver, KeywordBuf bufType)
         {
-            if (giver == null || target == null) return 0;
+            if (giver == null) return 0;
+
+            // 只处理认可的buff类型
+            if (!_tideValidBuffTypes.Contains(bufType)) return 0;
 
             // 获取施加者的潮buff
             BattleUnitBuf_Tide tideBuf = giver.bufListDetail.GetActivatedBufList()
@@ -1155,29 +1170,57 @@ namespace Steria
 
             if (tideBuf == null || tideBuf.stack <= 0) return 0;
 
-            bool shouldTrigger = false;
+            // 扣1层潮，额外赋予1层buff
+            tideBuf.stack -= 1;
+            SteriaLogger.Log($"Tide: Giver {giver.UnitData?.unitData?.name} consumed 1 Tide for {bufType}, remaining = {tideBuf.stack}");
 
-            // 检查是否是友方+正面效果
-            if (giver.faction == target.faction && _tidePositiveEffects.Contains(bufType))
+            if (tideBuf.stack <= 0)
             {
-                shouldTrigger = true;
-                SteriaLogger.Log($"Tide: Positive effect {bufType} to ally - triggering");
-            }
-            // 检查是否是敌方+负面效果
-            else if (giver.faction != target.faction && _tideNegativeEffects.Contains(bufType))
-            {
-                shouldTrigger = true;
-                SteriaLogger.Log($"Tide: Negative effect {bufType} to enemy - triggering");
+                tideBuf.Destroy();
             }
 
-            if (shouldTrigger)
-            {
-                int bonus = tideBuf.ConsumeTideForBonus();
-                SteriaLogger.Log($"Tide: Consumed 1 stack, bonus = {bonus}, remaining = {tideBuf.stack}");
-                return bonus;
-            }
+            return 1; // 固定额外赋予1层
+        }
 
-            return 0;
+        /// <summary>
+        /// 刷新目标的速度骰子（用于迅捷等需要立即生效的buff）
+        /// </summary>
+        private static void RefreshSpeedDice(BattleUnitModel target, int addedQuickness)
+        {
+            if (target == null || target.speedDiceResult == null || addedQuickness <= 0) return;
+
+            try
+            {
+                // 为每个未破坏的速度骰子增加迅捷加成
+                foreach (var speedDice in target.speedDiceResult)
+                {
+                    if (!speedDice.breaked)
+                    {
+                        speedDice.value = Mathf.Clamp(speedDice.value + addedQuickness, 1, 999);
+                    }
+                }
+
+                // 重新排序速度骰子（按值从高到低）
+                target.speedDiceResult.Sort((d1, d2) =>
+                {
+                    if (d1.breaked && d2.breaked) return d2.value.CompareTo(d1.value);
+                    if (d1.breaked) return -1;
+                    if (d2.breaked) return 1;
+                    return d2.value.CompareTo(d1.value);
+                });
+
+                // 更新UI
+                if (target.view?.speedDiceSetterUI != null)
+                {
+                    target.view.speedDiceSetterUI.SetSpeedDicesAfterRoll(target.speedDiceResult);
+                }
+
+                SteriaLogger.Log($"Tide: Refreshed speed dice for {target.UnitData?.unitData?.name}, added {addedQuickness} Quickness");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Error refreshing speed dice: {ex}");
+            }
         }
 
         // Patch for AddKeywordBufByEtc (下回合生效的buff)
@@ -1185,23 +1228,20 @@ namespace Steria
         public static class BattleUnitBufListDetail_AddKeywordBufByEtc_TidePatch
         {
             [HarmonyPrefix]
-            public static void Prefix(BattleUnitBufListDetail __instance, KeywordBuf bufType, ref int stack, BattleUnitModel giver)
+            public static void Prefix(BattleUnitBufListDetail __instance, KeywordBuf bufType, ref int stack, BattleUnitModel actor)
             {
                 try
                 {
-                    if (stack <= 0 || giver == null) return;
+                    // 调试日志
+                    SteriaLogger.Log($"Tide DEBUG: AddKeywordBufByEtc called - bufType={bufType}, stack={stack}, actor={(actor != null ? actor.UnitData?.unitData?.name : "NULL")}");
 
-                    // 获取目标单位
-                    var ownerField = AccessTools.Field(typeof(BattleUnitBufListDetail), "_self");
-                    BattleUnitModel target = ownerField?.GetValue(__instance) as BattleUnitModel;
+                    if (stack <= 0 || actor == null) return;
 
-                    if (target == null) return;
-
-                    int tideBonus = CheckAndConsumeTide(giver, target, bufType);
+                    int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
                     if (tideBonus > 0)
                     {
                         stack += tideBonus;
-                        SteriaLogger.Log($"Tide: Enhanced {bufType} from {stack - tideBonus} to {stack}");
+                        SteriaLogger.Log($"Tide: Enhanced {bufType} by {tideBonus}, new stack = {stack}");
                     }
                 }
                 catch (Exception ex)
@@ -1215,29 +1255,132 @@ namespace Steria
         [HarmonyPatch(typeof(BattleUnitBufListDetail), nameof(BattleUnitBufListDetail.AddKeywordBufThisRoundByEtc))]
         public static class BattleUnitBufListDetail_AddKeywordBufThisRoundByEtc_TidePatch
         {
+            // 存储潮加成信息，用于Postfix
+            private static int _lastTideBonus = 0;
+            private static KeywordBuf _lastBufType = KeywordBuf.None;
+
             [HarmonyPrefix]
-            public static void Prefix(BattleUnitBufListDetail __instance, KeywordBuf bufType, ref int stack, BattleUnitModel giver)
+            public static void Prefix(BattleUnitBufListDetail __instance, KeywordBuf bufType, ref int stack, BattleUnitModel actor)
             {
+                _lastTideBonus = 0;
+                _lastBufType = bufType;
+
                 try
                 {
-                    if (stack <= 0 || giver == null) return;
+                    // 调试日志
+                    SteriaLogger.Log($"Tide DEBUG: AddKeywordBufThisRoundByEtc called - bufType={bufType}, stack={stack}, actor={(actor != null ? actor.UnitData?.unitData?.name : "NULL")}");
 
-                    // 获取目标单位
-                    var ownerField = AccessTools.Field(typeof(BattleUnitBufListDetail), "_self");
-                    BattleUnitModel target = ownerField?.GetValue(__instance) as BattleUnitModel;
+                    if (stack <= 0 || actor == null) return;
 
-                    if (target == null) return;
-
-                    int tideBonus = CheckAndConsumeTide(giver, target, bufType);
+                    int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
                     if (tideBonus > 0)
                     {
                         stack += tideBonus;
-                        SteriaLogger.Log($"Tide: Enhanced {bufType} (this round) from {stack - tideBonus} to {stack}");
+                        _lastTideBonus = tideBonus;
+                        SteriaLogger.Log($"Tide: Enhanced {bufType} (this round) by {tideBonus}, new stack = {stack}");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"[Steria] Error in AddKeywordBufThisRoundByEtc TidePatch: {ex}");
+                    Debug.LogError($"[Steria] Error in AddKeywordBufThisRoundByEtc TidePatch Prefix: {ex}");
+                }
+            }
+
+            [HarmonyPostfix]
+            public static void Postfix(BattleUnitBufListDetail __instance, KeywordBuf bufType, int stack)
+            {
+                try
+                {
+                    // 如果赋予的是迅捷，刷新速度骰子
+                    if (_lastBufType == KeywordBuf.Quickness && stack > 0)
+                    {
+                        var ownerField = AccessTools.Field(typeof(BattleUnitBufListDetail), "_self");
+                        BattleUnitModel target = ownerField?.GetValue(__instance) as BattleUnitModel;
+                        if (target != null)
+                        {
+                            RefreshSpeedDice(target, stack);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Error in AddKeywordBufThisRoundByEtc TidePatch Postfix: {ex}");
+                }
+            }
+        }
+
+        // Patch for AddKeywordBufByCard (通过卡牌添加的buff，下回合生效)
+        [HarmonyPatch(typeof(BattleUnitBufListDetail), nameof(BattleUnitBufListDetail.AddKeywordBufByCard))]
+        public static class BattleUnitBufListDetail_AddKeywordBufByCard_TidePatch
+        {
+            [HarmonyPrefix]
+            public static void Prefix(BattleUnitBufListDetail __instance, KeywordBuf bufType, ref int stack, BattleUnitModel actor)
+            {
+                try
+                {
+                    if (stack <= 0 || actor == null) return;
+
+                    int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
+                    if (tideBonus > 0)
+                    {
+                        stack += tideBonus;
+                        SteriaLogger.Log($"Tide: Enhanced {bufType} (by card) by {tideBonus}, new stack = {stack}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Error in AddKeywordBufByCard TidePatch: {ex}");
+                }
+            }
+        }
+
+        // Patch for AddKeywordBufThisRoundByCard (通过卡牌添加的buff，本回合生效)
+        [HarmonyPatch(typeof(BattleUnitBufListDetail), nameof(BattleUnitBufListDetail.AddKeywordBufThisRoundByCard))]
+        public static class BattleUnitBufListDetail_AddKeywordBufThisRoundByCard_TidePatch
+        {
+            private static KeywordBuf _lastBufType = KeywordBuf.None;
+
+            [HarmonyPrefix]
+            public static void Prefix(BattleUnitBufListDetail __instance, KeywordBuf bufType, ref int stack, BattleUnitModel actor)
+            {
+                _lastBufType = bufType;
+
+                try
+                {
+                    if (stack <= 0 || actor == null) return;
+
+                    int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
+                    if (tideBonus > 0)
+                    {
+                        stack += tideBonus;
+                        SteriaLogger.Log($"Tide: Enhanced {bufType} (this round by card) by {tideBonus}, new stack = {stack}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Error in AddKeywordBufThisRoundByCard TidePatch Prefix: {ex}");
+                }
+            }
+
+            [HarmonyPostfix]
+            public static void Postfix(BattleUnitBufListDetail __instance, KeywordBuf bufType, int stack)
+            {
+                try
+                {
+                    // 如果赋予的是迅捷，刷新速度骰子
+                    if (_lastBufType == KeywordBuf.Quickness && stack > 0)
+                    {
+                        var ownerField = AccessTools.Field(typeof(BattleUnitBufListDetail), "_self");
+                        BattleUnitModel target = ownerField?.GetValue(__instance) as BattleUnitModel;
+                        if (target != null)
+                        {
+                            RefreshSpeedDice(target, stack);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Error in AddKeywordBufThisRoundByCard TidePatch Postfix: {ex}");
                 }
             }
         }
@@ -1256,11 +1399,111 @@ namespace Steria
                 NoFlowConsumptionActiveThisRound = false;
                 // 重置百川逐风的每幕触发记录
                 DiceCardSelfAbility_SlazeyaHundredRiversRepeat.ResetTriggeredOwners();
+
+                // 注意：冷却减少现在由 SteriaEgoCooldownPatches 处理
+
                 SteriaLogger.Log("Reset NoFlowConsumptionActiveThisRound and HundredRiversRepeat triggers");
             }
         }
 
+        // 在战斗结束时清除所有冷却状态和临时数据
+        [HarmonyPatch(typeof(StageController), "EndBattle")]
+        public static class StageController_EndBattle_ClearCooldowns_Patch
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                try
+                {
+                    // 注意：冷却清除现在由 SteriaEgoCooldownPatches 处理
+                    // 清除随我流向无尽的尽头的威力加成存储
+                    DiceCardSelfAbility_SlazeyaEndlessFlow.ClearPowerBonuses();
+                    SteriaLogger.Log("Battle ended: Cleared power bonuses");
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Error clearing data on battle end: {ex}");
+                }
+            }
+        }
+
     } // End of HarmonyPatches class
+
+    /// <summary>
+    /// Harmony补丁：修复mod核心书页的OnlyCard无法正确加载mod卡牌的问题
+    /// 原版游戏使用int类型的ID，无法识别mod卡牌（需要完整的LorId包含workshopID）
+    /// </summary>
+    [HarmonyPatch(typeof(BookModel), "SetXmlInfo")]
+    public static class BookModel_SetXmlInfo_OnlyCardFix_Patch
+    {
+        // Steria mod的workshopID
+        private const string STERIA_WORKSHOP_ID = "NormalInvitation";
+
+        // Steria mod的核心书页ID列表
+        private static readonly HashSet<int> _steriaBookIds = new HashSet<int>
+        {
+            10000001, // 安希尔
+            10000002, // 斯拉泽雅
+            10000003, // 司流者教徒
+            10000004, // 薇莉亚
+        };
+
+        [HarmonyPostfix]
+        public static void Postfix(BookModel __instance, BookXmlInfo classInfo)
+        {
+            try
+            {
+                // 检查是否是Steria mod的核心书页
+                if (classInfo == null || !_steriaBookIds.Contains(classInfo.id.id))
+                {
+                    return;
+                }
+
+                // 只处理mod书页（有workshopID的）
+                if (!classInfo.id.IsWorkshop())
+                {
+                    return;
+                }
+
+                // 获取_onlyCards字段
+                var onlyCardsField = AccessTools.Field(typeof(BookModel), "_onlyCards");
+                if (onlyCardsField == null) return;
+
+                var onlyCards = onlyCardsField.GetValue(__instance) as List<DiceCardXmlInfo>;
+                if (onlyCards == null)
+                {
+                    onlyCards = new List<DiceCardXmlInfo>();
+                    onlyCardsField.SetValue(__instance, onlyCards);
+                }
+
+                // 遍历OnlyCard列表，尝试使用mod的workshopID加载卡牌
+                foreach (int cardId in classInfo.EquipEffect.OnlyCard)
+                {
+                    // 检查是否已经加载了这张卡牌
+                    bool alreadyLoaded = onlyCards.Exists(x => x.id.IsBasic() ? x.id.id == cardId : x.id.id == cardId);
+                    if (alreadyLoaded) continue;
+
+                    // 尝试使用mod的workshopID加载卡牌
+                    LorId modCardId = new LorId(STERIA_WORKSHOP_ID, cardId);
+                    DiceCardXmlInfo cardItem = ItemXmlDataList.instance.GetCardItem(modCardId, true);
+
+                    if (cardItem != null && cardItem.id.IsWorkshop())
+                    {
+                        onlyCards.Add(cardItem);
+                        SteriaLogger.Log($"OnlyCardFix: Added mod card {modCardId} to book {classInfo.id}");
+                    }
+                    else
+                    {
+                        SteriaLogger.Log($"OnlyCardFix: Failed to find mod card {modCardId} for book {classInfo.id}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] OnlyCardFix error: {ex}");
+            }
+        }
+    }
 
     // --- 扩展 CardAbilityHelper 以支持流x2 ---
     public static class FlowMultiplierHelper

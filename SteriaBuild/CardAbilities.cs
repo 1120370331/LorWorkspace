@@ -68,7 +68,8 @@ public class DiceCardSelfAbility_SlazeyaEndlessFlow : DiceCardSelfAbilityBase
 {
     public static string Desc = "[On Use] This round all allies don't consume Flow for bonuses. This page's dice gain power equal to Flow/2 (rounded up)";
 
-    private int _calculatedPowerBonus = 0;
+    // 使用静态字典存储每个单位的威力加成，确保反击骰子也能获得加成
+    private static Dictionary<int, int> _powerBonusByUnit = new Dictionary<int, int>();
 
     public override void OnStartBattle()
     {
@@ -84,26 +85,48 @@ public class DiceCardSelfAbility_SlazeyaEndlessFlow : DiceCardSelfAbilityBase
                 ally.bufListDetail.AddBuf(new BattleUnitBuf_NoFlowConsumption());
             }
         }
+
+        // 在战斗开始时计算并存储威力加成
+        CalculateAndStorePowerBonus();
     }
 
     public override void OnUseCard()
     {
-        // 使用时计算威力加成（向上取整）
+        // 使用时重新计算威力加成（以防流数量变化）
+        CalculateAndStorePowerBonus();
+    }
+
+    private void CalculateAndStorePowerBonus()
+    {
+        if (owner == null) return;
+
         BattleUnitBuf_Flow flowBuf = owner.bufListDetail.GetActivatedBufList()
             .FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
         int flowStacks = flowBuf?.stack ?? 0;
-        _calculatedPowerBonus = (flowStacks + 1) / 2; // 向上取整
-        Debug.Log($"[Steria] SlazeyaEndlessFlow: OnUseCard - Calculated power bonus = {_calculatedPowerBonus} (Flow: {flowStacks})");
+        int powerBonus = (flowStacks + 1) / 2; // 向上取整
+
+        int unitId = owner.GetHashCode();
+        _powerBonusByUnit[unitId] = powerBonus;
+        Debug.Log($"[Steria] SlazeyaEndlessFlow: Stored power bonus = {powerBonus} for unit {owner.UnitData?.unitData?.name} (Flow: {flowStacks})");
     }
 
-    // 在骰子投掷前应用威力加成（这样可以正确处理 Standby 骰子）
+    // 在骰子投掷前应用威力加成（包括反击骰子）
     public override void BeforeRollDice(BattleDiceBehavior behavior)
     {
-        if (_calculatedPowerBonus > 0 && behavior != null)
+        if (owner == null || behavior == null) return;
+
+        int unitId = owner.GetHashCode();
+        if (_powerBonusByUnit.TryGetValue(unitId, out int powerBonus) && powerBonus > 0)
         {
-            behavior.ApplyDiceStatBonus(new DiceStatBonus { power = _calculatedPowerBonus });
-            Debug.Log($"[Steria] SlazeyaEndlessFlow: Applied +{_calculatedPowerBonus} power to dice (Index: {behavior.Index})");
+            behavior.ApplyDiceStatBonus(new DiceStatBonus { power = powerBonus });
+            Debug.Log($"[Steria] SlazeyaEndlessFlow: Applied +{powerBonus} power to dice (Index: {behavior.Index}, isBonusAttack: {behavior.isBonusAttack})");
         }
+    }
+
+    // 清除存储的威力加成（战斗结束时调用）
+    public static void ClearPowerBonuses()
+    {
+        _powerBonusByUnit.Clear();
     }
 }
 
@@ -134,6 +157,23 @@ public class DiceCardSelfAbility_SlazeyaFlowBonusX2 : DiceCardSelfAbilityBase
     public override void OnUseCard()
     {
         owner.bufListDetail.AddBuf(new BattleUnitBuf_FlowBonusX2Marker());
+    }
+}
+
+// SlazeyaFlowBonusX3 (Card Self Ability) - 风暴分流
+// 本书页骰子至多可受3次流强化
+public class DiceCardSelfAbility_SlazeyaFlowBonusX3 : DiceCardSelfAbilityBase
+{
+    public static string Desc = "This page's dice can receive up to 3 Flow enhancements";
+
+    public class BattleUnitBuf_FlowBonusX3Marker : BattleUnitBuf {
+        public override BufPositiveType positiveType => BufPositiveType.Positive;
+        public override void OnRoundEnd() { this.Destroy(); }
+    }
+
+    public override void OnUseCard()
+    {
+        owner.bufListDetail.AddBuf(new BattleUnitBuf_FlowBonusX3Marker());
     }
 }
 
@@ -224,7 +264,7 @@ public class DiceCardAbility_SlazeyaGainFlow1OnHit : DiceCardAbilityBase
     }
 }
 
-// SlazeyaBleed5OnFlow5 - 风暴分流的骰子效果
+// SlazeyaBleed5OnFlow5 - 风暴分流的骰子效果（旧版）
 // 命中时：如果本骰子被流强化过至少5次，则施加5层流血
 public class DiceCardAbility_SlazeyaBleed5OnFlow5 : DiceCardAbilityBase
 {
@@ -241,6 +281,27 @@ public class DiceCardAbility_SlazeyaBleed5OnFlow5 : DiceCardAbilityBase
         {
             target.bufListDetail.AddKeywordBufByEtc(KeywordBuf.Bleeding, 5, owner);
             Debug.Log($"[Steria] SlazeyaBleed5OnFlow5: Applied 5 Bleed to {target.UnitData?.unitData?.name}");
+        }
+    }
+}
+
+// SlazeyaBleed5OnFlow3 - 风暴分流的骰子效果（新版）
+// 命中时：如果本骰子被流强化过至少3次，则施加5层流血
+public class DiceCardAbility_SlazeyaBleed5OnFlow3 : DiceCardAbilityBase
+{
+    public static string Desc = "[On Hit] If this dice received at least 3 Flow enhancements, apply 5 Bleed";
+
+    public override void OnSucceedAttack(BattleUnitModel target)
+    {
+        if (target == null || this.card == null || this.behavior == null) return;
+
+        int flowEnhancementCount = HarmonyHelpers.GetFlowEnhancementCountForDice(this.card, this.behavior.Index);
+        Debug.Log($"[Steria] SlazeyaBleed5OnFlow3: Flow enhancement count = {flowEnhancementCount}");
+
+        if (flowEnhancementCount >= 3)
+        {
+            target.bufListDetail.AddKeywordBufByEtc(KeywordBuf.Bleeding, 5, owner);
+            Debug.Log($"[Steria] SlazeyaBleed5OnFlow3: Applied 5 Bleed to {target.UnitData?.unitData?.name}");
         }
     }
 }

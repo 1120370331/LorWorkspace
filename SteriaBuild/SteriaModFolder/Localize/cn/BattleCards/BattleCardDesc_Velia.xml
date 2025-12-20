@@ -4,7 +4,8 @@
     <!-- Velia Cards -->
     <BattleCardDesc ID="9004001">
       <Name>和谐共生</Name>
-      <Desc>使用时：恢复1点光芒</Desc>
+      <Desc>使用时：恢复1点光芒
+每拥有一层[潮]便使本骰子最小值+1</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9004002">
       <Name>传播希望</Name>
@@ -12,11 +13,12 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9004003">
       <Name>振作起来</Name>
-      <Desc>使用时：为血量最低的友方单位恢复5点血量和混乱抗性（每有一层[潮]使此效果+1）</Desc>
+      <Desc>使用时：为除自己外血量最低的友方单位恢复5点血量和混乱抗性（受[潮]加成）</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9004004">
       <Name>潮雾晨光</Name>
-      <Desc>使用时：下一幕开始时所有友方单位获得1层[强壮]，自身陷入眩晕并获得4层[守护]</Desc>
+      <Desc>自身每层[潮]使本书页骰子威力+1
+使用时：所有友方单位获得1层[强壮]（受[潮]加成），自身陷入眩晕并获得4层[守护]和4层[振奋]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9004005">
       <Name>潜力观测</Name>

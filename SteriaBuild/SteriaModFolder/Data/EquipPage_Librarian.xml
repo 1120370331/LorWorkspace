@@ -51,6 +51,7 @@
       <SBResist>Endure</SBResist>
       <PBResist>Normal</PBResist>
       <HBResist>Normal</HBResist>
+      <OnlyCard>9002005</OnlyCard>
       <Passive Pid="@origin">10008</Passive>
       <Passive Pid="@origin">250009</Passive>
       <Passive>9002001</Passive>
@@ -117,6 +118,9 @@
       <Passive>9004001</Passive>
       <Passive>9004002</Passive>
       <Passive>9004003</Passive>
+      <Passive>9004004</Passive>
+      <Passive>9004005</Passive>
+      <Passive>9004006</Passive>
     </EquipEffect>
     <Chapter>6</Chapter>
     <Episode>1</Episode>

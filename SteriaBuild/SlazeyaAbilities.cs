@@ -343,8 +343,10 @@ public class PassiveAbility_9002006 : PassiveAbilityBase
         new int[] { CARD_ALL_FLOW, CARD_CHASE_DREAM },          // 模式4额外卡牌
     };
 
-    // 循环顺序：1,2,1,2,3,1,2,4 (索引从0开始所以是0,1,0,1,2,0,1,3)
-    private static readonly int[] _sequence = new int[] { 0, 1, 0, 1, 2, 0, 1, 3 };
+    // 初始序列（幕1-4）：1,2,3,4 - 只走一遍
+    private static readonly int[] _initialSequence = new int[] { 0, 1, 2, 3 };
+    // 循环序列（幕5+）：1,2,3,1,3,4 - 重复123，再重复13，最后4
+    private static readonly int[] _loopSequence = new int[] { 0, 1, 2, 0, 2, 3 };
 
     public override void Init(BattleUnitModel self)
     {
@@ -365,22 +367,16 @@ public class PassiveAbility_9002006 : PassiveAbilityBase
         if (owner == null) return;
 
         int patternIndex;
-
-        // 第4幕(索引3)强制使用模式4
-        if (_roundCount == 3)
+        if (_roundCount < _initialSequence.Length)
         {
-            patternIndex = 3; // 模式4
-        }
-        else if (_roundCount < 3)
-        {
-            // 前3幕按顺序：1,2,1
-            patternIndex = _sequence[_roundCount];
+            // 幕1-4：使用初始序列
+            patternIndex = _initialSequence[_roundCount];
         }
         else
         {
-            // 第5幕开始，从循环的第4个位置继续（跳过已经用过的前4个）
-            int adjustedIndex = (_roundCount - 4) % _sequence.Length;
-            patternIndex = _sequence[adjustedIndex];
+            // 幕5+：使用循环序列
+            int loopIndex = (_roundCount - _initialSequence.Length) % _loopSequence.Length;
+            patternIndex = _loopSequence[loopIndex];
         }
         int[] cards = _patterns[patternIndex];
 

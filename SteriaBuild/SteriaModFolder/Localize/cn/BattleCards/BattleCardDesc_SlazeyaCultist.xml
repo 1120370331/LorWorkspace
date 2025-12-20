@@ -19,7 +19,7 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9002004">
       <Name>风暴分流</Name>
-      <Desc>本书页骰子至多可受5次[流]强化</Desc>
+      <Desc>本书页骰子至多可受3次[流]强化</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002005">
       <Name>倾覆万千之流</Name>
@@ -51,6 +51,11 @@
     <BattleCardDesc ID="9003004">
       <Name>逆转洋流</Name>
       <Desc>本书页骰子至多可受5次[流]强化</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9002008">
+      <Name>百川逐风</Name>
+      <Desc>本书页骰子至多可受2次[流]强化
+若自身[流]层数大于10，则消耗10层[流]随机对另一敌人重复使用本书页（每幕最多触发一次）</Desc>
     </BattleCardDesc>
   </cardDescList>
 </CardDescXmlRoot>
