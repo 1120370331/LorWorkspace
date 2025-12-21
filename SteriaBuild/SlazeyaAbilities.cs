@@ -14,6 +14,7 @@ using Steria;
 /// - 消耗流提升的骰子威力变为2（每消耗1层流，骰子获得+2威力）
 /// - 每造成10点伤害，下回合开始时获得1层流
 /// - 每消耗10层流，下回合获得1层强壮
+/// - 拼点失败时扣除自身1层流
 /// </summary>
 public class PassiveAbility_9002001 : PassiveAbilityBase
 {
@@ -74,6 +75,29 @@ public class PassiveAbility_9002001 : PassiveAbilityBase
         // 重置累积器
         _damageAccumulator = 0;
         _flowConsumedAccumulator = 0;
+    }
+
+    /// <summary>
+    /// 拼点失败时扣除自身1层流
+    /// </summary>
+    public override void OnLoseParrying(BattleDiceBehavior behavior)
+    {
+        base.OnLoseParrying(behavior);
+        if (owner == null) return;
+
+        // 查找流Buff
+        BattleUnitBuf_Flow flowBuf = owner.bufListDetail.GetActivatedBufList()
+            .FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
+
+        if (flowBuf != null && flowBuf.stack > 0)
+        {
+            flowBuf.stack -= 1;
+            SteriaLogger.Log($"神脉：梦之汐: {owner.UnitData?.unitData?.name} lost 1 flow on clash lose, remaining: {flowBuf.stack}");
+            if (flowBuf.stack <= 0)
+            {
+                flowBuf.Destroy();
+            }
+        }
     }
 
     /// <summary>
@@ -314,7 +338,7 @@ public class PassiveAbility_9002006 : PassiveAbilityBase
     private static readonly int CARD_ENDLESS_FLOW = 9002007;       // 随我流向无尽的尽头
     private static readonly int CARD_STORM_SPLIT = 9002004;        // 风暴分流
     private static readonly int CARD_ENDLESS_STREAM = 9002002;     // 川流不息
-    private static readonly int CARD_MASS_ATTACK = 9002005;        // 倾覆万千之流
+    private static readonly int CARD_MASS_ATTACK = 9002009;        // 倾覆万千之流
     private static readonly int CARD_HUNDRED_RIVERS = 9002008;     // 百川逐风
 
     // 每种模式的卡牌组合（基础版）
@@ -325,7 +349,7 @@ public class PassiveAbility_9002006 : PassiveAbilityBase
     private static readonly int[][] _patterns = new int[][]
     {
         new int[] { CARD_OCEAN_COMMAND, CARD_HUNDRED_RIVERS, CARD_CHASE_DREAM, CARD_ALL_FLOW },        // 模式1
-        new int[] { CARD_ENDLESS_FLOW, CARD_ALL_FLOW, CARD_STORM_SPLIT, CARD_CHASE_DREAM },            // 模式2
+        new int[] { CARD_ENDLESS_FLOW, CARD_ALL_FLOW, CARD_HUNDRED_RIVERS, CARD_CHASE_DREAM },            // 模式2
         new int[] { CARD_ALL_FLOW, CARD_STORM_SPLIT, CARD_HUNDRED_RIVERS, CARD_ENDLESS_STREAM },       // 模式3
         new int[] { CARD_MASS_ATTACK, CARD_CHASE_DREAM, CARD_HUNDRED_RIVERS, CARD_ENDLESS_STREAM },    // 模式4
     };
@@ -345,8 +369,8 @@ public class PassiveAbility_9002006 : PassiveAbilityBase
 
     // 初始序列（幕1-4）：1,2,3,4 - 只走一遍
     private static readonly int[] _initialSequence = new int[] { 0, 1, 2, 3 };
-    // 循环序列（幕5+）：1,2,3,1,3,4 - 重复123，再重复13，最后4
-    private static readonly int[] _loopSequence = new int[] { 0, 1, 2, 0, 2, 3 };
+    // 循环序列（幕5+）：2,3,1,3,4 - 重复23，再重复1次13，最后4
+    private static readonly int[] _loopSequence = new int[] { 1, 2, 0, 2, 3 };
 
     public override void Init(BattleUnitModel self)
     {

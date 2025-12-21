@@ -197,7 +197,7 @@ namespace Steria
         /// <summary>
         /// 通知所有相关被动流被消耗
         /// </summary>
-        private static void NotifyPassivesOnFlowConsumed(BattleUnitModel owner, int amount)
+        public static void NotifyPassivesOnFlowConsumed(BattleUnitModel owner, int amount)
         {
             if (owner == null || amount <= 0) return;
 
@@ -373,6 +373,9 @@ namespace Steria
                 flowBuf.Destroy();
             }
             SteriaLogger.Log($"RegisterCardUsage: Consumed {totalConsumed} flow, remaining: {flowBuf?.stack ?? 0}");
+
+            // 记录流消耗（供卡牌能力查询）
+            RecordFlowConsumptionForCard(card, totalConsumed);
 
             // 通知 PassiveAbility_9000005 (不会忘记的那个梦想)
             var passive9000005 = card.owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9000005) as PassiveAbility_9000005;

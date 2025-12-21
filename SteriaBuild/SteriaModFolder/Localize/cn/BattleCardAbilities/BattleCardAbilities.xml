@@ -131,7 +131,7 @@
       <Desc>[命中时] 如果本骰子被[流]强化过至少3次，则施加5层[流血]</Desc>
     </BattleCardAbility>
 
-    <!-- Card 9002005: 倾覆万千之流 -->
+    <!-- Card 9002009: 倾覆万千之流 -->
     <BattleCardAbility ID="SlazeyaMassAttackTeamLightGain">
       <Desc>[使用时] 消耗所有[流]（但不提供威力加成）。本书页每消耗5层[流]，下回合为所有友方单位恢复1点光芒</Desc>
     </BattleCardAbility>
@@ -142,6 +142,9 @@
     <!-- Card 9002006: 洋流，听我的号令 -->
     <BattleCardAbility ID="SlazeyaOceanCommand">
       <Desc>[流转] [使用时] 下回合获得3层[流]并抽取1张书页</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaOceanCommandV2">
+      <Desc>[流转] [回合开始时] 获得3层[流]，本回合本人书页受[流]加成时不再消耗[流]层数</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaClashLoseGainFlow3">
       <Desc>[拼点失败] 立刻获得3层[流]</Desc>

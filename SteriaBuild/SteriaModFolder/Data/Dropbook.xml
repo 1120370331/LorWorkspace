@@ -7,7 +7,7 @@
     <BookIcon />
     <Chapter>6</Chapter>
     <BookValue>0</BookValue>
-    <DropItem Type="Equip">10000001</DropItem>
+    <DropItem Type="Equip">99000001</DropItem>
   </BookUse>
     <BookUse ID="2">
     <Name>斯拉泽雅之书</Name>
@@ -15,7 +15,7 @@
     <BookIcon />
     <Chapter>6</Chapter>
     <BookValue>0</BookValue>
-    <DropItem Type="Equip">10000002</DropItem>
+    <DropItem Type="Equip">99000002</DropItem>
   </BookUse>
   <BookUse ID="3">
     <Name>司流者教徒之书</Name>
@@ -23,7 +23,7 @@
     <BookIcon />
     <Chapter>6</Chapter>
     <BookValue>0</BookValue>
-    <DropItem Type="Equip">10000003</DropItem>
+    <DropItem Type="Equip">99000003</DropItem>
   </BookUse>
   <BookUse ID="4">
     <Name>薇莉亚之书</Name>
@@ -31,6 +31,6 @@
     <BookIcon />
     <Chapter>6</Chapter>
     <BookValue>0</BookValue>
-    <DropItem Type="Equip">10000004</DropItem>
+    <DropItem Type="Equip">99000004</DropItem>
   </BookUse>
 </BookUseXmlRoot>

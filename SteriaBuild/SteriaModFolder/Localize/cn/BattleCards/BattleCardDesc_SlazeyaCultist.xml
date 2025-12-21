@@ -21,14 +21,14 @@
       <Name>风暴分流</Name>
       <Desc>本书页骰子至多可受3次[流]强化</Desc>
     </BattleCardDesc>
-    <BattleCardDesc ID="9002005">
+    <BattleCardDesc ID="9002009">
       <Name>倾覆万千之流</Name>
       <Desc>使用时：消耗所有[流]（但不提供威力加成）。本书页每消耗5层[流]，下回合为所有友方单位恢复1点光芒</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002006">
       <Name>洋流，听我的号令</Name>
       <Desc>[流转]
-使用时：下回合获得3层[流]并抽取1张书页</Desc>
+回合开始时：获得3层[流]，本回合本人书页受[流]加成时不再消耗[流]层数</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002007">
       <Name>随我流向无尽的尽头</Name>

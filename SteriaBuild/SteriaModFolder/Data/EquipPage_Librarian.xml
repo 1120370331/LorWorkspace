@@ -2,7 +2,7 @@
 <BookXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Version>1.1</Version>
 
-  <Book ID="10000001">
+  <Book ID="99000001">
     <Name>安希尔</Name>
     <TextId>-1</TextId>
     <DropTable>1</DropTable>
@@ -34,7 +34,7 @@
     <CharacterSkinType>Lor</CharacterSkinType>
   </Book>
 
-  <Book ID="10000002">
+  <Book ID="99000002">
     <Name>斯拉泽雅</Name>
     <TextId>-1</TextId>
     <DropTable>2</DropTable>
@@ -51,7 +51,7 @@
       <SBResist>Endure</SBResist>
       <PBResist>Normal</PBResist>
       <HBResist>Normal</HBResist>
-      <OnlyCard>9002005</OnlyCard>
+      <OnlyCard>9002009</OnlyCard>
       <Passive Pid="@origin">10008</Passive>
       <Passive Pid="@origin">250009</Passive>
       <Passive>9002001</Passive>
@@ -66,7 +66,7 @@
     <CharacterSkinType>Lor</CharacterSkinType>
   </Book>
 
-  <Book ID="10000003">
+  <Book ID="99000003">
     <Name>司流者教徒</Name>
     <TextId>-1</TextId>
     <DropTable>3</DropTable>
@@ -96,7 +96,7 @@
     <CharacterSkinType>Lor</CharacterSkinType>
   </Book>
 
-  <Book ID="10000004">
+  <Book ID="99000004">
     <Name>薇莉亚</Name>
     <TextId>-1</TextId>
     <DropTable>4</DropTable>

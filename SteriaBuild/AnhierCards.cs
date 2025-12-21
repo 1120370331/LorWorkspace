@@ -300,6 +300,9 @@ public class DiceCardAbility_AnhierQingSiFengLiuDice1 : DiceCardAbilityBase
             flowBuf.stack -= 10;
             SteriaLogger.Log($"清司风流 Dice1: Consumed 10 flow, remaining = {flowBuf.stack}");
 
+            // 通知被动流被消耗
+            HarmonyHelpers.NotifyPassivesOnFlowConsumed(this.owner, 10);
+
             if (flowBuf.stack <= 0)
             {
                 flowBuf.Destroy();
