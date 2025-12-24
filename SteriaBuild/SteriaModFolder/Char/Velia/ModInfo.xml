@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModInfo Extended="true">
+  <ClothInfo>
+    <Name>Velia</Name>
+
+    <!-- 默认站姿 -->
+    <Default size_x="688" size_y="768" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-200" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Default>
+
+    <!-- 斩击 -->
+    <Slash size_x="688" size_y="768" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-200" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash>
+
+    <!-- 打击 -->
+    <Hit size_x="688" size_y="768" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-200" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Hit>
+
+    <!-- 穿刺 -->
+    <Penetrate size_x="688" size_y="768" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-200" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Penetrate>
+
+    <!-- 防御 -->
+    <Guard size_x="688" size_y="768" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-200" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Guard>
+
+    <!-- 闪避 -->
+    <Evade size_x="688" size_y="768" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-200" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Evade>
+
+    <!-- 受伤 -->
+    <Damaged size_x="688" size_y="768" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-200" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Damaged>
+
+    <!-- 特殊动作(群攻施法) -->
+    <Special size_x="688" size_y="768" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-200" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Special>
+
+  </ClothInfo>
+</ModInfo>

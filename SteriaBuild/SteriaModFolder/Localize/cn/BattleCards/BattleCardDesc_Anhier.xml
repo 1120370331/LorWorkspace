@@ -40,7 +40,7 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9001009">
       <Name>以执为攻</Name>
-      <Desc>本舞台中，每弃置5张书页便使本书页骰子威力+1</Desc>
+      <Desc>本舞台中，每弃置4张书页便使本书页骰子威力+1</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001010">
       <Name>寒地后勤</Name>
@@ -51,6 +51,11 @@
       <Name>自我之流</Name>
       <Desc>[使用时] 扣除25点生命值，获得10层[流]
 冷却时间：4幕</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9001012">
+      <Name>忘却之梦</Name>
+      <Desc>[使用时] 下回合使自身陷入混乱
+本舞台中，每弃置1张书页便使本书页骰子威力+1</Desc>
     </BattleCardDesc>
   </cardDescList>
 </CardDescXmlRoot>

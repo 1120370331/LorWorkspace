@@ -309,6 +309,39 @@ namespace Steria
             }
         };
 
+        /// <summary>
+        /// 暗紫色斩击配置（忘却之梦用）
+        /// 持续时间较长，帅气的暗紫色特效
+        /// </summary>
+        public static SteriaEffectConfig DarkPurpleSlash => new SteriaEffectConfig
+        {
+            EffectName = "DarkPurpleSlash",
+            Duration = 0.7f,  // 较长持续时间
+            FadeInEnd = 0.1f,
+            FadeOutStart = 0.5f,
+            MaxAlpha = 1.8f,
+            Target = EffectTarget.Self,
+            ActionType = EffectActionType.Slash,
+            RootOffset = new Vector3(0f, 0f, -0.5f),
+            Shake = new ShakeConfig(0.025f, 0.02f, 60f, 0.4f),  // 较强震动
+            Quads = new[]
+            {
+                new QuadEffectConfig
+                {
+                    TextureName = "water_slash",  // 复用水系斩击图片
+                    LocalPosition = new Vector3(0f, 0f, 0f),
+                    RotationZ = 0f,
+                    BaseScale = 2.5f,  // 较大尺寸
+                    ScaleMultiplierStart = 0.4f,
+                    ScaleMultiplierEnd = 1.5f,
+                    AnimateScale = true,
+                    AnimatePosition = true,
+                    PositionOffset = new Vector3(0f, -0.4f, 0f),
+                    Tint = new Color(0.6f, 0.3f, 0.9f)  // 暗紫色
+                }
+            }
+        };
+
         #endregion
     }
 }

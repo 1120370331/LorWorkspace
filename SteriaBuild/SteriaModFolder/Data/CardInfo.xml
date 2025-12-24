@@ -51,8 +51,8 @@
       <Ability Script="AnhierDiscardAllDraw" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="AnhierClashWinDraw1" ActionScript="" Desc="" />
-      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AnhierGainLight1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="AnhierClashWinDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AnhierGainLight1" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -315,7 +315,7 @@
       <Ability Script="SlazeyaMassAttackTeamLightGain"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="16" Dice="26" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_WaterSlash" Script="SlazeyaMassAttackBonusDamage" ActionScript="" Desc=""/>
+      <Behaviour Min="16" Dice="26" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_WaterSlash" Script="SlazeyaMassAttackBonusDamage" ActionScript="Steria_OceanWave" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>9000</Priority>
@@ -387,7 +387,7 @@
   <Card ID="9003001">
     <Name>虔诚司流</Name>
     <TextId>-1</TextId>
-    <Artwork>Placeholder.png</Artwork>
+    <Artwork>9003001.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Far" Cost="0" />
     <Script>CultistGainFlow3NextTurn</Script>
@@ -405,7 +405,7 @@
   <Card ID="9003002">
     <Name>遵循流转</Name>
     <TextId>-1</TextId>
-    <Artwork>Placeholder.png</Artwork>
+    <Artwork>9003002.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Near" Cost="1" />
     <Script>CultistFlow2CheckGainLightDraw</Script>
@@ -424,7 +424,7 @@
   <Card ID="9003003">
     <Name>洋流汇聚</Name>
     <TextId>-1</TextId>
-    <Artwork>Placeholder.png</Artwork>
+    <Artwork>9003003.png</Artwork>
     <Rarity>Uncommon</Rarity>
     <Spec Range="Near" Cost="2" />
     <Script>CultistGainFlowAllyCountNextTurn</Script>
@@ -463,7 +463,7 @@
   <Card ID="9003005">
     <Name>顺流而为</Name>
     <TextId>-1</TextId>
-    <Artwork>Placeholder.png</Artwork>
+    <Artwork>9003005.png</Artwork>
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="2" />
     <Script>CultistFlowPowerBonus</Script>
@@ -485,7 +485,7 @@
   <Card ID="9004001">
     <Name>和谐共生</Name>
     <TextId>-1</TextId>
-    <Artwork>Placeholder.png</Artwork>
+    <Artwork>9004001.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Near" Cost="0" />
     <Script>VeliaHarmony</Script>
@@ -504,7 +504,7 @@
   <Card ID="9004002">
     <Name>传播希望</Name>
     <TextId>-1</TextId>
-    <Artwork>Placeholder.png</Artwork>
+    <Artwork>9004002.png</Artwork>
     <Rarity>Uncommon</Rarity>
     <Spec Range="Near" Cost="1" />
     <Script>VeliaSpreadHope</Script>
@@ -524,7 +524,7 @@
   <Card ID="9004003">
     <Name>振作起来</Name>
     <TextId>-1</TextId>
-    <Artwork>Placeholder.png</Artwork>
+    <Artwork>9004003.png</Artwork>
     <Rarity>Uncommon</Rarity>
     <Spec Range="Near" Cost="2" />
     <Script>VeliaCheerUp</Script>
@@ -544,13 +544,13 @@
   <Card ID="9004004">
     <Name>潮雾晨光</Name>
     <TextId>-1</TextId>
-    <Artwork>Placeholder.png</Artwork>
+    <Artwork>9004004.png</Artwork>
     <Rarity>Unique</Rarity>
     <Spec Range="FarAreaEach" Cost="4" Affection="Team"/>
     <Script>VeliaTideMist</Script>
     <BehaviourList>
-      <Behaviour Min="1" Dice="3" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealHP" ActionScript="" Desc=""/>
-      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealBP" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="3" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealHP" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealBP" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>200</Priority>
@@ -560,7 +560,7 @@
   <Card ID="9004005">
     <Name>潜力观测</Name>
     <TextId>-1</TextId>
-    <Artwork>Placeholder.png</Artwork>
+    <Artwork>9004005.png</Artwork>
     <Rarity>Unique</Rarity>
     <Spec Range="Instance" Cost="0" />
     <Option>EgoPersonal</Option>
@@ -577,4 +577,23 @@
     <Priority>0</Priority>
   </Card>
   <!-- Velia Cards End -->
+
+  <!-- 忘却之梦 (安希尔EGO) -->
+  <Card ID="9001012">
+    <Name>忘却之梦</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001012.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Option>EgoPersonal</Option>
+    <Option>OnlyPage</Option>
+    <Script>AnhierForgottenDream</Script>
+    <BehaviourList>
+      <Behaviour Min="10" Dice="23" Type="Atk" Detail="Slash" Motion="Z" EffectRes="Steria_DarkPurpleSlash" Script="AnhierForgottenDreamDice1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
 </DiceCardXmlRoot>

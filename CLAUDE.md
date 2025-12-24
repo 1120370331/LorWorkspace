@@ -91,6 +91,5 @@ private static readonly HashSet<int> _flowBonusOnlyCardIds = new HashSet<int>
 ```
 
 ## 日志文件
-日志输出到：`c:\Users\rog\WorkSpace\projects\games\lor\SteriaBuild\SteriaModFolder\steria_log.txt`
 上一次游戏运行的日志在本电脑的位置：
-C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Mods\SteriaModFolder\steria_log.txt
+C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Mods\SteriaModFolder\Steria.log

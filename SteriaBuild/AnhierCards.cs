@@ -317,10 +317,10 @@ public class DiceCardAbility_AnhierQingSiFengLiuDice1 : DiceCardAbilityBase
 #endregion
 
 #region 以执为攻 (ID: 9001009) On Use
-// 本舞台中，每弃置5张书页便使本书页骰子威力+1（按角色独立计数）
+// 本舞台中，每弃置4张书页便使本书页骰子威力+1（按角色独立计数）
 public class DiceCardSelfAbility_AnhierDiscardPowerUp : DiceCardSelfAbilityBase
 {
-    public static string Desc = "本舞台中，每弃置5张书页便使本书页骰子威力+1";
+    public static string Desc = "本舞台中，每弃置4张书页便使本书页骰子威力+1";
 
     // 按角色存储弃牌计数
     private static Dictionary<BattleUnitModel, int> _discardCountPerUnit = new Dictionary<BattleUnitModel, int>();
@@ -350,7 +350,7 @@ public class DiceCardSelfAbility_AnhierDiscardPowerUp : DiceCardSelfAbilityBase
     public override void OnUseCard()
     {
         int discardCount = GetDiscardCount(this.owner);
-        int powerBonus = discardCount / 5;
+        int powerBonus = discardCount / 4;
         SteriaLogger.Log($"以执为攻: OnUseCard - {this.owner?.UnitData?.unitData?.name} discards: {discardCount}, Power bonus: +{powerBonus}");
 
         if (powerBonus > 0)
@@ -458,6 +458,89 @@ public class DiceCardSelfAbility_AnhierSelfFlow : DiceCardSelfAbilityBase
 
         // 设置自定义冷却
         Steria.SteriaEgoCooldownManager.StartCooldown(unit, CARD_ID);
+    }
+}
+#endregion
+
+#region 忘却之梦 (ID: 9001012) - 安希尔EGO
+/// <summary>
+/// 忘却之梦 - 使用时效果
+/// [使用时] 下回合使自身陷入混乱
+/// </summary>
+public class DiceCardSelfAbility_AnhierForgottenDream : DiceCardSelfAbilityBase
+{
+    private const string MOD_ID = "SteriaBuilding";
+    private const int FORGOTTEN_DREAM_CARD_ID = 9001012;
+
+    public static string Desc = "[使用时] 下回合使自身陷入混乱";
+
+    public override void OnUseCard()
+    {
+        // 下回合使自身陷入混乱
+        if (this.owner != null)
+        {
+            // 添加一个buff，在回合结束时触发混乱
+            this.owner.bufListDetail.AddBuf(new BattleUnitBuf_ForgottenDreamStagger());
+            SteriaLogger.Log("忘却之梦: 下回合将陷入混乱");
+
+            // 从EGO装备区移除此卡牌（消耗）
+            LorId cardId = new LorId(MOD_ID, FORGOTTEN_DREAM_CARD_ID);
+            this.owner.personalEgoDetail.RemoveCard(cardId);
+            SteriaLogger.Log("忘却之梦: 已从EGO装备区移除");
+        }
+
+        // 应用弃牌威力加成
+        int discardCount = DiceCardSelfAbility_AnhierDiscardPowerUp.GetDiscardCount(this.owner);
+        if (discardCount > 0)
+        {
+            foreach (BattleDiceBehavior behavior in this.card.GetDiceBehaviorList())
+            {
+                behavior.ApplyDiceStatBonus(new DiceStatBonus { power = discardCount });
+            }
+            SteriaLogger.Log($"忘却之梦: 弃牌威力加成 +{discardCount}");
+        }
+    }
+}
+
+/// <summary>
+/// 忘却之梦骰子1 - 命中时追加伤害
+/// [命中时] 对敌人追加"本舞台本角色已消耗流"点伤害
+/// </summary>
+public class DiceCardAbility_AnhierForgottenDreamDice1 : DiceCardAbilityBase
+{
+    public static string Desc = "[命中时] 对敌人追加本舞台已消耗流层数的伤害";
+
+    public override void OnSucceedAttack(BattleUnitModel target)
+    {
+        if (target == null || this.owner == null) return;
+
+        // 获取本舞台已消耗的流总数
+        int flowConsumed = PassiveAbility_9000005.GetTotalFlowConsumedThisStage(this.owner);
+
+        if (flowConsumed > 0)
+        {
+            target.TakeDamage(flowConsumed, DamageType.Card_Ability, this.owner, KeywordBuf.None);
+            SteriaLogger.Log($"忘却之梦: 追加 {flowConsumed} 点伤害（本舞台已消耗流）");
+        }
+    }
+}
+
+/// <summary>
+/// 忘却之梦 - 下回合混乱Buff
+/// </summary>
+public class BattleUnitBuf_ForgottenDreamStagger : BattleUnitBuf
+{
+    public override BufPositiveType positiveType => BufPositiveType.Negative;
+
+    public override void OnRoundEnd()
+    {
+        if (_owner != null && !_owner.IsDead())
+        {
+            // 在回合结束时使自身陷入混乱，这样下回合会眩晕恢复
+            _owner.breakDetail.TakeBreakDamage(9999, DamageType.Buf, null, AtkResist.Normal);
+            SteriaLogger.Log("忘却之梦: 陷入混乱");
+        }
+        this.Destroy();
     }
 }
 #endregion

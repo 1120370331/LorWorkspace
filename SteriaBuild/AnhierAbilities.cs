@@ -352,21 +352,42 @@ public class PassiveAbility_9000004 : PassiveAbilityBase
 
 // 不会忘记的那个梦想 (ID: 9000005)
 // 每消耗5层流，下回合开始时将1张珍贵的回忆置入手牌
+// 弃置3张珍贵的回忆后，停止触发此被动，并将"忘却之梦"置入EGO装备区
 public class PassiveAbility_9000005 : PassiveAbilityBase
 {
-    private const int FLOW_COST_PER_EFFECT = 5; // 削弱门槛：6→5
-    private int _internalFlowCounter = 0;
-    private int _cardsToAddNextRound = 0; // 下回合需要添加的卡牌数量
+    private const int FLOW_COST_PER_EFFECT = 5;
+    private const int PRECIOUS_MEMORY_DISCARD_THRESHOLD = 3;
+    private const int PRECIOUS_MEMORY_CARD_ID = 9001006;
+    private const int FORGOTTEN_DREAM_CARD_ID = 9001012; // 忘却之梦
     private const string MOD_ID = "SteriaBuilding";
+
+    private int _internalFlowCounter = 0;
+    private int _cardsToAddNextRound = 0;
+    private int _preciousMemoryDiscardCount = 0; // 弃置珍贵回忆计数
+    private bool _passiveDisabled = false; // 被动是否已停止触发
+    private bool _forgottenDreamAdded = false; // 是否已添加忘却之梦
+
+    public override void OnWaveStart()
+    {
+        base.OnWaveStart();
+        _internalFlowCounter = 0;
+        _cardsToAddNextRound = 0;
+        _preciousMemoryDiscardCount = 0;
+        _passiveDisabled = false;
+        _forgottenDreamAdded = false;
+    }
 
     public override void OnRoundStart()
     {
         base.OnRoundStart();
 
+        // 被动已停止则不添加珍贵的回忆
+        if (_passiveDisabled) return;
+
         // 下回合开始时添加珍贵的回忆
         if (_cardsToAddNextRound > 0 && this.owner != null && !this.owner.IsDead())
         {
-            LorId preciousMemoryId = new LorId(MOD_ID, 9001006);
+            LorId preciousMemoryId = new LorId(MOD_ID, PRECIOUS_MEMORY_CARD_ID);
             for (int i = 0; i < _cardsToAddNextRound; i++)
             {
                 SteriaLogger.Log($"不会忘记的那个梦想: 将珍贵的回忆置入手牌 ({i + 1}/{_cardsToAddNextRound})");
@@ -378,10 +399,13 @@ public class PassiveAbility_9000005 : PassiveAbilityBase
 
     public void OnFlowConsumed(int amountConsumed)
     {
-        if (amountConsumed <= 0) return;
+        if (amountConsumed <= 0 || _passiveDisabled) return;
+
+        // 记录总消耗的流（用于忘却之梦追伤计算）
+        _totalFlowConsumedThisStage += amountConsumed;
 
         _internalFlowCounter += amountConsumed;
-        SteriaLogger.Log($"不会忘记的那个梦想: 消耗了{amountConsumed}层流，累计{_internalFlowCounter}/{FLOW_COST_PER_EFFECT}");
+        SteriaLogger.Log($"不会忘记的那个梦想: 消耗了{amountConsumed}层流，累计{_internalFlowCounter}/{FLOW_COST_PER_EFFECT}，总消耗{_totalFlowConsumedThisStage}");
 
         int cardsToAdd = _internalFlowCounter / FLOW_COST_PER_EFFECT;
         if (cardsToAdd > 0)
@@ -390,5 +414,71 @@ public class PassiveAbility_9000005 : PassiveAbilityBase
             _internalFlowCounter %= FLOW_COST_PER_EFFECT;
             SteriaLogger.Log($"不会忘记的那个梦想: 下回合将获得{cardsToAdd}张珍贵的回忆（累计{_cardsToAddNextRound}张）");
         }
+    }
+
+    /// <summary>
+    /// 当珍贵的回忆被弃置时调用
+    /// </summary>
+    public void OnPreciousMemoryDiscarded()
+    {
+        if (_passiveDisabled) return;
+
+        _preciousMemoryDiscardCount++;
+        SteriaLogger.Log($"不会忘记的那个梦想: 珍贵的回忆被弃置，计数 {_preciousMemoryDiscardCount}/{PRECIOUS_MEMORY_DISCARD_THRESHOLD}");
+
+        if (_preciousMemoryDiscardCount >= PRECIOUS_MEMORY_DISCARD_THRESHOLD)
+        {
+            _passiveDisabled = true;
+            SteriaLogger.Log("不会忘记的那个梦想: 被动已停止触发");
+            AddForgottenDreamToEgo();
+        }
+    }
+
+    private void AddForgottenDreamToEgo()
+    {
+        if (_forgottenDreamAdded || this.owner == null || this.owner.IsDead()) return;
+
+        _forgottenDreamAdded = true;
+        LorId forgottenDreamId = new LorId(MOD_ID, FORGOTTEN_DREAM_CARD_ID);
+
+        // 调试：检查卡牌是否存在
+        var cardItem = ItemXmlDataList.instance.GetCardItem(forgottenDreamId, true);
+        if (cardItem == null)
+        {
+            SteriaLogger.Log($"不会忘记的那个梦想: 错误 - 找不到卡牌 {forgottenDreamId}");
+            return;
+        }
+        SteriaLogger.Log($"不会忘记的那个梦想: 找到卡牌 {cardItem.Name}, IsPersonal={cardItem.IsPersonal()}, IsEgo={cardItem.IsEgo()}");
+
+        // 敌人单位：直接置入手牌
+        if (this.owner.faction == Faction.Enemy)
+        {
+            this.owner.allyCardDetail.AddNewCard(forgottenDreamId);
+            SteriaLogger.Log("不会忘记的那个梦想: 敌人单位 - 将忘却之梦直接置入手牌");
+        }
+        else
+        {
+            // 玩家单位：置入EGO装备区
+            // 使用 true 参数确保能找到mod卡牌
+            this.owner.personalEgoDetail.AddCard(forgottenDreamId);
+            SteriaLogger.Log($"不会忘记的那个梦想: 将忘却之梦置入EGO装备区, 当前EGO数量={this.owner.personalEgoDetail.GetCardAll().Count}");
+        }
+    }
+
+    /// <summary>
+    /// 获取本舞台已消耗的流总数（用于忘却之梦的伤害计算）
+    /// </summary>
+    public static int GetTotalFlowConsumedThisStage(BattleUnitModel unit)
+    {
+        // 从被动中获取累计消耗的流
+        var passive = unit?.passiveDetail?.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9000005) as PassiveAbility_9000005;
+        return passive?._totalFlowConsumedThisStage ?? 0;
+    }
+
+    private int _totalFlowConsumedThisStage = 0;
+
+    public void RecordFlowConsumed(int amount)
+    {
+        _totalFlowConsumedThisStage += amount;
     }
 }

@@ -573,6 +573,15 @@ namespace Steria
             {
                 SteriaLogger.LogError($"消耗珍贵的回忆失败: {ex.Message}");
             }
+
+            // 通知 PassiveAbility_9000005 (不会忘记的那个梦想) 珍贵的回忆被弃置
+            var passive9000005 = owner.passiveDetail.PassiveList?
+                .FirstOrDefault(p => p is PassiveAbility_9000005) as PassiveAbility_9000005;
+            if (passive9000005 != null)
+            {
+                passive9000005.OnPreciousMemoryDiscarded();
+                SteriaLogger.Log("通知了 PassiveAbility_9000005 珍贵的回忆被弃置");
+            }
         }
 
 
@@ -1002,6 +1011,7 @@ namespace Steria
             SteriaCustomEffects["Steria_WaterFarHit"] = typeof(DiceAttackEffect_Steria_WaterFarHit);
             SteriaCustomEffects["Steria_WaterPierce"] = typeof(DiceAttackEffect_Steria_WaterPierce);
             SteriaCustomEffects["Steria_WaterSurround"] = typeof(DiceAttackEffect_Steria_WaterSurround);
+            SteriaCustomEffects["Steria_DarkPurpleSlash"] = typeof(DiceAttackEffect_Steria_DarkPurpleSlash);
 
             SteriaLogger.Log($"Initialized {SteriaCustomEffects.Count} custom effects");
             foreach (var kvp in SteriaCustomEffects)
@@ -1158,6 +1168,7 @@ namespace Steria
             KeywordBuf.Binding,       // 束缚
             KeywordBuf.Paralysis,     // 麻痹
             KeywordBuf.Decay,         // 腐蚀
+            KeywordBuf.Smoke,         // 烟气
         };
 
         /// <summary>

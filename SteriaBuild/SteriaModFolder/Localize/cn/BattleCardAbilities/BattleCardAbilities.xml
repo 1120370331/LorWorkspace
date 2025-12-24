@@ -82,7 +82,15 @@
 
     <!-- Card 9001009: 以执为攻 -->
     <BattleCardAbility ID="AnhierDiscardPowerUp">
-      <Desc>[使用时] 本幕每弃置过1张书页，本书页所有骰子威力+1</Desc>
+      <Desc>[使用时] 本舞台中，每弃置4张书页便使本书页骰子威力+1</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9001012: 忘却之梦 -->
+    <BattleCardAbility ID="AnhierForgottenDream">
+      <Desc>[使用时] 下回合使自身陷入混乱；本舞台中，每弃置1张书页便使本书页骰子威力+1</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AnhierForgottenDreamDice1">
+      <Desc>[命中时] 对敌人追加本舞台已消耗流层数的伤害</Desc>
     </BattleCardAbility>
 
     <!-- ========== 斯拉泽雅卡牌能力 ========== -->

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BattleDialogRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Version>1.1</Version>
+  <GroupName>Steria</GroupName>
+
+  <!-- 斯拉泽雅 Enemy ID=2 -->
+  <Character ID="2">
+    <Type ID="START_BATTLE">
+      <BattleDialog ID="START_BATTLE_0">欢迎来到潮汐的领域。</BattleDialog>
+      <BattleDialog ID="START_BATTLE_1">顺应流向吧。</BattleDialog>
+    </Type>
+    <Type ID="BATTLE_VICTORY">
+      <BattleDialog ID="BATTLE_VICTORY_0">这就是流的力量。</BattleDialog>
+    </Type>
+    <Type ID="DEATH">
+      <BattleDialog ID="DEATH_0">潮汐...终将回归...</BattleDialog>
+    </Type>
+  </Character>
+
+</BattleDialogRoot>

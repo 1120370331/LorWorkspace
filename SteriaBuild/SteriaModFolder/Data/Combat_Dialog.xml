@@ -1,11 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <BattleDialogRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Version>1.1</Version>
+
+  <!-- 安希尔 - 前佣兵，现司流者，为保护教团而战 -->
   <Character ID="1">
-    <Type ID="START_BATTLE" />
-    <Type ID="BATTLE_VICTORY" />
-    <Type ID="DEATH" />
-    <Type ID="COLLEAGUE_DEATH" />
-    <Type ID="KILLS_OPPONENT" />
+    <Type ID="START_BATTLE">
+      <Dialog>……为了守护这里，我会燃烧一切。</Dialog>
+      <Dialog>抱歉，但我不能让你们再前进一步。</Dialog>
+      <Dialog>这次，我不会再逃了。</Dialog>
+    </Type>
+    <Type ID="BATTLE_VICTORY">
+      <Dialog>……结束了。</Dialog>
+      <Dialog>这就是我存在的价值。</Dialog>
+    </Type>
+    <Type ID="DEATH">
+      <Dialog>薇莉亚……对不起……</Dialog>
+      <Dialog>至少……我没有再逃……</Dialog>
+    </Type>
+    <Type ID="COLLEAGUE_DEATH">
+      <Dialog>……！不……！</Dialog>
+      <Dialog>我会替你报仇的……！</Dialog>
+    </Type>
+    <Type ID="KILLS_OPPONENT">
+      <Dialog>……安息吧。</Dialog>
+      <Dialog>这是为了保护我珍视的一切。</Dialog>
+    </Type>
   </Character>
+
+  <!-- 斯拉泽雅 - 梦想教皇，教团领袖，从容而强大 -->
+  <Character ID="2">
+    <Type ID="START_BATTLE">
+      <Dialog>潮汐的意志，将由我来贯彻。</Dialog>
+      <Dialog>你们的到来，早已在浪潮中显现。</Dialog>
+      <Dialog>让我看看，你们能否逆流而上。</Dialog>
+    </Type>
+    <Type ID="BATTLE_VICTORY">
+      <Dialog>一切都在潮汐的预示之中。</Dialog>
+      <Dialog>顺流者生，逆流者亡。</Dialog>
+    </Type>
+    <Type ID="DEATH">
+      <Dialog>潮汐……会指引……新的方向……</Dialog>
+      <Dialog>梦想……不会就此终结……</Dialog>
+    </Type>
+    <Type ID="COLLEAGUE_DEATH">
+      <Dialog>……你的牺牲，潮汐会铭记。</Dialog>
+      <Dialog>回归大海吧，我的孩子。</Dialog>
+    </Type>
+    <Type ID="KILLS_OPPONENT">
+      <Dialog>这是潮汐的裁决。</Dialog>
+      <Dialog>逆流者，终将被浪潮吞没。</Dialog>
+    </Type>
+  </Character>
+
+  <!-- 司流者教徒 - 狂热信徒，极端而虔诚 -->
+  <Character ID="3">
+    <Type ID="START_BATTLE">
+      <Dialog>大海的敌人……必须清除！</Dialog>
+      <Dialog>为了净化杂质，献上我的刀刃！</Dialog>
+      <Dialog>亵渎者！你们将在窒息中聆听大海的教诲！</Dialog>
+    </Type>
+    <Type ID="BATTLE_VICTORY">
+      <Dialog>赞美大海！杂质已被清除！</Dialog>
+      <Dialog>这就是违抗潮汐的下场！</Dialog>
+    </Type>
+    <Type ID="DEATH">
+      <Dialog>大海……我回来了……</Dialog>
+      <Dialog>能为潮汐献身……是我的荣幸……</Dialog>
+    </Type>
+    <Type ID="COLLEAGUE_DEATH">
+      <Dialog>你已回归母亲的怀抱……安息吧！</Dialog>
+      <Dialog>我会替你完成净化的！</Dialog>
+    </Type>
+    <Type ID="KILLS_OPPONENT">
+      <Dialog>哈哈哈！去喂鱼吧！</Dialog>
+      <Dialog>杂质……已被剔除。</Dialog>
+      <Dialog>这就是不敬大海的下场！</Dialog>
+    </Type>
+  </Character>
+
+  <!-- 薇莉亚 - 司潮者，温柔善良但坚定 -->
+  <Character ID="4">
+    <Type ID="START_BATTLE">
+      <Dialog>潮汐告诉我……必须阻止你们。</Dialog>
+      <Dialog>我不想伤害任何人……但这是潮汐的指引。</Dialog>
+      <Dialog>请回去吧……我不想让更多人受伤。</Dialog>
+    </Type>
+    <Type ID="BATTLE_VICTORY">
+      <Dialog>……对不起。</Dialog>
+      <Dialog>潮汐的指引……是正确的。</Dialog>
+    </Type>
+    <Type ID="DEATH">
+      <Dialog>安希尔……大家……对不起……</Dialog>
+      <Dialog>潮汐……会继续指引……大家的……</Dialog>
+    </Type>
+    <Type ID="COLLEAGUE_DEATH">
+      <Dialog>不……！为什么……！</Dialog>
+      <Dialog>潮汐啊……请指引他的灵魂……</Dialog>
+    </Type>
+    <Type ID="KILLS_OPPONENT">
+      <Dialog>……我很抱歉。</Dialog>
+      <Dialog>愿你的灵魂……能找到安宁。</Dialog>
+    </Type>
+  </Character>
+
 </BattleDialogRoot>

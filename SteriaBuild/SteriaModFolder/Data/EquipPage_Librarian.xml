@@ -118,7 +118,6 @@
       <Passive>9004001</Passive>
       <Passive>9004002</Passive>
       <Passive>9004003</Passive>
-      <Passive>9004004</Passive>
       <Passive>9004005</Passive>
       <Passive>9004006</Passive>
     </EquipEffect>
@@ -126,8 +125,8 @@
     <Episode>1</Episode>
     <Rarity>Rare</Rarity>
     <RangeType>Melee</RangeType>
-    <CharacterSkin>Bada</CharacterSkin>
-    <CharacterSkinType>Lor</CharacterSkinType>
+    <CharacterSkin>Velia</CharacterSkin>
+    <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
 </BookXmlRoot>
