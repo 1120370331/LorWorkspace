@@ -16,22 +16,22 @@ using Steria; // Added to access HarmonyHelpers
 // SlazeyaGainFlow2NextTurn (Card Self Ability) - 逐梦随流
 public class DiceCardSelfAbility_SlazeyaGainFlow2NextTurn : DiceCardSelfAbilityBase
 {
-    public static string Desc = "[On Use] Next turn gain 2 Flow";
+    public static string Desc = "[On Use] Next turn gain 1 Flow"; // 削弱：2→1
 
     public override void OnUseCard()
     {
-        owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 2 });
+        owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 1 }); // 削弱：2→1
     }
 }
 
 // SlazeyaGainFlow3NextTurn (Card Self Ability) - 川流不息
 public class DiceCardSelfAbility_SlazeyaGainFlow3NextTurn : DiceCardSelfAbilityBase
 {
-    public static string Desc = "[On Use] Next turn gain 3 Flow";
+    public static string Desc = "[On Use] Next turn gain 2 Flow"; // 削弱：3→2
 
     public override void OnUseCard()
     {
-        owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 3 });
+        owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 2 }); // 削弱：3→2
     }
 }
 
@@ -51,33 +51,33 @@ public class DiceCardSelfAbility_SlazeyaOceanCommand : DiceCardSelfAbilityBase
 }
 
 // SlazeyaOceanCommandV2 (Card Self Ability) - 洋流，听我的号令 (新版)
-// [流转] 回合开始时：获得3层流，本回合本人书页受流加成时不再消耗流层数
+// [流转] 回合开始时：获得2层流，本回合本人书页受流加成时不再消耗流层数
 public class DiceCardSelfAbility_SlazeyaOceanCommandV2 : DiceCardSelfAbilityBase
 {
-    public static string Desc = "[Round Start] Gain 3 Flow. This round, this unit's pages don't consume Flow for bonuses.";
+    public static string Desc = "[Round Start] Gain 2 Flow. This round, this unit's pages don't consume Flow for bonuses."; // 削弱：3→2
 
     public override void OnStartBattle()
     {
-        // 立刻获得3层流（不翻倍）
-        Steria.CardAbilityHelper.AddFlowStacks(owner, 3);
+        // 立刻获得2层流（不翻倍）- 削弱：3→2
+        Steria.CardAbilityHelper.AddFlowStacks(owner, 2);
 
         // 本回合本人书页受流加成时不再消耗流层数（只对自己生效）
         owner.bufListDetail.AddBuf(new BattleUnitBuf_NoFlowConsumption());
 
-        Debug.Log($"[Steria] SlazeyaOceanCommandV2: Gained 3 Flow and activated NoFlowConsumption for self");
+        Debug.Log($"[Steria] SlazeyaOceanCommandV2: Gained 2 Flow and activated NoFlowConsumption for self");
     }
 }
 
-// SlazeyaClashLoseGainFlow3 (Dice Ability) - 拼点失败立刻获得3层流
+// SlazeyaClashLoseGainFlow3 (Dice Ability) - 拼点失败立刻获得5层流 (BOSS机制加强)
 public class DiceCardAbility_SlazeyaClashLoseGainFlow3 : DiceCardAbilityBase
 {
-    public static string Desc = "[Clash Lose] Immediately gain 3 Flow";
+    public static string Desc = "[Clash Lose] Immediately gain 5 Flow"; // 加强：3→5 (BOSS机制)
 
     public override void OnLoseParrying()
     {
-        // 立即获得3层流（不翻倍）
-        Steria.CardAbilityHelper.AddFlowStacks(owner, 3);
-        Debug.Log($"[Steria] SlazeyaClashLoseGainFlow3: Gained 3 Flow on clash lose");
+        // 立即获得5层流（不翻倍）- 加强：3→5 (BOSS机制)
+        Steria.CardAbilityHelper.AddFlowStacks(owner, 5);
+        Debug.Log($"[Steria] SlazeyaClashLoseGainFlow3: Gained 5 Flow on clash lose");
     }
 }
 
@@ -86,8 +86,8 @@ public class DiceCardSelfAbility_SlazeyaEndlessFlow : DiceCardSelfAbilityBase
 {
     public static string Desc = "[On Use] This round all allies don't consume Flow for bonuses. This page's dice gain power equal to Flow/2 (rounded up)";
 
-    // 使用静态字典存储每个单位的威力加成，确保反击骰子也能获得加成
-    private static Dictionary<int, int> _powerBonusByUnit = new Dictionary<int, int>();
+    // 目标卡牌ID
+    private const int ENDLESS_FLOW_CARD_ID = 9002007;
 
     public override void OnStartBattle()
     {
@@ -103,19 +103,11 @@ public class DiceCardSelfAbility_SlazeyaEndlessFlow : DiceCardSelfAbilityBase
                 ally.bufListDetail.AddBuf(new BattleUnitBuf_NoFlowConsumption());
             }
         }
-
-        // 在战斗开始时计算并存储威力加成，并添加Buff来应用加成
-        CalculateAndApplyPowerBonus();
     }
 
     public override void OnUseCard()
     {
-        // 使用时重新计算威力加成（以防流数量变化）
-        CalculateAndApplyPowerBonus();
-    }
-
-    private void CalculateAndApplyPowerBonus()
-    {
+        // 使用时计算威力加成并添加隐藏Buff
         if (owner == null) return;
 
         BattleUnitBuf_Flow flowBuf = owner.bufListDetail.GetActivatedBufList()
@@ -131,43 +123,45 @@ public class DiceCardSelfAbility_SlazeyaEndlessFlow : DiceCardSelfAbilityBase
             oldBuf.Destroy();
         }
 
-        // 添加新的威力加成Buff
+        // 添加新的威力加成Buff（隐藏状态，层数=威力加成）
         if (powerBonus > 0)
         {
             var newBuf = new BattleUnitBuf_EndlessFlowPowerBonus();
             newBuf.stack = powerBonus;
-            newBuf.SetTargetCard(this.card); // 设置目标卡牌
             owner.bufListDetail.AddBuf(newBuf);
             Debug.Log($"[Steria] SlazeyaEndlessFlow: Added power bonus buff = {powerBonus} for unit {owner.UnitData?.unitData?.name} (Flow: {flowStacks})");
         }
     }
 
-    // 清除存储的威力加成（战斗结束时调用）
+    // 清除存储的威力加成（战斗结束时调用）- 保留接口兼容性
     public static void ClearPowerBonuses()
     {
-        _powerBonusByUnit.Clear();
+        // 不再需要静态字典，但保留方法以兼容现有调用
     }
 }
 
-// 随我流向无尽的尽头 - 威力加成Buff（用于反击骰子）
+// 随我流向无尽的尽头 - 威力加成Buff（隐藏状态）
+// 在拼点时检测骰子来源是否是卡牌ID 9002007，如果是则根据层数给予威力提升
 public class BattleUnitBuf_EndlessFlowPowerBonus : BattleUnitBuf
 {
-    private BattlePlayingCardDataInUnitModel _targetCard;
+    // 目标卡牌ID
+    private const int ENDLESS_FLOW_CARD_ID = 9002007;
 
     public override BufPositiveType positiveType => BufPositiveType.Positive;
-
-    public void SetTargetCard(BattlePlayingCardDataInUnitModel card)
-    {
-        _targetCard = card;
-    }
+    
+    // 隐藏状态，不显示图标
+    public override bool Hide => true;
 
     public override void BeforeRollDice(BattleDiceBehavior behavior)
     {
-        // 只对目标卡牌的骰子生效
-        if (behavior?.card == _targetCard && this.stack > 0)
+        // 检测骰子来源是否是"随我流向无尽的尽头"（卡牌ID 9002007）
+        if (behavior?.card?.card == null || this.stack <= 0) return;
+
+        int cardId = behavior.card.card.GetID().id;
+        if (cardId == ENDLESS_FLOW_CARD_ID)
         {
             behavior.ApplyDiceStatBonus(new DiceStatBonus { power = this.stack });
-            Debug.Log($"[Steria] BattleUnitBuf_EndlessFlowPowerBonus: Applied +{this.stack} power to dice (Index: {behavior.Index}, Type: {behavior.Type})");
+            Debug.Log($"[Steria] BattleUnitBuf_EndlessFlowPowerBonus: Applied +{this.stack} power to dice (CardID: {cardId}, Index: {behavior.Index}, Type: {behavior.Type})");
         }
     }
 
@@ -180,12 +174,12 @@ public class BattleUnitBuf_EndlessFlowPowerBonus : BattleUnitBuf
 // SlazeyaGainFlow5OnRoundStart (Card Self Ability)
 public class DiceCardSelfAbility_SlazeyaGainFlow5OnRoundStart : DiceCardSelfAbilityBase
 {
-     public static string Desc = "[Round Start] Gain 5 Flow";
+     public static string Desc = "[Round Start] Gain 3 Flow"; // 削弱：5→3
 
-    // Per setting "回合开始时：获得5层"流"", assuming this means when the card action starts
+    // Per setting "回合开始时：获得3层"流"", assuming this means when the card action starts
     public override void OnStartBattle()
     {
-         Steria.CardAbilityHelper.AddFlowStacks(owner, 5);
+         Steria.CardAbilityHelper.AddFlowStacks(owner, 3); // 削弱：5→3
     }
 }
 
@@ -382,20 +376,21 @@ public class DiceCardAbility_SlazeyaMassAttackBonusDamage : DiceCardAbilityBase
 // CultistGainFlow3NextTurn
 public class DiceCardSelfAbility_CultistGainFlow3NextTurn : DiceCardSelfAbilityBase
 {
-    public static string Desc = "[On Use] Next turn gain 3 Flow";
+    public static string Desc = "[On Use] Next turn gain 2 Flow"; // 削弱：3→2
     public override void OnUseCard()
     {
-        owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 3 }); // Reusing the helper buff
+        owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 2 }); // 削弱：3→2 (Reusing the helper buff)
     }
 }
 
 // CultistFlow2CheckGainLightDraw
 public class DiceCardSelfAbility_CultistFlow2CheckGainLightDraw : DiceCardSelfAbilityBase
 {
-    public static string Desc = "[On Use] If Flow spent >= 2, next turn gain 2 Light and draw 1 page";
-    public override void OnUseCard()
+    public static string Desc = "[After Action] If Flow spent >= 2, next turn gain 2 Light and draw 1 page";
+
+    // 改用 AfterAction 而不是 OnUseCard，因为流消耗发生在骰子结算时
+    public override void AfterAction()
     {
-        // Corrected: Use HarmonyHelpers from MyDLL namespace
         int flowConsumedByThisCard = HarmonyHelpers.GetFlowConsumedByCard(this.card);
 
         if (flowConsumedByThisCard >= 2)
@@ -404,7 +399,6 @@ public class DiceCardSelfAbility_CultistFlow2CheckGainLightDraw : DiceCardSelfAb
             owner.bufListDetail.AddBuf(new BattleUnitBuf_DrawNextTurn() { stack = 1 });
             Debug.Log($"[MyDLL] CultistFlow2CheckGainLightDraw: Granting light/draw next turn due to {flowConsumedByThisCard} flow consumed.");
         } else {
-             // Changed LogWarning to Debug
              Debug.Log($"[MyDLL] CultistFlow2CheckGainLightDraw: Flow consumed ({flowConsumedByThisCard}) < 2. No effect.");
         }
     }
@@ -454,10 +448,10 @@ public class DiceCardAbility_CultistDraw1 : DiceCardAbilityBase
 // CultistGainFlow3
 public class DiceCardAbility_CultistGainFlow3 : DiceCardAbilityBase
 {
-    public static string Desc = "[On Hit] Gain 3 Flow";
+    public static string Desc = "[On Hit] Gain 2 Flow"; // 削弱：3→2
     public override void OnSucceedAttack()
     {
-       Steria.CardAbilityHelper.AddFlowStacks(owner, 3);
+       Steria.CardAbilityHelper.AddFlowStacks(owner, 2); // 削弱：3→2
     }
 }
 
@@ -527,10 +521,10 @@ public class DiceCardSelfAbility_SlazeyaMultiFlowBonus2 : DiceCardSelfAbilityBas
     // 此能力仅作为标记存在
 }
 
-// SlazeyaHundredRiversRepeat - 百川逐风：2次流强化 + 流>10时消耗10流重复使用（每幕一次）
+// SlazeyaHundredRiversRepeat - 百川逐风：2次流强化 + 流>8时消耗8流重复使用（每幕一次）
 public class DiceCardSelfAbility_SlazeyaHundredRiversRepeat : DiceCardSelfAbilityBase
 {
-    public static string Desc = "This page's dice can receive up to 2 Flow enhancements. If Flow > 10, consume 10 Flow and repeat on another random enemy (max once per round)";
+    public static string Desc = "This page's dice can receive up to 2 Flow enhancements. If Flow > 8, consume 8 Flow and repeat on a random enemy (max once per round)"; // 调整：门槛10→8，目标改为随机一个敌人
     private static HashSet<BattleUnitModel> _triggeredThisRoundOwners = new HashSet<BattleUnitModel>(); // 每幕每角色最多触发一次
     private BattleUnitModel _repeatTarget = null;
 
@@ -542,41 +536,40 @@ public class DiceCardSelfAbility_SlazeyaHundredRiversRepeat : DiceCardSelfAbilit
 
     public override void OnUseCard()
     {
-        // 检查流层数是否大于10
+        // 检查流层数是否大于8（调整：10→8）
         BattleUnitBuf_Flow flowBuf = owner.bufListDetail.GetActivatedBufList()
             .FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
         int flowStacks = flowBuf?.stack ?? 0;
 
         Debug.Log($"[Steria] SlazeyaHundredRiversRepeat: Flow stacks = {flowStacks}");
 
-        // 检查是否本幕已触发过
-        if (flowStacks > 10 && !_triggeredThisRoundOwners.Contains(owner))
+        // 检查是否本幕已触发过（调整：门槛10→8）
+        if (flowStacks > 8 && !_triggeredThisRoundOwners.Contains(owner))
         {
             _triggeredThisRoundOwners.Add(owner);
 
-            // 消耗10层流
-            flowBuf.stack -= 10;
+            // 消耗8层流（调整：10→8）
+            flowBuf.stack -= 8;
             if (flowBuf.stack <= 0)
             {
                 flowBuf.Destroy();
             }
-            Debug.Log($"[Steria] SlazeyaHundredRiversRepeat: Consumed 10 Flow, remaining: {flowBuf?.stack ?? 0}");
+            Debug.Log($"[Steria] SlazeyaHundredRiversRepeat: Consumed 8 Flow, remaining: {flowBuf?.stack ?? 0}");
 
-            // 通知被动流被消耗
-            HarmonyHelpers.NotifyPassivesOnFlowConsumed(owner, 10);
+            // 通知被动流被消耗（调整：10→8）
+            HarmonyHelpers.NotifyPassivesOnFlowConsumed(owner, 8);
 
-            // 获取除当前目标外的其他敌人
+            // 获取所有敌人（调整：改为随机一个敌人，可以是同一目标）
             List<BattleUnitModel> enemies = BattleObjectManager.instance.GetAliveList(
                 owner.faction == Faction.Player ? Faction.Enemy : Faction.Player);
 
-            // 排除当前目标
-            BattleUnitModel currentTarget = card.target;
-            List<BattleUnitModel> otherEnemies = enemies.Where(e => e != currentTarget && !e.IsBreakLifeZero() && !e.IsDead()).ToList();
+            // 过滤掉已死亡的敌人
+            List<BattleUnitModel> validEnemies = enemies.Where(e => !e.IsBreakLifeZero() && !e.IsDead()).ToList();
 
-            if (otherEnemies.Count > 0)
+            if (validEnemies.Count > 0)
             {
-                // 随机选择一个敌人作为重复攻击目标
-                _repeatTarget = otherEnemies[UnityEngine.Random.Range(0, otherEnemies.Count)];
+                // 随机选择一个敌人作为重复攻击目标（可以是同一目标）
+                _repeatTarget = validEnemies[UnityEngine.Random.Range(0, validEnemies.Count)];
                 Debug.Log($"[Steria] SlazeyaHundredRiversRepeat: Will repeat on {_repeatTarget.UnitData?.unitData?.name}");
             }
         }

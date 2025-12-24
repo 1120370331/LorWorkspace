@@ -149,7 +149,7 @@
       <Ability Script="AnhierQingSiFengLiu" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="9" Dice="17" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WindSlash" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
+      <Behaviour Min="8" Dice="13" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WindSlash" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
       <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
@@ -293,7 +293,7 @@
       <Ability Script="SlazeyaFlowBonusX3"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="9" Dice="17" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaBleed5OnFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="8" Dice="13" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaBleed5OnFlow3" ActionScript="" Desc=""/>
       <Behaviour Min="1" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
       <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc=""/>
     </BehaviourList>

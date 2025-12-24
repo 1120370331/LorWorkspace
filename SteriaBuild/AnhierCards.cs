@@ -208,7 +208,7 @@ public class DiceCardSelfAbility_AnhierDiscardAllPowerUp : DiceCardSelfAbilityBa
 #region 内调之流 (ID: 9001007) On Use
 public class DiceCardSelfAbility_AnhierGainFlow5Draw2NextTurn : DiceCardSelfAbilityBase
 {
-    public static string Desc = "[流转] [使用时] 抽取2张书页，下回合获得5层[流]";
+    public static string Desc = "[流转] [使用时] 抽取2张书页，下回合获得3层[流]"; // 削弱：5→3
 
     public override string[] Keywords => new string[] { "SteriaFlowTransfer", "SteriaFlow" };
 
@@ -216,7 +216,7 @@ public class DiceCardSelfAbility_AnhierGainFlow5Draw2NextTurn : DiceCardSelfAbil
     {
         SteriaLogger.Log("内调之流: OnUseCard triggered - Drawing 2 cards and adding flow buff");
         this.owner.allyCardDetail.DrawCards(2);
-        this.owner.bufListDetail.AddBuf(new BattleUnitBuf_AddFlowNextRound { amount = 5 });
+        this.owner.bufListDetail.AddBuf(new BattleUnitBuf_AddFlowNextRound { amount = 3 }); // 削弱：5→3
     }
 }
 

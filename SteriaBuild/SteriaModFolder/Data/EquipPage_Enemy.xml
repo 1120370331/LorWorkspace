@@ -72,8 +72,8 @@
     <Category>DeckFixed</Category>
     <Option>Basic</Option>
     <EquipEffect>
-      <HP>102</HP>
-      <Break>55</Break>
+      <HP>145</HP>
+      <Break>70</Break>
       <SpeedMin>3</SpeedMin>
       <Speed>5</Speed>
       <StartPlayPoint>3</StartPlayPoint>
@@ -122,8 +122,8 @@
     <Chapter>6</Chapter>
     <Episode>1</Episode>
     <Rarity>Rare</Rarity>
-    <CharacterSkin>Bada</CharacterSkin>
-    <CharacterSkinType>Lor</CharacterSkinType>
+    <CharacterSkin>Velia</CharacterSkin>
+    <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
 </BookXmlRoot>

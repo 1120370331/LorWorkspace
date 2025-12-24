@@ -130,7 +130,7 @@ namespace Steria
         // 消耗所有流但不提供威力加成的卡牌ID集合（群攻卡牌等）
         private static readonly HashSet<int> _consumeAllFlowNoBonus = new HashSet<int>
         {
-            9002005,  // 倾覆万千之流
+            9002009,  // 倾覆万千之流
         };
 
         // 可受多次流强化的卡牌ID及其最大强化次数
@@ -358,21 +358,24 @@ namespace Steria
             bool noConsumption = HarmonyPatches.NoFlowConsumptionActiveThisRound ||
                 card.owner.bufListDetail.GetActivatedBufList().Any(b => b is BattleUnitBuf_NoFlowConsumption);
 
+            // 计算"视为消耗"的流数量（用于触发被动和卡牌效果）
+            int totalConsumed = flowToUse;
+
             if (noConsumption)
             {
-                SteriaLogger.Log($"RegisterCardUsage: NoFlowConsumption active, not consuming flow");
-                // 不消耗流，但仍然应用加成
-                return;
+                SteriaLogger.Log($"RegisterCardUsage: NoFlowConsumption active, not actually consuming flow but treating as {totalConsumed} consumed");
+                // 不实际消耗流，但仍然视为消耗（用于触发效果）
             }
-
-            // 只消耗实际使用的流（等于骰子数量）
-            int totalConsumed = flowToUse;
-            flowBuf.stack -= totalConsumed;
-            if (flowBuf.stack <= 0)
+            else
             {
-                flowBuf.Destroy();
+                // 实际消耗流
+                flowBuf.stack -= totalConsumed;
+                if (flowBuf.stack <= 0)
+                {
+                    flowBuf.Destroy();
+                }
+                SteriaLogger.Log($"RegisterCardUsage: Consumed {totalConsumed} flow, remaining: {flowBuf?.stack ?? 0}");
             }
-            SteriaLogger.Log($"RegisterCardUsage: Consumed {totalConsumed} flow, remaining: {flowBuf?.stack ?? 0}");
 
             // 记录流消耗（供卡牌能力查询）
             RecordFlowConsumptionForCard(card, totalConsumed);

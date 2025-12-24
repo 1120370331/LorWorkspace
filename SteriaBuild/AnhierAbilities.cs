@@ -104,7 +104,7 @@ public class PassiveAbility_9000002 : PassiveAbilityBase
     {
         if (_addFlowNextRound)
         {
-             AddFlowStacks(3);
+             AddFlowStacks(2); // 削弱：3→2
              _addFlowNextRound = false;
         }
         _attackedOneSideThisTurn = false;
@@ -351,10 +351,10 @@ public class PassiveAbility_9000004 : PassiveAbilityBase
 }
 
 // 不会忘记的那个梦想 (ID: 9000005)
-// 每消耗6层流，下回合开始时将1张珍贵的回忆置入手牌
+// 每消耗5层流，下回合开始时将1张珍贵的回忆置入手牌
 public class PassiveAbility_9000005 : PassiveAbilityBase
 {
-    private const int FLOW_COST_PER_EFFECT = 6;
+    private const int FLOW_COST_PER_EFFECT = 5; // 削弱门槛：6→5
     private int _internalFlowCounter = 0;
     private int _cardsToAddNextRound = 0; // 下回合需要添加的卡牌数量
     private const string MOD_ID = "SteriaBuilding";

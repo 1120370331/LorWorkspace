@@ -12,7 +12,7 @@ using Steria;
 /// 神脉：梦之汐-司流-倾覆之大流 (ID: 9002001)
 /// 效果：
 /// - 消耗流提升的骰子威力变为2（每消耗1层流，骰子获得+2威力）
-/// - 每造成10点伤害，下回合开始时获得1层流
+/// - 每造成15点伤害，下回合开始时获得1层流
 /// - 每消耗10层流，下回合获得1层强壮
 /// - 拼点失败时扣除自身1层流
 /// </summary>
@@ -110,10 +110,10 @@ public class PassiveAbility_9002001 : PassiveAbilityBase
         _damageAccumulator += damage;
         SteriaLogger.Log($"神脉：梦之汐: {owner.UnitData?.unitData?.name} dealt {damage} damage, accumulator: {_damageAccumulator}");
 
-        // 每造成10点伤害，下回合获得1层流
-        while (_damageAccumulator >= 10)
+        // 每造成15点伤害，下回合获得1层流
+        while (_damageAccumulator >= 15)
         {
-            _damageAccumulator -= 10;
+            _damageAccumulator -= 15;
             _flowToGainNextRound++;
             SteriaLogger.Log($"神脉：梦之汐: Will gain 1 flow next round (total pending: {_flowToGainNextRound})");
         }
