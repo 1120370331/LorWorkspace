@@ -489,38 +489,57 @@ public class DiceCardSelfAbility_AnhierForgottenDream : DiceCardSelfAbilityBase
             SteriaLogger.Log("忘却之梦: 已从EGO装备区移除");
         }
 
-        // 应用弃牌威力加成
+        // 应用弃牌威力加成（每丢弃2张+1威力）
         int discardCount = DiceCardSelfAbility_AnhierDiscardPowerUp.GetDiscardCount(this.owner);
-        if (discardCount > 0)
+        int discardBonus = discardCount / 2;
+        if (discardBonus > 0)
         {
             foreach (BattleDiceBehavior behavior in this.card.GetDiceBehaviorList())
             {
-                behavior.ApplyDiceStatBonus(new DiceStatBonus { power = discardCount });
+                behavior.ApplyDiceStatBonus(new DiceStatBonus { power = discardBonus });
             }
-            SteriaLogger.Log($"忘却之梦: 弃牌威力加成 +{discardCount}");
+            SteriaLogger.Log($"忘却之梦: 弃牌威力加成 +{discardBonus}（已弃{discardCount}张）");
         }
     }
 }
 
 /// <summary>
-/// 忘却之梦骰子1 - 命中时追加伤害
-/// [命中时] 对敌人追加"本舞台本角色已消耗流"点伤害
+/// 忘却之梦骰子1 - 命中时追加打击伤害
+/// [命中时] 对敌人追加"本舞台本角色已消耗流"点打击伤害
 /// </summary>
 public class DiceCardAbility_AnhierForgottenDreamDice1 : DiceCardAbilityBase
 {
-    public static string Desc = "[命中时] 对敌人追加本舞台已消耗流层数的伤害";
+    public static string Desc = "[命中时] 对敌人追加打击伤害（每消耗2层流+1伤害）";
 
     public override void OnSucceedAttack(BattleUnitModel target)
     {
         if (target == null || this.owner == null) return;
 
-        // 获取本舞台已消耗的流总数
+        // 获取本舞台已消耗的流总数，每2层+1伤害
         int flowConsumed = PassiveAbility_9000005.GetTotalFlowConsumedThisStage(this.owner);
+        int flowDamage = flowConsumed / 2;
 
-        if (flowConsumed > 0)
+        if (flowDamage > 0)
         {
-            target.TakeDamage(flowConsumed, DamageType.Card_Ability, this.owner, KeywordBuf.None);
-            SteriaLogger.Log($"忘却之梦: 追加 {flowConsumed} 点伤害（本舞台已消耗流）");
+            // 获取目标对打击的抗性
+            AtkResist hitResist = target.GetResistHP(BehaviourDetail.Hit);
+            float resistRate = BookModel.GetResistRate(hitResist);
+
+            // 计算实际伤害（应用抗性）
+            int actualDamage = (int)(flowDamage * resistRate);
+            if (actualDamage < 1) actualDamage = 0;
+
+            // 造成伤害
+            target.TakeDamage(actualDamage, DamageType.Card_Ability, this.owner, KeywordBuf.None);
+
+            // 显示伤害数字（带抗性显示）
+            if (actualDamage > 0)
+            {
+                SingletonBehavior<AttackEffectManager>.Instance?.CreateDamagedTextEffect(
+                    actualDamage, BehaviourDetail.Hit, target, this.owner, hitResist, true, 1);
+            }
+
+            SteriaLogger.Log($"忘却之梦: 追加 {actualDamage} 点打击伤害（基础{flowDamage}，抗性{hitResist}={resistRate}，已消耗{flowConsumed}层流）");
         }
     }
 }

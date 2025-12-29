@@ -225,7 +225,10 @@ public class DiceCardSelfAbility_SlazeyaMassAttackTeamLightGain : DiceCardSelfAb
     public static string Desc = "[On Use] Consume all Flow (no power bonus). For every 5 Flow spent, next turn all allies gain 1 Light";
     public override void OnUseCard()
     {
-        // 使用新的群攻卡牌流消耗记录（在 RegisterCardUsage 中已消耗所有流）
+        // 创建海洋波浪特效
+        CreateOceanWaveEffect();
+
+        // 使用新的群攻卡牌流消耗记录
         int flowConsumedByThisCard = HarmonyHelpers.GetMassAttackFlowConsumed(this.card);
 
         Debug.Log($"[Steria] SlazeyaMassAttackTeamLightGain: Flow consumed = {flowConsumedByThisCard}");
@@ -238,13 +241,26 @@ public class DiceCardSelfAbility_SlazeyaMassAttackTeamLightGain : DiceCardSelfAb
                    foreach (BattleUnitModel ally in BattleObjectManager.instance.GetAliveList(owner.faction)) {
                        ally.bufListDetail.AddBuf(new BattleUnitBuf_GainLightNextTurn() { stack = lightToGain });
                    }
-                   Debug.Log($"[Steria] SlazeyaMassAttackTeamLightGain: Granting {lightToGain} light next turn to allies due to {flowConsumedByThisCard} flow consumed.");
-               } else {
-                   Debug.LogError("[Steria] BattleObjectManager.instance is null!");
+                   Debug.Log($"[Steria] SlazeyaMassAttackTeamLightGain: Granting {lightToGain} light next turn.");
                }
             }
-        } else {
-             Debug.Log($"[Steria] SlazeyaMassAttackTeamLightGain: No Flow consumed for this card action.");
+        }
+    }
+
+    private void CreateOceanWaveEffect()
+    {
+        if (owner?.view == null) return;
+        try
+        {
+            GameObject effectObj = new GameObject("OceanWaveEffect");
+            effectObj.transform.position = owner.view.WorldPosition;
+            var effect = effectObj.AddComponent<OceanWaveEffectComponent>();
+            effect.Init(owner);
+            SteriaEffectHelper.AddScreenShake(0.04f, 0.03f, 70f, 0.6f);
+        }
+        catch (System.Exception ex)
+        {
+            SteriaLogger.Log($"SlazeyaMassAttack: Effect error: {ex.Message}");
         }
     }
 }

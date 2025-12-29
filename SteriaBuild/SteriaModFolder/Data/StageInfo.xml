@@ -32,7 +32,6 @@
     <Name>斯拉泽雅</Name>
     <Wave>
       <Formation>21</Formation>
-      <FormationType>AscendingOrder</FormationType>
       <AvailableUnit>5</AvailableUnit>
       <Unit>2</Unit>
       <Unit>4</Unit>

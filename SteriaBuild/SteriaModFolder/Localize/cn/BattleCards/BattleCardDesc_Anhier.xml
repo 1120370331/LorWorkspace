@@ -5,20 +5,20 @@
     <BattleCardDesc ID="9001001">
       <Name>拙劣控流</Name>
       <Desc>[流转]
-使用时：恢复1点光芒</Desc>
+使用时:恢复1点光芒</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001002">
       <Name>回忆侧斩</Name>
-      <Desc>使用时：从手中随机丢弃1张书页</Desc>
+      <Desc>使用时:从手中随机丢弃1张书页</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001003">
       <Name>奥塔尔的荣耀</Name>
-      <Desc>使用时：丢弃2张手牌来使本书页骰子威力+1
+      <Desc>使用时:丢弃2张手牌来使本书页骰子威力+1
 [被弃置时] 抽1张书页</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001004">
       <Name>回忆协奏之刃</Name>
-      <Desc>使用时：丢弃手中所有书页，并使本书页所有骰子威力+丢弃数量</Desc>
+      <Desc>使用时:丢弃手中所有书页,并使本书页所有骰子威力+丢弃数量</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001005">
       <Name>攫取回忆</Name>
@@ -26,12 +26,12 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9001006">
       <Name>珍贵的回忆</Name>
-      <Desc>[佚亡][被弃置时] 摧毁本书页，并抽取2张书页并在下一幕获得1层[强壮]</Desc>
+      <Desc>[佚亡][被弃置时] 摧毁本书页,并抽取2张书页并在下一幕获得1层[强壮]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001007">
       <Name>内调之流</Name>
       <Desc>[流转]
-使用时：抽取2张书页
+使用时:抽取2张书页
 下回合获得3层[流]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001008">
@@ -40,7 +40,7 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9001009">
       <Name>以执为攻</Name>
-      <Desc>本舞台中，每弃置4张书页便使本书页骰子威力+1</Desc>
+      <Desc>本舞台中,每弃置4张书页便使本书页骰子威力+1</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001010">
       <Name>寒地后勤</Name>
@@ -49,13 +49,13 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9001011">
       <Name>自我之流</Name>
-      <Desc>[使用时] 扣除25点生命值，获得10层[流]
-冷却时间：4幕</Desc>
+      <Desc>[使用时] 扣除25点生命值,获得10层[流]
+冷却时间:4幕</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9001012">
       <Name>忘却之梦</Name>
       <Desc>[使用时] 下回合使自身陷入混乱
-本舞台中，每弃置1张书页便使本书页骰子威力+1</Desc>
+本舞台中,每弃置1张书页便使本书页骰子威力+1</Desc>
     </BattleCardDesc>
   </cardDescList>
 </CardDescXmlRoot>

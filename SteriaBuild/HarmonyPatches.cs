@@ -563,10 +563,10 @@ namespace Steria
                 SteriaLogger.LogError($"赋予强壮失败: {ex.Message}");
             }
 
-            // 消耗这张牌（从所有牌堆中移除）
+            // 消耗这张牌（只消耗当前这一张，不影响其他同ID卡牌）
             try
             {
-                owner.allyCardDetail.ExhaustCard(cardId);
+                owner.allyCardDetail.ExhaustACardAnywhere(card);
                 SteriaLogger.Log("消耗了珍贵的回忆");
             }
             catch (Exception ex)

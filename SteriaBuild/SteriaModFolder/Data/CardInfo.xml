@@ -307,7 +307,6 @@
     <TextId>-1</TextId>
     <Artwork>9002009.png</Artwork>
     <Rarity>Unique</Rarity>
-    <Option>OnlyPage</Option>
     <Spec Range="FarArea" Cost="7" />
     <Script>SlazeyaMassAttackTeamLightGain</Script>
     <ScriptDesc>使用时：消耗所有[流]（但不提供威力加成）。本书页每消耗5层[流]，下回合为所有友方单位恢复1点光芒</ScriptDesc>
@@ -589,7 +588,7 @@
     <Option>OnlyPage</Option>
     <Script>AnhierForgottenDream</Script>
     <BehaviourList>
-      <Behaviour Min="10" Dice="23" Type="Atk" Detail="Slash" Motion="Z" EffectRes="Steria_DarkPurpleSlash" Script="AnhierForgottenDreamDice1" ActionScript="" Desc="" />
+      <Behaviour Min="10" Dice="19" Type="Atk" Detail="Slash" Motion="Z" EffectRes="Steria_DarkPurpleSlash" Script="AnhierForgottenDreamDice1" ActionScript="" Desc="" />
       <Behaviour Min="3" Dice="8" Type="Standby" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>

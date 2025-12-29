@@ -352,11 +352,11 @@ public class PassiveAbility_9000004 : PassiveAbilityBase
 
 // 不会忘记的那个梦想 (ID: 9000005)
 // 每消耗5层流，下回合开始时将1张珍贵的回忆置入手牌
-// 弃置3张珍贵的回忆后，停止触发此被动，并将"忘却之梦"置入EGO装备区
+// 弃置5张珍贵的回忆后，停止触发此被动，并将"忘却之梦"置入EGO装备区
 public class PassiveAbility_9000005 : PassiveAbilityBase
 {
     private const int FLOW_COST_PER_EFFECT = 5;
-    private const int PRECIOUS_MEMORY_DISCARD_THRESHOLD = 3;
+    private const int PRECIOUS_MEMORY_DISCARD_THRESHOLD = 5;
     private const int PRECIOUS_MEMORY_CARD_ID = 9001006;
     private const int FORGOTTEN_DREAM_CARD_ID = 9001012; // 忘却之梦
     private const string MOD_ID = "SteriaBuilding";

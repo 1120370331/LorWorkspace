@@ -41,7 +41,7 @@
     <!-- 闪避 -->
     <Evade size_x="688" size_y="768" quality="50">
       <Direction>Front</Direction>
-      <Pivot pivot_x="0" pivot_y="-200" />
+      <Pivot pivot_x="-100" pivot_y="-200" />
       <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
     </Evade>
 

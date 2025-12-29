@@ -61,9 +61,9 @@ public class DiceAttackEffect_Steria_DarkPurpleSlash : DiceAttackEffect
         _selfStartPos = self.WorldPosition;
         _targetPos = target != null ? target.WorldPosition : _selfStartPos;
 
-        // 计算穿透结束位置（敌人后方约3个单位）
+        // 计算穿透结束位置（敌人后方约1.5个单位，不要太远）
         Vector3 direction = (_targetPos - _selfStartPos).normalized;
-        _pierceEndPos = _targetPos + direction * 3f;
+        _pierceEndPos = _targetPos + direction * 1.5f;
 
         // 设置位置到目标身上
         if (target != null && target.atkEffectRoot != null)

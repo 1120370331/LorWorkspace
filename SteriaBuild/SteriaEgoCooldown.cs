@@ -189,6 +189,27 @@ namespace Steria
 // ============================================================================
 
 /// <summary>
+/// 补丁：在战斗开始时清除冷却（确保重新开始战斗时冷却被重置）
+/// </summary>
+[HarmonyPatch(typeof(StageController), "StartBattle")]
+public static class SteriaEgoCooldown_StartBattle_Patch
+{
+    [HarmonyPrefix]
+    public static void Prefix()
+    {
+        try
+        {
+            Steria.SteriaEgoCooldownManager.ClearAllCooldowns();
+            Steria.SteriaLogger.Log("SteriaEgoCooldown: Cleared cooldowns on battle start");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[Steria] SteriaEgoCooldown_StartBattle_Patch error: {ex}");
+        }
+    }
+}
+
+/// <summary>
 /// 补丁：在战斗结束时清除冷却
 /// </summary>
 [HarmonyPatch(typeof(StageController), "EndBattle")]
