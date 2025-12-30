@@ -595,4 +595,126 @@
     <Priority>0</Priority>
   </Card>
 
+  <!-- Velia EGO Boss Cards Start -->
+  <!-- 止渡 -->
+  <Card ID="9005001">
+    <Name>止渡</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005001.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script></Script>
+    <ScriptDesc>拼点失败:如果对方是进攻型骰子则对敌人造成5点伤害并施加2层流血</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="5" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="VeliaEgo_ZhiDu" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="5" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="VeliaEgo_ZhiDu" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="5" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="VeliaEgo_ZhiDu" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 凝视 -->
+  <Card ID="9005002">
+    <Name>凝视</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005002.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>VeliaEgo_NingShi</Script>
+    <ScriptDesc>使用时:使敌人的所有混乱抗性在本回合中变为"致命"</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Apostle" Script="VeliaEgo_NingShiDice" ActionScript="" Desc="对方每有1层荆棘便造成1点额外伤害" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 穿刺 -->
+  <Card ID="9005003">
+    <Name>穿刺</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005003.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>VeliaEgo_ChuanCi</Script>
+    <ScriptDesc>与速度高于自身的对象拼点时使本书页骰子威力-10</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="10" Dice="18" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="VeliaThorn_Z" Script="VeliaEgo_ChuanCiDice1" ActionScript="" Desc="命中时:下回合封印对方一颗速度骰子" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Apostle" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 请注视我 -->
+  <Card ID="9005004">
+    <Name>请注视我</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005004.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>VeliaEgo_QingZhuShiWo</Script>
+    <ScriptDesc>战斗开始时:若对方在本回合中攻击非本单位目标,则对其造成15点突刺伤害+突刺混乱伤害</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="4" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="4" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Apostle" Script="VeliaEgo_QingZhuShiWoDice3" ActionScript="" Desc="命中时:使目标获得3层[荆棘]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 荆棘之潮 -->
+  <Card ID="9005005">
+    <Name>荆棘之潮</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005005.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarAreaEach" Cost="5" />
+    <Script>VeliaEgo_JingJiZhiChao</Script>
+    <ScriptDesc>战斗开始时:对所有没有荆棘的敌人施加1层荆棘</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="10" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="Apostle" Script="VeliaEgo_JingJiZhiChaoDice1" ActionScript="WhiteNight_AuthorityArea" Desc="命中时:施加3层荆棘" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- 蔓延增生 -->
+  <Card ID="9005006">
+    <Name>蔓延增生</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005006.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>VeliaEgo_ManYanZengSheng</Script>
+    <ScriptDesc>使用时:下一幕召唤一个"荆棘幻影"</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="" Script="VeliaEgo_ManYanDice1" Desc="命中时:施加1层荆棘" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="S" EffectRes="" Script="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- 弱化穿刺 -->
+  <Card ID="9005007">
+    <Name>弱化穿刺</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005007.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>VeliaEgo_WeakChuanCi</Script>
+    <ScriptDesc>与速度高于自身的对象拼点时使本书页骰子威力-5</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="" Script="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="" Script="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+  <!-- Velia EGO Boss Cards End -->
+
 </DiceCardXmlRoot>

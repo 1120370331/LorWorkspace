@@ -126,4 +126,68 @@
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
+  <!-- Velia EGO Boss Book -->
+  <Book ID="5">
+    <Name>侵蚀EGO：渗透天堂</Name>
+    <TextId>-1</TextId>
+    <Category>DeckFixed</Category>
+    <Option>Basic</Option>
+    <EquipEffect>
+      <HP>350</HP>
+      <Break>300</Break>
+      <SpeedMin>1</SpeedMin>
+      <Speed>6</Speed>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
+      <SResist>Resist</SResist>
+      <PResist>Resist</PResist>
+      <HResist>Resist</HResist>
+      <SBResist>Endure</SBResist>
+      <PBResist>Endure</PBResist>
+      <HBResist>Resist</HBResist>
+      <Passive>9005001</Passive>
+      <Passive>9005002</Passive>
+      <Passive>9005003</Passive>
+      <Passive>9005004</Passive>
+      <Passive>9005005</Passive>
+      <Passive>9005009</Passive>
+    </EquipEffect>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <CharacterSkin>Velia</CharacterSkin>
+    <CharacterSkinType>Custom</CharacterSkinType>
+  </Book>
+
+  <!-- Thorn Phantom Book -->
+  <Book ID="6">
+    <Name>荆棘幻影</Name>
+    <TextId>-1</TextId>
+    <Category>DeckFixed</Category>
+    <Option>Basic</Option>
+    <EquipEffect>
+      <HP>50</HP>
+      <Break>30</Break>
+      <SpeedMin>1</SpeedMin>
+      <Speed>6</Speed>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
+      <SResist>Resist</SResist>
+      <PResist>Resist</PResist>
+      <HResist>Resist</HResist>
+      <SBResist>Endure</SBResist>
+      <PBResist>Endure</PBResist>
+      <HBResist>Resist</HBResist>
+      <Passive>9005006</Passive>
+      <Passive>9005007</Passive>
+      <Passive>9005002</Passive>
+      <Passive>9005008</Passive>
+    </EquipEffect>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <CharacterSkin>Velia</CharacterSkin>
+    <CharacterSkinType>Custom</CharacterSkinType>
+  </Book>
+
 </BookXmlRoot>

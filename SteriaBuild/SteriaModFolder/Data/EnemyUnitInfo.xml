@@ -79,4 +79,43 @@
     </DropTable>
     <AiScript />
   </Enemy>
+
+  <!-- Velia EGO Boss Enemy Definition -->
+  <Enemy ID="5">
+    <Name>侵蚀EGO：渗透天堂</Name>
+    <FaceType>Skin</FaceType>
+    <NameID>-1</NameID>
+    <MinHeight>160</MinHeight>
+    <MaxHeight>160</MaxHeight>
+    <Unknown>false</Unknown>
+    <Gender>F</Gender>
+    <Retreat>false</Retreat>
+    <BookId>5</BookId>
+    <BodyId>0</BodyId>
+    <Exp>0</Exp>
+    <DropBonus>0</DropBonus>
+    <DropTable Level="0">
+      <DropItem Prob="1">5</DropItem>
+    </DropTable>
+    <AiScript />
+  </Enemy>
+
+  <!-- Thorn Phantom Enemy Definition -->
+  <Enemy ID="6">
+    <Name>荆棘幻影</Name>
+    <FaceType>Skin</FaceType>
+    <NameID>-1</NameID>
+    <MinHeight>160</MinHeight>
+    <MaxHeight>160</MaxHeight>
+    <Unknown>false</Unknown>
+    <Gender>F</Gender>
+    <Retreat>false</Retreat>
+    <BookId>6</BookId>
+    <BodyId>0</BodyId>
+    <Exp>0</Exp>
+    <DropBonus>0</DropBonus>
+    <DropTable Level="0">
+    </DropTable>
+    <AiScript />
+  </Enemy>
 </EnemyUnitClassRoot>

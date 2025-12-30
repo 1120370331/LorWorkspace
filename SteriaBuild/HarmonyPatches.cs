@@ -176,6 +176,32 @@ namespace Steria
         }
 
         /// <summary>
+        /// 检查并消耗潮来增强荆棘效果
+        /// 荆棘是被潮影响的负面效果，施加时消耗1层潮并增加1层荆棘
+        /// </summary>
+        /// <returns>潮加成的层数（0或1）</returns>
+        public static int CheckAndConsumeTideForThorn(BattleUnitModel giver)
+        {
+            if (giver == null) return 0;
+
+            BattleUnitBuf_Tide tideBuf = giver.bufListDetail?.GetActivatedBufList()
+                ?.FirstOrDefault(b => b is BattleUnitBuf_Tide) as BattleUnitBuf_Tide;
+
+            if (tideBuf == null || tideBuf.stack <= 0) return 0;
+
+            // 消耗1层潮，增加1层荆棘
+            tideBuf.stack--;
+            SteriaLogger.Log($"Tide: Giver {giver.UnitData?.unitData?.name} consumed 1 Tide for Thorn, remaining = {tideBuf.stack}");
+
+            if (tideBuf.stack <= 0)
+            {
+                tideBuf.Destroy();
+            }
+
+            return 1;
+        }
+
+        /// <summary>
         /// 清除群攻卡牌消耗记录
         /// </summary>
         public static void ClearMassAttackFlowConsumed(BattlePlayingCardDataInUnitModel card)
@@ -1012,6 +1038,7 @@ namespace Steria
             SteriaCustomEffects["Steria_WaterPierce"] = typeof(DiceAttackEffect_Steria_WaterPierce);
             SteriaCustomEffects["Steria_WaterSurround"] = typeof(DiceAttackEffect_Steria_WaterSurround);
             SteriaCustomEffects["Steria_DarkPurpleSlash"] = typeof(DiceAttackEffect_Steria_DarkPurpleSlash);
+            SteriaCustomEffects["VeliaThorn_Z"] = typeof(DiceAttackEffect_VeliaThorn_Z);
 
             SteriaLogger.Log($"Initialized {SteriaCustomEffects.Count} custom effects");
             foreach (var kvp in SteriaCustomEffects)
@@ -1440,6 +1467,37 @@ namespace Steria
                 catch (Exception ex)
                 {
                     Debug.LogError($"[Steria] Error clearing data on battle end: {ex}");
+                }
+            }
+        }
+
+        // --- Patch for 荆棘攻击移除机制 ---
+        // 当拥有荆棘的单位进行单方面攻击时，移除1层荆棘
+        [HarmonyPatch(typeof(BattleOneSidePlayManager), "StartOneSidePlay")]
+        public static class BattleOneSidePlayManager_StartOneSidePlay_ThornPatch
+        {
+            [HarmonyPostfix]
+            public static void Postfix(BattleOneSidePlayManager __instance, BattlePlayingCardDataInUnitModel card)
+            {
+                try
+                {
+                    if (card?.owner == null) return;
+
+                    BattleUnitModel attacker = card.owner;
+
+                    // 检查攻击者是否有荆棘
+                    BattleUnitBuf_Thorn thornBuf = attacker.bufListDetail?.GetActivatedBufList()
+                        ?.FirstOrDefault(b => b is BattleUnitBuf_Thorn) as BattleUnitBuf_Thorn;
+
+                    if (thornBuf != null && thornBuf.stack > 0)
+                    {
+                        thornBuf.OnOneSidedAttack();
+                        SteriaLogger.Log($"Thorn: {attacker.UnitData?.unitData?.name} attacked, Thorn reduced");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Error in BattleOneSidePlayManager Thorn patch: {ex}");
                 }
             }
         }

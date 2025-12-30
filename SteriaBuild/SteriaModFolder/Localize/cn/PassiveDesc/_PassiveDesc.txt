@@ -31,4 +31,26 @@
     <Desc>每一幕开始时恢复所有光芒</Desc>
   </PassiveDesc>
 
+  <!-- 薇莉亚EGO BOSS被动描述 -->
+  <PassiveDesc ID="9005001">
+    <Name>侵蚀</Name>
+    <Desc>每一幕开始时将意图使用的书页置入手中，其光芒消耗为0。</Desc>
+  </PassiveDesc>
+  <PassiveDesc ID="9005002">
+    <Name>渗透天堂</Name>
+    <Desc>受到反震伤害x2，造成反震伤害x2，且造成反震伤害时造成等比伤害。</Desc>
+  </PassiveDesc>
+  <PassiveDesc ID="9005003">
+    <Name>渴望的注视</Name>
+    <Desc>若战斗结束时未被单方面攻击，则下一幕开始时对所有敌人造成25点突刺伤害并施加1层荆棘。</Desc>
+  </PassiveDesc>
+  <PassiveDesc ID="9005004">
+    <Name>荆棘之路</Name>
+    <Desc>免疫流血、束缚。命中拥有[荆棘]的单位时下回合获得1层强壮和忍耐。与进攻型骰子拼点时：对方每有一层荆棘便使其威力-1。</Desc>
+  </PassiveDesc>
+  <PassiveDesc ID="9005005">
+    <Name>速战速决6</Name>
+    <Desc>初始拥有6颗速度骰子。</Desc>
+  </PassiveDesc>
+
 </PassiveDescRoot> 

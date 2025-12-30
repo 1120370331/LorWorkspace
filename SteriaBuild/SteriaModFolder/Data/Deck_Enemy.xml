@@ -55,4 +55,21 @@
     <Card>9004004</Card> <!-- 潮雾晨光 x1 -->
   </Deck>
 
+  <!-- 薇莉亚EGO BOSS卡组 (对应 Book ID 5) -->
+  <Deck ID="5">
+    <Card>9005001</Card> <!-- 止渡 -->
+    <Card>9005002</Card> <!-- 凝视 -->
+    <Card>9005003</Card> <!-- 穿刺 -->
+    <Card>9005004</Card> <!-- 请注视我 -->
+    <Card>9005005</Card> <!-- 荆棘之潮 -->
+  </Deck>
+
+  <!-- 荆棘幻影卡组 (对应 Book ID 6) -->
+  <Deck ID="6">
+    <Card>9005001</Card> <!-- 止渡 -->
+    <Card>9005002</Card> <!-- 凝视 -->
+    <Card>9005004</Card> <!-- 请注视我 -->
+    <Card>9005007</Card> <!-- 弱化穿刺 -->
+  </Deck>
+
 </DeckXmlRoot>

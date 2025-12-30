@@ -24,5 +24,49 @@
       <Name>潜力观测</Name>
       <Desc>装备时:提高友方目标目前最高的正面效果等级1级(受[潮]加成).如果当前没有正面效果,则使其获得1层[强壮].每回合限使用1次.</Desc>
     </BattleCardDesc>
+
+    <!-- Velia EGO Boss Cards -->
+    <BattleCardDesc ID="9005001">
+      <Name>止渡</Name>
+      <Desc></Desc>
+      <BehaviourDescList>
+        <BehaviourDesc>拼点失败:如果对方是进攻型骰子则对敌人造成5点伤害并施加2层流血</BehaviourDesc>
+        <BehaviourDesc>拼点失败:如果对方是进攻型骰子则对敌人造成5点伤害并施加2层流血</BehaviourDesc>
+        <BehaviourDesc>拼点失败:如果对方是进攻型骰子则对敌人造成5点伤害并施加2层流血</BehaviourDesc>
+      </BehaviourDescList>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9005002">
+      <Name>凝视</Name>
+      <Desc>使用时:使敌人的所有混乱抗性在本回合中变为"致命"</Desc>
+      <BehaviourDescList>
+        <BehaviourDesc></BehaviourDesc>
+        <BehaviourDesc>对方每有1层荆棘便造成1点额外伤害</BehaviourDesc>
+        <BehaviourDesc>对方每有1层荆棘便造成1点额外伤害</BehaviourDesc>
+      </BehaviourDescList>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9005003">
+      <Name>穿刺</Name>
+      <Desc>与速度高于自身的对象拼点时使本书页骰子威力-10</Desc>
+      <BehaviourDescList>
+        <BehaviourDesc>命中时:下回合封印对方一颗速度骰子</BehaviourDesc>
+        <BehaviourDesc></BehaviourDesc>
+      </BehaviourDescList>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9005004">
+      <Name>请注视我</Name>
+      <Desc>战斗开始时:若对方在本回合中攻击非本单位目标,则对其造成15点突刺伤害+突刺混乱伤害并施加2层荆棘</Desc>
+      <BehaviourDescList>
+        <BehaviourDesc></BehaviourDesc>
+        <BehaviourDesc></BehaviourDesc>
+        <BehaviourDesc>命中时:使目标获得3层[荆棘]</BehaviourDesc>
+      </BehaviourDescList>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9005005">
+      <Name>荆棘之潮</Name>
+      <Desc>战斗开始时:对所有没有荆棘的敌人施加2层荆棘</Desc>
+      <BehaviourDescList>
+        <BehaviourDesc>命中时:施加5层荆棘</BehaviourDesc>
+      </BehaviourDescList>
+    </BattleCardDesc>
   </cardDescList>
 </CardDescXmlRoot>

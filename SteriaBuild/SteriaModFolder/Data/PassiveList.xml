@@ -226,4 +226,114 @@
     <Desc>自身防御型骰子拼点时：使对方骰子威力-1。
 防御型骰子拼点胜利时：追加1点混乱伤害。</Desc>
   </Passive>
+
+  <!-- Velia EGO Boss Passives -->
+  <Passive ID="9005001">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>侵蚀</Name>
+    <Desc>每一幕开始时将意图使用的书页置入手中，其光芒消耗为0。</Desc>
+  </Passive>
+  <Passive ID="9005002">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>渗透天堂</Name>
+    <Desc>受到反震伤害x2，造成反震伤害x2，且造成反震伤害时造成等比伤害。</Desc>
+  </Passive>
+  <Passive ID="9005003">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>渴望的注视</Name>
+    <Desc>若战斗结束时未被单方面攻击，则下一幕开始时对所有敌人造成25点突刺伤害并施加3层荆棘。</Desc>
+  </Passive>
+  <Passive ID="9005004">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>荆棘之路</Name>
+    <Desc>免疫流血、束缚。命中拥有[荆棘]的单位时下回合获得1层强壮和忍耐。与进攻型骰子拼点时：对方每有一层荆棘便使其威力-1。</Desc>
+  </Passive>
+  <Passive ID="9005005">
+    <Negative>false</Negative>
+    <IsHide>true</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>速战速决4</Name>
+    <Desc>初始拥有4颗速度骰子，情感等级达到3后额外获得1颗。</Desc>
+  </Passive>
+  <Passive ID="9005006">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>变幻莫测</Name>
+    <Desc>每一幕开始时将意图使用的书页置入手中，其光芒消耗为0。出牌顺序表循环。</Desc>
+  </Passive>
+  <Passive ID="9005007">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>渴望的注视-初</Name>
+    <Desc>若战斗结束时未被单方面攻击，则下一幕开始时对所有敌人造成15点突刺伤害并施加1层荆棘。</Desc>
+  </Passive>
+  <Passive ID="9005008">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>荆棘幻影</Name>
+    <Desc>存在时，薇莉亚获得4层守护和振奋。自身所有书页威力-4。</Desc>
+  </Passive>
+  <Passive ID="9005009">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>增生</Name>
+    <Desc>第二幕起，每四幕使用一张特殊书页"蔓延增生"。</Desc>
+  </Passive>
 </PassiveXmlRoot>

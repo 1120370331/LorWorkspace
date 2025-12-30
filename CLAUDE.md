@@ -57,7 +57,9 @@ cd c:\Users\rog\WorkSpace\projects\games\lor\SteriaBuild && dotnet build Steria.
 `SteriaModFolder/` - 最终部署的 mod 文件夹
 - `Assemblies/Steria.dll` - 编译后的 DLL
 - `Localize/` - 本地化文件
+  -  额外提醒BattleCardAbilities.xml 是需要更改的
 - `Resource/` - 资源文件（图标等）
+
 - `StaticInfo/` - XML 配置文件（卡牌、被动等定义）
 
 ## 命名空间规则
@@ -93,3 +95,11 @@ private static readonly HashSet<int> _flowBonusOnlyCardIds = new HashSet<int>
 ## 日志文件
 上一次游戏运行的日志在本电脑的位置：
 C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Mods\SteriaModFolder\Steria.log
+
+## Unity 版本（重要）
+
+Library of Ruina 使用的 Unity 版本：**2019.3.15f1**
+
+此信息从游戏文件 `globalgamemanagers` 中读取确认。
+
+制作 AssetBundle 特效时必须使用此版本，否则可能无法加载。

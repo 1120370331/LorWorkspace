@@ -51,4 +51,27 @@
     <Story Condition="Start">Button</Story>
     <Story Condition="End" />
   </Stage>
+
+  <!-- New Stage: Velia EGO Boss -->
+  <Stage id="3">
+    <StageType>Invitation</StageType>
+    <Name>侵蚀EGO：渗透天堂</Name>
+    <Wave>
+      <Formation>41</Formation>
+      <AvailableUnit>5</AvailableUnit>
+      <Unit>5</Unit>
+    </Wave>
+    <FloorNum>1</FloorNum>
+    <FloorBgm>SecondWarning</FloorBgm>
+    <Invitation Combine="BookValue">
+      <Value>8</Value>
+      <Num>1</Num>
+    </Invitation>
+    <Chapter>6</Chapter>
+    <Condition>
+      <Level>0</Level>
+    </Condition>
+    <Story Condition="Start">Button</Story>
+    <Story Condition="End" />
+  </Stage>
 </StageXmlRoot>

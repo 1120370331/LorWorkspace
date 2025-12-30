@@ -47,5 +47,11 @@
       <Name>潮</Name>
       <Desc>每次使用书页为敌人施加负面效果/为友方施加正面效果时:消耗1层[潮],并使施加的效果层数+1.</Desc>
     </BattleEffectText>
+
+    <!-- 薇莉亚EGO BOSS相关Buff -->
+    <BattleEffectText ID="SteriaThorn">
+      <Name>荆棘</Name>
+      <Desc>被攻击命中时,对攻击者造成等同于荆棘层数的反震伤害.</Desc>
+    </BattleEffectText>
   </effectTextList>
 </BattleEffectTextRoot> 

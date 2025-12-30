@@ -33,4 +33,13 @@
     <BookValue>0</BookValue>
     <DropItem Type="Equip">99000004</DropItem>
   </BookUse>
+  <BookUse ID="5">
+    <Name>薇莉亚-渗透天堂之书</Name>
+    <TextId />
+    <BookIcon />
+    <Chapter>6</Chapter>
+    <BookValue>0</BookValue>
+    <DropItem Type="Equip">99000005</DropItem>
+    <DropItem Type="Card">9005006</DropItem>
+  </BookUse>
 </BookUseXmlRoot>
