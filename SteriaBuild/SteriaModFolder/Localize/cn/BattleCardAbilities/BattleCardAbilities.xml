@@ -256,7 +256,7 @@
 
     <!-- Card 9005001: 止渡 -->
     <BattleCardAbility ID="VeliaEgo_ZhiDu">
-      <Desc>[拼点失败] 如果对方是进攻型骰子则对敌人造成5点伤害并施加2层流血</Desc>
+      <Desc>[拼点失败] 如果对方是进攻型骰子则施加5层流血和2层虚弱</Desc>
     </BattleCardAbility>
 
     <!-- Card 9005002: 凝视 -->

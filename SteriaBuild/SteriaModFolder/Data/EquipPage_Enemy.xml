@@ -166,7 +166,7 @@
     <Category>DeckFixed</Category>
     <Option>Basic</Option>
     <EquipEffect>
-      <HP>50</HP>
+      <HP>30</HP>
       <Break>30</Break>
       <SpeedMin>1</SpeedMin>
       <Speed>6</Speed>

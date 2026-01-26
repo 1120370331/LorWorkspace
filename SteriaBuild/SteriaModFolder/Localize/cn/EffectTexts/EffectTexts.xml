@@ -51,7 +51,7 @@
     <!-- 薇莉亚EGO BOSS相关Buff -->
     <BattleEffectText ID="SteriaThorn">
       <Name>荆棘</Name>
-      <Desc>被攻击命中时,对攻击者造成等同于荆棘层数的反震伤害.</Desc>
+      <Desc>每一幕开始时,施加荆棘层数层[束缚]和[流血].被攻击时移除1层.</Desc>
     </BattleEffectText>
   </effectTextList>
 </BattleEffectTextRoot> 

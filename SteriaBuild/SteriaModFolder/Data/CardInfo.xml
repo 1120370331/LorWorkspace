@@ -604,7 +604,7 @@
     <Rarity>Uncommon</Rarity>
     <Spec Range="Near" Cost="1" />
     <Script></Script>
-    <ScriptDesc>拼点失败:如果对方是进攻型骰子则对敌人造成5点伤害并施加2层流血</ScriptDesc>
+    <ScriptDesc>拼点失败:如果对方是进攻型骰子则施加5层流血和2层虚弱</ScriptDesc>
     <BehaviourList>
       <Behaviour Min="5" Dice="5" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="VeliaEgo_ZhiDu" ActionScript="" Desc="" />
       <Behaviour Min="5" Dice="5" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="VeliaEgo_ZhiDu" ActionScript="" Desc="" />
@@ -641,7 +641,7 @@
     <Script>VeliaEgo_ChuanCi</Script>
     <ScriptDesc>与速度高于自身的对象拼点时使本书页骰子威力-10</ScriptDesc>
     <BehaviourList>
-      <Behaviour Min="10" Dice="18" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="VeliaThorn_Z" Script="VeliaEgo_ChuanCiDice1" ActionScript="" Desc="命中时:下回合封印对方一颗速度骰子" />
+      <Behaviour Min="10" Dice="18" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="VeliaThorn_F" Script="VeliaEgo_ChuanCiDice1" ActionScript="" Desc="命中时:下回合封印对方一颗速度骰子" />
       <Behaviour Min="2" Dice="6" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Apostle" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>6</Chapter>
@@ -676,7 +676,7 @@
     <Script>VeliaEgo_JingJiZhiChao</Script>
     <ScriptDesc>战斗开始时:对所有没有荆棘的敌人施加1层荆棘</ScriptDesc>
     <BehaviourList>
-      <Behaviour Min="4" Dice="10" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="Apostle" Script="VeliaEgo_JingJiZhiChaoDice1" ActionScript="WhiteNight_AuthorityArea" Desc="命中时:施加3层荆棘" />
+      <Behaviour Min="4" Dice="10" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="VeliaThorn_F" Script="VeliaEgo_JingJiZhiChaoDice1" ActionScript="VeliaThorn_Area" Desc="命中时:施加3层荆棘" />
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>9000</Priority>
@@ -692,7 +692,7 @@
     <Script>VeliaEgo_ManYanZengSheng</Script>
     <ScriptDesc>使用时:下一幕召唤一个"荆棘幻影"</ScriptDesc>
     <BehaviourList>
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="" Script="VeliaEgo_ManYanDice1" Desc="命中时:施加1层荆棘" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="VeliaThorn_F" Script="VeliaEgo_ManYanDice1" Desc="命中时:施加1层荆棘" />
       <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="S" EffectRes="" Script="" Desc="" />
     </BehaviourList>
     <Chapter>6</Chapter>
@@ -709,8 +709,8 @@
     <Script>VeliaEgo_WeakChuanCi</Script>
     <ScriptDesc>与速度高于自身的对象拼点时使本书页骰子威力-5</ScriptDesc>
     <BehaviourList>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="" Script="" Desc="" />
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="" Script="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="VeliaThorn_F" Script="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="VeliaThorn_F" Script="" Desc="" />
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>9000</Priority>

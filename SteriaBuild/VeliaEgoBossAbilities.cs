@@ -341,7 +341,8 @@ public class PassiveAbility_9005003 : PassiveAbilityBase
     }
 
     /// <summary>
-    /// 当被单方面攻击时调用
+    /// 当被攻击时调用
+    /// 单方面攻击或反击骰子命中时算被攻击
     /// </summary>
     public override void OnTakeDamageByAttack(BattleDiceBehavior atkDice, int dmg)
     {
@@ -349,24 +350,40 @@ public class PassiveAbility_9005003 : PassiveAbilityBase
 
         if (atkDice?.card == null || owner == null) return;
 
-        // 检查是否是单方面攻击（没有对应的反击）
-        bool isOneSided = true;
+        BattleUnitModel attacker = atkDice.owner;
+        if (attacker == null) return;
+
+        // 检查薇莉亚是否有卡牌指向攻击者
+        bool veliaHasCardToAttacker = false;
         int opponentSlotOrder = atkDice.card.slotOrder;
 
         foreach (var playingCard in owner.cardSlotDetail.cardAry)
         {
-            if (playingCard != null && playingCard.target == atkDice.owner &&
+            if (playingCard != null && playingCard.target == attacker &&
                 playingCard.slotOrder == opponentSlotOrder)
             {
-                isOneSided = false;
+                veliaHasCardToAttacker = true;
                 break;
             }
         }
 
-        if (isOneSided)
+        // 检查攻击者是否有卡牌指向薇莉亚（判断是否是反击骰子）
+        bool attackerHasCardToVelia = false;
+        foreach (var playingCard in attacker.cardSlotDetail.cardAry)
+        {
+            if (playingCard != null && playingCard.target == owner)
+            {
+                attackerHasCardToVelia = true;
+                break;
+            }
+        }
+
+        // 单方面攻击：薇莉亚没有卡牌指向攻击者
+        // 反击骰子：攻击者没有卡牌指向薇莉亚
+        if (!veliaHasCardToAttacker || !attackerHasCardToVelia)
         {
             _wasOneSidedAttackedThisRound = true;
-            SteriaLogger.Log($"渴望的注视: {owner.UnitData?.unitData?.name} was one-sided attacked");
+            SteriaLogger.Log($"渴望的注视: {owner.UnitData?.unitData?.name} was attacked (one-sided or counter)");
         }
     }
 
@@ -532,7 +549,7 @@ public class PassiveAbility_9005005 : PassiveAbilityBase
 
 /// <summary>
 /// 止渡 - 骰子能力
-/// 拼点失败：如果对方是进攻型骰子则对敌人造成5点伤害并施加2层流血
+/// 拼点失败：如果对方是进攻型骰子则施加5层流血和2层虚弱
 /// </summary>
 public class DiceCardAbility_VeliaEgo_ZhiDu : DiceCardAbilityBase
 {
@@ -540,21 +557,26 @@ public class DiceCardAbility_VeliaEgo_ZhiDu : DiceCardAbilityBase
     {
         base.OnLoseParrying();
 
-        if (behavior?.TargetDice == null) return;
+        // 使用与nosferatu_guard相同的方式获取对方骰子
+        BattleDiceBehavior targetDice = behavior?.card?.target?.currentDiceAction?.currentBehavior;
+        if (targetDice == null) return;
 
-        BattleDiceBehavior targetDice = behavior.TargetDice;
         BattleUnitModel target = targetDice.owner;
+        if (target == null || target.IsDead()) return;
 
         // 检查对方是否是进攻型骰子
-        if (IsAttackDice(targetDice.Detail) && target != null && !target.IsDead())
+        if (IsAttackDice(targetDice.Detail))
         {
-            // 造成5点伤害
-            target.TakeDamage(5, DamageType.Card_Ability, owner);
+            // 施加5层流血
+            target.bufListDetail.AddKeywordBufByCard(KeywordBuf.Bleeding, 5, owner);
 
-            // 施加2层流血
-            target.bufListDetail.AddKeywordBufByCard(KeywordBuf.Bleeding, 2, owner);
+            // 施加2层虚弱
+            target.bufListDetail.AddKeywordBufByCard(KeywordBuf.Weak, 2, owner);
 
-            SteriaLogger.Log($"止渡: Clash lose - dealt 5 damage and 2 Bleeding to {target.UnitData?.unitData?.name}");
+            // 播放特效
+            owner?.battleCardResultLog?.SetCreatureAbilityEffect("9/HokmaFirst_Guard", 0.5f);
+
+            SteriaLogger.Log($"止渡: Clash lose - applied 5 Bleeding and 2 Weak to {target.UnitData?.unitData?.name}");
         }
     }
 
