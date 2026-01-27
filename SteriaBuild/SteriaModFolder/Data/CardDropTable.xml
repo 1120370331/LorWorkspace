@@ -36,4 +36,12 @@
     <Card>9004003</Card> <!-- 振作起来 -->
     <Card>9004004</Card> <!-- 潮雾晨光 -->
   </DropTable>
+  <DropTable ID="5">
+    <Card>9006001</Card> <!-- 潮汐低语 -->
+    <Card>9006002</Card> <!-- 命运将至 -->
+    <Card>9006003</Card> <!-- 梦中预兆 -->
+    <Card>9006004</Card> <!-- 极乐之境 -->
+    <Card>9006005</Card> <!-- 时溯潮生 -->
+    <Card>9006006</Card> <!-- 时陨汐夺 -->
+  </DropTable>
 </CardDropTableXmlRoot>

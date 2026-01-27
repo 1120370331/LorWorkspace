@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CardDescXmlRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <cardDescList>
+    <!-- Tibu Cards -->
+    <BattleCardDesc ID="9006001">
+      <Name>潮汐低语</Name>
+      <Desc>使用时:恢复1点光芒
+命中时:施加1层[虚弱](受[潮]加成)</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9006002">
+      <Name>命运将至</Name>
+      <Desc>命中时:对目标造成负面状态总层数×2点追加伤害
+拼点开始:消耗1层[潮]使本骰子威力+2</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9006003">
+      <Name>梦中预兆</Name>
+      <Desc>使用时:抽取1张书页
+命中时:施加1层[易伤](受[潮]加成)
+命中时:施加1层[流血](受[潮]加成)</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9006004">
+      <Name>极乐之境</Name>
+      <Desc>使用时:下回合获得1层[迅捷]
+命中时:施加1层[束缚](受[潮]加成)
+拼点胜利:施加1层[麻痹](受[潮]加成)</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9006005">
+      <Name>时溯潮生</Name>
+      <Desc>[迅攻]
+使用时:抽取2张书页,消耗2层[潮]使自身所有正面效果提升1级
+命中时:恢复5点混乱抗性
+命中时:获得1层[强壮]和[守护]</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9006006">
+      <Name>时陨汐夺</Name>
+      <Desc>[迅攻]
+使用时:消耗2层[潮]使目标所有负面效果提升1级
+命中时:使目标当前负面效果延续一幕
+命中时:施加1层[束缚]</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9006007">
+      <Name>潮启</Name>
+      <Desc>限拥有[潮]时使用,使用时消耗1层[潮]
+装备时:选择一个目标,本回合将其卡组中下一张牌置入手牌,消耗为0
+使用后/回合结束时归还(不打乱其牌库顺序)</Desc>
+    </BattleCardDesc>
+  </cardDescList>
+</CardDescXmlRoot>

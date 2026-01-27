@@ -251,6 +251,11 @@ namespace Steria
                         DiceCardSelfAbility_VeliaPotentialObservation.CARD_ID,
                         DiceCardSelfAbility_VeliaPotentialObservation.COOLDOWN_ROUNDS);
 
+                    // 提布 - 潮启 (ID: 9006007) - 1幕冷却
+                    SteriaEgoCooldownManager.RegisterCardCooldown(
+                        DiceCardSelfAbility_TibuTideAwakening.CARD_ID,
+                        DiceCardSelfAbility_TibuTideAwakening.COOLDOWN_ROUNDS);
+
                     SteriaLogger.Log("EGO card cooldowns registered successfully");
                 }
                 catch (Exception cooldownEx)

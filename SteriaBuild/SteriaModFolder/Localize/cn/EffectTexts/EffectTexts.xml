@@ -21,6 +21,11 @@
       <Desc>本书页不受[流]影响.</Desc>
     </BattleEffectText>
 
+    <BattleEffectText ID="SteriaRapidAssault">
+      <Name>迅攻</Name>
+      <Desc>若使用本书页的速度骰子速度大于目标速度骰子,不会使其改变目标,不会参与拼点,而是直接发起单方面攻击.</Desc>
+    </BattleEffectText>
+
     <!-- 倾诉梦想系列Buff -->
     <BattleEffectText ID="SteriaDreamVision">
       <Name>倾诉梦想:远望</Name>
@@ -46,6 +51,15 @@
     <BattleEffectText ID="SteriaTide">
       <Name>潮</Name>
       <Desc>每次使用书页为敌人施加负面效果/为友方施加正面效果时:消耗1层[潮],并使施加的效果层数+1.</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="TideRevelation">
+      <Name>潮之启示</Name>
+      <Desc>拥有该标记的书页所有骰子威力+1.使用后获得1-3层[潮]并移除该标记.不对装备书页生效.</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="CardBuf_TideRevelation">
+      <Name>潮之启示</Name>
+      <Desc>拥有该标记的书页所有骰子威力+1.使用后获得1-3层[潮]并移除该标记.不对装备书页生效.</Desc>
     </BattleEffectText>
 
     <!-- 薇莉亚EGO BOSS相关Buff -->

@@ -118,4 +118,24 @@
     </DropTable>
     <AiScript />
   </Enemy>
+
+  <!-- Tibu Enemy Definition -->
+  <Enemy ID="7">
+    <Name>提布</Name>
+    <FaceType>Skin</FaceType>
+    <NameID>-1</NameID>
+    <MinHeight>175</MinHeight>
+    <MaxHeight>175</MaxHeight>
+    <Unknown>false</Unknown>
+    <Gender>M</Gender>
+    <Retreat>false</Retreat>
+    <BookId>7</BookId>
+    <BodyId>0</BodyId>
+    <Exp>0</Exp>
+    <DropBonus>0</DropBonus>
+    <DropTable Level="0">
+      <DropItem Prob="1">6</DropItem>
+    </DropTable>
+    <AiScript />
+  </Enemy>
 </EnemyUnitClassRoot>

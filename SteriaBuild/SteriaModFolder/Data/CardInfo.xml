@@ -577,6 +577,150 @@
   </Card>
   <!-- Velia Cards End -->
 
+  <!-- Tibu Cards Start -->
+  <!-- 潮汐低语 -->
+  <Card ID="9006001">
+    <Name>潮汐低语</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>TibuTideWhisper</Script>
+    <ScriptDesc>使用时：恢复1点光芒</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuTideWhisper"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Hit" Motion="F" EffectRes="Steria_WaterFarHit" Script="TibuTideWhisperWeak" ActionScript="" Desc="命中时:施加1层[虚弱]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 命运将至 -->
+  <Card ID="9006002">
+    <Name>命运将至</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006002.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="4" />
+    <Script></Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList />
+    <BehaviourList>
+      <Behaviour Min="9" Dice="17" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="TibuFateArrivesBonusDamage" ActionScript="" Desc="命中时:对目标造成负面状态总层数×2点追加伤害" />
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="TibuFateArrivesParryPower" ActionScript="" Desc="拼点开始:消耗1层潮使本骰子威力+2" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 梦中预兆 -->
+  <Card ID="9006003">
+    <Name>梦中预兆</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006003.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>TibuDreamOmen</Script>
+    <ScriptDesc>使用时：抽取1张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuDreamOmen"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="TibuDreamOmenVulnerable" ActionScript="" Desc="命中时:施加1层[易伤]" />
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="TibuDreamOmenBleed" ActionScript="" Desc="命中时:施加1层[流血]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 极乐之境 -->
+  <Card ID="9006004">
+    <Name>极乐之境</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006004.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>TibuElysium</Script>
+    <ScriptDesc>使用时：下回合获得1层[迅捷]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuElysium"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="TibuElysiumBinding" ActionScript="" Desc="命中时:施加1层[束缚]" />
+      <Behaviour Min="2" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="TibuElysiumParalysis" ActionScript="" Desc="拼点胜利:施加1层[麻痹]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 时溯潮生 -->
+  <Card ID="9006005">
+    <Name>时溯潮生</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006005.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Keyword>SteriaRapidAssault</Keyword>
+    <Script>TibuTimeReturn</Script>
+    <ScriptDesc>[迅攻] 使用时：抽取2张书页，消耗2层[潮]使自身所有正面效果提升1级</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuTimeReturn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="TibuTimeReturnRecoverBreak" ActionScript="" Desc="命中时:恢复5点混乱抗性" />
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="TibuTimeReturnGainStrengthProtection" ActionScript="" Desc="命中时:获得1层[强壮]和[守护]" />
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 时陨汐夺 -->
+  <Card ID="9006006">
+    <Name>时陨汐夺</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006006.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Keyword>SteriaRapidAssault</Keyword>
+    <Script>TibuTimeRuin</Script>
+    <ScriptDesc>[迅攻] 使用时：消耗2层[潮]使目标所有负面效果提升1级</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuTimeRuin"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="TibuTimeRuinExtendDebuff" ActionScript="" Desc="命中时:使目标当前负面效果延续一幕" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="TibuElysiumBinding" ActionScript="" Desc="命中时:施加1层[束缚]" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 潮启 (EGO装备书页) -->
+  <Card ID="9006007">
+    <Name>潮启</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006007.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="2" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>999</MaxCooltimeForEgo>
+    <Script>TibuTideAwakening</Script>
+    <ScriptDesc>装备时：限拥有[潮]时使用，使用时消耗1层[潮]。选择一个目标，本回合中，将其卡组中下一张牌置入手牌，消耗为0。使用后/回合结束时归还（不打乱其牌库顺序）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuTideAwakening"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- Tibu Cards End -->
+
   <!-- 忘却之梦 (安希尔EGO) -->
   <Card ID="9001012">
     <Name>忘却之梦</Name>

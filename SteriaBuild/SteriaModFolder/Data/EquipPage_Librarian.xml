@@ -129,4 +129,33 @@
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
+  <Book ID="99000006">
+    <Name>提布</Name>
+    <TextId>-1</TextId>
+    <DropTable>5</DropTable>
+    <EquipEffect>
+      <HP>102</HP>
+      <Break>62</Break>
+      <SpeedMin>2</SpeedMin>
+      <Speed>6</Speed>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
+      <SResist>Normal</SResist>
+      <PResist>Normal</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Weak</SBResist>
+      <PBResist>Normal</PBResist>
+      <HBResist>Endure</HBResist>
+      <Passive Pid="@origin">10008</Passive>
+      <Passive>9006001</Passive>
+      <Passive>9006002</Passive>
+    </EquipEffect>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <RangeType>Hybrid</RangeType>
+    <CharacterSkin>Bada</CharacterSkin>
+    <CharacterSkinType>Lor</CharacterSkinType>
+  </Book>
+
 </BookXmlRoot>

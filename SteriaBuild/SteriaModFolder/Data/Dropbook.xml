@@ -42,4 +42,18 @@
     <DropItem Type="Equip">99000005</DropItem>
     <DropItem Type="Card">9005006</DropItem>
   </BookUse>
+  <BookUse ID="6">
+    <Name>提布之书</Name>
+    <TextId />
+    <BookIcon />
+    <Chapter>6</Chapter>
+    <BookValue>0</BookValue>
+    <DropItem Type="Equip">99000006</DropItem>
+    <DropItem Type="Card">9006001</DropItem>
+    <DropItem Type="Card">9006002</DropItem>
+    <DropItem Type="Card">9006003</DropItem>
+    <DropItem Type="Card">9006004</DropItem>
+    <DropItem Type="Card">9006005</DropItem>
+    <DropItem Type="Card">9006006</DropItem>
+  </BookUse>
 </BookUseXmlRoot>

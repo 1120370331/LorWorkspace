@@ -304,4 +304,66 @@
       <Desc>与速度高于自身的对象拼点时使本书页骰子威力-5</Desc>
     </BattleCardAbility>
 
+    <!-- ========== 提布卡牌能力 ========== -->
+
+    <BattleCardAbility ID="TibuTideWhisper">
+      <Desc>[使用时] 恢复1点光芒</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="TibuTideWhisperWeak">
+      <Desc>[命中时] 施加1层[虚弱]</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="TibuDreamOmen">
+      <Desc>[使用时] 抽取1张书页</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="TibuDreamOmenVulnerable">
+      <Desc>[命中时] 施加1层[易伤]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="TibuDreamOmenBleed">
+      <Desc>[命中时] 施加1层[流血]</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="TibuElysium">
+      <Desc>[使用时] 下回合获得1层[迅捷]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="TibuElysiumBinding">
+      <Desc>[命中时] 施加1层[束缚]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="TibuElysiumParalysis">
+      <Desc>[拼点胜利] 施加1层[麻痹]</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="TibuFateArrivesBonusDamage">
+      <Desc>[命中时] 对目标造成负面状态总层数×2点追加伤害</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="TibuFateArrivesParryPower">
+      <Desc>[拼点开始] 消耗1层[潮]使本骰子威力+2</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="TibuTimeReturn">
+        <Desc>[迅攻]</Desc>
+        <Desc>[使用时] 抽取2张书页，消耗2层[潮]使自身所有正面效果提升1级</Desc>
+      </BattleCardAbility>
+    <BattleCardAbility ID="TibuTimeReturnRecoverBreak">
+      <Desc>[命中时] 恢复5点混乱抗性</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="TibuTimeReturnGainStrengthProtection">
+      <Desc>[命中时] 获得1层[强壮]和[守护]</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="TibuTimeRuin">
+        <Desc>[迅攻]</Desc>
+        <Desc>[使用时] 消耗2层[潮]使目标所有负面效果提升1级</Desc>
+      </BattleCardAbility>
+    <BattleCardAbility ID="TibuTimeRuinExtendDebuff">
+      <Desc>[命中时] 使目标当前负面效果延续一幕</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="TibuTimeRuinGainQuickness">
+      <Desc>[命中时] 获得1层[迅捷]</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="TibuTideAwakening">
+        <Desc>[装备时] 限拥有[潮]时使用，使用时消耗1层[潮]。选择一个目标，本回合将其卡组中下一张牌置入手牌，消耗为0。使用后/回合结束时归还（不打乱其牌库顺序）</Desc>
+      </BattleCardAbility>
+
 </BattleCardAbilityDescRoot>

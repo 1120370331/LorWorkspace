@@ -36,6 +36,10 @@ public class BattleUnitBuf_Tide : BattleUnitBuf
 
         stack--;
         SteriaLogger.Log($"Tide: Consumed 1 stack, remaining: {stack}");
+        if (_owner != null)
+        {
+            Steria.HarmonyHelpers.NotifyPassivesOnTideConsumed(_owner, 1);
+        }
 
         if (stack <= 0)
         {

@@ -190,4 +190,34 @@
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
+  <!-- Tibu Enemy Book -->
+  <Book ID="7">
+    <Name>提布</Name>
+    <TextId>-1</TextId>
+    <Category>DeckFixed</Category>
+    <Option>Basic</Option>
+    <EquipEffect>
+      <HP>300</HP>
+      <Break>164</Break>
+      <SpeedMin>2</SpeedMin>
+      <Speed>6</Speed>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
+      <SResist>Normal</SResist>
+      <PResist>Normal</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Weak</SBResist>
+      <PBResist>Normal</PBResist>
+      <HBResist>Endure</HBResist>
+      <Passive Pid="@origin">10008</Passive>
+      <Passive>9006001</Passive>
+      <Passive>9006002</Passive>
+    </EquipEffect>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <CharacterSkin>Bada</CharacterSkin>
+    <CharacterSkinType>Lor</CharacterSkinType>
+  </Book>
+
 </BookXmlRoot>

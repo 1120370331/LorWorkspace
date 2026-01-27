@@ -53,4 +53,13 @@
     <Desc>初始拥有6颗速度骰子。</Desc>
   </PassiveDesc>
 
+  <PassiveDesc ID="9006001">
+    <Name>神脉：梦之汐-司潮-潮启</Name>
+    <Desc>每回合开始时获得2费EGO装备书页“潮启”。每消耗3层[潮]：恢复1点光芒，下回合获得1层[强壮]。</Desc>
+  </PassiveDesc>
+  <PassiveDesc ID="9006002">
+    <Name>观潮表的一页</Name>
+    <Desc>每回合随机为友方单位手中最多2张书页赋予“潮之启示”。拥有“潮之启示”的书页所有骰子威力+1，使用后获得1-3层[潮]并移除该标记。</Desc>
+  </PassiveDesc>
+
 </PassiveDescRoot> 

@@ -88,6 +88,8 @@ namespace Steria
 
         // 存储已经应用了流加成的骰子实例（用于防止重复应用，同时允许反击骰子获得加成）
         private static HashSet<BattleDiceBehavior> _flowBonusAppliedDice = new HashSet<BattleDiceBehavior>();
+        // 存储已应用潮之启示加成的骰子实例
+        private static HashSet<BattleDiceBehavior> _tideRevelationAppliedDice = new HashSet<BattleDiceBehavior>();
 
         // 检查骰子是否已经应用了流加成
         public static bool HasFlowBonusApplied(BattleDiceBehavior dice)
@@ -108,6 +110,27 @@ namespace Steria
         public static void ClearFlowBonusAppliedDice()
         {
             _flowBonusAppliedDice.Clear();
+        }
+
+        public static bool HasTideRevelationApplied(BattleDiceBehavior dice)
+        {
+            return dice != null && _tideRevelationAppliedDice.Contains(dice);
+        }
+
+        public static void MarkTideRevelationApplied(BattleDiceBehavior dice)
+        {
+            if (dice != null)
+            {
+                _tideRevelationAppliedDice.Add(dice);
+            }
+        }
+
+        public static void RemoveTideRevelationApplied(BattleDiceBehavior dice)
+        {
+            if (dice != null)
+            {
+                _tideRevelationAppliedDice.Remove(dice);
+            }
         }
 
         // 不消耗流、只获得加成的卡牌ID集合（流转卡牌）
@@ -139,6 +162,100 @@ namespace Steria
             { 9002004, 5 },  // 风暴分流 - 至多5次流强化
             { 9002008, 2 },  // 百川逐风 - 至多2次流强化
         };
+
+        // [迅攻] 关键词ID
+        private const string _rapidAssaultKeywordId = "SteriaRapidAssault";
+
+        internal static bool HasRapidAssaultKeyword(BattlePlayingCardDataInUnitModel card)
+        {
+            if (card?.card?.XmlData?.Keywords != null && card.card.XmlData.Keywords.Contains(_rapidAssaultKeywordId))
+            {
+                return true;
+            }
+
+            string[] abilityKeywords = card?.cardAbility?.Keywords;
+            if (abilityKeywords != null)
+            {
+                for (int i = 0; i < abilityKeywords.Length; i++)
+                {
+                    if (abilityKeywords[i] == _rapidAssaultKeywordId)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        internal static bool IsRapidAssaultFaster(BattlePlayingCardDataInUnitModel card)
+        {
+            if (card == null || card.target == null)
+            {
+                return false;
+            }
+
+            if (!HasRapidAssaultKeyword(card))
+            {
+                return false;
+            }
+
+            int mySpeed = card.speedDiceResultValue;
+            int targetSpeed = GetTargetSpeedValue(card);
+            if (mySpeed <= 0 || targetSpeed <= 0)
+            {
+                return false;
+            }
+
+            return mySpeed > targetSpeed;
+        }
+
+        internal static bool IsRapidAssaultFaster(BattlePlayingCardDataInUnitModel card, BattlePlayingCardDataInUnitModel opponent)
+        {
+            if (card == null || opponent == null)
+            {
+                return false;
+            }
+
+            if (!HasRapidAssaultKeyword(card))
+            {
+                return false;
+            }
+
+            if (card.speedDiceResultValue <= 0 || opponent.speedDiceResultValue <= 0)
+            {
+                return false;
+            }
+
+            return card.speedDiceResultValue > opponent.speedDiceResultValue;
+        }
+
+        private static int GetTargetSpeedValue(BattlePlayingCardDataInUnitModel card)
+        {
+            if (card?.target?.cardSlotDetail?.cardAry == null)
+            {
+                return -1;
+            }
+
+            int targetSlotOrder = card.targetSlotOrder;
+            if (targetSlotOrder < 0 || targetSlotOrder >= card.target.cardSlotDetail.cardAry.Count)
+            {
+                return -1;
+            }
+
+            BattlePlayingCardDataInUnitModel targetCard = card.target.cardSlotDetail.cardAry[targetSlotOrder];
+            if (targetCard != null && targetCard.speedDiceResultValue > 0)
+            {
+                return targetCard.speedDiceResultValue;
+            }
+
+            if (targetSlotOrder >= 0 && targetSlotOrder < card.target.speedDiceResult.Count)
+            {
+                return card.target.GetSpeedDiceResult(targetSlotOrder).value;
+            }
+
+            return -1;
+        }
 
         // 存储每颗骰子的原始流强化次数（未乘以倍率，用于计算debuff层数）
         private static Dictionary<BattlePlayingCardDataInUnitModel, Dictionary<int, int>> _flowEnhancementCountPerCard =
@@ -192,6 +309,7 @@ namespace Steria
             // 消耗1层潮，增加1层荆棘
             tideBuf.stack--;
             SteriaLogger.Log($"Tide: Giver {giver.UnitData?.unitData?.name} consumed 1 Tide for Thorn, remaining = {tideBuf.stack}");
+            NotifyPassivesOnTideConsumed(giver, 1);
 
             if (tideBuf.stack <= 0)
             {
@@ -240,6 +358,19 @@ namespace Steria
             passive9002004?.OnFlowConsumed(amount);
 
             SteriaLogger.Log($"NotifyPassivesOnFlowConsumed: Notified passives of {amount} flow consumed");
+        }
+
+        /// <summary>
+        /// 通知所有相关被动潮被消耗
+        /// </summary>
+        public static void NotifyPassivesOnTideConsumed(BattleUnitModel owner, int amount)
+        {
+            if (owner == null || amount <= 0) return;
+
+            var passive9006001 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9006001) as PassiveAbility_9006001;
+            passive9006001?.OnTideConsumed(amount);
+
+            SteriaLogger.Log($"NotifyPassivesOnTideConsumed: Notified passives of {amount} tide consumed");
         }
 
         /// <summary>
@@ -508,12 +639,13 @@ namespace Steria
              List<BattleDiceBehavior> behaviors = card.GetDiceBehaviorList();
              if (behaviors != null) {
                 foreach(var behavior in behaviors) {
-                     if (behavior != null) {
-                         _flowConsumedByDiceAction.Remove(behavior);
-                         // Also remove from repeat set if the action ends prematurely
-                         _repeatTriggeredDice.Remove(behavior);
-                     }
-                }
+                 if (behavior != null) {
+                     _flowConsumedByDiceAction.Remove(behavior);
+                     // Also remove from repeat set if the action ends prematurely
+                     _repeatTriggeredDice.Remove(behavior);
+                     RemoveTideRevelationApplied(behavior);
+                 }
+             }
              }
         }
     }
@@ -890,6 +1022,18 @@ namespace Steria
         {
             Debug.Log($"[Steria] Card OnEndBattle Postfix: ID={__instance.card?.GetID()}, Hash={__instance.GetHashCode()}");
             HarmonyHelpers.CleanupCardUsage(__instance);
+
+            if (__instance?.card != null)
+            {
+                TibuAbilityHelper.ClearTideRevelation(__instance.card);
+            }
+
+            if (__instance?.owner != null)
+            {
+                var borrowedBuf = __instance.owner.bufListDetail.GetActivatedBufList()
+                    .FirstOrDefault(b => b is global::BattleUnitBuf_TideBorrowedCard) as global::BattleUnitBuf_TideBorrowedCard;
+                borrowedBuf?.ReturnBorrowedCard(__instance.card);
+            }
         }
 
         // 新的简化流消耗逻辑：在 RollDice 时应用预先计算好的威力加成
@@ -931,6 +1075,37 @@ namespace Steria
                 // 标记这个骰子实例已经应用了加成（防止重复应用）
                 // 不清除记录，让反击骰子（复制的骰子）也能获得相同的加成
                 HarmonyHelpers.MarkFlowBonusApplied(__instance);
+            }
+        }
+
+        [HarmonyPatch(typeof(BattleDiceBehavior), nameof(BattleDiceBehavior.RollDice))]
+        public static class BattleDiceBehavior_RollDice_TideRevelationPatch
+        {
+            [HarmonyPrefix]
+            public static void Prefix(BattleDiceBehavior __instance)
+            {
+                try
+                {
+                    if (__instance == null || __instance.card?.card == null)
+                    {
+                        return;
+                    }
+
+                    if (HarmonyHelpers.HasTideRevelationApplied(__instance))
+                    {
+                        return;
+                    }
+
+                    if (TibuAbilityHelper.HasTideRevelation(__instance.card.card))
+                    {
+                        __instance.ApplyDiceStatBonus(new DiceStatBonus { power = 1 });
+                        HarmonyHelpers.MarkTideRevelationApplied(__instance);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] TideRevelation RollDice patch error: {ex}");
+                }
             }
         }
 
@@ -1217,6 +1392,7 @@ namespace Steria
             // 扣1层潮，额外赋予1层buff
             tideBuf.stack -= 1;
             SteriaLogger.Log($"Tide: Giver {giver.UnitData?.unitData?.name} consumed 1 Tide for {bufType}, remaining = {tideBuf.stack}");
+            HarmonyHelpers.NotifyPassivesOnTideConsumed(giver, 1);
 
             if (tideBuf.stack <= 0)
             {
@@ -1468,6 +1644,116 @@ namespace Steria
                 {
                     Debug.LogError($"[Steria] Error clearing data on battle end: {ex}");
                 }
+            }
+        }
+
+        // --- Patch for [迅攻]：速度更快时不改变目标并避免拼点 ---
+        [HarmonyPatch(typeof(BattleUnitModel), nameof(BattleUnitModel.CanChangeAttackTarget))]
+        public static class BattleUnitModel_CanChangeAttackTarget_RapidAssaultPatch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(BattleUnitModel __instance, BattleUnitModel target, int myIndex, int targetIndex, ref bool __result)
+            {
+                try
+                {
+                    if (__instance?.cardSlotDetail?.cardAry == null || target == null)
+                    {
+                        return true;
+                    }
+
+                    if (myIndex < 0 || myIndex >= __instance.cardSlotDetail.cardAry.Count)
+                    {
+                        return true;
+                    }
+
+                    BattlePlayingCardDataInUnitModel myCard = __instance.cardSlotDetail.cardAry[myIndex];
+                    if (myCard == null || !HarmonyHelpers.HasRapidAssaultKeyword(myCard))
+                    {
+                        return true;
+                    }
+
+                    if (target.cardSlotDetail?.cardAry == null || targetIndex < 0 || targetIndex >= target.cardSlotDetail.cardAry.Count)
+                    {
+                        return true;
+                    }
+
+                    int mySpeed = myCard.speedDiceResultValue > 0
+                        ? myCard.speedDiceResultValue
+                        : __instance.GetSpeedDiceResult(myIndex).value;
+
+                    int targetSpeed = -1;
+                    BattlePlayingCardDataInUnitModel targetCard = target.cardSlotDetail.cardAry[targetIndex];
+                    if (targetCard != null && targetCard.speedDiceResultValue > 0)
+                    {
+                        targetSpeed = targetCard.speedDiceResultValue;
+                    }
+                    else if (target.speedDiceResult != null && targetIndex < target.speedDiceResult.Count)
+                    {
+                        targetSpeed = target.GetSpeedDiceResult(targetIndex).value;
+                    }
+
+                    if (mySpeed <= 0 || targetSpeed <= 0)
+                    {
+                        return true;
+                    }
+
+                    if (mySpeed > targetSpeed)
+                    {
+                        __result = false;
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] RapidAssault CanChangeAttackTarget patch error: {ex}");
+                }
+
+                return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(StageController), "StartParrying")]
+        public static class StageController_StartParrying_RapidAssaultPatch
+        {
+            private static readonly MethodInfo _startActionMethod =
+                AccessTools.Method(typeof(StageController), "StartAction", new Type[] { typeof(BattlePlayingCardDataInUnitModel) });
+
+            [HarmonyPrefix]
+            public static bool Prefix(StageController __instance, BattlePlayingCardDataInUnitModel cardA, BattlePlayingCardDataInUnitModel cardB)
+            {
+                try
+                {
+                    BattlePlayingCardDataInUnitModel rapidCard = null;
+                    if (HarmonyHelpers.IsRapidAssaultFaster(cardA, cardB))
+                    {
+                        rapidCard = cardA;
+                    }
+                    else if (HarmonyHelpers.IsRapidAssaultFaster(cardB, cardA))
+                    {
+                        rapidCard = cardB;
+                    }
+
+                    if (rapidCard == null || rapidCard.target == null)
+                    {
+                        return true;
+                    }
+
+                    if (_startActionMethod == null)
+                    {
+                        SteriaLogger.LogWarning("RapidAssault: StartAction method not found, falling back to parrying.");
+                        return true;
+                    }
+
+                    _startActionMethod.Invoke(__instance, new object[] { rapidCard });
+                    SteriaLogger.Log($"RapidAssault: One-side action by {rapidCard.owner?.UnitData?.unitData?.name}");
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] RapidAssault StartParrying patch error: {ex}");
+                }
+
+                return true;
             }
         }
 

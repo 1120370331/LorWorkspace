@@ -72,4 +72,17 @@
     <Card>9005007</Card> <!-- 弱化穿刺 -->
   </Deck>
 
+  <!-- 提布卡组 (对应 Book ID 7) -->
+  <Deck ID="7">
+    <Card>9006001</Card> <!-- 潮汐低语 x2 -->
+    <Card>9006001</Card>
+    <Card>9006003</Card> <!-- 梦中预兆 x2 -->
+    <Card>9006003</Card>
+    <Card>9006004</Card> <!-- 极乐之境 x2 -->
+    <Card>9006004</Card>
+    <Card>9006005</Card> <!-- 时溯潮生 x1 -->
+    <Card>9006006</Card> <!-- 时陨汐夺 x1 -->
+    <Card>9006002</Card> <!-- 命运将至 x1 -->
+  </Deck>
+
 </DeckXmlRoot>
