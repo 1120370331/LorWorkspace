@@ -158,4 +158,36 @@
     <CharacterSkinType>Lor</CharacterSkinType>
   </Book>
 
+  <Book ID="99000007">
+    <Name>艾莉蕾尔</Name>
+    <TextId>-1</TextId>
+    <DropTable>6</DropTable>
+    <EquipEffect>
+      <HP>98</HP>
+      <Break>58</Break>
+      <SpeedMin>2</SpeedMin>
+      <Speed>7</Speed>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
+      <SResist>Normal</SResist>
+      <PResist>Normal</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Normal</SBResist>
+      <PBResist>Normal</PBResist>
+      <HBResist>Weak</HBResist>
+      <Passive Pid="@origin">10008</Passive>
+      <Passive>9007001</Passive>
+      <Passive>9007002</Passive>
+      <Passive>9007003</Passive>
+      <Passive>9007004</Passive>
+      <Passive>9007005</Passive>
+    </EquipEffect>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <RangeType>Melee</RangeType>
+    <CharacterSkin>Bada</CharacterSkin>
+    <CharacterSkinType>Lor</CharacterSkinType>
+  </Book>
+
 </BookXmlRoot>

@@ -359,6 +359,67 @@
     <InnerType>-1</InnerType>
     <Cost>6</Cost>
     <Name>观潮表的一页</Name>
-    <Desc>每回合随机为友方单位手中最多2张书页赋予“潮之启示”。拥有“潮之启示”的书页所有骰子威力+1，使用后获得1-3层[潮]并移除该标记。</Desc>
+    <Desc>每回合随机为友方单位手中最多2张书页赋予“潮之启示”。拥有“潮之启示”的书页所有骰子威力+1，使用后获得1-3层[潮]并移除该标记（不对装备书页生效）。</Desc>
+  </Passive>
+
+  <Passive ID="9007001">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>6</Cost>
+    <Name>汐音共振</Name>
+    <Desc>在消耗10层[流]之后，造成的伤害增加25%，进攻型骰子威力+1。再消耗10层[流]之后，造成的伤害进一步提高25%，所有骰子威力+1，但受到的伤害也提高25%。</Desc>
+  </Passive>
+  <Passive ID="9007002">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>不染浮浪</Name>
+    <Desc>与速度低于自身的角色拼点时威力+1；与速度高于自身的角色拼点时威力-1。</Desc>
+  </Passive>
+  <Passive ID="9007003">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>5</Cost>
+    <Name>灵动</Name>
+    <Desc>闪避型骰子威力+2；防御型骰子威力-2。</Desc>
+  </Passive>
+  <Passive ID="9007004">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Uncommon</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>2</Cost>
+    <Name>夜潮</Name>
+    <Desc>击败敌人后获得5层[流]。</Desc>
+  </Passive>
+  <Passive ID="9007005">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>2</Cost>
+    <Name>音段接收</Name>
+    <Desc>回合开始时获得一枚1-6闪避骰子；每有一个书页目标指向本单位，便使其威力+1。</Desc>
   </Passive>
 </PassiveXmlRoot>

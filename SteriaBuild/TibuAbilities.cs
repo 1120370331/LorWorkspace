@@ -82,10 +82,19 @@ public class PassiveAbility_9006001 : PassiveAbilityBase
 
 public class PassiveAbility_9006002 : PassiveAbilityBase
 {
-    public override void OnRoundStart()
+    public override void OnRoundStartAfter()
     {
-        base.OnRoundStart();
+        base.OnRoundStartAfter();
+        ClearTideRevelationFromAllies();
         ApplyTideRevelationToRandomCards();
+        RefreshHandUi();
+    }
+
+    public override void OnRoundEnd()
+    {
+        base.OnRoundEnd();
+        ClearTideRevelationFromAllies();
+        RefreshHandUi();
     }
 
     private void ApplyTideRevelationToRandomCards()
@@ -114,7 +123,7 @@ public class PassiveAbility_9006002 : PassiveAbilityBase
                     continue;
                 }
 
-                if (card.XmlData.Spec.Ranged == CardRange.Instance)
+                if (IsEquipmentCard(card))
                 {
                     continue;
                 }
@@ -138,6 +147,70 @@ public class PassiveAbility_9006002 : PassiveAbilityBase
                 BattleDiceCardBuf_TideRevelation buf = new BattleDiceCardBuf_TideRevelation(owner, 1);
                 selected.AddBufWithoutDuplication(buf);
             }
+        }
+    }
+
+    private void ClearTideRevelationFromAllies()
+    {
+        if (owner == null || owner.IsDead() || BattleObjectManager.instance == null)
+        {
+            return;
+        }
+
+        List<BattleUnitModel> allies = BattleObjectManager.instance
+            .GetAliveList(owner.faction)
+            .Where(u => !u.IsDead() && !u.IsBreakLifeZero())
+            .ToList();
+
+        foreach (BattleUnitModel ally in allies)
+        {
+            if (ally?.allyCardDetail == null)
+            {
+                continue;
+            }
+
+            List<BattleDiceCardModel> hand = ally.allyCardDetail.GetHand();
+            if (hand == null)
+            {
+                continue;
+            }
+
+            foreach (BattleDiceCardModel card in hand)
+            {
+                Steria.TibuAbilityHelper.ClearTideRevelation(card);
+            }
+        }
+    }
+
+    private static bool IsEquipmentCard(BattleDiceCardModel card)
+    {
+        if (card?.XmlData == null)
+        {
+            return true;
+        }
+
+        if (card.XmlData.Spec.Ranged == CardRange.Instance)
+        {
+            return true;
+        }
+
+        if (card.XmlData.IsEgo() || card.XmlData.IsPersonal())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static void RefreshHandUi()
+    {
+        try
+        {
+            SingletonBehavior<BattleManagerUI>.Instance?.ui_unitCardsInHand?.UpdateCardList();
+        }
+        catch
+        {
+            // Ignore UI refresh errors (e.g. during enemy turns or scene unload).
         }
     }
 }

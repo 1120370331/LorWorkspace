@@ -366,4 +366,54 @@
         <Desc>[装备时] 限拥有[潮]时使用，使用时消耗1层[潮]。选择一个目标，本回合将其卡组中下一张牌置入手牌，消耗为0。使用后/回合结束时归还（不打乱其牌库顺序）</Desc>
       </BattleCardAbility>
 
+    <!-- ========== 艾莉蕾尔卡牌能力 ========== -->
+    <BattleCardAbility ID="AilierelDuskAmbush">
+      <Desc>[流转] [使用时] 恢复1点光芒</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AilierelGainFlow1">
+      <Desc>[命中时] 获得1层[流]</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="AilierelSideStep">
+      <Desc>[流转] [使用时] 抽取1张书页</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AilierelSideStepLoseDestroySecond">
+      <Desc>[拼点失败] 摧毁本书页第二颗骰子</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AilierelDraw1">
+      <Desc>[命中时] 抽取1张书页</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="AilierelBigCatch">
+      <Desc>若此书页造成了不低于8点伤害则获得3层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AilierelBleed2">
+      <Desc>[命中时] 施加2层[流血]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AilierelBleed2DestroyDice">
+      <Desc>[命中时] 施加2层[流血],摧毁敌人当前书页所有骰子</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="AilierelWander">
+      <Desc>[使用时] 消耗3层[流]来抽取2张书页</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AilierelGainQuickness">
+      <Desc>[命中时] 获得1层[迅捷]</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="AilierelWhereSwim">
+      <Desc>[使用时] 获得6层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AilierelRerollIfBleed">
+      <Desc>[命中时] 若敌人[流血]层数>5,重新投掷本骰子(最多触发1次)</Desc>
+    </BattleCardAbility>
+
+    <BattleCardAbility ID="AilierelNightTrace">
+      <Desc>本书页仅限[流]数量>5时使用</Desc>
+      <Desc>渐强。每次使用后，本书页光芒消耗永久+1，所有骰子最小值+1，最大值+2（至多触发3次）</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="AilierelNightTraceBleedAndFlow">
+      <Desc>[命中时] 施加2层[流血]并获得“本书页光芒消耗”层[流]</Desc>
+    </BattleCardAbility>
+
 </BattleCardAbilityDescRoot>

@@ -147,6 +147,9 @@ namespace Steria
             9002006,  // 洋流，听我的号令
             // 司流者教徒流转卡牌
             9003005,  // 顺流而为
+            // 艾莉蕾尔流转卡牌
+            9007001,  // 暮雾伏击
+            9007002,  // 侧闪
             // 在此添加更多具有相同效果的卡牌ID...
         };
 
@@ -200,7 +203,7 @@ namespace Steria
                 return false;
             }
 
-            int mySpeed = card.speedDiceResultValue;
+            int mySpeed = GetSpeedValue(card);
             int targetSpeed = GetTargetSpeedValue(card);
             if (mySpeed <= 0 || targetSpeed <= 0)
             {
@@ -222,39 +225,69 @@ namespace Steria
                 return false;
             }
 
-            if (card.speedDiceResultValue <= 0 || opponent.speedDiceResultValue <= 0)
+            int mySpeed = GetSpeedValue(card);
+            int opponentSpeed = GetSpeedValue(opponent);
+            if (mySpeed <= 0 || opponentSpeed <= 0)
             {
                 return false;
             }
 
-            return card.speedDiceResultValue > opponent.speedDiceResultValue;
+            return mySpeed > opponentSpeed;
+        }
+
+        private static int GetSpeedValue(BattlePlayingCardDataInUnitModel card)
+        {
+            if (card == null)
+            {
+                return -1;
+            }
+
+            if (card.speedDiceResultValue > 0)
+            {
+                return card.speedDiceResultValue;
+            }
+
+            BattleUnitModel unit = card.owner;
+            if (unit?.speedDiceResult == null)
+            {
+                return -1;
+            }
+
+            int slot = card.slotOrder;
+            if (slot < 0 || slot >= unit.speedDiceResult.Count)
+            {
+                return -1;
+            }
+
+            return unit.GetSpeedDiceResult(slot).value;
         }
 
         private static int GetTargetSpeedValue(BattlePlayingCardDataInUnitModel card)
         {
-            if (card?.target?.cardSlotDetail?.cardAry == null)
+            if (card?.target == null)
             {
                 return -1;
             }
 
             int targetSlotOrder = card.targetSlotOrder;
-            if (targetSlotOrder < 0 || targetSlotOrder >= card.target.cardSlotDetail.cardAry.Count)
+            if (targetSlotOrder < 0 || card.target.speedDiceResult == null || targetSlotOrder >= card.target.speedDiceResult.Count)
             {
                 return -1;
             }
 
-            BattlePlayingCardDataInUnitModel targetCard = card.target.cardSlotDetail.cardAry[targetSlotOrder];
-            if (targetCard != null && targetCard.speedDiceResultValue > 0)
+            BattlePlayingCardDataInUnitModel targetCard = null;
+            if (card.target.cardSlotDetail?.cardAry != null && targetSlotOrder < card.target.cardSlotDetail.cardAry.Count)
             {
-                return targetCard.speedDiceResultValue;
+                targetCard = card.target.cardSlotDetail.cardAry[targetSlotOrder];
             }
 
-            if (targetSlotOrder >= 0 && targetSlotOrder < card.target.speedDiceResult.Count)
+            int targetSpeed = GetSpeedValue(targetCard);
+            if (targetSpeed > 0)
             {
-                return card.target.GetSpeedDiceResult(targetSlotOrder).value;
+                return targetSpeed;
             }
 
-            return -1;
+            return card.target.GetSpeedDiceResult(targetSlotOrder).value;
         }
 
         // 存储每颗骰子的原始流强化次数（未乘以倍率，用于计算debuff层数）
@@ -356,6 +389,10 @@ namespace Steria
             // 通知 PassiveAbility_9002004 (司流者)
             var passive9002004 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9002004) as PassiveAbility_9002004;
             passive9002004?.OnFlowConsumed(amount);
+
+            // 通知 PassiveAbility_9007001 (汐音共振)
+            var passive9007001 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9007001) as PassiveAbility_9007001;
+            passive9007001?.OnFlowConsumed(amount);
 
             SteriaLogger.Log($"NotifyPassivesOnFlowConsumed: Notified passives of {amount} flow consumed");
         }
@@ -559,6 +596,14 @@ namespace Steria
             {
                 SteriaLogger.Log($"RegisterCardUsage: Notifying PassiveAbility_9002004 of {totalConsumed} flow consumed");
                 passive9002004.OnFlowConsumed(totalConsumed);
+            }
+
+            // 通知 PassiveAbility_9007001 (汐音共振)
+            var passive9007001 = card.owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9007001) as PassiveAbility_9007001;
+            if (passive9007001 != null)
+            {
+                SteriaLogger.Log($"RegisterCardUsage: Notifying PassiveAbility_9007001 of {totalConsumed} flow consumed");
+                passive9007001.OnFlowConsumed(totalConsumed);
             }
         }
 
@@ -1623,6 +1668,36 @@ namespace Steria
                 // 注意：冷却减少现在由 SteriaEgoCooldownPatches 处理
 
                 SteriaLogger.Log("Reset NoFlowConsumptionActiveThisRound and HundredRiversRepeat triggers");
+            }
+        }
+
+        // --- Patch for 音段接收：在速度骰初始化后重新添加反击闪避骰 ---
+        [HarmonyPatch(typeof(BattleUnitModel), "OnRoundStart_speedDice")]
+        public static class BattleUnitModel_OnRoundStartSpeedDice_SoundSegmentPatch
+        {
+            [HarmonyPostfix]
+            public static void Postfix(BattleUnitModel __instance)
+            {
+                try
+                {
+                    if (__instance == null || __instance.IsDead())
+                    {
+                        return;
+                    }
+
+                    PassiveAbility_9007005 passive = __instance.passiveDetail?.PassiveList
+                        ?.FirstOrDefault(p => p is PassiveAbility_9007005) as PassiveAbility_9007005;
+                    if (passive == null)
+                    {
+                        return;
+                    }
+
+                    passive.ApplySoundSegmentDice();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Error applying SoundSegment dice after speed dice: {ex}");
+                }
             }
         }
 

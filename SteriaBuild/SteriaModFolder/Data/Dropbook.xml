@@ -48,6 +48,7 @@
     <BookIcon />
     <Chapter>6</Chapter>
     <BookValue>0</BookValue>
+    <DropItemState>All</DropItemState>
     <DropItem Type="Equip">99000006</DropItem>
     <DropItem Type="Card">9006001</DropItem>
     <DropItem Type="Card">9006002</DropItem>
@@ -55,5 +56,20 @@
     <DropItem Type="Card">9006004</DropItem>
     <DropItem Type="Card">9006005</DropItem>
     <DropItem Type="Card">9006006</DropItem>
+  </BookUse>
+  <BookUse ID="7">
+    <Name>艾莉蕾尔之书</Name>
+    <TextId />
+    <BookIcon />
+    <Chapter>6</Chapter>
+    <BookValue>0</BookValue>
+    <DropItemState>All</DropItemState>
+    <DropItem Type="Equip">99000007</DropItem>
+    <DropItem Type="Card">9007001</DropItem>
+    <DropItem Type="Card">9007002</DropItem>
+    <DropItem Type="Card">9007003</DropItem>
+    <DropItem Type="Card">9007004</DropItem>
+    <DropItem Type="Card">9007005</DropItem>
+    <DropItem Type="Card">9007006</DropItem>
   </BookUse>
 </BookUseXmlRoot>

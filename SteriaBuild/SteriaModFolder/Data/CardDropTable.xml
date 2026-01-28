@@ -44,4 +44,12 @@
     <Card>9006005</Card> <!-- 时溯潮生 -->
     <Card>9006006</Card> <!-- 时陨汐夺 -->
   </DropTable>
+  <DropTable ID="6">
+    <Card>9007001</Card> <!-- 暮雾伏击 -->
+    <Card>9007002</Card> <!-- 侧闪 -->
+    <Card>9007003</Card> <!-- 叉中大鱼了 -->
+    <Card>9007004</Card> <!-- 我要游走咯 -->
+    <Card>9007005</Card> <!-- 想往哪游呢 -->
+    <Card>9007006</Card> <!-- 汐音·夜痕 -->
+  </DropTable>
 </CardDropTableXmlRoot>

@@ -707,7 +707,7 @@
     <Rarity>Unique</Rarity>
     <Spec Range="Instance" Cost="2" />
     <Option>EgoPersonal</Option>
-    <MaxCooltimeForEgo>999</MaxCooltimeForEgo>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
     <Script>TibuTideAwakening</Script>
     <ScriptDesc>装备时：限拥有[潮]时使用，使用时消耗1层[潮]。选择一个目标，本回合中，将其卡组中下一张牌置入手牌，消耗为0。使用后/回合结束时归还（不打乱其牌库顺序）</ScriptDesc>
     <AbilityList>
@@ -720,6 +720,130 @@
     <Priority>0</Priority>
   </Card>
   <!-- Tibu Cards End -->
+
+  <!-- 艾莉蕾尔 Cards Start -->
+  <!-- 暮雾伏击 -->
+  <Card ID="9007001">
+    <Name>暮雾伏击</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>AilierelDuskAmbush</Script>
+    <ScriptDesc>[流转] 使用时：恢复1点光芒</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelDuskAmbush" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="3" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="1" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AilierelGainFlow1" ActionScript="" Desc="命中时:获得1层[流]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 侧闪 -->
+  <Card ID="9007002">
+    <Name>侧闪</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007002.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>AilierelSideStep</Script>
+    <ScriptDesc>[流转] 使用时：抽取1张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelSideStep" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="8" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="AilierelSideStepLoseDestroySecond" ActionScript="" Desc="拼点失败:摧毁本书页第二颗骰子" />
+      <Behaviour Min="1" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AilierelDraw1" ActionScript="" Desc="命中时:抽取1张书页" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 叉中大鱼了 -->
+  <Card ID="9007003">
+    <Name>叉中大鱼了</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007003.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>AilierelBigCatch</Script>
+    <ScriptDesc>若此书页造成了不低于8点伤害则获得3层[流]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelBigCatch" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelBleed2" ActionScript="" Desc="命中时:施加2层[流血]" />
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelBleed2" ActionScript="" Desc="命中时:施加2层[流血]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 我要游走咯 -->
+  <Card ID="9007004">
+    <Name>我要游走咯</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007004.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AilierelWander</Script>
+    <ScriptDesc>使用时：消耗3层[流]来抽取2张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelWander" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="9" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelGainQuickness" ActionScript="" Desc="命中时:获得1层[迅捷]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 想往哪游呢 -->
+  <Card ID="9007005">
+    <Name>想往哪游呢</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007005.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Script>AilierelWhereSwim</Script>
+    <ScriptDesc>使用时：获得6层[流]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelWhereSwim" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="10" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelBleed2" ActionScript="" Desc="命中时:施加2层[流血]" />
+      <Behaviour Min="6" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelRerollIfBleed" ActionScript="" Desc="命中时:若敌人[流血]层数>5,重新投掷本骰子(最多触发1次)" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 汐音·夜痕 -->
+  <Card ID="9007006">
+    <Name>汐音·夜痕</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007006.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>AilierelNightTrace</Script>
+    <ScriptDesc>本书页仅限[流]数量>5时使用
+渐强。每次使用后，本书页光芒消耗永久+1，所有骰子最小值+1，最大值+2（至多触发3次）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelNightTrace" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelNightTraceBleedAndFlow" ActionScript="" Desc="命中时:施加2层[流血],获得“本书页光芒消耗”层[流]" />
+      <Behaviour Min="3" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AilierelNightTraceBleedAndFlow" ActionScript="" Desc="命中时:施加2层[流血],获得“本书页光芒消耗”层[流]" />
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelNightTraceBleedAndFlow" ActionScript="" Desc="命中时:施加2层[流血],获得“本书页光芒消耗”层[流]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 艾莉蕾尔 Cards End -->
 
   <!-- 忘却之梦 (安希尔EGO) -->
   <Card ID="9001012">

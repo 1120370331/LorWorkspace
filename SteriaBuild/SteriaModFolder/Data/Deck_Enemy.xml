@@ -85,4 +85,17 @@
     <Card>9006002</Card> <!-- 命运将至 x1 -->
   </Deck>
 
+  <!-- 艾莉蕾尔卡组 (对应 Book ID 8) -->
+  <Deck ID="8">
+    <Card>9007001</Card> <!-- 暮雾伏击 x2 -->
+    <Card>9007001</Card>
+    <Card>9007002</Card> <!-- 侧闪 x2 -->
+    <Card>9007002</Card>
+    <Card>9007003</Card> <!-- 叉中大鱼了 x2 -->
+    <Card>9007003</Card>
+    <Card>9007004</Card> <!-- 我要游走咯 x1 -->
+    <Card>9007005</Card> <!-- 想往哪游呢 x1 -->
+    <Card>9007006</Card> <!-- 汐音·夜痕 x1 -->
+  </Deck>
+
 </DeckXmlRoot>
