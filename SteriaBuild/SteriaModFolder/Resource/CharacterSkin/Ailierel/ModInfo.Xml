@@ -1,0 +1,50 @@
+<ModInfo>
+  <ClothInfo>
+    <Name>Ailierel</Name>
+    <Default>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-3.2" pivot_y="-262.9" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Default>
+    <Guard>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="31.30001" pivot_y="-256" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Guard>
+    <Evade>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-40" pivot_y="-251.4" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Evade>
+    <Damaged>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="49.7" pivot_y="-253.7" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Damaged>
+    <Slash>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="72.7" pivot_y="-256" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash>
+    <Penetrate>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="121" pivot_y="-253.6999" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Penetrate>
+    <Hit>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-205.6" pivot_y="-331.9" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Hit>
+    <Move>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-40" pivot_y="-260.6" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Move>
+    <S1>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="58.9" pivot_y="-187" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S1>
+  </ClothInfo>
+</ModInfo>

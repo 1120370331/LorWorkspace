@@ -186,8 +186,8 @@
     <Episode>1</Episode>
     <Rarity>Unique</Rarity>
     <RangeType>Melee</RangeType>
-    <CharacterSkin>Bada</CharacterSkin>
-    <CharacterSkinType>Lor</CharacterSkinType>
+    <CharacterSkin>Ailierel</CharacterSkin>
+    <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
 </BookXmlRoot>
