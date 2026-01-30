@@ -56,6 +56,18 @@
         <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\UnityEngine.UI.dll</HintPath>
         <Private>false</Private>
     </Reference>
+    <Reference Include="UnityEngine.UIModule">
+        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+        <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+        <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+        <Private>false</Private>
+    </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
       <HintPath>Libs\UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>false</Private>

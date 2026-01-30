@@ -26,6 +26,19 @@
       <Desc>若使用本书页的速度骰子速度大于目标速度骰子,不会使其改变目标,不会参与拼点,而是直接发起单方面攻击.</Desc>
     </BattleEffectText>
 
+    <BattleEffectText ID="SteriaMusicDice">
+      <Name>乐章</Name>
+      <Desc>该书页的攻击骰子为乐章型骰子.造成伤害时,推进本方等量[乐谱进度].</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaSeaVoice_NightTrace">
+      <Name>沧海之声·夜痕</Name>
+      <Desc>触发时:对所有敌人造成其混乱抗性上限10%的伤害,并施加(20-场上单位数x2)层[流血].</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaSeaVoice_MorningLight">
+      <Name>沧海之声·晨光</Name>
+      <Desc>触发时:为所有友方单位恢复2点光芒,15点混乱抗性和生命值.</Desc>
+    </BattleEffectText>
+
     <!-- 倾诉梦想系列Buff -->
     <BattleEffectText ID="SteriaDreamVision">
       <Name>倾诉梦想:远望</Name>

@@ -983,7 +983,26 @@ namespace Steria
             {
                 // PassiveAbility_9000004 现在使用实例变量，Init时自动重置，不需要手动重置
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset all discard counts for 以执为攻
+                MusicScoreSystem.InitializeForBattle();
                 Debug.Log("[Steria] StartBattle: Reset discard counts");
+            }
+        }
+
+        // --- 初始化乐谱UI占位 ---
+        [HarmonyPatch(typeof(BattleManagerUI), nameof(BattleManagerUI.Init))]
+        public static class BattleManagerUI_Init_MusicScoreUI_Patch
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                try
+                {
+                    MusicScoreUI.UpdateAll();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] MusicScoreUI Init error: {ex}");
+                }
             }
         }
 
@@ -996,6 +1015,8 @@ namespace Steria
             {
                 // PassiveAbility_9000004 现在使用实例变量，不需要手动重置
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset discard counts
+                MusicScoreSystem.ResetAll();
+                MusicScoreUI.DestroyUI();
                 Debug.Log("[Steria] EndBattle: Reset discard counts");
             }
         }
@@ -1009,6 +1030,8 @@ namespace Steria
             {
                 // PassiveAbility_9000004 现在使用实例变量，不需要手动重置
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset discard counts
+                MusicScoreSystem.ResetAll();
+                MusicScoreUI.DestroyUI();
                 Debug.Log("[Steria] CloseBattleScene: Reset discard counts");
             }
         }
@@ -1021,6 +1044,7 @@ namespace Steria
             public static void Postfix()
             {
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset all discard counts at wave start
+                MusicScoreSystem.RefreshTracksFromDecks();
                 Debug.Log("[Steria] SetCurrentWave: Reset discard counts for 以执为攻");
             }
         }
@@ -1937,6 +1961,139 @@ namespace Steria
             catch (Exception ex)
             {
                 Debug.LogError($"[Steria] OnlyCardFix error: {ex}");
+            }
+        }
+    }
+
+    // --- 乐章型骰子：伤害推进乐谱进度 ---
+    [HarmonyPatch(typeof(BattleDiceBehavior), nameof(BattleDiceBehavior.GiveDamage))]
+    public static class BattleDiceBehavior_GiveDamage_MusicScorePatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceBehavior __instance, BattleUnitModel target)
+        {
+            try
+            {
+                if (__instance == null || target == null)
+                {
+                    return;
+                }
+
+                BattleDiceCardModel cardModel = __instance.card?.card;
+                if (!MusicScoreSystem.IsMusicCard(cardModel))
+                {
+                    return;
+                }
+
+                int dmg = __instance.DiceResultDamage;
+                if (dmg <= 0)
+                {
+                    return;
+                }
+
+                int multiplier = MusicScoreSystem.GetMusicScoreMultiplier(cardModel);
+                MusicScoreSystem.AddScore(__instance.owner, dmg * multiplier);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] MusicScore GiveDamage patch error: {ex}");
+            }
+        }
+    }
+
+    // --- 乐章型骰子：UI白边黑底 ---
+    [HarmonyPatch(typeof(BattleSimpleActionUI_Dice), "PrepareDice", new Type[] { typeof(List<BattleCardBehaviourResult>) })]
+    public static class BattleSimpleActionUI_Dice_PrepareDice_List_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleSimpleActionUI_Dice __instance)
+        {
+            try
+            {
+                if (__instance == null || !MusicScoreSystem.IsMusicCard(__instance.cardOfBehaviour))
+                {
+                    return;
+                }
+
+                MusicScoreSystem.ApplyMusicDiceStyle(__instance);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice UI patch (list) error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleSimpleActionUI_Dice), "PrepareDice", new Type[] { typeof(BattleDiceBehaviourUI) })]
+    public static class BattleSimpleActionUI_Dice_PrepareDice_Behavior_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleSimpleActionUI_Dice __instance)
+        {
+            try
+            {
+                if (__instance == null || !MusicScoreSystem.IsMusicCard(__instance.cardOfBehaviour))
+                {
+                    return;
+                }
+
+                MusicScoreSystem.ApplyMusicDiceStyle(__instance);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice UI patch (behavior) error: {ex}");
+            }
+        }
+    }
+
+    // --- 乐章型骰子：书页UI样式 ---
+    [HarmonyPatch(typeof(BattleDiceCardUI), nameof(BattleDiceCardUI.SetCard))]
+    public static class BattleDiceCardUI_SetCard_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceCardUI __instance)
+        {
+            try
+            {
+                MusicScoreSystem.ApplyMusicDiceStyleOnCardUI(__instance);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice card UI patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleDiceCardUI), nameof(BattleDiceCardUI.SetPreviewResist))]
+    public static class BattleDiceCardUI_SetPreviewResist_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceCardUI __instance)
+        {
+            try
+            {
+                MusicScoreSystem.ApplyMusicDiceStyleOnCardUI(__instance);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice preview resist patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleDiceCard_BehaviourDescUI), "SetBehaviourInfo")]
+    public static class BattleDiceCard_BehaviourDescUI_SetBehaviourInfo_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceCard_BehaviourDescUI __instance)
+        {
+            try
+            {
+                MusicScoreSystem.ApplyMusicDiceStyleOnDescUI(__instance);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice behaviour desc patch error: {ex}");
             }
         }
     }
