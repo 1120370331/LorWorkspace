@@ -9,6 +9,8 @@ namespace Steria
         private static GameObject _root;
         private static Text _leftText;
         private static Text _rightText;
+        private static bool _loggedInit;
+        private static bool _lastActiveState;
 
         public static void EnsureUI()
         {
@@ -24,18 +26,20 @@ namespace Steria
             }
 
             _root = new GameObject("SteriaMusicScoreUI");
-            Transform parent = FindCanvasParent(ui);
-            if (parent == null)
+            Transform parent = ui.transform.root;
+            if (parent != null)
             {
-                return;
+                _root.transform.SetParent(parent, false);
+                _root.layer = parent.gameObject.layer;
             }
-            _root.transform.SetParent(parent, false);
-            _root.layer = parent.gameObject.layer;
 
             Canvas canvas = _root.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.overrideSorting = true;
             canvas.sortingOrder = 10000;
+            CanvasGroup cg = _root.AddComponent<CanvasGroup>();
+            cg.interactable = false;
+            cg.blocksRaycasts = false;
             CanvasScaler scaler = _root.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);
@@ -51,6 +55,12 @@ namespace Steria
 
             _leftText = CreateText("MusicScore_Left", _root.transform, new Vector2(120f, 320f), new Vector2(0f, 0.5f), TextAnchor.MiddleLeft, font);
             _rightText = CreateText("MusicScore_Right", _root.transform, new Vector2(-120f, 320f), new Vector2(1f, 0.5f), TextAnchor.MiddleRight, font);
+
+            if (!_loggedInit)
+            {
+                Debug.Log($"[Steria] MusicScoreUI created. parent={(parent != null ? parent.name : "none")}");
+                _loggedInit = true;
+            }
         }
 
         private static Transform FindCanvasParent(BattleManagerUI ui)
@@ -131,6 +141,7 @@ namespace Steria
             bg.transform.SetSiblingIndex(target.GetSiblingIndex());
             UnityEngine.UI.Image img = bg.AddComponent<UnityEngine.UI.Image>();
             img.color = new Color(0f, 0f, 0f, 0.55f);
+            img.raycastTarget = false;
             RectTransform rect = bg.GetComponent<RectTransform>();
             rect.anchorMin = target.anchorMin;
             rect.anchorMax = target.anchorMax;
@@ -148,15 +159,21 @@ namespace Steria
 
             bool active = MusicScoreSystem.IsActive;
             _root.SetActive(active);
+            if (_lastActiveState != active)
+            {
+                Debug.Log($"[Steria] MusicScoreUI active={active}, hasXiyin={MusicScoreSystem.HasXiyinPresence}");
+                _lastActiveState = active;
+            }
             if (!active)
             {
                 return;
             }
 
-            int leftMax = MusicScoreSystem.GetMaxScore(Faction.Player);
-            int rightMax = MusicScoreSystem.GetMaxScore(Faction.Enemy);
-            _leftText.text = $"P {MusicScoreSystem.GetScore(Faction.Player)}/{leftMax}";
-            _rightText.text = $"E {MusicScoreSystem.GetScore(Faction.Enemy)}/{rightMax}";
+            int leftMax = MusicScoreSystem.GetMaxScore(Faction.Enemy);
+            int rightMax = MusicScoreSystem.GetMaxScore(Faction.Player);
+            _leftText.text = $"E {MusicScoreSystem.GetScore(Faction.Enemy)}/{leftMax}";
+            _rightText.text = $"P {MusicScoreSystem.GetScore(Faction.Player)}/{rightMax}";
+            Canvas.ForceUpdateCanvases();
         }
 
         public static void DestroyUI()
@@ -167,6 +184,8 @@ namespace Steria
                 _root = null;
                 _leftText = null;
                 _rightText = null;
+                _loggedInit = false;
+                _lastActiveState = false;
             }
         }
     }

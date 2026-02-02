@@ -479,21 +479,6 @@ namespace Steria
                     AddReadyClone(bufListDetail, buf, false);
                 }
             }
-
-            // Extend next-round negatives to the round after.
-            List<BattleUnitBuf> readyBufs = bufListDetail.GetReadyBufList();
-            if (readyBufs != null)
-            {
-                foreach (BattleUnitBuf buf in readyBufs.ToList())
-                {
-                    if (!IsExtendableNegative(buf))
-                    {
-                        continue;
-                    }
-
-                    AddReadyClone(bufListDetail, buf, true);
-                }
-            }
         }
 
         private static void ApplyBuffStackUpgrade(List<BattleUnitBuf> bufList, BufPositiveType type, int amount, bool includeTide)

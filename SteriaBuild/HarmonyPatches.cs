@@ -1695,7 +1695,7 @@ namespace Steria
             }
         }
 
-        // --- Patch for 音段接收：在速度骰初始化后重新添加反击闪避骰 ---
+        // --- Patch for 音段接收：战斗开始时在速度骰初始化后添加反击闪避骰 ---
         [HarmonyPatch(typeof(BattleUnitModel), "OnRoundStart_speedDice")]
         public static class BattleUnitModel_OnRoundStartSpeedDice_SoundSegmentPatch
         {
@@ -1716,7 +1716,7 @@ namespace Steria
                         return;
                     }
 
-                    passive.ApplySoundSegmentDice();
+                    passive.TryApplySoundSegmentDiceOnRoundStart();
                 }
                 catch (Exception ex)
                 {
@@ -1965,38 +1965,131 @@ namespace Steria
         }
     }
 
-    // --- 乐章型骰子：伤害推进乐谱进度 ---
+    // --- 乐章型骰子：命中/防御成功时推进乐谱进度 ---
     [HarmonyPatch(typeof(BattleDiceBehavior), nameof(BattleDiceBehavior.GiveDamage))]
     public static class BattleDiceBehavior_GiveDamage_MusicScorePatch
     {
         [HarmonyPostfix]
-        public static void Postfix(BattleDiceBehavior __instance, BattleUnitModel target)
+        public static void Postfix(BattleDiceBehavior __instance)
         {
             try
             {
-                if (__instance == null || target == null)
-                {
-                    return;
-                }
-
-                BattleDiceCardModel cardModel = __instance.card?.card;
-                if (!MusicScoreSystem.IsMusicCard(cardModel))
-                {
-                    return;
-                }
-
-                int dmg = __instance.DiceResultDamage;
-                if (dmg <= 0)
-                {
-                    return;
-                }
-
-                int multiplier = MusicScoreSystem.GetMusicScoreMultiplier(cardModel);
-                MusicScoreSystem.AddScore(__instance.owner, dmg * multiplier);
+                // Deprecated hook: use per-dice succeed hooks for accurate per-die timing.
+                return;
             }
             catch (Exception ex)
             {
                 Debug.LogError($"[Steria] MusicScore GiveDamage patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleDiceBehavior), nameof(BattleDiceBehavior.GiveDeflectDamage))]
+    public static class BattleDiceBehavior_GiveDeflectDamage_MusicScorePatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceBehavior __instance)
+        {
+            try
+            {
+                // Deprecated hook: use per-dice succeed hooks for accurate per-die timing.
+                return;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] MusicScore GiveDeflectDamage patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnWinParryingDefense))]
+    public static class BattlePlayingCardDataInUnitModel_OnWinParryingDefense_MusicScorePatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
+        {
+            try
+            {
+                MusicScoreSystem.TryAddScoreFromBehavior(__instance?.currentBehavior);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] MusicScore OnWinParryingDefense patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnWinParryingAttack))]
+    public static class BattlePlayingCardDataInUnitModel_OnWinParryingAttack_MusicScorePatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
+        {
+            try
+            {
+                MusicScoreSystem.TryAddScoreFromBehavior(__instance?.currentBehavior);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] MusicScore OnWinParryingAttack patch error: {ex}");
+            }
+        }
+    }
+
+    // --- 乐章型骰子：每颗骰子命中/防御成功时推进乐谱进度 ---
+    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnSucceedAttack))]
+    public static class BattlePlayingCardDataInUnitModel_OnSucceedAttack_MusicScorePatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceBehavior behavior)
+        {
+            try
+            {
+                if (behavior == null || behavior.IsParrying())
+                {
+                    return;
+                }
+
+                MusicScoreSystem.TryAddScoreFromBehavior(behavior);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] MusicScore OnSucceedAttack patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnSucceedDefEvent))]
+    public static class BattlePlayingCardDataInUnitModel_OnSucceedDefEvent_MusicScorePatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
+        {
+            try
+            {
+                // Deprecated hook: use parry win/defense without parry hooks to avoid duplicate triggers.
+                return;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] MusicScore OnSucceedDefEvent patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnDefenseWithoutParryingWin))]
+    public static class BattlePlayingCardDataInUnitModel_OnDefenseWithoutParryingWin_MusicScorePatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
+        {
+            try
+            {
+                MusicScoreSystem.TryAddScoreFromBehavior(__instance?.currentBehavior);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] MusicScore OnDefenseWithoutParryingWin patch error: {ex}");
             }
         }
     }
@@ -2094,6 +2187,41 @@ namespace Steria
             catch (Exception ex)
             {
                 Debug.LogError($"[Steria] Music dice behaviour desc patch error: {ex}");
+            }
+        }
+    }
+
+    // --- 乐章型骰子：非战斗界面（卡组/图鉴）样式 ---
+    [HarmonyPatch(typeof(UI.UIOriginCardSlot), "SetData")]
+    public static class UIOriginCardSlot_SetData_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(UI.UIOriginCardSlot __instance, DiceCardItemModel cardmodel)
+        {
+            try
+            {
+                MusicScoreSystem.ApplyMusicDiceStyleOnOriginSlot(__instance, cardmodel);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice origin card slot patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(UI.UIDetailCardDescSlot), "SetBehaviourInfo")]
+    public static class UIDetailCardDescSlot_SetBehaviourInfo_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(UI.UIDetailCardDescSlot __instance, DiceBehaviour behaviour, LorId cardId, List<DiceBehaviour> behaviourList, bool isHide)
+        {
+            try
+            {
+                MusicScoreSystem.ApplyMusicDiceStyleOnDetailDescSlot(__instance, cardId);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice detail desc patch error: {ex}");
             }
         }
     }

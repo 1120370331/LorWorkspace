@@ -28,7 +28,7 @@
 
     <BattleEffectText ID="SteriaMusicDice">
       <Name>乐章</Name>
-      <Desc>该书页的攻击骰子为乐章型骰子.造成伤害时,推进本方等量[乐谱进度].</Desc>
+      <Desc>该书页的斩击/突刺/打击/防御/闪避骰子为乐章型骰子.拼点胜利时,推进((骰子基础值)取余7)+1的[乐谱进度].</Desc>
     </BattleEffectText>
     <BattleEffectText ID="SteriaSeaVoice_NightTrace">
       <Name>沧海之声·夜痕</Name>

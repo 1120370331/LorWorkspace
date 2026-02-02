@@ -1,0 +1,46 @@
+[aist#0:0/pcm_s16be @ 0000019C094C8F80] Guessed Channel Layout: mono
+Input #0, aiff, from 'C:\Users\rog\WorkSpace\projects\games\lor\SteriaBuild\TempAudio\Violin.arco.mf.sulG.B3B4.aiff':
+  Duration: 00:02:00.88, start: 0.000000, bitrate: 705 kb/s
+  Stream #0:0: Audio: pcm_s16be, 44100 Hz, 1 channels, s16, 705 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (pcm_s16be (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, null, to 'pipe:':
+  Metadata:
+    encoder         : Lavf60.16.100
+  Stream #0:0: Audio: pcm_s16le, 44100 Hz, mono, s16, 705 kb/s
+    Metadata:
+      encoder         : Lavc60.31.102 pcm_s16le
+size=       0kB time=00:00:00.00 bitrate=N/A speed=N/A    
+[silencedetect @ 0000019C094B5D80] silence_start: 0
+[silencedetect @ 0000019C094B5D80] silence_end: 2.91939 | silence_duration: 2.91939
+[silencedetect @ 0000019C094B5D80] silence_start: 6.92433
+[silencedetect @ 0000019C094B5D80] silence_end: 12.884 | silence_duration: 5.95968
+[silencedetect @ 0000019C094B5D80] silence_start: 17.2778
+[silencedetect @ 0000019C094B5D80] silence_end: 22.9229 | silence_duration: 5.64503
+[silencedetect @ 0000019C094B5D80] silence_start: 27.5797
+[silencedetect @ 0000019C094B5D80] silence_end: 32.8169 | silence_duration: 5.23721
+[silencedetect @ 0000019C094B5D80] silence_start: 37.2201
+[silencedetect @ 0000019C094B5D80] silence_end: 41.8822 | silence_duration: 4.66206
+[silencedetect @ 0000019C094B5D80] silence_start: 46.4085
+[silencedetect @ 0000019C094B5D80] silence_end: 52.7314 | silence_duration: 6.32295
+[silencedetect @ 0000019C094B5D80] silence_start: 52.7375
+[silencedetect @ 0000019C094B5D80] silence_end: 52.9412 | silence_duration: 0.203673
+[silencedetect @ 0000019C094B5D80] silence_start: 52.9778
+[silencedetect @ 0000019C094B5D80] silence_end: 53.1577 | silence_duration: 0.179887
+[silencedetect @ 0000019C094B5D80] silence_start: 56.3243
+[silencedetect @ 0000019C094B5D80] silence_end: 62.4122 | silence_duration: 6.08796
+[silencedetect @ 0000019C094B5D80] silence_start: 66.6724
+[silencedetect @ 0000019C094B5D80] silence_end: 72.3397 | silence_duration: 5.66735
+[silencedetect @ 0000019C094B5D80] silence_start: 76.4261
+[silencedetect @ 0000019C094B5D80] silence_end: 83.2418 | silence_duration: 6.81576
+[silencedetect @ 0000019C094B5D80] silence_start: 87.796
+[silencedetect @ 0000019C094B5D80] silence_end: 94.1634 | silence_duration: 6.36744
+[silencedetect @ 0000019C094B5D80] silence_start: 98.6625
+[silencedetect @ 0000019C094B5D80] silence_end: 104.957 | silence_duration: 6.29401
+[silencedetect @ 0000019C094B5D80] silence_start: 108.85
+[silencedetect @ 0000019C094B5D80] silence_end: 114.206 | silence_duration: 5.35531
+[silencedetect @ 0000019C094B5D80] silence_start: 118.562
+[out#0/null @ 0000019C094B93C0] video:0kB audio:10412kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+size=N/A time=00:02:00.83 bitrate=N/A speed=3.37e+03x    
+[silencedetect @ 0000019C094B5D80] silence_end: 120.882 | silence_duration: 2.32027

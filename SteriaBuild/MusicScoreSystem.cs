@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,27 @@ namespace Steria
 
     public static class MusicScoreSystem
     {
+        private sealed class SteriaMusicDiceStyleTag : MonoBehaviour
+        {
+        }
+
+        private sealed class SteriaMusicCardTag : MonoBehaviour
+        {
+        }
+
+        private sealed class MusicScoreQueueRunner : MonoBehaviour
+        {
+            public void ResetTimer()
+            {
+                _nextProcessTime = 0f;
+            }
+
+            private void Update()
+            {
+                ProcessQueue();
+            }
+        }
+
         public const string MusicDiceKeyword = "SteriaMusicDice";
         public const string SeaVoiceNightTraceKeyword = "SteriaSeaVoice_NightTrace";
         public const string SeaVoiceMorningLightKeyword = "SteriaSeaVoice_MorningLight";
@@ -24,8 +46,17 @@ namespace Steria
         private static readonly Dictionary<Faction, int> _score = new Dictionary<Faction, int>();
         private static readonly Dictionary<Faction, List<SeaVoiceTrack>> _tracks = new Dictionary<Faction, List<SeaVoiceTrack>>();
         private static readonly Dictionary<Faction, int> _trackIndex = new Dictionary<Faction, int>();
+        private static readonly ConditionalWeakTable<BattleDiceBehavior, HashSet<int>> _rolledMusicDiceRegistry = new ConditionalWeakTable<BattleDiceBehavior, HashSet<int>>();
+        private static readonly Queue<ScoreEvent> _pendingScoreEvents = new Queue<ScoreEvent>();
+        private static MusicScoreQueueRunner _queueRunner;
+        private static float _nextProcessTime;
+        private const float ScoreStepInterval = 0.08f;
         private static bool _active;
         private static bool _hasXiyin;
+        private static readonly HashSet<int> _xiyinCardIds = new HashSet<int>
+        {
+            9007001, 9007002, 9007003, 9007004, 9007005, 9007006
+        };
 
         public static bool IsActive => HasXiyinPresence;
         public static bool HasXiyinPresence
@@ -43,6 +74,7 @@ namespace Steria
         public static void InitializeForBattle()
         {
             ResetAll();
+            EnsureQueueRunner();
             RegisterTracksFromDecks();
             MusicScoreUI.UpdateAll();
         }
@@ -67,6 +99,8 @@ namespace Steria
             _trackIndex[Faction.Enemy] = 0;
             _active = false;
             _hasXiyin = false;
+            _pendingScoreEvents.Clear();
+            _queueRunner?.ResetTimer();
             MusicScoreUI.UpdateAll();
         }
 
@@ -80,6 +114,47 @@ namespace Steria
             return card?.XmlData?.Keywords != null && card.XmlData.Keywords.Contains(MusicDiceKeyword);
         }
 
+        public static bool IsMusicCard(DiceCardItemModel card)
+        {
+            return card?.ClassInfo?.Keywords != null && card.ClassInfo.Keywords.Contains(MusicDiceKeyword);
+        }
+
+        public static bool IsMusicCard(LorId cardId)
+        {
+            if (ItemXmlDataList.instance == null)
+            {
+                return false;
+            }
+
+            DiceCardXmlInfo info = ItemXmlDataList.instance.GetCardItem(cardId, false);
+            return info?.Keywords != null && info.Keywords.Contains(MusicDiceKeyword);
+        }
+
+        public static bool IsMusicDiceBehaviour(BattleDiceBehavior behavior)
+        {
+            if (behavior == null)
+            {
+                return false;
+            }
+
+            if (behavior.Type == BehaviourType.Standby)
+            {
+                return false;
+            }
+
+            switch (behavior.Detail)
+            {
+                case BehaviourDetail.Slash:
+                case BehaviourDetail.Penetrate:
+                case BehaviourDetail.Hit:
+                case BehaviourDetail.Guard:
+                case BehaviourDetail.Evasion:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public static int GetMusicScoreMultiplier(BattleDiceCardModel card)
         {
             if (card?.XmlData?.Keywords != null && card.XmlData.Keywords.Contains(MusicAccentKeyword))
@@ -90,7 +165,7 @@ namespace Steria
             return 1;
         }
 
-        public static void AddScore(BattleUnitModel owner, int amount)
+        private static void AddScoreImmediate(BattleUnitModel owner, int amount)
         {
             if (owner == null || amount <= 0)
             {
@@ -136,6 +211,103 @@ namespace Steria
             MusicScoreUI.UpdateAll();
         }
 
+        private struct ScoreEvent
+        {
+            public BattleUnitModel Owner;
+            public int Amount;
+            public int NoteIndex;
+            public int Growth;
+            public int MaxGrowth;
+        }
+
+        private static void EnsureQueueRunner()
+        {
+            if (_queueRunner != null)
+            {
+                return;
+            }
+
+            GameObject go = new GameObject("SteriaMusicScoreQueue");
+            BattleManagerUI ui = SingletonBehavior<BattleManagerUI>.Instance;
+            if (ui != null)
+            {
+                go.transform.SetParent(ui.transform, false);
+            }
+            _queueRunner = go.AddComponent<MusicScoreQueueRunner>();
+            _nextProcessTime = 0f;
+        }
+
+        private static void EnqueueScore(BattleUnitModel owner, int amount, int noteIndex, int growth, int maxGrowth)
+        {
+            if (owner == null || amount <= 0)
+            {
+                return;
+            }
+
+            EnsureQueueRunner();
+            _pendingScoreEvents.Enqueue(new ScoreEvent
+            {
+                Owner = owner,
+                Amount = amount,
+                NoteIndex = noteIndex,
+                Growth = growth,
+                MaxGrowth = maxGrowth
+            });
+
+            // Try to process immediately if we're not throttled, so per-die hits update on time.
+            if (Time.unscaledTime >= _nextProcessTime)
+            {
+                ProcessQueue();
+            }
+        }
+
+        private static void ProcessQueue()
+        {
+            if (_pendingScoreEvents.Count == 0)
+            {
+                return;
+            }
+
+            if (Time.unscaledTime < _nextProcessTime)
+            {
+                return;
+            }
+
+            ScoreEvent evt = _pendingScoreEvents.Dequeue();
+            AddScoreImmediate(evt.Owner, evt.Amount);
+            if (evt.NoteIndex > 0)
+            {
+                AilierelSoundHelper.PlayNightTraceNote(evt.Owner, evt.NoteIndex, evt.Growth, evt.MaxGrowth);
+            }
+
+            _nextProcessTime = Time.unscaledTime + ScoreStepInterval;
+        }
+
+        public static bool TryMarkRolledDice(BattleDiceBehavior behavior)
+        {
+            if (behavior == null)
+            {
+                return false;
+            }
+
+            lock (_rolledMusicDiceRegistry)
+            {
+                if (!_rolledMusicDiceRegistry.TryGetValue(behavior, out HashSet<int> indexes))
+                {
+                    indexes = new HashSet<int>();
+                    _rolledMusicDiceRegistry.Add(behavior, indexes);
+                }
+
+                int index = behavior.Index;
+                if (!indexes.Add(index))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
         public static int GetMaxScore(Faction faction)
         {
             if (BattleObjectManager.instance == null)
@@ -146,6 +318,56 @@ namespace Steria
             int count = BattleObjectManager.instance.GetAliveList(faction)?.Count ?? 0;
             return Math.Max(0, count * 20);
         }
+
+        public static void TryAddScoreFromBehavior(BattleDiceBehavior behavior)
+        {
+            if (behavior == null)
+            {
+                return;
+            }
+
+            BattleDiceCardModel cardModel = behavior.card?.card;
+            if (!IsMusicCard(cardModel))
+            {
+                return;
+            }
+
+            if (!IsMusicDiceBehaviour(behavior))
+            {
+                return;
+            }
+
+            if (!TryMarkRolledDice(behavior))
+            {
+                return;
+            }
+
+            int baseValue = behavior.DiceVanillaValue;
+            if (baseValue <= 0)
+            {
+                baseValue = behavior.DiceResultValue;
+            }
+            int gain = baseValue % 7 + 1;
+            if (gain <= 0)
+            {
+                return;
+            }
+
+            int noteIndex = 0;
+            int growth = 0;
+            int maxGrowth = 0;
+            DiceCardXmlInfo xml = cardModel?.XmlData;
+            if (xml != null && xml.id.id == 9007006)
+            {
+                noteIndex = baseValue % 7 + 1;
+                growth = AilierelAbilityHelper.GetNightTraceGrowth(behavior.owner, 3);
+                maxGrowth = 3;
+            }
+
+            EnqueueScore(behavior.owner, gain, noteIndex, growth, maxGrowth);
+            SteriaLogger.Log($"MusicScore gain: card={cardModel?.XmlData?.id} detail={behavior.Detail} vanilla={behavior.DiceVanillaValue} result={behavior.DiceResultValue} gain={gain}");
+        }
+
 
         private static void RegisterTracksFromDecks()
         {
@@ -190,6 +412,48 @@ namespace Steria
                 return false;
             }
 
+            if (HasXiyinDeckCard(unit))
+            {
+                return true;
+            }
+
+            try
+            {
+                if (unit.UnitData?.unitData != null)
+                {
+                    object data = unit.UnitData.unitData;
+                    var type = data.GetType();
+                    var bookProp = AccessTools.Property(type, "bookId")
+                                   ?? AccessTools.Property(type, "bookID")
+                                   ?? AccessTools.Property(type, "BookId")
+                                   ?? AccessTools.Property(type, "BookID");
+                    if (bookProp != null)
+                    {
+                        object value = bookProp.GetValue(data, null);
+                        if (value is int bookIdInt && bookIdInt == 99000007)
+                        {
+                            return true;
+                        }
+                        if (value is LorId bookId && bookId.id == 99000007)
+                        {
+                            return true;
+                        }
+                    }
+
+                    var nameProp = AccessTools.Property(type, "name") ?? AccessTools.Property(type, "Name");
+                    string unitName = nameProp?.GetValue(data, null) as string;
+                    if (!string.IsNullOrEmpty(unitName) &&
+                        (unitName.Contains("艾莉蕾尔") || unitName.IndexOf("Ailierel", StringComparison.OrdinalIgnoreCase) >= 0))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                // ignore lookup errors
+            }
+
             foreach (PassiveAbilityBase passive in unit.passiveDetail.PassiveList)
             {
                 if (passive is global::PassiveAbility_9007001 ||
@@ -205,11 +469,55 @@ namespace Steria
             return false;
         }
 
+        private static bool HasXiyinDeckCard(BattleUnitModel unit)
+        {
+            if (unit?.allyCardDetail == null)
+            {
+                return false;
+            }
+
+            List<BattleDiceCardModel> deck = unit.allyCardDetail.GetAllDeck();
+            if (deck == null || deck.Count == 0)
+            {
+                return false;
+            }
+
+            foreach (BattleDiceCardModel card in deck)
+            {
+                if (card == null)
+                {
+                    continue;
+                }
+
+                LorId cardId = card.GetID();
+                if (_xiyinCardIds.Contains(cardId.id))
+                {
+                    return true;
+                }
+
+                DiceCardXmlInfo xml = card.XmlData;
+                if (xml?.Keywords == null || xml.Keywords.Count == 0)
+                {
+                    continue;
+                }
+
+                if (xml.Keywords.Contains(MusicDiceKeyword) ||
+                    xml.Keywords.Contains(SeaVoiceNightTraceKeyword) ||
+                    xml.Keywords.Contains(SeaVoiceMorningLightKeyword))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static bool RegisterTracksForFaction(Faction faction)
         {
             bool hasNightTrace = false;
             bool hasMorningLight = false;
             bool hasMusicDice = false;
+            bool hasXiyinCards = false;
 
             List<BattleUnitModel> units = BattleObjectManager.instance.GetAliveList(faction);
             if (units == null)
@@ -229,6 +537,14 @@ namespace Steria
                     DiceCardXmlInfo xml = card?.XmlData;
                     if (xml?.Keywords == null || xml.Keywords.Count == 0)
                     {
+                        if (card != null)
+                        {
+                            LorId cardId = card.GetID();
+                            if (_xiyinCardIds.Contains(cardId.id))
+                            {
+                                hasXiyinCards = true;
+                            }
+                        }
                         continue;
                     }
 
@@ -245,6 +561,22 @@ namespace Steria
                     if (xml.Keywords.Contains(MusicDiceKeyword))
                     {
                         hasMusicDice = true;
+                    }
+
+                    if (card != null)
+                    {
+                        LorId cardId = card.GetID();
+                        if (_xiyinCardIds.Contains(cardId.id))
+                        {
+                            hasXiyinCards = true;
+                        }
+                    }
+
+                    if (xml.Keywords.Contains(MusicDiceKeyword) ||
+                        xml.Keywords.Contains(SeaVoiceNightTraceKeyword) ||
+                        xml.Keywords.Contains(SeaVoiceMorningLightKeyword))
+                    {
+                        hasXiyinCards = true;
                     }
                 }
             }
@@ -268,6 +600,11 @@ namespace Steria
             {
                 string trackList = string.Join(",", _tracks[faction]);
                 SteriaLogger.Log($"SeaVoice: Registered tracks for {faction}: {trackList}");
+            }
+
+            if (hasXiyinCards)
+            {
+                _hasXiyin = true;
             }
 
             return hasMusicDice || _tracks[faction].Count > 0;
@@ -408,9 +745,25 @@ namespace Steria
 
         public static void ApplyMusicDiceStyleOnCardUI(BattleDiceCardUI cardUi)
         {
-            if (cardUi == null || !IsMusicCard(cardUi.CardModel))
+            if (cardUi == null)
             {
                 return;
+            }
+
+            bool isMusic = IsMusicCard(cardUi.CardModel);
+            SteriaMusicCardTag cardTag = cardUi.GetComponent<SteriaMusicCardTag>();
+            if (!isMusic)
+            {
+                if (cardTag != null)
+                {
+                    UnityEngine.Object.Destroy(cardTag);
+                }
+                ClearMusicDiceStyle(cardUi);
+                return;
+            }
+            else if (cardTag == null)
+            {
+                cardUi.gameObject.AddComponent<SteriaMusicCardTag>();
             }
 
             try
@@ -445,12 +798,21 @@ namespace Steria
             }
 
             BattleDiceCardUI cardUi = desc.GetComponentInParent<BattleDiceCardUI>();
-            if (cardUi == null || !IsMusicCard(cardUi.CardModel))
+            if (cardUi == null)
             {
                 return;
             }
 
-            ApplyMonochromeToDescImages(desc);
+            if (!IsMusicCard(cardUi.CardModel))
+            {
+                ClearMusicDiceStyleOnDesc(desc);
+                return;
+            }
+
+            if (desc.img_detail != null)
+            {
+                ApplyMonochromeIcon(desc.img_detail);
+            }
 
             if (desc.txt_ability != null)
             {
@@ -465,54 +827,78 @@ namespace Steria
             EnsureBehaviourBackground(desc);
         }
 
-        private static void ApplyMonochromeToDescImages(BattleDiceCard_BehaviourDescUI desc)
+        public static void ApplyMusicDiceStyleOnOriginSlot(UI.UIOriginCardSlot slot, DiceCardItemModel cardModel)
+        {
+            if (slot == null)
+            {
+                return;
+            }
+
+            bool isMusic = IsMusicCard(cardModel);
+            if (!isMusic)
+            {
+                ClearMusicDiceStyleOnSlot(slot.transform);
+                return;
+            }
+
+            ApplyMusicDiceStyleOnOriginSlotInternal(slot);
+        }
+
+        public static void ApplyMusicDiceStyleOnDetailDescSlot(UI.UIDetailCardDescSlot desc, LorId cardId)
         {
             if (desc == null)
             {
                 return;
             }
 
-            Image[] images = desc.GetComponentsInChildren<Image>(true);
-            if (images != null)
+            if (!IsMusicCard(cardId))
             {
-                foreach (Image img in images)
-                {
-                    if (IsIconLikeImage(img, desc))
-                    {
-                        ApplyMonochromeIcon(img);
-                        continue;
-                    }
+                ClearMusicDiceStyleOnSlot(desc.transform);
+                return;
+            }
 
-                    if (IsBackgroundLikeImage(img.gameObject.name, img.sprite != null ? img.sprite.name : null))
-                    {
-                        img.color = new Color(0.05f, 0.05f, 0.05f, 0.85f);
-                        RefineHsv hsv = img.GetComponent<RefineHsv>();
-                        if (hsv != null)
-                        {
-                            hsv.ActiveChange = false;
-                        }
-                    }
+            if (desc.img_detail != null)
+            {
+                ApplyMonochromeIcon(desc.img_detail);
+            }
+        }
+
+        private static void ApplyMusicDiceStyleOnOriginSlotInternal(UI.UIOriginCardSlot slot)
+        {
+            if (slot == null)
+            {
+                return;
+            }
+
+            Image[] behaviourIcons = AccessTools.Field(typeof(UI.UIOriginCardSlot), "img_BehaviourIcons")
+                ?.GetValue(slot) as Image[];
+            if (behaviourIcons != null)
+            {
+                foreach (Image img in behaviourIcons)
+                {
+                    ApplyMonochromeIcon(img);
                 }
             }
 
-            RawImage[] rawImages = desc.GetComponentsInChildren<RawImage>(true);
-            if (rawImages != null)
+            Image rangeIcon = AccessTools.Field(typeof(UI.UIOriginCardSlot), "img_RangeIcon")
+                ?.GetValue(slot) as Image;
+            if (rangeIcon != null)
             {
-                foreach (RawImage raw in rawImages)
-                {
-                    if (IsIconLikeImage(raw.gameObject.name))
-                    {
-                        ApplyMonochromeIcon(raw);
-                        continue;
-                    }
+                ApplyMonochromeIcon(rangeIcon);
+            }
 
-                    if (IsBackgroundLikeImage(raw.gameObject.name, null))
+            Image[] linearDodge = AccessTools.Field(typeof(UI.UIOriginCardSlot), "img_linearDodge")
+                ?.GetValue(slot) as Image[];
+            if (linearDodge != null)
+            {
+                foreach (Image img in linearDodge)
+                {
+                    if (img != null)
                     {
-                        raw.color = new Color(0.05f, 0.05f, 0.05f, 0.85f);
-                        RefineHsv hsv = raw.GetComponent<RefineHsv>();
-                        if (hsv != null)
+                        img.color = Color.white;
+                        if (img.GetComponent<SteriaMusicDiceStyleTag>() == null)
                         {
-                            hsv.ActiveChange = false;
+                            img.gameObject.AddComponent<SteriaMusicDiceStyleTag>();
                         }
                     }
                 }
@@ -542,6 +928,18 @@ namespace Steria
                    combined.Contains("defense") || combined.Contains("evade");
         }
 
+        private static bool IsLikelyIconSize(RectTransform rect)
+        {
+            if (rect == null)
+            {
+                return false;
+            }
+
+            float width = rect.rect.width;
+            float height = rect.rect.height;
+            return width > 0f && height > 0f && width <= 80f && height <= 80f;
+        }
+
         private static bool IsBackgroundLikeImage(string name, string spriteName)
         {
             string combined = $"{name} {spriteName}".ToLowerInvariant();
@@ -564,6 +962,10 @@ namespace Steria
             {
                 hsv = img.gameObject.AddComponent<RefineHsv>();
             }
+            if (img.GetComponent<SteriaMusicDiceStyleTag>() == null)
+            {
+                img.gameObject.AddComponent<SteriaMusicDiceStyleTag>();
+            }
 
             hsv.ActiveChange = true;
             hsv._HueShift = 0f;
@@ -585,12 +987,159 @@ namespace Steria
             {
                 hsv = img.gameObject.AddComponent<RefineHsv>();
             }
+            if (img.GetComponent<SteriaMusicDiceStyleTag>() == null)
+            {
+                img.gameObject.AddComponent<SteriaMusicDiceStyleTag>();
+            }
 
             hsv.ActiveChange = true;
             hsv._HueShift = 0f;
             hsv._Saturation = 0f;
             hsv._ValueBrightness = 1.2f;
             hsv.CallUpdate();
+        }
+
+        private static void ClearMusicDiceStyle(BattleDiceCardUI cardUi)
+        {
+            if (cardUi == null)
+            {
+                return;
+            }
+
+            if (cardUi.ui_behaviourDescList != null)
+            {
+                foreach (BattleDiceCard_BehaviourDescUI desc in cardUi.ui_behaviourDescList)
+                {
+                    if (desc == null)
+                    {
+                        continue;
+                    }
+
+                    Transform bg = desc.transform.Find("SteriaMusicDiceBg");
+                    if (bg != null)
+                    {
+                        UnityEngine.Object.Destroy(bg.gameObject);
+                    }
+                }
+            }
+
+            SteriaMusicDiceStyleTag[] tags = cardUi.GetComponentsInChildren<SteriaMusicDiceStyleTag>(true);
+            foreach (SteriaMusicDiceStyleTag tag in tags)
+            {
+                if (tag == null)
+                {
+                    continue;
+                }
+
+                RefineHsv hsv = tag.GetComponent<RefineHsv>();
+                if (hsv != null)
+                {
+                    hsv._HueShift = 0f;
+                    hsv._Saturation = 1f;
+                    hsv._ValueBrightness = 1f;
+                    hsv.CallUpdate();
+                }
+
+                Image img = tag.GetComponent<Image>();
+                if (img != null)
+                {
+                    img.color = Color.white;
+                }
+
+                RawImage raw = tag.GetComponent<RawImage>();
+                if (raw != null)
+                {
+                    raw.color = Color.white;
+                }
+
+                UnityEngine.Object.Destroy(tag);
+            }
+        }
+
+        private static void ClearMusicDiceStyleOnSlot(Transform root)
+        {
+            if (root == null)
+            {
+                return;
+            }
+
+            SteriaMusicDiceStyleTag[] tags = root.GetComponentsInChildren<SteriaMusicDiceStyleTag>(true);
+            foreach (SteriaMusicDiceStyleTag tag in tags)
+            {
+                if (tag == null)
+                {
+                    continue;
+                }
+
+                RefineHsv hsv = tag.GetComponent<RefineHsv>();
+                if (hsv != null)
+                {
+                    hsv._HueShift = 0f;
+                    hsv._Saturation = 1f;
+                    hsv._ValueBrightness = 1f;
+                    hsv.CallUpdate();
+                }
+
+                Image img = tag.GetComponent<Image>();
+                if (img != null)
+                {
+                    img.color = Color.white;
+                }
+
+                RawImage raw = tag.GetComponent<RawImage>();
+                if (raw != null)
+                {
+                    raw.color = Color.white;
+                }
+
+                UnityEngine.Object.Destroy(tag);
+            }
+        }
+
+        private static void ClearMusicDiceStyleOnDesc(BattleDiceCard_BehaviourDescUI desc)
+        {
+            if (desc == null)
+            {
+                return;
+            }
+
+            Transform bg = desc.transform.Find("SteriaMusicDiceBg");
+            if (bg != null)
+            {
+                UnityEngine.Object.Destroy(bg.gameObject);
+            }
+
+            SteriaMusicDiceStyleTag[] tags = desc.GetComponentsInChildren<SteriaMusicDiceStyleTag>(true);
+            foreach (SteriaMusicDiceStyleTag tag in tags)
+            {
+                if (tag == null)
+                {
+                    continue;
+                }
+
+                RefineHsv hsv = tag.GetComponent<RefineHsv>();
+                if (hsv != null)
+                {
+                    hsv._HueShift = 0f;
+                    hsv._Saturation = 1f;
+                    hsv._ValueBrightness = 1f;
+                    hsv.CallUpdate();
+                }
+
+                Image img = tag.GetComponent<Image>();
+                if (img != null)
+                {
+                    img.color = Color.white;
+                }
+
+                RawImage raw = tag.GetComponent<RawImage>();
+                if (raw != null)
+                {
+                    raw.color = Color.white;
+                }
+
+                UnityEngine.Object.Destroy(tag);
+            }
         }
 
         private static void EnsureBehaviourBackground(BattleDiceCard_BehaviourDescUI desc)
@@ -608,6 +1157,7 @@ namespace Steria
 
             UnityEngine.UI.Image img = bg.AddComponent<UnityEngine.UI.Image>();
             img.color = new Color(0.05f, 0.05f, 0.05f, 0.95f);
+            img.raycastTarget = false;
 
             RectTransform rect = bg.GetComponent<RectTransform>();
             rect.anchorMin = Vector2.zero;

@@ -409,8 +409,7 @@
     </BattleCardAbility>
 
     <BattleCardAbility ID="AilierelNightTrace">
-      <Desc>本书页仅限[流]数量>5时使用</Desc>
-      <Desc>渐强。每次使用后，本书页光芒消耗永久+1，所有骰子最小值+1，最大值+2（至多触发3次）</Desc>
+      <Desc>渐强。每次使用后，本书页光芒消耗永久+1，所有骰子基础值最小值+1，最大值+2（至多触发3次）</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AilierelNightTraceBleedAndFlow">
       <Desc>[命中时] 施加2层[流血]并获得“本书页光芒消耗”层[流]</Desc>

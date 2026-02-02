@@ -64,6 +64,10 @@
         <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
         <Private>false</Private>
     </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+        <Private>false</Private>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
         <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\Unity.TextMeshPro.dll</HintPath>
         <Private>false</Private>

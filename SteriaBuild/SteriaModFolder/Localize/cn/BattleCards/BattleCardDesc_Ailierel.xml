@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BattleCardDescRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Pid="SteriaBuilding">
+  <cardDescList>
+    <BattleCardDesc ID="9007001">
+      <LocalizedName>暮雾伏击</LocalizedName>
+      <Ability>[流转]
+使用时:恢复1点光芒</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9007002">
+      <LocalizedName>侧闪</LocalizedName>
+      <Ability>[流转]
+使用时:抽取1张书页</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9007003">
+      <LocalizedName>叉中大鱼了</LocalizedName>
+      <Ability>若此书页造成了不低于8点伤害则获得3层[流]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9007004">
+      <LocalizedName>我要游走咯</LocalizedName>
+      <Ability>使用时:消耗3层[流]来抽取2张书页</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9007005">
+      <LocalizedName>想往哪游呢</LocalizedName>
+      <Ability>使用时:获得6层[流]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9007006">
+      <LocalizedName>汐音·夜痕</LocalizedName>
+      <Ability>渐强。每次使用后，本书页光芒消耗永久+1，所有骰子基础值最小值+1，最大值+2（至多触发3次）</Ability>
+    </BattleCardDesc>
+  </cardDescList>
+</BattleCardDescRoot>

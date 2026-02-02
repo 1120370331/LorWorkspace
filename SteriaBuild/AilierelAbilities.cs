@@ -1,7 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Reflection;
 using LOR_DiceSystem;
+using UnityEngine;
+using BaseMod;
+using Mod;
+using Sound;
 using Steria;
 
 // Ailierel passives and card abilities
@@ -222,15 +228,36 @@ public class PassiveAbility_9007005 : PassiveAbilityBase
     private const string SOUND_SEGMENT_NAME = "音段接收";
     private const string SOUND_SEGMENT_ARTWORK = "Ailierel_SoundSegment.png";
 
-    public void ApplySoundSegmentDice()
+    private bool _soundSegmentApplied;
+
+    public override void OnWaveStart()
     {
-        if (owner == null || owner.IsDead())
+        base.OnWaveStart();
+        _soundSegmentApplied = false;
+    }
+
+    public void TryApplySoundSegmentDiceOnRoundStart()
+    {
+        if (_soundSegmentApplied)
         {
             return;
         }
 
+        if (ApplySoundSegmentDice())
+        {
+            _soundSegmentApplied = true;
+        }
+    }
+
+    public bool ApplySoundSegmentDice()
+    {
+        if (owner == null || owner.IsDead())
+        {
+            return false;
+        }
+
         RemoveExistingSoundSegmentDice();
-        AddSoundSegmentEvasionDice();
+        bool added = AddSoundSegmentEvasionDice();
         try
         {
             owner.view?.keepUI?.Init(true);
@@ -239,6 +266,8 @@ public class PassiveAbility_9007005 : PassiveAbilityBase
         {
             // ignore UI refresh errors
         }
+
+        return added;
     }
 
     private void RemoveExistingSoundSegmentDice()
@@ -271,12 +300,12 @@ public class PassiveAbility_9007005 : PassiveAbilityBase
         return behavior.abilityList.Any(a => a is DiceCardAbility_AilierelSoundSegmentReceive);
     }
 
-    private void AddSoundSegmentEvasionDice()
+    private bool AddSoundSegmentEvasionDice()
     {
         BattleKeepedCardDataInUnitModel keepCard = owner.cardSlotDetail?.keepCard;
         if (keepCard == null)
         {
-            return;
+            return false;
         }
 
         DiceCardXmlInfo cardItem = new DiceCardXmlInfo(new LorId(MOD_ID, SOUND_SEGMENT_CARD_ID))
@@ -294,7 +323,7 @@ public class PassiveAbility_9007005 : PassiveAbilityBase
         BattleDiceCardModel cardModel = BattleDiceCardModel.CreatePlayingCard(cardItem);
         if (cardModel == null)
         {
-            return;
+            return false;
         }
 
         BattleDiceBehavior evasionBehavior = new BattleDiceBehavior();
@@ -310,6 +339,7 @@ public class PassiveAbility_9007005 : PassiveAbilityBase
         evasionBehavior.AddAbility(new DiceCardAbility_AilierelSoundSegmentReceive());
         keepCard.AddBehaviourForOnlyDefense(cardModel, evasionBehavior);
         SteriaLogger.Log($"SoundSegment: Added 1-6 evasion die to {owner.UnitData?.unitData?.name} (name={SOUND_SEGMENT_NAME}, art={SOUND_SEGMENT_ARTWORK})");
+        return true;
     }
 }
 
@@ -503,8 +533,7 @@ public class DiceCardSelfAbility_AilierelNightTrace : DiceCardSelfAbilityBase
 
     public override bool OnChooseCard(BattleUnitModel owner)
     {
-        int flowStacks = AilierelAbilityHelper.GetFlowStacks(owner);
-        return flowStacks > 5;
+        return true;
     }
 
     public override int GetCostAdder(BattleUnitModel unit, BattleDiceCardModel self)
@@ -656,5 +685,131 @@ internal static class AilierelAbilityHelper
         }
 
         return count;
+    }
+}
+
+internal static class AilierelSoundHelper
+{
+    private static readonly string[] NightTraceNotes = { "C", "D", "E", "F", "G", "A", "B" };
+    private const string NightTraceAudioPrefix = "XiyinNightTrace_";
+    private static readonly Dictionary<string, AudioClip> _noteClips = new Dictionary<string, AudioClip>();
+    private static bool _loaded;
+    private const float FastDurationSeconds = 0.9f;
+    private const float MinVolume = 1.0f;
+    private const float MaxVolume = 1.8f;
+    private const float MinPitch = 0.98f;
+    private const float MaxPitch = 1.04f;
+
+    public static void PlayNightTraceNote(BattleUnitModel owner, int noteIndex, int growth, int maxGrowth)
+    {
+        if (noteIndex < 1)
+        {
+            noteIndex = 1;
+        }
+        if (noteIndex > NightTraceNotes.Length)
+        {
+            noteIndex = NightTraceNotes.Length;
+        }
+
+        EnsureLoaded();
+
+        string note = NightTraceNotes[noteIndex - 1];
+        if (!_noteClips.TryGetValue(note, out AudioClip clip) || clip == null)
+        {
+            SteriaLogger.Log($"NightTrace: Missing audio for note {note} (index {noteIndex}).");
+            return;
+        }
+
+        GameObject sourceObject = new GameObject($"NightTrace_{note}");
+        if (owner?.view?.transform != null)
+        {
+            sourceObject.transform.SetParent(owner.view.transform, false);
+        }
+
+        AudioSource source = sourceObject.AddComponent<AudioSource>();
+        ApplyMusicIndicators(source, growth, maxGrowth);
+        source.clip = clip;
+        source.Play();
+
+        UnityEngine.Object.Destroy(sourceObject, FastDurationSeconds);
+    }
+
+    private static void ApplyMusicIndicators(AudioSource source, int growth, int maxGrowth)
+    {
+        if (source == null)
+        {
+            return;
+        }
+
+        float t = 0f;
+        if (maxGrowth > 0)
+        {
+            t = Mathf.Clamp01((float)growth / maxGrowth);
+        }
+
+        float smooth = t * t * (3f - 2f * t);
+        float volume = Mathf.Lerp(MinVolume, MaxVolume, smooth);
+        float pitch = Mathf.Lerp(MinPitch, MaxPitch, smooth);
+
+        source.volume = volume;
+        source.pitch = pitch;
+        source.spatialBlend = 0f;
+    }
+
+    private static void EnsureLoaded()
+    {
+        if (_loaded)
+        {
+            return;
+        }
+
+        _loaded = true;
+        string modId = Tools.GetModId(Assembly.GetExecutingAssembly());
+        string modPath = Singleton<ModContentManager>.Instance?.GetModPath(modId);
+        if (string.IsNullOrEmpty(modPath))
+        {
+            SteriaLogger.Log("NightTrace: Mod path not found; audio will not load.");
+            return;
+        }
+
+        string folder = Path.Combine(modPath, "Resource", "CustomAudio");
+        foreach (string note in NightTraceNotes)
+        {
+            AudioClip clip = TryLoadNoteClip(folder, note);
+            if (clip != null)
+            {
+                _noteClips[note] = clip;
+            }
+        }
+    }
+
+    private static AudioClip TryLoadNoteClip(string folder, string note)
+    {
+        string[] baseNames =
+        {
+            NightTraceAudioPrefix + note,
+            note
+        };
+        string[] exts = { ".mp3", ".wav", ".ogg" };
+
+        foreach (string baseName in baseNames)
+        {
+            foreach (string ext in exts)
+            {
+                string path = Path.Combine(folder, baseName + ext);
+                if (!File.Exists(path))
+                {
+                    continue;
+                }
+
+                AudioClip clip = Tools.GetAudio(path, baseName);
+                if (clip != null)
+                {
+                    return clip;
+                }
+            }
+        }
+
+        return null;
     }
 }
