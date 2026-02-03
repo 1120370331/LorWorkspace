@@ -16,6 +16,18 @@
 - 建议角色主体保持在格子中心，便于后续 pivot 微调
 - 需要透明背景时，可用现有抠白脚本处理
 
+流程补充（3x3 透明背景）：
+- 得到 3x3 透明背景返回后，先做 3x3 切割
+- 确保能切出 9 张 `512x512` 图片
+- 对每张图做内部缩放/拉伸，使非透明人物主体占整张图像的 `256x256`
+- 按动作名保存为：
+  `Default.png, Guard.png, Evade.png, Damaged.png, Slash.png, Penetrate.png, Hit.png, Move.png, S1.png`
+- 存入目录：
+  `SteriaBuild\\SteriaModFolder\\Resource\\CharacterSkin\\<SkinName>\\ClothCustom\\`
+- 在 `SteriaBuild\\SteriaModFolder\\Resource\\CharacterSkin\\<SkinName>\\ModInfo.xml` 配置动作 pivot/head/direction
+- 在 `SteriaBuild\\SteriaModFolder\\Data\\EquipPage_Enemy.xml` 或 `EquipPage_Librarian.xml` 中设置：
+  `<CharacterSkin><SkinName></CharacterSkin>` 与 `<CharacterSkinType>Custom</CharacterSkinType>`
+
 Split script (ASCII):
 - Script: `SteriaBuild\\Templates\\split_skin_sheet.py`
 - Default row-major order: Default, Guard, Evade, Damaged, Slash, Penetrate, Hit, Move, S1

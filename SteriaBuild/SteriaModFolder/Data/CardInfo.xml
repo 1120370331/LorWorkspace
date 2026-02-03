@@ -988,4 +988,150 @@
   </Card>
   <!-- Velia EGO Boss Cards End -->
 
+  <!-- Sivier Cards Start -->
+  <!-- 聚愿而行 -->
+  <Card ID="9008001">
+    <Name>聚愿而行</Name>
+    <TextId>-1</TextId>
+    <Artwork>聚愿而行.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Script></Script>
+    <ScriptDesc></ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="12" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SivierGatherWish1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierGatherWish2" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="SivierGatherWish3" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="7" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 守望潮汐 -->
+  <Card ID="9008002">
+    <Name>守望潮汐</Name>
+    <TextId>-1</TextId>
+    <Artwork>守望潮汐.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>SivierWatchTide</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierWatchTide"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="10" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SivierWatchTide1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 愿望之刺 -->
+  <Card ID="9008003">
+    <Name>愿望之刺</Name>
+    <TextId>-1</TextId>
+    <Artwork>愿望之刺.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>SivierWishThorn</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierWishThorn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="SivierWishThorn1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 愿护佑我们 -->
+  <Card ID="9008004">
+    <Name>愿护佑我们</Name>
+    <TextId>-1</TextId>
+    <Artwork>愿护佑我们.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>SivierWishProtect</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierWishProtect"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="10" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 海愿斩 -->
+  <Card ID="9008005">
+    <Name>海愿斩</Name>
+    <TextId>-1</TextId>
+    <Artwork>海愿斩.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Keyword>SteriaMusicDice</Keyword>
+    <Keyword>SteriaSeaVoice_SeaWish</Keyword>
+    <Script>SivierSeaWishSlash</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierSeaWishSlash"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaWishSlash1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaWishSlash2" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 汐音：海之还愿 -->
+  <Card ID="9008006">
+    <Name>汐音：海之还愿</Name>
+    <TextId>-1</TextId>
+    <Artwork>汐音：海之还愿.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="5" />
+    <Keyword>SteriaMusicDice</Keyword>
+    <Keyword>SteriaSeaVoice_SeaReturn</Keyword>
+    <Script>SivierSeaReturn</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierSeaReturn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="14" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaReturn1" ActionScript="" Desc="" />
+      <Behaviour Min="9" Dice="16" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaReturn2" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="13" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="SivierSeaReturn3" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 愿望终将埋葬于深海 -->
+  <Card ID="9008007">
+    <Name>愿望终将埋葬于深海</Name>
+    <TextId>-1</TextId>
+    <Artwork>愿望终将埋葬于深海.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarArea" Cost="5" />
+    <Keyword>ExhaustOnUse</Keyword>
+    <Script>SivierWishBuried</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierWishBuried"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="10" Dice="23" Type="Atk" Detail="Hit" Motion="S1" EffectRes="Steria_WaterHit" Script="SivierWishBuried1" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+  <!-- Sivier Cards End -->
+
 </DiceCardXmlRoot>

@@ -80,5 +80,26 @@
       <Name>荆棘</Name>
       <Desc>每一幕开始时,施加荆棘层数层[束缚]和[流血].被攻击时移除1层.</Desc>
     </BattleEffectText>
+
+    <!-- 希维尔相关Buff -->
+    <BattleEffectText ID="SteriaDream">
+      <Name>梦</Name>
+      <Desc>拼点时消耗1层[梦]使骰子威力+1.受到单方面攻击时消耗1层[梦]减少3点伤害.</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="SteriaWishShield">
+      <Name>愿望之盾</Name>
+      <Desc>受到伤害时,优先消耗[愿望之盾]层数来抵消伤害(1层抵消1点伤害).</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="SteriaSeaVoice_SeaWish">
+      <Name>沧海之声·海愿</Name>
+      <Desc>触发时:为所有友方单位赋予5层[愿望之盾],并获得3层[梦].</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="SteriaSeaVoice_SeaReturn">
+        <Name>沧海之声·还愿</Name>
+        <Desc>触发时:所有友方单位抽取2张书页,恢复2点光芒.</Desc>
+      </BattleEffectText>
   </effectTextList>
 </BattleEffectTextRoot> 

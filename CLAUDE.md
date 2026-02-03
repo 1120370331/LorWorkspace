@@ -63,7 +63,7 @@ cd c:\Users\rog\WorkSpace\projects\games\lor\SteriaBuild && dotnet build Steria.
 - `StaticInfo/` - XML 配置文件（卡牌、被动等定义）
 
 ## 命名空间规则
-
+**重要**: 别他妈再在CardInfo.xml里，用Cnt/Counter代表反击骰子了！反击骰子只支持唯一一个值叫做“Standby”！！！
 **重要**: 游戏需要在全局命名空间中查找以下类型的类：
 - `PassiveAbility_XXXXXXX` - 被动能力类
 - `DiceCardAbility_*` - 骰子能力类

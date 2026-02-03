@@ -72,4 +72,20 @@
     <DropItem Type="Card">9007005</DropItem>
     <DropItem Type="Card">9007006</DropItem>
   </BookUse>
+  <BookUse ID="8">
+    <Name>希维尔之书</Name>
+    <TextId />
+    <BookIcon />
+    <Chapter>6</Chapter>
+    <BookValue>0</BookValue>
+    <DropItemState>All</DropItemState>
+    <DropItem Type="Equip">99000008</DropItem>
+    <DropItem Type="Card">9008001</DropItem>
+    <DropItem Type="Card">9008002</DropItem>
+    <DropItem Type="Card">9008003</DropItem>
+    <DropItem Type="Card">9008004</DropItem>
+    <DropItem Type="Card">9008005</DropItem>
+    <DropItem Type="Card">9008006</DropItem>
+    <DropItem Type="Card">9008007</DropItem>
+  </BookUse>
 </BookUseXmlRoot>

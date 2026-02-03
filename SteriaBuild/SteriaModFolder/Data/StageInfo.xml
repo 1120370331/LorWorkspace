@@ -120,4 +120,49 @@
     <Story Condition="Start">Button</Story>
     <Story Condition="End" />
   </Stage>
+
+  <!-- New Stage: Sivier Solo -->
+  <Stage id="6">
+    <StageType>Invitation</StageType>
+    <Name>希维尔单人</Name>
+    <Wave>
+      <Formation>41</Formation>
+      <AvailableUnit>2</AvailableUnit>
+      <Unit>9</Unit>
+    </Wave>
+    <FloorNum>1</FloorNum>
+    <Invitation Combine="BookValue">
+      <Value>7</Value>
+      <Num>1</Num>
+    </Invitation>
+    <Chapter>6</Chapter>
+    <Condition>
+      <Level>0</Level>
+    </Condition>
+    <Story Condition="Start">Button</Story>
+    <Story Condition="End" />
+  </Stage>
+
+  <!-- New Stage: Sivier + Ailierel Duo -->
+  <Stage id="7">
+    <StageType>Invitation</StageType>
+    <Name>希维尔与艾莉蕾尔</Name>
+    <Wave>
+      <Formation>7</Formation>
+      <AvailableUnit>2</AvailableUnit>
+      <Unit>9</Unit>
+      <Unit>8</Unit>
+    </Wave>
+    <FloorNum>1</FloorNum>
+    <Invitation Combine="BookValue">
+      <Value>8</Value>
+      <Num>1</Num>
+    </Invitation>
+    <Chapter>6</Chapter>
+    <Condition>
+      <Level>0</Level>
+    </Condition>
+    <Story Condition="Start">Button</Story>
+    <Story Condition="End" />
+  </Stage>
 </StageXmlRoot>

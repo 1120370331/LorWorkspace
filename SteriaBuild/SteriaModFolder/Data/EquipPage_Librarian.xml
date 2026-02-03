@@ -190,4 +190,36 @@
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
+  <!-- Sivier Librarian Book -->
+  <Book ID="99000008">
+    <Name>希维尔</Name>
+    <TextId>-1</TextId>
+    <DropTable>8</DropTable>
+      <EquipEffect>
+      <HP>106</HP>
+      <Break>65</Break>
+      <SpeedMin>2</SpeedMin>
+      <Speed>7</Speed>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
+      <SResist>Endure</SResist>
+      <PResist>Normal</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Normal</SBResist>
+      <PBResist>Weak</PBResist>
+      <HBResist>Normal</HBResist>
+      <Passive Pid="@origin">10008</Passive>
+      <Passive>9008001</Passive>
+      <Passive>9008002</Passive>
+      <Passive>9008003</Passive>
+      <Passive>9008004</Passive>
+    </EquipEffect>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <RangeType>Melee</RangeType>
+    <CharacterSkin>Sivier</CharacterSkin>
+    <CharacterSkinType>Custom</CharacterSkinType>
+  </Book>
+
 </BookXmlRoot>

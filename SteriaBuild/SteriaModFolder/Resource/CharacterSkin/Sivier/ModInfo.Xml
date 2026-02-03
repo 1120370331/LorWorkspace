@@ -1,0 +1,50 @@
+<ModInfo>
+  <ClothInfo>
+    <Name>Sivier</Name>
+    <Default>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="46.8" pivot_y="-292.9" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Default>
+    <Guard>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="81.30001" pivot_y="-286" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Guard>
+    <Evade>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="10" pivot_y="-281.4" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Evade>
+    <Damaged>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="99.7" pivot_y="-283.7" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Damaged>
+    <Slash>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="122.7" pivot_y="-286" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash>
+    <Penetrate>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="171" pivot_y="-283.6999" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Penetrate>
+    <Hit>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-155.6" pivot_y="-361.9" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Hit>
+    <Move>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="10" pivot_y="-290.6" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Move>
+    <S1>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="108.9" pivot_y="-217" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S1>
+  </ClothInfo>
+</ModInfo>

@@ -12,7 +12,8 @@ namespace Steria
     public enum SeaVoiceTrack
     {
         NightTrace,
-        MorningLight
+        MorningLight,
+        SeaReturn
     }
 
     public static class MusicScoreSystem
@@ -41,6 +42,7 @@ namespace Steria
         public const string MusicDiceKeyword = "SteriaMusicDice";
         public const string SeaVoiceNightTraceKeyword = "SteriaSeaVoice_NightTrace";
         public const string SeaVoiceMorningLightKeyword = "SteriaSeaVoice_MorningLight";
+        public const string SeaVoiceSeaReturnKeyword = "SteriaSeaVoice_SeaReturn";
         public const string MusicAccentKeyword = "SteriaMusicAccent"; // Reserved for future [重音]
 
         private static readonly Dictionary<Faction, int> _score = new Dictionary<Faction, int>();
@@ -516,6 +518,7 @@ namespace Steria
         {
             bool hasNightTrace = false;
             bool hasMorningLight = false;
+            bool hasSeaReturn = false;
             bool hasMusicDice = false;
             bool hasXiyinCards = false;
 
@@ -558,6 +561,11 @@ namespace Steria
                         hasMorningLight = true;
                     }
 
+                    if (xml.Keywords.Contains(SeaVoiceSeaReturnKeyword))
+                    {
+                        hasSeaReturn = true;
+                    }
+
                     if (xml.Keywords.Contains(MusicDiceKeyword))
                     {
                         hasMusicDice = true;
@@ -574,7 +582,8 @@ namespace Steria
 
                     if (xml.Keywords.Contains(MusicDiceKeyword) ||
                         xml.Keywords.Contains(SeaVoiceNightTraceKeyword) ||
-                        xml.Keywords.Contains(SeaVoiceMorningLightKeyword))
+                        xml.Keywords.Contains(SeaVoiceMorningLightKeyword) ||
+                        xml.Keywords.Contains(SeaVoiceSeaReturnKeyword))
                     {
                         hasXiyinCards = true;
                     }
@@ -594,6 +603,11 @@ namespace Steria
             if (hasMorningLight)
             {
                 _tracks[faction].Add(SeaVoiceTrack.MorningLight);
+            }
+
+            if (hasSeaReturn)
+            {
+                _tracks[faction].Add(SeaVoiceTrack.SeaReturn);
             }
 
             if (_tracks[faction].Count > 0)
@@ -641,6 +655,9 @@ namespace Steria
                     break;
                 case SeaVoiceTrack.MorningLight:
                     TriggerMorningLight(faction, actor);
+                    break;
+                case SeaVoiceTrack.SeaReturn:
+                    TriggerSeaReturn(faction, actor);
                     break;
             }
 
@@ -709,6 +726,31 @@ namespace Steria
                 unit.cardSlotDetail?.RecoverPlayPoint(2);
                 unit.RecoverHP(15);
                 unit.breakDetail?.RecoverBreak(15);
+            }
+        }
+
+        private static void TriggerSeaReturn(Faction faction, BattleUnitModel actor)
+        {
+            if (BattleObjectManager.instance == null)
+            {
+                return;
+            }
+
+            List<BattleUnitModel> allies = BattleObjectManager.instance.GetAliveList(faction);
+            if (allies == null || allies.Count == 0)
+            {
+                return;
+            }
+
+            foreach (BattleUnitModel unit in allies)
+            {
+                if (unit == null || unit.IsDead())
+                {
+                    continue;
+                }
+
+                unit.allyCardDetail?.DrawCards(2);
+                unit.cardSlotDetail?.RecoverPlayPoint(2);
             }
         }
 

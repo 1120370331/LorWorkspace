@@ -422,4 +422,54 @@
     <Name>音段接收</Name>
     <Desc>战斗开始时获得一枚1-6闪避骰子；每有一个书页目标指向本单位，便使其威力+1。</Desc>
   </Passive>
+
+  <!-- Sivier Passives -->
+  <Passive ID="9008001">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>5</Cost>
+    <Name>梦之汐音</Name>
+    <Desc>拼点时不消耗[梦]。受到单方面攻击时，消耗1层[梦]减少3点伤害。每消耗3层[梦]，下回合获得1层[守护]。</Desc>
+  </Passive>
+  <Passive ID="9008002">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>3</Cost>
+    <Name>散落的愿望</Name>
+    <Desc>使用防御骰子拼点胜利时，获得1层[梦]。</Desc>
+  </Passive>
+  <Passive ID="9008003">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>true</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>梦境共鸣</Name>
+    <Desc>回合开始时，若拥有5层以上的[梦]，全队友方单位获得1层[守护]。</Desc>
+  </Passive>
+  <Passive ID="9008004">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>true</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>3</Cost>
+    <Name>加速音律</Name>
+    <Desc>每回合使超过2个敌方速度骰子改变目标后：下回合获得1层[迅捷]。</Desc>
+  </Passive>
 </PassiveXmlRoot>
