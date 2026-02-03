@@ -190,7 +190,7 @@ public class PassiveAbility_9009001 : PassiveAbilityBase
     public override void OnWaveStart()
     {
         base.OnWaveStart();
-        if (owner?.Book != null)
+        if (owner?.Book != null && owner.faction == Faction.Enemy)
         {
             owner.Book.SetSpeedDiceNum(3);
             SteriaLogger.Log($"速战速决3: Set speed dice to 3 for {owner.UnitData?.unitData?.name}");
@@ -248,6 +248,11 @@ public class PassiveAbility_9009003 : PassiveAbilityBase
         return 3;
     }
 
+    public override int GetBreakDamageReductionAll(int dmg, DamageType dmgType, BattleUnitModel attacker)
+    {
+        return 3;
+    }
+
     public override void OnBreakState()
     {
         base.OnBreakState();
@@ -257,10 +262,11 @@ public class PassiveAbility_9009003 : PassiveAbilityBase
         if (bd != null)
         {
             int maxGauge = bd.GetDefaultBreakGauge();
-            bd.RecoverBreakLife(owner.MaxBreakLife, true);
+            bd.RecoverBreakLife(owner.MaxBreakLife, false);
             bd.RecoverBreak(maxGauge);
+            bd.nextTurnBreak = false;
         }
-        owner.OnReleaseBreak();
+        owner.turnState = BattleUnitTurnState.WAIT_CARD;
     }
 
     public override void OnRoundStart()
@@ -276,8 +282,7 @@ public class PassiveAbility_9009003 : PassiveAbilityBase
 
 /// <summary>
 /// 遗物：海公主的桂冠 (ID: 9009004)
-/// - 消耗/转换潮时：自身恢复2点体力与混乱抗性
-/// - 下一回合随机使一个友方单位随机获得1层强壮/守护（不受潮/黄金之潮影响）
+/// - 消耗/转换潮时：下一回合随机使一个友方单位随机获得1层强壮/守护/恢复2点体力/恢复2点混乱抗性（不受潮/黄金之潮影响）
 /// </summary>
 public class PassiveAbility_9009004 : PassiveAbilityBase
 {
@@ -288,9 +293,6 @@ public class PassiveAbility_9009004 : PassiveAbilityBase
         // 每层潮触发一次
         for (int i = 0; i < amount; i++)
         {
-            owner.RecoverHP(2);
-            owner.breakDetail?.RecoverBreak(2);
-
             BattleUnitBuf_ChristashaCrownNextTurn buf = owner.bufListDetail.GetActivatedBufList()
                 .FirstOrDefault(b => b is BattleUnitBuf_ChristashaCrownNextTurn) as BattleUnitBuf_ChristashaCrownNextTurn;
             if (buf == null)
@@ -331,14 +333,22 @@ public class BattleUnitBuf_ChristashaCrownNextTurn : BattleUnitBuf
         for (int i = 0; i < times; i++)
         {
             BattleUnitModel target = allies[UnityEngine.Random.Range(0, allies.Count)];
-            bool giveStrength = UnityEngine.Random.Range(0, 2) == 0;
-            if (giveStrength)
+            int roll = UnityEngine.Random.Range(0, 4);
+            if (roll == 0)
             {
                 target.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Strength, 1, null);
             }
-            else
+            else if (roll == 1)
             {
                 target.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Protection, 1, null);
+            }
+            else if (roll == 2)
+            {
+                target.RecoverHP(2);
+            }
+            else
+            {
+                target.breakDetail?.RecoverBreak(2);
             }
         }
 

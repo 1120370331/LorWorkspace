@@ -499,7 +499,7 @@
 
     <!-- Card 9009003: 海银工坊:埃利耶 -->
     <BattleCardAbility ID="ChristashaEliye">
-      <Desc>[使用时] 获得2层[潮]</Desc>
+      <Desc>[使用时] 获得1层[潮]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="ChristashaConvertTide1">
       <Desc>[命中时] 将1层[潮]转换为[黄金之潮]</Desc>
@@ -510,7 +510,7 @@
 
     <!-- Card 9009004: 涤光驱暗 -->
     <BattleCardAbility ID="ChristashaLightPurge">
-      <Desc>[使用时] 获得2层[潮]</Desc>
+      <Desc>[使用后] 获得3层[潮]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="ChristashaBurn2">
       <Desc>[命中时] 施加2层[烧伤]</Desc>
@@ -525,10 +525,10 @@
     <!-- Card 9009005: 迸射流光 -->
     <BattleCardAbility ID="ChristashaBurstReroll">
       <Desc>[拼点胜利] 使本骰子威力-2并重复投掷本骰子</Desc>
-      <Desc>[命中时] 施加2层[烧伤]并获得1层[潮]</Desc>
+      <Desc>[命中时] 施加2层[烧伤],之后获得2层[潮]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="ChristashaCounterPowerDown">
-      <Desc>[拼点失败] 使敌人当前骰子威力-5</Desc>
+      <Desc>[拼点失败] 使敌人当前骰子造成的伤害-5</Desc>
     </BattleCardAbility>
 
     <!-- Card 9009006: 汐音:光耀万海 -->

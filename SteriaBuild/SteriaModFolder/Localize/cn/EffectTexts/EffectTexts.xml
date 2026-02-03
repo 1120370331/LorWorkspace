@@ -69,7 +69,7 @@
     <!-- 克丽丝塔夏相关Buff -->
     <BattleEffectText ID="SteriaGoldenTide">
       <Name>黄金之潮</Name>
-      <Desc>特殊的[潮].赋予友方[强壮]/[忍耐]时消耗1层[黄金之潮]使其层数+2;若作用目标为自己,则额外消耗1层改为+3.</Desc>
+      <Desc>特殊的[潮].赋予友方[强壮]/[忍耐]时消耗1层[黄金之潮]使其层数+2;若作用目标为自己且[黄金之潮]≥2,则消耗2层改为+3.</Desc>
     </BattleEffectText>
     <BattleEffectText ID="SteriaMoonGravity">
       <Name>月之引力</Name>

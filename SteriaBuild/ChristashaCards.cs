@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using LOR_DiceSystem;
 using UnityEngine;
+using Steria;
 
 // 克丽丝塔夏战斗书页能力（全局命名空间）
 
@@ -22,20 +24,7 @@ public class DiceCardSelfAbility_ChristashaHomecoming : DiceCardSelfAbilityBase
     {
         if (owner?.allyCardDetail == null) return;
 
-        List<BattleDiceCardModel> before = owner.allyCardDetail.GetHand().ToList();
-        owner.allyCardDetail.DrawCards(1);
-        List<BattleDiceCardModel> after = owner.allyCardDetail.GetHand();
-
-        BattleDiceCardModel drawn = null;
-        foreach (var card in after)
-        {
-            if (!before.Contains(card))
-            {
-                drawn = card;
-                break;
-            }
-        }
-
+        BattleDiceCardModel drawn = DrawOneCardAndGet(owner.allyCardDetail);
         if (drawn == null) return;
 
         int cost = drawn.GetCost();
@@ -48,6 +37,46 @@ public class DiceCardSelfAbility_ChristashaHomecoming : DiceCardSelfAbilityBase
             PassiveAbility_9004001.AddTideStacks(owner, 1);
         }
     }
+
+    private static BattleDiceCardModel DrawOneCardAndGet(BattleAllyCardDetail detail)
+    {
+        if (detail == null) return null;
+
+        try
+        {
+            FieldInfo deckField = typeof(BattleAllyCardDetail).GetField("_cardInDeck", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo discardField = typeof(BattleAllyCardDetail).GetField("_cardInDiscarded", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo handField = typeof(BattleAllyCardDetail).GetField("_cardInHand", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo maxDrawField = typeof(BattleAllyCardDetail).GetField("_maxDrawHand", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            List<BattleDiceCardModel> deck = deckField?.GetValue(detail) as List<BattleDiceCardModel>;
+            List<BattleDiceCardModel> discard = discardField?.GetValue(detail) as List<BattleDiceCardModel>;
+            List<BattleDiceCardModel> hand = handField?.GetValue(detail) as List<BattleDiceCardModel>;
+            int maxDraw = maxDrawField != null ? (int)maxDrawField.GetValue(detail) : 0;
+
+            if (deck == null || discard == null || hand == null) return null;
+            if (maxDraw > 0 && hand.Count >= maxDraw) return null;
+
+            if (deck.Count == 0)
+            {
+                if (discard.Count == 0) return null;
+                deck.AddRange(discard);
+                discard.Clear();
+                detail.Shuffle();
+            }
+
+            if (deck.Count <= 0) return null;
+            BattleDiceCardModel drawn = deck[deck.Count - 1];
+            detail.AddCardToHand(drawn, false);
+            deck.RemoveAt(deck.Count - 1);
+            return drawn;
+        }
+        catch (Exception ex)
+        {
+            SteriaLogger.LogError($"ChristashaHomecoming: DrawOneCardAndGet failed: {ex.Message}");
+            return null;
+        }
+    }
 }
 
 public class DiceCardSelfAbility_ChristashaEliye : DiceCardSelfAbilityBase
@@ -55,7 +84,7 @@ public class DiceCardSelfAbility_ChristashaEliye : DiceCardSelfAbilityBase
     public override void OnUseCard()
     {
         if (owner == null) return;
-        PassiveAbility_9004001.AddTideStacks(owner, 2);
+        PassiveAbility_9004001.AddTideStacks(owner, 1);
     }
 }
 
@@ -64,7 +93,7 @@ public class DiceCardSelfAbility_ChristashaLightPurge : DiceCardSelfAbilityBase
     public override void OnUseCard()
     {
         if (owner == null) return;
-        PassiveAbility_9004001.AddTideStacks(owner, 2);
+        PassiveAbility_9004001.AddTideStacks(owner, 3);
     }
 }
 
@@ -120,7 +149,17 @@ public class BattleUnitBuf_ChristashaStrengthNextTurn : BattleUnitBuf
 
         if (stack > 0)
         {
-            _owner.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Strength, 1, _owner);
+            int bonus = ConsumeGoldenTideForStrength(_owner);
+            int finalStack = 1 + bonus;
+            // 若黄金之潮已触发，避免再次触发潮/黄金之潮逻辑
+            if (bonus > 0)
+            {
+                _owner.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Strength, finalStack, null);
+            }
+            else
+            {
+                _owner.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Strength, finalStack, _owner);
+            }
             stack--;
         }
 
@@ -128,6 +167,31 @@ public class BattleUnitBuf_ChristashaStrengthNextTurn : BattleUnitBuf
         {
             this.Destroy();
         }
+    }
+
+    private static int ConsumeGoldenTideForStrength(BattleUnitModel owner)
+    {
+        if (owner == null) return 0;
+        BattleUnitBuf_GoldenTide golden = owner.bufListDetail.GetActivatedBufList()
+            .FirstOrDefault(b => b is BattleUnitBuf_GoldenTide) as BattleUnitBuf_GoldenTide;
+        if (golden == null || golden.stack <= 0) return 0;
+
+        int consume = 1;
+        int bonus = 2;
+        if (golden.stack >= 2)
+        {
+            consume = 2;
+            bonus = 3;
+        }
+
+        golden.stack -= consume;
+        if (golden.stack <= 0)
+        {
+            golden.Destroy();
+        }
+
+        Steria.HarmonyHelpers.NotifyPassivesOnTideConsumed(owner, consume);
+        return bonus;
     }
 }
 
@@ -176,21 +240,60 @@ public class DiceCardAbility_ChristashaGloryOnHit : DiceCardAbilityBase
 
 public class DiceCardAbility_ChristashaBurstReroll : DiceCardAbilityBase
 {
-    private bool _repeatTriggered;
+    private int _repeatCount;
+    private const int MaxRepeat = 20;
+    private static readonly Dictionary<BattleDiceBehavior, int> _pendingPowerDown = new Dictionary<BattleDiceBehavior, int>();
 
     public override void OnWinParrying()
     {
-        if (_repeatTriggered) return;
-        behavior?.ApplyDiceStatBonus(new DiceStatBonus { power = -2 });
+        if (_repeatCount >= MaxRepeat) return;
+        AddPendingPowerDown(behavior);
         ActivateBonusAttackDice();
-        _repeatTriggered = true;
+        _repeatCount++;
+    }
+
+    public override void BeforeRollDice()
+    {
+        if (ConsumePendingPowerDown(behavior))
+        {
+            behavior?.ApplyDiceStatBonus(new DiceStatBonus { power = -2 });
+        }
     }
 
     public override void OnSucceedAttack(BattleUnitModel target)
     {
         if (owner == null) return;
         target?.bufListDetail.AddKeywordBufByCard(KeywordBuf.Burn, 2, owner);
-        PassiveAbility_9004001.AddTideStacks(owner, 1);
+        PassiveAbility_9004001.AddTideStacks(owner, 2);
+    }
+
+    private static void AddPendingPowerDown(BattleDiceBehavior dice)
+    {
+        if (dice == null) return;
+        if (_pendingPowerDown.TryGetValue(dice, out int count))
+        {
+            _pendingPowerDown[dice] = count + 1;
+        }
+        else
+        {
+            _pendingPowerDown[dice] = 1;
+        }
+    }
+
+    private static bool ConsumePendingPowerDown(BattleDiceBehavior dice)
+    {
+        if (dice == null) return false;
+        if (!_pendingPowerDown.TryGetValue(dice, out int count) || count <= 0) return false;
+        count--;
+        if (count <= 0)
+        {
+            _pendingPowerDown.Remove(dice);
+        }
+        else
+        {
+            _pendingPowerDown[dice] = count;
+        }
+        return true;
     }
 }
 
@@ -200,7 +303,7 @@ public class DiceCardAbility_ChristashaCounterPowerDown : DiceCardAbilityBase
     {
         BattleDiceBehavior targetDice = behavior?.TargetDice;
         if (targetDice == null) return;
-        targetDice.ApplyDiceStatBonus(new DiceStatBonus { power = -5 });
+        targetDice.ApplyDiceStatBonus(new DiceStatBonus { dmg = -5 });
     }
 }
 
@@ -210,7 +313,7 @@ public class DiceCardAbility_ChristashaCounterPowerDown : DiceCardAbilityBase
 /// </summary>
 public class DiceCardSelfAbility_ChristashaGlory : DiceCardSelfAbilityBase
 {
-    private const int MaxGrow = 2;
+    internal const int MaxGrow = 2;
 
     public override void OnUseCard()
     {
@@ -224,6 +327,7 @@ public class DiceCardSelfAbility_ChristashaGlory : DiceCardSelfAbilityBase
             card.card.AddBufWithoutDuplication(growth);
         }
 
+        EnsureUniqueDiceList(card.card, growth);
         if (growth.StackCount >= MaxGrow) return;
         // 延后复制：确保本次使用的点数不受新复制影响
         growth.PendingAdd = 1;
@@ -252,17 +356,41 @@ public class DiceCardSelfAbility_ChristashaGlory : DiceCardSelfAbilityBase
         if (card?.card == null) return;
         BattleDiceCardBuf_ChristashaGloryGrowth growth = card.card.GetBufList()
             .FirstOrDefault(b => b is BattleDiceCardBuf_ChristashaGloryGrowth) as BattleDiceCardBuf_ChristashaGloryGrowth;
-        if (growth == null || growth.PendingAdd <= 0 || growth.StackCount >= MaxGrow) return;
+        TryApplyPendingGrowth(card.card, growth);
+    }
 
+    internal static void TryApplyPendingGrowth(BattleDiceCardModel model, BattleDiceCardBuf_ChristashaGloryGrowth growth)
+    {
+        if (model == null || growth == null) return;
+        if (growth.PendingAdd <= 0 || growth.StackCount >= MaxGrow) return;
+
+        EnsureUniqueDiceList(model, growth);
         growth.PendingAdd = 0;
         // 永久追加最后一颗骰子（在本次战斗结束后生效）
-        DiceCardXmlInfo xml = card.card.XmlData;
+        DiceCardXmlInfo xml = model.XmlData;
         if (xml?.DiceBehaviourList != null && xml.DiceBehaviourList.Count > 0)
         {
             DiceBehaviour last = xml.DiceBehaviourList[xml.DiceBehaviourList.Count - 1];
             xml.DiceBehaviourList.Add(last.Copy());
             growth.StackCount += 1;
         }
+    }
+
+    private static void EnsureUniqueDiceList(BattleDiceCardModel model, BattleDiceCardBuf_ChristashaGloryGrowth growth)
+    {
+        if (model == null || growth == null || growth.HasClonedList) return;
+        DiceCardXmlInfo xml = model.XmlData;
+        if (xml?.DiceBehaviourList == null) return;
+
+        List<DiceBehaviour> copied = new List<DiceBehaviour>();
+        foreach (DiceBehaviour dice in xml.DiceBehaviourList)
+        {
+            copied.Add(dice.Copy());
+        }
+
+        xml.DiceBehaviourList = copied;
+        growth.HasClonedList = true;
+        growth.BaseDiceCount = copied.Count;
     }
 }
 
@@ -271,11 +399,20 @@ public class BattleDiceCardBuf_ChristashaGloryGrowth : BattleDiceCardBuf
     protected override string keywordId => "ChristashaGloryGrowth";
 
     public int PendingAdd { get; set; }
+    public bool HasClonedList { get; set; }
+    public int BaseDiceCount { get; set; }
 
     public int StackCount
     {
         get { return _stack; }
         set { _stack = value; }
+    }
+
+    public override void OnRoundEnd()
+    {
+        base.OnRoundEnd();
+        if (_card == null) return;
+        DiceCardSelfAbility_ChristashaGlory.TryApplyPendingGrowth(_card, this);
     }
 }
 

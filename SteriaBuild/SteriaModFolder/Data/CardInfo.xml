@@ -1150,7 +1150,7 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1170,7 +1170,7 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1184,7 +1184,7 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="2" />
     <Script>ChristashaEliye</Script>
-    <ScriptDesc>[使用时] 获得2层[潮]</ScriptDesc>
+    <ScriptDesc>[使用时] 获得1层[潮]</ScriptDesc>
     <AbilityList>
       <Ability Script="ChristashaEliye"/>
     </AbilityList>
@@ -1204,7 +1204,7 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="2" />
     <Script>ChristashaLightPurge</Script>
-    <ScriptDesc>[使用时] 获得2层[潮]</ScriptDesc>
+    <ScriptDesc>[使用后] 获得3层[潮]</ScriptDesc>
     <AbilityList>
       <Ability Script="ChristashaLightPurge"/>
     </AbilityList>
@@ -1225,8 +1225,8 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="3" />
     <BehaviourList>
-      <Behaviour Min="10" Dice="15" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-2并重复投掷本骰子;命中时:施加2层[烧伤]并获得1层[潮]" />
-      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子威力-5" />
+      <Behaviour Min="10" Dice="15" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-2并重复投掷本骰子;命中时:施加2层[烧伤],之后获得2层[潮]" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子造成的伤害-5" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>

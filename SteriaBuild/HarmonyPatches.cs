@@ -1541,6 +1541,11 @@ namespace Steria
                 bonus = 2;
             }
 
+            if (golden.stack < consume)
+            {
+                return 0;
+            }
+
             if (consume <= 0 || bonus <= 0) return 0;
 
             golden.stack -= consume;
@@ -1618,7 +1623,7 @@ namespace Steria
                         SteriaLogger.Log($"GoldenTide: Enhanced {bufType} by {goldenBonus}, new stack = {stack}");
                     }
 
-                    int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
+                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType);
                     if (tideBonus > 0)
                     {
                         stack += tideBonus;
@@ -1661,7 +1666,7 @@ namespace Steria
                         SteriaLogger.Log($"GoldenTide: Enhanced {bufType} (this round) by {goldenBonus}, new stack = {stack}");
                     }
 
-                    int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
+                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType);
                     if (tideBonus > 0)
                     {
                         stack += tideBonus;
@@ -1717,7 +1722,7 @@ namespace Steria
                         SteriaLogger.Log($"GoldenTide: Enhanced {bufType} (by card) by {goldenBonus}, new stack = {stack}");
                     }
 
-                    int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
+                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType);
                     if (tideBonus > 0)
                     {
                         stack += tideBonus;
@@ -1754,7 +1759,7 @@ namespace Steria
                         SteriaLogger.Log($"GoldenTide: Enhanced {bufType} (this round by card) by {goldenBonus}, new stack = {stack}");
                     }
 
-                    int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
+                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType);
                     if (tideBonus > 0)
                     {
                         stack += tideBonus;
