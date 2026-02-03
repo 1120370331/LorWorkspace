@@ -21,7 +21,6 @@ public class PassiveAbility_9008001 : PassiveAbilityBase
 
     // 追踪是否正在被单方面攻击
     private bool _isBeingOneSided = false;
-    private bool _consumedDreamThisDamage = false;
 
     public override void OnWaveStart()
     {
@@ -29,7 +28,6 @@ public class PassiveAbility_9008001 : PassiveAbilityBase
         _dreamConsumedTotal = 0;
         _protectionGranted = 0;
         _isBeingOneSided = false;
-        _consumedDreamThisDamage = false;
     }
 
     /// <summary>
@@ -49,7 +47,6 @@ public class PassiveAbility_9008001 : PassiveAbilityBase
     {
         base.OnEndOneSideVictim(attackerCard);
         _isBeingOneSided = false;
-        _consumedDreamThisDamage = false;
         SteriaLogger.Log($"PassiveAbility_9008001: OneSide attack ended");
     }
 
@@ -60,7 +57,6 @@ public class PassiveAbility_9008001 : PassiveAbilityBase
     {
         // 只在单方面攻击时触发，不包括拼点失败后的伤害
         if (!_isBeingOneSided) return 0;
-        if (_consumedDreamThisDamage) return 0;
 
         var dreamBuf = owner.bufListDetail.GetActivatedBufList()
             .Find(x => x is BattleUnitBuf_Dream) as BattleUnitBuf_Dream;
@@ -70,7 +66,6 @@ public class PassiveAbility_9008001 : PassiveAbilityBase
             // 消耗1层梦
             dreamBuf.stack--;
             _dreamConsumedTotal++;
-            _consumedDreamThisDamage = true;
             SteriaLogger.Log($"PassiveAbility_9008001: Consumed 1 Dream for OneSide damage reduction, total consumed: {_dreamConsumedTotal}");
 
             // 通知追踪系统
@@ -86,18 +81,6 @@ public class PassiveAbility_9008001 : PassiveAbilityBase
             return 3; // 减少3点伤害
         }
         return 0;
-    }
-
-    public override void OnTakeDamageByAttack(BattleDiceBehavior atkDice, int dmg)
-    {
-        base.OnTakeDamageByAttack(atkDice, dmg);
-        _consumedDreamThisDamage = false;
-    }
-
-    public override void OnTakeBreakDamageByAttack(BattleDiceBehavior atkDice, int breakdmg)
-    {
-        base.OnTakeBreakDamageByAttack(atkDice, breakdmg);
-        _consumedDreamThisDamage = false;
     }
 
     /// <summary>

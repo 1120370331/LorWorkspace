@@ -23,7 +23,7 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9002009">
       <Name>倾覆万千之流</Name>
-      <Desc>使用时:消耗所有[流](但不提供威力加成)。本书页每消耗5层[流],下回合为所有友方单位恢复1点光芒</Desc>
+      <Desc>使用时:消耗所有[流](但不提供威力加成).本书页每消耗5层[流],下回合为所有友方单位恢复1点光芒</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002006">
       <Name>洋流,听我的号令</Name>

@@ -1,0 +1,55 @@
+<ModInfo>
+  <ClothInfo>
+    <Name>Christasha</Name>
+    <Default>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="46.8" pivot_y="-242.9" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Default>
+    <Guard>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="81.30001" pivot_y="-236" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Guard>
+    <Evade>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="10" pivot_y="-231.4" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Evade>
+    <Damaged>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="99.7" pivot_y="-233.7" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Damaged>
+    <Slash>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="122.7" pivot_y="-236" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash>
+    <Slash2>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="122.7" pivot_y="-236" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash2>
+    <Penetrate>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="171" pivot_y="-233.6999" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Penetrate>
+    <Hit>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="-155.6" pivot_y="-311.9" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Hit>
+    <Move>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="10" pivot_y="-240.6" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Move>
+    <S1>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="108.9" pivot_y="-167" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </S1>
+  </ClothInfo>
+</ModInfo>

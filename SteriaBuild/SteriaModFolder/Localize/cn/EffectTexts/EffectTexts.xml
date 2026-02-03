@@ -31,11 +31,11 @@
       <Desc>该书页的斩击/突刺/打击/防御/闪避骰子为乐章型骰子.拼点胜利时,推进((骰子基础值)取余7)+1的[乐谱进度].</Desc>
     </BattleEffectText>
     <BattleEffectText ID="SteriaSeaVoice_NightTrace">
-      <Name>沧海之声·夜痕</Name>
+      <Name>沧海之声.夜痕</Name>
       <Desc>触发时:对所有敌人造成其混乱抗性上限10%的伤害,并施加(20-场上单位数x2)层[流血].</Desc>
     </BattleEffectText>
     <BattleEffectText ID="SteriaSeaVoice_MorningLight">
-      <Name>沧海之声·晨光</Name>
+      <Name>沧海之声.晨光</Name>
       <Desc>触发时:为所有友方单位恢复2点光芒,15点混乱抗性和生命值.</Desc>
     </BattleEffectText>
 
@@ -66,6 +66,20 @@
       <Desc>每次使用书页为敌人施加负面效果/为友方施加正面效果时:消耗1层[潮],并使施加的效果层数+1.</Desc>
     </BattleEffectText>
 
+    <!-- 克丽丝塔夏相关Buff -->
+    <BattleEffectText ID="SteriaGoldenTide">
+      <Name>黄金之潮</Name>
+      <Desc>特殊的[潮].赋予友方[强壮]/[忍耐]时消耗1层[黄金之潮]使其层数+2;若作用目标为自己,则额外消耗1层改为+3.</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaMoonGravity">
+      <Name>月之引力</Name>
+      <Desc>受到的混乱伤害提高10%(至多叠加10层).回合结束时清空.</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaMoonGravityNext">
+      <Name>月之引力(下回合)</Name>
+      <Desc>回合开始时,获得等量[月之引力].</Desc>
+    </BattleEffectText>
+
     <BattleEffectText ID="TideRevelation">
       <Name>潮之启示</Name>
       <Desc>拥有该标记的书页所有骰子威力+1.使用后获得1-3层[潮]并移除该标记.不对装备书页生效.</Desc>
@@ -93,13 +107,18 @@
     </BattleEffectText>
 
     <BattleEffectText ID="SteriaSeaVoice_SeaWish">
-      <Name>沧海之声·海愿</Name>
+      <Name>沧海之声.海愿</Name>
       <Desc>触发时:为所有友方单位赋予5层[愿望之盾],并获得3层[梦].</Desc>
     </BattleEffectText>
 
     <BattleEffectText ID="SteriaSeaVoice_SeaReturn">
-        <Name>沧海之声·还愿</Name>
-        <Desc>触发时:所有友方单位抽取2张书页,恢复2点光芒.</Desc>
-      </BattleEffectText>
+      <Name>沧海之声.还愿</Name>
+      <Desc>触发时:消耗所有[梦],每消耗1层[梦]对所有敌人造成3点伤害.</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="BurningMemory">
+      <Name>燃烧的回忆</Name>
+      <Desc>弃置[珍贵的回忆]的计数.达到5层后,将[忘却之梦]置入EGO装备区.</Desc>
+    </BattleEffectText>
   </effectTextList>
 </BattleEffectTextRoot> 

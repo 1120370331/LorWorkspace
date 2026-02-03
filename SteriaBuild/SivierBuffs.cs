@@ -44,7 +44,6 @@ public class BattleUnitBuf_WishShield : BattleUnitBuf
     protected override string keywordId => "SteriaWishShield";
     protected override string keywordIconId => "SteriaWishShield";
     public override BufPositiveType positiveType => BufPositiveType.Positive;
-    private int _pendingAbsorb = 0;
 
     public override void Init(BattleUnitModel owner)
     {
@@ -65,14 +64,8 @@ public class BattleUnitBuf_WishShield : BattleUnitBuf
     {
         if (this.stack <= 0) return 0;
 
-        // 记录本次预计吸收量（用于后续扣除层数）
-        int estimate = behavior != null ? behavior.DiceResultValue : 0;
-        if (estimate <= 0)
-        {
-            estimate = this.stack;
-        }
-        int reduction = Math.Min(this.stack, estimate);
-        _pendingAbsorb = reduction;
+        // 返回当前护盾层数作为伤害减免
+        int reduction = this.stack;
         SteriaLogger.Log($"BattleUnitBuf_WishShield: Providing {reduction} damage reduction");
         return reduction;
     }
@@ -84,31 +77,18 @@ public class BattleUnitBuf_WishShield : BattleUnitBuf
     {
         base.OnTakeDamageByAttack(atkDice, dmg);
 
-        if (this.stack > 0)
+        if (this.stack > 0 && dmg > 0)
         {
-            int absorbed = 0;
-            if (_pendingAbsorb > 0)
-            {
-                absorbed = Math.Min(_pendingAbsorb, this.stack);
-            }
-            else if (dmg > 0)
-            {
-                absorbed = Math.Min(dmg, this.stack);
-            }
-
-            if (absorbed > 0)
-            {
-                this.stack -= absorbed;
-                SteriaLogger.Log($"BattleUnitBuf_WishShield: Absorbed {absorbed} damage, remaining: {this.stack}");
-            }
+            // 计算实际吸收的伤害量（不超过护盾层数）
+            int absorbed = Math.Min(dmg, this.stack);
+            this.stack -= absorbed;
+            SteriaLogger.Log($"BattleUnitBuf_WishShield: Absorbed {absorbed} damage, remaining: {this.stack}");
 
             if (this.stack <= 0)
             {
                 this.Destroy();
             }
         }
-
-        _pendingAbsorb = 0;
     }
 
     public override void OnRoundEnd()

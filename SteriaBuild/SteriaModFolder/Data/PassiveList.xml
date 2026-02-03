@@ -472,4 +472,90 @@
     <Name>加速音律</Name>
     <Desc>每回合使超过2个敌方速度骰子改变目标后：下回合获得1层[迅捷]。</Desc>
   </Passive>
+
+  <!-- Christasha Passives -->
+  <Passive ID="9009001">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>速战速决3</Name>
+    <Desc>初始拥有3颗速度骰子，情感等级达到3后额外获得1颗。</Desc>
+  </Passive>
+  <Passive ID="9009002">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>5</Cost>
+    <Name>金色的乐章</Name>
+    <Desc>消耗或转换[潮]时积累等量[乐谱进度]；触发沧海之声后，获得5层[潮]。</Desc>
+  </Passive>
+  <Passive ID="9009003">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>5</Cost>
+    <Name>高阶月长石</Name>
+    <Desc>受到的混乱伤害-3；每一舞台首次陷入混乱时：解除混乱状态并恢复所有混乱抗性；每一幕开始时，为所有友方角色恢复2点混乱抗性。</Desc>
+  </Passive>
+  <Passive ID="9009004">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>6</Cost>
+    <Name>遗物：海公主的桂冠</Name>
+    <Desc>自身每消耗或转换1层[潮]后，下一回合随机使一个友方单位随机获得1层[强壮]/[守护]（此效果不受[潮]、[黄金之潮]影响）；并使自身恢复2点生命值与混乱抗性。</Desc>
+  </Passive>
+  <Passive ID="9009005">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>月光工坊烙印</Name>
+    <Desc>命中敌人时施加1层[月之引力]。</Desc>
+  </Passive>
+  <Passive ID="9009006">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>溢流潮生</Name>
+    <Desc>自身每有一层[潮]/[黄金之潮]便使造成的伤害+5%(至多50%);自身[潮]/[黄金之潮]层数不低于10时:所有骰子威力+1.</Desc>
+  </Passive>
+  <Passive ID="9009007">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>变幻莫测</Name>
+    <Desc>每一幕将指定书页置入手中且光芒消耗为0.情感等级达到3后,每幕额外加入1张强化书页.</Desc>
+  </Passive>
 </PassiveXmlRoot>

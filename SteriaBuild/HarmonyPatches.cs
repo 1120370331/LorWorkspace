@@ -407,6 +407,12 @@ namespace Steria
             var passive9006001 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9006001) as PassiveAbility_9006001;
             passive9006001?.OnTideConsumed(amount);
 
+            var passive9009002 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9009002) as PassiveAbility_9009002;
+            passive9009002?.OnTideConsumed(amount);
+
+            var passive9009004 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9009004) as PassiveAbility_9009004;
+            passive9009004?.OnTideConsumed(amount);
+
             SteriaLogger.Log($"NotifyPassivesOnTideConsumed: Notified passives of {amount} tide consumed");
         }
 
@@ -785,6 +791,15 @@ namespace Steria
                 passive9000005.OnPreciousMemoryDiscarded();
                 SteriaLogger.Log("通知了 PassiveAbility_9000005 珍贵的回忆被弃置");
             }
+        }
+
+        private const int CHRISTASHA_TWINSTAR_ID = 9009007;
+
+        private static bool IsChristashaTwinStar(BattlePlayingCardDataInUnitModel card)
+        {
+            if (card?.card == null) return false;
+            LorId id = card.card.GetID();
+            return id != null && id.packageId == MOD_PACKAGE_ID && id.id == CHRISTASHA_TWINSTAR_ID;
         }
 
 
@@ -1442,6 +1457,24 @@ namespace Steria
             KeywordBuf.Smoke,         // 烟气
         };
 
+        private static readonly HashSet<KeywordBuf> _goldenTideBuffTypes = new HashSet<KeywordBuf>
+        {
+            KeywordBuf.Strength,
+            KeywordBuf.Endurance,
+        };
+
+        private static FieldInfo _bufListOwnerField;
+
+        private static BattleUnitModel GetBufListOwner(BattleUnitBufListDetail bufList)
+        {
+            if (bufList == null) return null;
+            if (_bufListOwnerField == null)
+            {
+                _bufListOwnerField = AccessTools.Field(typeof(BattleUnitBufListDetail), "_self");
+            }
+            return _bufListOwnerField?.GetValue(bufList) as BattleUnitModel;
+        }
+
         /// <summary>
         /// 简化版潮加成：只要施加者有潮，就扣1层并额外赋予1层
         /// </summary>
@@ -1469,6 +1502,57 @@ namespace Steria
             }
 
             return 1; // 固定额外赋予1层
+        }
+
+        /// <summary>
+        /// 黄金之潮：赋予友方强壮/忍耐时消耗黄金之潮并额外增加层数
+        /// </summary>
+        private static int CheckAndConsumeGoldenTide(BattleUnitModel giver, BattleUnitModel target, KeywordBuf bufType)
+        {
+            if (giver == null || target == null) return 0;
+            if (!_goldenTideBuffTypes.Contains(bufType)) return 0;
+            if (giver.faction != target.faction) return 0;
+
+            global::BattleUnitBuf_GoldenTide golden = giver.bufListDetail.GetActivatedBufList()
+                .FirstOrDefault(b => b is global::BattleUnitBuf_GoldenTide) as global::BattleUnitBuf_GoldenTide;
+
+            if (golden == null || golden.stack <= 0) return 0;
+
+            bool isSelf = giver == target;
+            int consume = 0;
+            int bonus = 0;
+
+            if (isSelf)
+            {
+                if (golden.stack >= 2)
+                {
+                    consume = 2;
+                    bonus = 3;
+                }
+                else
+                {
+                    consume = 1;
+                    bonus = 2;
+                }
+            }
+            else
+            {
+                consume = 1;
+                bonus = 2;
+            }
+
+            if (consume <= 0 || bonus <= 0) return 0;
+
+            golden.stack -= consume;
+            SteriaLogger.Log($"GoldenTide: {giver.UnitData?.unitData?.name} consumed {consume} for {bufType}, bonus={bonus}, remaining={golden.stack}");
+            HarmonyHelpers.NotifyPassivesOnTideConsumed(giver, consume);
+
+            if (golden.stack <= 0)
+            {
+                golden.Destroy();
+            }
+
+            return bonus;
         }
 
         /// <summary>
@@ -1526,6 +1610,14 @@ namespace Steria
 
                     if (stack <= 0 || actor == null) return;
 
+                    BattleUnitModel target = GetBufListOwner(__instance);
+                    int goldenBonus = CheckAndConsumeGoldenTide(actor, target, bufType);
+                    if (goldenBonus > 0)
+                    {
+                        stack += goldenBonus;
+                        SteriaLogger.Log($"GoldenTide: Enhanced {bufType} by {goldenBonus}, new stack = {stack}");
+                    }
+
                     int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
                     if (tideBonus > 0)
                     {
@@ -1560,6 +1652,14 @@ namespace Steria
                     SteriaLogger.Log($"Tide DEBUG: AddKeywordBufThisRoundByEtc called - bufType={bufType}, stack={stack}, actor={(actor != null ? actor.UnitData?.unitData?.name : "NULL")}");
 
                     if (stack <= 0 || actor == null) return;
+
+                    BattleUnitModel target = GetBufListOwner(__instance);
+                    int goldenBonus = CheckAndConsumeGoldenTide(actor, target, bufType);
+                    if (goldenBonus > 0)
+                    {
+                        stack += goldenBonus;
+                        SteriaLogger.Log($"GoldenTide: Enhanced {bufType} (this round) by {goldenBonus}, new stack = {stack}");
+                    }
 
                     int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
                     if (tideBonus > 0)
@@ -1609,6 +1709,14 @@ namespace Steria
                 {
                     if (stack <= 0 || actor == null) return;
 
+                    BattleUnitModel target = GetBufListOwner(__instance);
+                    int goldenBonus = CheckAndConsumeGoldenTide(actor, target, bufType);
+                    if (goldenBonus > 0)
+                    {
+                        stack += goldenBonus;
+                        SteriaLogger.Log($"GoldenTide: Enhanced {bufType} (by card) by {goldenBonus}, new stack = {stack}");
+                    }
+
                     int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
                     if (tideBonus > 0)
                     {
@@ -1637,6 +1745,14 @@ namespace Steria
                 try
                 {
                     if (stack <= 0 || actor == null) return;
+
+                    BattleUnitModel target = GetBufListOwner(__instance);
+                    int goldenBonus = CheckAndConsumeGoldenTide(actor, target, bufType);
+                    if (goldenBonus > 0)
+                    {
+                        stack += goldenBonus;
+                        SteriaLogger.Log($"GoldenTide: Enhanced {bufType} (this round by card) by {goldenBonus}, new stack = {stack}");
+                    }
 
                     int tideBonus = CheckAndConsumeTideSimple(actor, bufType);
                     if (tideBonus > 0)
@@ -1853,6 +1969,63 @@ namespace Steria
                 }
 
                 return true;
+            }
+        }
+
+        // --- Patch for 汐火联星: 连续2次同目标 ---
+        [HarmonyPatch(typeof(StageController), "StartAction")]
+        public static class StageController_StartAction_TwinStarLockPatch
+        {
+            [HarmonyPrefix]
+            public static void Prefix(StageController __instance, BattlePlayingCardDataInUnitModel card)
+            {
+                try
+                {
+                    if (card?.owner?.passiveDetail?.PassiveList == null) return;
+                    if (!card.owner.passiveDetail.PassiveList.Any(p => p is PassiveAbility_9009007)) return;
+                    if (!IsChristashaTwinStar(card)) return;
+
+                    BattleUnitModel owner = card.owner;
+                    BattleUnitBuf_ChristashaTwinStarLock lockBuf = owner.bufListDetail?.GetActivatedBufList()
+                        .FirstOrDefault(b => b is BattleUnitBuf_ChristashaTwinStarLock) as BattleUnitBuf_ChristashaTwinStarLock;
+
+                    if (lockBuf == null || lockBuf.remaining <= 0 || lockBuf.target == null || lockBuf.target.IsDead() || lockBuf.target.IsBreakLifeZero())
+                    {
+                        if (card.target == null) return;
+                        lockBuf = new BattleUnitBuf_ChristashaTwinStarLock
+                        {
+                            target = card.target,
+                            remaining = 2
+                        };
+                        owner.bufListDetail.AddBuf(lockBuf);
+                    }
+                    else
+                    {
+                        if (card.target != lockBuf.target)
+                        {
+                            card.target = lockBuf.target;
+                            card.earlyTarget = lockBuf.target;
+                            int tslot = 0;
+                            if (lockBuf.target.speedDiceResult != null && lockBuf.target.speedDiceResult.Count > 0)
+                            {
+                                tslot = Math.Min(Math.Max(0, card.targetSlotOrder), lockBuf.target.speedDiceResult.Count - 1);
+                            }
+                            card.targetSlotOrder = tslot;
+                            card.earlyTargetOrder = tslot;
+                            card.ResetCardQueue();
+                        }
+                    }
+
+                    lockBuf.remaining = Math.Max(0, lockBuf.remaining - 1);
+                    if (lockBuf.remaining <= 0)
+                    {
+                        lockBuf.Destroy();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] TwinStar lock patch error: {ex}");
+                }
             }
         }
 

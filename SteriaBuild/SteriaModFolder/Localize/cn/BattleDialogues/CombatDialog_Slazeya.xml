@@ -6,11 +6,11 @@
   <!-- 斯拉泽雅 Enemy ID=2 -->
   <Character ID="2">
     <Type ID="START_BATTLE">
-      <BattleDialog ID="START_BATTLE_0">欢迎来到潮汐的领域。</BattleDialog>
-      <BattleDialog ID="START_BATTLE_1">顺应流向吧。</BattleDialog>
+      <BattleDialog ID="START_BATTLE_0">欢迎来到潮汐的领域.</BattleDialog>
+      <BattleDialog ID="START_BATTLE_1">顺应流向吧.</BattleDialog>
     </Type>
     <Type ID="BATTLE_VICTORY">
-      <BattleDialog ID="BATTLE_VICTORY_0">这就是流的力量。</BattleDialog>
+      <BattleDialog ID="BATTLE_VICTORY_0">这就是流的力量.</BattleDialog>
     </Type>
     <Type ID="DEATH">
       <BattleDialog ID="DEATH_0">潮汐...终将回归...</BattleDialog>

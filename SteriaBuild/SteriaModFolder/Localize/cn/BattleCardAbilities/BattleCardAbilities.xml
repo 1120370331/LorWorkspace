@@ -18,7 +18,7 @@
 
     <!-- Card 9001003: 奥塔尔的荣耀 -->
     <BattleCardAbility ID="AnhierDiscardAllDraw">
-      <Desc>[使用时] 丢弃2张手牌来使本书页骰子威力+1；[被弃置时] 抽1张书页</Desc>
+      <Desc>[使用时] 丢弃2张手牌来使本书页骰子威力+1;[被弃置时] 抽1张书页</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AnhierClashWinDraw1">
       <Desc>[拼点胜利] 抽取1张书页</Desc>
@@ -64,7 +64,7 @@
 
     <!-- Card 9001010: 寒地后勤 -->
     <BattleCardAbility ID="AnhierColdLogistics">
-      <Desc>[使用时] 恢复2点光芒；[被弃置时] 恢复2点光芒</Desc>
+      <Desc>[使用时] 恢复2点光芒;[被弃置时] 恢复2点光芒</Desc>
     </BattleCardAbility>
 
     <!-- Card 9001008: 清司风流 -->
@@ -87,7 +87,7 @@
 
     <!-- Card 9001012: 忘却之梦 -->
     <BattleCardAbility ID="AnhierForgottenDream">
-      <Desc>[使用时] 下回合使自身陷入混乱；本舞台中,每弃置1张书页便使本书页骰子威力+1</Desc>
+      <Desc>[使用时] 下回合使自身陷入混乱;本舞台中,每弃置1张书页便使本书页骰子威力+1</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AnhierForgottenDreamDice1">
       <Desc>[命中时] 追加(本舞台消耗流层数/2(向下取整))点打击伤害</Desc>
@@ -160,7 +160,7 @@
 
     <!-- Card 9002007: 随我流向无尽的尽头 -->
     <BattleCardAbility ID="SlazeyaEndlessFlow">
-      <Desc>[战斗开始时] 本幕友方所有书页享受[流]加成时不再消耗[流]数量；[使用时] 本书页骰子获得等同自身[流]数量/2威力加成(向上取整)</Desc>
+      <Desc>[战斗开始时] 本幕友方所有书页享受[流]加成时不再消耗[流]数量;[使用时] 本书页骰子获得等同自身[流]数量/2威力加成(向上取整)</Desc>
     </BattleCardAbility>
 
     <!-- ========== 司流者教徒卡牌能力 ========== -->
@@ -207,7 +207,7 @@
       <Desc>本书页骰子至多可受2次[流]强化</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaHundredRiversRepeat">
-      <Desc>本书页骰子至多可受2次[流]强化；[使用时] 若自身[流]层数大于10,则随机对另一敌人重复使用本书页(最多触发一次)</Desc>
+      <Desc>本书页骰子至多可受2次[流]强化;[使用时] 若自身[流]层数大于10,则随机对另一敌人重复使用本书页(最多触发一次)</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaApplyWeakByFlowBonus">
       <Desc>[命中时] 施加本骰子受[流]强化层数的[虚弱]</Desc>
@@ -342,7 +342,7 @@
 
     <BattleCardAbility ID="TibuTimeReturn">
         <Desc>[迅攻]</Desc>
-        <Desc>[使用时] 抽取2张书页，消耗2层[潮]使自身所有正面效果提升1级</Desc>
+        <Desc>[使用时] 抽取2张书页,消耗2层[潮]使自身所有正面效果提升1级</Desc>
       </BattleCardAbility>
     <BattleCardAbility ID="TibuTimeReturnRecoverBreak">
       <Desc>[命中时] 恢复5点混乱抗性</Desc>
@@ -363,7 +363,7 @@
     </BattleCardAbility>
 
     <BattleCardAbility ID="TibuTideAwakening">
-        <Desc>[装备时] 限拥有[潮]时使用，使用时消耗1层[潮]。选择一个目标，本回合将其卡组中下一张牌置入手牌，消耗为0。使用后/回合结束时归还（不打乱其牌库顺序）</Desc>
+        <Desc>[装备时] 限拥有[潮]时使用,使用时消耗1层[潮].选择一个目标,本回合将其卡组中下一张牌置入手牌,消耗为0.使用后/回合结束时归还(不打乱其牌库顺序)</Desc>
       </BattleCardAbility>
 
     <!-- ========== 艾莉蕾尔卡牌能力 ========== -->
@@ -409,7 +409,7 @@
     </BattleCardAbility>
 
     <BattleCardAbility ID="AilierelNightTrace">
-      <Desc>渐强。每次使用后，本书页光芒消耗永久+1，所有骰子基础值最小值+1，最大值+2（至多触发3次）</Desc>
+      <Desc>渐强.每次使用后,本书页光芒消耗永久+1,所有骰子基础值最小值+1,最大值+2(至多触发3次)</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AilierelNightTraceBleedAndFlow">
       <Desc>[命中时] 施加2层[流血]并获得"本书页光芒消耗"层[流]</Desc>
@@ -460,9 +460,9 @@
       <Desc>[命中时] 消耗1层[梦]来恢复5点混乱抗性</Desc>
     </BattleCardAbility>
 
-    <!-- Card 9008006: 汐音：海之还愿 -->
+    <!-- Card 9008006: 汐音:海之还愿 -->
     <BattleCardAbility ID="SivierSeaReturn">
-      <Desc>[乐章] [渐弱] 每使用1次本书页使本书页骰子最大值-2,最小值-1(至多触发4次)；[使用时] 使所有友方角色获得(等同本书页光芒消耗)点[梦]</Desc>
+      <Desc>[乐章] [渐弱] 每使用1次本书页使本书页骰子最大值-2,最小值-1(至多触发4次);[使用时] 使所有友方角色获得(等同本书页光芒消耗)点[梦]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SivierSeaReturn1">
       <Desc>[命中时] 抽1张牌</Desc>
@@ -476,10 +476,80 @@
 
     <!-- Card 9008007: 愿望终将埋葬于深海 -->
     <BattleCardAbility ID="SivierWishBuried">
-      <Desc>[佚亡] 本书页仅限消耗20层以上[梦]后使用；[使用时] 持续2幕,所有敌人无法恢复光芒</Desc>
+      <Desc>[佚亡] 本书页仅限消耗20层以上[梦]后使用;[使用时] 持续2幕,所有敌人无法恢复光芒</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SivierWishBuried1">
       <Desc>[命中时] 下回合开始时失去2点光芒</Desc>
+    </BattleCardAbility>
+
+    <!-- ========== 克丽丝塔夏卡牌能力 ========== -->
+
+    <!-- Card 9009001: 金火璀璨之潮 -->
+    <BattleCardAbility ID="ChristashaGoldenTide">
+      <Desc>[使用时] 恢复1点光芒,将自身1层[潮]转换为[黄金之潮]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaGainTide1">
+      <Desc>[命中时] 获得1层[潮]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9009002: 何以归乡 -->
+    <BattleCardAbility ID="ChristashaHomecoming">
+      <Desc>[使用时] 抽取1张书页;若抽取的书页光芒消耗为偶数,则额外抽取1张;若为奇数,则获得1层[潮]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9009003: 海银工坊:埃利耶 -->
+    <BattleCardAbility ID="ChristashaEliye">
+      <Desc>[使用时] 获得2层[潮]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaConvertTide1">
+      <Desc>[命中时] 将1层[潮]转换为[黄金之潮]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaStrengthNextTurn2">
+      <Desc>[命中时] 接下来两回合,每回合开始时获得1层[强壮]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9009004: 涤光驱暗 -->
+    <BattleCardAbility ID="ChristashaLightPurge">
+      <Desc>[使用时] 获得2层[潮]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaBurn2">
+      <Desc>[命中时] 施加2层[烧伤]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaBurn1Moon1">
+      <Desc>[命中时] 施加1层[烧伤]与1层[月之引力]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaMoon2">
+      <Desc>[命中时] 施加2层[月之引力]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9009005: 迸射流光 -->
+    <BattleCardAbility ID="ChristashaBurstReroll">
+      <Desc>[拼点胜利] 使本骰子威力-2并重复投掷本骰子</Desc>
+      <Desc>[命中时] 施加2层[烧伤]并获得1层[潮]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaCounterPowerDown">
+      <Desc>[拼点失败] 使敌人当前骰子威力-5</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9009006: 汐音:光耀万海 -->
+    <BattleCardAbility ID="ChristashaGlory">
+      <Desc>[乐章] [渐快] 使用本书页后,永久将本书页最后一颗骰子复制置入书页末尾.所有骰子威力×([X-1]/X)(向上取整),X为复制后的骰子数量(至多触发2次)</Desc>
+      <Desc>[被编入卡组时] 将激活"汐音:光耀万海"到沧海之声</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaGloryOnHit">
+      <Desc>[命中时] 获得1层[潮]并施加1层[烧伤]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9009007: 汐火联星 -->
+    <BattleCardAbility ID="ChristashaTwinStar">
+      <Desc>[延长] 本书页仅限潮+黄金之潮层数不低于5时使用</Desc>
+      <Desc>[使用时] 将至多2层[潮]转换为[黄金之潮]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaTwinStarBurn">
+      <Desc>[命中时] 施加3层[烧伤]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaTwinStarMoon">
+      <Desc>[命中时] 施加3层[月之引力]</Desc>
     </BattleCardAbility>
 
 </BattleCardAbilityDescRoot>

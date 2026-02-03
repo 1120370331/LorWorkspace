@@ -285,4 +285,38 @@
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
+  <!-- Christasha Enemy Book -->
+  <Book ID="10">
+    <Name>克丽丝塔夏</Name>
+    <TextId>-1</TextId>
+    <Category>DeckFixed</Category>
+    <Option>Basic</Option>
+    <EquipEffect>
+      <HP>450</HP>
+      <Break>244</Break>
+      <SpeedMin>3</SpeedMin>
+      <Speed>7</Speed>
+      <StartPlayPoint>5</StartPlayPoint>
+      <MaxPlayPoint>5</MaxPlayPoint>
+      <SResist>Endure</SResist>
+      <PResist>Endure</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Normal</SBResist>
+      <PBResist>Normal</PBResist>
+      <HBResist>Normal</HBResist>
+      <Passive>9009001</Passive>
+      <Passive>9009002</Passive>
+      <Passive>9009003</Passive>
+      <Passive>9009004</Passive>
+      <Passive>9009005</Passive>
+      <Passive>9009006</Passive>
+      <Passive>9009007</Passive>
+    </EquipEffect>
+    <Chapter>7</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <CharacterSkin>Christasha</CharacterSkin>
+    <CharacterSkinType>Custom</CharacterSkinType>
+  </Book>
+
 </BookXmlRoot>

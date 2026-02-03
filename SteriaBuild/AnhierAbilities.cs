@@ -257,6 +257,16 @@ public class BattleUnitBuf_CrystalizedPower : BattleUnitBuf
     public override BufPositiveType positiveType => BufPositiveType.Positive;
 }
 
+// --- Buff: 燃烧的回忆 ---
+// 显示安希尔弃置珍贵的回忆的计数（达到5层后触发忘却之梦）
+public class BattleUnitBuf_BurningMemory : BattleUnitBuf
+{
+    protected override string keywordId => "BurningMemory";
+    protected override string keywordIconId => "BurningMemory";
+
+    public override BufPositiveType positiveType => BufPositiveType.Positive;
+}
+
 // 回忆结晶 (ID: 9000004)
 // 舞台每经过5幕，便使自身骰子威力+1（至多+3）
 // 重写：使用实例变量，每个单位独立计数，新战斗自动重置
@@ -426,12 +436,43 @@ public class PassiveAbility_9000005 : PassiveAbilityBase
         _preciousMemoryDiscardCount++;
         SteriaLogger.Log($"不会忘记的那个梦想: 珍贵的回忆被弃置，计数 {_preciousMemoryDiscardCount}/{PRECIOUS_MEMORY_DISCARD_THRESHOLD}");
 
+        // 更新燃烧的回忆buff显示
+        UpdateBurningMemoryBuff();
+
         if (_preciousMemoryDiscardCount >= PRECIOUS_MEMORY_DISCARD_THRESHOLD)
         {
             _passiveDisabled = true;
             SteriaLogger.Log("不会忘记的那个梦想: 被动已停止触发");
+            // 移除燃烧的回忆buff
+            RemoveBurningMemoryBuff();
             AddForgottenDreamToEgo();
         }
+    }
+
+    private void UpdateBurningMemoryBuff()
+    {
+        if (this.owner == null || this.owner.IsDead()) return;
+
+        var existingBuf = this.owner.bufListDetail.GetActivatedBufList()
+            .FirstOrDefault(b => b is BattleUnitBuf_BurningMemory) as BattleUnitBuf_BurningMemory;
+
+        if (existingBuf != null && !existingBuf.IsDestroyed())
+        {
+            existingBuf.stack = _preciousMemoryDiscardCount;
+        }
+        else
+        {
+            var newBuf = new BattleUnitBuf_BurningMemory { stack = _preciousMemoryDiscardCount };
+            this.owner.bufListDetail.AddBuf(newBuf);
+        }
+    }
+
+    private void RemoveBurningMemoryBuff()
+    {
+        if (this.owner == null) return;
+        var buf = this.owner.bufListDetail.GetActivatedBufList()
+            .FirstOrDefault(b => b is BattleUnitBuf_BurningMemory);
+        if (buf != null) buf.Destroy();
     }
 
     private void AddForgottenDreamToEgo()

@@ -1108,6 +1108,7 @@
       <Behaviour Min="6" Dice="14" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaReturn1" ActionScript="" Desc="" />
       <Behaviour Min="9" Dice="16" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaReturn2" ActionScript="" Desc="" />
       <Behaviour Min="5" Dice="13" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="SivierSeaReturn3" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="12" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -1133,5 +1134,148 @@
     <Priority>9000</Priority>
   </Card>
   <!-- Sivier Cards End -->
+
+  <!-- Christasha Cards Start -->
+  <!-- 金火璀璨之潮 -->
+  <Card ID="9009001">
+    <Name>金火璀璨之潮</Name>
+    <TextId>-1</TextId>
+    <Artwork>金火璀璨之潮.jpg</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>ChristashaGoldenTide</Script>
+    <ScriptDesc>[使用时] 恢复1点光芒，将自身1层[潮]转换为[黄金之潮]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaGoldenTide"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 何以归乡 -->
+  <Card ID="9009002">
+    <Name>何以归乡</Name>
+    <TextId>-1</TextId>
+    <Artwork>何以归乡.jpg</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>ChristashaHomecoming</Script>
+    <ScriptDesc>[使用时] 抽取1张书页。若抽取的书页光芒消耗为偶数，则额外抽取1张；若为奇数，则获得1层[潮]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaHomecoming"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 海银工坊：埃利耶 -->
+  <Card ID="9009003">
+    <Name>海银工坊：埃利耶</Name>
+    <TextId>-1</TextId>
+    <Artwork>海银工坊：埃利耶.jpg</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>ChristashaEliye</Script>
+    <ScriptDesc>[使用时] 获得2层[潮]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEliye"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaConvertTide1" ActionScript="" Desc="命中时:将1层[潮]转换为[黄金之潮]" />
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaStrengthNextTurn2" ActionScript="" Desc="命中时:接下来两回合每回合开始时获得1层[强壮]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 涤光驱暗 -->
+  <Card ID="9009004">
+    <Name>涤光驱暗</Name>
+    <TextId>-1</TextId>
+    <Artwork>涤光驱暗.jpg</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>ChristashaLightPurge</Script>
+    <ScriptDesc>[使用时] 获得2层[潮]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaLightPurge"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="ChristashaBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaBurn1Moon1" ActionScript="" Desc="命中时:施加1层[烧伤]与1层[月之引力]" />
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="ChristashaMoon2" ActionScript="" Desc="命中时:施加2层[月之引力]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 迸射流光 -->
+  <Card ID="9009005">
+    <Name>迸射流光</Name>
+    <TextId>-1</TextId>
+    <Artwork>迸射流光.jpg</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <BehaviourList>
+      <Behaviour Min="10" Dice="15" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-2并重复投掷本骰子;命中时:施加2层[烧伤]并获得1层[潮]" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子威力-5" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 汐音：光耀万海 -->
+  <Card ID="9009006">
+    <Name>汐音：光耀万海</Name>
+    <TextId>-1</TextId>
+    <Artwork>汐音：光耀万海.jpg</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarAreaEach" Cost="5" />
+    <Keyword>SteriaMusicDice</Keyword>
+    <Keyword>SteriaSeaVoice_MorningLight</Keyword>
+    <Script>ChristashaGlory</Script>
+    <ScriptDesc>[乐章] [渐快] 使用本书页后，永久将本书页最后一颗的骰子的复制置入书页末尾。所有骰子威力×([X-1]/X) (X为复制后的骰子数量，向上取整)（至多触发2次）；被编入卡组时，将激活"汐音：光耀万海"到沧海之声</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaGlory"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="7" Dice="18" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="ChristashaGloryOnHit" ActionScript="" Desc="命中时:获得1层[潮]并施加1层[烧伤]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>200</Priority>
+  </Card>
+
+  <!-- 汐火联星 -->
+  <Card ID="9009007">
+    <Name>汐火联星</Name>
+    <TextId>-1</TextId>
+    <Artwork>汐火联星.jpg</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="4" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>5</MaxCooltimeForEgo>
+    <Keyword>SteriaMusicDice</Keyword>
+    <Script>ChristashaTwinStar</Script>
+    <ScriptDesc>[延长] 本书页仅限潮+黄金之潮层数不低于5时使用；[使用时] 将至多2层[潮]转换为[黄金之潮]；10点情感硬币冷却</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaTwinStar"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaTwinStarBurn" ActionScript="" Desc="命中时:施加3层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="ChristashaTwinStarMoon" ActionScript="" Desc="命中时:施加3层[月之引力]" />
+      <Behaviour Min="2" Dice="7" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- Christasha Cards End -->
 
 </DiceCardXmlRoot>

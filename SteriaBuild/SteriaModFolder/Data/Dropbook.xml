@@ -88,4 +88,19 @@
     <DropItem Type="Card">9008006</DropItem>
     <DropItem Type="Card">9008007</DropItem>
   </BookUse>
+  <BookUse ID="9">
+    <Name>克丽丝塔夏之书</Name>
+    <TextId />
+    <BookIcon />
+    <Chapter>7</Chapter>
+    <BookValue>0</BookValue>
+    <DropItemState>All</DropItemState>
+    <DropItem Type="Equip">99000009</DropItem>
+    <DropItem Type="Card">9009001</DropItem>
+    <DropItem Type="Card">9009002</DropItem>
+    <DropItem Type="Card">9009003</DropItem>
+    <DropItem Type="Card">9009004</DropItem>
+    <DropItem Type="Card">9009005</DropItem>
+    <DropItem Type="Card">9009006</DropItem>
+  </BookUse>
 </BookUseXmlRoot>

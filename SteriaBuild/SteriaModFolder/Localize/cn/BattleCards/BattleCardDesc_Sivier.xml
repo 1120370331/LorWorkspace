@@ -29,7 +29,7 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9008007">
       <LocalizedName>愿望终将埋葬于深海</LocalizedName>
-      <Ability>仅限消耗20层以上[梦]后使用；使用时:持续2幕,所有敌人无法恢复光芒</Ability>
+      <Ability>使用时:消耗所有[梦],每消耗1层[梦]本书页骰子威力+1</Ability>
     </BattleCardDesc>
   </cardDescList>
 </BattleCardDescRoot>

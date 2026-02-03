@@ -321,6 +321,32 @@ namespace Steria
             return Math.Max(0, count * 20);
         }
 
+        public static void AddScoreFromTide(BattleUnitModel owner, int amount)
+        {
+            if (owner == null || amount <= 0)
+            {
+                return;
+            }
+
+            if (!_hasXiyin)
+            {
+                _hasXiyin = HasXiyinInBattle();
+            }
+
+            if (!_active && _hasXiyin)
+            {
+                _active = true;
+            }
+
+            int max = GetMaxScore(owner.faction);
+            if (max <= 0)
+            {
+                return;
+            }
+
+            EnqueueScore(owner, amount, 0, 0, 0);
+        }
+
         public static void TryAddScoreFromBehavior(BattleDiceBehavior behavior)
         {
             if (behavior == null)
@@ -661,8 +687,34 @@ namespace Steria
                     break;
             }
 
+            NotifySeaVoiceTriggered(faction);
             SteriaLogger.Log($"SeaVoice: Triggered {track} for {faction}");
             MusicScoreUI.UpdateAll();
+        }
+
+        private static void NotifySeaVoiceTriggered(Faction faction)
+        {
+            if (BattleObjectManager.instance == null)
+            {
+                return;
+            }
+
+            List<BattleUnitModel> allies = BattleObjectManager.instance.GetAliveList(faction);
+            if (allies == null || allies.Count == 0)
+            {
+                return;
+            }
+
+            foreach (BattleUnitModel unit in allies)
+            {
+                if (unit == null || unit.IsDead())
+                {
+                    continue;
+                }
+
+                var passive = unit.passiveDetail?.PassiveList?.FirstOrDefault(p => p is global::PassiveAbility_9009002) as global::PassiveAbility_9009002;
+                passive?.OnSeaVoiceTriggered();
+            }
         }
 
         private static void TriggerNightTrace(Faction faction, BattleUnitModel actor)

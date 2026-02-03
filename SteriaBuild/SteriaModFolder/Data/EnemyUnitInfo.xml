@@ -178,4 +178,24 @@
     </DropTable>
     <AiScript />
   </Enemy>
+
+  <!-- Christasha Enemy Definition -->
+  <Enemy ID="10">
+    <Name>克丽丝塔夏</Name>
+    <FaceType>Skin</FaceType>
+    <NameID>-1</NameID>
+    <MinHeight>170</MinHeight>
+    <MaxHeight>170</MaxHeight>
+    <Unknown>false</Unknown>
+    <Gender>F</Gender>
+    <Retreat>false</Retreat>
+    <BookId>10</BookId>
+    <BodyId>0</BodyId>
+    <Exp>0</Exp>
+    <DropBonus>0</DropBonus>
+    <DropTable Level="0">
+      <DropItem Prob="1">9</DropItem>
+    </DropTable>
+    <AiScript />
+  </Enemy>
 </EnemyUnitClassRoot>
