@@ -196,8 +196,8 @@
     <TextId>-1</TextId>
     <DropTable>8</DropTable>
     <EquipEffect>
-      <HP>78</HP>
-      <Break>50</Break>
+      <HP>106</HP>
+      <Break>65</Break>
       <SpeedMin>2</SpeedMin>
       <Speed>7</Speed>
       <StartPlayPoint>4</StartPlayPoint>
@@ -241,9 +241,8 @@
       <PBResist>Normal</PBResist>
       <HBResist>Normal</HBResist>
       <Passive Pid="@origin">10008</Passive>
-      <Passive>9009001</Passive>
       <Passive>9009002</Passive>
-      <Passive>9009003</Passive>
+      <Passive>9009008</Passive>
       <Passive>9009004</Passive>
       <Passive>9009005</Passive>
       <Passive>9009006</Passive>

@@ -400,7 +400,7 @@ namespace Steria
         /// <summary>
         /// 通知所有相关被动潮被消耗
         /// </summary>
-        public static void NotifyPassivesOnTideConsumed(BattleUnitModel owner, int amount)
+        public static void NotifyPassivesOnTideConsumed(BattleUnitModel owner, int amount, bool isGolden = false)
         {
             if (owner == null || amount <= 0) return;
 
@@ -413,7 +413,10 @@ namespace Steria
             var passive9009004 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9009004) as PassiveAbility_9009004;
             passive9009004?.OnTideConsumed(amount);
 
+            ChristashaAbilityHelper.AddTwinStarTideConsumed(owner, amount);
+
             SteriaLogger.Log($"NotifyPassivesOnTideConsumed: Notified passives of {amount} tide consumed");
+            TideConsumptionTracker.NotifyConsumed(owner, isGolden);
         }
 
         /// <summary>
@@ -799,7 +802,8 @@ namespace Steria
         {
             if (card?.card == null) return false;
             LorId id = card.card.GetID();
-            return id != null && id.packageId == MOD_PACKAGE_ID && id.id == CHRISTASHA_TWINSTAR_ID;
+            if (id == null || id.id != CHRISTASHA_TWINSTAR_ID) return false;
+            return string.IsNullOrEmpty(id.packageId) || id.packageId == MOD_PACKAGE_ID;
         }
 
 
@@ -1030,6 +1034,8 @@ namespace Steria
             {
                 // PassiveAbility_9000004 现在使用实例变量，不需要手动重置
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset discard counts
+                DiceCardSelfAbility_ChristashaGlory.ClearStoredGrowth();
+                ChristashaAbilityHelper.ClearTwinStarTideConsumed();
                 MusicScoreSystem.ResetAll();
                 MusicScoreUI.DestroyUI();
                 Debug.Log("[Steria] EndBattle: Reset discard counts");
@@ -1045,6 +1051,8 @@ namespace Steria
             {
                 // PassiveAbility_9000004 现在使用实例变量，不需要手动重置
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset discard counts
+                DiceCardSelfAbility_ChristashaGlory.ClearStoredGrowth();
+                ChristashaAbilityHelper.ClearTwinStarTideConsumed();
                 MusicScoreSystem.ResetAll();
                 MusicScoreUI.DestroyUI();
                 Debug.Log("[Steria] CloseBattleScene: Reset discard counts");
@@ -1550,7 +1558,7 @@ namespace Steria
 
             golden.stack -= consume;
             SteriaLogger.Log($"GoldenTide: {giver.UnitData?.unitData?.name} consumed {consume} for {bufType}, bonus={bonus}, remaining={golden.stack}");
-            HarmonyHelpers.NotifyPassivesOnTideConsumed(giver, consume);
+            HarmonyHelpers.NotifyPassivesOnTideConsumed(giver, consume, true);
 
             if (golden.stack <= 0)
             {
@@ -1612,6 +1620,9 @@ namespace Steria
                 {
                     // 调试日志
                     SteriaLogger.Log($"Tide DEBUG: AddKeywordBufByEtc called - bufType={bufType}, stack={stack}, actor={(actor != null ? actor.UnitData?.unitData?.name : "NULL")}");
+
+                    // Burn 会在 AddKeywordBufThisRoundByEtc 中处理，避免重复消耗潮
+                    if (bufType == KeywordBuf.Burn) return;
 
                     if (stack <= 0 || actor == null) return;
 
@@ -1712,6 +1723,9 @@ namespace Steria
             {
                 try
                 {
+                    // Burn 会在 AddKeywordBufThisRoundByCard 中处理，避免重复消耗潮
+                    if (bufType == KeywordBuf.Burn) return;
+
                     if (stack <= 0 || actor == null) return;
 
                     BattleUnitModel target = GetBufListOwner(__instance);
@@ -1813,6 +1827,7 @@ namespace Steria
                 // 注意：冷却减少现在由 SteriaEgoCooldownPatches 处理
 
                 SteriaLogger.Log("Reset NoFlowConsumptionActiveThisRound and HundredRiversRepeat triggers");
+                TideConsumptionTracker.CaptureAllUnits();
             }
         }
 
@@ -1846,6 +1861,88 @@ namespace Steria
             }
         }
 
+        [HarmonyPatch(typeof(StageController), "RoundEndPhase_TheLast")]
+        public static class StageController_RoundEndPhase_TheLast_TideFlushPatch
+        {
+            [HarmonyPrefix]
+            public static void Prefix()
+            {
+                try
+                {
+                    TideConsumptionTracker.FlushUnnotified();
+                    BattleUnitBuf_ChristashaExtend.ClearLockedActions();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Error flushing unnotified Tide consumption: {ex}");
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(BattlePlayingCardSlotDetail), "AddCard")]
+        public static class BattlePlayingCardSlotDetail_AddCard_ExtendLockPatch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(BattlePlayingCardSlotDetail __instance, BattleDiceCardModel card, BattleUnitModel target, int targetSlot, bool isEnemyAuto)
+            {
+                try
+                {
+                    if (isEnemyAuto || __instance == null)
+                    {
+                        return true;
+                    }
+
+                    FieldInfo selfField = AccessTools.Field(typeof(BattlePlayingCardSlotDetail), "_self");
+                    BattleUnitModel owner = selfField?.GetValue(__instance) as BattleUnitModel;
+                    if (owner == null)
+                    {
+                        return true;
+                    }
+
+                    int slot = owner.cardOrder;
+                    if (slot < 0 || slot >= __instance.cardAry.Count)
+                    {
+                        return true;
+                    }
+
+                    BattlePlayingCardDataInUnitModel existing = __instance.cardAry[slot];
+                    if (BattleUnitBuf_ChristashaExtend.IsLockedAction(existing))
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Extend lock AddCard patch error: {ex}");
+                }
+
+                return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(LOR_BattleUnit_UI.SpeedDiceUI), "DeselectCard")]
+        public static class SpeedDiceUI_DeselectCard_ExtendLockPatch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(LOR_BattleUnit_UI.SpeedDiceUI __instance)
+            {
+                try
+                {
+                    BattlePlayingCardDataInUnitModel card = __instance?.CardInDice;
+                    if (BattleUnitBuf_ChristashaExtend.IsLockedAction(card))
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] Extend lock Deselect patch error: {ex}");
+                }
+
+                return true;
+            }
+        }
+
         // 在战斗结束时清除所有冷却状态和临时数据
         [HarmonyPatch(typeof(StageController), "EndBattle")]
         public static class StageController_EndBattle_ClearCooldowns_Patch
@@ -1858,6 +1955,7 @@ namespace Steria
                     // 注意：冷却清除现在由 SteriaEgoCooldownPatches 处理
                     // 清除随我流向无尽的尽头的威力加成存储
                     DiceCardSelfAbility_SlazeyaEndlessFlow.ClearPowerBonuses();
+                    TideConsumptionTracker.Reset();
                     SteriaLogger.Log("Battle ended: Cleared power bonuses");
                 }
                 catch (Exception ex)
@@ -1986,9 +2084,8 @@ namespace Steria
             {
                 try
                 {
-                    if (card?.owner?.passiveDetail?.PassiveList == null) return;
-                    if (!card.owner.passiveDetail.PassiveList.Any(p => p is PassiveAbility_9009007)) return;
-                    if (!IsChristashaTwinStar(card)) return;
+                    if (card?.owner == null) return;
+                    if (!IsChristashaTwinStar(card) && !(card.cardAbility is DiceCardSelfAbility_ChristashaTwinStar)) return;
 
                     BattleUnitModel owner = card.owner;
                     BattleUnitBuf_ChristashaTwinStarLock lockBuf = owner.bufListDetail?.GetActivatedBufList()
@@ -2365,6 +2462,43 @@ namespace Steria
             catch (Exception ex)
             {
                 Debug.LogError($"[Steria] Music dice behaviour desc patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleDiceCard_BehaviourDescUI), "SetBehaviourInfo")]
+    public static class BattleDiceCard_BehaviourDescUI_SetBehaviourInfo_DynamicRange_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceCard_BehaviourDescUI __instance, DiceBehaviour behaviour, LorId cardId, List<DiceBehaviour> behaviourList, bool isHide)
+        {
+            try
+            {
+                if (__instance == null || isHide || behaviour == null || behaviour.Min == 999)
+                {
+                    return;
+                }
+
+                BattleDiceCardUI cardUi = __instance.GetComponentInParent<BattleDiceCardUI>();
+                BattleDiceCardModel cardModel = cardUi?.CardModel;
+                if (cardModel == null)
+                {
+                    return;
+                }
+
+                if (!DiceRangePreviewHelper.TryGetAdjustedRange(cardModel, behaviour, out int min, out int max))
+                {
+                    return;
+                }
+
+                if (__instance.txt_range != null)
+                {
+                    __instance.txt_range.text = $"{min}-{max}";
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Dynamic dice range patch error: {ex}");
             }
         }
     }

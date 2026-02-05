@@ -190,7 +190,7 @@ public class BattleUnitBuf_ChristashaStrengthNextTurn : BattleUnitBuf
             golden.Destroy();
         }
 
-        Steria.HarmonyHelpers.NotifyPassivesOnTideConsumed(owner, consume);
+        Steria.HarmonyHelpers.NotifyPassivesOnTideConsumed(owner, consume, true);
         return bonus;
     }
 }
@@ -242,22 +242,18 @@ public class DiceCardAbility_ChristashaBurstReroll : DiceCardAbilityBase
 {
     private int _repeatCount;
     private const int MaxRepeat = 20;
-    private static readonly Dictionary<BattleDiceBehavior, int> _pendingPowerDown = new Dictionary<BattleDiceBehavior, int>();
 
     public override void OnWinParrying()
     {
         if (_repeatCount >= MaxRepeat) return;
-        AddPendingPowerDown(behavior);
-        ActivateBonusAttackDice();
         _repeatCount++;
+        ActivateBonusAttackDice();
     }
 
     public override void BeforeRollDice()
     {
-        if (ConsumePendingPowerDown(behavior))
-        {
-            behavior?.ApplyDiceStatBonus(new DiceStatBonus { power = -2 });
-        }
+        if (_repeatCount <= 0) return;
+        behavior?.ApplyDiceStatBonus(new DiceStatBonus { power = -2 * _repeatCount });
     }
 
     public override void OnSucceedAttack(BattleUnitModel target)
@@ -267,34 +263,6 @@ public class DiceCardAbility_ChristashaBurstReroll : DiceCardAbilityBase
         PassiveAbility_9004001.AddTideStacks(owner, 2);
     }
 
-    private static void AddPendingPowerDown(BattleDiceBehavior dice)
-    {
-        if (dice == null) return;
-        if (_pendingPowerDown.TryGetValue(dice, out int count))
-        {
-            _pendingPowerDown[dice] = count + 1;
-        }
-        else
-        {
-            _pendingPowerDown[dice] = 1;
-        }
-    }
-
-    private static bool ConsumePendingPowerDown(BattleDiceBehavior dice)
-    {
-        if (dice == null) return false;
-        if (!_pendingPowerDown.TryGetValue(dice, out int count) || count <= 0) return false;
-        count--;
-        if (count <= 0)
-        {
-            _pendingPowerDown.Remove(dice);
-        }
-        else
-        {
-            _pendingPowerDown[dice] = count;
-        }
-        return true;
-    }
 }
 
 public class DiceCardAbility_ChristashaCounterPowerDown : DiceCardAbilityBase
@@ -314,6 +282,7 @@ public class DiceCardAbility_ChristashaCounterPowerDown : DiceCardAbilityBase
 public class DiceCardSelfAbility_ChristashaGlory : DiceCardSelfAbilityBase
 {
     internal const int MaxGrow = 2;
+    private static readonly Dictionary<BattleUnitModel, int> _growthByOwner = new Dictionary<BattleUnitModel, int>();
 
     public override void OnUseCard()
     {
@@ -331,6 +300,26 @@ public class DiceCardSelfAbility_ChristashaGlory : DiceCardSelfAbilityBase
         if (growth.StackCount >= MaxGrow) return;
         // 延后复制：确保本次使用的点数不受新复制影响
         growth.PendingAdd = 1;
+    }
+
+    public override bool BeforeAddToHand(BattleUnitModel unit, BattleDiceCardModel self)
+    {
+        if (unit == null || self == null) return true;
+        int stored = GetStoredGrowth(unit);
+        if (stored <= 0) return true;
+
+        ApplyStoredGrowth(self, stored);
+        return true;
+    }
+
+    public override void AfterAction()
+    {
+        ApplyPendingGrowth();
+    }
+
+    public override void OnEndAreaAttack()
+    {
+        ApplyPendingGrowth();
     }
 
     public override void BeforeRollDice(BattleDiceBehavior behavior)
@@ -353,6 +342,11 @@ public class DiceCardSelfAbility_ChristashaGlory : DiceCardSelfAbilityBase
 
     public override void OnEndBattle()
     {
+        ApplyPendingGrowth();
+    }
+
+    private void ApplyPendingGrowth()
+    {
         if (card?.card == null) return;
         BattleDiceCardBuf_ChristashaGloryGrowth growth = card.card.GetBufList()
             .FirstOrDefault(b => b is BattleDiceCardBuf_ChristashaGloryGrowth) as BattleDiceCardBuf_ChristashaGloryGrowth;
@@ -373,6 +367,7 @@ public class DiceCardSelfAbility_ChristashaGlory : DiceCardSelfAbilityBase
             DiceBehaviour last = xml.DiceBehaviourList[xml.DiceBehaviourList.Count - 1];
             xml.DiceBehaviourList.Add(last.Copy());
             growth.StackCount += 1;
+            UpdateStoredGrowth(model?.owner, growth.StackCount);
         }
     }
 
@@ -391,6 +386,66 @@ public class DiceCardSelfAbility_ChristashaGlory : DiceCardSelfAbilityBase
         xml.DiceBehaviourList = copied;
         growth.HasClonedList = true;
         growth.BaseDiceCount = copied.Count;
+    }
+
+    private static int GetStoredGrowth(BattleUnitModel owner)
+    {
+        if (owner == null) return 0;
+        return _growthByOwner.TryGetValue(owner, out int value) ? value : 0;
+    }
+
+    private static void UpdateStoredGrowth(BattleUnitModel owner, int growth)
+    {
+        if (owner == null || growth <= 0) return;
+        if (_growthByOwner.TryGetValue(owner, out int current))
+        {
+            if (growth > current)
+            {
+                _growthByOwner[owner] = growth;
+            }
+        }
+        else
+        {
+            _growthByOwner[owner] = growth;
+        }
+    }
+
+    private static void ApplyStoredGrowth(BattleDiceCardModel model, int stored)
+    {
+        if (model == null || stored <= 0) return;
+
+        BattleDiceCardBuf_ChristashaGloryGrowth growth = model.GetBufList()
+            .FirstOrDefault(b => b is BattleDiceCardBuf_ChristashaGloryGrowth) as BattleDiceCardBuf_ChristashaGloryGrowth;
+        if (growth == null)
+        {
+            growth = new BattleDiceCardBuf_ChristashaGloryGrowth { StackCount = 0 };
+            model.AddBufWithoutDuplication(growth);
+        }
+
+        EnsureUniqueDiceList(model, growth);
+        DiceCardXmlInfo xml = model.XmlData;
+        if (xml?.DiceBehaviourList == null || xml.DiceBehaviourList.Count == 0) return;
+
+        if (growth.BaseDiceCount <= 0)
+        {
+            growth.BaseDiceCount = xml.DiceBehaviourList.Count;
+        }
+
+        int currentGrowth = Math.Max(0, xml.DiceBehaviourList.Count - growth.BaseDiceCount);
+        int targetGrowth = Math.Min(MaxGrow, stored);
+        while (currentGrowth < targetGrowth)
+        {
+            DiceBehaviour last = xml.DiceBehaviourList[xml.DiceBehaviourList.Count - 1];
+            xml.DiceBehaviourList.Add(last.Copy());
+            currentGrowth++;
+        }
+
+        growth.StackCount = Math.Max(growth.StackCount, currentGrowth);
+    }
+
+    public static void ClearStoredGrowth()
+    {
+        _growthByOwner.Clear();
     }
 }
 
@@ -426,20 +481,20 @@ public class DiceCardSelfAbility_ChristashaTwinStar : DiceCardSelfAbilityBase
     public override bool OnChooseCard(BattleUnitModel owner)
     {
         if (owner == null) return false;
-        return ChristashaAbilityHelper.GetTotalTideStacks(owner) >= MinTide;
+        return ChristashaAbilityHelper.GetTwinStarTideConsumed(owner) >= MinTide;
     }
 
     public override void OnUseInstance(BattleUnitModel unit, BattleDiceCardModel self, BattleUnitModel targetUnit)
     {
         if (unit == null) return;
-        ChristashaAbilityHelper.ConvertTideToGolden(unit, 2);
+        PassiveAbility_9004001.AddTideStacks(unit, 2);
         ApplyExtension(unit, self, targetUnit);
     }
 
     public override void OnUseCard()
     {
         if (owner == null) return;
-        ChristashaAbilityHelper.ConvertTideToGolden(owner, 2);
+        PassiveAbility_9004001.AddTideStacks(owner, 2);
         ApplyExtension(owner, card?.card, card?.target);
     }
 
@@ -465,7 +520,29 @@ public class DiceCardAbility_ChristashaTwinStarBurn : DiceCardAbilityBase
 {
     public override void OnSucceedAttack(BattleUnitModel target)
     {
-        target?.bufListDetail.AddKeywordBufByCard(KeywordBuf.Burn, 3, owner);
+        if (target == null) return;
+
+        int total = 0;
+        BattleUnitBuf_MoonGravity moon = target.bufListDetail.GetActivatedBufList()
+            .FirstOrDefault(b => b is BattleUnitBuf_MoonGravity) as BattleUnitBuf_MoonGravity;
+        if (moon != null)
+        {
+            total += Math.Max(0, moon.stack);
+            moon.Destroy();
+        }
+
+        BattleUnitBuf_MoonGravityNextRound moonNext = target.bufListDetail.GetActivatedBufList()
+            .FirstOrDefault(b => b is BattleUnitBuf_MoonGravityNextRound) as BattleUnitBuf_MoonGravityNextRound;
+        if (moonNext != null)
+        {
+            total += Math.Max(0, moonNext.stack);
+            moonNext.Destroy();
+        }
+
+        if (total > 0)
+        {
+            target.bufListDetail.AddKeywordBufByCard(KeywordBuf.Burn, total, owner);
+        }
     }
 }
 
@@ -482,6 +559,8 @@ public class BattleUnitBuf_ChristashaExtend : BattleUnitBuf
     public override bool Hide => true;
     public override BufPositiveType positiveType => BufPositiveType.Positive;
 
+    private static readonly HashSet<BattlePlayingCardDataInUnitModel> _lockedActions = new HashSet<BattlePlayingCardDataInUnitModel>();
+
     private BattleDiceCardModel _card;
     private BattleUnitModel _target;
     private int _slotOrder;
@@ -493,6 +572,16 @@ public class BattleUnitBuf_ChristashaExtend : BattleUnitBuf
         _target = target;
         _slotOrder = slotOrder;
         _targetSlot = targetSlot;
+    }
+
+    public static bool IsLockedAction(BattlePlayingCardDataInUnitModel action)
+    {
+        return action != null && _lockedActions.Contains(action);
+    }
+
+    public static void ClearLockedActions()
+    {
+        _lockedActions.Clear();
     }
 
     public override void OnRoundStart()
@@ -534,11 +623,6 @@ public class BattleUnitBuf_ChristashaExtend : BattleUnitBuf
             targetSlot = 0;
         }
 
-        // 复制卡牌，设置0费
-        BattleDiceCardModel tempCard = BattleDiceCardModel.CreatePlayingCard(_card.XmlData);
-        tempCard.SetCurrentCost(0);
-
-        // 强制放入指定速度骰子
         int slot = _slotOrder;
         if (slot < 0 || _owner.speedDiceResult == null || slot >= _owner.speedDiceResult.Count || _owner.speedDiceResult[slot].breaked)
         {
@@ -558,10 +642,133 @@ public class BattleUnitBuf_ChristashaExtend : BattleUnitBuf
 
         if (slot >= 0)
         {
-            _owner.cardOrder = slot;
-            _owner.cardSlotDetail.AddCard(tempCard, target, targetSlot, false);
+            BattlePlayingCardDataInUnitModel existing = _owner.cardSlotDetail.cardAry[slot];
+            if (existing != null)
+            {
+                try
+                {
+                    existing.cardAbility?.OnReleaseCard();
+                }
+                catch (Exception ex)
+                {
+                    SteriaLogger.LogError($"ChristashaExtend: OnReleaseCard failed: {ex.Message}");
+                }
+
+                if (existing.card != null)
+                {
+                    if (existing.card.XmlData.IsFloorEgo())
+                    {
+                        Singleton<SpecialCardListModel>.Instance.ReturnCardToHand(_owner, existing.card);
+                    }
+                    else if (existing.card.XmlData.IsPersonal())
+                    {
+                        _owner.personalEgoDetail.ReturnCardToHand(existing.card);
+                    }
+                    else
+                    {
+                        _owner.allyCardDetail.ReturnCardToHand(existing.card);
+                    }
+                }
+            }
+
+            BattlePlayingCardDataInUnitModel forced = CreateForcedAction(_owner, _card, target, targetSlot, slot);
+            if (forced != null)
+            {
+                _owner.cardOrder = slot;
+                _owner.cardSlotDetail.cardAry[slot] = forced;
+                _lockedActions.Add(forced);
+                _owner.cardSlotDetail.ArrangeCardOrder();
+            }
         }
 
         this.Destroy();
+    }
+
+    private static BattlePlayingCardDataInUnitModel CreateForcedAction(BattleUnitModel owner, BattleDiceCardModel source, BattleUnitModel target, int targetSlot, int slotOrder)
+    {
+        if (owner == null || source == null)
+        {
+            return null;
+        }
+
+        BattleDiceCardModel tempCard = BattleDiceCardModel.CreatePlayingCard(source.XmlData);
+        tempCard.owner = owner;
+        tempCard.SetCurrentCost(0);
+        tempCard.SetCostToZero(true);
+        tempCard.temporary = true;
+        tempCard.isCopiedCard = true;
+
+        BattlePlayingCardDataInUnitModel action = new BattlePlayingCardDataInUnitModel();
+        action.owner = owner;
+        action.card = tempCard;
+        action.target = target;
+        action.earlyTarget = target;
+        action.earlyTargetOrder = targetSlot;
+        action.targetSlotOrder = targetSlot;
+
+        List<BattleUnitModel> subTargets = null;
+        if (tempCard.GetSpec().Ranged == CardRange.FarArea || tempCard.GetSpec().Ranged == CardRange.FarAreaEach)
+        {
+            CardAffection affection = tempCard.GetSpec().affection;
+            if (affection == CardAffection.One)
+            {
+                affection = CardAffection.Team;
+            }
+
+            if (affection == CardAffection.Team)
+            {
+                subTargets = BattleObjectManager.instance?.GetAliveList((owner.faction == Faction.Enemy) ? Faction.Player : Faction.Enemy);
+            }
+            else if (affection == CardAffection.All)
+            {
+                subTargets = BattleObjectManager.instance?.GetAliveList(false);
+            }
+            else if (affection == CardAffection.Passive)
+            {
+                subTargets = owner.passiveDetail?.ChangeSubTargets(tempCard, target);
+            }
+        }
+        else if (tempCard.GetSpec().affection == CardAffection.TeamNear)
+        {
+            subTargets = BattleObjectManager.instance?.GetAliveList((owner.faction == Faction.Enemy) ? Faction.Player : Faction.Enemy);
+        }
+
+        if (subTargets != null)
+        {
+            subTargets.Remove(owner);
+            subTargets.Remove(target);
+            action.subTargets = new List<BattlePlayingCardDataInUnitModel.SubTarget>();
+            foreach (BattleUnitModel sub in subTargets)
+            {
+                if (sub != null && sub != target && sub.IsTargetable(owner))
+                {
+                    BattlePlayingCardDataInUnitModel.SubTarget subTarget = new BattlePlayingCardDataInUnitModel.SubTarget
+                    {
+                        target = sub,
+                        targetSlotOrder = (sub.speedDiceResult != null && sub.speedDiceResult.Count > 0)
+                            ? UnityEngine.Random.Range(0, sub.speedDiceResult.Count)
+                            : 0
+                    };
+                    action.subTargets.Add(subTarget);
+                }
+            }
+        }
+
+        action.cardAbility = tempCard.CreateDiceCardSelfAbilityScript();
+        if (action.cardAbility != null)
+        {
+            action.cardAbility.card = action;
+            action.cardAbility.OnApplyCard();
+        }
+
+        action.ResetCardQueue();
+        if (owner.speedDiceResult != null && slotOrder >= 0 && slotOrder < owner.speedDiceResult.Count)
+        {
+            action.speedDiceResultValue = owner.GetSpeedDiceResult(slotOrder).value;
+        }
+        action.slotOrder = slotOrder;
+
+        owner.cardSlotDetail.OnApplyCard(tempCard);
+        return action;
     }
 }

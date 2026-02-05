@@ -25,7 +25,7 @@
     <BattleCardDesc ID="9008006">
       <LocalizedName>汐音:海之还愿</LocalizedName>
       <Ability>[乐章]
-使用时:消耗所有[梦],每消耗2层[梦]本书页所有骰子威力+1</Ability>
+使用时:自身获得(等同本书页光芒消耗)x2层[梦]</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008007">
       <LocalizedName>愿望终将埋葬于深海</LocalizedName>

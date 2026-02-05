@@ -1108,7 +1108,7 @@
       <Behaviour Min="6" Dice="14" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaReturn1" ActionScript="" Desc="" />
       <Behaviour Min="9" Dice="16" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaReturn2" ActionScript="" Desc="" />
       <Behaviour Min="5" Dice="13" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="SivierSeaReturn3" ActionScript="" Desc="" />
-      <Behaviour Min="5" Dice="12" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="8" Dice="13" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SivierSeaReturn4" ActionScript="" Desc="拼点胜利:施加1层[麻痹]" />
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -1189,7 +1189,7 @@
       <Ability Script="ChristashaEliye"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaConvertTide1" ActionScript="" Desc="命中时:将1层[潮]转换为[黄金之潮]" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
       <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaStrengthNextTurn2" ActionScript="" Desc="命中时:接下来两回合每回合开始时获得1层[强壮]" />
     </BehaviourList>
     <Chapter>7</Chapter>
@@ -1261,15 +1261,15 @@
     <Rarity>Unique</Rarity>
     <Spec Range="Near" Cost="4" />
     <Option>EgoPersonal</Option>
-    <MaxCooltimeForEgo>5</MaxCooltimeForEgo>
+    <MaxCooltimeForEgo>10</MaxCooltimeForEgo>
     <Keyword>SteriaMusicDice</Keyword>
     <Script>ChristashaTwinStar</Script>
-    <ScriptDesc>[延长] 本书页仅限潮+黄金之潮层数不低于5时使用；[使用时] 将至多2层[潮]转换为[黄金之潮]；10点情感硬币冷却</ScriptDesc>
+    <ScriptDesc>[延长] 本书页仅限消耗5层[潮]后使用;[使用时] 获得2层[潮];10点情感硬币冷却</ScriptDesc>
     <AbilityList>
       <Ability Script="ChristashaTwinStar"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaTwinStarBurn" ActionScript="" Desc="命中时:施加3层[烧伤]" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaTwinStarBurn" ActionScript="" Desc="命中时:将目标所有[月之引力]转化为[烧伤]" />
       <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="ChristashaTwinStarMoon" ActionScript="" Desc="命中时:施加3层[月之引力]" />
       <Behaviour Min="2" Dice="7" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
     </BehaviourList>

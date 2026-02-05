@@ -44,6 +44,8 @@ public class BattleUnitBuf_WishShield : BattleUnitBuf
     protected override string keywordId => "SteriaWishShield";
     protected override string keywordIconId => "SteriaWishShield";
     public override BufPositiveType positiveType => BufPositiveType.Positive;
+    private static System.Reflection.FieldInfo _guardReductionField;
+    private readonly Dictionary<BattleDiceBehavior, int> _pendingAbsorb = new Dictionary<BattleDiceBehavior, int>();
 
     public override void Init(BattleUnitModel owner)
     {
@@ -62,11 +64,33 @@ public class BattleUnitBuf_WishShield : BattleUnitBuf
     /// </summary>
     public override int GetDamageReduction(BattleDiceBehavior behavior)
     {
-        if (this.stack <= 0) return 0;
+        if (this.stack <= 0 || behavior == null) return 0;
 
-        // 返回当前护盾层数作为伤害减免
-        int reduction = this.stack;
-        SteriaLogger.Log($"BattleUnitBuf_WishShield: Providing {reduction} damage reduction");
+        int guardReduction = 0;
+        if (_guardReductionField == null)
+        {
+            _guardReductionField = typeof(BattleDiceBehavior).GetField("_damageReductionByGuard", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        }
+        if (_guardReductionField != null)
+        {
+            guardReduction = (int)_guardReductionField.GetValue(behavior);
+        }
+
+        int raw = behavior.DiceResultValue - guardReduction + behavior.DamageAdder;
+        try
+        {
+            raw += behavior.owner?.UnitData?.unitData?.giftInventory?.GetStatBonus_Dmg(behavior.Detail) ?? 0;
+        }
+        catch
+        {
+        }
+
+        if (raw < 0) raw = 0;
+        int reduction = Math.Min(this.stack, raw);
+        if (reduction <= 0) return 0;
+
+        _pendingAbsorb[behavior] = reduction;
+        SteriaLogger.Log($"BattleUnitBuf_WishShield: Providing {reduction} damage reduction (raw={raw})");
         return reduction;
     }
 
@@ -77,10 +101,18 @@ public class BattleUnitBuf_WishShield : BattleUnitBuf
     {
         base.OnTakeDamageByAttack(atkDice, dmg);
 
-        if (this.stack > 0 && dmg > 0)
+        int absorbed = 0;
+        if (atkDice != null && _pendingAbsorb.TryGetValue(atkDice, out absorbed))
         {
-            // 计算实际吸收的伤害量（不超过护盾层数）
-            int absorbed = Math.Min(dmg, this.stack);
+            _pendingAbsorb.Remove(atkDice);
+        }
+        else if (dmg > 0)
+        {
+            absorbed = Math.Min(dmg, this.stack);
+        }
+
+        if (this.stack > 0 && absorbed > 0)
+        {
             this.stack -= absorbed;
             SteriaLogger.Log($"BattleUnitBuf_WishShield: Absorbed {absorbed} damage, remaining: {this.stack}");
 

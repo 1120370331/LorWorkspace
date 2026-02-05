@@ -88,16 +88,12 @@ public class BattleUnitBuf_ChristashaTwinStarLock : BattleUnitBuf
     public override bool Hide => true;
     public BattleUnitModel target;
     public int remaining = 2;
-
-    public override void OnRoundEnd()
-    {
-        base.OnRoundEnd();
-        this.Destroy();
-    }
 }
 
 public static class ChristashaAbilityHelper
 {
+    private static readonly Dictionary<BattleUnitModel, int> _twinStarConsumed = new Dictionary<BattleUnitModel, int>();
+
     public static int GetTideStacks(BattleUnitModel unit)
     {
         if (unit == null) return 0;
@@ -117,6 +113,30 @@ public static class ChristashaAbilityHelper
     public static int GetTotalTideStacks(BattleUnitModel unit)
     {
         return GetTideStacks(unit) + GetGoldenTideStacks(unit);
+    }
+
+    public static void AddTwinStarTideConsumed(BattleUnitModel unit, int amount)
+    {
+        if (unit == null || amount <= 0) return;
+        if (_twinStarConsumed.TryGetValue(unit, out int current))
+        {
+            _twinStarConsumed[unit] = current + amount;
+        }
+        else
+        {
+            _twinStarConsumed[unit] = amount;
+        }
+    }
+
+    public static int GetTwinStarTideConsumed(BattleUnitModel unit)
+    {
+        if (unit == null) return 0;
+        return _twinStarConsumed.TryGetValue(unit, out int value) ? value : 0;
+    }
+
+    public static void ClearTwinStarTideConsumed()
+    {
+        _twinStarConsumed.Clear();
     }
 
     public static int ConsumeTideStacks(BattleUnitModel unit, int amount)
@@ -214,6 +234,23 @@ public class PassiveAbility_9009001 : PassiveAbilityBase
 /// </summary>
 public class PassiveAbility_9009002 : PassiveAbilityBase
 {
+    private const string MOD_ID = "SteriaBuilding";
+    private const int CARD_TWINSTAR_EGO = 9009007; // 汐火联星 (EGO装备)
+    private bool _egoCardAdded;
+
+    public override void OnWaveStart()
+    {
+        base.OnWaveStart();
+        _egoCardAdded = false;
+        TryAddTwinStarEgo();
+    }
+
+    public override void OnRoundStart()
+    {
+        base.OnRoundStart();
+        TryAddTwinStarEgo();
+    }
+
     public void OnTideConsumed(int amount)
     {
         if (amount <= 0 || owner == null) return;
@@ -224,6 +261,41 @@ public class PassiveAbility_9009002 : PassiveAbilityBase
     {
         if (owner == null || owner.IsDead()) return;
         PassiveAbility_9004001.AddTideStacks(owner, 5);
+    }
+
+    private void TryAddTwinStarEgo()
+    {
+        if (_egoCardAdded || owner == null || owner.faction != Faction.Player) return;
+        try
+        {
+            LorId egoCardId = new LorId(MOD_ID, CARD_TWINSTAR_EGO);
+            owner.personalEgoDetail?.AddCard(egoCardId);
+            _egoCardAdded = true;
+            SteriaLogger.Log($"金色的乐章: Added 汐火联星 EGO card to {owner.UnitData?.unitData?.name}");
+        }
+        catch (Exception ex)
+        {
+            SteriaLogger.LogError($"金色的乐章: Failed to add 汐火联星 EGO card: {ex.Message}");
+        }
+    }
+}
+
+/// <summary>
+/// 金色的潮汐 (ID: 9009008)
+/// 回合开始拥有大于3层潮时，将1层潮转化为黄金之潮
+/// </summary>
+public class PassiveAbility_9009008 : PassiveAbilityBase
+{
+    public override void OnRoundStartAfter()
+    {
+        base.OnRoundStartAfter();
+        if (owner == null) return;
+
+        int tide = ChristashaAbilityHelper.GetTideStacks(owner);
+        if (tide > 3)
+        {
+            ChristashaAbilityHelper.ConvertTideToGolden(owner, 1);
+        }
     }
 }
 

@@ -204,6 +204,11 @@ public class DiceCardSelfAbility_SivierSeaReturn : DiceCardSelfAbilityBase
         return _useCount.ContainsKey(id) ? _useCount[id] : 0;
     }
 
+    internal static int GetUseCountForUnit(BattleUnitModel unit)
+    {
+        return GetUseCount(unit);
+    }
+
     // 渐弱效果：减少光芒消耗
     public override int GetCostAdder(BattleUnitModel unit, BattleDiceCardModel self)
     {
@@ -214,13 +219,10 @@ public class DiceCardSelfAbility_SivierSeaReturn : DiceCardSelfAbilityBase
     public override void OnUseCard()
     {
         base.OnUseCard();
-        // 使所有友方角色获得(等同本书页光芒消耗)点梦
+        // 自身获得(等同本书页光芒消耗)x2点梦
         int cost = card?.card?.GetCost() ?? 5;
-        var allies = BattleObjectManager.instance.GetAliveList(owner.faction);
-        foreach (var ally in allies)
-        {
-            SivierCardHelper.AddDreamToUnit(ally, cost);
-        }
+        int gain = Math.Max(0, cost) * 2;
+        SivierCardHelper.AddDreamToUnit(owner, gain);
     }
 
     public override void BeforeRollDice(BattleDiceBehavior behavior)
@@ -275,6 +277,20 @@ public class DiceCardAbility_SivierSeaReturn3 : DiceCardAbilityBase
         base.OnSucceedAttack();
         // 命中时：获得1层梦
         SivierCardHelper.AddDreamToUnit(owner, 1);
+    }
+}
+
+public class DiceCardAbility_SivierSeaReturn4 : DiceCardAbilityBase
+{
+    public override void OnWinParrying()
+    {
+        base.OnWinParrying();
+        // 拼点胜利：施加1层麻痹
+        var target = behavior?.card?.target;
+        if (target != null)
+        {
+            target.bufListDetail.AddKeywordBufByCard(KeywordBuf.Paralysis, 1, owner);
+        }
     }
 }
 

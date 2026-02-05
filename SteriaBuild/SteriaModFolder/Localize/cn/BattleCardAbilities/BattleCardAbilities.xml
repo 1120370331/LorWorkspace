@@ -462,7 +462,7 @@
 
     <!-- Card 9008006: 汐音:海之还愿 -->
     <BattleCardAbility ID="SivierSeaReturn">
-      <Desc>[乐章] [渐弱] 每使用1次本书页使本书页骰子最大值-2,最小值-1(至多触发4次);[使用时] 使所有友方角色获得(等同本书页光芒消耗)点[梦]</Desc>
+      <Desc>[乐章] [渐弱] 每使用1次本书页使本书页骰子最大值-2,最小值-1(至多触发4次);[使用时] 自身获得(等同本书页光芒消耗)x2层[梦]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SivierSeaReturn1">
       <Desc>[命中时] 抽1张牌</Desc>
@@ -472,6 +472,9 @@
     </BattleCardAbility>
     <BattleCardAbility ID="SivierSeaReturn3">
       <Desc>[命中时] 获得1层[梦]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SivierSeaReturn4">
+      <Desc>[拼点胜利] 施加1层[麻痹]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9008007: 愿望终将埋葬于深海 -->
@@ -542,11 +545,11 @@
 
     <!-- Card 9009007: 汐火联星 -->
     <BattleCardAbility ID="ChristashaTwinStar">
-      <Desc>[延长] 本书页仅限潮+黄金之潮层数不低于5时使用</Desc>
-      <Desc>[使用时] 将至多2层[潮]转换为[黄金之潮]</Desc>
+      <Desc>[延长] 本书页仅限消耗5层[潮]后使用</Desc>
+      <Desc>[使用时] 获得2层[潮]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="ChristashaTwinStarBurn">
-      <Desc>[命中时] 施加3层[烧伤]</Desc>
+      <Desc>[命中时] 将目标所有[月之引力]转化为[烧伤]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="ChristashaTwinStarMoon">
       <Desc>[命中时] 施加3层[月之引力]</Desc>

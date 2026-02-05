@@ -558,4 +558,16 @@
     <Name>变幻莫测</Name>
     <Desc>每一幕将指定书页置入手中且光芒消耗为0.情感等级达到3后,每幕额外加入1张强化书页.</Desc>
   </Passive>
+  <Passive ID="9009008">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>3</Cost>
+    <Name>金色的潮汐</Name>
+    <Desc>回合开始拥有大于3层[潮]:将1层[潮]转化为[黄金之潮].</Desc>
+  </Passive>
 </PassiveXmlRoot>
