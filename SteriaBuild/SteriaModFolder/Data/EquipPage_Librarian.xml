@@ -29,7 +29,7 @@
     <Chapter>6</Chapter>
     <Episode>1</Episode>
     <Rarity>Unique</Rarity>
-    <RangeType>Hybrid</RangeType>
+    <RangeType>Melee</RangeType>
     <CharacterSkin>Bada</CharacterSkin>
     <CharacterSkinType>Lor</CharacterSkinType>
   </Book>
@@ -124,7 +124,7 @@
     <Chapter>6</Chapter>
     <Episode>1</Episode>
     <Rarity>Rare</Rarity>
-    <RangeType>Melee</RangeType>
+    <RangeType>Hybrid</RangeType>
     <CharacterSkin>Velia</CharacterSkin>
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
@@ -251,6 +251,40 @@
     <Episode>1</Episode>
     <Rarity>Unique</Rarity>
     <RangeType>Melee</RangeType>
+    <CharacterSkin>Christasha</CharacterSkin>
+    <CharacterSkinType>Custom</CharacterSkinType>
+  </Book>
+
+  <!-- Christasha EGO Librarian Book: 日沐曦渊 -->
+  <Book ID="99000010">
+    <Name>日沐曦渊</Name>
+    <TextId>-1</TextId>
+    <DropTable>10</DropTable>
+    <EquipEffect>
+      <HP>106</HP>
+      <Break>62</Break>
+      <SpeedMin>2</SpeedMin>
+      <Speed>7</Speed>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
+      <SResist>Endure</SResist>
+      <PResist>Normal</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Normal</SBResist>
+      <PBResist>Endure</PBResist>
+      <HBResist>Normal</HBResist>
+      <Passive Pid="@origin">10003</Passive>
+      <Passive>9009010</Passive>
+      <Passive>9009011</Passive>
+      <Passive>9009012</Passive>
+      <Passive>9009006</Passive>
+      <Passive>9009008</Passive>
+      <Passive>9009005</Passive>
+    </EquipEffect>
+    <Chapter>7</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <RangeType>Hybrid</RangeType>
     <CharacterSkin>Christasha</CharacterSkin>
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>

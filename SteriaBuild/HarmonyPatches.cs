@@ -413,6 +413,12 @@ namespace Steria
             var passive9009004 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9009004) as PassiveAbility_9009004;
             passive9009004?.OnTideConsumed(amount);
 
+            if (isGolden)
+            {
+                var passive9009008 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9009008) as PassiveAbility_9009008;
+                passive9009008?.OnGoldenTideConsumed(amount);
+            }
+
             ChristashaAbilityHelper.AddTwinStarTideConsumed(owner, amount);
 
             SteriaLogger.Log($"NotifyPassivesOnTideConsumed: Notified passives of {amount} tide consumed");
@@ -713,6 +719,55 @@ namespace Steria
     [HarmonyPatch] 
     public static class HarmonyPatches 
     {
+        private static int _globalFlowPowerBonusThisRound = 0;
+
+        public static void AddGlobalFlowPowerBonusThisRound(int amount, BattleUnitModel source = null)
+        {
+            if (amount <= 0) return;
+            _globalFlowPowerBonusThisRound += amount;
+            SteriaLogger.Log($"GlobalFlowPowerBonus +{amount} (total={_globalFlowPowerBonusThisRound}), source={source?.UnitData?.unitData?.name}");
+        }
+
+        // 原初之潮：仅允许流/梦体系来源改动威力
+        [HarmonyPatch(typeof(BattleDiceBehavior), nameof(BattleDiceBehavior.ApplyDiceStatBonus))]
+        public static class BattleDiceBehavior_ApplyDiceStatBonus_PrimalTidePatch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(BattleDiceBehavior __instance, DiceStatBonus bonus)
+            {
+                try
+                {
+                    if (__instance?.owner == null || bonus == null)
+                    {
+                        return true;
+                    }
+
+                    if (!global::ChristashaEgoBossHelper.HasPrimalTide(__instance.owner))
+                    {
+                        return true;
+                    }
+
+                    if (global::PrimalTidePowerScope.IsAllowanceActive)
+                    {
+                        return true;
+                    }
+
+                    if (bonus.power == 0)
+                    {
+                        return true;
+                    }
+
+                    bonus.power = 0;
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] PrimalTide ApplyDiceStatBonus patch error: {ex}");
+                    return true;
+                }
+            }
+        }
+
         // Removed _harmonyInstance and _patched fields
         // Removed Initialize() and Unpatch() methods - ModInitializer handles PatchAll now
 
@@ -1158,12 +1213,20 @@ namespace Steria
             // 使用卡牌实例和骰子索引来查找威力加成
             int diceIndex = __instance.Index;
             int flowBonus = HarmonyHelpers.GetFlowPowerBonusForDice(__instance.card, diceIndex);
+
+            if (flowBonus > 0 && _globalFlowPowerBonusThisRound > 0)
+            {
+                flowBonus += _globalFlowPowerBonusThisRound;
+                SteriaLogger.Log($"RollDice FlowPatch: Applying global flow bonus +{_globalFlowPowerBonusThisRound}, final bonus={flowBonus}");
+            }
+
             SteriaLogger.Log($"RollDice Patch: DiceIndex={diceIndex}, FlowBonus={flowBonus}");
 
             if (flowBonus > 0)
             {
                 SteriaLogger.Log($"RollDice FlowPatch: Applying +{flowBonus} power from flow to dice index {diceIndex}");
-                __instance.ApplyDiceStatBonus(new DiceStatBonus { power = flowBonus });
+                global::PrimalTidePowerScope.RunWithAllowance(() =>
+                    __instance.ApplyDiceStatBonus(new DiceStatBonus { power = flowBonus }));
                 // 标记这个骰子实例已经应用了加成（防止重复应用）
                 // 不清除记录，让反击骰子（复制的骰子）也能获得相同的加成
                 HarmonyHelpers.MarkFlowBonusApplied(__instance);
@@ -1190,7 +1253,8 @@ namespace Steria
 
                     if (TibuAbilityHelper.HasTideRevelation(__instance.card.card))
                     {
-                        __instance.ApplyDiceStatBonus(new DiceStatBonus { power = 1 });
+                        global::PrimalTidePowerScope.RunWithAllowance(() =>
+                            __instance.ApplyDiceStatBonus(new DiceStatBonus { power = 1 }));
                         HarmonyHelpers.MarkTideRevelationApplied(__instance);
                     }
                 }
@@ -1245,7 +1309,8 @@ namespace Steria
                          if (basePower > 0)
                          {
                              DiceStatBonus bonus = new DiceStatBonus { power = basePower };
-                             nextBehaviour.ApplyDiceStatBonus(bonus);
+                             global::PrimalTidePowerScope.RunWithAllowance(() =>
+                                 nextBehaviour.ApplyDiceStatBonus(bonus));
                              Debug.Log($"[Steria] SlazeyaClashLosePowerUpNextDice: Powered up dice {currentDiceIdx + 1} by {basePower}");
                          }
                      }
@@ -1535,18 +1600,18 @@ namespace Steria
                 if (golden.stack >= 2)
                 {
                     consume = 2;
-                    bonus = 3;
+                    bonus = 2;
                 }
                 else
                 {
                     consume = 1;
-                    bonus = 2;
+                    bonus = 1;
                 }
             }
             else
             {
                 consume = 1;
-                bonus = 2;
+                bonus = 1;
             }
 
             if (golden.stack < consume)
@@ -1826,6 +1891,8 @@ namespace Steria
 
                 // 注意：冷却减少现在由 SteriaEgoCooldownPatches 处理
 
+                _globalFlowPowerBonusThisRound = 0;
+
                 SteriaLogger.Log("Reset NoFlowConsumptionActiveThisRound and HundredRiversRepeat triggers");
                 TideConsumptionTracker.CaptureAllUnits();
             }
@@ -1974,6 +2041,19 @@ namespace Steria
             {
                 try
                 {
+                    // 致盲：无法更改目标
+                    if (__instance?.bufListDetail != null)
+                    {
+                        bool hasBlinding = __instance.bufListDetail.GetActivatedBufList()
+                            .Any(buf => buf is BattleUnitBuf_Blinding && buf.stack > 0);
+                        if (hasBlinding)
+                        {
+                            __result = false;
+                            SteriaLogger.Log($"Blinding blocked target change: {__instance.UnitData?.unitData?.name}");
+                            return false;
+                        }
+                    }
+
                     if (__instance?.cardSlotDetail?.cardAry == null || target == null)
                     {
                         return true;
@@ -2294,6 +2374,57 @@ namespace Steria
         }
     }
 
+    internal static class ChristashaCounterDestroySupport
+    {
+        public static void TryForceDestroy(BattleDiceBehavior behavior, string source)
+        {
+            try
+            {
+                if (behavior == null || behavior.Type != BehaviourType.Standby)
+                {
+                    return;
+                }
+
+                bool isTargetCounter = behavior.abilityList != null &&
+                                       behavior.abilityList.Exists(a => a is global::DiceCardAbility_ChristashaEgoDestroyDice);
+                if (!isTargetCounter)
+                {
+                    return;
+                }
+
+                BattlePlayingCardDataInUnitModel card = behavior.card;
+                if (card != null)
+                {
+                    List<BattleDiceBehavior> list = card.GetDiceBehaviorList();
+                    int index = list?.IndexOf(behavior) ?? -1;
+                    if (index >= 0)
+                    {
+                        card.DestroyDice(match => match.index == index);
+                        SteriaLogger.Log($"CounterDestroyPatch: destroy by resolved index={index}, source={source}, cardHash={card.GetHashCode()}");
+                    }
+                    else
+                    {
+                        SteriaLogger.Log($"CounterDestroyPatch: skip destroy because index resolve failed, source={source}, behaviorIndex={behavior.Index}, cardHash={card.GetHashCode()}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] CounterDestroyPatch error ({source}): {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnWinParryingDefense))]
+    public static class BattlePlayingCardDataInUnitModel_OnWinParryingDefense_ChristashaCounterDestroyPatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
+        {
+            ChristashaCounterDestroySupport.TryForceDestroy(__instance?.currentBehavior, "OnWinParryingDefense");
+        }
+    }
+
     [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnWinParryingAttack))]
     public static class BattlePlayingCardDataInUnitModel_OnWinParryingAttack_MusicScorePatch
     {
@@ -2308,6 +2439,16 @@ namespace Steria
             {
                 Debug.LogError($"[Steria] MusicScore OnWinParryingAttack patch error: {ex}");
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnWinParryingAttack))]
+    public static class BattlePlayingCardDataInUnitModel_OnWinParryingAttack_ChristashaCounterDestroyPatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
+        {
+            ChristashaCounterDestroySupport.TryForceDestroy(__instance?.currentBehavior, "OnWinParryingAttack");
         }
     }
 
@@ -2331,6 +2472,16 @@ namespace Steria
             {
                 Debug.LogError($"[Steria] MusicScore OnSucceedAttack patch error: {ex}");
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnSucceedAttack))]
+    public static class BattlePlayingCardDataInUnitModel_OnSucceedAttack_ChristashaCounterDestroyPatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceBehavior behavior)
+        {
+            ChristashaCounterDestroySupport.TryForceDestroy(behavior, "OnSucceedAttack");
         }
     }
 
@@ -2366,6 +2517,16 @@ namespace Steria
             {
                 Debug.LogError($"[Steria] MusicScore OnDefenseWithoutParryingWin patch error: {ex}");
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnDefenseWithoutParryingWin))]
+    public static class BattlePlayingCardDataInUnitModel_OnDefenseWithoutParryingWin_ChristashaCounterDestroyPatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
+        {
+            ChristashaCounterDestroySupport.TryForceDestroy(__instance?.currentBehavior, "OnDefenseWithoutParryingWin");
         }
     }
 
@@ -2534,6 +2695,79 @@ namespace Steria
             catch (Exception ex)
             {
                 Debug.LogError($"[Steria] Music dice detail desc patch error: {ex}");
+            }
+        }
+    }
+
+    // --- 烧伤伤害Hook：触发日光混乱伤害 + Phase2最大生命值削减 ---
+    [HarmonyPatch(typeof(BattleUnitBuf_burn), nameof(BattleUnitBuf_burn.OnRoundEnd))]
+    public static class BurnDamage_Postfix_Patch
+    {
+        public class BurnRoundState
+        {
+            public BattleUnitModel owner;
+            public int hpBefore;
+            public int burnStackBefore;
+        }
+
+        public static void Prefix(BattleUnitBuf_burn __instance, out BurnRoundState __state)
+        {
+            __state = null;
+            try
+            {
+                var ownerField = typeof(BattleUnitBuf).GetField("_owner",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                if (ownerField == null) return;
+                BattleUnitModel owner = ownerField.GetValue(__instance) as BattleUnitModel;
+                if (owner != null)
+                {
+                    __state = new BurnRoundState
+                    {
+                        owner = owner,
+                        hpBefore = (int)owner.hp,
+                        burnStackBefore = Math.Max(0, __instance?.stack ?? 0)
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] BurnDamage Prefix error: {ex.Message}");
+            }
+        }
+
+        public static void Postfix(BattleUnitBuf_burn __instance, BurnRoundState __state)
+        {
+            try
+            {
+                if (__state == null || __state.owner == null)
+                {
+                    return;
+                }
+
+                BattleUnitModel owner = __state.owner;
+                if (owner.IsDead())
+                {
+                    return;
+                }
+
+                int hpAfter = (int)owner.hp;
+                int burnDamage = Math.Max(0, __state.hpBefore - hpAfter);
+
+                // 兜底：部分情况下HP差值可能取不到，使用烧伤层数作为触发值
+                int effectiveBurnDamage = burnDamage > 0 ? burnDamage : __state.burnStackBefore;
+                if (effectiveBurnDamage <= 0)
+                {
+                    return;
+                }
+
+                SteriaLogger.Log($"烧伤结算捕获: {owner.UnitData?.unitData?.name} HP {__state.hpBefore}->{hpAfter}, burnStackBefore={__state.burnStackBefore}, effective={effectiveBurnDamage}");
+
+                // 触发日光 + Phase2最大生命值削减
+                PassiveAbility_9010003.OnAnyUnitBurnDamage(owner, effectiveBurnDamage);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] BurnDamage Postfix error: {ex.Message}");
             }
         }
     }

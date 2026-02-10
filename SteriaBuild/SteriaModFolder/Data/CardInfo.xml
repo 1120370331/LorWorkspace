@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <DiceCardXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Version>1.1</Version>
   <!-- 拙劣控流 -->
@@ -307,6 +307,7 @@
     <TextId>-1</TextId>
     <Artwork>9002009.png</Artwork>
     <Rarity>Unique</Rarity>
+    <Option>OnlyPage</Option>
     <Spec Range="FarArea" Cost="7" />
     <Script>SlazeyaMassAttackTeamLightGain</Script>
     <ScriptDesc>使用时：消耗所有[流]（但不提供威力加成）。本书页每消耗5层[流]，下回合为所有友方单位恢复1点光芒</ScriptDesc>
@@ -1225,7 +1226,7 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="3" />
     <BehaviourList>
-      <Behaviour Min="10" Dice="15" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-2并重复投掷本骰子;命中时:施加2层[烧伤],之后获得2层[潮]" />
+      <Behaviour Min="9" Dice="12" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-3并重复投掷本骰子;命中时:施加2层[烧伤],之后获得2层[潮]" />
       <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子造成的伤害-5" />
     </BehaviourList>
     <Chapter>7</Chapter>
@@ -1277,5 +1278,330 @@
     <Priority>0</Priority>
   </Card>
   <!-- Christasha Cards End -->
+
+  <!-- Christasha EGO Boss Cards Start (神备EGO：日沐曦渊) -->
+
+  <!-- 不要害怕，我在梦中 -->
+  <Card ID="9010001">
+    <Name>不要害怕，我在梦中</Name>
+    <TextId>-1</TextId>
+    <Artwork>不要害怕，我在梦中.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>ChristashaEgoDontFear</Script>
+    <ScriptDesc>[回合开始时] 获得4层[梦]，本幕自身所有防御型骰子威力+4</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaEgoDontFearDice1" ActionScript="" Desc="拼点失败:对自身施加5层[烧伤]" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaEgoCounterGainTide1" ActionScript="" Desc="拼点胜利:获得1层[潮]" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaEgoCounterGainTide1" ActionScript="" Desc="拼点胜利:获得1层[潮]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 飞星连刺 -->
+  <Card ID="9010002">
+    <Name>飞星连刺</Name>
+    <TextId>-1</TextId>
+    <Artwork>飞星连刺.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="6" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 埃利耶，水中的圣职 -->
+  <Card ID="9010003">
+    <Name>埃利耶，水中的圣职</Name>
+    <TextId>-1</TextId>
+    <Artwork>埃利耶，水中的圣职.jpg</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>ChristashaEgoEliyeHoly</Script>
+    <ScriptDesc>[使用时] 接下来两回合每回合开始时获得1层[强壮]以及3层[流]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoEliyeHoly"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaEgoConvertTide1OnHit" ActionScript="" Desc="命中时:将1层[潮]转化为[黄金之潮]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 渐明 -->
+  <Card ID="9010004">
+    <Name>渐明</Name>
+    <TextId>-1</TextId>
+    <Artwork>渐明.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>ChristashaEgoDawnApproach</Script>
+    <ScriptDesc>[使用时] 对敌方施加1层[日光]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoDawnApproach"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="ChristashaBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaEgoApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 金乌 -->
+  <Card ID="9010005">
+    <Name>金乌</Name>
+    <TextId>-1</TextId>
+    <Artwork>金乌.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="2" />
+    <Script>ChristashaEgoGoldenCrow</Script>
+    <ScriptDesc>[使用时] 使敌方于下回合获得1层[致盲]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoGoldenCrow"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="10" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="ChristashaEgoBurn4" ActionScript="" Desc="命中时:施加4层[烧伤]" />
+      <Behaviour Min="2" Dice="2" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaEgoRemoveTargetBurn" ActionScript="" Desc="拼点失败:消除对方燃烧层数" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaEgoSelfBurn5OnLose" ActionScript="" Desc="拼点失败:获得5层[烧伤]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 迸射流光 (Boss版 - 复用已有能力) -->
+  <Card ID="9010006">
+    <Name>迸射流光</Name>
+    <TextId>-1</TextId>
+    <Artwork>迸射流光.jpg</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <BehaviourList>
+      <Behaviour Min="9" Dice="12" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-3并重复投掷本骰子;命中时:施加2层[烧伤],之后获得2层[潮]" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子造成的伤害-5" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 迸发 (群体攻击-清算) -->
+  <Card ID="9010007">
+    <Name>迸发</Name>
+    <TextId>-1</TextId>
+    <Artwork>迸发.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarArea" Cost="3" />
+    <Script>ChristashaEgoBurst</Script>
+    <ScriptDesc>[群体攻击-清算] 本单位每有5层[烧伤],使本书页骰子威力+1</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoBurst"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="20" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_WaterSlash" Script="" ActionScript="Xiao_610005" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- 黎明之光 (群体攻击-交锋) -->
+  <Card ID="9010008">
+    <Name>黎明之光</Name>
+    <TextId>-1</TextId>
+    <Artwork>黎明之光.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarAreaEach" Cost="5" />
+    <Script>ChristashaEgoDawnLight</Script>
+    <ScriptDesc>[群体攻击-交锋] [渐强]每次使用后本书页骰子威力+2(最多+6).本书页不造成伤害</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoDawnLight"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="3" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="ChristashaEgoDawnLightBurn3" ActionScript="Xiao_610001" Desc="命中时:施加3层[烧伤]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>200</Priority>
+  </Card>
+
+  <!-- Phase 2 专属书页 -->
+  <!-- 随流而来，伴流而去 -->
+  <Card ID="9010009">
+    <Name>随流而来，伴流而去</Name>
+    <TextId>-1</TextId>
+    <Artwork>随流而来，伴流而去.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Keyword>SteriaFlowTransfer</Keyword>
+    <Script>ChristashaEgoFlowComeGo</Script>
+    <ScriptDesc>[流转] 回合开始时:获得4层[流],本幕进攻型骰子造成的伤害+4</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoFlowComeGo"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaEgoApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
+      <Behaviour Min="6" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+      <Behaviour Min="6" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 深渊之中，太阳升起 -->
+  <Card ID="9010010">
+    <Name>深渊之中，太阳升起</Name>
+    <TextId>-1</TextId>
+    <Artwork>深渊之中，太阳升起.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Keyword>SteriaFlowTransfer</Keyword>
+    <Script>ChristashaEgoAbyssSunrise</Script>
+    <ScriptDesc>[流转] 回合开始时:获得4层[潮],本幕所有单位受[流]威力加成+1</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoAbyssSunrise"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="ChristashaEgoApplyBlinding1" ActionScript="" Desc="命中时:使目标于下回合获得1层[致盲]" />
+      <Behaviour Min="8" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+      <Behaviour Min="8" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 我将和黎明一起到来 (群体攻击-清算) -->
+  <Card ID="9010011">
+    <Name>我将和黎明一起到来</Name>
+    <TextId>-1</TextId>
+    <Artwork>我将和黎明一起到来.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarArea" Cost="7" />
+    <Script>ChristashaEgoDawnArrival</Script>
+    <ScriptDesc>[群体攻击-清算] 所有单位每有10层[烧伤]使本书页威力+1.使用时为所有敌人施加1层[日光],并使其于下回合获得1层[致盲],为自己施加6层[烧伤](日光/致盲受[潮]增幅)</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoDawnArrival"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="10" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_WaterSlash" Script="" ActionScript="Xiao_610005" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- Christasha Xiyuan Cards Start (接待奖励：日沐曦渊) -->
+
+  <!-- 飞星连刺 -->
+  <Card ID="9010101">
+    <Name>飞星连刺</Name>
+    <TextId>-1</TextId>
+    <Artwork>飞星连刺.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>ChristashaXiyuanFeixing</Script>
+    <ScriptDesc>[使用后] 若本书页3颗进攻型骰子全部命中,则使目标于下回合获得1层[易损]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaXiyuanFeixing"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
+      <Behaviour Min="5" Dice="6" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 渐明日光 -->
+  <Card ID="9010102">
+    <Name>渐明日光</Name>
+    <TextId>-1</TextId>
+    <Artwork>渐明.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>ChristashaXiyuanDawnSun</Script>
+    <ScriptDesc>[使用时] 若目标[烧伤]层数低于5则施加3层[烧伤],否则抽2张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaXiyuanDawnSun"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="ChristashaXiyuanBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaXiyuanApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="ChristashaXiyuanBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 金乌庇佑 -->
+  <Card ID="9010103">
+    <Name>金乌庇佑</Name>
+    <TextId>-1</TextId>
+    <Artwork>金乌.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="2" />
+    <Script>ChristashaXiyuanGoldenCrow</Script>
+    <ScriptDesc>[命中混乱状态敌人] 恢复20%造成伤害(向上取整)</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaXiyuanGoldenCrow"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="7" Dice="13" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="ChristashaXiyuanGoldenCrowHit" ActionScript="" Desc="命中时:施加4层[烧伤]与1层[日光]" />
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaXiyuanRecoverBreak5OnLose" ActionScript="" Desc="拼点失败:恢复5点混乱抗性" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 擢升新阳 -->
+  <Card ID="9010104">
+    <Name>擢升新阳</Name>
+    <TextId>-1</TextId>
+    <Artwork>我将和黎明一起到来.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarArea" Cost="5" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>8</MaxCooltimeForEgo>
+    <Script>ChristashaXiyuanRisingSun</Script>
+    <ScriptDesc>[群体攻击-清算] 所有敌人每有7层[烧伤],使本书页骰子威力+1</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaXiyuanRisingSun"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="18" Dice="27" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_WaterSlash" Script="ChristashaXiyuanApplySunlight1" ActionScript="Xiao_610005" Desc="命中时:施加1层[日光]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- 黎明之光 -->
+  <Card ID="9010105">
+    <Name>黎明之光</Name>
+    <TextId>-1</TextId>
+    <Artwork>黎明之光.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarAreaEach" Cost="2" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>5</MaxCooltimeForEgo>
+    <Script>ChristashaXiyuanDawnLight</Script>
+    <ScriptDesc>[群体攻击-交锋] [渐强] 每次使用后,本书页骰子威力+2,光芒消耗+1,至多触发3次.本书页不造成伤害</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaXiyuanDawnLight"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="ChristashaXiyuanDawnLightBurnByCost" ActionScript="Xiao_610001" Desc="命中时:施加等同本书页消耗光芒层数的[烧伤]与1层[日光]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>200</Priority>
+  </Card>
+
+  <!-- Christasha Xiyuan Cards End -->
+  <!-- Christasha EGO Boss Cards End -->
 
 </DiceCardXmlRoot>

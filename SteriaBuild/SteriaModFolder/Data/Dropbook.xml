@@ -103,4 +103,18 @@
     <DropItem Type="Card">9009005</DropItem>
     <DropItem Type="Card">9009006</DropItem>
   </BookUse>
+  <BookUse ID="10">
+    <Name>日沐曦渊之书</Name>
+    <TextId />
+    <BookIcon />
+    <Chapter>7</Chapter>
+    <BookValue>0</BookValue>
+    <DropItemState>All</DropItemState>
+    <DropItem Type="Equip">99000010</DropItem>
+    <DropItem Type="Card">9010101</DropItem>
+    <DropItem Type="Card">9010102</DropItem>
+    <DropItem Type="Card">9010103</DropItem>
+    <DropItem Type="Card">9010104</DropItem>
+    <DropItem Type="Card">9010105</DropItem>
+  </BookUse>
 </BookUseXmlRoot>

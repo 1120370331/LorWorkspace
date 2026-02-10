@@ -189,4 +189,26 @@
     <Story Condition="Start">Button</Story>
     <Story Condition="End" />
   </Stage>
+
+  <!-- New Stage: 神备克丽丝塔夏 -->
+  <Stage id="9">
+    <StageType>Invitation</StageType>
+    <Name>神备克丽丝塔夏</Name>
+    <Wave>
+      <Formation>41</Formation>
+      <AvailableUnit>5</AvailableUnit>
+      <Unit>11</Unit>
+    </Wave>
+    <FloorNum>2</FloorNum>
+    <Invitation Combine="BookValue">
+      <Value>7</Value>
+      <Num>1</Num>
+    </Invitation>
+    <Chapter>7</Chapter>
+    <Condition>
+      <Level>0</Level>
+    </Condition>
+    <Story Condition="Start">Button</Story>
+    <Story Condition="End" />
+  </Stage>
 </StageXmlRoot>

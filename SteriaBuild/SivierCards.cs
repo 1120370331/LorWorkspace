@@ -195,6 +195,7 @@ public class DiceCardSelfAbility_SivierSeaReturn : DiceCardSelfAbilityBase
 {
     // 追踪每个角色使用此卡的次数（用于渐弱效果）
     private static Dictionary<int, int> _useCount = new Dictionary<int, int>();
+    private bool _countedThisUse;
 
     // 获取当前使用次数（用于计算减益）
     private static int GetUseCount(BattleUnitModel unit)
@@ -219,6 +220,8 @@ public class DiceCardSelfAbility_SivierSeaReturn : DiceCardSelfAbilityBase
     public override void OnUseCard()
     {
         base.OnUseCard();
+        _countedThisUse = false;
+
         // 自身获得(等同本书页光芒消耗)x2点梦
         int cost = card?.card?.GetCost() ?? 5;
         int gain = Math.Max(0, cost) * 2;
@@ -240,6 +243,12 @@ public class DiceCardSelfAbility_SivierSeaReturn : DiceCardSelfAbilityBase
     public override void AfterAction()
     {
         base.AfterAction();
+
+        if (_countedThisUse)
+            return;
+
+        _countedThisUse = true;
+
         // 渐弱效果：记录使用次数（至多4次）
         if (owner == null) return;
         int ownerId = owner.GetHashCode();
@@ -360,17 +369,36 @@ public class DiceCardAbility_SivierWishBuried1 : DiceCardAbilityBase
 
 public static class SivierCardHelper
 {
+    public static BattleUnitBuf GetDreamBuf(BattleUnitModel unit)
+    {
+        if (unit?.bufListDetail == null) return null;
+
+        var activeBufList = unit.bufListDetail.GetActivatedBufList();
+        if (activeBufList == null || activeBufList.Count == 0) return null;
+
+        BattleUnitBuf typedBuf = activeBufList.FirstOrDefault(x => x is BattleUnitBuf_Dream);
+        if (typedBuf != null && !typedBuf.IsDestroyed())
+        {
+            return typedBuf;
+        }
+
+        // 兜底：兼容同名类型来自不同程序集导致的类型不匹配
+        return activeBufList.FirstOrDefault(x =>
+            x != null &&
+            !x.IsDestroyed() &&
+            x.GetType().Name == nameof(BattleUnitBuf_Dream));
+    }
+
     public static int GetDreamCount(BattleUnitModel unit)
     {
-        if (unit == null) return 0;
-        var buf = unit.bufListDetail.GetActivatedBufList().Find(x => x is BattleUnitBuf_Dream) as BattleUnitBuf_Dream;
+        BattleUnitBuf buf = GetDreamBuf(unit);
         return buf?.stack ?? 0;
     }
 
     public static void AddDreamToUnit(BattleUnitModel unit, int amount)
     {
         if (unit == null || amount <= 0) return;
-        var buf = unit.bufListDetail.GetActivatedBufList().Find(x => x is BattleUnitBuf_Dream) as BattleUnitBuf_Dream;
+        BattleUnitBuf buf = GetDreamBuf(unit);
         if (buf != null)
         {
             buf.stack += amount;
@@ -384,7 +412,7 @@ public static class SivierCardHelper
     public static void ConsumeDream(BattleUnitModel unit, int amount)
     {
         if (unit == null || amount <= 0) return;
-        var buf = unit.bufListDetail.GetActivatedBufList().Find(x => x is BattleUnitBuf_Dream) as BattleUnitBuf_Dream;
+        BattleUnitBuf buf = GetDreamBuf(unit);
         if (buf != null && buf.stack >= amount)
         {
             buf.stack -= amount;

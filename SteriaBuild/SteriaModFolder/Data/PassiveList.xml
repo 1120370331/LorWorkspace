@@ -568,6 +568,128 @@
     <InnerType>-1</InnerType>
     <Cost>3</Cost>
     <Name>金色的潮汐</Name>
-    <Desc>回合开始拥有大于3层[潮]:将1层[潮]转化为[黄金之潮].</Desc>
+    <Desc>回合开始拥有[潮]:将1层[潮]转化为[黄金之潮].消耗[黄金之潮]时:恢复2点体力值与混乱抗性.</Desc>
+  </Passive>
+  <Passive ID="9009010">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>速战速决3</Name>
+    <Desc>速度骰子+1;情感等级达到3后额外+1.</Desc>
+  </Passive>
+  <Passive ID="9009011">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>日沐曦渊</Name>
+    <Desc>每幕结束时若情感等级≥2:展现E.G.O并获得[日出于渊].[日出于渊]:所有骰子威力+1,回合结束时对最后攻击的敌人施加1层[日光].情感等级≥4时,以拥有[日光]的目标为对象时骰子威力额外+1,命中拥有[日光]的单位时施加2层[烧伤].</Desc>
+  </Passive>
+  <Passive ID="9009012">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>6</Cost>
+    <Name>斯蒂芬妮之冠</Name>
+    <Desc>每幕开始时随机获得:1层[强壮]+3层[流] / 1层[坚韧]+3层[梦] / 1层[守护]+1层[振奋]+3层[潮].</Desc>
+  </Passive>
+
+  <!-- 神备EGO：日沐曦渊 Passives -->
+  <Passive ID="9010001">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>神备EGO：日沐曦渊</Name>
+    <Desc>每回合将意图使用的书页置入手中,自身使用书页不消耗光芒.当血量低于350后,免疫所有伤害并进入下一阶段.</Desc>
+  </Passive>
+  <Passive ID="9010002">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>3</Cost>
+    <Name>困于黑夜太久了吗...</Name>
+    <Desc>自身进攻型骰子拼点胜利时:双方施加2层[烧伤].自身防御型骰子拼点失败时:双方施加2层[烧伤].自身反击型骰子拼点失败时:获得5层[烧伤].</Desc>
+  </Passive>
+  <Passive ID="9010003">
+    <Negative>false</Negative>
+    <IsHide>true</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>5</Cost>
+    <Name>因为她要升起...</Name>
+    <Desc>承受致命伤害时:立刻恢复至当前最大生命值,最大生命值上限-25,并获得25层[烧伤].所有单位受到[烧伤]伤害时降低等量1/2最大生命值上限.当最大生命值不高于1后,接待结束.</Desc>
+  </Passive>
+  <Passive ID="9010004">
+    <Negative>false</Negative>
+    <IsHide>true</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>5</Cost>
+    <Name>太阳就快要来了...</Name>
+    <Desc>每幕开始时为所有单位施加[烧伤],此效果每幕提升1层.回合开始时每拥有25层[烧伤]获得1层[强壮].</Desc>
+  </Passive>
+  <Passive ID="9010005">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>3</Cost>
+    <Name>福斯福洛斯之剑</Name>
+    <Desc>每次进攻型骰子时从以下效果中轮流选择:施加5层[烧伤]/使其于下回合获得1层[致盲]/施加1层[日光].</Desc>
+  </Passive>
+  <Passive ID="9010006">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>6</Cost>
+    <Name>斯蒂芬妮之冠</Name>
+    <Desc>每一幕开始时随机:获得1层[强壮]+3层[流] / 1层[坚韧]+3层[梦] / 1层[守护]+[振奋]+3层[潮].此增益受[潮]影响.返还上一幕消耗的[潮]层数的一半.</Desc>
+  </Passive>
+  <Passive ID="9010012">
+    <Negative>false</Negative>
+    <IsHide>true</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>5</Cost>
+    <Name>曙光庇护</Name>
+    <Desc>二阶段激活后:本单位不会陷入[混乱].</Desc>
   </Passive>
 </PassiveXmlRoot>

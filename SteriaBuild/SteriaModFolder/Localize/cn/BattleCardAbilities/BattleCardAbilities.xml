@@ -527,7 +527,7 @@
 
     <!-- Card 9009005: 迸射流光 -->
     <BattleCardAbility ID="ChristashaBurstReroll">
-      <Desc>[拼点胜利] 使本骰子威力-2并重复投掷本骰子</Desc>
+      <Desc>[拼点胜利] 使本骰子威力-3并重复投掷本骰子</Desc>
       <Desc>[命中时] 施加2层[烧伤],之后获得2层[潮]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="ChristashaCounterPowerDown">
@@ -553,6 +553,117 @@
     </BattleCardAbility>
     <BattleCardAbility ID="ChristashaTwinStarMoon">
       <Desc>[命中时] 施加3层[月之引力]</Desc>
+    </BattleCardAbility>
+
+    <!-- ========== 神备EGO：日沐曦渊 卡牌能力 ========== -->
+
+    <!-- Card 9010001: 不要害怕，我在梦中 -->
+    <BattleCardAbility ID="ChristashaEgoDontFear">
+      <Desc>[战斗开始时] 获得4层[梦],本幕自身所有防御型骰子威力+4</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaEgoDontFearDice1">
+      <Desc>[拼点失败] 对自身施加5层[烧伤]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaEgoCounterGainTide1">
+      <Desc>[拼点胜利] 获得1层[潮]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9010003: 埃利耶，水中的圣职 -->
+    <BattleCardAbility ID="ChristashaEgoEliyeHoly">
+      <Desc>[使用时] 接下来两回合,每回合开始时获得1层[强壮]以及3层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaEgoConvertTide1OnHit">
+      <Desc>[命中时] 将1层[潮]转化为[黄金之潮]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9010004: 渐明 -->
+    <BattleCardAbility ID="ChristashaEgoDawnApproach">
+      <Desc>[使用时] 对敌方施加1层[日光]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaEgoApplySunlight1">
+      <Desc>[命中时] 施加1层[日光]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9010005: 金乌 -->
+    <BattleCardAbility ID="ChristashaEgoGoldenCrow">
+      <Desc>[使用时] 使敌方于下回合获得1层[致盲]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaEgoBurn4">
+      <Desc>[命中时] 施加4层[烧伤]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaEgoRemoveTargetBurn">
+      <Desc>[拼点失败] 消除对方所有[烧伤]层数</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaEgoSelfBurn5OnLose">
+      <Desc>[拼点失败] 获得5层[烧伤]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9010007: 迸发 -->
+    <BattleCardAbility ID="ChristashaEgoBurst">
+      <Desc>[群体攻击-清算] 本单位每有5层[烧伤],使本书页骰子威力+1</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9010008: 黎明之光 -->
+    <BattleCardAbility ID="ChristashaEgoDawnLight">
+      <Desc>[群体攻击-交锋] [渐强]每次使用后骰子威力+2(最多+6).本书页不造成伤害</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaEgoDawnLightBurn3">
+      <Desc>[命中时] 施加3层[烧伤]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9010009: 随流而来，伴流而去 -->
+    <BattleCardAbility ID="ChristashaEgoFlowComeGo">
+      <Desc>[流转] [战斗开始时] 获得4层[流],本幕进攻型骰子造成的伤害+4</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaEgoDestroyDice">
+      <Desc>[命中时] 摧毁本骰子</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9010010: 深渊之中，太阳升起 -->
+    <BattleCardAbility ID="ChristashaEgoAbyssSunrise">
+      <Desc>[流转] [战斗开始时] 获得4层[潮],本幕所有单位受[流]威力加成+1</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaEgoApplyBlinding1">
+      <Desc>[命中时] 使目标于下回合获得1层[致盲]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9010011: 我将和黎明一起到来 -->
+    <BattleCardAbility ID="ChristashaEgoDawnArrival">
+      <Desc>[群体攻击-清算] 所有单位每有10层[烧伤]使本书页威力+1
+使用时:为所有敌人施加1层[日光],并使其于下回合获得1层[致盲],为自己施加6层[烧伤](日光/致盲受[潮]增幅)</Desc>
+    </BattleCardAbility>
+
+    <!-- ========== 日沐曦渊接待奖励 卡牌能力 ========== -->
+    <BattleCardAbility ID="ChristashaXiyuanFeixing">
+      <Desc>[使用后] 若本书页3颗进攻型骰子全部命中,则使目标于下回合获得1层[易损]
+[命中时] 施加1层[烧伤]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaXiyuanDawnSun">
+      <Desc>[使用时] 若目标[烧伤]层数低于5,施加3层[烧伤];否则抽2张书页</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaXiyuanGoldenCrow">
+      <Desc>[命中混乱状态敌人] 恢复20%造成伤害(向上取整)</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaXiyuanGoldenCrowHit">
+      <Desc>[命中时] 施加4层[烧伤]与1层[日光]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaXiyuanApplySunlight1">
+      <Desc>[命中时] 施加1层[日光]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaXiyuanBurn2">
+      <Desc>[命中时] 施加2层[烧伤]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaXiyuanRecoverBreak5OnLose">
+      <Desc>[拼点失败] 恢复5点混乱抗性</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaXiyuanRisingSun">
+      <Desc>[群体攻击-清算] 所有敌人每有7层[烧伤],使本书页骰子威力+1</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaXiyuanDawnLight">
+      <Desc>[群体攻击-交锋] [渐强] 每次使用后,本书页骰子威力+2,光芒消耗+1,至多触发3次</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="ChristashaXiyuanDawnLightBurnByCost">
+      <Desc>[命中时] 施加等同本书页消耗光芒层数的[烧伤]与1层[日光]</Desc>
     </BattleCardAbility>
 
 </BattleCardAbilityDescRoot>

@@ -69,7 +69,7 @@
     <!-- 克丽丝塔夏相关Buff -->
     <BattleEffectText ID="SteriaGoldenTide">
       <Name>黄金之潮</Name>
-      <Desc>特殊的[潮].赋予友方[强壮]/[忍耐]时消耗1层[黄金之潮]使其层数+2;若作用目标为自己且[黄金之潮]≥2,则消耗2层改为+3.</Desc>
+      <Desc>特殊的[潮].所有对[潮]层数的判定会额外计入本效果层数.赋予友方[强壮]/[忍耐]时:消耗1层[黄金之潮],使赋予层数+1;若目标为自己且[黄金之潮]≥2,则改为消耗2层并使赋予层数+2.本效果优先于并阻止[潮]触发.</Desc>
     </BattleEffectText>
     <BattleEffectText ID="SteriaMoonGravity">
       <Name>月之引力</Name>
@@ -98,7 +98,7 @@
     <!-- 希维尔相关Buff -->
     <BattleEffectText ID="SteriaDream">
       <Name>梦</Name>
-      <Desc>拼点时消耗1层[梦]使骰子威力+1.受到单方面攻击时消耗1层[梦]减少3点伤害.</Desc>
+      <Desc>拼点时消耗1层[梦]使敌人骰子威力-1.受到单方面攻击时消耗1层[梦]减少3点伤害.</Desc>
     </BattleEffectText>
 
     <BattleEffectText ID="SteriaWishShield">
@@ -119,6 +119,28 @@
     <BattleEffectText ID="BurningMemory">
       <Name>燃烧的回忆</Name>
       <Desc>弃置[珍贵的回忆]的计数.达到5层后,将[忘却之梦]置入EGO装备区.</Desc>
+    </BattleEffectText>
+
+    <!-- 神备克丽丝塔夏相关Buff -->
+    <BattleEffectText ID="SteriaSunlight">
+      <Name>日光</Name>
+      <Desc>拥有本效果的单位受到[烧伤]伤害时,消耗1层[日光]并造成等量1/2的混乱伤害.</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaBlinding">
+      <Name>致盲</Name>
+      <Desc>拼点时骰子威力-{0}.拥有本效果的单位无法更改敌人的速度骰子目标.每回合结束时层数-1,并在生效后的第2回合结束时移除全部层数.</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaPhase2Active">
+      <Name>日沐曦渊</Name>
+      <Desc>太阳即将升起.所有单位的[烧伤]伤害还会降低等量1/2最大生命值.</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaSunriseAbyss">
+      <Name>日出于渊</Name>
+      <Desc>所有骰子威力+1.回合结束时对最后攻击的敌人施加1层[日光].情感等级达到4后:以拥有[日光]的目标为对象时所有骰子威力额外+1,命中拥有[日光]的单位时施加2层[烧伤].</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaPrimalTide">
+      <Name>原初之潮</Name>
+      <Desc>受到影响的所有骰子威力不会受[流]/[梦]之外的威力增减影响.</Desc>
     </BattleEffectText>
   </effectTextList>
 </BattleEffectTextRoot> 

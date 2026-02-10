@@ -198,4 +198,24 @@
     </DropTable>
     <AiScript />
   </Enemy>
+
+  <!-- 神备EGO：日沐曦渊 Boss Enemy Definition -->
+  <Enemy ID="11">
+    <Name>神备EGO：日沐曦渊</Name>
+    <FaceType>Skin</FaceType>
+    <NameID>-1</NameID>
+    <MinHeight>170</MinHeight>
+    <MaxHeight>170</MaxHeight>
+    <Unknown>false</Unknown>
+    <Gender>F</Gender>
+    <Retreat>false</Retreat>
+    <BookId>11</BookId>
+    <BodyId>0</BodyId>
+    <Exp>0</Exp>
+    <DropBonus>0</DropBonus>
+    <DropTable Level="0">
+      <DropItem Prob="1">10</DropItem>
+    </DropTable>
+    <AiScript />
+  </Enemy>
 </EnemyUnitClassRoot>

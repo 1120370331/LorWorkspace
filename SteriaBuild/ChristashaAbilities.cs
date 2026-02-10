@@ -282,7 +282,8 @@ public class PassiveAbility_9009002 : PassiveAbilityBase
 
 /// <summary>
 /// 金色的潮汐 (ID: 9009008)
-/// 回合开始拥有大于3层潮时，将1层潮转化为黄金之潮
+/// 回合开始拥有潮时，将1层潮转化为黄金之潮
+/// 消耗黄金之潮时：恢复体力与混乱抗性
 /// </summary>
 public class PassiveAbility_9009008 : PassiveAbilityBase
 {
@@ -292,10 +293,22 @@ public class PassiveAbility_9009008 : PassiveAbilityBase
         if (owner == null) return;
 
         int tide = ChristashaAbilityHelper.GetTideStacks(owner);
-        if (tide > 3)
+        if (tide > 0)
         {
             ChristashaAbilityHelper.ConvertTideToGolden(owner, 1);
         }
+    }
+
+    public void OnGoldenTideConsumed(int amount)
+    {
+        if (owner == null || amount <= 0)
+        {
+            return;
+        }
+
+        int recover = amount * 2;
+        owner.RecoverHP(recover);
+        owner.breakDetail?.RecoverBreak(recover);
     }
 }
 

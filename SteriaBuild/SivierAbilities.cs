@@ -58,8 +58,7 @@ public class PassiveAbility_9008001 : PassiveAbilityBase
         // 只在单方面攻击时触发，不包括拼点失败后的伤害
         if (!_isBeingOneSided) return 0;
 
-        var dreamBuf = owner.bufListDetail.GetActivatedBufList()
-            .Find(x => x is BattleUnitBuf_Dream) as BattleUnitBuf_Dream;
+        BattleUnitBuf dreamBuf = SivierCardHelper.GetDreamBuf(owner);
 
         if (dreamBuf != null && dreamBuf.stack > 0)
         {
@@ -122,8 +121,7 @@ public class PassiveAbility_9008002 : PassiveAbilityBase
         if (behavior.Detail == BehaviourDetail.Guard || behavior.Detail == BehaviourDetail.Evasion)
         {
             // 获得1层梦
-            var dreamBuf = owner.bufListDetail.GetActivatedBufList()
-                .Find(x => x is BattleUnitBuf_Dream) as BattleUnitBuf_Dream;
+            BattleUnitBuf dreamBuf = SivierCardHelper.GetDreamBuf(owner);
 
             if (dreamBuf != null)
             {
@@ -149,8 +147,7 @@ public class PassiveAbility_9008003 : PassiveAbilityBase
     {
         base.OnRoundStart();
 
-        var dreamBuf = owner.bufListDetail.GetActivatedBufList()
-            .Find(x => x is BattleUnitBuf_Dream) as BattleUnitBuf_Dream;
+        BattleUnitBuf dreamBuf = SivierCardHelper.GetDreamBuf(owner);
 
         if (dreamBuf != null && dreamBuf.stack >= 5)
         {

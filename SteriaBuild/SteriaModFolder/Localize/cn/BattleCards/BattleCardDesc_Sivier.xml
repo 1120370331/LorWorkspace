@@ -3,24 +3,29 @@
   <cardDescList>
     <BattleCardDesc ID="9008001">
       <LocalizedName>聚愿而行</LocalizedName>
-      <Ability>使用时:获得3层[梦]</Ability>
+      <Ability>骰子1拼点胜利:使敌人当前书页骰子威力-2
+骰子3命中时:施加2层[麻痹]</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008002">
       <LocalizedName>守望潮汐</LocalizedName>
-      <Ability>使用时:为血量最低的友方单位赋予5层[愿望之盾]</Ability>
+      <Ability>使用时:抽取2张书页
+骰子1拼点胜利:获得2层[梦]</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008003">
       <LocalizedName>愿望之刺</LocalizedName>
-      <Ability>使用时:消耗2层[梦],本书页所有骰子威力+1</Ability>
+      <Ability>使用时:恢复2点光芒
+骰子1命中时:获得1层[梦]</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008004">
       <LocalizedName>愿护佑我们</LocalizedName>
-      <Ability>使用时:为所有友方单位赋予3层[愿望之盾]</Ability>
+      <Ability>使用时:消耗所有[梦],为全体友方施加等量x2层[愿望之盾]</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008005">
       <LocalizedName>海愿斩</LocalizedName>
       <Ability>[乐章]
-使用时:消耗3层[梦],本书页所有骰子威力+2</Ability>
+若自身[梦]不少于5层,则本书页所有骰子威力+2
+骰子1命中时:消耗1层[梦]并追加5点混乱伤害
+骰子2命中时:消耗1层[梦]并恢复5点混乱抗性</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008006">
       <LocalizedName>汐音:海之还愿</LocalizedName>
@@ -29,7 +34,9 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9008007">
       <LocalizedName>愿望终将埋葬于深海</LocalizedName>
-      <Ability>使用时:消耗所有[梦],每消耗1层[梦]本书页骰子威力+1</Ability>
+      <Ability>[佚亡] 本书页仅限累计消耗20层以上[梦]后使用
+使用时:持续2幕,所有敌方单位无法恢复光芒
+命中时:使目标下回合开始时失去2点光芒</Ability>
     </BattleCardDesc>
   </cardDescList>
 </BattleCardDescRoot>

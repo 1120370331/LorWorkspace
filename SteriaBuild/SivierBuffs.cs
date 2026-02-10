@@ -2,19 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using LOR_DiceSystem;
 using Steria;
 
 // 希维尔相关Buff - 需要在全局命名空间中
 
 /// <summary>
 /// 梦 Buff - 希维尔的核心机制
-/// 通过书页消耗梦，为全队施加"愿望之盾"（每层梦=2点护盾）
+/// 拼点时：消耗1层梦使敌人骰子威力-1
+/// 受到单方面攻击时：消耗1层梦减少3点伤害（由被动9008001处理）
+/// 拥有被动9008001时：拼点不消耗梦
 /// </summary>
 public class BattleUnitBuf_Dream : BattleUnitBuf
 {
     protected override string keywordId => "SteriaDream";
     protected override string keywordIconId => "SteriaDream";
     public override BufPositiveType positiveType => BufPositiveType.Positive;
+
+    // 标记：本次拼点是否已经触发过梦效果（防止同一骰子重复触发）
+    private BattleDiceBehavior _lastTriggeredDice = null;
 
     public override void Init(BattleUnitModel owner)
     {
@@ -28,10 +34,66 @@ public class BattleUnitBuf_Dream : BattleUnitBuf
         SteriaLogger.Log($"BattleUnitBuf_Dream: Added {addedStack} stacks, total: {this.stack}");
     }
 
+    /// <summary>
+    /// 拼点时：消耗1层梦使敌人骰子威力-1
+    /// 如果拥有被动9008001（梦之汐音），则不消耗梦
+    /// </summary>
+    public override void BeforeRollDice(BattleDiceBehavior behavior)
+    {
+        base.BeforeRollDice(behavior);
+        if (behavior == null || stack <= 0) return;
+        if (_lastTriggeredDice == behavior) return;
+
+        // 只在拼点时触发（有对手骰子时）
+        BattleDiceBehavior targetDice = behavior.TargetDice;
+        if (targetDice == null) return;
+
+        _lastTriggeredDice = behavior;
+
+        // 降低敌人骰子威力-1
+        targetDice.ApplyDiceStatBonus(new DiceStatBonus { power = -1 });
+
+        // 检查是否拥有被动9008001（拼点时不消耗梦）
+        bool hasPassive9008001 = _owner?.passiveDetail?.PassiveList?
+            .Any(p => p is PassiveAbility_9008001) ?? false;
+
+        if (!hasPassive9008001)
+        {
+            // 消耗1层梦
+            stack--;
+            SteriaLogger.Log($"BattleUnitBuf_Dream: Consumed 1 stack (parry), remaining: {stack}");
+
+            // 通知被动系统梦被消耗
+            NotifyDreamConsumed(1);
+
+            if (stack <= 0) this.Destroy();
+        }
+        else
+        {
+            SteriaLogger.Log($"BattleUnitBuf_Dream: Parry effect triggered without consuming (9008001)");
+        }
+    }
+
+    /// <summary>
+    /// 通知相关系统梦被消耗
+    /// </summary>
+    private void NotifyDreamConsumed(int amount)
+    {
+        if (_owner == null || amount <= 0) return;
+
+        // 通知被动9008001追踪消耗
+        var passive = _owner.passiveDetail?.PassiveList?
+            .FirstOrDefault(p => p is PassiveAbility_9008001) as PassiveAbility_9008001;
+        passive?.OnDreamConsumed(amount);
+
+        // 通知愿望终将埋葬于深海追踪
+        DiceCardSelfAbility_SivierWishBuried.OnDreamConsumed(_owner, amount);
+    }
+
     public override void OnRoundStart()
     {
         base.OnRoundStart();
-        // 梦不会自动消失，只在特定情况下消耗
+        _lastTriggeredDice = null;
     }
 }
 

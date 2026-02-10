@@ -177,11 +177,11 @@ public class BattleUnitBuf_ChristashaStrengthNextTurn : BattleUnitBuf
         if (golden == null || golden.stack <= 0) return 0;
 
         int consume = 1;
-        int bonus = 2;
+        int bonus = 1;
         if (golden.stack >= 2)
         {
             consume = 2;
-            bonus = 3;
+            bonus = 2;
         }
 
         golden.stack -= consume;
@@ -253,7 +253,7 @@ public class DiceCardAbility_ChristashaBurstReroll : DiceCardAbilityBase
     public override void BeforeRollDice()
     {
         if (_repeatCount <= 0) return;
-        behavior?.ApplyDiceStatBonus(new DiceStatBonus { power = -2 * _repeatCount });
+        behavior?.ApplyDiceStatBonus(new DiceStatBonus { power = -3 * _repeatCount });
     }
 
     public override void OnSucceedAttack(BattleUnitModel target)

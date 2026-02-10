@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BattleCardDescRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Pid="SteriaBuilding">
+  <cardDescList>
+    <!-- 普通克丽丝塔夏 -->
+    <BattleCardDesc ID="9009001">
+      <LocalizedName>金火璀璨之潮</LocalizedName>
+      <Ability>使用时:恢复1点光芒,将自身1层[潮]转换为[黄金之潮]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9009002">
+      <LocalizedName>何以归乡</LocalizedName>
+      <Ability>使用时:抽取1张书页;若抽取的书页光芒消耗为偶数,则额外抽取1张;若为奇数,则获得1层[潮]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9009003">
+      <LocalizedName>海银工坊：埃利耶</LocalizedName>
+      <Ability>使用时:获得1层[潮]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9009004">
+      <LocalizedName>涤光驱暗</LocalizedName>
+      <Ability>使用后:获得3层[潮]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9009005">
+      <LocalizedName>迸射流光</LocalizedName>
+      <Ability>拼点胜利:使本骰子威力-3并重复投掷本骰子
+命中时:施加2层[烧伤],之后获得2层[潮]
+拼点失败:使敌人当前骰子造成的伤害-5</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9009006">
+      <LocalizedName>汐音：光耀万海</LocalizedName>
+      <Ability>[乐章] [渐快] 使用后永久复制最后一颗骰子(至多2次),所有骰子威力×([X-1]/X)(向上取整)
+被编入卡组时,激活"汐音：光耀万海"到沧海之声</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9009007">
+      <LocalizedName>汐火联星</LocalizedName>
+      <Ability>[延长] 本书页仅限消耗5层[潮]后使用
+使用时:获得2层[潮]</Ability>
+    </BattleCardDesc>
+
+    <!-- 神备EGO：日沐曦渊 -->
+    <BattleCardDesc ID="9010001">
+      <LocalizedName>不要害怕，我在梦中</LocalizedName>
+      <Ability>战斗开始时:获得4层[梦],本幕自身所有防御型骰子威力+4</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010002">
+      <LocalizedName>飞星连刺</LocalizedName>
+      <Ability></Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010003">
+      <LocalizedName>埃利耶，水中的圣职</LocalizedName>
+      <Ability>使用时:接下来两回合,每回合开始时获得1层[强壮]以及3层[流]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010004">
+      <LocalizedName>渐明</LocalizedName>
+      <Ability>使用时:对敌方施加1层[日光]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010005">
+      <LocalizedName>金乌</LocalizedName>
+      <Ability>使用时:使敌方于下回合获得1层[致盲]
+拼点失败:清除对方所有[烧伤]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010006">
+      <LocalizedName>迸射流光</LocalizedName>
+      <Ability>拼点胜利:使本骰子威力-3并重复投掷本骰子
+命中时:施加2层[烧伤],之后获得2层[潮]
+拼点失败:使敌人当前骰子造成的伤害-5</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010007">
+      <LocalizedName>迸发</LocalizedName>
+      <Ability>[群体攻击-清算] 本单位每有5层[烧伤],使本书页骰子威力+1</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010008">
+      <LocalizedName>黎明之光</LocalizedName>
+      <Ability>[群体攻击-交锋] [渐强]每次使用后本书页骰子威力+2(最多+6)
+本书页不造成伤害</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010009">
+      <LocalizedName>随流而来，伴流而去</LocalizedName>
+      <Ability>[流转] 战斗开始时:获得4层[流],本幕进攻型骰子造成的伤害+4</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010010">
+      <LocalizedName>深渊之中，太阳升起</LocalizedName>
+      <Ability>[流转] 战斗开始时:获得4层[潮],本幕所有单位受[流]威力加成+1</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010011">
+      <LocalizedName>我将和黎明一起到来</LocalizedName>
+      <Ability>[群体攻击-清算] 所有单位每有10层[烧伤]使本书页威力+1
+使用时:为所有敌人施加1层[日光],并使其于下回合获得1层[致盲],为自己施加6层[烧伤](日光/致盲受[潮]增幅)</Ability>
+    </BattleCardDesc>
+
+    <!-- 日沐曦渊接待奖励 -->
+    <BattleCardDesc ID="9010101">
+      <LocalizedName>飞星连刺</LocalizedName>
+      <Ability>使用后:若本书页3颗进攻型骰子全部命中,则使目标于下回合获得1层[易损]
+命中时:施加1层[烧伤]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010102">
+      <LocalizedName>渐明日光</LocalizedName>
+      <Ability>使用时:若目标[烧伤]层数低于5,则施加3层[烧伤];否则抽2张书页
+命中时:施加2层[烧伤] / 施加1层[日光]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010103">
+      <LocalizedName>金乌庇佑</LocalizedName>
+      <Ability>命中混乱状态敌人时:恢复20%等量体力(向上取整)
+命中时:施加4层[烧伤]与1层[日光]
+拼点失败:恢复5点混乱抗性</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010104">
+      <LocalizedName>擢升新阳</LocalizedName>
+      <Ability>[群体攻击-清算] 所有敌人每有7层[烧伤],使本书页骰子威力+1
+命中时:施加1层[日光]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9010105">
+      <LocalizedName>黎明之光</LocalizedName>
+      <Ability>[群体攻击-交锋] [渐强] 每次使用后本书页骰子威力+2,光芒消耗+1,至多触发3次
+命中时:施加等同本书页消耗光芒层数的[烧伤]与1层[日光]</Ability>
+    </BattleCardDesc>
+  </cardDescList>
+</BattleCardDescRoot>
