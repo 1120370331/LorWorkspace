@@ -564,11 +564,16 @@ public class DiceCardSelfAbility_SlazeyaHundredRiversRepeat : DiceCardSelfAbilit
         {
             _triggeredThisRoundOwners.Add(owner);
 
+            bool hasProxy = DirectiveDreamHelper.HasStephanieProxy(owner);
+
             // 消耗8层流（调整：10→8）
-            flowBuf.stack -= 8;
-            if (flowBuf.stack <= 0)
+            if (!hasProxy)
             {
-                flowBuf.Destroy();
+                flowBuf.stack -= 8;
+                if (flowBuf.stack <= 0)
+                {
+                    flowBuf.Destroy();
+                }
             }
             Debug.Log($"[Steria] SlazeyaHundredRiversRepeat: Consumed 8 Flow, remaining: {flowBuf?.stack ?? 0}");
 

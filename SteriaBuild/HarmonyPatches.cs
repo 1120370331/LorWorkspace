@@ -480,13 +480,19 @@ namespace Steria
             }
 
             int cardId = card.card.GetID().id;
+            bool hasStephanieProxy = global::DirectiveDreamHelper.HasStephanieProxy(card.owner);
 
             // 检查是否是"流转"卡牌（不受流影响：不获得加成也不消耗流）
+            // 代行-斯蒂芬妮：流转效果失效，改为按普通消耗流书页处理
             bool isFlowTransfer = IsFlowBonusOnlyCard(cardId);
-            if (isFlowTransfer)
+            if (isFlowTransfer && !hasStephanieProxy)
             {
                 SteriaLogger.Log($"RegisterCardUsage: [流转] card detected (ID: {cardId}) - not affected by flow");
                 return; // 流转卡牌完全不受流影响，直接返回
+            }
+            if (isFlowTransfer && hasStephanieProxy)
+            {
+                SteriaLogger.Log($"RegisterCardUsage: [流转] card (ID: {cardId}) overridden by StephanieProxy");
             }
 
             // 检查是否是"消耗所有流但不提供威力加成"的卡牌（如群攻）
@@ -496,9 +502,14 @@ namespace Steria
                 SteriaLogger.Log($"RegisterCardUsage: [消耗所有流] card detected (ID: {cardId}) - consuming all {flowStacks} flow without bonus");
                 // 记录消耗的流数量（用于额外伤害计算）
                 _massAttackFlowConsumed[card] = flowStacks;
-                // 消耗所有流
-                flowBuf.stack = 0;
-                flowBuf.Destroy();
+
+                // 代行-斯蒂芬妮：消耗视为成功触发，但层数不减少
+                if (!hasStephanieProxy)
+                {
+                    flowBuf.stack = 0;
+                    flowBuf.Destroy();
+                }
+
                 // 通知被动
                 NotifyPassivesOnFlowConsumed(card.owner, flowStacks);
                 return;
@@ -553,6 +564,22 @@ namespace Steria
 
             SteriaLogger.Log($"RegisterCardUsage: Distributing {flowToUse} flow to {diceCount} non-Standby dice (max {maxFlowPerDice} per dice, multiplier {flowPowerMultiplier})");
 
+            // 代行-斯蒂芬妮：所有消耗流/梦/潮的书页骰子威力+1
+            if (hasStephanieProxy && flowToUse > 0)
+            {
+                foreach (int idx in nonStandbyIndices)
+                {
+                    if (powerBonusMap.ContainsKey(idx))
+                    {
+                        powerBonusMap[idx] += 1;
+                    }
+                    else
+                    {
+                        powerBonusMap[idx] = 1;
+                    }
+                }
+            }
+
             // 存储威力加成映射
             _flowPowerBonusPerCard[card] = powerBonusMap;
             // 存储原始流强化次数映射
@@ -564,7 +591,7 @@ namespace Steria
             }
 
             // 检查是否有"本幕不消耗流"效果
-            bool noConsumption = HarmonyPatches.NoFlowConsumptionActiveThisRound ||
+            bool noConsumption = hasStephanieProxy || HarmonyPatches.NoFlowConsumptionActiveThisRound ||
                 card.owner.bufListDetail.GetActivatedBufList().Any(b => b is BattleUnitBuf_NoFlowConsumption);
 
             // 计算"视为消耗"的流数量（用于触发被动和卡牌效果）
@@ -1564,14 +1591,25 @@ namespace Steria
 
             if (tideBuf == null || tideBuf.stack <= 0) return 0;
 
+            bool hasStephanieProxy = global::DirectiveDreamHelper.HasStephanieProxy(giver);
+
             // 扣1层潮，额外赋予1层buff
-            tideBuf.stack -= 1;
-            SteriaLogger.Log($"Tide: Giver {giver.UnitData?.unitData?.name} consumed 1 Tide for {bufType}, remaining = {tideBuf.stack}");
+            if (!hasStephanieProxy)
+            {
+                tideBuf.stack -= 1;
+                SteriaLogger.Log($"Tide: Giver {giver.UnitData?.unitData?.name} consumed 1 Tide for {bufType}, remaining = {tideBuf.stack}");
+            }
             HarmonyHelpers.NotifyPassivesOnTideConsumed(giver, 1);
 
-            if (tideBuf.stack <= 0)
+            if (!hasStephanieProxy && tideBuf.stack <= 0)
             {
                 tideBuf.Destroy();
+            }
+
+            // 代行-斯蒂芬妮：消耗潮的书页骰子威力+1
+            if (hasStephanieProxy)
+            {
+                giver.currentDiceAction?.currentBehavior?.ApplyDiceStatBonus(new DiceStatBonus { power = 1 });
             }
 
             return 1; // 固定额外赋予1层
@@ -1621,13 +1659,24 @@ namespace Steria
 
             if (consume <= 0 || bonus <= 0) return 0;
 
-            golden.stack -= consume;
-            SteriaLogger.Log($"GoldenTide: {giver.UnitData?.unitData?.name} consumed {consume} for {bufType}, bonus={bonus}, remaining={golden.stack}");
+            bool hasStephanieProxy = global::DirectiveDreamHelper.HasStephanieProxy(giver);
+
+            if (!hasStephanieProxy)
+            {
+                golden.stack -= consume;
+                SteriaLogger.Log($"GoldenTide: {giver.UnitData?.unitData?.name} consumed {consume} for {bufType}, bonus={bonus}, remaining={golden.stack}");
+            }
             HarmonyHelpers.NotifyPassivesOnTideConsumed(giver, consume, true);
 
-            if (golden.stack <= 0)
+            if (!hasStephanieProxy && golden.stack <= 0)
             {
                 golden.Destroy();
+            }
+
+            // 代行-斯蒂芬妮：消耗潮的书页骰子威力+1
+            if (hasStephanieProxy)
+            {
+                giver.currentDiceAction?.currentBehavior?.ApplyDiceStatBonus(new DiceStatBonus { power = 1 });
             }
 
             return bonus;

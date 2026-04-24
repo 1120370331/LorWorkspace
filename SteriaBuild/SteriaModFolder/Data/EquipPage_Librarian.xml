@@ -87,6 +87,7 @@
       <Passive Pid="@origin">250009</Passive>
       <Passive>9002004</Passive>
       <Passive>9002003</Passive>
+      <Passive>9002010</Passive>
     </EquipEffect>
     <Chapter>6</Chapter>
     <Episode>1</Episode>

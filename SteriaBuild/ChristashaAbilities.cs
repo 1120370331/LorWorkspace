@@ -147,13 +147,25 @@ public static class ChristashaAbilityHelper
         if (tide == null || tide.stack <= 0) return 0;
 
         int toConsume = Math.Min(amount, tide.stack);
-        tide.stack -= toConsume;
-        if (tide.stack <= 0)
+        bool hasProxy = DirectiveDreamHelper.HasStephanieProxy(unit);
+
+        if (!hasProxy)
         {
-            tide.Destroy();
+            tide.stack -= toConsume;
+            if (tide.stack <= 0)
+            {
+                tide.Destroy();
+            }
         }
 
         HarmonyHelpers.NotifyPassivesOnTideConsumed(unit, toConsume);
+
+        // 代行-斯蒂芬妮：消耗潮/梦/流的书页骰子威力+1
+        if (hasProxy)
+        {
+            unit.currentDiceAction?.currentBehavior?.ApplyDiceStatBonus(new DiceStatBonus { power = 1 });
+        }
+
         return toConsume;
     }
 

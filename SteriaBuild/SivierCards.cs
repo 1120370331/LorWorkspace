@@ -415,10 +415,14 @@ public static class SivierCardHelper
         BattleUnitBuf buf = GetDreamBuf(unit);
         if (buf != null && buf.stack >= amount)
         {
-            buf.stack -= amount;
+            bool hasProxy = DirectiveDreamHelper.HasStephanieProxy(unit);
+            if (!hasProxy)
+            {
+                buf.stack -= amount;
+            }
             // 通知被动和追踪系统
             DiceCardSelfAbility_SivierWishBuried.OnDreamConsumed(unit, amount);
-            if (buf.stack <= 0)
+            if (!hasProxy && buf.stack <= 0)
             {
                 buf.Destroy();
             }

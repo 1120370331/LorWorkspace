@@ -142,5 +142,36 @@
       <Name>原初之潮</Name>
       <Desc>受到影响的所有骰子威力不会受[流]/[梦]之外的威力增减影响.</Desc>
     </BattleEffectText>
+
+    <BattleEffectText ID="SteriaCommandProtection">
+      <Name>指令加护</Name>
+      <Desc>最大层数10。受到的伤害与混乱伤害-3%×层数；层数达到10时，所有骰子威力+1。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaKarmaLachesis">
+      <Name>业-拉克西丝</Name>
+      <Desc>最大层数10。受到的伤害与混乱伤害+3%×层数；层数达到5时，所有骰子最大值-2；层数达到10时，掷出最小值的骰子会被摧毁并使自身获得1层[虚弱]。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaFortuneLachesis">
+      <Name>福-拉克西丝</Name>
+      <Desc>最大层数10。自身骰子掷出最小值时：消耗1层，重投该骰子，并在当幕获得1层[强壮]。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaStephanieProxy">
+      <Name>代行-斯蒂芬妮</Name>
+      <Desc>自身的[流]/[梦]/[潮]层数不会减少；所有[流转]关键词书页的流转效果失效；所有消耗[流]/[梦]/[潮]的书页骰子威力+1。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaDreamRival">
+      <Name>梦想宿敌</Name>
+      <Desc>与其拼点的拥有[接收指令：梦境]的单位骰子威力+1；被其成功命中后，对应攻击者会在下回合获得1层[指令加护]（每回合最多1次）。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="DreamDirectiveMark">
+      <Name>梦想意旨</Name>
+      <Desc>该书页骰子威力+1。若本回合使用：下回合恢复1点光芒并获得1层[指令加护]；若未使用：下回合获得1层[业-拉克西丝]。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="CardBuf_DreamDirectiveMark">
+      <Name>梦想意旨</Name>
+      <Desc>该书页骰子威力+1。若本回合使用：下回合恢复1点光芒并获得1层[指令加护]；若未使用：下回合获得1层[业-拉克西丝]。</Desc>
+    </BattleEffectText>
   </effectTextList>
 </BattleEffectTextRoot> 
+
+

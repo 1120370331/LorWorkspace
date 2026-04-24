@@ -56,8 +56,15 @@ public class BattleUnitBuf_Dream : BattleUnitBuf
         // 检查是否拥有被动9008001（拼点时不消耗梦）
         bool hasPassive9008001 = _owner?.passiveDetail?.PassiveList?
             .Any(p => p is PassiveAbility_9008001) ?? false;
+        bool hasProxy = DirectiveDreamHelper.HasStephanieProxy(_owner);
 
-        if (!hasPassive9008001)
+        // 代行-斯蒂芬妮：所有消耗梦的书页骰子威力+1
+        if (hasProxy)
+        {
+            behavior.ApplyDiceStatBonus(new DiceStatBonus { power = 1 });
+        }
+
+        if (!hasPassive9008001 && !hasProxy)
         {
             // 消耗1层梦
             stack--;
@@ -70,7 +77,7 @@ public class BattleUnitBuf_Dream : BattleUnitBuf
         }
         else
         {
-            SteriaLogger.Log($"BattleUnitBuf_Dream: Parry effect triggered without consuming (9008001)");
+            SteriaLogger.Log($"BattleUnitBuf_Dream: Parry effect triggered without consuming (9008001 or StephanieProxy)");
         }
     }
 

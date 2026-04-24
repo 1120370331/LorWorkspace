@@ -296,17 +296,22 @@ public class DiceCardAbility_AnhierQingSiFengLiuDice1 : DiceCardAbilityBase
 
         if (flowStacks >= 10)
         {
+            bool hasProxy = DirectiveDreamHelper.HasStephanieProxy(this.owner);
+
             // 消耗10层流
-            flowBuf.stack -= 10;
-            SteriaLogger.Log($"清司风流 Dice1: Consumed 10 flow, remaining = {flowBuf.stack}");
+            if (!hasProxy)
+            {
+                flowBuf.stack -= 10;
+                SteriaLogger.Log($"清司风流 Dice1: Consumed 10 flow, remaining = {flowBuf.stack}");
+
+                if (flowBuf.stack <= 0)
+                {
+                    flowBuf.Destroy();
+                }
+            }
 
             // 通知被动流被消耗
             HarmonyHelpers.NotifyPassivesOnFlowConsumed(this.owner, 10);
-
-            if (flowBuf.stack <= 0)
-            {
-                flowBuf.Destroy();
-            }
 
             // 使用游戏内置方法触发骰子重复攻击
             SteriaLogger.Log("清司风流 Dice1: Activating bonus attack dice (re-roll)");

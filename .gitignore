@@ -21,3 +21,6 @@ obj/
 
 # 其他
 *.log
+
+# 私人对话记录
+SteriaBuild/设定/对话记录_*.md

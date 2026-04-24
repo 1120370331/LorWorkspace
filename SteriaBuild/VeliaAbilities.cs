@@ -34,14 +34,25 @@ public class BattleUnitBuf_Tide : BattleUnitBuf
     {
         if (stack <= 0) return 0;
 
-        stack--;
-        SteriaLogger.Log($"Tide: Consumed 1 stack, remaining: {stack}");
+        bool hasProxy = DirectiveDreamHelper.HasStephanieProxy(_owner);
+        if (!hasProxy)
+        {
+            stack--;
+            SteriaLogger.Log($"Tide: Consumed 1 stack, remaining: {stack}");
+        }
+
         if (_owner != null)
         {
             Steria.HarmonyHelpers.NotifyPassivesOnTideConsumed(_owner, 1);
+
+            // 代行-斯蒂芬妮：消耗潮的书页骰子威力+1
+            if (hasProxy)
+            {
+                _owner.currentDiceAction?.currentBehavior?.ApplyDiceStatBonus(new DiceStatBonus { power = 1 });
+            }
         }
 
-        if (stack <= 0)
+        if (!hasProxy && stack <= 0)
         {
             this.Destroy();
         }

@@ -91,11 +91,15 @@ public class PassiveAbility_9002001 : PassiveAbilityBase
 
         if (flowBuf != null && flowBuf.stack > 0)
         {
-            flowBuf.stack -= 1;
-            SteriaLogger.Log($"神脉：梦之汐: {owner.UnitData?.unitData?.name} lost 1 flow on clash lose, remaining: {flowBuf.stack}");
-            if (flowBuf.stack <= 0)
+            bool hasProxy = DirectiveDreamHelper.HasStephanieProxy(owner);
+            if (!hasProxy)
             {
-                flowBuf.Destroy();
+                flowBuf.stack -= 1;
+                SteriaLogger.Log($"神脉：梦之汐: {owner.UnitData?.unitData?.name} lost 1 flow on clash lose, remaining: {flowBuf.stack}");
+                if (flowBuf.stack <= 0)
+                {
+                    flowBuf.Destroy();
+                }
             }
         }
     }

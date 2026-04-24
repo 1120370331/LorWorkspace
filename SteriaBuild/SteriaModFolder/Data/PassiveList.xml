@@ -151,6 +151,18 @@
     <Name>速战速决4</Name>
     <Desc>初始拥有4颗速度骰子，情感等级达到3后额外获得1颗。</Desc>
   </Passive>
+  <Passive ID="9002010">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Rare</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>true</CanGivePassive>
+    <CanReceivePassive>true</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>接收指令：梦境</Name>
+    <Desc>每回合开始时：随机为1名敌人赋予[梦想宿敌]标记（回合结束时移除）。与[梦想宿敌]拼点时骰子威力+1；每回合首次成功命中[梦想宿敌]后，下回合获得1层[指令加护]。同时，随机为手中1张书页施加[梦想意旨]标记（回合结束时移除）：其骰子威力+1；若使用该书页，则下回合恢复1点光芒并获得1层[指令加护]；若未使用，则下回合获得1层[业-拉克西丝]。</Desc>
+  </Passive>
 
   <!-- Velia Passives -->
   <Passive ID="9004001">
