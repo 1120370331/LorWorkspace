@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <DiceCardXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Version>1.1</Version>
   <!-- 拙劣控流 -->
@@ -1604,4 +1604,267 @@
   <!-- Christasha Xiyuan Cards End -->
   <!-- Christasha EGO Boss Cards End -->
 
+
+
+  <!-- Antie Form Change Cards -->
+  <Card ID="9011101">
+    <Name>司潮形态</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="1" />
+    <Option>Personal</Option>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
+    <Script>AntieChangeTideForm</Script>
+    <ScriptDesc>装备时:切换为司潮形态,并用司潮卡组等量替换手牌。使用后2幕内无法再次切换形态。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieChangeTideForm" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011102">
+    <Name>司梦形态</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="1" />
+    <Option>Personal</Option>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
+    <Script>AntieChangeDreamForm</Script>
+    <ScriptDesc>装备时:切换为司梦形态,并用司梦卡组等量替换手牌。使用后2幕内无法再次切换形态。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieChangeDreamForm" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011103">
+    <Name>司流形态</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="1" />
+    <Option>Personal</Option>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
+    <Script>AntieChangeFlowForm</Script>
+    <ScriptDesc>装备时:切换为司流形态,并用司流卡组等量替换手牌。使用后2幕内无法再次切换形态。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieChangeFlowForm" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Antie Shared Cards -->
+  <Card ID="9011501">
+    <Name>司神之职</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AntieForceDrawOnBaseMax</Script>
+    <ScriptDesc>拼点时若本书页骰子基础最大值大于对方最大值,则在拼点失败时强制打平.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieForceDrawOnBaseMax" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AntieGainFlowByVanillaOnHit" ActionScript="" Desc="命中时:获得等同本骰子基础值层[流]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AntieBonusDamageByVanillaOnHit" ActionScript="" Desc="命中时:追加本骰子基础值点伤害" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Antie Tide Form Cards -->
+  <Card ID="9011201">
+    <Name>潮语</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>AntieTideSpeech</Script>
+    <ScriptDesc>使用时:抽取1张书页,获得1层[潮].</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieTideSpeech" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="5" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Hit" Motion="F" EffectRes="Steria_WaterFarHit" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011202">
+    <Name>汐压</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AntieTidePressure</Script>
+    <ScriptDesc>使用时:消耗至多4层[潮].每消耗1层,依次对目标施加1层[束缚]/[虚弱]/[易伤]/[麻痹].若消耗4层,使目标当前负面效果延续1幕.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieTidePressure" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011203">
+    <Name>潮启之刻</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Script>AntieTideAwaken</Script>
+    <ScriptDesc>使用时:消耗至多3层[潮].下一幕获得等同消耗层数的[强壮]与[忍耐].若使用时自身非资源类正面效果总层数不低于6,则本书页骰子威力+3.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieTideAwaken" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Antie Dream Form Cards -->
+  <Card ID="9011301">
+    <Name>梦呓</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="1" />
+    <Script>AntieDreamMurmur</Script>
+    <ScriptDesc>使用时:若自身[梦]数量不低于4则获得3层[梦].若高于4,则改为消耗2层[梦],抽取2张书页并恢复2点光芒.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieDreamMurmur" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011302">
+    <Name>深梦</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AntieDeepDream</Script>
+    <ScriptDesc>使用时:恢复等同自身[梦]层数×2的体力与混乱抗性.下回合获得5层[梦].</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieDeepDream" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011303">
+    <Name>觉醒</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Script>AntieDreamAwaken</Script>
+    <ScriptDesc>使用时:消耗至多6层[梦].每消耗1层[梦],本书页骰子伤害与混乱伤害+25%.若消耗6层[梦],下回合获得1层[所有骰子威力提升].</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieDreamAwaken" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Antie Flow Form Cards -->
+  <Card ID="9011401">
+    <Name>塑海</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Keyword>SteriaFlowTransfer</Keyword>
+    <Script>AntieShapeSea</Script>
+    <ScriptDesc>[流转] 使用时:消耗本幕剩余全部光芒.下一幕获得消耗光芒数×3层[流].若至少消耗2点光芒,抽取1张书页.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieShapeSea" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011402">
+    <Name>逆流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Keyword>SteriaFlowTransfer</Keyword>
+    <Script>AntieReverseFlow</Script>
+    <ScriptDesc>[流转] 使用后:若自身[流]不少于4层,消耗4层[流]并恢复4点光芒;否则若不少于2层,消耗2层[流]并抽取1张书页.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieReverseFlow" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011403">
+    <Name>流向裁断</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AntieForceDrawOnBaseMax</Script>
+    <ScriptDesc>拼点时若本书页骰子基础最大值大于对方最大值,则在拼点失败时强制打平.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieForceDrawOnBaseMax" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AntieGainFlowByVanillaOnHit" ActionScript="" Desc="命中时:获得等同本骰子基础值层[流]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AntieBonusDamageByVanillaOnHit" ActionScript="" Desc="命中时:追加本骰子基础值点伤害" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
 </DiceCardXmlRoot>

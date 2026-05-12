@@ -5,7 +5,7 @@
       <Name>流</Name>
       <Desc>使用书页时,每颗骰子最多消耗1层[流]并获得+1威力.</Desc>
     </BattleEffectText>
-    
+
     <BattleEffectText ID="MyDLL.Anxier.OnlyPageKeyword">
         <Name>安希尔专用</Name>
         <Desc>仅限"安希尔"核心书页装备者使用.</Desc>
@@ -98,7 +98,7 @@
     <!-- 希维尔相关Buff -->
     <BattleEffectText ID="SteriaDream">
       <Name>梦</Name>
-      <Desc>拼点时消耗1层[梦]使敌人骰子威力-1.受到单方面攻击时消耗1层[梦]减少3点伤害.</Desc>
+      <Desc>拼点时消耗1层[梦]使敌人骰子威力-1。</Desc>
     </BattleEffectText>
 
     <BattleEffectText ID="SteriaWishShield">
@@ -170,6 +170,31 @@
     <BattleEffectText ID="CardBuf_DreamDirectiveMark">
       <Name>梦想意旨</Name>
       <Desc>该书页骰子威力+1。若本回合使用：下回合恢复1点光芒并获得1层[指令加护]；若未使用：下回合获得1层[业-拉克西丝]。</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="AntieFormCooldown">
+      <Name>形态切换冷却</Name>
+      <Desc>暂时无法再次切换形态。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AntieTideForm">
+      <Name>司潮形态</Name>
+      <Desc>每次使用[潮]提高对敌负面效果时,对该目标额外施加随机1层[虚弱]/[易伤]/[麻痹]/[束缚].</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AntieDreamForm">
+      <Name>司梦形态</Name>
+      <Desc>敌方骰子造成的伤害与混乱伤害降低30%。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AntieFlowForm">
+      <Name>司流形态</Name>
+      <Desc>受[流]强化的骰子命中/反震时,额外造成骰子基础值最大值一半的真实伤害与混乱伤害.</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="SteriaTidalNemesis">
+      <Name>潮汐的死敌</Name>
+      <Desc>被[诛灭仇敌]锁定的单位。标记者与其拼点时骰子基础最大值+2；胜利/平局/失败会触发对应追加效果。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AntieAllDicePowerUp">
+      <Name>所有骰子威力提升</Name>
+      <Desc>本幕所有骰子威力提高等同层数的值。</Desc>
     </BattleEffectText>
   </effectTextList>
 </BattleEffectTextRoot> 

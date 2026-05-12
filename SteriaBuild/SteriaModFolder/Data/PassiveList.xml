@@ -704,4 +704,29 @@
     <Name>曙光庇护</Name>
     <Desc>二阶段激活后:本单位不会陷入[混乱].</Desc>
   </Passive>
+
+  <Passive ID="9011001">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>8</Cost>
+    <Name>神脉：梦之汐-司神-使徒</Name>
+    <Desc>舞台开始时随机激活司潮/司梦/司流形态,并获得3张1费形态切换装备书页。切换形态时将自身[潮]/[梦]/[流]转换为当前形态资源并追加基础层数,再用对应卡组等量替换手牌。敌方单位每2幕随机切换至不同形态。</Desc>
+  </Passive>
+  <Passive ID="9011002">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>5</Cost>
+    <Name>诛灭仇敌</Name>
+    <Desc>本场对局第一次命中敌人时施加[潮汐的死敌].与[潮汐的死敌]拼点时自身骰子基础最大值+2.拼点胜利时造成的伤害/混乱伤害/反震伤害/闪避回复混乱值提高50%;打平时将此骰子移动到书页末尾再次使用;拼点失败时受到的伤害与混乱伤害增加50%.[潮汐的死敌]死亡或撤离后可再次标记.</Desc>
+  </Passive>
 </PassiveXmlRoot>

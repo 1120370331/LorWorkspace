@@ -30,6 +30,28 @@ namespace Steria
         // Storage for dice behaviors that triggered a repeat effect this action
         internal static HashSet<BattleDiceBehavior> _repeatTriggeredDice = new HashSet<BattleDiceBehavior>();
 
+        private static int _tideEnhancementSuppressionDepth;
+
+        public static bool IsTideEnhancementSuppressed => _tideEnhancementSuppressionDepth > 0;
+
+        public static void RunWithoutTideEnhancement(Action action)
+        {
+            if (action == null)
+            {
+                return;
+            }
+
+            _tideEnhancementSuppressionDepth++;
+            try
+            {
+                action();
+            }
+            finally
+            {
+                _tideEnhancementSuppressionDepth = Math.Max(0, _tideEnhancementSuppressionDepth - 1);
+            }
+        }
+
         public static int GetFlowConsumedByCard(BattlePlayingCardDataInUnitModel card) {
             // Manual implementation of GetValueOrDefault
             _flowConsumedByCardAction.TryGetValue(card, out int consumed);
@@ -150,6 +172,9 @@ namespace Steria
             // 艾莉蕾尔流转卡牌
             9007001,  // 暮雾伏击
             9007002,  // 侧闪
+            // 安蒂司流形态
+            9011401,  // 塑海
+            9011402,  // 逆流
             // 在此添加更多具有相同效果的卡牌ID...
         };
 
@@ -333,6 +358,7 @@ namespace Steria
         public static int CheckAndConsumeTideForThorn(BattleUnitModel giver)
         {
             if (giver == null) return 0;
+            if (IsTideEnhancementSuppressed) return 0;
 
             BattleUnitBuf_Tide tideBuf = giver.bufListDetail?.GetActivatedBufList()
                 ?.FirstOrDefault(b => b is BattleUnitBuf_Tide) as BattleUnitBuf_Tide;
@@ -400,7 +426,7 @@ namespace Steria
         /// <summary>
         /// 通知所有相关被动潮被消耗
         /// </summary>
-        public static void NotifyPassivesOnTideConsumed(BattleUnitModel owner, int amount, bool isGolden = false)
+        public static void NotifyPassivesOnTideConsumed(BattleUnitModel owner, int amount, bool isGolden = false, BattleUnitModel enhancedTarget = null, KeywordBuf enhancedBufType = KeywordBuf.None, bool enhancedByTide = false)
         {
             if (owner == null || amount <= 0) return;
 
@@ -412,6 +438,9 @@ namespace Steria
 
             var passive9009004 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9009004) as PassiveAbility_9009004;
             passive9009004?.OnTideConsumed(amount);
+
+            var passive9011001 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9011001) as PassiveAbility_9011001;
+            passive9011001?.OnTideConsumed(amount, enhancedTarget, enhancedBufType, enhancedByTide);
 
             if (isGolden)
             {
@@ -1578,9 +1607,10 @@ namespace Steria
         /// <summary>
         /// 简化版潮加成：只要施加者有潮，就扣1层并额外赋予1层
         /// </summary>
-        private static int CheckAndConsumeTideSimple(BattleUnitModel giver, KeywordBuf bufType)
+        private static int CheckAndConsumeTideSimple(BattleUnitModel giver, KeywordBuf bufType, BattleUnitModel target = null)
         {
             if (giver == null) return 0;
+            if (HarmonyHelpers.IsTideEnhancementSuppressed) return 0;
 
             // 只处理认可的buff类型
             if (!_tideValidBuffTypes.Contains(bufType)) return 0;
@@ -1599,7 +1629,12 @@ namespace Steria
                 tideBuf.stack -= 1;
                 SteriaLogger.Log($"Tide: Giver {giver.UnitData?.unitData?.name} consumed 1 Tide for {bufType}, remaining = {tideBuf.stack}");
             }
-            HarmonyHelpers.NotifyPassivesOnTideConsumed(giver, 1);
+            HarmonyHelpers.NotifyPassivesOnTideConsumed(
+                giver,
+                1,
+                enhancedTarget: target,
+                enhancedBufType: bufType,
+                enhancedByTide: true);
 
             if (!hasStephanieProxy && tideBuf.stack <= 0)
             {
@@ -1621,6 +1656,7 @@ namespace Steria
         private static int CheckAndConsumeGoldenTide(BattleUnitModel giver, BattleUnitModel target, KeywordBuf bufType)
         {
             if (giver == null || target == null) return 0;
+            if (HarmonyHelpers.IsTideEnhancementSuppressed) return 0;
             if (!_goldenTideBuffTypes.Contains(bufType)) return 0;
             if (giver.faction != target.faction) return 0;
 
@@ -1748,7 +1784,7 @@ namespace Steria
                         SteriaLogger.Log($"GoldenTide: Enhanced {bufType} by {goldenBonus}, new stack = {stack}");
                     }
 
-                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType);
+                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType, target);
                     if (tideBonus > 0)
                     {
                         stack += tideBonus;
@@ -1791,7 +1827,7 @@ namespace Steria
                         SteriaLogger.Log($"GoldenTide: Enhanced {bufType} (this round) by {goldenBonus}, new stack = {stack}");
                     }
 
-                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType);
+                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType, target);
                     if (tideBonus > 0)
                     {
                         stack += tideBonus;
@@ -1850,7 +1886,7 @@ namespace Steria
                         SteriaLogger.Log($"GoldenTide: Enhanced {bufType} (by card) by {goldenBonus}, new stack = {stack}");
                     }
 
-                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType);
+                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType, target);
                     if (tideBonus > 0)
                     {
                         stack += tideBonus;
@@ -1887,7 +1923,7 @@ namespace Steria
                         SteriaLogger.Log($"GoldenTide: Enhanced {bufType} (this round by card) by {goldenBonus}, new stack = {stack}");
                     }
 
-                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType);
+                    int tideBonus = goldenBonus > 0 ? 0 : CheckAndConsumeTideSimple(actor, bufType, target);
                     if (tideBonus > 0)
                     {
                         stack += tideBonus;

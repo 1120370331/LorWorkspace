@@ -52,4 +52,13 @@
     <Card>9007005</Card> <!-- 想往哪游呢 -->
     <Card>9007006</Card> <!-- 汐音·夜痕 -->
   </DropTable>
+
+  <DropTable ID="7">
+    <Card>9006001</Card> <!-- 潮汐低语 -->
+    <Card>9006002</Card> <!-- 命运将至 -->
+    <Card>9006003</Card> <!-- 梦中预兆 -->
+    <Card>9006004</Card> <!-- 极乐之境 -->
+    <Card>9006005</Card> <!-- 时溯潮生 -->
+    <Card>9006006</Card> <!-- 时陨汐夺 -->
+  </DropTable>
 </CardDropTableXmlRoot>

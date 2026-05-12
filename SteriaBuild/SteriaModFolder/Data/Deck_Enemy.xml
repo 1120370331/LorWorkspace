@@ -151,4 +151,18 @@
     <Card>9010011</Card> <!-- 我将和黎明一起到来 -->
   </Deck>
 
+
+
+  <!-- 安蒂初始卡组 (对应 Enemy Book ID 13) -->
+  <Deck ID="13">
+    <Card>9011201</Card> <!-- 潮语 x2 -->
+    <Card>9011201</Card>
+    <Card>9011501</Card> <!-- 司神之职 x2 -->
+    <Card>9011501</Card>
+    <Card>9011202</Card> <!-- 汐压 x2 -->
+    <Card>9011202</Card>
+    <Card>9006006</Card> <!-- 时陨汐夺 -->
+    <Card>9011203</Card> <!-- 潮启之刻 -->
+    <Card>9006002</Card> <!-- 命运将至 -->
+  </Deck>
 </DeckXmlRoot>

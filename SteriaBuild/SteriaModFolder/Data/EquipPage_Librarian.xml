@@ -290,4 +290,35 @@
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
+
+
+  <Book ID="99000011">
+    <Name>安蒂</Name>
+    <TextId>-1</TextId>
+    <Option>MultiDeck</Option>
+    <DropTable>7</DropTable>
+    <EquipEffect>
+      <HP>102</HP>
+      <Break>62</Break>
+      <SpeedMin>2</SpeedMin>
+      <Speed>6</Speed>
+      <StartPlayPoint>4</StartPlayPoint>
+      <MaxPlayPoint>4</MaxPlayPoint>
+      <SResist>Endure</SResist>
+      <PResist>Normal</PResist>
+      <HResist>Normal</HResist>
+      <SBResist>Normal</SBResist>
+      <PBResist>Weak</PBResist>
+      <HBResist>Endure</HBResist>
+      <Passive Pid="@origin">10008</Passive>
+      <Passive>9011001</Passive>
+      <Passive>9011002</Passive>
+    </EquipEffect>
+    <Chapter>6</Chapter>
+    <Episode>1</Episode>
+    <Rarity>Unique</Rarity>
+    <RangeType>Hybrid</RangeType>
+    <CharacterSkin>Bada</CharacterSkin>
+    <CharacterSkinType>Lor</CharacterSkinType>
+  </Book>
 </BookXmlRoot>

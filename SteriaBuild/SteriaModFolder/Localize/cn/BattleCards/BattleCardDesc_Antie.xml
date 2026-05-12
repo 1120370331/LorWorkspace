@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CardDescXmlRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <cardDescList>
+    <BattleCardDesc ID="9011101">
+      <Name>司潮形态</Name>
+      <Desc>装备时:切换为司潮形态,并用司潮卡组等量替换手牌。使用后2幕内无法再次切换形态。</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011102">
+      <Name>司梦形态</Name>
+      <Desc>装备时:切换为司梦形态,并用司梦卡组等量替换手牌。使用后2幕内无法再次切换形态。</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011103">
+      <Name>司流形态</Name>
+      <Desc>装备时:切换为司流形态,并用司流卡组等量替换手牌。使用后2幕内无法再次切换形态。</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011501">
+      <Name>司神之职</Name>
+      <Desc>拼点时若本书页骰子基础最大值大于对方最大值,则在拼点失败时强制打平.</Desc>
+      <BehaviourDescList>
+        <BehaviourDesc>命中时:获得等同本骰子基础值层[流]</BehaviourDesc>
+        <BehaviourDesc>命中时:追加本骰子基础值点伤害</BehaviourDesc>
+      </BehaviourDescList>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011201">
+      <Name>潮语</Name>
+      <Desc>使用时:抽取1张书页,获得1层[潮].</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011202">
+      <Name>汐压</Name>
+      <Desc>使用时:消耗至多4层[潮].每消耗1层,依次对目标施加1层[束缚]/[虚弱]/[易伤]/[麻痹].若消耗4层,使目标当前负面效果延续1幕.</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011203">
+      <Name>潮启之刻</Name>
+      <Desc>使用时:消耗至多3层[潮].下一幕获得等同消耗层数的[强壮]与[忍耐].若使用时自身非资源类正面效果总层数不低于6,则本书页骰子威力+3.</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011301">
+      <Name>梦呓</Name>
+      <Desc>使用时:若自身[梦]数量不低于4则获得3层[梦].若高于4,则改为消耗2层[梦],抽取2张书页并恢复2点光芒.</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011302">
+      <Name>深梦</Name>
+      <Desc>使用时:恢复等同自身[梦]层数×2的体力与混乱抗性.下回合获得5层[梦].</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011303">
+      <Name>觉醒</Name>
+      <Desc>使用时:消耗至多6层[梦].每消耗1层[梦],本书页骰子伤害与混乱伤害+25%.若消耗6层[梦],下回合获得1层[所有骰子威力提升].</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011401">
+      <Name>塑海</Name>
+      <Desc>[流转] 使用时:消耗本幕剩余全部光芒.下一幕获得消耗光芒数×3层[流].若至少消耗2点光芒,抽取1张书页.</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011402">
+      <Name>逆流</Name>
+      <Desc>[流转] 使用后:若自身[流]不少于4层,消耗4层[流]并恢复4点光芒;否则若不少于2层,消耗2层[流]并抽取1张书页.</Desc>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011403">
+      <Name>流向裁断</Name>
+      <Desc>拼点时若本书页骰子基础最大值大于对方最大值,则在拼点失败时强制打平.</Desc>
+      <BehaviourDescList>
+        <BehaviourDesc>命中时:获得等同本骰子基础值层[流]</BehaviourDesc>
+        <BehaviourDesc>命中时:追加本骰子基础值点伤害</BehaviourDesc>
+      </BehaviourDescList>
+    </BattleCardDesc>
+  </cardDescList>
+</CardDescXmlRoot>

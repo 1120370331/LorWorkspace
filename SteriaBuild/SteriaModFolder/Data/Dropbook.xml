@@ -117,4 +117,30 @@
     <DropItem Type="Card">9010104</DropItem>
     <DropItem Type="Card">9010105</DropItem>
   </BookUse>
+
+  <BookUse ID="11">
+    <Name>安蒂之书</Name>
+    <TextId />
+    <BookIcon />
+    <Chapter>6</Chapter>
+    <BookValue>0</BookValue>
+    <DropItemState>All</DropItemState>
+    <DropItem Type="Equip">99000011</DropItem>
+    <DropItem Type="Card">9006001</DropItem>
+    <DropItem Type="Card">9006002</DropItem>
+    <DropItem Type="Card">9006003</DropItem>
+    <DropItem Type="Card">9006004</DropItem>
+    <DropItem Type="Card">9006005</DropItem>
+    <DropItem Type="Card">9006006</DropItem>
+    <DropItem Type="Card">9011201</DropItem>
+    <DropItem Type="Card">9011202</DropItem>
+    <DropItem Type="Card">9011203</DropItem>
+    <DropItem Type="Card">9011301</DropItem>
+    <DropItem Type="Card">9011302</DropItem>
+    <DropItem Type="Card">9011303</DropItem>
+    <DropItem Type="Card">9011401</DropItem>
+    <DropItem Type="Card">9011402</DropItem>
+    <DropItem Type="Card">9011403</DropItem>
+    <DropItem Type="Card">9011501</DropItem>
+  </BookUse>
 </BookUseXmlRoot>
