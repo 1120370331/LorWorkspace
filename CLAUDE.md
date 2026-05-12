@@ -78,14 +78,15 @@ cd c:\Users\rog\WorkSpace\projects\games\lor\SteriaBuild && dotnet build Steria.
 ## 流机制说明
 
 ### 流消耗逻辑
-- 使用书页时，消耗所有流层数
-- 流层数循环分配给骰子，每1层流给1颗骰子+1威力
-- 特殊卡牌（如清司风流 ID:9001008）只获得加成而不消耗流
+- 使用书页时，按非反击骰子数量消耗流
+- 每1层流给1颗骰子+1威力
+- [流转]书页正常消耗流获得加成，并在下回合开始时返还本书页实际消耗的流
+- [幻梦]书页可指向友方行动槽，消耗本书页光芒消耗+1层梦，将0费[佚亡]复制置入目标手中；梦不足则不能触发
 
-### 添加新的"只获得流加成而不消耗流"的卡牌
-在 `HarmonyPatches.cs` 的 `_flowBonusOnlyCardIds` 集合中添加卡牌ID：
+### 添加新的"[流转]"卡牌
+在 `HarmonyPatches.cs` 的 `_flowTransferCardIds` 集合中添加卡牌ID：
 ```csharp
-private static readonly HashSet<int> _flowBonusOnlyCardIds = new HashSet<int>
+private static readonly HashSet<int> _flowTransferCardIds = new HashSet<int>
 {
     9001008,  // 清司风流
     // 在此添加更多卡牌ID...

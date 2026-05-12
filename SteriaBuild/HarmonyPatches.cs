@@ -155,9 +155,12 @@ namespace Steria
             }
         }
 
-        // 不消耗流、只获得加成的卡牌ID集合（流转卡牌）
+        private const string _flowTransferKeywordId = "SteriaFlowTransfer";
+        private const string _phantomDreamKeywordId = "SteriaPhantomDream";
+
+        // 流转卡牌ID集合：正常消耗流获得加成，并在下回合开始时返还实际消耗的流
         // 添加新卡牌时只需在此集合中添加对应ID即可
-        private static readonly HashSet<int> _flowBonusOnlyCardIds = new HashSet<int>
+        private static readonly HashSet<int> _flowTransferCardIds = new HashSet<int>
         {
             9001001,  // 拙劣控流
             9001007,  // 内调之流
@@ -172,6 +175,9 @@ namespace Steria
             // 艾莉蕾尔流转卡牌
             9007001,  // 暮雾伏击
             9007002,  // 侧闪
+            // 克丽丝塔夏流转卡牌
+            9010009,  // 随流而来，伴流而去
+            9010010,  // 深渊之中，太阳升起
             // 安蒂司流形态
             9011401,  // 塑海
             9011402,  // 逆流
@@ -390,11 +396,153 @@ namespace Steria
         }
 
         /// <summary>
-        /// 检查卡牌是否具有"只获得流加成而不消耗流"的效果
+        /// 检查卡牌是否具有"流转"效果
+        /// </summary>
+        public static bool IsFlowTransferCard(int cardId)
+        {
+            return _flowTransferCardIds.Contains(cardId);
+        }
+
+        internal static bool HasFlowTransferKeyword(BattlePlayingCardDataInUnitModel card)
+        {
+            if (card?.card?.XmlData?.Keywords != null && card.card.XmlData.Keywords.Contains(_flowTransferKeywordId))
+            {
+                return true;
+            }
+
+            string[] abilityKeywords = card?.cardAbility?.Keywords;
+            if (abilityKeywords != null)
+            {
+                for (int i = 0; i < abilityKeywords.Length; i++)
+                {
+                    if (abilityKeywords[i] == _flowTransferKeywordId)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        internal static bool IsPhantomDreamCard(BattleDiceCardModel card)
+        {
+            return card?.XmlData?.Keywords != null && card.XmlData.Keywords.Contains(_phantomDreamKeywordId);
+        }
+
+        internal static int GetPhantomDreamCost(BattleDiceCardModel card)
+        {
+            return Math.Max(1, Math.Max(0, card?.GetCost() ?? 0) + 1);
+        }
+
+        internal static bool CanTargetAllyWithPhantomDream(BattleDiceCardModel card, BattleUnitModel actor, BattleUnitModel target, int targetDiceIdx)
+        {
+            if (!IsPhantomDreamCard(card) || actor == null || target == null || actor == target)
+            {
+                return false;
+            }
+
+            if (card.XmlData.IsEgo() || card.XmlData.IsPersonal() || card.XmlData.IsFloorEgo())
+            {
+                return false;
+            }
+
+            if (actor.faction != target.faction || SivierCardHelper.GetDreamCount(actor) < GetPhantomDreamCost(card))
+            {
+                return false;
+            }
+
+            if (target.bufListDetail == null || !target.bufListDetail.IsControlable() || target.TeamKill() || !target.IsTargetable(actor))
+            {
+                return false;
+            }
+
+            if (targetDiceIdx >= 0)
+            {
+                if (target.speedDiceResult == null || targetDiceIdx >= target.speedDiceResult.Count || !target.speedDiceResult[targetDiceIdx].isControlable)
+                {
+                    return false;
+                }
+            }
+
+            List<BattleUnitModel> fixedTargets = actor.GetFixedTargets();
+            if (fixedTargets != null && fixedTargets.Count > 0 && !fixedTargets.Contains(target))
+            {
+                return false;
+            }
+
+            return card.IsValidTarget(actor, card, target);
+        }
+
+        internal static bool TryResolvePhantomDreamTransfer(BattleUnitModel owner, BattleDiceCardModel sourceCard, BattleUnitModel target, int targetDiceIdx = -1)
+        {
+            if (!CanTargetAllyWithPhantomDream(sourceCard, owner, target, targetDiceIdx))
+            {
+                return false;
+            }
+
+            int dream = SivierCardHelper.GetDreamCount(owner);
+            int dreamToConsume = GetPhantomDreamCost(sourceCard);
+            if (dream < dreamToConsume)
+            {
+                SteriaLogger.Log($"PhantomDream: not enough Dream to consume, required {dreamToConsume}, current {dream}");
+                return false;
+            }
+
+            if (owner.allyCardDetail == null || target.allyCardDetail == null)
+            {
+                return false;
+            }
+
+            BattleDiceCardModel copiedCard = BattleDiceCardModel.CreatePlayingCard(sourceCard.XmlData);
+            if (copiedCard == null)
+            {
+                return false;
+            }
+
+            copiedCard.owner = target;
+            copiedCard.SetCurrentCost(0);
+            copiedCard.SetCostToZero(true);
+            copiedCard.temporary = true;
+            copiedCard.isCopiedCard = true;
+
+            if (copiedCard.XmlData.optionList == null)
+            {
+                copiedCard.XmlData.optionList = new List<CardOption>();
+            }
+            if (!copiedCard.XmlData.optionList.Contains(CardOption.ExhaustOnUse))
+            {
+                copiedCard.XmlData.optionList.Add(CardOption.ExhaustOnUse);
+            }
+            if (copiedCard.XmlData.Keywords == null)
+            {
+                copiedCard.XmlData.Keywords = new List<string>();
+            }
+            if (!copiedCard.XmlData.Keywords.Contains(_phantomDreamKeywordId))
+            {
+                copiedCard.XmlData.Keywords.Add(_phantomDreamKeywordId);
+            }
+
+            owner.allyCardDetail.UseCard(sourceCard);
+            owner.SpendCardAndCost(sourceCard);
+            SivierCardHelper.ConsumeDream(owner, dreamToConsume);
+            target.allyCardDetail.AddCardToHand(copiedCard, false);
+
+            BattleUnitBuf_DreamIllusion dreamIllusion = owner.bufListDetail?.GetActivatedBufList()
+                ?.FirstOrDefault(b => b is BattleUnitBuf_DreamIllusion) as BattleUnitBuf_DreamIllusion;
+            dreamIllusion?.OnCardUsed();
+
+            SingletonBehavior<BattleManagerUI>.Instance?.ui_unitCardsInHand?.UpdateCardList();
+            SteriaLogger.Log($"PhantomDream: {owner.UnitData?.unitData?.name} consumed {dreamToConsume} Dream to transfer a 0-cost exhausted copy of {sourceCard.GetName()} to {target.UnitData?.unitData?.name}");
+            return true;
+        }
+
+        /// <summary>
+        /// 兼容旧调用名：当前含义为"流转"卡牌。
         /// </summary>
         public static bool IsFlowBonusOnlyCard(int cardId)
         {
-            return _flowBonusOnlyCardIds.Contains(cardId);
+            return IsFlowTransferCard(cardId);
         }
 
         /// <summary>
@@ -433,8 +581,7 @@ namespace Steria
             var passive9006001 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9006001) as PassiveAbility_9006001;
             passive9006001?.OnTideConsumed(amount);
 
-            var passive9009002 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9009002) as PassiveAbility_9009002;
-            passive9009002?.OnTideConsumed(amount);
+            // PassiveAbility_9009002 (金色的乐章) 旧版的"乐谱进度"已随乐章型骰子重制移除，不再监听潮消耗。
 
             var passive9009004 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9009004) as PassiveAbility_9009004;
             passive9009004?.OnTideConsumed(amount);
@@ -455,17 +602,47 @@ namespace Steria
         }
 
         /// <summary>
-        /// 注册新的"只获得流加成而不消耗流"的卡牌ID（运行时动态添加）
+        /// 注册新的"流转"卡牌ID（运行时动态添加）
+        /// </summary>
+        public static void RegisterFlowTransferCard(int cardId)
+        {
+            _flowTransferCardIds.Add(cardId);
+            SteriaLogger.Log($"Registered card ID {cardId} as FlowTransfer card");
+        }
+
+        /// <summary>
+        /// 兼容旧调用名：当前含义为注册"流转"卡牌。
         /// </summary>
         public static void RegisterFlowBonusOnlyCard(int cardId)
         {
-            _flowBonusOnlyCardIds.Add(cardId);
-            SteriaLogger.Log($"Registered card ID {cardId} as FlowBonusOnly card");
+            RegisterFlowTransferCard(cardId);
+        }
+
+        private static void ScheduleFlowTransferRefund(BattleUnitModel owner, int amount, int cardId)
+        {
+            if (owner == null || owner.bufListDetail == null || amount <= 0)
+            {
+                return;
+            }
+
+            BattleUnitBuf_FlowTransferRefundNextRound existing = owner.bufListDetail.GetActivatedBufList()
+                ?.FirstOrDefault(b => b is BattleUnitBuf_FlowTransferRefundNextRound) as BattleUnitBuf_FlowTransferRefundNextRound;
+
+            if (existing != null)
+            {
+                existing.stack += amount;
+            }
+            else
+            {
+                owner.bufListDetail.AddBuf(new BattleUnitBuf_FlowTransferRefundNextRound { stack = amount });
+            }
+
+            SteriaLogger.Log($"FlowTransfer: Card {cardId} will refund {amount} Flow next round");
         }
 
         // Method called when a card is about to be used
         // 新逻辑：所有书页都会消耗流，在使用时一次性分配威力加成
-        // 特殊：_flowBonusOnlyCardIds 中的卡牌只获得加成而不消耗流
+        // 特殊：_flowTransferCardIds 中的卡牌会在下回合开始时返还实际消耗的流
         // 注意：Standby 骰子被忽略，不参与流加成分配
         public static void RegisterCardUsage(BattlePlayingCardDataInUnitModel card)
         {
@@ -511,13 +688,12 @@ namespace Steria
             int cardId = card.card.GetID().id;
             bool hasStephanieProxy = global::DirectiveDreamHelper.HasStephanieProxy(card.owner);
 
-            // 检查是否是"流转"卡牌（不受流影响：不获得加成也不消耗流）
+            // 检查是否是"流转"卡牌：正常消耗流获得加成，下回合开始时返还实际消耗的流
             // 代行-斯蒂芬妮：流转效果失效，改为按普通消耗流书页处理
-            bool isFlowTransfer = IsFlowBonusOnlyCard(cardId);
+            bool isFlowTransfer = IsFlowTransferCard(cardId) || HasFlowTransferKeyword(card);
             if (isFlowTransfer && !hasStephanieProxy)
             {
-                SteriaLogger.Log($"RegisterCardUsage: [流转] card detected (ID: {cardId}) - not affected by flow");
-                return; // 流转卡牌完全不受流影响，直接返回
+                SteriaLogger.Log($"RegisterCardUsage: [流转] card detected (ID: {cardId}) - consumed Flow will be returned next round");
             }
             if (isFlowTransfer && hasStephanieProxy)
             {
@@ -533,10 +709,16 @@ namespace Steria
                 _massAttackFlowConsumed[card] = flowStacks;
 
                 // 代行-斯蒂芬妮：消耗视为成功触发，但层数不减少
+                int actualConsumed = hasStephanieProxy ? 0 : flowStacks;
                 if (!hasStephanieProxy)
                 {
                     flowBuf.stack = 0;
                     flowBuf.Destroy();
+                }
+
+                if (isFlowTransfer && !hasStephanieProxy && actualConsumed > 0)
+                {
+                    ScheduleFlowTransferRefund(card.owner, actualConsumed, cardId);
                 }
 
                 // 通知被动
@@ -640,6 +822,11 @@ namespace Steria
                     flowBuf.Destroy();
                 }
                 SteriaLogger.Log($"RegisterCardUsage: Consumed {totalConsumed} flow, remaining: {flowBuf?.stack ?? 0}");
+            }
+
+            if (isFlowTransfer && !hasStephanieProxy && !noConsumption && totalConsumed > 0)
+            {
+                ScheduleFlowTransferRefund(card.owner, totalConsumed, cardId);
             }
 
             // 记录流消耗（供卡牌能力查询）
@@ -1113,26 +1300,7 @@ namespace Steria
             {
                 // PassiveAbility_9000004 现在使用实例变量，Init时自动重置，不需要手动重置
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset all discard counts for 以执为攻
-                MusicScoreSystem.InitializeForBattle();
                 Debug.Log("[Steria] StartBattle: Reset discard counts");
-            }
-        }
-
-        // --- 初始化乐谱UI占位 ---
-        [HarmonyPatch(typeof(BattleManagerUI), nameof(BattleManagerUI.Init))]
-        public static class BattleManagerUI_Init_MusicScoreUI_Patch
-        {
-            [HarmonyPostfix]
-            public static void Postfix()
-            {
-                try
-                {
-                    MusicScoreUI.UpdateAll();
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"[Steria] MusicScoreUI Init error: {ex}");
-                }
             }
         }
 
@@ -1147,8 +1315,6 @@ namespace Steria
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset discard counts
                 DiceCardSelfAbility_ChristashaGlory.ClearStoredGrowth();
                 ChristashaAbilityHelper.ClearTwinStarTideConsumed();
-                MusicScoreSystem.ResetAll();
-                MusicScoreUI.DestroyUI();
                 Debug.Log("[Steria] EndBattle: Reset discard counts");
             }
         }
@@ -1164,8 +1330,6 @@ namespace Steria
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset discard counts
                 DiceCardSelfAbility_ChristashaGlory.ClearStoredGrowth();
                 ChristashaAbilityHelper.ClearTwinStarTideConsumed();
-                MusicScoreSystem.ResetAll();
-                MusicScoreUI.DestroyUI();
                 Debug.Log("[Steria] CloseBattleScene: Reset discard counts");
             }
         }
@@ -1178,7 +1342,6 @@ namespace Steria
             public static void Postfix()
             {
                 DiceCardSelfAbility_AnhierDiscardPowerUp.ResetAllDiscardCounts(); // Reset all discard counts at wave start
-                MusicScoreSystem.RefreshTracksFromDecks();
                 Debug.Log("[Steria] SetCurrentWave: Reset discard counts for 以执为攻");
             }
         }
@@ -2031,6 +2194,26 @@ namespace Steria
             }
         }
 
+        [HarmonyPatch(typeof(BattleUnitModel), "IsTargetableUnit")]
+        public static class BattleUnitModel_IsTargetableUnit_PhantomDreamPatch
+        {
+            [HarmonyPostfix]
+            public static void Postfix(BattleDiceCardModel card, BattleUnitModel actor, BattleUnitModel target, int targetDiceIdx, ref bool __result)
+            {
+                try
+                {
+                    if (!__result && HarmonyHelpers.CanTargetAllyWithPhantomDream(card, actor, target, targetDiceIdx))
+                    {
+                        __result = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Steria] PhantomDream target patch error: {ex}");
+                }
+            }
+        }
+
         [HarmonyPatch(typeof(BattlePlayingCardSlotDetail), "AddCard")]
         public static class BattlePlayingCardSlotDetail_AddCard_ExtendLockPatch
         {
@@ -2059,6 +2242,11 @@ namespace Steria
 
                     BattlePlayingCardDataInUnitModel existing = __instance.cardAry[slot];
                     if (BattleUnitBuf_ChristashaExtend.IsLockedAction(existing))
+                    {
+                        return false;
+                    }
+
+                    if (HarmonyHelpers.TryResolvePhantomDreamTransfer(owner, card, target, targetSlot))
                     {
                         return false;
                     }
@@ -2405,56 +2593,460 @@ namespace Steria
         }
     }
 
-    // --- 乐章型骰子：命中/防御成功时推进乐谱进度 ---
+    // ==============================================================
+    // 乐章型骰子（Music dice）补丁集合
+    // ==============================================================
+
+    /// <summary>
+    /// 乐章型骰子伤害结算：
+    ///   - 进入 GiveDamage 前压入 MusicDamageContext
+    ///   - 上下文激活时，BookModel.GetResistRate 会按"先体力(1.0)、再混乱(1.25)"返回固定乘数，
+    ///     而非按敌人 Slash/Penetrate/Hit 抗性。
+    /// </summary>
     [HarmonyPatch(typeof(BattleDiceBehavior), nameof(BattleDiceBehavior.GiveDamage))]
-    public static class BattleDiceBehavior_GiveDamage_MusicScorePatch
+    public static class BattleDiceBehavior_GiveDamage_MusicDicePatch
     {
-        [HarmonyPostfix]
-        public static void Postfix(BattleDiceBehavior __instance)
+        [HarmonyPrefix]
+        public static void Prefix(BattleDiceBehavior __instance, BattleUnitModel target)
         {
             try
             {
-                // Deprecated hook: use per-dice succeed hooks for accurate per-die timing.
-                return;
+                if (target != null && MusicDiceSystem.IsMusicDiceBehaviour(__instance))
+                {
+                    MusicDamageContext.Enter(target);
+                }
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Steria] MusicScore GiveDamage patch error: {ex}");
+                Debug.LogError($"[Steria] Music dice GiveDamage Prefix error: {ex}");
+            }
+        }
+
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceBehavior __instance, BattleUnitModel target)
+        {
+            try
+            {
+                if (target != null && MusicDiceSystem.IsMusicDiceBehaviour(__instance))
+                {
+                    MusicDamageContext.Exit();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice GiveDamage Postfix error: {ex}");
             }
         }
     }
 
-    [HarmonyPatch(typeof(BattleDiceBehavior), nameof(BattleDiceBehavior.GiveDeflectDamage))]
-    public static class BattleDiceBehavior_GiveDeflectDamage_MusicScorePatch
+    /// <summary>
+    /// 替换 BookModel.GetResistRate 的返回值：
+    ///   - 处于 MusicDamageContext 时，第 1 次调用 = 体力(1.0×乐章抗性)，第 2 次 = 混乱(1.25×乐章抗性)
+    ///   - 其余情况走原逻辑
+    /// </summary>
+    [HarmonyPatch(typeof(BookModel), nameof(BookModel.GetResistRate))]
+    public static class BookModel_GetResistRate_MusicDicePatch
     {
-        [HarmonyPostfix]
-        public static void Postfix(BattleDiceBehavior __instance)
+        [HarmonyPrefix]
+        public static bool Prefix(AtkResist atkResist, ref float __result)
+        {
+            if (!MusicDamageContext.IsActive)
+            {
+                return true;
+            }
+
+            float? overrideRate = MusicDamageContext.NextResistRate();
+            if (overrideRate.HasValue)
+            {
+                __result = overrideRate.Value;
+                return false;
+            }
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// 乐章型骰子与防御型骰子拼点时，跳过拼点：
+    ///   - 乐章方强制判定为胜方
+    ///   - 防御方"当前防御骰"被移动到本张书页骰子队列末尾（不消耗、推后使用）
+    ///
+    /// 时机说明：Decision() 末尾就直接调用 ActionPhase()，因此挂 Decision Postfix 会太晚
+    /// （vanilla ActionPhase 已按错误胜负执行了动作）。改在 ActionPhase Prefix 里改写胜负字段，
+    /// 同时把防御方的 currentBehavior 临时挪空，让 vanilla ActionPhaseAtkVSDfn 走"无防御方"分支，
+    /// 直接给乐章方造成伤害。
+    /// </summary>
+    [HarmonyPatch(typeof(BattleParryingManager), "ActionPhase")]
+    public static class BattleParryingManager_ActionPhase_MusicSkipPatch
+    {
+        [HarmonyPrefix]
+        public static void Prefix(BattleParryingManager __instance)
         {
             try
             {
-                // Deprecated hook: use per-dice succeed hooks for accurate per-die timing.
-                return;
+                MusicDiceClashRouter.TryRouteMusicVsDefense(__instance);
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Steria] MusicScore GiveDeflectDamage patch error: {ex}");
+                Debug.LogError($"[Steria] Music vs Defense skip patch error: {ex}");
             }
         }
     }
 
-    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnWinParryingDefense))]
-    public static class BattlePlayingCardDataInUnitModel_OnWinParryingDefense_MusicScorePatch
+    /// <summary>
+    /// EndAction 末尾会调用 CheckParryingEnd 进入下一轮 Decision。
+    /// 在它之前把被乐章跳过拼点的防御骰从队列推回 currentBehavior，
+    /// 这样下一轮 Decision 看到的就是新的当前骰，被推后的那颗已挪到队列末尾。
+    /// </summary>
+    [HarmonyPatch(typeof(BattleParryingManager), "CheckParryingEnd")]
+    public static class BattleParryingManager_CheckParryingEnd_MusicDicePatch
     {
-        [HarmonyPostfix]
-        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
+        [HarmonyPrefix]
+        public static void Prefix()
         {
             try
             {
-                MusicScoreSystem.TryAddScoreFromBehavior(__instance?.currentBehavior);
+                MusicDiceClashRouter.OnBeforeCheckParryingEnd();
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Steria] MusicScore OnWinParryingDefense patch error: {ex}");
+                Debug.LogError($"[Steria] Music vs Defense CheckParryingEnd prefix error: {ex}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 处理"乐章型骰子 vs 防御型骰子"的特殊拼点路由：
+    ///   1. 检测当前 Decision 阶段两侧骰子是否构成 音乐 vs 防御
+    ///   2. 强制把乐章方设为胜方、防御方设为败方
+    ///   3. 立刻把防御方的 currentBehavior 重新入队到本张书页末尾（不销毁），并清空 currentBehavior
+    ///      这样接下来 ActionPhaseAtkVSDfn 会走"防御侧无骰子"分支，直接由攻击侧给伤害。
+    /// </summary>
+    internal static class MusicDiceClashRouter
+    {
+        /// <summary>
+        /// 当前正在等待"在 CheckParryingEnd 之前推进队列"的防御方书页。
+        /// 用 ThreadStatic 防止跨线程串扰；正常游戏单线程，仅作保险。
+        /// </summary>
+        [ThreadStatic] private static BattlePlayingCardDataInUnitModel _pendingDefenseCard;
+
+        public static void TryRouteMusicVsDefense(BattleParryingManager mgr)
+        {
+            if (mgr == null)
+            {
+                return;
+            }
+
+            var enemyTeam = AccessTools.Field(typeof(BattleParryingManager), "_teamEnemy")?.GetValue(mgr)
+                as BattleParryingManager.ParryingTeam;
+            var libTeam = AccessTools.Field(typeof(BattleParryingManager), "_teamLibrarian")?.GetValue(mgr)
+                as BattleParryingManager.ParryingTeam;
+            if (enemyTeam == null || libTeam == null)
+            {
+                return;
+            }
+            if (!enemyTeam.DiceExists() || !libTeam.DiceExists())
+            {
+                return;
+            }
+
+            var enemyBehavior = enemyTeam.playingCard?.currentBehavior;
+            var libBehavior = libTeam.playingCard?.currentBehavior;
+            if (enemyBehavior == null || libBehavior == null)
+            {
+                return;
+            }
+
+            bool enemyIsMusic = MusicDiceSystem.IsMusicDiceBehaviour(enemyBehavior);
+            bool libIsMusic = MusicDiceSystem.IsMusicDiceBehaviour(libBehavior);
+            bool enemyIsDefense = enemyTeam.GetParryingDiceType() == BattleParryingManager.ParryingDiceType.Defense;
+            bool libIsDefense = libTeam.GetParryingDiceType() == BattleParryingManager.ParryingDiceType.Defense;
+
+            BattleParryingManager.ParryingTeam musicTeam = null;
+            BattleParryingManager.ParryingTeam defenseTeam = null;
+            BattleParryingManager.ParryingDecisionResult forcedResult;
+
+            if (enemyIsMusic && libIsDefense)
+            {
+                musicTeam = enemyTeam;
+                defenseTeam = libTeam;
+                forcedResult = BattleParryingManager.ParryingDecisionResult.WinEnemy;
+            }
+            else if (libIsMusic && enemyIsDefense)
+            {
+                musicTeam = libTeam;
+                defenseTeam = enemyTeam;
+                forcedResult = BattleParryingManager.ParryingDecisionResult.WinLibrarian;
+            }
+            else
+            {
+                return;
+            }
+
+            // 1) 改写胜负 / 攻防字段，让 vanilla ActionPhase 进入 Atk vs Dfn 分支。
+            ForceClashResult(mgr, forcedResult, musicTeam, defenseTeam);
+
+            // 2) 把防御方当前骰挪到队列末尾，并暂时清空 currentBehavior，
+            //    让 vanilla ActionPhaseAtkVSDfn 走 "!DiceExists" 路径，直接对单位造成乐章伤害。
+            BattlePlayingCardDataInUnitModel deferredCard = DeferDefenseBehavior(defenseTeam);
+
+            // 3) 记下要在下一次 CheckParryingEnd 之前推进的书页。
+            _pendingDefenseCard = deferredCard;
+
+            SteriaLogger.Log($"MusicDice clash skip: music={GetUnitName(musicTeam)}, defense={GetUnitName(defenseTeam)}");
+        }
+
+        /// <summary>
+        /// 在 vanilla CheckParryingEnd 真正运行前，让被推迟的防御方书页前进一格，
+        /// 这样下一次 Decision 看到的是队列里"原本应该是下一颗"的骰子；
+        /// 而我们刚才挪到队尾的那颗会自然在更后面的回合再次掷骰。
+        /// </summary>
+        public static void OnBeforeCheckParryingEnd()
+        {
+            BattlePlayingCardDataInUnitModel card = _pendingDefenseCard;
+            if (card == null)
+            {
+                return;
+            }
+            _pendingDefenseCard = null;
+
+            // 若单位已死 / extinction / 无可用骰，跳过即可（NextDice 自身也会判断队列）。
+            try
+            {
+                card.NextDice();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music vs Defense deferred NextDice error: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// 把防御方当前的 currentBehavior 推到本张书页骰子队列末尾，并清空 currentBehavior /
+        /// currentBehaviorUI（让 DiceExists() 暂时返回 false）。
+        /// 不调用 DestroyDice、不修改 isUsed 之外的字段，骰子稍后会被 NextDice 重新取出来再次掷点。
+        /// </summary>
+        private static BattlePlayingCardDataInUnitModel DeferDefenseBehavior(BattleParryingManager.ParryingTeam defenseTeam)
+        {
+            BattlePlayingCardDataInUnitModel playingCard = defenseTeam?.playingCard;
+            BattleDiceBehavior behavior = playingCard?.currentBehavior;
+            if (playingCard == null || behavior == null)
+            {
+                return null;
+            }
+
+            // RollDice 会把 isUsed 置为 true；这里复位让它能再次进入掷骰流程。
+            behavior.isUsed = false;
+            playingCard.AddDice(behavior);
+            playingCard.currentBehavior = null;
+            playingCard.currentBehaviorUI = null;
+            return playingCard;
+        }
+
+        private static void ForceClashResult(
+            BattleParryingManager mgr,
+            BattleParryingManager.ParryingDecisionResult result,
+            BattleParryingManager.ParryingTeam winner,
+            BattleParryingManager.ParryingTeam loser)
+        {
+            AccessTools.Field(typeof(BattleParryingManager), "_decisionResult")?.SetValue(mgr, result);
+            AccessTools.Field(typeof(BattleParryingManager), "_currentWinnerTeam")?.SetValue(mgr, winner);
+            AccessTools.Field(typeof(BattleParryingManager), "_currentLoserTeam")?.SetValue(mgr, loser);
+            AccessTools.Field(typeof(BattleParryingManager), "_currentAttackerTeam")?.SetValue(mgr, winner);
+            AccessTools.Field(typeof(BattleParryingManager), "_currentDefenderTeam")?.SetValue(mgr, loser);
+        }
+
+        private static string GetUnitName(BattleParryingManager.ParryingTeam team)
+        {
+            try
+            {
+                return team?.unit?.UnitData?.unitData?.name ?? "?";
+            }
+            catch
+            {
+                return "?";
+            }
+        }
+    }
+
+    /// <summary>
+    /// 拦截原版"强壮"对乐章型骰子的威力加成。
+    /// </summary>
+    [HarmonyPatch(typeof(BattleUnitBuf_strength), nameof(BattleUnitBuf_strength.BeforeRollDice))]
+    public static class BattleUnitBuf_strength_MusicDicePatch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(BattleDiceBehavior behavior)
+        {
+            return !MusicDiceSystem.IsMusicDiceBehaviour(behavior);
+        }
+    }
+
+    /// <summary>
+    /// 拦截原版"忍耐"对乐章型骰子的影响。乐章型骰子不是防御骰，理论上不会被命中，
+    /// 但为契合需求显式忽略，避免未来扩展时出现意外。
+    /// </summary>
+    [HarmonyPatch(typeof(BattleUnitBuf_endurance), nameof(BattleUnitBuf_endurance.BeforeRollDice))]
+    public static class BattleUnitBuf_endurance_MusicDicePatch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(BattleDiceBehavior behavior)
+        {
+            return !MusicDiceSystem.IsMusicDiceBehaviour(behavior);
+        }
+    }
+
+    /// <summary>
+    /// 拦截"进攻型骰子伤害增加"类原版 buff（dmgUp / slash / hit / penetrate / allPowerUp 等），
+    /// 让乐章型骰子不被原版攻击系威力 / 伤害加成增强。
+    /// </summary>
+    [HarmonyPatch(typeof(BattleUnitBuf_dmgUp), nameof(BattleUnitBuf_dmgUp.BeforeGiveDamage))]
+    public static class BattleUnitBuf_dmgUp_MusicDicePatch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(BattleDiceBehavior behavior)
+        {
+            return !MusicDiceSystem.IsMusicDiceBehaviour(behavior);
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleUnitBuf_slashPowerUp), nameof(BattleUnitBuf_slashPowerUp.BeforeRollDice))]
+    public static class BattleUnitBuf_slashPowerUp_MusicDicePatch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(BattleDiceBehavior behavior)
+        {
+            return !MusicDiceSystem.IsMusicDiceBehaviour(behavior);
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleUnitBuf_hitPowerUp), nameof(BattleUnitBuf_hitPowerUp.BeforeRollDice))]
+    public static class BattleUnitBuf_hitPowerUp_MusicDicePatch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(BattleDiceBehavior behavior)
+        {
+            return !MusicDiceSystem.IsMusicDiceBehaviour(behavior);
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleUnitBuf_penetratePowerUp), nameof(BattleUnitBuf_penetratePowerUp.BeforeRollDice))]
+    public static class BattleUnitBuf_penetratePowerUp_MusicDicePatch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(BattleDiceBehavior behavior)
+        {
+            return !MusicDiceSystem.IsMusicDiceBehaviour(behavior);
+        }
+    }
+
+    // 注：`BattleUnitBuf_AllPowerUp`（"所有骰子威力提升"）是非指定型加成，
+    // 按设计应当能正常生效到乐章型骰子。此处不再拦截。
+    // 类似地，影响 min/max 的书页效果（渐强 / 渐弱）以及其他"全骰子向"加成
+    // 都不在 *_MusicDicePatch 拦截范围之内。
+
+    // 注：以前这里有一个 BattleDiceBehavior_ApplyDiceStatBonus_MusicDicePatch 全局拦截器，
+    // 会无脑把乐章骰子的 power/dmg/dmgRate/breakRate 清零；现已移除，让本 mod 的骰子加成
+    // （流 +N、梦 -1、潮、潮之启示等）都能正常作用在乐章骰子上。
+    // 原版"强壮 / 忍耐 / 进攻骰威力提升 / 伤害+"等仍由各自专属的 *_MusicDicePatch
+    // （Prefix return false）在调用 ApplyDiceStatBonus 之前就被拦截。
+
+    // --- 乐章型骰子：UI 蓝白渐变 ---
+    [HarmonyPatch(typeof(BattleSimpleActionUI_Dice), "PrepareDice", new Type[] { typeof(List<BattleCardBehaviourResult>) })]
+    public static class BattleSimpleActionUI_Dice_PrepareDice_List_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleSimpleActionUI_Dice __instance)
+        {
+            try
+            {
+                if (__instance == null || !MusicDiceSystem.IsMusicCard(__instance.cardOfBehaviour))
+                {
+                    return;
+                }
+
+                MusicDiceVisuals.ApplyOnActionDice(__instance);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice UI patch (list) error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleSimpleActionUI_Dice), "PrepareDice", new Type[] { typeof(BattleDiceBehaviourUI) })]
+    public static class BattleSimpleActionUI_Dice_PrepareDice_Behavior_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleSimpleActionUI_Dice __instance)
+        {
+            try
+            {
+                if (__instance == null || !MusicDiceSystem.IsMusicCard(__instance.cardOfBehaviour))
+                {
+                    return;
+                }
+
+                MusicDiceVisuals.ApplyOnActionDice(__instance);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice UI patch (behavior) error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleDiceCardUI), nameof(BattleDiceCardUI.SetCard))]
+    public static class BattleDiceCardUI_SetCard_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceCardUI __instance)
+        {
+            try
+            {
+                MusicDiceVisuals.ApplyOnCardUI(__instance);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice card UI patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleDiceCardUI), nameof(BattleDiceCardUI.SetPreviewResist))]
+    public static class BattleDiceCardUI_SetPreviewResist_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceCardUI __instance)
+        {
+            try
+            {
+                MusicDiceVisuals.ApplyOnCardUI(__instance);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice preview resist patch error: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleDiceCard_BehaviourDescUI), "SetBehaviourInfo")]
+    public static class BattleDiceCard_BehaviourDescUI_SetBehaviourInfo_MusicStyle_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleDiceCard_BehaviourDescUI __instance, DiceBehaviour behaviour, LorId cardId, List<DiceBehaviour> behaviourList, bool isHide)
+        {
+            try
+            {
+                if (__instance == null || isHide)
+                {
+                    return;
+                }
+
+                MusicDiceVisuals.ApplyOnDescUI(__instance, cardId, behaviour);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music dice behaviour desc patch error: {ex}");
             }
         }
     }
@@ -2511,52 +3103,12 @@ namespace Steria
     }
 
     [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnWinParryingAttack))]
-    public static class BattlePlayingCardDataInUnitModel_OnWinParryingAttack_MusicScorePatch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
-        {
-            try
-            {
-                MusicScoreSystem.TryAddScoreFromBehavior(__instance?.currentBehavior);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] MusicScore OnWinParryingAttack patch error: {ex}");
-            }
-        }
-    }
-
-    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnWinParryingAttack))]
     public static class BattlePlayingCardDataInUnitModel_OnWinParryingAttack_ChristashaCounterDestroyPatch
     {
         [HarmonyPostfix]
         public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
         {
             ChristashaCounterDestroySupport.TryForceDestroy(__instance?.currentBehavior, "OnWinParryingAttack");
-        }
-    }
-
-    // --- 乐章型骰子：每颗骰子命中/防御成功时推进乐谱进度 ---
-    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnSucceedAttack))]
-    public static class BattlePlayingCardDataInUnitModel_OnSucceedAttack_MusicScorePatch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(BattleDiceBehavior behavior)
-        {
-            try
-            {
-                if (behavior == null || behavior.IsParrying())
-                {
-                    return;
-                }
-
-                MusicScoreSystem.TryAddScoreFromBehavior(behavior);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] MusicScore OnSucceedAttack patch error: {ex}");
-            }
         }
     }
 
@@ -2570,41 +3122,6 @@ namespace Steria
         }
     }
 
-    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnSucceedDefEvent))]
-    public static class BattlePlayingCardDataInUnitModel_OnSucceedDefEvent_MusicScorePatch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
-        {
-            try
-            {
-                // Deprecated hook: use parry win/defense without parry hooks to avoid duplicate triggers.
-                return;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] MusicScore OnSucceedDefEvent patch error: {ex}");
-            }
-        }
-    }
-
-    [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnDefenseWithoutParryingWin))]
-    public static class BattlePlayingCardDataInUnitModel_OnDefenseWithoutParryingWin_MusicScorePatch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
-        {
-            try
-            {
-                MusicScoreSystem.TryAddScoreFromBehavior(__instance?.currentBehavior);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] MusicScore OnDefenseWithoutParryingWin patch error: {ex}");
-            }
-        }
-    }
-
     [HarmonyPatch(typeof(BattlePlayingCardDataInUnitModel), nameof(BattlePlayingCardDataInUnitModel.OnDefenseWithoutParryingWin))]
     public static class BattlePlayingCardDataInUnitModel_OnDefenseWithoutParryingWin_ChristashaCounterDestroyPatch
     {
@@ -2612,103 +3129,6 @@ namespace Steria
         public static void Postfix(BattlePlayingCardDataInUnitModel __instance)
         {
             ChristashaCounterDestroySupport.TryForceDestroy(__instance?.currentBehavior, "OnDefenseWithoutParryingWin");
-        }
-    }
-
-    // --- 乐章型骰子：UI白边黑底 ---
-    [HarmonyPatch(typeof(BattleSimpleActionUI_Dice), "PrepareDice", new Type[] { typeof(List<BattleCardBehaviourResult>) })]
-    public static class BattleSimpleActionUI_Dice_PrepareDice_List_MusicStyle_Patch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(BattleSimpleActionUI_Dice __instance)
-        {
-            try
-            {
-                if (__instance == null || !MusicScoreSystem.IsMusicCard(__instance.cardOfBehaviour))
-                {
-                    return;
-                }
-
-                MusicScoreSystem.ApplyMusicDiceStyle(__instance);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] Music dice UI patch (list) error: {ex}");
-            }
-        }
-    }
-
-    [HarmonyPatch(typeof(BattleSimpleActionUI_Dice), "PrepareDice", new Type[] { typeof(BattleDiceBehaviourUI) })]
-    public static class BattleSimpleActionUI_Dice_PrepareDice_Behavior_MusicStyle_Patch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(BattleSimpleActionUI_Dice __instance)
-        {
-            try
-            {
-                if (__instance == null || !MusicScoreSystem.IsMusicCard(__instance.cardOfBehaviour))
-                {
-                    return;
-                }
-
-                MusicScoreSystem.ApplyMusicDiceStyle(__instance);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] Music dice UI patch (behavior) error: {ex}");
-            }
-        }
-    }
-
-    // --- 乐章型骰子：书页UI样式 ---
-    [HarmonyPatch(typeof(BattleDiceCardUI), nameof(BattleDiceCardUI.SetCard))]
-    public static class BattleDiceCardUI_SetCard_MusicStyle_Patch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(BattleDiceCardUI __instance)
-        {
-            try
-            {
-                MusicScoreSystem.ApplyMusicDiceStyleOnCardUI(__instance);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] Music dice card UI patch error: {ex}");
-            }
-        }
-    }
-
-    [HarmonyPatch(typeof(BattleDiceCardUI), nameof(BattleDiceCardUI.SetPreviewResist))]
-    public static class BattleDiceCardUI_SetPreviewResist_MusicStyle_Patch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(BattleDiceCardUI __instance)
-        {
-            try
-            {
-                MusicScoreSystem.ApplyMusicDiceStyleOnCardUI(__instance);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] Music dice preview resist patch error: {ex}");
-            }
-        }
-    }
-
-    [HarmonyPatch(typeof(BattleDiceCard_BehaviourDescUI), "SetBehaviourInfo")]
-    public static class BattleDiceCard_BehaviourDescUI_SetBehaviourInfo_MusicStyle_Patch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(BattleDiceCard_BehaviourDescUI __instance)
-        {
-            try
-            {
-                MusicScoreSystem.ApplyMusicDiceStyleOnDescUI(__instance);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] Music dice behaviour desc patch error: {ex}");
-            }
         }
     }
 
@@ -2758,7 +3178,7 @@ namespace Steria
         {
             try
             {
-                MusicScoreSystem.ApplyMusicDiceStyleOnOriginSlot(__instance, cardmodel);
+                MusicDiceVisuals.ApplyOnOriginSlot(__instance, cardmodel);
             }
             catch (Exception ex)
             {
@@ -2775,7 +3195,12 @@ namespace Steria
         {
             try
             {
-                MusicScoreSystem.ApplyMusicDiceStyleOnDetailDescSlot(__instance, cardId);
+                if (__instance == null || isHide)
+                {
+                    return;
+                }
+
+                MusicDiceVisuals.ApplyOnDetailDescSlot(__instance, cardId, behaviour);
             }
             catch (Exception ex)
             {

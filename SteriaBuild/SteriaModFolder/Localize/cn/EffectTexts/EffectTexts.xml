@@ -18,7 +18,12 @@
 
     <BattleEffectText ID="SteriaFlowTransfer">
       <Name>流转</Name>
-      <Desc>本书页不受[流]影响.</Desc>
+      <Desc>本书页将在下回合开始时返还消耗的[流].</Desc>
+    </BattleEffectText>
+
+    <BattleEffectText ID="SteriaPhantomDream">
+      <Name>幻梦</Name>
+      <Desc>可指向友方行动槽；消耗费用+1层[梦]，将本书页的0费[佚亡]复制置入其手中.</Desc>
     </BattleEffectText>
 
     <BattleEffectText ID="SteriaRapidAssault">
@@ -28,15 +33,11 @@
 
     <BattleEffectText ID="SteriaMusicDice">
       <Name>乐章</Name>
-      <Desc>该书页的斩击/突刺/打击/防御/闪避骰子为乐章型骰子.拼点胜利时,推进((骰子基础值)取余7)+1的[乐谱进度].</Desc>
+      <Desc>该书页的斩击/突刺/打击骰子为乐章型骰子.乐章型骰子并列于进攻/防御/反击,固定造成1.0倍体力伤害与1.25倍混乱伤害,且不受斩击/打击/突刺抗性影响,只受目标的乐章抗性(默认1.0)影响.与防御型骰子拼点时跳过拼点,直接造成伤害,目标的防御骰子被移至该书页骰子队列末尾.乐章型骰子不受[强壮]/[忍耐]等原版骰子威力提升或进攻型骰子伤害提升效果增强.</Desc>
     </BattleEffectText>
-    <BattleEffectText ID="SteriaSeaVoice_NightTrace">
-      <Name>沧海之声.夜痕</Name>
-      <Desc>触发时:对所有敌人造成其混乱抗性上限10%的伤害,并施加(20-场上单位数x2)层[流血].</Desc>
-    </BattleEffectText>
-    <BattleEffectText ID="SteriaSeaVoice_MorningLight">
-      <Name>沧海之声.晨光</Name>
-      <Desc>触发时:为所有友方单位恢复2点光芒,15点混乱抗性和生命值.</Desc>
+    <BattleEffectText ID="SteriaForte">
+      <Name>强音</Name>
+      <Desc>乐章型骰子的威力+X(X=层数).回合结束时失去所有层数.</Desc>
     </BattleEffectText>
 
     <!-- 倾诉梦想系列Buff -->
@@ -104,16 +105,6 @@
     <BattleEffectText ID="SteriaWishShield">
       <Name>愿望之盾</Name>
       <Desc>受到伤害时,优先消耗[愿望之盾]层数来抵消伤害(1层抵消1点伤害).</Desc>
-    </BattleEffectText>
-
-    <BattleEffectText ID="SteriaSeaVoice_SeaWish">
-      <Name>沧海之声.海愿</Name>
-      <Desc>触发时:为所有友方单位赋予5层[愿望之盾],并获得3层[梦].</Desc>
-    </BattleEffectText>
-
-    <BattleEffectText ID="SteriaSeaVoice_SeaReturn">
-      <Name>沧海之声.还愿</Name>
-      <Desc>触发时:消耗所有[梦],每消耗1层[梦]对所有敌人造成3点伤害.</Desc>
     </BattleEffectText>
 
     <BattleEffectText ID="BurningMemory">

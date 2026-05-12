@@ -17,8 +17,9 @@
 骰子1命中时:获得1层[梦]</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008004">
-      <LocalizedName>愿护佑我们</LocalizedName>
-      <Ability>使用时:消耗所有[梦],为全体友方施加等量x2层[愿望之盾]</Ability>
+      <LocalizedName>集愿之盾</LocalizedName>
+      <Ability>[幻梦]
+使用时:消耗所有[梦],为全体友方施加等量x2层[愿望之盾]</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008005">
       <LocalizedName>海愿斩</LocalizedName>

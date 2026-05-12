@@ -244,7 +244,7 @@ public class BattleUnitBuf_AddFlowNextRound : BattleUnitBuf
 #endregion
 
 #region 清司风流 (ID: 9001008) On Use
-// 特殊效果：本书页不受流影响（通过Harmony补丁实现）
+// 特殊效果：流转（通过Harmony补丁实现，下回合返还本书页实际消耗的流）
 public class DiceCardSelfAbility_AnhierQingSiFengLiu : DiceCardSelfAbilityBase
 {
     public static string Desc = "[流转]";

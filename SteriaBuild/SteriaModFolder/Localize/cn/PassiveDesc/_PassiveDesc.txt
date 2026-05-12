@@ -89,7 +89,7 @@
   </PassiveDesc>
   <PassiveDesc ID="9009002">
     <Name>金色的乐章</Name>
-    <Desc>消耗或转换[潮]时积累等量[乐谱进度];触发沧海之声后,获得5层[潮].</Desc>
+    <Desc>每一幕开始时,自动将"汐火联星"装配为EGO书页.</Desc>
   </PassiveDesc>
   <PassiveDesc ID="9009003">
     <Name>高阶月长石</Name>

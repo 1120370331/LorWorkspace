@@ -34,4 +34,23 @@ namespace Steria
             // Flow 不会自动消失，只在使用书页时消耗
         }
     }
+
+    public class BattleUnitBuf_FlowTransferRefundNextRound : BattleUnitBuf
+    {
+        public override bool Hide => true;
+        public override BufPositiveType positiveType => BufPositiveType.Positive;
+
+        public override void OnRoundStart()
+        {
+            base.OnRoundStart();
+
+            if (_owner != null && !_owner.IsDead() && stack > 0)
+            {
+                CardAbilityHelper.AddFlowStacks(_owner, stack);
+                SteriaLogger.Log($"FlowTransferRefund: returned {stack} Flow to {_owner.UnitData?.unitData?.name}");
+            }
+
+            Destroy();
+        }
+    }
 } 

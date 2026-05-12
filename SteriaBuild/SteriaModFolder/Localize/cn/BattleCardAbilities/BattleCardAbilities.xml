@@ -444,14 +444,14 @@
       <Desc>[命中时] 获得1层[梦]</Desc>
     </BattleCardAbility>
 
-    <!-- Card 9008004: 愿护佑我们 -->
+    <!-- Card 9008004: 集愿之盾 -->
     <BattleCardAbility ID="SivierWishProtect">
       <Desc>[使用时] 消耗所有[梦],为全队友方单位施加等量x2层[愿望之盾]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9008005: 海愿斩 -->
     <BattleCardAbility ID="SivierSeaWishSlash">
-      <Desc>[乐章] [重音] 若自身[梦]数量不低于5则使本书页骰子威力+2</Desc>
+      <Desc>[乐章] 若自身[梦]数量不低于5则使本书页骰子威力+2</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SivierSeaWishSlash1">
       <Desc>[命中时] 消耗1层[梦]来追加5点混乱伤害</Desc>
@@ -537,7 +537,6 @@
     <!-- Card 9009006: 汐音:光耀万海 -->
     <BattleCardAbility ID="ChristashaGlory">
       <Desc>[乐章] [渐快] 使用本书页后,永久将本书页最后一颗骰子复制置入书页末尾.所有骰子威力×([X-1]/X)(向上取整),X为复制后的骰子数量(至多触发2次)</Desc>
-      <Desc>[被编入卡组时] 将激活"汐音:光耀万海"到沧海之声</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="ChristashaGloryOnHit">
       <Desc>[命中时] 获得1层[潮]并施加1层[烧伤]</Desc>

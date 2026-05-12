@@ -74,7 +74,8 @@ public static class DirectiveDreamHelper
     {
         int id = card?.GetID().id ?? -1;
         if (id < 0) return false;
-        return HarmonyHelpers.IsFlowBonusOnlyCard(id);
+        return HarmonyHelpers.IsFlowTransferCard(id) ||
+               card.XmlData?.Keywords?.Contains("SteriaFlowTransfer") == true;
     }
 
     public static bool HasDreamRivalMark(BattleUnitModel unit)
@@ -470,7 +471,7 @@ public class BattleUnitBuf_FortuneLachesis : BattleUnitBuf
 /// <summary>
 /// 代行-斯蒂芬妮：
 /// - 自身流/梦/潮层数不会减少
-/// - 流转卡牌的流转免疫失效（由 HarmonyHelpers.RegisterCardUsage 侧处理）
+/// - 流转卡牌的返还效果失效（由 HarmonyHelpers.RegisterCardUsage 侧处理）
 /// - 所有消耗流/梦/潮的书页骰子威力+1
 /// </summary>
 public class BattleUnitBuf_StephanieProxy : BattleUnitBuf

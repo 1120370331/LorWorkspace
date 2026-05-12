@@ -109,10 +109,10 @@ public class DiceCardAbility_SivierWishThorn1 : DiceCardAbilityBase
     }
 }
 
-// ========== 愿护佑我们 (9008004) ==========
+// ========== 集愿之盾 (9008004) ==========
 // 使用时：消耗所有梦，为全队友方单位施加等量x2层"愿望之盾"
-// 骰子1：防御5-10
-// 骰子2：防御4-8
+// 骰子1：防御5-9
+// 骰子2：反击防御4-8
 
 public class DiceCardSelfAbility_SivierWishProtect : DiceCardSelfAbilityBase
 {
@@ -149,7 +149,10 @@ public class DiceCardSelfAbility_SivierSeaWishSlash : DiceCardSelfAbilityBase
         int dreamCount = SivierCardHelper.GetDreamCount(owner);
         if (dreamCount >= 5)
         {
-            card.ApplyDiceStatBonus(DiceMatch.AllDice, new DiceStatBonus { power = 2 });
+            // 海愿斩本身是乐章型卡牌，必须通过乐章白名单 + 原初之潮白名单下发威力。
+            MusicDicePowerScope.RunWithAllowance(() =>
+                global::PrimalTidePowerScope.RunWithAllowance(() =>
+                    card.ApplyDiceStatBonus(DiceMatch.AllDice, new DiceStatBonus { power = 2 })));
         }
     }
 }

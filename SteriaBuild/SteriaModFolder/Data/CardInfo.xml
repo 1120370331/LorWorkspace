@@ -548,7 +548,6 @@
     <Rarity>Unique</Rarity>
     <Spec Range="FarAreaEach" Cost="4" Affection="Team"/>
     <Keyword>SteriaMusicDice</Keyword>
-    <Keyword>SteriaSeaVoice_MorningLight</Keyword>
     <Script>VeliaTideMist</Script>
     <BehaviourList>
       <Behaviour Min="1" Dice="3" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealHP" ActionScript="" Desc=""/>
@@ -833,7 +832,6 @@
     <Rarity>Unique</Rarity>
     <Spec Range="Near" Cost="1" />
     <Keyword>SteriaMusicDice</Keyword>
-    <Keyword>SteriaSeaVoice_NightTrace</Keyword>
     <Script>AilierelNightTrace</Script>
     <ScriptDesc>渐强。每次使用后，本书页光芒消耗永久+1，所有骰子基础值最小值+1，最大值+2（至多触发3次）</ScriptDesc>
     <AbilityList>
@@ -1049,21 +1047,22 @@
     <Priority>0</Priority>
   </Card>
 
-  <!-- 愿护佑我们 -->
+  <!-- 集愿之盾 -->
   <Card ID="9008004">
-    <Name>愿护佑我们</Name>
+    <Name>集愿之盾</Name>
     <TextId>-1</TextId>
-    <Artwork>愿护佑我们.png</Artwork>
+    <Artwork>集愿之盾.png</Artwork>
     <Rarity>Uncommon</Rarity>
-    <Spec Range="Near" Cost="2" />
+    <Spec Range="Near" Cost="1" />
+    <Keyword>SteriaPhantomDream</Keyword>
     <Script>SivierWishProtect</Script>
-    <ScriptDesc></ScriptDesc>
+    <ScriptDesc>[幻梦] 使用时:消耗所有[梦],为全体友方施加等量x2层[愿望之盾]</ScriptDesc>
     <AbilityList>
       <Ability Script="SivierWishProtect"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="5" Dice="10" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -1077,7 +1076,6 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="2" />
     <Keyword>SteriaMusicDice</Keyword>
-    <Keyword>SteriaSeaVoice_SeaWish</Keyword>
     <Script>SivierSeaWishSlash</Script>
     <ScriptDesc></ScriptDesc>
     <AbilityList>
@@ -1099,7 +1097,6 @@
     <Rarity>Unique</Rarity>
     <Spec Range="Near" Cost="5" />
     <Keyword>SteriaMusicDice</Keyword>
-    <Keyword>SteriaSeaVoice_SeaReturn</Keyword>
     <Script>SivierSeaReturn</Script>
     <ScriptDesc></ScriptDesc>
     <AbilityList>
@@ -1241,9 +1238,8 @@
     <Rarity>Unique</Rarity>
     <Spec Range="FarAreaEach" Cost="5" />
     <Keyword>SteriaMusicDice</Keyword>
-    <Keyword>SteriaSeaVoice_MorningLight</Keyword>
     <Script>ChristashaGlory</Script>
-    <ScriptDesc>[乐章] [渐快] 使用本书页后，永久将本书页最后一颗的骰子的复制置入书页末尾。所有骰子威力×([X-1]/X) (X为复制后的骰子数量，向上取整)（至多触发2次）；被编入卡组时，将激活"汐音：光耀万海"到沧海之声</ScriptDesc>
+    <ScriptDesc>[乐章] [渐快] 使用本书页后，永久将本书页最后一颗的骰子的复制置入书页末尾。所有骰子威力×([X-1]/X) (X为复制后的骰子数量，向上取整)（至多触发2次）</ScriptDesc>
     <AbilityList>
       <Ability Script="ChristashaGlory"/>
     </AbilityList>

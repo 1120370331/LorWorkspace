@@ -241,8 +241,8 @@ public class PassiveAbility_9009001 : PassiveAbilityBase
 
 /// <summary>
 /// 金色的乐章 (ID: 9009002)
-/// - 消耗或转换潮时积累等量乐谱进度
-/// - 触发沧海之声后，获得5层潮
+/// - 每幕开始时，自动装配 "汐火联星" EGO 卡牌
+/// 注：沿用旧标题，沧海之声/乐谱进度的老机制已经在乐章型骰子重制中移除。
 /// </summary>
 public class PassiveAbility_9009002 : PassiveAbilityBase
 {
@@ -261,18 +261,6 @@ public class PassiveAbility_9009002 : PassiveAbilityBase
     {
         base.OnRoundStart();
         TryAddTwinStarEgo();
-    }
-
-    public void OnTideConsumed(int amount)
-    {
-        if (amount <= 0 || owner == null) return;
-        Steria.MusicScoreSystem.AddScoreFromTide(owner, amount);
-    }
-
-    public void OnSeaVoiceTriggered()
-    {
-        if (owner == null || owner.IsDead()) return;
-        PassiveAbility_9004001.AddTideStacks(owner, 5);
     }
 
     private void TryAddTwinStarEgo()
