@@ -9,22 +9,24 @@
     <BattleCardDesc ID="9008002">
       <LocalizedName>守望潮汐</LocalizedName>
       <Ability>使用时:抽取2张书页
-骰子1拼点胜利:获得2层[梦]</Ability>
+骰子1拼点胜利:获得5层[梦]</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008003">
       <LocalizedName>愿望之刺</LocalizedName>
-      <Ability>使用时:恢复2点光芒
+      <Ability>使用时:恢复2点光芒,将1张[愿露]置入手牌
 骰子1命中时:获得1层[梦]</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008004">
       <LocalizedName>集愿之盾</LocalizedName>
       <Ability>[幻梦]
-使用时:消耗所有[梦],为全体友方施加等量x2层[愿望之盾]</Ability>
+使用时:消耗所有[梦],为全体友方施加等量x2层[愿望之盾]
+下回合将2张[梦之庇护]置入手牌</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008005">
       <LocalizedName>海愿斩</LocalizedName>
       <Ability>[乐章]
 若自身[梦]不少于5层,则本书页所有骰子威力+2
+若本书页消耗了2层[梦],将2张[愿露]置入手牌
 骰子1命中时:消耗1层[梦]并追加5点混乱伤害
 骰子2命中时:消耗1层[梦]并恢复5点混乱抗性</Ability>
     </BattleCardDesc>
@@ -38,6 +40,16 @@
       <Ability>[佚亡] 本书页仅限累计消耗20层以上[梦]后使用
 使用时:持续2幕,所有敌方单位无法恢复光芒
 命中时:使目标下回合开始时失去2点光芒</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9008008">
+      <LocalizedName>愿露</LocalizedName>
+      <Ability>[幻梦] [佚亡]
+使用时:抽取1张书页,获得1层[梦]</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9008009">
+      <LocalizedName>梦之庇护</LocalizedName>
+      <Ability>[幻梦] [佚亡]
+使用时:恢复1点光芒,抽取2张书页</Ability>
     </BattleCardDesc>
   </cardDescList>
 </BattleCardDescRoot>

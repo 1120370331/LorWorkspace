@@ -1020,7 +1020,7 @@
       <Ability Script="SivierWatchTide"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="6" Dice="10" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SivierWatchTide1" ActionScript="" Desc="" />
+      <Behaviour Min="6" Dice="14" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SivierWatchTide1" ActionScript="" Desc="" />
       <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>6</Chapter>
@@ -1052,17 +1052,60 @@
     <Name>集愿之盾</Name>
     <TextId>-1</TextId>
     <Artwork>集愿之盾.png</Artwork>
-    <Rarity>Uncommon</Rarity>
+    <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="1" />
     <Keyword>SteriaPhantomDream</Keyword>
     <Script>SivierWishProtect</Script>
-    <ScriptDesc>[幻梦] 使用时:消耗所有[梦],为全体友方施加等量x2层[愿望之盾]</ScriptDesc>
+    <ScriptDesc>[幻梦] 使用时:消耗所有[梦],为全体友方施加等量x2层[愿望之盾]。下回合将2张[梦之庇护]置入手牌</ScriptDesc>
     <AbilityList>
       <Ability Script="SivierWishProtect"/>
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="5" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
       <Behaviour Min="4" Dice="8" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 愿露 -->
+  <Card ID="9008008">
+    <Name>愿露</Name>
+    <TextId>-1</TextId>
+    <Artwork>愿望之刺.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Keyword>SteriaPhantomDream</Keyword>
+    <Keyword>ExhaustOnUse</Keyword>
+    <Script>SivierWishDew</Script>
+    <ScriptDesc>[幻梦] [佚亡] 使用时:抽取1张书页,获得1层[梦]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierWishDew"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 梦之庇护 -->
+  <Card ID="9008009">
+    <Name>梦之庇护</Name>
+    <TextId>-1</TextId>
+    <Artwork>集愿之盾.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Keyword>SteriaPhantomDream</Keyword>
+    <Keyword>ExhaustOnUse</Keyword>
+    <Script>SivierDreamShelter</Script>
+    <ScriptDesc>[幻梦] [佚亡] 使用时:恢复1点光芒,抽取2张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierDreamShelter"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -1106,6 +1149,7 @@
       <Behaviour Min="6" Dice="14" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaReturn1" ActionScript="" Desc="" />
       <Behaviour Min="9" Dice="16" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaReturn2" ActionScript="" Desc="" />
       <Behaviour Min="5" Dice="13" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="SivierSeaReturn3" ActionScript="" Desc="" />
+      <Behaviour Min="8" Dice="13" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SivierSeaReturn4" ActionScript="" Desc="拼点胜利:施加1层[麻痹]" />
       <Behaviour Min="8" Dice="13" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SivierSeaReturn4" ActionScript="" Desc="拼点胜利:施加1层[麻痹]" />
     </BehaviourList>
     <Chapter>6</Chapter>

@@ -30,6 +30,12 @@ public class PassiveAbility_9008001 : PassiveAbilityBase
         _isBeingOneSided = false;
     }
 
+    public override void OnRoundStart()
+    {
+        base.OnRoundStart();
+        SivierCardHelper.TryAutoUsePhantomDreamForEnemy(owner);
+    }
+
     /// <summary>
     /// 被单方面攻击开始时
     /// </summary>

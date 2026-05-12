@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -61,7 +62,7 @@ public class DiceCardAbility_SivierGatherWish3 : DiceCardAbilityBase
 
 // ========== 守望潮汐 (9008002) ==========
 // 使用时：抽2张牌
-// 骰子1：防御6-10 - 拼点胜利：获得2层梦
+// 骰子1：防御6-14 - 拼点胜利：获得5层梦
 // 骰子2：攻击斩击3-6
 
 public class DiceCardSelfAbility_SivierWatchTide : DiceCardSelfAbilityBase
@@ -79,13 +80,13 @@ public class DiceCardAbility_SivierWatchTide1 : DiceCardAbilityBase
     public override void OnWinParrying()
     {
         base.OnWinParrying();
-        // 拼点胜利：获得2层梦
-        SivierCardHelper.AddDreamToUnit(owner, 2);
+        // 拼点胜利：获得5层梦
+        SivierCardHelper.AddDreamToUnit(owner, 5);
     }
 }
 
 // ========== 愿望之刺 (9008003) ==========
-// 使用时：恢复2点光芒
+// 使用时：恢复2点光芒，将一张“愿露”置入手牌
 // 骰子1：攻击突刺4-7 - 命中时：获得1层梦
 // 骰子2：防御3-6
 
@@ -96,6 +97,7 @@ public class DiceCardSelfAbility_SivierWishThorn : DiceCardSelfAbilityBase
         base.OnUseCard();
         // 恢复2点光芒
         owner?.cardSlotDetail?.RecoverPlayPoint(2);
+        SivierCardHelper.AddSivierCardToHand(owner, SivierCardHelper.CardWishDew);
     }
 }
 
@@ -111,6 +113,7 @@ public class DiceCardAbility_SivierWishThorn1 : DiceCardAbilityBase
 
 // ========== 集愿之盾 (9008004) ==========
 // 使用时：消耗所有梦，为全队友方单位施加等量x2层"愿望之盾"
+// 下回合将两张“梦之庇护”置入手牌
 // 骰子1：防御5-9
 // 骰子2：反击防御4-8
 
@@ -131,20 +134,74 @@ public class DiceCardSelfAbility_SivierWishProtect : DiceCardSelfAbilityBase
                 SivierCardHelper.AddWishShieldToUnit(ally, shieldAmount);
             }
         }
+
+        if (owner != null)
+        {
+            owner.bufListDetail.AddBuf(new BattleUnitBuf_SivierAddCardsNextRound
+            {
+                cardId = SivierCardHelper.CardDreamShelter,
+                amount = 2
+            });
+        }
+    }
+}
+
+// ========== 愿露 (9008008) ==========
+// 使用时：抽1张牌，获得1层梦
+
+public class DiceCardSelfAbility_SivierWishDew : DiceCardSelfAbilityBase
+{
+    public override void OnUseCard()
+    {
+        base.OnUseCard();
+        owner?.allyCardDetail?.DrawCards(1);
+        SivierCardHelper.AddDreamToUnit(owner, 1);
+    }
+}
+
+// ========== 梦之庇护 (9008009) ==========
+// 使用时：恢复1点光芒，抽2张牌
+
+public class DiceCardSelfAbility_SivierDreamShelter : DiceCardSelfAbilityBase
+{
+    public override void OnUseCard()
+    {
+        base.OnUseCard();
+        owner?.cardSlotDetail?.RecoverPlayPoint(1);
+        owner?.allyCardDetail?.DrawCards(2);
     }
 }
 
 // ========== 海愿斩 (9008005) ==========
 // 乐章型骰子 [重音]
 // 若自身梦数量不低于5则使本书页骰子威力+2
+// 若本书页消耗了2层梦，则将2张愿露置入手牌
 // 骰子1：攻击斩击5-8 - 命中时：消耗1层梦来追加5点混乱伤害
 // 骰子2：攻击斩击4-7 - 命中时：消耗1层梦来恢复5点混乱抗性
 
 public class DiceCardSelfAbility_SivierSeaWishSlash : DiceCardSelfAbilityBase
 {
+    private static readonly Dictionary<BattlePlayingCardDataInUnitModel, int> _dreamConsumedByCard =
+        new Dictionary<BattlePlayingCardDataInUnitModel, int>();
+    private bool _addedWishDew;
+
+    internal static void RecordDreamConsumed(BattlePlayingCardDataInUnitModel cardAction, int amount)
+    {
+        if (cardAction == null || amount <= 0) return;
+        int current;
+        _dreamConsumedByCard.TryGetValue(cardAction, out current);
+        _dreamConsumedByCard[cardAction] = current + amount;
+    }
+
     public override void OnUseCard()
     {
         base.OnUseCard();
+        _addedWishDew = false;
+        if (card != null)
+        {
+            _dreamConsumedByCard[card] = 0;
+        }
+
         // 若自身梦数量不低于5则使本书页骰子威力+2
         int dreamCount = SivierCardHelper.GetDreamCount(owner);
         if (dreamCount >= 5)
@@ -154,6 +211,25 @@ public class DiceCardSelfAbility_SivierSeaWishSlash : DiceCardSelfAbilityBase
                 global::PrimalTidePowerScope.RunWithAllowance(() =>
                     card.ApplyDiceStatBonus(DiceMatch.AllDice, new DiceStatBonus { power = 2 })));
         }
+    }
+
+    public override void AfterAction()
+    {
+        base.AfterAction();
+
+        if (_addedWishDew || card == null)
+        {
+            return;
+        }
+
+        _addedWishDew = true;
+        int consumed;
+        if (_dreamConsumedByCard.TryGetValue(card, out consumed) && consumed >= 2)
+        {
+            SivierCardHelper.AddSivierCardToHand(owner, SivierCardHelper.CardWishDew);
+            SivierCardHelper.AddSivierCardToHand(owner, SivierCardHelper.CardWishDew);
+        }
+        _dreamConsumedByCard.Remove(card);
     }
 }
 
@@ -166,6 +242,7 @@ public class DiceCardAbility_SivierSeaWishSlash1 : DiceCardAbilityBase
         if (SivierCardHelper.GetDreamCount(owner) >= 1)
         {
             SivierCardHelper.ConsumeDream(owner, 1);
+            DiceCardSelfAbility_SivierSeaWishSlash.RecordDreamConsumed(behavior?.card, 1);
             behavior?.card?.target?.TakeBreakDamage(5, DamageType.Card_Ability);
         }
     }
@@ -180,6 +257,7 @@ public class DiceCardAbility_SivierSeaWishSlash2 : DiceCardAbilityBase
         if (SivierCardHelper.GetDreamCount(owner) >= 1)
         {
             SivierCardHelper.ConsumeDream(owner, 1);
+            DiceCardSelfAbility_SivierSeaWishSlash.RecordDreamConsumed(behavior?.card, 1);
             owner?.breakDetail?.RecoverBreak(5);
         }
     }
@@ -188,11 +266,11 @@ public class DiceCardAbility_SivierSeaWishSlash2 : DiceCardAbilityBase
 // ========== 汐音：海之还愿 (9008006) ==========
 // 乐章型骰子
 // [渐弱]:每使用1次本书页使本书页光芒消耗-1,骰子最大值-2,最小值-1(至多触发4次)
-// 使用时：使所有友方角色获得(等同本书页光芒消耗)点梦
+// 使用时：自身获得(等同本书页光芒消耗)x2层梦
 // 骰子1：攻击斩击6-14 - 命中时：抽1张牌
 // 骰子2：攻击斩击9-16 - 命中时：恢复1点光芒
 // 骰子3：攻击突刺5-13 - 命中时：获得1层梦
-// 骰子4：反击5-12
+// 骰子4/5：防御8-13 - 拼点胜利：施加1层麻痹
 
 public class DiceCardSelfAbility_SivierSeaReturn : DiceCardSelfAbilityBase
 {
@@ -372,6 +450,10 @@ public class DiceCardAbility_SivierWishBuried1 : DiceCardAbilityBase
 
 public static class SivierCardHelper
 {
+    public const string ModId = "SteriaBuilding";
+    public const int CardWishDew = 9008008;
+    public const int CardDreamShelter = 9008009;
+
     public static BattleUnitBuf GetDreamBuf(BattleUnitModel unit)
     {
         if (unit?.bufListDetail == null) return null;
@@ -445,9 +527,168 @@ public static class SivierCardHelper
             unit.bufListDetail.AddBuf(new BattleUnitBuf_WishShield { stack = amount });
         }
     }
+
+    public static BattleDiceCardModel AddSivierCardToHand(BattleUnitModel unit, int cardId)
+    {
+        if (unit?.allyCardDetail == null) return null;
+
+        try
+        {
+            LorId lorId = new LorId(ModId, cardId);
+            DiceCardXmlInfo cardItem = ItemXmlDataList.instance.GetCardItem(lorId, true)
+                ?? ItemXmlDataList.instance.GetCardItem(lorId, false)
+                ?? ItemXmlDataList.instance.GetCardItem(cardId, false);
+            if (cardItem == null)
+            {
+                SteriaLogger.LogWarning($"SivierCardHelper: card {cardId} not found");
+                return null;
+            }
+
+            BattleDiceCardModel cardModel = BattleDiceCardModel.CreatePlayingCard(cardItem);
+            if (cardModel == null) return null;
+            cardModel.owner = unit;
+            cardModel.temporary = true;
+            unit.allyCardDetail.AddCardToHand(cardModel, false);
+            SingletonBehavior<BattleManagerUI>.Instance?.ui_unitCardsInHand?.UpdateCardList();
+            return cardModel;
+        }
+        catch (Exception ex)
+        {
+            SteriaLogger.LogError($"SivierCardHelper: failed to add card {cardId}: {ex.Message}");
+            return null;
+        }
+    }
+
+    public static void PlayPhantomDreamSpecialMotion(BattleUnitModel unit)
+    {
+        CharacterAppearance appearance = unit?.view?.charAppearance;
+        if (appearance == null) return;
+
+        appearance.ChangeMotion(ActionDetail.Special);
+        unit.view.StartCoroutine(ResetMotionAfter(appearance, 1.0f));
+    }
+
+    private static IEnumerator ResetMotionAfter(CharacterAppearance appearance, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (appearance != null)
+        {
+            appearance.ChangeMotion(ActionDetail.Standing);
+        }
+    }
+
+    public static void TryAutoUsePhantomDreamForEnemy(BattleUnitModel unit)
+    {
+        if (unit == null || unit.faction != Faction.Enemy || unit.IsDead() || unit.allyCardDetail == null)
+        {
+            return;
+        }
+
+        List<BattleDiceCardModel> hand = unit.allyCardDetail.GetHand();
+        if (hand == null || hand.Count == 0)
+        {
+            return;
+        }
+
+        int dream = GetDreamCount(unit);
+        List<BattleDiceCardModel> phantomCards = hand
+            .Where(c => c != null
+                && Steria.HarmonyHelpers.IsPhantomDreamCard(c)
+                && dream >= Steria.HarmonyHelpers.GetPhantomDreamCost(c))
+            .ToList();
+        if (phantomCards.Count == 0)
+        {
+            return;
+        }
+
+        int actionSlots = GetUsableActionSlotCount(unit);
+        bool guaranteed = hand.Count > actionSlots;
+        if (!guaranteed && UnityEngine.Random.value >= 0.5f)
+        {
+            return;
+        }
+
+        List<BattleUnitModel> allies = BattleObjectManager.instance?.GetAliveList(unit.faction)
+            ?.Where(ally => ally != null && ally != unit && !ally.IsDead() && !ally.IsBreakLifeZero())
+            .ToList();
+        if (allies == null || allies.Count == 0)
+        {
+            return;
+        }
+
+        List<BattleUnitModel> shuffledAllies = allies.OrderBy(_ => UnityEngine.Random.value).ToList();
+        List<BattleDiceCardModel> shuffledCards = phantomCards.OrderBy(_ => UnityEngine.Random.value).ToList();
+
+        foreach (BattleDiceCardModel sourceCard in shuffledCards)
+        {
+            foreach (BattleUnitModel ally in shuffledAllies)
+            {
+                int targetSlot = GetRandomUsableSpeedSlot(ally);
+                if (Steria.HarmonyHelpers.TryResolvePhantomDreamTransfer(unit, sourceCard, ally, targetSlot))
+                {
+                    SteriaLogger.Log($"Sivier AI: auto-used Phantom Dream card {sourceCard.GetName()} on {ally.UnitData?.unitData?.name}");
+                    return;
+                }
+            }
+        }
+    }
+
+    private static int GetUsableActionSlotCount(BattleUnitModel unit)
+    {
+        if (unit?.speedDiceResult != null && unit.speedDiceResult.Count > 0)
+        {
+            return Math.Max(1, unit.speedDiceResult.Count(x => !x.breaked));
+        }
+
+        return Math.Max(1, unit?.cardSlotDetail?.cardAry?.Count ?? 1);
+    }
+
+    private static int GetRandomUsableSpeedSlot(BattleUnitModel unit)
+    {
+        if (unit?.speedDiceResult == null || unit.speedDiceResult.Count == 0)
+        {
+            return -1;
+        }
+
+        List<int> slots = new List<int>();
+        for (int i = 0; i < unit.speedDiceResult.Count; i++)
+        {
+            if (!unit.speedDiceResult[i].breaked)
+            {
+                slots.Add(i);
+            }
+        }
+
+        return slots.Count > 0 ? slots[UnityEngine.Random.Range(0, slots.Count)] : -1;
+    }
 }
 
 // ========== 额外Buff类 ==========
+
+/// <summary>
+/// 下回合将指定希维尔衍生书页置入手牌。
+/// </summary>
+public class BattleUnitBuf_SivierAddCardsNextRound : BattleUnitBuf
+{
+    public int cardId;
+    public int amount;
+
+    public override bool Hide => true;
+    public override BufPositiveType positiveType => BufPositiveType.Positive;
+
+    public override void OnRoundStart()
+    {
+        base.OnRoundStart();
+
+        int count = Math.Max(0, amount);
+        for (int i = 0; i < count; i++)
+        {
+            SivierCardHelper.AddSivierCardToHand(_owner, cardId);
+        }
+
+        Destroy();
+    }
+}
 
 /// <summary>
 /// 无法恢复光芒（持续2幕）

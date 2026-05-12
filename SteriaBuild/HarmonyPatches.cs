@@ -452,14 +452,24 @@ namespace Steria
                 return false;
             }
 
-            if (target.bufListDetail == null || !target.bufListDetail.IsControlable() || target.TeamKill() || !target.IsTargetable(actor))
+            if (target.bufListDetail == null || target.TeamKill() || !target.IsTargetable(actor))
+            {
+                return false;
+            }
+
+            if (actor.faction == Faction.Player && !target.bufListDetail.IsControlable())
             {
                 return false;
             }
 
             if (targetDiceIdx >= 0)
             {
-                if (target.speedDiceResult == null || targetDiceIdx >= target.speedDiceResult.Count || !target.speedDiceResult[targetDiceIdx].isControlable)
+                if (target.speedDiceResult == null || targetDiceIdx >= target.speedDiceResult.Count)
+                {
+                    return false;
+                }
+
+                if (actor.faction == Faction.Player && !target.speedDiceResult[targetDiceIdx].isControlable)
                 {
                     return false;
                 }
@@ -527,6 +537,7 @@ namespace Steria
             owner.SpendCardAndCost(sourceCard);
             SivierCardHelper.ConsumeDream(owner, dreamToConsume);
             target.allyCardDetail.AddCardToHand(copiedCard, false);
+            SivierCardHelper.PlayPhantomDreamSpecialMotion(owner);
 
             BattleUnitBuf_DreamIllusion dreamIllusion = owner.bufListDetail?.GetActivatedBufList()
                 ?.FirstOrDefault(b => b is BattleUnitBuf_DreamIllusion) as BattleUnitBuf_DreamIllusion;

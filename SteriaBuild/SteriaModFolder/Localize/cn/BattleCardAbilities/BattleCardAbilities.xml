@@ -433,12 +433,12 @@
       <Desc>[使用时] 抽2张牌</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SivierWatchTide1">
-      <Desc>[拼点胜利] 获得2层[梦]</Desc>
+      <Desc>[拼点胜利] 获得5层[梦]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9008003: 愿望之刺 -->
     <BattleCardAbility ID="SivierWishThorn">
-      <Desc>[使用时] 恢复2点光芒</Desc>
+      <Desc>[使用时] 恢复2点光芒,将1张[愿露]置入手牌</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SivierWishThorn1">
       <Desc>[命中时] 获得1层[梦]</Desc>
@@ -446,12 +446,22 @@
 
     <!-- Card 9008004: 集愿之盾 -->
     <BattleCardAbility ID="SivierWishProtect">
-      <Desc>[使用时] 消耗所有[梦],为全队友方单位施加等量x2层[愿望之盾]</Desc>
+      <Desc>[使用时] 消耗所有[梦],为全队友方单位施加等量x2层[愿望之盾]。下回合将2张[梦之庇护]置入手牌</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9008008: 愿露 -->
+    <BattleCardAbility ID="SivierWishDew">
+      <Desc>[使用时] 抽取1张书页,获得1层[梦]</Desc>
+    </BattleCardAbility>
+
+    <!-- Card 9008009: 梦之庇护 -->
+    <BattleCardAbility ID="SivierDreamShelter">
+      <Desc>[使用时] 恢复1点光芒,抽取2张书页</Desc>
     </BattleCardAbility>
 
     <!-- Card 9008005: 海愿斩 -->
     <BattleCardAbility ID="SivierSeaWishSlash">
-      <Desc>[乐章] 若自身[梦]数量不低于5则使本书页骰子威力+2</Desc>
+      <Desc>[乐章] 若自身[梦]数量不低于5则使本书页骰子威力+2。若本书页消耗了2层[梦],将2张[愿露]置入手牌</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SivierSeaWishSlash1">
       <Desc>[命中时] 消耗1层[梦]来追加5点混乱伤害</Desc>
