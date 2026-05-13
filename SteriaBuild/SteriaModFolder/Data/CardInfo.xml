@@ -1072,7 +1072,7 @@
   <Card ID="9008008">
     <Name>愿露</Name>
     <TextId>-1</TextId>
-    <Artwork>愿露.png</Artwork>
+    <Artwork>愿露_无手.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Near" Cost="0" />
     <Keyword>SteriaPhantomDream</Keyword>
