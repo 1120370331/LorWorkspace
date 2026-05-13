@@ -547,15 +547,36 @@ public static class SivierCardHelper
             BattleDiceCardModel cardModel = BattleDiceCardModel.CreatePlayingCard(cardItem);
             if (cardModel == null) return null;
             cardModel.owner = unit;
-            cardModel.temporary = true;
+            EnsureExhaustOnUse(cardModel);
+            int before = unit.allyCardDetail.GetHand()?.Count ?? -1;
             unit.allyCardDetail.AddCardToHand(cardModel, false);
+            int after = unit.allyCardDetail.GetHand()?.Count ?? -1;
             SingletonBehavior<BattleManagerUI>.Instance?.ui_unitCardsInHand?.UpdateCardList();
+            SteriaLogger.Log($"SivierCardHelper: added derivative card {cardId} to {unit.UnitData?.unitData?.name}, hand {before}->{after}");
             return cardModel;
         }
         catch (Exception ex)
         {
             SteriaLogger.LogError($"SivierCardHelper: failed to add card {cardId}: {ex.Message}");
             return null;
+        }
+    }
+
+    private static void EnsureExhaustOnUse(BattleDiceCardModel cardModel)
+    {
+        if (cardModel?.XmlData == null)
+        {
+            return;
+        }
+
+        if (cardModel.XmlData.optionList == null)
+        {
+            cardModel.XmlData.optionList = new List<CardOption>();
+        }
+
+        if (!cardModel.XmlData.optionList.Contains(CardOption.ExhaustOnUse))
+        {
+            cardModel.XmlData.optionList.Add(CardOption.ExhaustOnUse);
         }
     }
 
