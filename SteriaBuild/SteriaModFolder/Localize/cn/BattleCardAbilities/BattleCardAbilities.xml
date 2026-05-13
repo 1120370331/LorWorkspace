@@ -99,16 +99,28 @@
     <BattleCardAbility ID="SlazeyaGainFlow2NextTurn">
       <Desc>[流转] [使用时] 下回合获得1层[流]</Desc>
     </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaRecoverLight1OnUse">
+      <Desc>[流转] [使用时] 恢复1点光芒</Desc>
+    </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaGainLight1">
       <Desc>[命中时] 恢复1点光芒</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaClashWinGainFlow2NextTurn">
-      <Desc>[拼点胜利] 下回合获得1层[流]</Desc>
+      <Desc>[拼点胜利] 下回合获得2层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaClashWinGainFlow3NextTurn">
+      <Desc>[拼点胜利] 下回合获得3层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaHitGainFlow2NextTurn">
+      <Desc>[命中时] 下回合获得2层[流]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9002002: 川流不息 -->
     <BattleCardAbility ID="SlazeyaGainFlow3NextTurn">
       <Desc>[流转] [使用时] 下回合获得2层[流]</Desc>
+    </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaDraw2OnUse">
+      <Desc>[流转] [使用时] 抽取2张书页</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaClashLosePowerUpNextDice">
       <Desc>[拼点失败] 将本书页下一颗骰子增加(本骰子基础威力)点威力</Desc>
@@ -116,10 +128,13 @@
     <BattleCardAbility ID="SlazeyaDraw2">
       <Desc>[命中时] 抽取2张书页</Desc>
     </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaHitGainFlow3NextTurn">
+      <Desc>[命中时] 下回合获得3层[流]</Desc>
+    </BattleCardAbility>
 
     <!-- Card 9002003: 万物之流 -->
     <BattleCardAbility ID="SlazeyaGainFlow5OnRoundStart">
-      <Desc>[流转] [战斗开始时] 获得3层[流]</Desc>
+      <Desc>[流转] [战斗开始时] 获得5层[流]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaGainFlow1OnHit">
       <Desc>[命中时] 获得1层[流]</Desc>
@@ -130,7 +145,7 @@
       <Desc>本书页骰子至多可受5次[流]强化</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaFlowBonusX3">
-      <Desc>本书页骰子至多可受3次[流]强化</Desc>
+      <Desc>本书页可额外受3次[流]强化</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaBleed5OnFlow5">
       <Desc>[命中时] 如果本骰子被[流]强化过至少5次,则施加5层[流血]</Desc>
@@ -138,13 +153,16 @@
     <BattleCardAbility ID="SlazeyaBleed5OnFlow3">
       <Desc>[命中时] 如果本骰子被[流]强化过至少3次,则施加5层[流血]</Desc>
     </BattleCardAbility>
+    <BattleCardAbility ID="SlazeyaBleedByFlowBonusX2">
+      <Desc>[命中时] 施加本骰子受[流]强化层数x2层[流血]</Desc>
+    </BattleCardAbility>
 
     <!-- Card 9002009: 倾覆万千之流 -->
     <BattleCardAbility ID="SlazeyaMassAttackTeamLightGain">
-      <Desc>[使用时] 消耗所有[流](但不提供威力加成).本书页每消耗5层[流],下回合为所有友方单位恢复1点光芒</Desc>
+      <Desc>[使用时] 消耗所有[流](但不提供常规[流]威力加成).本书页每消耗8层[流],骰子威力+1</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaMassAttackBonusDamage">
-      <Desc>[命中时] 追加本书页消耗的[流]点伤害</Desc>
+      <Desc>[命中时] 追加本书页消耗的[流]点伤害并施加1层[麻痹]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9002006: 洋流,听我的号令 -->
@@ -152,15 +170,15 @@
       <Desc>[流转] [使用时] 下回合获得3层[流]并抽取1张书页</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaOceanCommandV2">
-      <Desc>[流转] [回合开始时] 获得2层[流],本回合本人书页受[流]加成时不再消耗[流]层数</Desc>
+      <Desc>本书页可额外受3次[流]强化</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaClashLoseGainFlow3">
-      <Desc>[拼点失败] 立刻获得5层[流]</Desc>
+      <Desc>[拼点失败] 立刻获得5层[流],并将最小值/最大值等同本骰子消耗[流]层数的一颗防御骰追加到末位</Desc>
     </BattleCardAbility>
 
     <!-- Card 9002007: 随我流向无尽的尽头 -->
     <BattleCardAbility ID="SlazeyaEndlessFlow">
-      <Desc>[战斗开始时] 本幕友方所有书页享受[流]加成时不再消耗[流]数量;[使用时] 本书页骰子获得等同自身[流]数量/2威力加成(向上取整)</Desc>
+      <Desc>[战斗开始时] 本幕友方所有书页享受[流]加成时不再消耗[流]数量;本书页骰子获得等同自身[流]数量/3威力加成(向上取整)</Desc>
     </BattleCardAbility>
 
     <!-- ========== 司流者教徒卡牌能力 ========== -->
@@ -204,10 +222,10 @@
 
     <!-- Card 9002008: 百川逐风 -->
     <BattleCardAbility ID="SlazeyaMultiFlowBonus2">
-      <Desc>本书页骰子至多可受2次[流]强化</Desc>
+      <Desc>本书页能额外受1次[流]强化</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaHundredRiversRepeat">
-      <Desc>本书页骰子至多可受2次[流]强化;[使用时] 若自身[流]层数大于10,则随机对另一敌人重复使用本书页(最多触发一次)</Desc>
+      <Desc>本书页能额外受1次[流]强化;若自身[流]层数大于8,则消耗8层[流]随机对一个敌人重复使用本书页(每幕最多触发一次)</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaApplyWeakByFlowBonus">
       <Desc>[命中时] 施加本骰子受[流]强化层数的[虚弱]</Desc>
@@ -451,7 +469,7 @@
 
     <!-- Card 9008008: 愿露 -->
     <BattleCardAbility ID="SivierWishDew">
-      <Desc>[使用时] 抽取1张书页,获得1层[梦]</Desc>
+      <Desc>[装备时] 抽取1张书页,获得1层[梦]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9008009: 梦之庇护 -->

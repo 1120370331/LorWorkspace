@@ -46,11 +46,11 @@ namespace Steria
 
             if (_owner != null && !_owner.IsDead() && stack > 0)
             {
-                CardAbilityHelper.AddFlowStacks(_owner, stack);
+                CardAbilityHelper.AddFlowStacks(_owner, stack, false);
                 SteriaLogger.Log($"FlowTransferRefund: returned {stack} Flow to {_owner.UnitData?.unitData?.name}");
             }
 
             Destroy();
         }
     }
-} 
+}

@@ -226,14 +226,14 @@
     <Artwork>9002001.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Far" Cost="0" />
-    <Script>SlazeyaGainFlow2NextTurn</Script>
-    <ScriptDesc>[流转] 使用时：下回合获得2层[流]</ScriptDesc>
+    <Script>SlazeyaRecoverLight1OnUse</Script>
+    <ScriptDesc>[流转] 使用时：恢复1点光芒</ScriptDesc>
     <AbilityList>
-      <Ability Script="SlazeyaGainFlow2NextTurn"/>
+      <Ability Script="SlazeyaRecoverLight1OnUse"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaGainLight1" ActionScript="" Desc=""/>
-      <Behaviour Min="1" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SlazeyaClashWinGainFlow2NextTurn" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaHitGainFlow2NextTurn" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SlazeyaClashWinGainFlow3NextTurn" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -246,14 +246,14 @@
     <Artwork>9002002.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Far" Cost="1" />
-    <Script>SlazeyaGainFlow3NextTurn</Script>
-    <ScriptDesc>[流转] 使用时：下回合获得3层[流]</ScriptDesc>
+    <Script>SlazeyaDraw2OnUse</Script>
+    <ScriptDesc>[流转] 使用时：抽取2张书页</ScriptDesc>
     <AbilityList>
-      <Ability Script="SlazeyaGainFlow3NextTurn"/>
+      <Ability Script="SlazeyaDraw2OnUse"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="1" Dice="6" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaClashLosePowerUpNextDice" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaDraw2" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaClashLosePowerUpNextDice" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaHitGainFlow3NextTurn" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -288,12 +288,12 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Far" Cost="3" />
     <Script>SlazeyaFlowBonusX3</Script>
-    <ScriptDesc>本书页骰子至多可受3次[流]强化</ScriptDesc>
+    <ScriptDesc>本书页可额外受3次[流]强化</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaFlowBonusX3"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="8" Dice="13" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaBleed5OnFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="7" Dice="13" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaBleedByFlowBonusX2" ActionScript="" Desc=""/>
       <Behaviour Min="1" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
       <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc=""/>
     </BehaviourList>
@@ -310,7 +310,7 @@
     <Option>OnlyPage</Option>
     <Spec Range="FarArea" Cost="7" />
     <Script>SlazeyaMassAttackTeamLightGain</Script>
-    <ScriptDesc>使用时：消耗所有[流]（但不提供威力加成）。本书页每消耗5层[流]，下回合为所有友方单位恢复1点光芒</ScriptDesc>
+    <ScriptDesc>使用时：消耗所有[流]（但不提供常规[流]威力加成）。本书页每消耗8层[流]，骰子威力+1，命中时施加1层[麻痹]</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaMassAttackTeamLightGain"/>
     </AbilityList>
@@ -327,15 +327,16 @@
     <TextId>-1</TextId>
     <Artwork>9002006.png</Artwork>
     <Rarity>Unique</Rarity>
-    <Spec Range="Near" Cost="1" />
+    <Spec Range="Far" Cost="3" />
     <Script>SlazeyaOceanCommandV2</Script>
-    <ScriptDesc>[流转] 回合开始时：获得3层[流]，本回合本人书页受[流]加成时不再消耗[流]层数</ScriptDesc>
+    <ScriptDesc>本书页可额外受3次[流]强化。本书页的骰子拼点失败时，会将最小值/最大值等同本骰子消耗[流]层数的一颗防御型骰子追加到末位</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaOceanCommandV2"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
-      <Behaviour Min="1" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -347,9 +348,9 @@
     <TextId>-1</TextId>
     <Artwork>9002007.png</Artwork>
     <Rarity>Unique</Rarity>
-    <Spec Range="Near" Cost="3" />
+    <Spec Range="Near" Cost="4" />
     <Script>SlazeyaEndlessFlow</Script>
-    <ScriptDesc>战斗开始时：本幕友方所有书页享受[流]加成时不再消耗[流]数量；使用时：本书页骰子获得等同自身[流]数量/2威力加成（向上取整）</ScriptDesc>
+    <ScriptDesc>战斗开始时：本幕友方所有书页享受[流]加成时不再消耗[流]数量；本书页骰子获得等同自身[流]数量/3威力加成（向上取整）</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaEndlessFlow"/>
     </AbilityList>
@@ -368,14 +369,14 @@
     <Rarity>Uncommon</Rarity>
     <Spec Range="Near" Cost="2" />
     <Script>SlazeyaHundredRiversRepeat</Script>
-    <ScriptDesc>本书页骰子至多可受2次[流]强化；[使用时] 若自身[流]层数大于10，则消耗10层[流]随机对另一敌人重复使用本书页（每幕最多触发一次）</ScriptDesc>
+    <ScriptDesc>本书页能额外受1次[流]强化；若自身[流]层数大于8，则消耗8层[流]随机对一个敌人重复使用本书页（每幕最多触发一次）</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaHundredRiversRepeat"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="SlazeyaApplyWeakByFlowBonus" ActionScript="" Desc=""/>
-      <Behaviour Min="1" Dice="5" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaApplyBleedAndDamageByFlowBonus" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="SlazeyaApplyWeakByFlowBonus" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="5" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaApplyBleedAndDamageByFlowBonus" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -1074,16 +1075,16 @@
     <TextId>-1</TextId>
     <Artwork>愿露_无手.png</Artwork>
     <Rarity>Common</Rarity>
-    <Spec Range="Near" Cost="0" />
+    <Spec Range="Instance" Cost="0" />
     <Keyword>SteriaPhantomDream</Keyword>
     <Option>ExhaustOnUse</Option>
     <Script>SivierWishDew</Script>
-    <ScriptDesc>[幻梦] [佚亡] 使用时:抽取1张书页,获得1层[梦]</ScriptDesc>
+    <ScriptDesc>[幻梦] [佚亡] 装备时:抽取1张书页,获得1层[梦]</ScriptDesc>
     <AbilityList>
       <Ability Script="SivierWishDew"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="1" Dice="1" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>

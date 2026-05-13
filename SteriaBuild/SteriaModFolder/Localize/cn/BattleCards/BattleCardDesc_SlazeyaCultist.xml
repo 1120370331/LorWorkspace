@@ -5,35 +5,35 @@
     <BattleCardDesc ID="9002001">
       <Name>逐梦随流</Name>
       <Desc>[流转]
-使用时:下回合获得1层[流]</Desc>
+使用时:恢复1点光芒</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002002">
       <Name>川流不息</Name>
       <Desc>[流转]
-使用时:下回合获得2层[流]</Desc>
+使用时:抽取2张书页</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002003">
       <Name>万物之流</Name>
       <Desc>[流转]
-战斗开始时:获得3层[流]</Desc>
+战斗开始时:获得5层[流]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002004">
       <Name>风暴分流</Name>
-      <Desc>本书页骰子至多可受3次[流]强化</Desc>
+      <Desc>本书页可额外受3次[流]强化</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002009">
       <Name>倾覆万千之流</Name>
-      <Desc>使用时:消耗所有[流](但不提供威力加成).本书页每消耗5层[流],下回合为所有友方单位恢复1点光芒</Desc>
+      <Desc>使用时:消耗所有[流](但不提供常规[流]威力加成).本书页每消耗8层[流],骰子威力+1,命中时施加1层[麻痹]</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002006">
       <Name>洋流,听我的号令</Name>
-      <Desc>[流转]
-回合开始时:获得2层[流],本回合本人书页受[流]加成时不再消耗[流]层数</Desc>
+      <Desc>本书页可额外受3次[流]强化
+本书页的骰子拼点失败时,会将最小值/最大值等同本骰子消耗[流]层数的一颗防御型骰子追加到末位</Desc>
     </BattleCardDesc>
     <BattleCardDesc ID="9002007">
       <Name>随我流向无尽的尽头</Name>
       <Desc>战斗开始时:本幕友方所有书页享受[流]加成时不再消耗[流]数量
-本书页骰子获得等同自身[流]数量/2威力加成</Desc>
+本书页骰子获得等同自身[流]数量/3威力加成(向上取整)</Desc>
     </BattleCardDesc>
     <!-- Cultist Cards -->
     <BattleCardDesc ID="9003001">
@@ -54,7 +54,7 @@
     </BattleCardDesc>
     <BattleCardDesc ID="9002008">
       <Name>百川逐风</Name>
-      <Desc>本书页骰子至多可受2次[流]强化
+      <Desc>本书页能额外受1次[流]强化
 若自身[流]层数大于8,则消耗8层[流]随机对一个敌人重复使用本书页(每幕最多触发一次)</Desc>
     </BattleCardDesc>
   </cardDescList>

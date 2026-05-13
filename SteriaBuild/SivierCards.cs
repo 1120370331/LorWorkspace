@@ -154,8 +154,19 @@ public class DiceCardSelfAbility_SivierWishDew : DiceCardSelfAbilityBase
     public override void OnUseCard()
     {
         base.OnUseCard();
-        owner?.allyCardDetail?.DrawCards(1);
-        SivierCardHelper.AddDreamToUnit(owner, 1);
+        ApplyWishDew(owner);
+    }
+
+    public override void OnUseInstance(BattleUnitModel unit, BattleDiceCardModel self, BattleUnitModel targetUnit)
+    {
+        SteriaLogger.Log($"愿露: OnUseInstance triggered for {unit?.UnitData?.unitData?.name}, target={targetUnit?.UnitData?.unitData?.name}");
+        ApplyWishDew(unit);
+    }
+
+    private static void ApplyWishDew(BattleUnitModel unit)
+    {
+        unit?.allyCardDetail?.DrawCards(1);
+        SivierCardHelper.AddDreamToUnit(unit, 1);
     }
 }
 

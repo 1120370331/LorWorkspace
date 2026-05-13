@@ -11,7 +11,8 @@ using Steria;
 /// <summary>
 /// 神脉：梦之汐-司流-倾覆之大流 (ID: 9002001)
 /// 效果：
-/// - 消耗流提升的骰子威力变为2（每消耗1层流，骰子获得+2威力）
+/// - 本单位通过书页和其他被动获得的流翻倍（不包含流转返还）
+/// - 本单位所有书页可额外受一次流强化
 /// - 每造成15点伤害，下回合开始时获得1层流
 /// - 每消耗10层流，下回合获得1层强壮
 /// - 拼点失败时扣除自身1层流
@@ -23,16 +24,26 @@ public class PassiveAbility_9002001 : PassiveAbilityBase
     private int _flowConsumedAccumulator = 0;
     private int _strengthToGainNextRound = 0;
 
-    // 标记是否拥有此被动（用于Harmony补丁检查 - 流获取x2，已废弃）
+    // 标记是否拥有此被动（用于流获取翻倍与额外流强化）
     public static bool HasPassive(BattleUnitModel unit)
     {
         return unit?.passiveDetail?.PassiveList?.Any(p => p is PassiveAbility_9002001) == true;
     }
 
-    // 检查是否拥有流威力加成x2效果
+    public static bool HasFlowGainMultiplier(BattleUnitModel unit)
+    {
+        return HasPassive(unit);
+    }
+
+    public static bool HasExtraFlowEnhancement(BattleUnitModel unit)
+    {
+        return HasPassive(unit);
+    }
+
+    // 兼容旧调用名：新版不再把每层流提供的威力翻倍。
     public static bool HasFlowPowerBonus(BattleUnitModel unit)
     {
-        return unit?.passiveDetail?.PassiveList?.Any(p => p is PassiveAbility_9002001) == true;
+        return false;
     }
 
     public override void Init(BattleUnitModel self)

@@ -795,13 +795,26 @@ namespace Steria
                 return true;
             }
 
+            List<Image> handCardIcons = AccessTools.Field(typeof(BattleDiceCardUI), "img_behaviourDetatilList")
+                ?.GetValue(cardUi) as List<Image>;
+            if (handCardIcons != null && handCardIcons.Count > 0)
+            {
+                icons = handCardIcons.ToArray();
+            }
+
+            if (linearDodge == null)
+            {
+                linearDodge = AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodges")
+                    ?.GetValue(cardUi) as Image[];
+            }
+
+            if (icons != null && icons.Length > 0)
+            {
+                return true;
+            }
+
             foreach (FieldInfo fi in typeof(BattleDiceCardUI).GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
             {
-                if (fi.FieldType != typeof(Image[]))
-                {
-                    continue;
-                }
-
                 string n = fi.Name;
                 if (!n.StartsWith("img_", StringComparison.OrdinalIgnoreCase))
                 {
@@ -818,16 +831,29 @@ namespace Steria
                     continue;
                 }
 
-                icons = fi.GetValue(cardUi) as Image[];
-                if (icons != null && icons.Length > 0)
+                if (fi.FieldType == typeof(Image[]))
                 {
-                    break;
+                    icons = fi.GetValue(cardUi) as Image[];
+                    if (icons != null && icons.Length > 0)
+                    {
+                        break;
+                    }
+                }
+                else if (fi.FieldType == typeof(List<Image>))
+                {
+                    List<Image> list = fi.GetValue(cardUi) as List<Image>;
+                    if (list != null && list.Count > 0)
+                    {
+                        icons = list.ToArray();
+                        break;
+                    }
                 }
             }
 
             if (linearDodge == null)
             {
-                linearDodge = AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodge")?.GetValue(cardUi) as Image[];
+                linearDodge = AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodge")?.GetValue(cardUi) as Image[]
+                    ?? AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodges")?.GetValue(cardUi) as Image[];
             }
 
             return icons != null && icons.Length > 0;

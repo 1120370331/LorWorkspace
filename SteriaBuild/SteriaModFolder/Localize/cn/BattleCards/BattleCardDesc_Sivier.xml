@@ -44,7 +44,7 @@
     <BattleCardDesc ID="9008008">
       <LocalizedName>愿露</LocalizedName>
       <Ability>[幻梦] [佚亡]
-使用时:抽取1张书页,获得1层[梦]</Ability>
+装备时:抽取1张书页,获得1层[梦]</Ability>
     </BattleCardDesc>
     <BattleCardDesc ID="9008009">
       <LocalizedName>梦之庇护</LocalizedName>

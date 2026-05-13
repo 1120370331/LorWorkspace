@@ -169,7 +169,6 @@ namespace Steria
             9002001,  // 逐梦随流
             9002002,  // 川流不息
             9002003,  // 万物之流
-            9002006,  // 洋流，听我的号令
             // 司流者教徒流转卡牌
             9003005,  // 顺流而为
             // 艾莉蕾尔流转卡牌
@@ -193,8 +192,9 @@ namespace Steria
         // 可受多次流强化的卡牌ID及其最大强化次数
         private static readonly Dictionary<int, int> _multiFlowBonusCards = new Dictionary<int, int>
         {
-            { 9002004, 5 },  // 风暴分流 - 至多5次流强化
-            { 9002008, 2 },  // 百川逐风 - 至多2次流强化
+            { 9002004, 4 },  // 风暴分流 - 额外3次流强化
+            { 9002006, 4 },  // 洋流，听我的号令 - 额外3次流强化
+            { 9002008, 2 },  // 百川逐风 - 额外1次流强化
         };
 
         // [迅攻] 关键词ID
@@ -564,6 +564,10 @@ namespace Steria
         {
             if (owner == null || amount <= 0) return;
 
+            // 通知 PassiveAbility_9002001 (神脉：梦之汐-司流-倾覆之大流)
+            var passive9002001 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9002001) as PassiveAbility_9002001;
+            passive9002001?.OnFlowConsumed(amount);
+
             // 通知 PassiveAbility_9000005 (不会忘记的那个梦想)
             var passive9000005 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9000005) as PassiveAbility_9000005;
             passive9000005?.OnFlowConsumed(amount);
@@ -575,6 +579,10 @@ namespace Steria
             // 通知 PassiveAbility_9002004 (司流者)
             var passive9002004 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9002004) as PassiveAbility_9002004;
             passive9002004?.OnFlowConsumed(amount);
+
+            // 通知 PassiveAbility_9002005 (斯拉泽雅司流者)
+            var passive9002005 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9002005) as PassiveAbility_9002005;
+            passive9002005?.OnFlowConsumed(amount);
 
             // 通知 PassiveAbility_9007001 (汐音共振)
             var passive9007001 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9007001) as PassiveAbility_9007001;
@@ -746,12 +754,11 @@ namespace Steria
                 SteriaLogger.Log($"RegisterCardUsage: [多次流强化] card detected (ID: {cardId}) - max {maxFlowPerDice} per dice");
             }
 
-            // 检查角色是否有斯拉泽雅被动（流威力加成x2）
-            int flowPowerMultiplier = 1;
-            if (PassiveAbility_9002001.HasFlowPowerBonus(card.owner))
+            // 斯拉泽雅被动：本单位所有书页可额外受一次流强化
+            if (PassiveAbility_9002001.HasExtraFlowEnhancement(card.owner))
             {
-                flowPowerMultiplier = 2;
-                SteriaLogger.Log($"RegisterCardUsage: Owner has 斯拉泽雅被动 - flow power bonus x2");
+                maxFlowPerDice += 1;
+                SteriaLogger.Log($"RegisterCardUsage: Owner has 神脉：梦之汐 - max Flow enhancement per dice +1 (now {maxFlowPerDice})");
             }
 
             // 计算流分配
@@ -768,24 +775,24 @@ namespace Steria
                 {
                     int targetIndex = nonStandbyIndices[i];
                     int bonusForThisDice = Math.Min(flowRemaining, maxFlowPerDice);
-                    powerBonusMap[targetIndex] = bonusForThisDice * flowPowerMultiplier;
+                    powerBonusMap[targetIndex] = bonusForThisDice;
                     enhancementCountMap[targetIndex] = bonusForThisDice; // 存储原始次数
                     flowRemaining -= bonusForThisDice;
                 }
             }
             else
             {
-                // 普通卡牌：每颗骰子最多+1威力（乘以倍率）
+                // 普通卡牌：每颗骰子最多+1威力
                 flowToUse = Math.Min(flowStacks, diceCount);
                 for (int i = 0; i < flowToUse; i++)
                 {
                     int targetIndex = nonStandbyIndices[i];
-                    powerBonusMap[targetIndex] = 1 * flowPowerMultiplier;
+                    powerBonusMap[targetIndex] = 1;
                     enhancementCountMap[targetIndex] = 1; // 存储原始次数
                 }
             }
 
-            SteriaLogger.Log($"RegisterCardUsage: Distributing {flowToUse} flow to {diceCount} non-Standby dice (max {maxFlowPerDice} per dice, multiplier {flowPowerMultiplier})");
+            SteriaLogger.Log($"RegisterCardUsage: Distributing {flowToUse} flow to {diceCount} non-Standby dice (max {maxFlowPerDice} per dice)");
 
             // 代行-斯蒂芬妮：所有消耗流/梦/潮的书页骰子威力+1
             if (hasStephanieProxy && flowToUse > 0)
@@ -844,37 +851,8 @@ namespace Steria
             // 记录流消耗（供卡牌能力查询）
             RecordFlowConsumptionForCard(card, totalConsumed);
 
-            // 通知 PassiveAbility_9000005 (不会忘记的那个梦想)
-            var passive9000005 = card.owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9000005) as PassiveAbility_9000005;
-            if (passive9000005 != null)
-            {
-                SteriaLogger.Log($"RegisterCardUsage: Notifying PassiveAbility_9000005 of {totalConsumed} flow consumed");
-                passive9000005.OnFlowConsumed(totalConsumed);
-            }
-
-            // 通知 PassiveAbility_9002003 (御风司流)
-            var passive9002003 = card.owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9002003) as PassiveAbility_9002003;
-            if (passive9002003 != null)
-            {
-                SteriaLogger.Log($"RegisterCardUsage: Notifying PassiveAbility_9002003 of {totalConsumed} flow consumed");
-                passive9002003.OnFlowConsumed(totalConsumed);
-            }
-
-            // 通知 PassiveAbility_9002004 (司流者)
-            var passive9002004 = card.owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9002004) as PassiveAbility_9002004;
-            if (passive9002004 != null)
-            {
-                SteriaLogger.Log($"RegisterCardUsage: Notifying PassiveAbility_9002004 of {totalConsumed} flow consumed");
-                passive9002004.OnFlowConsumed(totalConsumed);
-            }
-
-            // 通知 PassiveAbility_9007001 (汐音共振)
-            var passive9007001 = card.owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9007001) as PassiveAbility_9007001;
-            if (passive9007001 != null)
-            {
-                SteriaLogger.Log($"RegisterCardUsage: Notifying PassiveAbility_9007001 of {totalConsumed} flow consumed");
-                passive9007001.OnFlowConsumed(totalConsumed);
-            }
+            // 通知所有依赖流消耗的被动
+            NotifyPassivesOnFlowConsumed(card.owner, totalConsumed);
         }
 
         // 获取骰子的流威力加成（通过卡牌和骰子索引）
@@ -3043,6 +3021,33 @@ namespace Steria
         }
     }
 
+    [HarmonyPatch(typeof(BattleUnitCardsInHandUI), nameof(BattleUnitCardsInHandUI.UpdateCardList))]
+    public static class BattleUnitCardsInHandUI_UpdateCardList_SteriaCardVisuals_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(BattleUnitCardsInHandUI __instance)
+        {
+            try
+            {
+                List<BattleDiceCardUI> cards = __instance?.GetCardUIList();
+                if (cards == null)
+                {
+                    return;
+                }
+
+                foreach (BattleDiceCardUI cardUi in cards)
+                {
+                    MusicDiceVisuals.ApplyOnCardUI(cardUi);
+                    PhantomDreamCardVisuals.ApplyOnCardUI(cardUi);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Hand card visual refresh patch error: {ex}");
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(BattleDiceCard_BehaviourDescUI), "SetBehaviourInfo")]
     public static class BattleDiceCard_BehaviourDescUI_SetBehaviourInfo_MusicStyle_Patch
     {
@@ -3304,18 +3309,7 @@ namespace Steria
         /// </summary>
         public static void AddFlowStacksWithMultiplier(BattleUnitModel owner, int amount)
         {
-            if (owner == null || amount <= 0) return;
-
-            // 检查是否有流x2被动 (PassiveAbility_9002001)
-            if (PassiveAbility_9002001.HasPassive(owner))
-            {
-                int originalAmount = amount;
-                amount *= 2;
-                SteriaLogger.Log($"FlowMultiplier: {owner.UnitData?.unitData?.name} has 流x2 passive, {originalAmount} -> {amount}");
-            }
-
-            // 调用原始的添加流方法
-            CardAbilityHelper.AddFlowStacks(owner, amount);
+            CardAbilityHelper.AddFlowStacks(owner, amount, true);
         }
     }
 } // End of Steria namespace
