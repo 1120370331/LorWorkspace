@@ -2655,6 +2655,98 @@ namespace Steria
         }
     }
 
+    [HarmonyPatch(typeof(AttackEffectManager), nameof(AttackEffectManager.CreateDamagedTextEffect))]
+    public static class AttackEffectManager_CreateDamagedTextEffect_MusicDicePatch
+    {
+        public sealed class MusicDamageTextState
+        {
+            public bool ShouldApply;
+            public HashSet<DamageTextEffect> Existing;
+        }
+
+        [HarmonyPrefix]
+        public static void Prefix(BehaviourDetail detail, BattleUnitModel unit, out MusicDamageTextState __state)
+        {
+            __state = null;
+            try
+            {
+                bool isAttackDetail = detail == BehaviourDetail.Slash
+                    || detail == BehaviourDetail.Penetrate
+                    || detail == BehaviourDetail.Hit;
+                if (!MusicDamageContext.IsActive || !isAttackDetail)
+                {
+                    return;
+                }
+
+                __state = new MusicDamageTextState
+                {
+                    ShouldApply = true,
+                    Existing = new HashSet<DamageTextEffect>()
+                };
+
+                Transform root = unit?.view?.damageTextEffectRoot;
+                if (root == null)
+                {
+                    return;
+                }
+
+                DamageTextEffect[] before = root.GetComponentsInChildren<DamageTextEffect>(true);
+                foreach (DamageTextEffect effect in before)
+                {
+                    if (effect != null)
+                    {
+                        __state.Existing.Add(effect);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music damage text Prefix error: {ex}");
+                __state = null;
+            }
+        }
+
+        [HarmonyPostfix]
+        public static void Postfix(BattleUnitModel unit, MusicDamageTextState __state)
+        {
+            try
+            {
+                if (__state == null || !__state.ShouldApply)
+                {
+                    return;
+                }
+
+                Transform root = unit?.view?.damageTextEffectRoot;
+                if (root == null)
+                {
+                    return;
+                }
+
+                DamageTextEffect[] effects = root.GetComponentsInChildren<DamageTextEffect>(true);
+                DamageTextEffect selected = null;
+                foreach (DamageTextEffect effect in effects)
+                {
+                    if (effect != null && (__state.Existing == null || !__state.Existing.Contains(effect)))
+                    {
+                        selected = effect;
+                    }
+                }
+
+                if (selected == null)
+                {
+                    selected = effects.LastOrDefault(effect => effect != null && !MusicDiceVisuals.IsMusicDamageText(effect))
+                        ?? effects.LastOrDefault(effect => effect != null);
+                }
+
+                MusicDiceVisuals.ApplyOnDamageText(selected);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music damage text Postfix error: {ex}");
+            }
+        }
+    }
+
     /// <summary>
     /// 乐章型骰子与防御型骰子拼点时，跳过拼点：
     ///   - 乐章方强制判定为胜方

@@ -487,6 +487,10 @@ namespace Steria
             public bool WasEnabled = true;
         }
 
+        private sealed class SteriaMusicDamageTextTag : MonoBehaviour
+        {
+        }
+
         // 蓝白渐变：面板使用淡蓝，边缘使用白色亮边，整体呈现冷色调白蓝感
         private static readonly Color MusicDiceFaceColor = new Color(0.48f, 0.74f, 1f, 1f);
         private static readonly Color MusicDiceEdgeColor = Color.white;
@@ -497,6 +501,8 @@ namespace Steria
         private const float BookFaceScale = 1.35f;
         private const float BookGlowScale = 1.5f;
         private const float BookDieIconScale = 1.18f * 0.7f;
+        private const float BookCardFaceScaleMultiplier = 0.75f;
+        private const float BookCardFaceLayoutCompactness = 0.62f;
 
         public static void ApplyOnActionDice(BattleSimpleActionUI_Dice diceUi)
         {
@@ -524,6 +530,44 @@ namespace Steria
 
             AccessTools.Field(typeof(BattleSimpleActionUI_Dice), "originColor")?.SetValue(diceUi, MusicDiceFaceColor);
             diceUi.SetValueColor(BattleDiceValueColor.Normal);
+        }
+
+        public static bool IsMusicDamageText(DamageTextEffect effect)
+        {
+            return effect != null && effect.GetComponent<SteriaMusicDamageTextTag>() != null;
+        }
+
+        public static void ApplyOnDamageText(DamageTextEffect effect)
+        {
+            if (effect == null)
+            {
+                return;
+            }
+
+            Sprite sprite = MusicDiceSpriteFactory.GetDieIconSprite() ?? MusicDiceSpriteFactory.GetFaceSprite();
+            if (sprite == null || effect.img_resistIcon == null)
+            {
+                return;
+            }
+
+            effect.img_resistIcon.sprite = sprite;
+            effect.img_resistIcon.color = Color.white;
+            effect.img_resistIcon.enabled = true;
+            effect.img_resistIcon.preserveAspect = true;
+
+            if (effect.img_resistIconBg != null)
+            {
+                effect.img_resistIconBg.enabled = false;
+            }
+            if (effect.img_resistIconFg != null)
+            {
+                effect.img_resistIconFg.enabled = false;
+            }
+
+            if (effect.GetComponent<SteriaMusicDamageTextTag>() == null)
+            {
+                effect.gameObject.AddComponent<SteriaMusicDamageTextTag>();
+            }
         }
 
         public static void ApplyOnCardUI(BattleDiceCardUI cardUi)
@@ -787,27 +831,19 @@ namespace Steria
 
         private static bool TryGetBattleDiceCardBehaviourIconArrays(BattleDiceCardUI cardUi, out Image[] icons, out Image[] linearDodge)
         {
-            icons = AccessTools.Field(typeof(BattleDiceCardUI), "img_BehaviourIcons")?.GetValue(cardUi) as Image[];
-            linearDodge = AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodge")?.GetValue(cardUi) as Image[];
-
-            if (icons != null && icons.Length > 0)
-            {
-                return true;
-            }
+            icons = null;
+            linearDodge = AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodges")?.GetValue(cardUi) as Image[]
+                ?? AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodge")?.GetValue(cardUi) as Image[];
 
             List<Image> handCardIcons = AccessTools.Field(typeof(BattleDiceCardUI), "img_behaviourDetatilList")
                 ?.GetValue(cardUi) as List<Image>;
             if (handCardIcons != null && handCardIcons.Count > 0)
             {
                 icons = handCardIcons.ToArray();
+                return true;
             }
 
-            if (linearDodge == null)
-            {
-                linearDodge = AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodges")
-                    ?.GetValue(cardUi) as Image[];
-            }
-
+            icons = AccessTools.Field(typeof(BattleDiceCardUI), "img_BehaviourIcons")?.GetValue(cardUi) as Image[];
             if (icons != null && icons.Length > 0)
             {
                 return true;
@@ -859,6 +895,55 @@ namespace Steria
             return icons != null && icons.Length > 0;
         }
 
+        private static bool IsBattleDiceCardFaceIconArray(BattleDiceCardUI cardUi, Image[] icons)
+        {
+            if (cardUi == null || icons == null || icons.Length == 0)
+            {
+                return false;
+            }
+
+            List<Image> handCardIcons = AccessTools.Field(typeof(BattleDiceCardUI), "img_behaviourDetatilList")
+                ?.GetValue(cardUi) as List<Image>;
+            if (handCardIcons == null || handCardIcons.Count == 0)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < icons.Length; i++)
+            {
+                Image icon = icons[i];
+                if (icon != null && handCardIcons.Contains(icon))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static Vector2 GetMusicAttackDiceCenter(Image[] icons, BattleDiceCardModel model)
+        {
+            Vector2 sum = Vector2.zero;
+            int count = 0;
+            for (int i = 0; i < icons.Length; i++)
+            {
+                Image icon = icons[i];
+                if (icon == null)
+                {
+                    continue;
+                }
+
+                if (!MusicDiceSystem.IsMusicAttackDiceBehaviour(MusicDiceSystem.TryGetDiceBehaviourAt(model, i)))
+                {
+                    continue;
+                }
+
+                sum += icon.rectTransform.anchoredPosition;
+                count++;
+            }
+
+            return count > 0 ? sum / count : Vector2.zero;
+        }
+
         private static void ApplyBattleDiceCardFaceStrip(BattleDiceCardUI cardUi)
         {
             if (cardUi?.CardModel == null || !MusicDiceSystem.IsMusicCard(cardUi.CardModel))
@@ -874,6 +959,10 @@ namespace Steria
 
             BattleDiceCardModel model = cardUi.CardModel;
             bool useDieArt = MusicDiceSpriteFactory.GetDieIconSprite() != null;
+            bool isCardFaceStrip = IsBattleDiceCardFaceIconArray(cardUi, icons);
+            Vector2 layoutCenter = isCardFaceStrip ? GetMusicAttackDiceCenter(icons, model) : Vector2.zero;
+            float scaleMultiplier = isCardFaceStrip ? BookCardFaceScaleMultiplier : 1f;
+            float layoutCompactness = isCardFaceStrip ? BookCardFaceLayoutCompactness : 1f;
 
             for (int i = 0; i < icons.Length; i++)
             {
@@ -894,18 +983,29 @@ namespace Steria
 
                 if (useDieArt)
                 {
-                    EnsureBookDiceBackdrop(img);
+                    EnsureBookDiceBackdrop(img, scaleMultiplier, layoutCompactness, layoutCenter);
                     if (img.enabled)
                     {
                         img.color = Color.white;
                     }
 
-                    SuppressLinearDodge(lin);
+                    if (isCardFaceStrip)
+                    {
+                        RestoreLinearDodgeIfNeeded(lin);
+                        if (lin != null)
+                        {
+                            lin.color = Color.white;
+                        }
+                    }
+                    else
+                    {
+                        SuppressLinearDodge(lin);
+                    }
                 }
                 else
                 {
                     RestoreLinearDodgeIfNeeded(lin);
-                    EnsureBookDiceBackdrop(img);
+                    EnsureBookDiceBackdrop(img, scaleMultiplier, layoutCompactness, layoutCenter);
                     ApplyBlueTintIcon(img);
                     if (lin != null)
                     {
@@ -1090,7 +1190,7 @@ namespace Steria
         /// - 若存在 music_dice_die_icon.png：仅铺一层整张骰面，并隐藏原版行为线稿图标；
         /// - 否则：蓝色面板 + 软光 + 白色线稿图标（face / glow）。
         /// </summary>
-        private static void EnsureBookDiceBackdrop(Image icon)
+        private static void EnsureBookDiceBackdrop(Image icon, float scaleMultiplier = 1f, float layoutCompactness = 1f, Vector2 layoutCenter = default(Vector2))
         {
             if (icon == null)
             {
@@ -1111,6 +1211,14 @@ namespace Steria
                 Transform existingDie = parent.Find("SteriaMusicDiceDieIcon" + sfx);
                 if (existingDie != null)
                 {
+                    Image existingDieImg = existingDie.GetComponent<Image>();
+                    if (existingDieImg != null)
+                    {
+                        existingDieImg.sprite = die;
+                        existingDieImg.color = Color.white;
+                        existingDieImg.preserveAspect = true;
+                    }
+                    CopyIconRect(existingDie.GetComponent<RectTransform>(), icon.rectTransform, BookDieIconScale * scaleMultiplier, layoutCompactness, layoutCenter);
                     SuppressVanillaDetailIcon(icon);
                     return;
                 }
@@ -1123,7 +1231,7 @@ namespace Steria
                 dieImg.raycastTarget = false;
                 dieImg.type = Image.Type.Simple;
                 dieImg.preserveAspect = true;
-                CopyIconRect(go.GetComponent<RectTransform>(), icon.rectTransform, BookDieIconScale);
+                CopyIconRect(go.GetComponent<RectTransform>(), icon.rectTransform, BookDieIconScale * scaleMultiplier, layoutCompactness, layoutCenter);
                 go.AddComponent<SteriaMusicDiceStyleTag>();
                 go.transform.SetSiblingIndex(icon.transform.GetSiblingIndex());
 
@@ -1144,8 +1252,15 @@ namespace Steria
 
             RestoreVanillaDetailIfNeededOnImage(icon);
 
-            if (parent.Find("SteriaMusicDiceFace" + sfx) != null)
+            Transform existingFace = parent.Find("SteriaMusicDiceFace" + sfx);
+            Transform existingGlow = parent.Find("SteriaMusicDiceGlow" + sfx);
+            if (existingFace != null)
             {
+                CopyIconRect(existingFace.GetComponent<RectTransform>(), icon.rectTransform, BookFaceScale * scaleMultiplier, layoutCompactness, layoutCenter);
+                if (existingGlow != null)
+                {
+                    CopyIconRect(existingGlow.GetComponent<RectTransform>(), icon.rectTransform, BookGlowScale * scaleMultiplier, layoutCompactness, layoutCenter);
+                }
                 return;
             }
 
@@ -1159,7 +1274,7 @@ namespace Steria
             faceImg.raycastTarget = false;
             faceImg.type = Image.Type.Simple;
             faceImg.preserveAspect = false;
-            CopyIconRect(face.GetComponent<RectTransform>(), iconRect, BookFaceScale);
+            CopyIconRect(face.GetComponent<RectTransform>(), iconRect, BookFaceScale * scaleMultiplier, layoutCompactness, layoutCenter);
             face.AddComponent<SteriaMusicDiceStyleTag>();
             face.transform.SetSiblingIndex(icon.transform.GetSiblingIndex());
 
@@ -1171,7 +1286,7 @@ namespace Steria
             glowImg.raycastTarget = false;
             glowImg.type = Image.Type.Simple;
             glowImg.preserveAspect = false;
-            CopyIconRect(glow.GetComponent<RectTransform>(), iconRect, BookGlowScale);
+            CopyIconRect(glow.GetComponent<RectTransform>(), iconRect, BookGlowScale * scaleMultiplier, layoutCompactness, layoutCenter);
             glow.AddComponent<SteriaMusicDiceStyleTag>();
             glow.transform.SetSiblingIndex(icon.transform.GetSiblingIndex());
         }
@@ -1217,12 +1332,19 @@ namespace Steria
         /// 把 src 的 RectTransform 锚定 / 位移 / 旋转复制到 dst，并把 sizeDelta 按 scale 放大。
         /// 若 src 是用 anchorMin/Max 撑满父对象（sizeDelta=0），改用 rect.size 推断真实大小。
         /// </summary>
-        private static void CopyIconRect(RectTransform dst, RectTransform src, float scale)
+        private static void CopyIconRect(RectTransform dst, RectTransform src, float scale, float layoutCompactness = 1f, Vector2 layoutCenter = default(Vector2))
         {
+            if (dst == null || src == null)
+            {
+                return;
+            }
+
             dst.anchorMin = src.anchorMin;
             dst.anchorMax = src.anchorMax;
             dst.pivot = src.pivot;
-            dst.anchoredPosition = src.anchoredPosition;
+            dst.anchoredPosition = layoutCompactness < 0.999f
+                ? layoutCenter + (src.anchoredPosition - layoutCenter) * layoutCompactness
+                : src.anchoredPosition;
 
             Vector2 size = src.sizeDelta;
             if (Mathf.Approximately(size.x, 0f) && Mathf.Approximately(size.y, 0f))

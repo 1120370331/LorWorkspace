@@ -180,10 +180,7 @@ public class BattleUnitBuf_EliyeHolyBuff : BattleUnitBuf
         if (_owner == null || stack <= 0) { this.Destroy(); return; }
         _owner.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Strength, 1, _owner);
         // 获得3层流
-        BattleUnitBuf_Flow flow = _owner.bufListDetail.GetActivatedBufList()
-            .FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-        if (flow != null) flow.stack += 3;
-        else _owner.bufListDetail.AddBuf(new BattleUnitBuf_Flow { stack = 3 });
+        CardAbilityHelper.AddFlowStacks(_owner, 3);
         stack--;
         if (stack <= 0) this.Destroy();
     }
@@ -1215,10 +1212,7 @@ public class PassiveAbility_9010006 : PassiveAbilityBase
         {
             case 0: // 1层强壮 + 3层流
                 owner.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Strength, 1, owner);
-                BattleUnitBuf_Flow flow = owner.bufListDetail.GetActivatedBufList()
-                    .FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-                if (flow != null) flow.stack += 3;
-                else owner.bufListDetail.AddBuf(new BattleUnitBuf_Flow { stack = 3 });
+                CardAbilityHelper.AddFlowStacks(owner, 3);
                 break;
             case 1: // 1层坚韧 + 3层梦
                 owner.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Endurance, 1, owner);

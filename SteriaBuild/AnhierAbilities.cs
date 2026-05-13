@@ -193,21 +193,7 @@ public class PassiveAbility_9000002 : PassiveAbilityBase
 
     private void AddFlowStacks(int amount)
     {
-        if (amount <= 0 || this.owner == null || this.owner.bufListDetail == null) return;
-        BattleUnitBuf_Flow existingFlow = this.owner.bufListDetail.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-         if (existingFlow != null && !existingFlow.IsDestroyed())
-         {
-             Debug.Log($"[Steria] Adding {amount} stack(s) to existing Flow buff.");
-             existingFlow.stack += amount;
-             existingFlow.OnAddBuf(amount);
-         }
-         else
-         {
-             Debug.Log($"[Steria] Adding new Flow buff with {amount} stack(s).");
-             BattleUnitBuf_Flow newFlow = new BattleUnitBuf_Flow();
-             newFlow.stack = amount;
-             this.owner.bufListDetail.AddBuf(newFlow);
-         }
+        CardAbilityHelper.AddFlowStacks(this.owner, amount);
     }
 }
 

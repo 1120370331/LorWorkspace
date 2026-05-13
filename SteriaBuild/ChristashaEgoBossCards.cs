@@ -347,10 +347,7 @@ public class DiceCardSelfAbility_ChristashaEgoFlowComeGo : DiceCardSelfAbilityBa
         base.OnStartBattle();
         if (owner == null) return;
         // 获得4层流
-        BattleUnitBuf_Flow flow = owner.bufListDetail.GetActivatedBufList()
-            .FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-        if (flow != null) flow.stack += 4;
-        else owner.bufListDetail.AddBuf(new BattleUnitBuf_Flow { stack = 4 });
+        CardAbilityHelper.AddFlowStacks(owner, 4);
     }
 
     public override void BeforeGiveDamage(BattleDiceBehavior behavior)

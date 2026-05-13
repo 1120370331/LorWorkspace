@@ -287,21 +287,7 @@ public class PassiveAbility_9009012 : PassiveAbilityBase
 
     private static void AddFlow(BattleUnitModel unit, int amount)
     {
-        if (unit == null || amount <= 0)
-        {
-            return;
-        }
-
-        BattleUnitBuf_Flow flow = unit.bufListDetail.GetActivatedBufList()
-            .FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-        if (flow != null)
-        {
-            flow.stack += amount;
-        }
-        else
-        {
-            unit.bufListDetail.AddBuf(new BattleUnitBuf_Flow { stack = amount });
-        }
+        CardAbilityHelper.AddFlowStacks(unit, amount);
     }
 
     private static void AddDream(BattleUnitModel unit, int amount)

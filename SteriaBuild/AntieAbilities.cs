@@ -218,7 +218,10 @@ public class PassiveAbility_9011001 : PassiveAbilityBase
             return;
         }
 
-        int converted = TakeBuffStack<BattleUnitBuf_Tide>() + TakeBuffStack<BattleUnitBuf_Dream>() + TakeBuffStack<BattleUnitBuf_Flow>();
+        int tideStack = TakeBuffStack<BattleUnitBuf_Tide>();
+        int dreamStack = TakeBuffStack<BattleUnitBuf_Dream>();
+        int flowStack = TakeBuffStack<BattleUnitBuf_Flow>();
+        int converted = tideStack + dreamStack + flowStack;
         _currentForm = form;
         RefreshFormMarker(form);
 
@@ -231,7 +234,8 @@ public class PassiveAbility_9011001 : PassiveAbilityBase
                 AddBuff(new BattleUnitBuf_Dream(), converted + 7);
                 break;
             case AntieForm.Flow:
-                AddBuff(new BattleUnitBuf_Flow(), converted + 8);
+                AddBuff(new BattleUnitBuf_Flow(), flowStack);
+                CardAbilityHelper.AddFlowStacks(owner, tideStack + dreamStack + 8);
                 break;
         }
 
