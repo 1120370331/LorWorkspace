@@ -1076,7 +1076,7 @@
     <Rarity>Common</Rarity>
     <Spec Range="Near" Cost="0" />
     <Keyword>SteriaPhantomDream</Keyword>
-    <Keyword>ExhaustOnUse</Keyword>
+    <Option>ExhaustOnUse</Option>
     <Script>SivierWishDew</Script>
     <ScriptDesc>[幻梦] [佚亡] 使用时:抽取1张书页,获得1层[梦]</ScriptDesc>
     <AbilityList>
@@ -1097,7 +1097,7 @@
     <Rarity>Unique</Rarity>
     <Spec Range="Near" Cost="2" />
     <Keyword>SteriaPhantomDream</Keyword>
-    <Keyword>ExhaustOnUse</Keyword>
+    <Option>ExhaustOnUse</Option>
     <Script>SivierDreamShelter</Script>
     <ScriptDesc>[幻梦] [佚亡] 使用时:恢复1点光芒,抽取2张书页</ScriptDesc>
     <AbilityList>
