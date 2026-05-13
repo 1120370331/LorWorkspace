@@ -1072,7 +1072,7 @@
   <Card ID="9008008">
     <Name>愿露</Name>
     <TextId>-1</TextId>
-    <Artwork>愿望之刺.png</Artwork>
+    <Artwork>愿露.png</Artwork>
     <Rarity>Common</Rarity>
     <Spec Range="Near" Cost="0" />
     <Keyword>SteriaPhantomDream</Keyword>
@@ -1093,7 +1093,7 @@
   <Card ID="9008009">
     <Name>梦之庇护</Name>
     <TextId>-1</TextId>
-    <Artwork>集愿之盾.png</Artwork>
+    <Artwork>梦之庇护.png</Artwork>
     <Rarity>Unique</Rarity>
     <Spec Range="Near" Cost="2" />
     <Keyword>SteriaPhantomDream</Keyword>

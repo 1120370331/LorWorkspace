@@ -532,6 +532,7 @@ namespace Steria
             {
                 copiedCard.XmlData.Keywords.Add(_phantomDreamKeywordId);
             }
+            copiedCard.AddBufWithoutDuplication(new global::BattleDiceCardBuf_PhantomDreamTransferred());
 
             owner.allyCardDetail.UseCard(sourceCard);
             owner.SpendCardAndCost(sourceCard);
@@ -3015,10 +3016,11 @@ namespace Steria
             try
             {
                 MusicDiceVisuals.ApplyOnCardUI(__instance);
+                PhantomDreamCardVisuals.ApplyOnCardUI(__instance);
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Steria] Music dice card UI patch error: {ex}");
+                Debug.LogError($"[Steria] Card UI visual patch error: {ex}");
             }
         }
     }
@@ -3032,10 +3034,11 @@ namespace Steria
             try
             {
                 MusicDiceVisuals.ApplyOnCardUI(__instance);
+                PhantomDreamCardVisuals.ApplyOnCardUI(__instance);
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Steria] Music dice preview resist patch error: {ex}");
+                Debug.LogError($"[Steria] Card UI preview resist visual patch error: {ex}");
             }
         }
     }
