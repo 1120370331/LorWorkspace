@@ -4,7 +4,7 @@ using UnityEngine;
 [InitializeOnLoad]
 public static class ChristashaDawnCoreOnlyAutoEnsure
 {
-    private const string SessionKey = "Steria.ChristashaDawn.CoreOnlyAutoEnsure.Done.v10";
+    private const string SessionKey = "Steria.ChristashaDawn.CoreOnlyAutoEnsure.Done.v11";
 
     static ChristashaDawnCoreOnlyAutoEnsure()
     {

@@ -225,6 +225,7 @@ public static class ChristashaDawnCombatBundleBuilder
         RemoveCoreOnlyParticleComponents(root);
         ConfigureCoreOnlyMeshRenderer(root, whiteCoreMaterial, coreMesh);
         ConfigureCoreOnlyAnimation(root, revealClip);
+        ConfigureCoreOnlyPreviewAnimator(root);
 
         SavePrefab(root, "Assets/Prefabs/ChristashaDawnSlashVerticalCoreOnlyPrefab.prefab");
     }
@@ -282,6 +283,23 @@ public static class ChristashaDawnCombatBundleBuilder
         animation.playAutomatically = false;
         animation.wrapMode = WrapMode.Once;
         animation.AddClip(revealClip, revealClip.name);
+    }
+
+    private static void ConfigureCoreOnlyPreviewAnimator(GameObject target)
+    {
+        ChristashaDawnCoreOnlyAnimator animator = target.GetComponent<ChristashaDawnCoreOnlyAnimator>();
+        if (animator == null)
+        {
+            animator = target.AddComponent<ChristashaDawnCoreOnlyAnimator>();
+        }
+
+        animator.duration = 0.82f;
+        animator.revealStartDelay = 0.02f;
+        animator.revealDuration = 0.34f;
+        animator.holdDuration = 0.10f;
+        animator.retreatDuration = 0.34f;
+        animator.loopInEditor = true;
+        animator.loopInPlay = true;
     }
 
     private static void CreateMeleePiercePrefab(Material blade, Material glow, Material star, Material dots, Material black, Mesh lanceMesh, Mesh diamondMesh)

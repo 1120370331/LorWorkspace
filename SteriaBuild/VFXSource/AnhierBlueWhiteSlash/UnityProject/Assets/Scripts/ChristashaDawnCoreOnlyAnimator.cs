@@ -11,7 +11,7 @@ public class ChristashaDawnCoreOnlyAnimator : MonoBehaviour
     public float revealDuration = 0.34f;
     public float holdDuration = 0.10f;
     public float retreatDuration = 0.34f;
-    public bool loopInEditor = false;
+    public bool loopInEditor = true;
     public bool loopInPlay = true;
 
     private static readonly int RevealId = Shader.PropertyToID("_Reveal");
@@ -31,6 +31,14 @@ public class ChristashaDawnCoreOnlyAnimator : MonoBehaviour
         }
 
         startTime = Time.realtimeSinceStartup;
+        ApplyAtElapsed(0f);
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            EditorApplication.QueuePlayerLoopUpdate();
+            SceneView.RepaintAll();
+        }
+#endif
     }
 
     private void OnDisable()
@@ -68,6 +76,7 @@ public class ChristashaDawnCoreOnlyAnimator : MonoBehaviour
         {
             elapsed = Mathf.Repeat(elapsed, duration);
             EditorApplication.QueuePlayerLoopUpdate();
+            SceneView.RepaintAll();
         }
         else if (!Application.isPlaying)
         {
@@ -75,9 +84,20 @@ public class ChristashaDawnCoreOnlyAnimator : MonoBehaviour
             if (elapsed < duration)
             {
                 EditorApplication.QueuePlayerLoopUpdate();
+                SceneView.RepaintAll();
             }
         }
 #endif
+        ApplyAtElapsed(elapsed);
+
+        if (Application.isPlaying && !loopInPlay && elapsed > duration)
+        {
+            enabled = false;
+        }
+    }
+
+    private void ApplyAtElapsed(float elapsed)
+    {
         float revealT = Mathf.InverseLerp(revealStartDelay, revealStartDelay + revealDuration, elapsed);
         float holdEnd = revealStartDelay + revealDuration + holdDuration;
         float retreatT = Mathf.InverseLerp(holdEnd, holdEnd + retreatDuration, elapsed);
@@ -92,11 +112,6 @@ public class ChristashaDawnCoreOnlyAnimator : MonoBehaviour
         propertyBlock.SetFloat(RetreatId, retreat);
         propertyBlock.SetFloat(EmissionBoostId, emission);
         targetRenderer.SetPropertyBlock(propertyBlock);
-
-        if (Application.isPlaying && !loopInPlay && elapsed > duration)
-        {
-            enabled = false;
-        }
     }
 
     private static float EaseOutCubic(float t)
