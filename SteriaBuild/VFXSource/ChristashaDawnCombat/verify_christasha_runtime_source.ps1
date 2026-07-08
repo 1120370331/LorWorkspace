@@ -56,6 +56,15 @@ Assert-Contains $runtime 'protected override float CenterSlashYOffset => -0\.06f
 Assert-Contains $runtime 'CenterSlashTravelUsesTargetSide' "runtime must orient caster-centered slashes by target side instead of rotating the whole prefab backward."
 Assert-Contains $runtime 'protected override bool CenterSlashTravelUsesTargetSide => true;' "horizontal slash must use target-side travel scaling to avoid firing behind the caster."
 Assert-Contains $runtime 'main\.transform\.localRotation = Quaternion\.identity;' "asset bundle root must not be globally 180-degree flipped for caster-centered slash VFX."
+Assert-Contains $runtime 'AnimateCrescentRevealMaterials\(' "runtime must animate crescent shader reveal continuously instead of relying on staged mesh slices."
+Assert-Contains $runtime 'SetFloat\("_Reveal"' "runtime must drive shader reveal progress."
+Assert-Contains $runtime 'SetFloat\("_Retreat"' "runtime must drive shader retreat progress."
+Assert-Contains $runtime 'Mathf\.Pow\(revealRaw, 1\.65f\)' "runtime reveal must use an accelerating motion curve."
+Assert-Contains $runtime 'float fifoRetreat = reveal - 0\.30f;' "runtime retreat must follow the reveal path so earlier regions exit first."
+Assert-Contains $runtime 'Mathf\.Max\(fifoRetreat, flushRetreat\)' "runtime retreat must preserve FIFO exit while still flushing the full slash."
+if ($runtime -match 'UnityEngine\.Rendering\.PostProcessing|PostProcessLayer|PostProcessVolume|RuntimeBloom') {
+    $failures.Add("runtime must not override Library Of Ruina camera Bloom; slash glow should come from HDR/emissive materials and the game's own post-processing.")
+}
 Assert-Contains $runtime 'DiceAttackEffect_Steria_ChristashaDawnSlashH[\s\S]*?PrefabName\s*=>\s*"ChristashaDawnSlashVerticalPrefab"' "horizontal slash runtime must temporarily use the vertical cleave prefab."
 Assert-Contains $runtime 'protected override float Duration => 2\.37f;' "slash duration must be extended by 50 percent for visual inspection."
 Assert-Contains $runtime 'SlashShakeStrength' "runtime must expose slash-specific hit-stop/screen-shake strength."

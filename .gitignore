@@ -32,6 +32,10 @@ SteriaBuild/VFXSource/**/UnityProject/Builds/
 SteriaBuild/VFXSource/**/UnityProject/Preview/
 SteriaBuild/VFXSource/**/UnityProject/UserSettings/
 SteriaBuild/VFXSource/**/UnityProject/AssetBundles/
+SteriaBuild/VFXSource/**/UnityProject/Assets/TestScene.unity
+SteriaBuild/VFXSource/**/UnityProject/Assets/TestScene.unity.meta
+SteriaBuild/VFXSource/**/UnityProject/Assets/tet.unity
+SteriaBuild/VFXSource/**/UnityProject/Assets/tet.unity.meta
 SteriaBuild/VFXSource/**/UnityProject/Assets/Materials/
 SteriaBuild/VFXSource/**/UnityProject/Assets/Materials.meta
 SteriaBuild/VFXSource/**/UnityProject/Assets/Meshes/

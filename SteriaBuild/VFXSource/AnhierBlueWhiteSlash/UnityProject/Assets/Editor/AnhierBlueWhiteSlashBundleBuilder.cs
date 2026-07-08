@@ -441,7 +441,7 @@ public static class AnhierBlueWhiteSlashBundleBuilder
         var shape = ps.shape;
         shape.enabled = true;
         shape.shapeType = ParticleSystemShapeType.Box;
-        shape.box = new Vector3(5.6f, 0.55f, 0.05f);
+        shape.scale = new Vector3(5.6f, 0.55f, 0.05f);
 
         var velocity = ps.velocityOverLifetime;
         velocity.enabled = true;

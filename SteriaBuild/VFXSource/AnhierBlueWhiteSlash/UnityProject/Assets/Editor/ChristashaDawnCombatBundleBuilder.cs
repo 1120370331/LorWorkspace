@@ -9,6 +9,7 @@ public static class ChristashaDawnCombatBundleBuilder
     private const string BundleName = "steria_christasha_dawn_combat";
     private const string SlashHorizontalPrefabName = "ChristashaDawnSlashHorizontalPrefab";
     private const string SlashVerticalPrefabName = "ChristashaDawnSlashVerticalPrefab";
+    private const string SlashVerticalCoreOnlyPrefabName = "ChristashaDawnSlashVerticalCoreOnlyPrefab";
     private const string PierceNearPrefabName = "ChristashaDawnPierceNearPrefab";
     private const string PierceFarPrefabName = "ChristashaDawnPierceFarPrefab";
     private const string HitPrefabName = "ChristashaDawnHitPrefab";
@@ -37,6 +38,7 @@ public static class ChristashaDawnCombatBundleBuilder
         Directory.CreateDirectory("Assets/Prefabs");
         Directory.CreateDirectory("Assets/Shaders");
         Directory.CreateDirectory("Assets/Textures");
+        Directory.CreateDirectory("Assets/Animations");
 
         GenerateShaders();
         GenerateTextures();
@@ -68,28 +70,25 @@ public static class ChristashaDawnCombatBundleBuilder
         Mesh vCleaveFull = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_VCleaveFull.asset", CreateVerticalCleaveSweepMesh("ChristashaDawn_VCleaveFull", 2.42f, -2.22f, 0.08f, 0.62f, -0.28f, 38, 0.00f, 1.00f));
         Mesh vCleaveCore = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_VCleaveCore.asset", CreateVerticalCleaveSweepMesh("ChristashaDawn_VCleaveCore", 2.30f, -2.12f, 0.10f, 0.26f, -0.22f, 38, 0.02f, 0.98f));
         Mesh vCleaveRetreat = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_VCleaveRetreat.asset", CreateVerticalCleaveSweepMesh("ChristashaDawn_VCleaveRetreat", 1.98f, -2.20f, 0.16f, 0.34f, -0.18f, 26, 0.30f, 1.00f));
-        Vector3 vCrescentP0 = new Vector3(-0.22f, 1.22f, 0f);
-        Vector3 vCrescentP1 = new Vector3(0.66f, 0.54f, 0f);
-        Vector3 vCrescentP2 = new Vector3(0.58f, -0.58f, 0f);
-        Vector3 vCrescentP3 = new Vector3(-0.18f, -1.24f, 0f);
-        Mesh vDaoguangEnterTop = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_VBezierCrescentLeadTop.asset", CreateBezierCrescentMesh("ChristashaDawn_VBezierCrescentLeadTop", vCrescentP0, vCrescentP1, vCrescentP2, vCrescentP3, 0.210f, 24, 0.00f, 0.40f));
-        Mesh vDaoguangMid = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_VBezierCrescentMid.asset", CreateBezierCrescentMesh("ChristashaDawn_VBezierCrescentMid", vCrescentP0, vCrescentP1, vCrescentP2, vCrescentP3, 0.210f, 32, 0.00f, 0.74f));
-        Mesh vDaoguangFull = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_VBezierCrescentEndBottom.asset", CreateBezierCrescentMesh("ChristashaDawn_VBezierCrescentEndBottom", vCrescentP0, vCrescentP1, vCrescentP2, vCrescentP3, 0.210f, 42, 0.00f, 1.00f));
-        Mesh vDaoguangExitLower = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_VBezierCrescentCore.asset", CreateBezierCrescentMesh("ChristashaDawn_VBezierCrescentCore", vCrescentP0, vCrescentP1, vCrescentP2, vCrescentP3, 0.080f, 44, 0.03f, 0.98f));
-        Mesh[] vCrescentOuterReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleOuter", "ChristashaDawn_VParticleOuter", 5.05f, 0.72f, 1.02f, 0.34f, 0.34f, 0.00f);
-        Mesh[] vCrescentInnerReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleInner", "ChristashaDawn_VParticleInner", 4.78f, 0.45f, 0.82f, 0.20f, 0.22f, -0.018f);
-        Mesh[] vCrescentShadowReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleShadow", "ChristashaDawn_VParticleShadow", 4.70f, 0.30f, 0.68f, 0.15f, 0.12f, 0.035f);
-        Mesh[] vCrescentGlowReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleGlow", "ChristashaDawn_VParticleGlow", 5.24f, 1.00f, 1.32f, 0.48f, 0.40f, 0.018f);
-        Mesh[] vCrescentCoreReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleCore", "ChristashaDawn_VParticleCore", 4.95f, 0.18f, 0.32f, 0.09f, 0.16f, -0.050f);
-        Mesh[] providedVerticalLayerMeshes = CreateProvidedVerticalCrescentLayerMeshes();
+        Mesh[] vCrescentOuterReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleOuter", "ChristashaDawn_VParticleOuter", 6.95f, 5.20f, 7.10f, 0.12f, 0.48f, 0.000f);
+        Mesh[] vCrescentInnerReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleInner", "ChristashaDawn_VParticleInner", 6.72f, 5.05f, 6.95f, 0.18f, 0.34f, -0.030f);
+        Mesh[] vCrescentShadowReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleShadow", "ChristashaDawn_VParticleShadow", 6.35f, 4.25f, 5.85f, 0.22f, 0.20f, 0.055f);
+        Mesh[] vCrescentGlowReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleGlow", "ChristashaDawn_VParticleGlow", 7.20f, 6.40f, 8.20f, 0.08f, 0.56f, 0.025f);
+        Mesh[] vCrescentCoreReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleCore", "ChristashaDawn_VParticleCore", 6.52f, 4.10f, 5.70f, 0.26f, 0.24f, -0.070f);
+        Mesh[] vCrescentOuterBladeReveal = CreateVerticalCrescentOuterBladeRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleOuterBlade", "ChristashaDawn_VParticleOuterBlade", 6.95f, 5.70f, 7.55f, 0.10f, 0.48f, -0.095f);
+        Mesh vCrescentUserCoreOnly = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_UserCrescentCoreOnly.asset", CreateUserProvidedCrescentVolumeMesh("ChristashaDawn_UserCrescentCoreOnly"));
         Mesh lanceMesh = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_LanceMesh.asset", CreateNeedleMesh("ChristashaDawn_LanceMesh", 1.35f, 0.16f, 16));
         Mesh cleaveMesh = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_CleaveMesh.asset", CreateNeedleMesh("ChristashaDawn_CleaveMesh", 1.22f, 0.26f, 16));
         Mesh diamondMesh = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_DiamondMesh.asset", CreateDiamondMesh("ChristashaDawn_DiamondMesh", 0.92f, 0.38f));
         Mesh quadMesh = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_QuadMesh.asset", CreateQuadMesh("ChristashaDawn_QuadMesh", 1f));
+        Mesh crossStarCoreMesh = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_CrossStarCoreMesh.asset", CreateCrossStarCoreMesh("ChristashaDawn_CrossStarCoreMesh", 1.00f, 0.18f));
+        Mesh cosmicShardMesh = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_CosmicShardMesh.asset", CreateCosmicShardMesh("ChristashaDawn_CosmicShardMesh", 0.30f, 0.22f));
 
         Material blade = CreateMaterial("Assets/Textures/christasha_dawn_blade.png", "Assets/Materials/ChristashaDawn_Blade_Add.mat", ColorDawnWhite, false);
         Material glow = CreateMaterial("Assets/Textures/christasha_dawn_glow.png", "Assets/Materials/ChristashaDawn_Glow_Add.mat", ColorDawnGold, false);
         Material star = CreateMaterial("Assets/Textures/christasha_dawn_star.png", "Assets/Materials/ChristashaDawn_Star_Add.mat", ColorDawnWhite, false);
+        Material starHdr = CreateHdrAdditiveMaterial("Assets/Textures/christasha_dawn_star.png", "Assets/Materials/ChristashaDawn_StarHdr_Add.mat", new Color(1f, 0.96f, 0.68f, 0.70f), 1.85f, 3145);
+        Material cosmicShard = CreateMaterial("Assets/Textures/christasha_dawn_cosmic_shard.png", "Assets/Materials/ChristashaDawn_CosmicShard_Add.mat", new Color(1f, 0.96f, 0.70f, 0.86f), false);
         Material dots = CreateMaterial("Assets/Textures/christasha_dawn_dots.png", "Assets/Materials/ChristashaDawn_Dots_Add.mat", ColorDawnGold, false);
         Material black = CreateMaterial("Assets/Textures/christasha_dawn_black.png", "Assets/Materials/ChristashaDawn_Black_Alpha.mat", ColorDeepBlack, true);
         Material circle = CreateMaterial("Assets/Textures/christasha_dawn_circle.png", "Assets/Materials/ChristashaDawn_Circle_Add.mat", ColorDawnGold, false);
@@ -99,20 +98,52 @@ public static class ChristashaDawnCombatBundleBuilder
         Material daoguangVertical = CreateMaterial("Assets/Textures/christasha_dawn_daoguang_vertical.png", "Assets/Materials/ChristashaDawn_DaoguangVertical_Add.mat", ColorDawnWhite, false);
         Material daoguangVerticalGold = CreateMaterial("Assets/Textures/christasha_dawn_daoguang_vertical.png", "Assets/Materials/ChristashaDawn_DaoguangVerticalGold_Add.mat", ColorDawnGold, false);
         Material daoguangVerticalDark = CreateMaterial("Assets/Textures/christasha_dawn_daoguang_vertical.png", "Assets/Materials/ChristashaDawn_DaoguangVerticalDark_Alpha.mat", ColorDeepBlack, true);
-        Material crescentGlow = CreateCrescentSlashMaterial("Assets/Textures/christasha_dawn_crescent_particle.png", "Assets/Materials/ChristashaDawn_CrescentGlow_Flow.mat", new Color(1f, 0.42f, 0.02f, 0.34f), 1.25f, 0.12f, 0.24f);
-        Material crescentOuter = CreateCrescentSlashMaterial("Assets/Textures/christasha_dawn_crescent_particle.png", "Assets/Materials/ChristashaDawn_CrescentOuter_Flow.mat", new Color(1f, 0.56f, 0.04f, 0.68f), 1.70f, 0.080f, 0.38f);
-        Material crescentInner = CreateCrescentSlashMaterial("Assets/Textures/christasha_dawn_crescent_particle.png", "Assets/Materials/ChristashaDawn_CrescentInner_Flow.mat", new Color(1f, 0.92f, 0.46f, 0.62f), 1.95f, 0.055f, 0.52f);
-        Material crescentCore = CreateCrescentSlashMaterial("Assets/Textures/christasha_dawn_crescent_core.png", "Assets/Materials/ChristashaDawn_CrescentCore_Flow.mat", new Color(1f, 0.98f, 0.72f, 0.86f), 3.25f, 0.038f, 0.68f);
+        Material crescentGlow = CreateCrescentSlashMaterial("Assets/Textures/christasha_dawn_crescent_particle.png", "Assets/Materials/ChristashaDawn_CrescentGlow_Flow.mat", new Color(1f, 0.92f, 0.26f, 0.16f), new Color(1.24f, 1.08f, 0.30f, 1f), 0.82f, 0.20f, 0.24f, 0f, 0.28f, 0.010f, 18f, 1.35f, 0.50f, 2.35f);
+        Material crescentOuter = CreateCrescentSlashMaterial("Assets/Textures/christasha_dawn_crescent_particle.png", "Assets/Materials/ChristashaDawn_CrescentOuter_Flow.mat", new Color(1f, 0.92f, 0.22f, 0.72f), new Color(1.32f, 1.18f, 0.42f, 1f), 1.06f, 0.12f, 0.38f, 0f, 0.28f, 0.014f, 20f, 1.55f, 0.44f, 2.65f);
+        Material crescentInner = CreateCrescentSlashMaterial("Assets/Textures/christasha_dawn_crescent_particle.png", "Assets/Materials/ChristashaDawn_CrescentInner_Flow.mat", new Color(1f, 0.99f, 0.76f, 1.00f), new Color(1.48f, 1.42f, 0.96f, 1f), 1.04f, 0.055f, 0.58f, 0.46f, 0.30f, 0.016f, 22f, 1.75f, 0.76f, 1.18f);
+        Material crescentCore = CreateCrescentSlashMaterial("Assets/Textures/christasha_dawn_crescent_core.png", "Assets/Materials/ChristashaDawn_CrescentCore_Flow.mat", new Color(1f, 1f, 0.92f, 1.00f), new Color(1.58f, 1.54f, 1.14f, 1f), 1.18f, 0.040f, 0.72f, 1.38f, 0.34f, 0.020f, 24f, 1.95f, 0.68f, 1.22f);
+        Material crescentOuterBlade = CreateOuterBladeSlashMaterial("Assets/Textures/christasha_dawn_crescent_core.png", "Assets/Materials/ChristashaDawn_CrescentOuterBlade_Flow.mat", new Color(1f, 0.95f, 0.34f, 0.68f), new Color(1.58f, 1.48f, 0.96f, 1f), new Color(1.24f, 1.08f, 0.26f, 1f), 1.10f, 0.10f, 0.58f, 0.10f, 0.28f, 0.020f, 25f, 2.05f, 0.54f, 2.85f);
         Material crescentShadow = CreateMaterial("Assets/Textures/christasha_dawn_crescent_shadow.png", "Assets/Materials/ChristashaDawn_CrescentShadow_Alpha.mat", new Color(0.13f, 0.075f, 0.025f, 0.42f), true);
-        Material[] providedVerticalLayers = CreateProvidedVerticalCrescentLayerMaterials();
-
+        Material crescentCoreOnlyWhite = CreateCoreOnlyWhiteMaterial("Assets/Textures/christasha_dawn_solid_white.png", "Assets/Materials/ChristashaDawn_CrescentCoreOnly_WhiteHdr.mat", new Color(2.20f, 2.20f, 2.20f, 1f), 3160);
+        AnimationClip crescentCoreOnlyReveal = CreateCoreOnlyRevealClip("Assets/Animations/ChristashaDawn_CoreOnly_RevealPreview.anim");
         Mesh[] wideSegments = { arcSegA, arcSegB, arcSegC };
         Mesh[] thinSegments = { thinSegA, thinSegB, thinSegC };
         CreateSlashHorizontalPrefab(blade, glow, star, dots, black, daoguang, daoguangGold, daoguangDark, hSlashSweepEnter, hSlashSweepMid, hSlashSweep, hSlashSweepCore, hSlashSweepRetreat, hDaoguangEnter, hDaoguangMid, hDaoguangFull, hDaoguangBelly, hDaoguangExit);
-        CreateSlashVerticalPrefab(star, dots, black, crescentGlow, crescentOuter, crescentInner, crescentCore, crescentShadow, vCrescentGlowReveal, vCrescentOuterReveal, vCrescentInnerReveal, vCrescentCoreReveal, vCrescentShadowReveal, quadMesh);
+        CreateSlashVerticalPrefab(star, starHdr, cosmicShard, dots, black, crescentGlow, crescentOuter, crescentInner, crescentCore, crescentOuterBlade, crescentShadow, vCrescentGlowReveal, vCrescentOuterReveal, vCrescentInnerReveal, vCrescentCoreReveal, vCrescentOuterBladeReveal, vCrescentShadowReveal, quadMesh, crossStarCoreMesh, cosmicShardMesh);
+        CreateSlashVerticalCoreOnlyPrefab(crescentCoreOnlyWhite, vCrescentUserCoreOnly, crescentCoreOnlyReveal);
         CreateMeleePiercePrefab(blade, glow, star, dots, black, lanceMesh, diamondMesh);
         CreateFarPiercePrefab(blade, glow, star, dots, black, circle, lanceMesh, diamondMesh, quadMesh);
         CreateHitPrefab(blade, glow, star, dots, black, cleaveMesh, diamondMesh, quadMesh);
+
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
+
+    [MenuItem("Steria/Ensure Christasha Dawn Core Only Prefab")]
+    public static void EnsureVerticalCoreOnlyPrefab()
+    {
+        Directory.CreateDirectory("Assets/Materials");
+        Directory.CreateDirectory("Assets/Meshes");
+        Directory.CreateDirectory("Assets/Prefabs");
+        Directory.CreateDirectory("Assets/Shaders");
+        Directory.CreateDirectory("Assets/Textures");
+        Directory.CreateDirectory("Assets/Animations");
+
+        GenerateShaders();
+        SavePng("Assets/Textures/christasha_dawn_solid_white.png", CreateSolidTexture(8, 8, Color.white));
+
+        Mesh coreMesh = CreateOrReplaceMesh(
+            "Assets/Meshes/ChristashaDawn_UserCrescentCoreOnly.asset",
+            CreateUserProvidedCrescentVolumeMesh("ChristashaDawn_UserCrescentCoreOnly"));
+
+        Material coreMaterial = CreateCoreOnlyWhiteMaterial(
+            "Assets/Textures/christasha_dawn_solid_white.png",
+            "Assets/Materials/ChristashaDawn_CrescentCoreOnly_WhiteHdr.mat",
+            new Color(2.20f, 2.20f, 2.20f, 1f),
+            3160);
+        AnimationClip revealClip = CreateCoreOnlyRevealClip("Assets/Animations/ChristashaDawn_CoreOnly_RevealPreview.anim");
+
+        CreateSlashVerticalCoreOnlyPrefab(coreMaterial, coreMesh, revealClip);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -143,7 +174,7 @@ public static class ChristashaDawnCombatBundleBuilder
         SavePrefab(root, "Assets/Prefabs/ChristashaDawnSlashHorizontalPrefab.prefab");
     }
 
-    private static void CreateSlashVerticalPrefab(Material star, Material dots, Material black, Material crescentGlow, Material crescentOuter, Material crescentInner, Material crescentCore, Material crescentShadow, Mesh[] glowReveal, Mesh[] outerReveal, Mesh[] innerReveal, Mesh[] coreReveal, Mesh[] shadowReveal, Mesh quadMesh)
+    private static void CreateSlashVerticalPrefab(Material star, Material starHdr, Material cosmicShard, Material dots, Material black, Material crescentGlow, Material crescentOuter, Material crescentInner, Material crescentCore, Material crescentOuterBlade, Material crescentShadow, Mesh[] glowReveal, Mesh[] outerReveal, Mesh[] innerReveal, Mesh[] coreReveal, Mesh[] outerBladeReveal, Mesh[] shadowReveal, Mesh quadMesh, Mesh crossStarCoreMesh, Mesh cosmicShardMesh)
     {
         GameObject root = CreateRoot(SlashVerticalPrefabName);
         Transform travelRoot = CreateGroup(root.transform, "AB_TravelRoot", new Vector3(1.25f, 0f, 0f));
@@ -154,28 +185,103 @@ public static class ChristashaDawnCombatBundleBuilder
             "AB_DawnSlashV_TopCrossStar",
             "AB_DawnSlashV_BottomCrossStar",
             "AB_DawnSlashV_SoftOuterGlow",
-            "AB_DawnSlashV_OuterDeepGold",
-            "AB_DawnSlashV_InnerPaleGold",
+            "AB_DawnSlashV_OuterYellowRim",
+            "AB_DawnSlashV_InnerPaleYellow",
             "AB_DawnSlashV_WhiteCore",
+            "AB_DawnSlashV_OuterBladeYellowWhite",
             "AB_DawnSlashV_InnerBrownBlackStarfield",
+            "AB_DawnSlashV_CosmicStarShardHalo",
             star,
+            starHdr,
+            cosmicShard,
             dots,
             black,
             crescentGlow,
             crescentOuter,
             crescentInner,
             crescentCore,
+            crescentOuterBlade,
             crescentShadow,
             glowReveal,
             outerReveal,
             innerReveal,
             coreReveal,
+            outerBladeReveal,
             shadowReveal,
-            quadMesh);
+            quadMesh,
+            crossStarCoreMesh,
+            cosmicShardMesh);
         CreateImpactFlash(impactRoot, "AB_DawnSlashV_CrescentImpactWhite", star, Vector3.zero, 0.500f, 0.20f, 1.18f, new Color(1f, 0.98f, 0.78f, 0.050f), 144);
         CreateImpactFlash(impactRoot, "AB_DawnSlashV_CrescentImpactShade", black, new Vector3(0f, -0.02f, 0.05f), 0.485f, 0.30f, 2.0f, new Color(0.02f, 0.015f, 0.018f, 0.070f), 84);
 
         SavePrefab(root, "Assets/Prefabs/ChristashaDawnSlashVerticalPrefab.prefab");
+    }
+
+    private static void CreateSlashVerticalCoreOnlyPrefab(Material whiteCoreMaterial, Mesh coreMesh, AnimationClip revealClip)
+    {
+        GameObject root = CreateRoot(SlashVerticalCoreOnlyPrefabName);
+        root.name = SlashVerticalCoreOnlyPrefabName;
+        root.layer = 8;
+        RemoveCoreOnlyParticleComponents(root);
+        ConfigureCoreOnlyMeshRenderer(root, whiteCoreMaterial, coreMesh);
+        ConfigureCoreOnlyAnimation(root, revealClip);
+
+        SavePrefab(root, "Assets/Prefabs/ChristashaDawnSlashVerticalCoreOnlyPrefab.prefab");
+    }
+
+    private static void RemoveCoreOnlyParticleComponents(GameObject root)
+    {
+        ParticleSystem ps = root.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            UnityEngine.Object.DestroyImmediate(ps);
+        }
+
+        ParticleSystemRenderer renderer = root.GetComponent<ParticleSystemRenderer>();
+        if (renderer != null)
+        {
+            UnityEngine.Object.DestroyImmediate(renderer);
+        }
+    }
+
+    private static void ConfigureCoreOnlyMeshRenderer(GameObject root, Material whiteCoreMaterial, Mesh coreMesh)
+    {
+        MeshFilter filter = root.GetComponent<MeshFilter>();
+        if (filter == null)
+        {
+            filter = root.AddComponent<MeshFilter>();
+        }
+        filter.sharedMesh = coreMesh;
+
+        MeshRenderer renderer = root.GetComponent<MeshRenderer>();
+        if (renderer == null)
+        {
+            renderer = root.AddComponent<MeshRenderer>();
+        }
+        renderer.enabled = true;
+        renderer.sharedMaterial = whiteCoreMaterial;
+        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        renderer.receiveShadows = false;
+        renderer.sortingOrder = 180;
+    }
+
+    private static void ConfigureCoreOnlyAnimation(GameObject target, AnimationClip revealClip)
+    {
+        if (revealClip == null)
+        {
+            return;
+        }
+
+        Animation animation = target.GetComponent<Animation>();
+        if (animation == null)
+        {
+            animation = target.AddComponent<Animation>();
+        }
+
+        animation.clip = revealClip;
+        animation.playAutomatically = false;
+        animation.wrapMode = WrapMode.Once;
+        animation.AddClip(revealClip, revealClip.name);
     }
 
     private static void CreateMeleePiercePrefab(Material blade, Material glow, Material star, Material dots, Material black, Mesh lanceMesh, Mesh diamondMesh)
@@ -503,7 +609,7 @@ public static class ChristashaDawnCombatBundleBuilder
         var shape = ps.shape;
         shape.enabled = true;
         shape.shapeType = ParticleSystemShapeType.Box;
-        shape.box = new Vector3(4.8f, 1.1f, 0.05f);
+        shape.scale = new Vector3(4.8f, 1.1f, 0.05f);
 
         var velocity = ps.velocityOverLifetime;
         velocity.enabled = true;
@@ -553,7 +659,7 @@ public static class ChristashaDawnCombatBundleBuilder
         var shape = ps.shape;
         shape.enabled = true;
         shape.shapeType = ParticleSystemShapeType.Box;
-        shape.box = new Vector3(0.70f, 2.10f, 0.04f);
+        shape.scale = new Vector3(0.70f, 2.10f, 0.04f);
 
         var velocity = ps.velocityOverLifetime;
         velocity.enabled = true;
@@ -586,36 +692,35 @@ public static class ChristashaDawnCombatBundleBuilder
         r.sortingOrder = sortingOrder;
     }
 
-    private static void CreateCrescentVerticalParticleSlash(Transform parent, string topStarName, string bottomStarName, string glowName, string outerName, string innerName, string coreName, string shadowName, Material star, Material dots, Material black, Material crescentGlow, Material crescentOuter, Material crescentInner, Material crescentCore, Material crescentShadow, Mesh[] glowReveal, Mesh[] outerReveal, Mesh[] innerReveal, Mesh[] coreReveal, Mesh[] shadowReveal, Mesh quadMesh)
+    private static void CreateCrescentVerticalParticleSlash(Transform parent, string topStarName, string bottomStarName, string glowName, string outerName, string innerName, string coreName, string outerBladeName, string shadowName, string cosmicShardName, Material star, Material starHdr, Material cosmicShard, Material dots, Material black, Material crescentGlow, Material crescentOuter, Material crescentInner, Material crescentCore, Material crescentOuterBlade, Material crescentShadow, Mesh[] glowReveal, Mesh[] outerReveal, Mesh[] innerReveal, Mesh[] coreReveal, Mesh[] outerBladeReveal, Mesh[] shadowReveal, Mesh quadMesh, Mesh crossStarCoreMesh, Mesh cosmicShardMesh)
     {
         Vector3 crescentPos = new Vector3(0.05f, -0.16f, -0.24f);
         Vector3 crescentEuler = new Vector3(-12f, 16f, -4f);
-        CreateCrescentStarParticle(parent, topStarName, star, quadMesh, new Vector3(0.07f, 2.24f, -0.32f), new Vector3(-10f, 16f, -4f), 0.000f, 0.46f, 1.02f, new Color(1f, 0.96f, 0.66f, 0.34f), 166);
+        Transform crescentRoot = CreateGroup(parent, "AB_DawnSlashV_CrescentMeshRoot", crescentPos);
+        crescentRoot.localRotation = Quaternion.Euler(crescentEuler);
 
-        for (int i = 0; i < outerReveal.Length; i++)
-        {
-            float n = i / (float)(outerReveal.Length - 1);
-            float energyTiming = EvaluateAcceleratingSlashTiming(n);
-            float delay = 0.025f + 0.34f * energyTiming;
-            float glowAlpha = Mathf.Lerp(0.18f, 0.11f, n);
-            float outerAlpha = Mathf.Lerp(0.66f, 0.48f, n);
-            float innerAlpha = Mathf.Lerp(0.52f, 0.40f, n);
-            float coreAlpha = Mathf.Lerp(0.54f, 0.34f, n);
-            float shadowAlpha = Mathf.Lerp(0.26f, 0.16f, n);
+        Vector3 topStarLocal = new Vector3(0.14f, 3.28f, -0.08f);
+        Vector3 bottomStarLocal = new Vector3(0.30f, -3.28f, -0.08f);
+        CreateCrescentStarParticle(crescentRoot, topStarName, starHdr, crossStarCoreMesh, topStarLocal, Vector3.zero, 0.000f, 0.46f, 1.02f, new Color(1.48f, 1.40f, 0.86f, 0.54f), 166);
+        CreateCrescentStarGlowParticle(crescentRoot, "AB_DawnSlashV_TopCrossStar_Glow", starHdr, quadMesh, topStarLocal + new Vector3(0f, 0f, 0.018f), Vector3.zero, 0.004f, 0.40f, 1.62f, new Color(1.22f, 0.82f, 0.24f, 0.13f), 160);
+        CreateCrescentStarRayParticle(crescentRoot, "AB_DawnSlashV_TopCrossStar_Rays", dots, topStarLocal + new Vector3(0f, -0.01f, -0.030f), 0.000f, 0.72f, new Color(1f, 0.88f, 0.38f, 0.26f), 167);
+        CreateCrescentStarEdgeSparkParticle(crescentRoot, "AB_DawnSlashV_TopCrossStar_EdgeSparks", dots, topStarLocal + new Vector3(0.02f, -0.02f, -0.02f), 0.000f, new Vector3(0.24f, -0.76f, 0.04f), new Color(1f, 0.90f, 0.44f, 0.34f), 168);
 
-            string label = (i + 1).ToString("00");
-            Vector3 sweepOffset = new Vector3(0.010f * i, -0.005f * i, -0.004f * i);
-            CreateCrescentBladeParticle(parent, glowName + "_" + label, crescentGlow, glowReveal[i], crescentPos + sweepOffset + new Vector3(0.020f, -0.006f, 0.026f), crescentEuler, Mathf.Max(0f, delay - 0.016f), 0.76f, 1.03f, 136 + i, new Color(1f, 0.50f, 0.03f, glowAlpha), true, true);
-            CreateCrescentBladeParticle(parent, outerName + "_" + label, crescentOuter, outerReveal[i], crescentPos + sweepOffset, crescentEuler, delay, 0.70f, 1.02f, 150 + i, new Color(1f, 0.58f, 0.04f, outerAlpha), true, true);
-            CreateCrescentBladeParticle(parent, innerName + "_" + label, crescentInner, innerReveal[i], crescentPos + sweepOffset + new Vector3(0.035f, 0.002f, -0.030f), crescentEuler, delay + 0.014f, 0.64f, 1.00f, 158 + i, new Color(1f, 0.90f, 0.46f, innerAlpha), false, true);
-            CreateCrescentBladeParticle(parent, coreName + "_" + label, crescentCore, coreReveal[i], crescentPos + sweepOffset + new Vector3(0.060f, 0.010f, -0.060f), crescentEuler, delay + 0.020f, 0.36f, 1.00f, 170 + i, new Color(1f, 0.98f, 0.78f, coreAlpha), false, true);
-            CreateCrescentBladeParticle(parent, shadowName + "_Mesh_" + label, crescentShadow, shadowReveal[i], crescentPos + sweepOffset + new Vector3(-0.045f, -0.016f, 0.040f), new Vector3(-14f, 16f, -4f), delay + 0.030f, 0.76f, 1.00f, 120 + i, new Color(0.12f, 0.064f, 0.018f, shadowAlpha), false, false);
-        }
+        CreateCrescentBladeParticle(crescentRoot, glowName, crescentGlow, glowReveal[0], new Vector3(0.020f, -0.006f, 0.026f), Vector3.zero, 0.000f, 1.02f, 1.04f, 136, new Color(1f, 0.92f, 0.24f, 0.16f), true, true);
+        CreateCrescentBladeParticle(crescentRoot, outerName, crescentOuter, outerReveal[0], Vector3.zero, Vector3.zero, 0.000f, 0.92f, 1.02f, 150, new Color(1f, 0.92f, 0.22f, 0.72f), true, true);
+        CreateCrescentBladeParticle(crescentRoot, innerName, crescentInner, innerReveal[0], new Vector3(0.006f, 0.002f, -0.040f), Vector3.zero, 0.000f, 0.92f, 1.00f, 158, new Color(1f, 0.99f, 0.74f, 0.94f), false, true);
+        CreateCrescentBladeParticle(crescentRoot, outerBladeName, crescentOuterBlade, outerBladeReveal[0], new Vector3(0.014f, 0.004f, -0.088f), Vector3.zero, 0.000f, 0.92f, 1.02f, 163, new Color(1f, 0.96f, 0.36f, 0.68f), true, true);
+        CreateCrescentBladeParticle(crescentRoot, coreName, crescentCore, coreReveal[0], new Vector3(0.012f, 0.010f, -0.075f), Vector3.zero, 0.018f, 0.60f, 0.98f, 170, new Color(1f, 1f, 0.90f, 0.92f), false, true);
+        CreateCrescentBladeParticle(crescentRoot, shadowName + "_Mesh", crescentShadow, shadowReveal[0], new Vector3(-0.045f, -0.016f, 0.040f), new Vector3(-2f, 0f, 0f), 0.000f, 0.96f, 1.00f, 120, new Color(0.12f, 0.064f, 0.018f, 0.24f), false, false);
 
-        CreateCrescentEdgeDust(parent, "AB_DawnSlashV_OuterEdgeDust", star, new Vector3(0.22f, -0.12f, -0.28f), new Vector3(0.68f, 4.48f, 0.10f), 0.090f, 24, new Color(1f, 0.72f, 0.12f, 0.20f), 142);
-        CreateCrescentEdgeDust(parent, "AB_DawnSlashV_OuterPaleDissolve", dots, new Vector3(0.14f, -0.24f, -0.30f), new Vector3(0.62f, 4.08f, 0.08f), 0.190f, 20, new Color(1f, 0.92f, 0.56f, 0.15f), 146);
-        CreateCrescentShadowDust(parent, shadowName, black, new Vector3(-0.08f, -0.18f, -0.10f), 0.170f, 20, new Color(0.10f, 0.058f, 0.018f, 0.34f), 122);
-        CreateCrescentStarParticle(parent, bottomStarName, star, quadMesh, new Vector3(-0.02f, -2.54f, -0.32f), new Vector3(-10f, 16f, -4f), 0.455f, 0.40f, 0.90f, new Color(1f, 0.94f, 0.58f, 0.28f), 164);
+        CreateCrescentEdgeDust(crescentRoot, "AB_DawnSlashV_OuterEdgeDust", star, new Vector3(0.30f, -0.12f, -0.04f), new Vector3(0.52f, 4.18f, 0.10f), 0.150f, 22, new Color(1f, 0.72f, 0.12f, 0.19f), 142);
+        CreateCrescentEdgeDust(crescentRoot, "AB_DawnSlashV_OuterPaleDissolve", dots, new Vector3(0.22f, -0.24f, -0.06f), new Vector3(0.50f, 3.88f, 0.08f), 0.260f, 18, new Color(1f, 0.92f, 0.56f, 0.14f), 146);
+        CreateCrescentShadowDust(crescentRoot, shadowName, black, new Vector3(-0.16f, -0.18f, 0.02f), 0.220f, 18, new Color(0.10f, 0.058f, 0.018f, 0.30f), 122);
+        CreateCrescentCosmicShardHalo(crescentRoot, cosmicShardName, cosmicShard, cosmicShardMesh, new Vector3(0.02f, -0.08f, -0.115f), 0.120f, 42, new Color(0.96f, 0.88f, 0.54f, 0.82f), 156);
+        CreateCrescentStarParticle(crescentRoot, bottomStarName, starHdr, crossStarCoreMesh, bottomStarLocal, Vector3.zero, 0.390f, 0.34f, 0.90f, new Color(1.40f, 1.28f, 0.72f, 0.46f), 164);
+        CreateCrescentStarGlowParticle(crescentRoot, "AB_DawnSlashV_BottomCrossStar_Glow", starHdr, quadMesh, bottomStarLocal + new Vector3(0f, 0f, 0.018f), Vector3.zero, 0.394f, 0.32f, 1.38f, new Color(1.16f, 0.72f, 0.18f, 0.12f), 158);
+        CreateCrescentStarRayParticle(crescentRoot, "AB_DawnSlashV_BottomCrossStar_Rays", dots, bottomStarLocal + new Vector3(0f, 0.01f, -0.030f), 0.390f, 0.62f, new Color(1f, 0.78f, 0.26f, 0.22f), 165);
+        CreateCrescentStarEdgeSparkParticle(crescentRoot, "AB_DawnSlashV_BottomCrossStar_EdgeSparks", dots, bottomStarLocal + new Vector3(0.02f, 0.02f, -0.02f), 0.390f, new Vector3(0.18f, -1.04f, 0.04f), new Color(1f, 0.86f, 0.36f, 0.30f), 166);
     }
 
     private static void CreateCrescentBladeParticle(Transform parent, string name, Material mat, Mesh mesh, Vector3 pos, Vector3 euler, float delay, float lifetime, float size, int sortingOrder, Color color, bool outwardPulse, bool downwardDrift)
@@ -647,7 +752,7 @@ public static class ChristashaDawnCombatBundleBuilder
 
         var sizeOver = ps.sizeOverLifetime;
         sizeOver.enabled = true;
-        sizeOver.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.90f), new Keyframe(0.16f, 1.04f), new Keyframe(0.66f, 1.00f), new Keyframe(1f, 0.82f)));
+        sizeOver.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 1.00f), new Keyframe(0.18f, 1.03f), new Keyframe(0.56f, 1.02f), new Keyframe(1f, 1.00f)));
 
         if (outwardPulse || downwardDrift)
         {
@@ -693,11 +798,11 @@ public static class ChristashaDawnCombatBundleBuilder
 
         var col = ps.colorOverLifetime;
         col.enabled = true;
-        col.color = CreateCrescentRevealGradient(color, color.a, 0.16f, 0.28f, 0.62f);
+        col.color = CreateCrescentStarFadeGradient(color, color.a);
 
         var sizeOver = ps.sizeOverLifetime;
         sizeOver.enabled = true;
-        sizeOver.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.08f), new Keyframe(0.18f, 1.18f), new Keyframe(0.48f, 1.00f), new Keyframe(1f, 0.04f)));
+        sizeOver.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.08f), new Keyframe(0.08f, 1.34f), new Keyframe(0.28f, 1.24f), new Keyframe(1f, 1.24f)));
 
         var rotOver = ps.rotationOverLifetime;
         rotOver.enabled = true;
@@ -709,6 +814,146 @@ public static class ChristashaDawnCombatBundleBuilder
         r.mesh = mesh;
         r.sortingOrder = sortingOrder;
         r.alignment = ParticleSystemRenderSpace.Local;
+    }
+
+    private static void CreateCrescentStarGlowParticle(Transform parent, string name, Material mat, Mesh mesh, Vector3 pos, Vector3 euler, float delay, float lifetime, float size, Color color, int sortingOrder)
+    {
+        GameObject go = NewParticle(parent, name, pos, Quaternion.Euler(euler.x, euler.y, euler.z));
+        ParticleSystem ps = go.GetComponent<ParticleSystem>();
+        var main = ps.main;
+        main.playOnAwake = true;
+        main.loop = false;
+        main.duration = delay + lifetime + 0.08f;
+        main.startDelay = delay;
+        main.startLifetime = lifetime;
+        main.startSpeed = 0f;
+        main.startSize = size;
+        main.startRotation = new ParticleSystem.MinMaxCurve(-0.08f, 0.08f);
+        main.startColor = color;
+        main.maxParticles = 2;
+        main.simulationSpace = ParticleSystemSimulationSpace.Local;
+
+        var emission = ps.emission;
+        emission.rateOverTime = 0f;
+        emission.SetBursts(new[] { new ParticleSystem.Burst(0f, 1) });
+
+        var shape = ps.shape;
+        shape.enabled = false;
+
+        var col = ps.colorOverLifetime;
+        col.enabled = true;
+        col.color = CreateCrescentStarFadeGradient(color, color.a);
+
+        var sizeOver = ps.sizeOverLifetime;
+        sizeOver.enabled = true;
+        sizeOver.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.18f), new Keyframe(0.12f, 1.20f), new Keyframe(0.34f, 1.20f), new Keyframe(1f, 1.20f)));
+
+        ParticleSystemRenderer r = go.GetComponent<ParticleSystemRenderer>();
+        r.sharedMaterial = mat;
+        r.renderMode = ParticleSystemRenderMode.Mesh;
+        r.mesh = mesh;
+        r.sortingOrder = sortingOrder;
+        r.alignment = ParticleSystemRenderSpace.Local;
+    }
+
+    private static void CreateCrescentStarRayParticle(Transform parent, string name, Material mat, Vector3 pos, float delay, float radius, Color color, int sortingOrder)
+    {
+        GameObject go = NewParticle(parent, name, pos, Quaternion.identity);
+        ParticleSystem ps = go.GetComponent<ParticleSystem>();
+        var main = ps.main;
+        main.playOnAwake = true;
+        main.loop = false;
+        main.duration = delay + 0.42f;
+        main.startDelay = delay;
+        main.startLifetime = new ParticleSystem.MinMaxCurve(0.16f, 0.34f);
+        main.startSpeed = new ParticleSystem.MinMaxCurve(0.52f, 1.36f);
+        main.startSize = new ParticleSystem.MinMaxCurve(0.040f, 0.120f);
+        main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
+        main.startColor = color;
+        main.maxParticles = 22;
+        main.simulationSpace = ParticleSystemSimulationSpace.Local;
+
+        var emission = ps.emission;
+        emission.rateOverTime = 0f;
+        emission.SetBursts(new[] { new ParticleSystem.Burst(0.000f, 10), new ParticleSystem.Burst(0.055f, 7) });
+
+        var shape = ps.shape;
+        shape.enabled = true;
+        shape.shapeType = ParticleSystemShapeType.Circle;
+        shape.radius = radius;
+        shape.arcMode = ParticleSystemShapeMultiModeValue.Random;
+        shape.rotation = new Vector3(0f, 0f, 0f);
+
+        var velocity = ps.velocityOverLifetime;
+        velocity.enabled = true;
+        velocity.space = ParticleSystemSimulationSpace.Local;
+        velocity.x = new ParticleSystem.MinMaxCurve(-0.38f, 0.38f);
+        velocity.y = new ParticleSystem.MinMaxCurve(-0.38f, 0.38f);
+        velocity.z = new ParticleSystem.MinMaxCurve(-0.03f, 0.08f);
+
+        var col = ps.colorOverLifetime;
+        col.enabled = true;
+        col.color = CreateCrescentRevealGradient(color, color.a, 0.05f, 0.14f, 0.34f);
+
+        var sizeOver = ps.sizeOverLifetime;
+        sizeOver.enabled = true;
+        sizeOver.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0.00f, 0.00f), new Keyframe(0.18f, 1.22f), new Keyframe(1f, 0f)));
+
+        ParticleSystemRenderer r = go.GetComponent<ParticleSystemRenderer>();
+        r.sharedMaterial = mat;
+        r.renderMode = ParticleSystemRenderMode.Stretch;
+        r.velocityScale = 0.08f;
+        r.lengthScale = 0.88f;
+        r.sortingOrder = sortingOrder;
+    }
+
+    private static void CreateCrescentStarEdgeSparkParticle(Transform parent, string name, Material mat, Vector3 pos, float delay, Vector3 velocityBias, Color color, int sortingOrder)
+    {
+        GameObject go = NewParticle(parent, name, pos, Quaternion.identity);
+        ParticleSystem ps = go.GetComponent<ParticleSystem>();
+        var main = ps.main;
+        main.playOnAwake = true;
+        main.loop = false;
+        main.duration = delay + 0.36f;
+        main.startDelay = delay;
+        main.startLifetime = new ParticleSystem.MinMaxCurve(0.10f, 0.24f);
+        main.startSpeed = new ParticleSystem.MinMaxCurve(0.18f, 0.58f);
+        main.startSize = new ParticleSystem.MinMaxCurve(0.030f, 0.085f);
+        main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
+        main.startColor = color;
+        main.maxParticles = 14;
+        main.simulationSpace = ParticleSystemSimulationSpace.Local;
+
+        var emission = ps.emission;
+        emission.rateOverTime = 0f;
+        emission.SetBursts(new[] { new ParticleSystem.Burst(0.025f, 5), new ParticleSystem.Burst(0.070f, 4) });
+
+        var shape = ps.shape;
+        shape.enabled = true;
+        shape.shapeType = ParticleSystemShapeType.Box;
+        shape.scale = new Vector3(0.34f, 0.09f, 0.055f);
+
+        var velocity = ps.velocityOverLifetime;
+        velocity.enabled = true;
+        velocity.space = ParticleSystemSimulationSpace.Local;
+        velocity.x = new ParticleSystem.MinMaxCurve(velocityBias.x - 0.20f, velocityBias.x + 0.20f);
+        velocity.y = new ParticleSystem.MinMaxCurve(velocityBias.y - 0.18f, velocityBias.y + 0.18f);
+        velocity.z = new ParticleSystem.MinMaxCurve(velocityBias.z - 0.05f, velocityBias.z + 0.08f);
+
+        var col = ps.colorOverLifetime;
+        col.enabled = true;
+        col.color = CreateCrescentRevealGradient(color, color.a, 0.08f, 0.18f, 0.46f);
+
+        var sizeOver = ps.sizeOverLifetime;
+        sizeOver.enabled = true;
+        sizeOver.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.35f), new Keyframe(0.18f, 1f), new Keyframe(1f, 0f)));
+
+        ParticleSystemRenderer r = go.GetComponent<ParticleSystemRenderer>();
+        r.sharedMaterial = mat;
+        r.renderMode = ParticleSystemRenderMode.Stretch;
+        r.velocityScale = 0.06f;
+        r.lengthScale = 0.58f;
+        r.sortingOrder = sortingOrder;
     }
 
     private static void CreateCrescentEdgeDust(Transform parent, string name, Material mat, Vector3 pos, Vector3 box, float delay, short burst, Color color, int sortingOrder)
@@ -735,7 +980,7 @@ public static class ChristashaDawnCombatBundleBuilder
         var shape = ps.shape;
         shape.enabled = true;
         shape.shapeType = ParticleSystemShapeType.Box;
-        shape.box = box;
+        shape.scale = box;
 
         var velocity = ps.velocityOverLifetime;
         velocity.enabled = true;
@@ -784,7 +1029,7 @@ public static class ChristashaDawnCombatBundleBuilder
         var shape = ps.shape;
         shape.enabled = true;
         shape.shapeType = ParticleSystemShapeType.Box;
-        shape.box = new Vector3(0.42f, 3.40f, 0.08f);
+        shape.scale = new Vector3(0.42f, 3.40f, 0.08f);
 
         var velocity = ps.velocityOverLifetime;
         velocity.enabled = true;
@@ -805,6 +1050,60 @@ public static class ChristashaDawnCombatBundleBuilder
         r.sharedMaterial = mat;
         r.renderMode = ParticleSystemRenderMode.Billboard;
         r.sortingOrder = sortingOrder;
+    }
+
+    private static void CreateCrescentCosmicShardHalo(Transform parent, string name, Material mat, Mesh mesh, Vector3 pos, float delay, short burst, Color color, int sortingOrder)
+    {
+        GameObject go = NewParticle(parent, name, pos, Quaternion.Euler(-8f, 18f, -4f));
+        ParticleSystem ps = go.GetComponent<ParticleSystem>();
+        var main = ps.main;
+        main.playOnAwake = true;
+        main.loop = false;
+        main.duration = delay + 0.92f;
+        main.startDelay = delay;
+        main.startLifetime = new ParticleSystem.MinMaxCurve(0.42f, 0.86f);
+        main.startSpeed = new ParticleSystem.MinMaxCurve(0.02f, 0.22f);
+        main.startSize = new ParticleSystem.MinMaxCurve(0.050f, 0.145f);
+        main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
+        main.startColor = color;
+        main.maxParticles = burst + 8;
+        main.simulationSpace = ParticleSystemSimulationSpace.Local;
+
+        var emission = ps.emission;
+        emission.rateOverTime = 0f;
+        emission.SetBursts(new[] { new ParticleSystem.Burst(0f, burst) });
+
+        var shape = ps.shape;
+        shape.enabled = true;
+        shape.shapeType = ParticleSystemShapeType.Box;
+        shape.scale = new Vector3(7.40f, 7.15f, 0.22f);
+
+        var velocity = ps.velocityOverLifetime;
+        velocity.enabled = true;
+        velocity.space = ParticleSystemSimulationSpace.Local;
+        velocity.x = new ParticleSystem.MinMaxCurve(-0.12f, 0.12f);
+        velocity.y = new ParticleSystem.MinMaxCurve(-0.16f, 0.08f);
+        velocity.z = new ParticleSystem.MinMaxCurve(-0.035f, 0.050f);
+
+        var col = ps.colorOverLifetime;
+        col.enabled = true;
+        col.color = CreateCosmicShardGradient(color.a);
+
+        var sizeOver = ps.sizeOverLifetime;
+        sizeOver.enabled = true;
+        sizeOver.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.55f), new Keyframe(0.22f, 1.0f), new Keyframe(0.72f, 0.82f), new Keyframe(1f, 0f)));
+
+        var noise = ps.noise;
+        noise.enabled = true;
+        noise.strength = 0.08f;
+        noise.frequency = 0.9f;
+
+        ParticleSystemRenderer r = go.GetComponent<ParticleSystemRenderer>();
+        r.sharedMaterial = mat;
+        r.renderMode = ParticleSystemRenderMode.Mesh;
+        r.mesh = mesh;
+        r.sortingOrder = sortingOrder;
+        r.alignment = ParticleSystemRenderSpace.Local;
     }
 
     private static void CreateDotMatrixParticle(Transform parent, string name, Material mat, Vector3 pos, float delay, short burst, float minSize, float maxSize, float minSpeed, float maxSpeed, int sortingOrder)
@@ -831,7 +1130,7 @@ public static class ChristashaDawnCombatBundleBuilder
         var shape = ps.shape;
         shape.enabled = true;
         shape.shapeType = ParticleSystemShapeType.Box;
-        shape.box = new Vector3(5.2f, 1.6f, 0.06f);
+        shape.scale = new Vector3(5.2f, 1.6f, 0.06f);
 
         var velocity = ps.velocityOverLifetime;
         velocity.enabled = true;
@@ -1004,11 +1303,191 @@ public static class ChristashaDawnCombatBundleBuilder
         SavePng("Assets/Textures/christasha_dawn_crescent_particle.png", CreateCrescentParticleTexture(512, 1024));
         SavePng("Assets/Textures/christasha_dawn_crescent_core.png", CreateCrescentCoreTexture(512, 1024));
         SavePng("Assets/Textures/christasha_dawn_crescent_shadow.png", CreateCrescentShadowTexture(512, 1024));
+        SavePng("Assets/Textures/christasha_dawn_cosmic_shard.png", CreateCosmicShardTexture(256, 256));
+        SavePng("Assets/Textures/christasha_dawn_solid_white.png", CreateSolidTexture(8, 8, Color.white));
         AssetDatabase.Refresh();
     }
 
     private static void GenerateShaders()
     {
+        File.WriteAllText("Assets/Shaders/ChristashaDawn_CoreOnlyFlow.shader", @"
+Shader ""Steria/ChristashaDawnCoreOnlyFlow""
+{
+    Properties
+    {
+        _MainTex (""Texture"", 2D) = ""white"" {}
+        _FlowTex (""Flow Mask (CC0)"", 2D) = ""gray"" {}
+        _TintColor (""Tint Color"", Color) = (1,1,1,1)
+        _HdrEmission (""HDR Emission"", Color) = (1,1,1,1)
+        _EmissionBoost (""Emission Boost"", Float) = 1.0
+        _DebugForceVisible (""Debug Force Visible"", Float) = 1.0
+        _Reveal (""Reveal"", Float) = 1.0
+        _Retreat (""Retreat"", Float) = -0.08
+        _UseParticleAge (""Use Particle Age Alpha"", Float) = 1.0
+        _RevealStartAge (""Reveal Start Age"", Float) = 0.024
+        _RevealEndAge (""Reveal End Age"", Float) = 0.439
+        _RetreatStartAge (""Retreat Start Age"", Float) = 0.561
+        _RetreatEndAge (""Retreat End Age"", Float) = 0.976
+        _RevealEdgeWidth (""Reveal Edge Width"", Float) = 0.075
+        _UseControlUV (""Use Control UV1"", Float) = 0.0
+        _CoreFillStrength (""Core Fill Strength"", Float) = 1.0
+        _CoreFillTail (""Core Fill Tail"", Float) = 0.28
+        _DistortStrength (""Distort Strength"", Float) = 0.018
+        _DistortScale (""Distort Scale"", Float) = 22.0
+        _DistortSpeed (""Distort Speed"", Float) = 1.75
+        _FlowSpeed (""Flow Speed"", Float) = 0.35
+        _FlowScale (""Flow Scale"", Float) = 28.0
+        _FlowTexStrength (""Flow Texture Strength"", Float) = 0.34
+        _FlowTexDistortStrength (""Flow Texture Distort Strength"", Float) = 0.016
+        _FlowTexTiling (""Flow Texture Tiling"", Float) = 2.4
+        _CenterPlateauWidth (""Center Plateau Width"", Float) = 0.52
+        _CenterFalloffPower (""Center Falloff Power"", Float) = 2.25
+    }
+    SubShader
+    {
+        Tags { ""Queue""=""Transparent"" ""IgnoreProjector""=""True"" ""RenderType""=""Transparent"" }
+        Blend SrcAlpha OneMinusSrcAlpha
+        Cull Off
+        Lighting Off
+        ZTest Always
+        ZWrite Off
+        Fog { Mode Off }
+
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include ""UnityCG.cginc""
+
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+            sampler2D _FlowTex;
+            float4 _TintColor;
+            float4 _HdrEmission;
+            float _EmissionBoost;
+            float _DebugForceVisible;
+            float _Reveal;
+            float _Retreat;
+            float _UseParticleAge;
+            float _RevealStartAge;
+            float _RevealEndAge;
+            float _RetreatStartAge;
+            float _RetreatEndAge;
+            float _RevealEdgeWidth;
+            float _UseControlUV;
+            float _CoreFillStrength;
+            float _CoreFillTail;
+            float _DistortStrength;
+            float _DistortScale;
+            float _DistortSpeed;
+            float _FlowSpeed;
+            float _FlowScale;
+            float _FlowTexStrength;
+            float _FlowTexDistortStrength;
+            float _FlowTexTiling;
+            float _CenterPlateauWidth;
+            float _CenterFalloffPower;
+
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float2 texcoord : TEXCOORD0;
+                float2 texcoord1 : TEXCOORD1;
+                fixed4 color : COLOR;
+            };
+
+            struct v2f
+            {
+                float4 vertex : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float2 controlUv : TEXCOORD1;
+                fixed4 color : COLOR;
+            };
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+                o.controlUv = v.texcoord1;
+                o.color = v.color;
+                return o;
+            }
+
+            float4 frag(v2f i) : SV_Target
+            {
+                float useControlUv = saturate(_UseControlUV);
+                float pathT = lerp(1.0 - i.uv.y, saturate(i.controlUv.x), useControlUv);
+                float outerToInner = lerp(saturate(i.uv.x), saturate(i.controlUv.y), useControlUv);
+                float edge = max(_RevealEdgeWidth, 0.001);
+
+                float useParticleAge = saturate(_UseParticleAge);
+                float particleAge = saturate(i.color.a);
+                float revealT = saturate((particleAge - _RevealStartAge) / max(_RevealEndAge - _RevealStartAge, 0.001));
+                revealT = 1.0 - pow(1.0 - revealT, 3.0);
+                float retreatT = saturate((particleAge - _RetreatStartAge) / max(_RetreatEndAge - _RetreatStartAge, 0.001));
+                retreatT = retreatT < 0.5 ? 4.0 * retreatT * retreatT * retreatT : 1.0 - pow(-2.0 * retreatT + 2.0, 3.0) * 0.5;
+                float revealControl = lerp(_Reveal, revealT, useParticleAge);
+                float retreatControl = lerp(_Retreat, retreatT, useParticleAge);
+
+                float retreatProgress = saturate(retreatControl);
+                float retreatThreshold = 1.0 - retreatProgress * (1.0 + edge);
+                float revealMask = 1.0 - smoothstep(revealControl, revealControl + edge, pathT);
+                float retreatMask = 1.0 - smoothstep(retreatThreshold, retreatThreshold + edge, outerToInner);
+                float revealEdge = 1.0 - smoothstep(0.0, edge, abs(pathT - revealControl));
+                float retreatEdge = 1.0 - smoothstep(0.0, edge, abs(outerToInner - retreatThreshold));
+                float visible = saturate(revealMask * retreatMask);
+
+                float centerDistance = abs(outerToInner - 0.50) * 2.0;
+                float plateauEdge = saturate(_CenterPlateauWidth);
+                float corePlateau = 1.0 - smoothstep(plateauEdge, 1.0, centerDistance);
+                corePlateau = pow(saturate(corePlateau), max(_CenterFalloffPower, 0.01));
+
+                if (_DebugForceVisible > 0.5)
+                {
+                    float previewFill = 0.86 + corePlateau * 0.14 + revealEdge * 0.08;
+                    return float4(_TintColor.rgb * _HdrEmission.rgb * max(_EmissionBoost, 1.0) * previewFill, visible);
+                }
+
+                float2 flowUv = i.uv;
+                float distortA = sin(pathT * _DistortScale + _Time.y * _DistortSpeed + outerToInner * 5.0);
+                float distortB = sin(pathT * _DistortScale * 0.37 - _Time.y * _DistortSpeed * 0.70 + outerToInner * 8.0);
+                float distort = distortA * distortB;
+                float2 maskUv = float2(
+                    outerToInner * _FlowTexTiling + _Time.y * _FlowSpeed * 0.18 + distort * 0.16,
+                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.55 + distort * 0.10);
+                float4 flowTex = tex2D(_FlowTex, maskUv);
+                float flowMask = saturate(max(flowTex.a, dot(flowTex.rgb, float3(0.299, 0.587, 0.114))));
+                float flowSigned = flowMask * 2.0 - 1.0;
+                flowUv.x += distort * _DistortStrength * (0.20 + corePlateau * 0.80);
+                flowUv.y += distort * _DistortStrength * 0.22;
+                flowUv.x += flowSigned * _FlowTexDistortStrength * (0.30 + corePlateau * 0.70);
+                flowUv.y += flowSigned * _FlowTexDistortStrength * 0.28;
+
+                float4 tex = tex2D(_MainTex, flowUv);
+                float flowA = pow(saturate(sin((pathT + _Time.y * _FlowSpeed) * _FlowScale) * 0.5 + 0.5), 3.0);
+                float flowB = pow(saturate(sin((pathT - _Time.y * _FlowSpeed * 0.82) * _FlowScale + outerToInner * 7.0) * 0.5 + 0.5), 4.0);
+                float freshCore = 1.0 - smoothstep(max(revealControl - _CoreFillTail, 0.0), revealControl, pathT);
+                freshCore *= 1.0 - smoothstep(revealControl, revealControl + edge, pathT);
+                float flowTextureEnergy = 0.92 + flowMask * 0.22 + flowA * 0.06 + flowB * 0.06;
+                float coreFill = saturate((0.68 + corePlateau * 0.32 + freshCore * 0.16 + flowA * 0.05 + flowB * 0.06) * _CoreFillStrength);
+                coreFill *= lerp(1.0, flowTextureEnergy, saturate(_FlowTexStrength));
+
+                fixed4 particleColor = lerp(fixed4(1.0, 1.0, 1.0, 1.0), i.color, useParticleAge);
+                particleColor.a = lerp(1.0, i.color.a, useParticleAge);
+                float4 c = tex * _TintColor * particleColor;
+                c.rgb = c.rgb * _HdrEmission.rgb * _EmissionBoost * coreFill;
+                c.a *= visible * saturate(0.84 + corePlateau * 0.13 + flowMask * _FlowTexStrength * 0.16 + revealEdge * 0.16 + retreatEdge * 0.04);
+                return c;
+            }
+            ENDCG
+        }
+    }
+    Fallback ""Legacy Shaders/Particles/Alpha Blended""
+}
+");
+
         File.WriteAllText("Assets/Shaders/ChristashaDawn_CrescentFlow.shader", @"
 Shader ""Steria/ChristashaDawnCrescentFlow""
 {
@@ -1016,8 +1495,23 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
     {
         _MainTex (""Texture"", 2D) = ""white"" {}
         _TintColor (""Tint Color"", Color) = (1,1,1,1)
+        _HdrEmission (""HDR Emission"", Color) = (1,1,1,1)
+        _BladeInnerColor (""Blade Inner Color"", Color) = (1,0.92,0.42,1)
+        _BladeOuterColor (""Blade Outer Color"", Color) = (1,0.72,0.05,1)
+        _BladeGradientStrength (""Blade Gradient Strength"", Float) = 0.0
         _EmissionBoost (""Emission Boost"", Float) = 1.0
         _EdgeWidth (""Edge Width"", Float) = 0.08
+        _CenterPlateauWidth (""Center Plateau Width"", Float) = 0.34
+        _CenterFalloffPower (""Center Falloff Power"", Float) = 2.8
+        _Reveal (""Reveal"", Float) = 1.0
+        _Retreat (""Retreat"", Float) = -0.08
+        _RevealEdgeWidth (""Reveal Edge Width"", Float) = 0.075
+        _UseControlUV (""Use Control UV1"", Float) = 0.0
+        _CoreFillStrength (""Core Fill Strength"", Float) = 0.0
+        _CoreFillTail (""Core Fill Tail"", Float) = 0.28
+        _DistortStrength (""Distort Strength"", Float) = 0.018
+        _DistortScale (""Distort Scale"", Float) = 22.0
+        _DistortSpeed (""Distort Speed"", Float) = 1.75
         _FlowSpeed (""Flow Speed"", Float) = 0.35
         _FlowScale (""Flow Scale"", Float) = 28.0
     }
@@ -1039,9 +1533,24 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            fixed4 _TintColor;
+            float4 _TintColor;
+            float4 _HdrEmission;
+            float4 _BladeInnerColor;
+            float4 _BladeOuterColor;
+            float _BladeGradientStrength;
             float _EmissionBoost;
             float _EdgeWidth;
+            float _CenterPlateauWidth;
+            float _CenterFalloffPower;
+            float _Reveal;
+            float _Retreat;
+            float _RevealEdgeWidth;
+            float _UseControlUV;
+            float _CoreFillStrength;
+            float _CoreFillTail;
+            float _DistortStrength;
+            float _DistortScale;
+            float _DistortSpeed;
             float _FlowSpeed;
             float _FlowScale;
 
@@ -1049,6 +1558,7 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
             {
                 float4 vertex : POSITION;
                 float2 texcoord : TEXCOORD0;
+                float2 texcoord1 : TEXCOORD1;
                 fixed4 color : COLOR;
             };
 
@@ -1056,6 +1566,7 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
             {
                 float4 vertex : SV_POSITION;
                 float2 uv : TEXCOORD0;
+                float2 controlUv : TEXCOORD1;
                 fixed4 color : COLOR;
             };
 
@@ -1064,19 +1575,52 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+                o.controlUv = v.texcoord1;
                 o.color = v.color;
                 return o;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            float4 frag(v2f i) : SV_Target
             {
-                fixed4 tex = tex2D(_MainTex, i.uv);
+                float useControlUv = saturate(_UseControlUV);
+                float pathT = lerp(1.0 - i.uv.y, saturate(i.controlUv.x), useControlUv);
+                float edge = max(_RevealEdgeWidth, 0.001);
+                float outerToInner = lerp(saturate(i.uv.x), saturate(i.controlUv.y), useControlUv);
+                float retreatProgress = saturate(_Retreat);
+                float retreatThreshold = 1.0 - retreatProgress * (1.0 + edge);
+                float revealMask = 1.0 - smoothstep(_Reveal, _Reveal + edge, pathT);
+                float retreatMask = 1.0 - smoothstep(retreatThreshold, retreatThreshold + edge, outerToInner);
+                float revealEdge = 1.0 - smoothstep(0.0, edge, abs(pathT - _Reveal));
+                float retreatEdge = 1.0 - smoothstep(0.0, edge, abs(outerToInner - retreatThreshold));
+                float visible = saturate(revealMask * retreatMask);
                 float sideMask = 1.0 - smoothstep(0.0, _EdgeWidth, i.uv.x) * (1.0 - smoothstep(1.0 - _EdgeWidth, 1.0, i.uv.x));
-                float flow = pow(saturate(sin((i.uv.y + _Time.y * _FlowSpeed) * _FlowScale) * 0.5 + 0.5), 3.0);
-                float spark = pow(saturate(sin(i.uv.y * 61.0 - i.uv.x * 17.0 + _Time.y * _FlowSpeed * 5.7) * 0.5 + 0.5), 7.0);
-                fixed4 c = tex * _TintColor * i.color;
-                c.rgb *= _EmissionBoost * (1.0 + flow * 0.16 + sideMask * 0.26 + spark * 0.10);
-                c.a *= saturate(0.70 + flow * 0.18 + sideMask * 0.12);
+                float centerMask = 1.0 - saturate(abs(i.uv.x - 0.50) * 2.0);
+                float centerDistance = abs(i.uv.x - 0.50) * 2.0;
+                float plateauEdge = saturate(_CenterPlateauWidth);
+                float trapezoidProfile = 1.0 - smoothstep(plateauEdge, 1.0, centerDistance);
+                trapezoidProfile = pow(saturate(trapezoidProfile), max(_CenterFalloffPower, 0.01));
+                float3 trapezoidEmission = _HdrEmission.rgb;
+                float3 bladeGradient = lerp(_BladeOuterColor.rgb, _BladeInnerColor.rgb, saturate(i.uv.x));
+                trapezoidEmission = lerp(trapezoidEmission, bladeGradient, saturate(_BladeGradientStrength));
+                float coreMask = pow(saturate(centerMask), 1.65) * smoothstep(0.02, 0.18, pathT) * (1.0 - smoothstep(0.90, 1.0, pathT));
+                float freshCore = 1.0 - smoothstep(max(_Reveal - _CoreFillTail, 0.0), _Reveal, pathT);
+                freshCore *= 1.0 - smoothstep(_Reveal, _Reveal + edge, pathT);
+                float coreFill = visible * coreMask * saturate(0.34 + freshCore * 0.82) * _CoreFillStrength;
+                float2 flowUv = i.uv;
+                float distortA = sin(pathT * _DistortScale + _Time.y * _DistortSpeed + i.uv.x * 5.0);
+                float distortB = sin(pathT * _DistortScale * 0.37 - _Time.y * _DistortSpeed * 0.70 + i.uv.x * 8.0);
+                float distort = distortA * distortB;
+                flowUv.x += distort * _DistortStrength * (0.18 + centerMask * 0.82);
+                flowUv.y += distort * _DistortStrength * 0.22;
+                float4 tex = tex2D(_MainTex, flowUv);
+                float flow = pow(saturate(sin((pathT + _Time.y * _FlowSpeed) * _FlowScale) * 0.5 + 0.5), 3.0);
+                float energyFlow = pow(saturate(sin((pathT - _Time.y * _FlowSpeed * 0.82) * _FlowScale + flowUv.x * 7.0) * 0.5 + 0.5), 4.0) * 0.65
+                    + pow(saturate(sin((pathT * 1.7 + _Time.y * _FlowSpeed * 0.55) * _FlowScale * 0.47 + flowUv.x * 11.0) * 0.5 + 0.5), 6.0) * 0.35;
+                float spark = pow(saturate(sin(pathT * 61.0 - i.uv.x * 17.0 + _Time.y * _FlowSpeed * 5.7) * 0.5 + 0.5), 7.0);
+                float4 c = tex * _TintColor * i.color;
+                c.rgb *= trapezoidEmission * _EmissionBoost * (0.70 + trapezoidProfile * 0.22 + flow * 0.12 + energyFlow * 0.18 + sideMask * 0.06 + spark * 0.04 + revealEdge * 0.46 + retreatEdge * 0.10);
+                c.rgb = lerp(c.rgb, float3(1.0, 1.0, 1.0) * _HdrEmission.rgb * _EmissionBoost * (0.76 + energyFlow * 0.18), saturate(coreFill));
+                c.a *= visible * saturate(0.82 + flow * 0.10 + energyFlow * 0.14 + sideMask * 0.05 + revealEdge * 0.20 + coreFill * 0.30);
                 return c;
             }
             ENDCG
@@ -1138,7 +1682,282 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
         return mat;
     }
 
-    private static Material CreateCrescentSlashMaterial(string texturePath, string materialPath, Color tint, float emissionBoost, float edgeWidth, float flowSpeed)
+    private static Material CreateHdrAdditiveMaterial(string texturePath, string materialPath, Color tint, float hdrBoost, int renderQueue)
+    {
+        TextureImporter ti = AssetImporter.GetAtPath(texturePath) as TextureImporter;
+        if (ti != null)
+        {
+            ti.textureType = TextureImporterType.Default;
+            ti.alphaIsTransparency = true;
+            ti.mipmapEnabled = false;
+            ti.wrapMode = TextureWrapMode.Clamp;
+            ti.filterMode = FilterMode.Bilinear;
+            ti.maxTextureSize = 1024;
+            ti.SaveAndReimport();
+        }
+
+        Shader shader = Shader.Find("Particles/Additive") ?? Shader.Find("Legacy Shaders/Particles/Additive") ?? Shader.Find("Sprites/Default");
+        Material mat = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+        if (mat == null)
+        {
+            mat = new Material(shader);
+            AssetDatabase.CreateAsset(mat, materialPath);
+        }
+        else
+        {
+            mat.shader = shader;
+        }
+
+        Color hdrTint = new Color(tint.r * hdrBoost, tint.g * hdrBoost, tint.b * hdrBoost, tint.a);
+        mat.mainTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
+        if (mat.HasProperty("_TintColor"))
+        {
+            mat.SetColor("_TintColor", hdrTint);
+        }
+        if (mat.HasProperty("_Color"))
+        {
+            mat.SetColor("_Color", hdrTint);
+        }
+        mat.color = hdrTint;
+        mat.renderQueue = renderQueue;
+        EditorUtility.SetDirty(mat);
+        return mat;
+    }
+
+    private static Material CreateCoreOnlyWhiteMaterial(string texturePath, string materialPath, Color hdrTint, int renderQueue)
+    {
+        const string coreOnlyFlowTexturePath = "Assets/Textures/Generated/ChristashaDawn_CoreFlowMask_512.png";
+        TextureImporter ti = AssetImporter.GetAtPath(texturePath) as TextureImporter;
+        if (ti != null)
+        {
+            ti.textureType = TextureImporterType.Default;
+            ti.alphaIsTransparency = true;
+            ti.mipmapEnabled = false;
+            ti.wrapMode = TextureWrapMode.Clamp;
+            ti.filterMode = FilterMode.Point;
+            ti.maxTextureSize = 32;
+            ti.SaveAndReimport();
+        }
+
+        TextureImporter flowTi = AssetImporter.GetAtPath(coreOnlyFlowTexturePath) as TextureImporter;
+        if (flowTi != null)
+        {
+            flowTi.textureType = TextureImporterType.Default;
+            flowTi.alphaIsTransparency = true;
+            flowTi.mipmapEnabled = false;
+            flowTi.sRGBTexture = false;
+            flowTi.wrapMode = TextureWrapMode.Repeat;
+            flowTi.filterMode = FilterMode.Bilinear;
+            flowTi.maxTextureSize = 1024;
+            flowTi.SaveAndReimport();
+        }
+
+        Shader shader = Shader.Find("Steria/ChristashaDawnCoreOnlyFlow")
+            ?? Shader.Find("Steria/ChristashaDawnCrescentFlow")
+            ?? Shader.Find("Particles/Additive")
+            ?? Shader.Find("Legacy Shaders/Particles/Additive")
+            ?? Shader.Find("Unlit/Transparent")
+            ?? Shader.Find("Sprites/Default");
+
+        Material mat = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+        if (mat == null)
+        {
+            mat = new Material(shader);
+            AssetDatabase.CreateAsset(mat, materialPath);
+        }
+        else
+        {
+            mat.shader = shader;
+        }
+
+        mat.mainTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
+        Texture2D flowTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(coreOnlyFlowTexturePath);
+        if (mat.HasProperty("_FlowTex") && flowTexture != null)
+        {
+            mat.SetTexture("_FlowTex", flowTexture);
+            mat.SetTextureScale("_FlowTex", Vector2.one);
+            mat.SetTextureOffset("_FlowTex", Vector2.zero);
+        }
+        if (mat.HasProperty("_TintColor"))
+        {
+            mat.SetColor("_TintColor", hdrTint);
+        }
+        if (mat.HasProperty("_Color"))
+        {
+            mat.SetColor("_Color", hdrTint);
+        }
+        if (mat.HasProperty("_HdrEmission"))
+        {
+            mat.SetColor("_HdrEmission", hdrTint);
+        }
+        if (mat.HasProperty("_EmissionBoost"))
+        {
+            mat.SetFloat("_EmissionBoost", 1.75f);
+        }
+        if (mat.HasProperty("_DebugForceVisible"))
+        {
+            mat.SetFloat("_DebugForceVisible", 1.0f);
+        }
+        if (mat.HasProperty("_Reveal"))
+        {
+            mat.SetFloat("_Reveal", 1.0f);
+        }
+        if (mat.HasProperty("_Retreat"))
+        {
+            mat.SetFloat("_Retreat", -0.08f);
+        }
+        if (mat.HasProperty("_UseParticleAge"))
+        {
+            mat.SetFloat("_UseParticleAge", 0.0f);
+        }
+        if (mat.HasProperty("_RevealStartAge"))
+        {
+            mat.SetFloat("_RevealStartAge", 0.024f);
+        }
+        if (mat.HasProperty("_RevealEndAge"))
+        {
+            mat.SetFloat("_RevealEndAge", 0.439f);
+        }
+        if (mat.HasProperty("_RetreatStartAge"))
+        {
+            mat.SetFloat("_RetreatStartAge", 0.561f);
+        }
+        if (mat.HasProperty("_RetreatEndAge"))
+        {
+            mat.SetFloat("_RetreatEndAge", 0.976f);
+        }
+        if (mat.HasProperty("_RevealEdgeWidth"))
+        {
+            mat.SetFloat("_RevealEdgeWidth", 0.055f);
+        }
+        if (mat.HasProperty("_UseControlUV"))
+        {
+            mat.SetFloat("_UseControlUV", 0.0f);
+        }
+        if (mat.HasProperty("_CoreFillStrength"))
+        {
+            mat.SetFloat("_CoreFillStrength", 1.18f);
+        }
+        if (mat.HasProperty("_CoreFillTail"))
+        {
+            mat.SetFloat("_CoreFillTail", 0.32f);
+        }
+        if (mat.HasProperty("_DistortStrength"))
+        {
+            mat.SetFloat("_DistortStrength", 0.010f);
+        }
+        if (mat.HasProperty("_DistortScale"))
+        {
+            mat.SetFloat("_DistortScale", 18f);
+        }
+        if (mat.HasProperty("_DistortSpeed"))
+        {
+            mat.SetFloat("_DistortSpeed", 1.35f);
+        }
+        if (mat.HasProperty("_FlowSpeed"))
+        {
+            mat.SetFloat("_FlowSpeed", 0.48f);
+        }
+        if (mat.HasProperty("_FlowScale"))
+        {
+            mat.SetFloat("_FlowScale", 20f);
+        }
+        if (mat.HasProperty("_FlowTexStrength"))
+        {
+            mat.SetFloat("_FlowTexStrength", 0.34f);
+        }
+        if (mat.HasProperty("_FlowTexDistortStrength"))
+        {
+            mat.SetFloat("_FlowTexDistortStrength", 0.016f);
+        }
+        if (mat.HasProperty("_FlowTexTiling"))
+        {
+            mat.SetFloat("_FlowTexTiling", 2.4f);
+        }
+        if (mat.HasProperty("_CenterPlateauWidth"))
+        {
+            mat.SetFloat("_CenterPlateauWidth", 0.52f);
+        }
+        if (mat.HasProperty("_CenterFalloffPower"))
+        {
+            mat.SetFloat("_CenterFalloffPower", 2.25f);
+        }
+        if (mat.HasProperty("_BladeGradientStrength"))
+        {
+            mat.SetFloat("_BladeGradientStrength", 0f);
+        }
+        mat.color = hdrTint;
+        mat.renderQueue = renderQueue;
+        EditorUtility.SetDirty(mat);
+        return mat;
+    }
+
+    private static AnimationClip CreateCoreOnlyRevealClip(string path)
+    {
+        AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
+        if (clip == null)
+        {
+            clip = new AnimationClip();
+            clip.name = Path.GetFileNameWithoutExtension(path);
+            AssetDatabase.CreateAsset(clip, path);
+        }
+        else
+        {
+            clip.ClearCurves();
+        }
+
+        clip.name = Path.GetFileNameWithoutExtension(path);
+        clip.legacy = true;
+        clip.wrapMode = WrapMode.Once;
+
+        AnimationCurve reveal = new AnimationCurve(
+            new Keyframe(0.00f, 0.00f),
+            new Keyframe(0.02f, 0.00f),
+            new Keyframe(0.16f, 0.46f),
+            new Keyframe(0.36f, 1.00f),
+            new Keyframe(0.82f, 1.00f));
+
+        AnimationCurve retreat = new AnimationCurve(
+            new Keyframe(0.00f, 0.00f),
+            new Keyframe(0.46f, 0.00f),
+            new Keyframe(0.62f, 0.48f),
+            new Keyframe(0.80f, 1.00f),
+            new Keyframe(0.82f, 1.00f));
+
+        AnimationCurve emission = new AnimationCurve(
+            new Keyframe(0.00f, 0.65f),
+            new Keyframe(0.16f, 1.90f),
+            new Keyframe(0.38f, 1.75f),
+            new Keyframe(0.64f, 1.20f),
+            new Keyframe(0.82f, 0.78f));
+
+        SmoothCurve(reveal);
+        SmoothCurve(retreat);
+        SmoothCurve(emission);
+
+        clip.SetCurve("", typeof(Renderer), "material._Reveal", reveal);
+        clip.SetCurve("", typeof(Renderer), "material._Retreat", retreat);
+        clip.SetCurve("", typeof(Renderer), "material._EmissionBoost", emission);
+
+        EditorUtility.SetDirty(clip);
+        return clip;
+    }
+
+    private static void SmoothCurve(AnimationCurve curve)
+    {
+        for (int i = 0; i < curve.length; i++)
+        {
+            AnimationUtility.SetKeyLeftTangentMode(curve, i, AnimationUtility.TangentMode.Auto);
+            AnimationUtility.SetKeyRightTangentMode(curve, i, AnimationUtility.TangentMode.Auto);
+        }
+    }
+
+    private static Material CreateCrescentSlashMaterial(string texturePath, string materialPath, Color tint, float emissionBoost, float edgeWidth, float flowSpeed, float coreFillStrength = 0f, float coreFillTail = 0.28f, float distortStrength = 0.018f, float distortScale = 22f, float distortSpeed = 1.75f)
+    {
+        return CreateCrescentSlashMaterial(texturePath, materialPath, tint, Color.white, emissionBoost, edgeWidth, flowSpeed, coreFillStrength, coreFillTail, distortStrength, distortScale, distortSpeed, 0.34f, 2.8f);
+    }
+
+    private static Material CreateCrescentSlashMaterial(string texturePath, string materialPath, Color tint, Color hdrEmission, float emissionBoost, float edgeWidth, float flowSpeed, float coreFillStrength = 0f, float coreFillTail = 0.28f, float distortStrength = 0.018f, float distortScale = 22f, float distortSpeed = 1.75f, float centerPlateauWidth = 0.34f, float centerFalloffPower = 2.8f)
     {
         TextureImporter ti = AssetImporter.GetAtPath(texturePath) as TextureImporter;
         if (ti != null)
@@ -1181,9 +2000,21 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
         {
             mat.SetFloat("_EmissionBoost", emissionBoost);
         }
+        if (mat.HasProperty("_HdrEmission"))
+        {
+            mat.SetColor("_HdrEmission", hdrEmission);
+        }
         if (mat.HasProperty("_EdgeWidth"))
         {
             mat.SetFloat("_EdgeWidth", edgeWidth);
+        }
+        if (mat.HasProperty("_CenterPlateauWidth"))
+        {
+            mat.SetFloat("_CenterPlateauWidth", centerPlateauWidth);
+        }
+        if (mat.HasProperty("_CenterFalloffPower"))
+        {
+            mat.SetFloat("_CenterFalloffPower", centerFalloffPower);
         }
         if (mat.HasProperty("_FlowSpeed"))
         {
@@ -1193,8 +2024,59 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
         {
             mat.SetFloat("_FlowScale", 30f);
         }
+        if (mat.HasProperty("_Reveal"))
+        {
+            mat.SetFloat("_Reveal", 1f);
+        }
+        if (mat.HasProperty("_Retreat"))
+        {
+            mat.SetFloat("_Retreat", -0.08f);
+        }
+        if (mat.HasProperty("_RevealEdgeWidth"))
+        {
+            mat.SetFloat("_RevealEdgeWidth", Mathf.Max(0.03f, edgeWidth * 0.70f));
+        }
+        if (mat.HasProperty("_CoreFillStrength"))
+        {
+            mat.SetFloat("_CoreFillStrength", coreFillStrength);
+        }
+        if (mat.HasProperty("_CoreFillTail"))
+        {
+            mat.SetFloat("_CoreFillTail", coreFillTail);
+        }
+        if (mat.HasProperty("_DistortStrength"))
+        {
+            mat.SetFloat("_DistortStrength", distortStrength);
+        }
+        if (mat.HasProperty("_DistortScale"))
+        {
+            mat.SetFloat("_DistortScale", distortScale);
+        }
+        if (mat.HasProperty("_DistortSpeed"))
+        {
+            mat.SetFloat("_DistortSpeed", distortSpeed);
+        }
         mat.color = tint;
         mat.renderQueue = 3140;
+        EditorUtility.SetDirty(mat);
+        return mat;
+    }
+
+    private static Material CreateOuterBladeSlashMaterial(string texturePath, string materialPath, Color tint, Color bladeInnerColor, Color bladeOuterColor, float emissionBoost, float edgeWidth, float flowSpeed, float coreFillStrength = 0f, float coreFillTail = 0.28f, float distortStrength = 0.018f, float distortScale = 22f, float distortSpeed = 1.75f, float centerPlateauWidth = 0.34f, float centerFalloffPower = 2.8f)
+    {
+        Material mat = CreateCrescentSlashMaterial(texturePath, materialPath, tint, bladeInnerColor, emissionBoost, edgeWidth, flowSpeed, coreFillStrength, coreFillTail, distortStrength, distortScale, distortSpeed, centerPlateauWidth, centerFalloffPower);
+        if (mat.HasProperty("_BladeInnerColor"))
+        {
+            mat.SetColor("_BladeInnerColor", bladeInnerColor);
+        }
+        if (mat.HasProperty("_BladeOuterColor"))
+        {
+            mat.SetColor("_BladeOuterColor", bladeOuterColor);
+        }
+        if (mat.HasProperty("_BladeGradientStrength"))
+        {
+            mat.SetFloat("_BladeGradientStrength", 1f);
+        }
         EditorUtility.SetDirty(mat);
         return mat;
     }
@@ -1539,14 +2421,518 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
 
     private static Mesh[] CreateVerticalCrescentRevealMeshes(string pathPrefix, string namePrefix, float height, float outerWidth, float bellyWidth, float innerCut, float depthBend, float zOffset)
     {
-        float[] revealEnds = { 0.22f, 0.36f, 0.50f, 0.64f, 0.78f, 0.90f, 1.00f };
-        Mesh[] meshes = new Mesh[revealEnds.Length];
-        for (int i = 0; i < revealEnds.Length; i++)
+        return new[]
         {
-            string label = (i + 1).ToString("00");
-            meshes[i] = CreateOrReplaceMesh(pathPrefix + "_" + label + ".asset", CreateVerticalCrescentMesh(namePrefix + "_" + label, height, outerWidth, bellyWidth, innerCut, depthBend, zOffset, 42, 0.00f, revealEnds[i]));
+            CreateOrReplaceMesh(pathPrefix + "_Full.asset", CreateUserCrescentSlashVolumeMesh(namePrefix + "_Full", height, outerWidth, bellyWidth, innerCut, depthBend, zOffset, 96, 10, false, 0.00f, 1.00f))
+        };
+    }
+
+    private static Mesh[] CreateVerticalCrescentOuterBladeRevealMeshes(string pathPrefix, string namePrefix, float height, float outerWidth, float bellyWidth, float innerCut, float depthBend, float zOffset)
+    {
+        return new[]
+        {
+            CreateOrReplaceMesh(pathPrefix + "_Full.asset", CreateUserCrescentSlashVolumeMesh(namePrefix + "_Full", height, outerWidth, bellyWidth, innerCut, depthBend, zOffset, 96, 4, true, 0.00f, 1.00f))
+        };
+    }
+
+    private static Mesh CreateUserCrescentSlashVolumeMesh(string name, float height, float outerWidth, float bellyWidth, float innerCut, float depthBend, float zOffset, int lengthSegments, int widthSegments, bool outerBladeOnly, float tStart, float tEnd)
+    {
+        const float startAngle = 85f;
+        const float endAngle = -115f;
+        const float horizontalScale = 1.35f;
+        const float verticalScale = 1.15f;
+        const float middleBulgePower = 1.4f;
+        const float widthChangeRate = 1.875f;
+        const float outwardWidthRatio = 0.3f;
+
+        float startRad = startAngle * Mathf.Deg2Rad;
+        float endRad = endAngle * Mathf.Deg2Rad;
+        float yRangeFactor = Mathf.Abs((Mathf.Sin(startRad) - Mathf.Sin(endRad)) * verticalScale);
+        float outerRadius = Mathf.Max(0.01f, height / Mathf.Max(0.01f, yRangeFactor));
+        float middleBladeWidth = Mathf.Max(0.08f, outerWidth * 0.19f + bellyWidth * 0.06f);
+        float tipBladeWidth = Mathf.Max(0.012f, middleBladeWidth * 0.035f);
+        float depth = Mathf.Max(0.012f, Mathf.Abs(depthBend) * 0.25f);
+        float ridgeAmplitude = depth * 0.20f;
+        float tipLength = outerRadius * 0.225f;
+        float edgeNoise = outerRadius * 0.012f;
+        float noiseSeed = 3.17f + innerCut * 11.0f + (outerBladeOnly ? 1.9f : 0f);
+
+        tStart = Mathf.Clamp01(tStart);
+        tEnd = Mathf.Clamp01(tEnd);
+        if (tEnd < tStart)
+        {
+            float tmp = tStart;
+            tStart = tEnd;
+            tEnd = tmp;
         }
-        return meshes;
+
+        lengthSegments = Mathf.Max(8, lengthSegments);
+        widthSegments = Mathf.Max(2, widthSegments);
+        float uStart = outerBladeOnly ? 0f : 0f;
+        float uEnd = outerBladeOnly ? 0.22f : 1f;
+
+        List<Vector3> vertices = new List<Vector3>();
+        List<Vector2> uvs = new List<Vector2>();
+        List<int> triangles = new List<int>();
+
+        int rowCount = lengthSegments + 1;
+        int colCount = widthSegments + 1;
+        int frontOffset = 0;
+        int backOffset = rowCount * colCount;
+
+        for (int i = 0; i <= lengthSegments; i++)
+        {
+            float localT = i / (float)lengthSegments;
+            float t = Mathf.Lerp(tStart, tEnd, localT);
+            for (int j = 0; j <= widthSegments; j++)
+            {
+                float localU = j / (float)widthSegments;
+                float u = Mathf.Lerp(uStart, uEnd, localU);
+                Vector3 p = GetUserCrescentVolumePoint(t, u, height, middleBladeWidth, tipBladeWidth, depthBend, tipLength, edgeNoise, noiseSeed);
+                float halfZ = GetUserCrescentHalfDepth(t, u, depth, ridgeAmplitude, middleBulgePower, widthChangeRate);
+                vertices.Add(new Vector3(p.x, p.y, zOffset + halfZ));
+                uvs.Add(new Vector2(u, 1f - t));
+            }
+        }
+
+        for (int i = 0; i <= lengthSegments; i++)
+        {
+            float localT = i / (float)lengthSegments;
+            float t = Mathf.Lerp(tStart, tEnd, localT);
+            for (int j = 0; j <= widthSegments; j++)
+            {
+                float localU = j / (float)widthSegments;
+                float u = Mathf.Lerp(uStart, uEnd, localU);
+                Vector3 p = GetUserCrescentVolumePoint(t, u, height, middleBladeWidth, tipBladeWidth, depthBend, tipLength, edgeNoise, noiseSeed);
+                float halfZ = GetUserCrescentHalfDepth(t, u, depth, ridgeAmplitude, middleBulgePower, widthChangeRate);
+                vertices.Add(new Vector3(p.x, p.y, zOffset - halfZ));
+                uvs.Add(new Vector2(u, 1f - t));
+            }
+        }
+
+        for (int i = 0; i < lengthSegments; i++)
+        {
+            for (int j = 0; j < widthSegments; j++)
+            {
+                int a = frontOffset + UserCrescentIndex(i, j, widthSegments);
+                int b = frontOffset + UserCrescentIndex(i + 1, j, widthSegments);
+                int c = frontOffset + UserCrescentIndex(i + 1, j + 1, widthSegments);
+                int d = frontOffset + UserCrescentIndex(i, j + 1, widthSegments);
+                AddUserCrescentQuad(triangles, a, d, c, b);
+            }
+        }
+
+        for (int i = 0; i < lengthSegments; i++)
+        {
+            for (int j = 0; j < widthSegments; j++)
+            {
+                int a = backOffset + UserCrescentIndex(i, j, widthSegments);
+                int b = backOffset + UserCrescentIndex(i + 1, j, widthSegments);
+                int c = backOffset + UserCrescentIndex(i + 1, j + 1, widthSegments);
+                int d = backOffset + UserCrescentIndex(i, j + 1, widthSegments);
+                AddUserCrescentQuad(triangles, a, b, c, d);
+            }
+        }
+
+        for (int i = 0; i < lengthSegments; i++)
+        {
+            int f0 = frontOffset + UserCrescentIndex(i, 0, widthSegments);
+            int f1 = frontOffset + UserCrescentIndex(i + 1, 0, widthSegments);
+            int b1 = backOffset + UserCrescentIndex(i + 1, 0, widthSegments);
+            int b0 = backOffset + UserCrescentIndex(i, 0, widthSegments);
+            AddUserCrescentQuad(triangles, f0, f1, b1, b0);
+        }
+
+        for (int i = 0; i < lengthSegments; i++)
+        {
+            int f0 = frontOffset + UserCrescentIndex(i, widthSegments, widthSegments);
+            int f1 = frontOffset + UserCrescentIndex(i + 1, widthSegments, widthSegments);
+            int b1 = backOffset + UserCrescentIndex(i + 1, widthSegments, widthSegments);
+            int b0 = backOffset + UserCrescentIndex(i, widthSegments, widthSegments);
+            AddUserCrescentQuad(triangles, f0, b0, b1, f1);
+        }
+
+        for (int j = 0; j < widthSegments; j++)
+        {
+            int f0 = frontOffset + UserCrescentIndex(0, j, widthSegments);
+            int f1 = frontOffset + UserCrescentIndex(0, j + 1, widthSegments);
+            int b1 = backOffset + UserCrescentIndex(0, j + 1, widthSegments);
+            int b0 = backOffset + UserCrescentIndex(0, j, widthSegments);
+            AddUserCrescentQuad(triangles, f0, b0, b1, f1);
+        }
+
+        for (int j = 0; j < widthSegments; j++)
+        {
+            int f0 = frontOffset + UserCrescentIndex(lengthSegments, j, widthSegments);
+            int f1 = frontOffset + UserCrescentIndex(lengthSegments, j + 1, widthSegments);
+            int b1 = backOffset + UserCrescentIndex(lengthSegments, j + 1, widthSegments);
+            int b0 = backOffset + UserCrescentIndex(lengthSegments, j, widthSegments);
+            AddUserCrescentQuad(triangles, f0, f1, b1, b0);
+        }
+
+        Mesh mesh = new Mesh();
+        mesh.name = name;
+        mesh.SetVertices(vertices);
+        mesh.SetUVs(0, uvs);
+        mesh.SetTriangles(triangles, 0);
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        return mesh;
+    }
+
+    private static Mesh CreateUserProvidedCrescentVolumeMesh(string name)
+    {
+        const float outerRadius = 2.0f;
+        const float horizontalScale = 1.35f;
+        const float verticalScale = 1.15f;
+        const float tipBladeWidth = 0.03f;
+        const float middleBladeWidth = 0.90f;
+        const float middleBulgePower = 1.4f;
+        const float widthChangeRate = 1.875f;
+        const float outwardWidthRatio = 0.3f;
+        const float depth = 0.12f;
+        const float ridgeAmplitude = 0.025f;
+        const float startAngle = 85f;
+        const float endAngle = -115f;
+        const float tipLength = 0.45f;
+        const float edgeNoise = 0.03f;
+        const float noiseSeed = 3.17f;
+        const int lengthSegments = 96;
+        const int widthSegments = 10;
+
+        List<Vector3> vertices = new List<Vector3>();
+        List<Vector2> uvs = new List<Vector2>();
+        List<Vector2> controlUvs = new List<Vector2>();
+        List<int> triangles = new List<int>();
+
+        int rowCount = lengthSegments + 1;
+        int colCount = widthSegments + 1;
+        int frontOffset = 0;
+        int backOffset = rowCount * colCount;
+
+        for (int i = 0; i <= lengthSegments; i++)
+        {
+            float t = i / (float)lengthSegments;
+            for (int j = 0; j <= widthSegments; j++)
+            {
+                float u = j / (float)widthSegments;
+                Vector3 p = GetProvidedCrescentPoint(t, u, outerRadius, horizontalScale, verticalScale, tipBladeWidth, middleBladeWidth, middleBulgePower, widthChangeRate, outwardWidthRatio, startAngle, endAngle, tipLength, edgeNoise, noiseSeed);
+                float halfZ = GetProvidedCrescentHalfDepth(t, u, depth, ridgeAmplitude, middleBulgePower, widthChangeRate);
+                vertices.Add(new Vector3(p.x, p.y, halfZ));
+                uvs.Add(new Vector2(u, 1f - t));
+                controlUvs.Add(new Vector2(t, u));
+            }
+        }
+
+        for (int i = 0; i <= lengthSegments; i++)
+        {
+            float t = i / (float)lengthSegments;
+            for (int j = 0; j <= widthSegments; j++)
+            {
+                float u = j / (float)widthSegments;
+                Vector3 p = GetProvidedCrescentPoint(t, u, outerRadius, horizontalScale, verticalScale, tipBladeWidth, middleBladeWidth, middleBulgePower, widthChangeRate, outwardWidthRatio, startAngle, endAngle, tipLength, edgeNoise, noiseSeed);
+                float halfZ = GetProvidedCrescentHalfDepth(t, u, depth, ridgeAmplitude, middleBulgePower, widthChangeRate);
+                vertices.Add(new Vector3(p.x, p.y, -halfZ));
+                uvs.Add(new Vector2(u, 1f - t));
+                controlUvs.Add(new Vector2(t, u));
+            }
+        }
+
+        for (int i = 0; i < lengthSegments; i++)
+        {
+            for (int j = 0; j < widthSegments; j++)
+            {
+                int a = frontOffset + UserCrescentIndex(i, j, widthSegments);
+                int b = frontOffset + UserCrescentIndex(i + 1, j, widthSegments);
+                int c = frontOffset + UserCrescentIndex(i + 1, j + 1, widthSegments);
+                int d = frontOffset + UserCrescentIndex(i, j + 1, widthSegments);
+                AddUserCrescentQuad(triangles, a, d, c, b);
+            }
+        }
+
+        for (int i = 0; i < lengthSegments; i++)
+        {
+            for (int j = 0; j < widthSegments; j++)
+            {
+                int a = backOffset + UserCrescentIndex(i, j, widthSegments);
+                int b = backOffset + UserCrescentIndex(i + 1, j, widthSegments);
+                int c = backOffset + UserCrescentIndex(i + 1, j + 1, widthSegments);
+                int d = backOffset + UserCrescentIndex(i, j + 1, widthSegments);
+                AddUserCrescentQuad(triangles, a, b, c, d);
+            }
+        }
+
+        for (int i = 0; i < lengthSegments; i++)
+        {
+            int f0 = frontOffset + UserCrescentIndex(i, 0, widthSegments);
+            int f1 = frontOffset + UserCrescentIndex(i + 1, 0, widthSegments);
+            int b1 = backOffset + UserCrescentIndex(i + 1, 0, widthSegments);
+            int b0 = backOffset + UserCrescentIndex(i, 0, widthSegments);
+            AddUserCrescentQuad(triangles, f0, f1, b1, b0);
+        }
+
+        for (int i = 0; i < lengthSegments; i++)
+        {
+            int f0 = frontOffset + UserCrescentIndex(i, widthSegments, widthSegments);
+            int f1 = frontOffset + UserCrescentIndex(i + 1, widthSegments, widthSegments);
+            int b1 = backOffset + UserCrescentIndex(i + 1, widthSegments, widthSegments);
+            int b0 = backOffset + UserCrescentIndex(i, widthSegments, widthSegments);
+            AddUserCrescentQuad(triangles, f0, b0, b1, f1);
+        }
+
+        for (int j = 0; j < widthSegments; j++)
+        {
+            int f0 = frontOffset + UserCrescentIndex(0, j, widthSegments);
+            int f1 = frontOffset + UserCrescentIndex(0, j + 1, widthSegments);
+            int b1 = backOffset + UserCrescentIndex(0, j + 1, widthSegments);
+            int b0 = backOffset + UserCrescentIndex(0, j, widthSegments);
+            AddUserCrescentQuad(triangles, f0, b0, b1, f1);
+        }
+
+        for (int j = 0; j < widthSegments; j++)
+        {
+            int f0 = frontOffset + UserCrescentIndex(lengthSegments, j, widthSegments);
+            int f1 = frontOffset + UserCrescentIndex(lengthSegments, j + 1, widthSegments);
+            int b1 = backOffset + UserCrescentIndex(lengthSegments, j + 1, widthSegments);
+            int b0 = backOffset + UserCrescentIndex(lengthSegments, j, widthSegments);
+            AddUserCrescentQuad(triangles, f0, f1, b1, b0);
+        }
+
+        Mesh mesh = new Mesh();
+        mesh.name = name;
+        mesh.SetVertices(vertices);
+        mesh.SetUVs(0, uvs);
+        mesh.SetUVs(1, controlUvs);
+        mesh.SetTriangles(triangles, 0);
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        return mesh;
+    }
+
+    private static Vector3 GetProvidedCrescentPoint(float t, float u, float outerRadius, float horizontalScale, float verticalScale, float tipBladeWidth, float middleBladeWidth, float middleBulgePower, float widthChangeRate, float outwardWidthRatio, float startAngle, float endAngle, float tipLength, float edgeNoise, float noiseSeed)
+    {
+        float angle = Mathf.Lerp(startAngle, endAngle, t) * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(angle);
+        float sin = Mathf.Sin(angle);
+        float baseProfile = Mathf.Sin(Mathf.PI * t);
+        float widthProfile = Mathf.Pow(baseProfile, middleBulgePower * widthChangeRate);
+        float bladeWidth = Mathf.Lerp(tipBladeWidth, middleBladeWidth, widthProfile);
+        bladeWidth = Mathf.Min(bladeWidth, outerRadius * 0.95f);
+
+        float outwardWidth = bladeWidth * outwardWidthRatio;
+        float inwardWidth = bladeWidth * (1f - outwardWidthRatio);
+        float outerR = outerRadius + outwardWidth;
+        float innerR = outerRadius - inwardWidth;
+
+        Vector2 outer = new Vector2(cos * outerR * horizontalScale, sin * outerR * verticalScale);
+        Vector2 inner = new Vector2(cos * innerR * horizontalScale, sin * innerR * verticalScale);
+
+        float tipFactor = Mathf.Pow(Mathf.Abs(t - 0.5f) * 2f, 2.5f);
+        outer.x -= tipLength * tipFactor;
+        inner.x -= tipLength * tipFactor * 0.65f;
+
+        float easedU = Smooth01Unit(u);
+        Vector2 p = Vector2.Lerp(outer, inner, easedU);
+
+        float edgeFactor = Mathf.Pow(Mathf.Max(1f - u, u), 3f);
+        float n1 = Mathf.PerlinNoise(noiseSeed + t * 13.7f, u * 4.1f) - 0.5f;
+        float n2 = Mathf.PerlinNoise(noiseSeed + 10.0f + t * 27.3f, u * 2.9f) - 0.5f;
+
+        Vector2 radial = new Vector2(cos, sin).normalized;
+        Vector2 tangent = new Vector2(-sin, cos).normalized;
+
+        p += radial * n1 * edgeNoise * edgeFactor;
+        p += tangent * n2 * edgeNoise * edgeFactor;
+
+        return new Vector3(p.x, p.y, 0f);
+    }
+
+    private static float GetProvidedCrescentHalfDepth(float t, float u, float depth, float ridgeAmplitude, float middleBulgePower, float widthChangeRate)
+    {
+        float baseProfile = Mathf.Sin(Mathf.PI * t);
+        float lengthProfile = Mathf.Pow(baseProfile, middleBulgePower * widthChangeRate);
+
+        float widthProfile = Mathf.Sin(Mathf.PI * u);
+        widthProfile = Mathf.Pow(widthProfile, 0.55f);
+
+        float thicknessProfile = (0.25f + 0.75f * widthProfile) * lengthProfile;
+
+        float ridge =
+            Mathf.Sin(t * Mathf.PI * 10f + u * 2.3f) *
+            Mathf.Sin(u * Mathf.PI) *
+            ridgeAmplitude;
+
+        float halfDepth = depth * thicknessProfile + ridge;
+        return Mathf.Max(0.003f, halfDepth);
+    }
+
+    private static Vector3 GetUserCrescentVolumePoint(float t, float u, float height, float middleBladeWidth, float tipBladeWidth, float depthBend, float tipLength, float edgeNoise, float noiseSeed)
+    {
+        float y = Mathf.Lerp(height * 0.5f, -height * 0.5f, t);
+        float arc = Mathf.Sin(Mathf.PI * t);
+        float tipTaper = Smooth01(0.00f, 0.10f, t) * (1f - Smooth01(0.90f, 1.00f, t));
+        float body = Mathf.Pow(Mathf.Max(0f, arc), 0.70f) * Mathf.Max(0.08f, tipTaper);
+        float bladeWidth = Mathf.Max(tipBladeWidth, middleBladeWidth * body);
+
+        float curveReach = Mathf.Max(0.85f, middleBladeWidth * 1.18f + height * 0.045f);
+        float spineX = -0.54f + curveReach * Mathf.Pow(Mathf.Max(0f, arc), 0.78f) - 0.16f * t;
+        float outerX = spineX + bladeWidth * 0.34f;
+        float innerX = spineX - bladeWidth * 0.66f;
+        float easedU = Smooth01Unit(u);
+        float x = Mathf.Lerp(outerX, innerX, easedU);
+
+        float tipFactor = Mathf.Pow(Mathf.Abs(t - 0.5f) * 2f, 2.6f);
+        x -= tipLength * 0.20f * tipFactor;
+        y += (easedU - 0.5f) * bladeWidth * 0.13f * (2f * t - 1f);
+
+        float edgeFactor = Mathf.Pow(Mathf.Max(1f - u, u), 3f);
+        float n1 = Mathf.PerlinNoise(noiseSeed + t * 13.7f, u * 4.1f) - 0.5f;
+        float n2 = Mathf.PerlinNoise(noiseSeed + 10.0f + t * 27.3f, u * 2.9f) - 0.5f;
+        float normalSign = u < 0.5f ? 1f : -1f;
+        x += n1 * edgeNoise * edgeFactor * normalSign;
+        y += n2 * edgeNoise * edgeFactor;
+
+        return new Vector3(x, y, 0f);
+    }
+
+    private static float GetUserCrescentHalfDepth(float t, float u, float depth, float ridgeAmplitude, float middleBulgePower, float widthChangeRate)
+    {
+        float baseProfile = Mathf.Sin(Mathf.PI * t);
+        float lengthProfile = Mathf.Pow(Mathf.Max(0f, baseProfile), middleBulgePower * widthChangeRate);
+        float widthProfile = Mathf.Sin(Mathf.PI * u);
+        widthProfile = Mathf.Pow(Mathf.Max(0f, widthProfile), 0.55f);
+        float thicknessProfile = (0.25f + 0.75f * widthProfile) * lengthProfile;
+        float ridge = Mathf.Sin(t * Mathf.PI * 10f + u * 2.3f) * Mathf.Sin(u * Mathf.PI) * ridgeAmplitude;
+        return Mathf.Max(0.003f, depth * thicknessProfile + ridge);
+    }
+
+    private static int UserCrescentIndex(int i, int j, int widthSegments)
+    {
+        return i * (widthSegments + 1) + j;
+    }
+
+    private static void AddUserCrescentQuad(List<int> tris, int a, int b, int c, int d)
+    {
+        tris.Add(a);
+        tris.Add(b);
+        tris.Add(c);
+        tris.Add(a);
+        tris.Add(c);
+        tris.Add(d);
+    }
+
+    private static float Smooth01Unit(float x)
+    {
+        return x * x * (3f - 2f * x);
+    }
+
+    private static Mesh CreateVerticalCrescentOuterBladeMesh(string name, float height, float outerWidth, float bellyWidth, float innerCut, float depthBend, float zOffset, int segments, float tStart, float tEnd)
+    {
+        List<Vector3> vertices = new List<Vector3>();
+        List<Vector2> uvs = new List<Vector2>();
+        List<int> triangles = new List<int>();
+
+        tStart = Mathf.Clamp01(tStart);
+        tEnd = Mathf.Clamp01(tEnd);
+        if (tEnd < tStart)
+        {
+            float tmp = tStart;
+            tStart = tEnd;
+            tEnd = tmp;
+        }
+
+        segments = Mathf.Max(4, segments);
+        for (int i = 0; i <= segments; i++)
+        {
+            float localT = i / (float)segments;
+            float t = Mathf.Lerp(tStart, tEnd, localT);
+            float y = Mathf.Lerp(height * 0.5f, -height * 0.5f, t);
+            float arc = Mathf.Sin(t * Mathf.PI);
+            float taper = Smooth01(0.00f, 0.10f, t) * (1f - Smooth01(0.90f, 1.00f, t));
+            float bodyTaper = Mathf.Pow(Mathf.Max(0.001f, arc), 0.34f) * Mathf.Max(0.06f, taper);
+            float widthBody = (outerWidth * Mathf.Lerp(0.10f, 0.14f, t) + bellyWidth * 0.26f * Mathf.Pow(Mathf.Max(0.001f, arc), 0.76f)) * bodyTaper;
+            float centerX = -0.10f + 0.48f * arc - 0.12f * t - 0.035f * Mathf.Sin((t * 2.1f + 0.08f) * Mathf.PI);
+            float outsideX = centerX - widthBody * Mathf.Lerp(0.78f, 0.96f, arc);
+            float bladeWidth = Mathf.Max(0.10f, widthBody * Mathf.Lerp(0.16f, 0.26f, arc));
+            float outerBladeX = outsideX - bladeWidth * 0.10f;
+            float innerBladeX = outsideX + bladeWidth * 0.90f;
+            float zCurve = zOffset + depthBend * (arc - 0.5f) * 0.36f;
+            float edgeLift = depthBend * Mathf.Pow(Mathf.Max(0f, arc), 0.78f) * 0.20f;
+            float extrusionDepth = Mathf.Max(0.042f, Mathf.Abs(depthBend) * 0.28f);
+            float frontDepth = zCurve - extrusionDepth * 0.5f - edgeLift * 0.62f;
+            float backDepth = zCurve + extrusionDepth * 0.5f - edgeLift * 0.22f;
+
+            vertices.Add(new Vector3(outerBladeX, y, frontDepth));
+            vertices.Add(new Vector3(innerBladeX, y, frontDepth + edgeLift * 0.18f));
+            vertices.Add(new Vector3(outerBladeX, y, backDepth));
+            vertices.Add(new Vector3(innerBladeX, y, backDepth + edgeLift * 0.34f));
+            uvs.Add(new Vector2(0f, 1f - t));
+            uvs.Add(new Vector2(1f, 1f - t));
+            uvs.Add(new Vector2(0f, 1f - t));
+            uvs.Add(new Vector2(1f, 1f - t));
+
+            if (i < segments)
+            {
+                int a = i * 4;
+
+                triangles.Add(a);
+                triangles.Add(a + 1);
+                triangles.Add(a + 4);
+                triangles.Add(a + 1);
+                triangles.Add(a + 5);
+                triangles.Add(a + 4);
+
+                triangles.Add(a + 2);
+                triangles.Add(a + 6);
+                triangles.Add(a + 3);
+                triangles.Add(a + 3);
+                triangles.Add(a + 6);
+                triangles.Add(a + 7);
+
+                triangles.Add(a);
+                triangles.Add(a + 4);
+                triangles.Add(a + 2);
+                triangles.Add(a + 2);
+                triangles.Add(a + 4);
+                triangles.Add(a + 6);
+
+                triangles.Add(a + 1);
+                triangles.Add(a + 3);
+                triangles.Add(a + 5);
+                triangles.Add(a + 3);
+                triangles.Add(a + 7);
+                triangles.Add(a + 5);
+
+                if (i == 0)
+                {
+                    triangles.Add(a);
+                    triangles.Add(a + 2);
+                    triangles.Add(a + 1);
+                    triangles.Add(a + 1);
+                    triangles.Add(a + 2);
+                    triangles.Add(a + 3);
+                }
+                if (i == segments - 1)
+                {
+                    int b = (i + 1) * 4;
+                    triangles.Add(b);
+                    triangles.Add(b + 1);
+                    triangles.Add(b + 2);
+                    triangles.Add(b + 1);
+                    triangles.Add(b + 3);
+                    triangles.Add(b + 2);
+                }
+            }
+        }
+
+        Mesh mesh = new Mesh();
+        mesh.name = name;
+        mesh.SetVertices(vertices);
+        mesh.SetUVs(0, uvs);
+        mesh.SetTriangles(triangles, 0);
+        mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
+        return mesh;
     }
 
     private static Mesh CreateVerticalCrescentMesh(string name, float height, float outerWidth, float bellyWidth, float innerCut, float depthBend, float zOffset, int segments, float tStart, float tEnd)
@@ -1571,29 +2957,84 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
             float t = Mathf.Lerp(tStart, tEnd, localT);
             float y = Mathf.Lerp(height * 0.5f, -height * 0.5f, t);
             float arc = Mathf.Sin(t * Mathf.PI);
-            float taper = Smooth01(0.00f, 0.07f, t) * (1f - Smooth01(0.93f, 1.00f, t));
-            float centerX = -0.16f + 0.62f * arc - 0.20f * t + 0.045f * Mathf.Sin((t * 2.1f + 0.08f) * Mathf.PI);
-            float outer = (outerWidth * 0.18f + bellyWidth * Mathf.Pow(Mathf.Max(0.001f, arc), 0.54f)) * Mathf.Max(0.16f, taper);
-            float inner = Mathf.Max(outer * 0.16f, outer - innerCut * Mathf.Lerp(0.65f, 1.20f, arc));
-            float outsideX = centerX - outer * 0.58f;
-            float insideX = centerX + inner * 0.92f;
+            float taper = Smooth01(0.00f, 0.10f, t) * (1f - Smooth01(0.90f, 1.00f, t));
+            float bodyTaper = Mathf.Pow(Mathf.Max(0.001f, arc), 0.34f) * Mathf.Max(0.06f, taper);
+            float widthBody = (outerWidth * Mathf.Lerp(0.12f, 0.16f, t) + bellyWidth * 0.28f * Mathf.Pow(Mathf.Max(0.001f, arc), 0.76f)) * bodyTaper;
+            float centerX = -0.10f + 0.48f * arc - 0.12f * t - 0.035f * Mathf.Sin((t * 2.1f + 0.08f) * Mathf.PI);
+            float arcWide = Mathf.Pow(Mathf.Max(0f, arc), 0.84f);
+            float outsideX = centerX - widthBody * Mathf.Lerp(0.70f, 0.92f, arcWide);
+            float mouthScale = Mathf.Clamp(0.34f - innerCut * 0.62f, 0.08f, 0.34f);
+            float insideX = centerX + widthBody * Mathf.Lerp(0.03f, mouthScale, Mathf.Pow(Mathf.Max(0f, arc), 0.74f));
             float zCurve = zOffset + depthBend * (arc - 0.5f) * 0.36f;
             float edgeLift = depthBend * Mathf.Pow(Mathf.Max(0f, arc), 0.78f) * 0.20f;
+            float extrusionDepth = Mathf.Max(0.045f, Mathf.Abs(depthBend) * 0.34f);
+            float frontDepth = zCurve - extrusionDepth * 0.5f;
+            float backDepth = zCurve + extrusionDepth * 0.5f;
+            float outerFront = frontDepth - edgeLift * 0.52f;
+            float innerFront = frontDepth + edgeLift * 0.18f;
+            float outerBack = backDepth - edgeLift * 0.18f;
+            float innerBack = backDepth + edgeLift * 0.52f;
 
-            vertices.Add(new Vector3(outsideX, y, zCurve - edgeLift));
-            vertices.Add(new Vector3(insideX, y, zCurve + edgeLift));
+            vertices.Add(new Vector3(outsideX, y, outerFront));
+            vertices.Add(new Vector3(insideX, y, innerFront));
+            vertices.Add(new Vector3(outsideX, y, outerBack));
+            vertices.Add(new Vector3(insideX, y, innerBack));
+            uvs.Add(new Vector2(0f, 1f - t));
+            uvs.Add(new Vector2(1f, 1f - t));
             uvs.Add(new Vector2(0f, 1f - t));
             uvs.Add(new Vector2(1f, 1f - t));
 
             if (i < segments)
             {
-                int a = i * 2;
+                int a = i * 4;
+
                 triangles.Add(a);
                 triangles.Add(a + 1);
+                triangles.Add(a + 4);
+                triangles.Add(a + 1);
+                triangles.Add(a + 5);
+                triangles.Add(a + 4);
+
                 triangles.Add(a + 2);
+                triangles.Add(a + 6);
+                triangles.Add(a + 3);
+                triangles.Add(a + 3);
+                triangles.Add(a + 6);
+                triangles.Add(a + 7);
+
+                triangles.Add(a);
+                triangles.Add(a + 4);
+                triangles.Add(a + 2);
+                triangles.Add(a + 2);
+                triangles.Add(a + 4);
+                triangles.Add(a + 6);
+
                 triangles.Add(a + 1);
                 triangles.Add(a + 3);
-                triangles.Add(a + 2);
+                triangles.Add(a + 5);
+                triangles.Add(a + 3);
+                triangles.Add(a + 7);
+                triangles.Add(a + 5);
+
+                if (i == 0)
+                {
+                    triangles.Add(a);
+                    triangles.Add(a + 2);
+                    triangles.Add(a + 1);
+                    triangles.Add(a + 1);
+                    triangles.Add(a + 2);
+                    triangles.Add(a + 3);
+                }
+                if (i == segments - 1)
+                {
+                    int b = (i + 1) * 4;
+                    triangles.Add(b);
+                    triangles.Add(b + 1);
+                    triangles.Add(b + 2);
+                    triangles.Add(b + 1);
+                    triangles.Add(b + 3);
+                    triangles.Add(b + 2);
+                }
             }
         }
 
@@ -1898,6 +3339,103 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
         return mesh;
     }
 
+    private static Mesh CreateCosmicShardMesh(string name, float width, float height)
+    {
+        Mesh mesh = new Mesh();
+        mesh.name = name;
+        float hw = width * 0.5f;
+        float hh = height * 0.5f;
+        mesh.vertices = new[]
+        {
+            new Vector3(-hw * 0.72f, -hh * 0.86f, 0f),
+            new Vector3(-hw, hh * 0.10f, 0f),
+            new Vector3(-hw * 0.22f, hh, 0f),
+            new Vector3(hw * 0.66f, hh * 0.72f, 0f),
+            new Vector3(hw, -hh * 0.18f, 0f),
+            new Vector3(hw * 0.18f, -hh, 0f)
+        };
+        mesh.uv = new[]
+        {
+            new Vector2(0.16f, 0.08f),
+            new Vector2(0.00f, 0.55f),
+            new Vector2(0.38f, 1.00f),
+            new Vector2(0.83f, 0.86f),
+            new Vector2(1.00f, 0.42f),
+            new Vector2(0.58f, 0.00f)
+        };
+        mesh.triangles = new[] { 0, 1, 2, 0, 2, 5, 5, 2, 3, 5, 3, 4 };
+        mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
+        return mesh;
+    }
+
+    private static Mesh CreateCrossStarCoreMesh(string name, float length, float thickness)
+    {
+        float halfLength = length * 0.5f;
+        float halfThickness = thickness * 0.5f;
+        float diagonalLength = halfLength * 0.72f;
+        float diagonalThickness = halfThickness * 0.62f;
+
+        List<Vector3> vertices = new List<Vector3>();
+        List<Vector2> uvs = new List<Vector2>();
+        List<int> triangles = new List<int>();
+        AddCrossStarBar(vertices, uvs, triangles, new Vector2(-halfLength, -halfThickness), new Vector2(halfLength, halfThickness));
+        AddCrossStarBar(vertices, uvs, triangles, new Vector2(-halfThickness, -halfLength), new Vector2(halfThickness, halfLength));
+        AddCrossStarDiagonalBar(vertices, uvs, triangles, -diagonalLength, diagonalLength, diagonalThickness);
+        AddCrossStarDiagonalBar(vertices, uvs, triangles, diagonalLength, -diagonalLength, diagonalThickness);
+
+        Mesh mesh = new Mesh();
+        mesh.name = name;
+        mesh.SetVertices(vertices);
+        mesh.SetUVs(0, uvs);
+        mesh.SetTriangles(triangles, 0);
+        mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
+        return mesh;
+    }
+
+    private static void AddCrossStarBar(List<Vector3> vertices, List<Vector2> uvs, List<int> triangles, Vector2 min, Vector2 max)
+    {
+        int start = vertices.Count;
+        vertices.Add(new Vector3(min.x, min.y, 0f));
+        vertices.Add(new Vector3(min.x, max.y, 0f));
+        vertices.Add(new Vector3(max.x, max.y, 0f));
+        vertices.Add(new Vector3(max.x, min.y, 0f));
+        uvs.Add(new Vector2(0f, 0f));
+        uvs.Add(new Vector2(0f, 1f));
+        uvs.Add(new Vector2(1f, 1f));
+        uvs.Add(new Vector2(1f, 0f));
+        triangles.Add(start);
+        triangles.Add(start + 1);
+        triangles.Add(start + 2);
+        triangles.Add(start);
+        triangles.Add(start + 2);
+        triangles.Add(start + 3);
+    }
+
+    private static void AddCrossStarDiagonalBar(List<Vector3> vertices, List<Vector2> uvs, List<int> triangles, float startCoord, float endCoord, float halfThickness)
+    {
+        Vector2 a = new Vector2(startCoord, -startCoord);
+        Vector2 b = new Vector2(endCoord, -endCoord);
+        Vector2 tangent = (b - a).normalized;
+        Vector2 normal = new Vector2(-tangent.y, tangent.x) * halfThickness;
+        int start = vertices.Count;
+        vertices.Add(new Vector3(a.x - normal.x, a.y - normal.y, 0f));
+        vertices.Add(new Vector3(a.x + normal.x, a.y + normal.y, 0f));
+        vertices.Add(new Vector3(b.x + normal.x, b.y + normal.y, 0f));
+        vertices.Add(new Vector3(b.x - normal.x, b.y - normal.y, 0f));
+        uvs.Add(new Vector2(0f, 0f));
+        uvs.Add(new Vector2(0f, 1f));
+        uvs.Add(new Vector2(1f, 1f));
+        uvs.Add(new Vector2(1f, 0f));
+        triangles.Add(start);
+        triangles.Add(start + 1);
+        triangles.Add(start + 2);
+        triangles.Add(start);
+        triangles.Add(start + 2);
+        triangles.Add(start + 3);
+    }
+
     private static Mesh CreateQuadMesh(string name, float size)
     {
         float half = size * 0.5f;
@@ -2005,10 +3543,10 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
         gradient.SetKeys(
             new[]
             {
-                new GradientColorKey(new Color(0.96f, 0.46f, 0.02f), 0f),
-                new GradientColorKey(new Color(1f, 0.92f, 0.46f), peakTime),
+                new GradientColorKey(new Color(1f, 0.84f, 0.18f), 0f),
+                new GradientColorKey(new Color(1f, 0.98f, 0.70f), peakTime),
                 new GradientColorKey(baseColor, 0.72f),
-                new GradientColorKey(new Color(baseColor.r * 0.72f, baseColor.g * 0.62f, baseColor.b * 0.42f), 1f)
+                new GradientColorKey(new Color(baseColor.r * 0.86f, baseColor.g * 0.82f, baseColor.b * 0.58f), 1f)
             },
             new[]
             {
@@ -2017,6 +3555,27 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
                 new GradientAlphaKey(peakAlpha, peakTime),
                 new GradientAlphaKey(peakAlpha * 0.78f, holdTime),
                 new GradientAlphaKey(peakAlpha * 0.20f, fadeStart),
+                new GradientAlphaKey(0f, 1f)
+            });
+        return new ParticleSystem.MinMaxGradient(gradient);
+    }
+
+    private static ParticleSystem.MinMaxGradient CreateCrescentStarFadeGradient(Color baseColor, float peakAlpha)
+    {
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(
+            new[]
+            {
+                new GradientColorKey(new Color(1f, 0.98f, 0.72f), 0f),
+                new GradientColorKey(baseColor, 0.20f),
+                new GradientColorKey(baseColor, 1f)
+            },
+            new[]
+            {
+                new GradientAlphaKey(0f, 0f),
+                new GradientAlphaKey(peakAlpha, 0.10f),
+                new GradientAlphaKey(peakAlpha * 0.92f, 0.32f),
+                new GradientAlphaKey(peakAlpha * 0.40f, 0.68f),
                 new GradientAlphaKey(0f, 1f)
             });
         return new ParticleSystem.MinMaxGradient(gradient);
@@ -2040,6 +3599,91 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
                 new GradientAlphaKey(0f, 1f)
             });
         return new ParticleSystem.MinMaxGradient(gradient);
+    }
+
+    private static ParticleSystem.MinMaxGradient CreateCosmicShardGradient(float peakAlpha)
+    {
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(
+            new[]
+            {
+                new GradientColorKey(new Color(0.11f, 0.075f, 0.040f), 0f),
+                new GradientColorKey(new Color(1f, 0.96f, 0.72f), 0.30f),
+                new GradientColorKey(new Color(1f, 1f, 0.90f), 0.58f),
+                new GradientColorKey(new Color(0.22f, 0.14f, 0.070f), 1f)
+            },
+            new[]
+            {
+                new GradientAlphaKey(0f, 0f),
+                new GradientAlphaKey(peakAlpha, 0.14f),
+                new GradientAlphaKey(peakAlpha * 0.82f, 0.54f),
+                new GradientAlphaKey(0f, 1f)
+            });
+        return new ParticleSystem.MinMaxGradient(gradient);
+    }
+
+    private static Texture2D CreateCosmicShardTexture(int width, int height)
+    {
+        Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        Color[] pixels = ClearPixels(width, height);
+        Vector2[] poly =
+        {
+            new Vector2(-0.72f, -0.78f),
+            new Vector2(-0.95f, -0.08f),
+            new Vector2(-0.28f, 0.92f),
+            new Vector2(0.64f, 0.72f),
+            new Vector2(0.96f, -0.18f),
+            new Vector2(0.12f, -0.92f)
+        };
+
+        for (int y = 0; y < height; y++)
+        {
+            float py = (y / (height - 1f) - 0.5f) * 2f;
+            for (int x = 0; x < width; x++)
+            {
+                float px = (x / (width - 1f) - 0.5f) * 2f;
+                Vector2 p = new Vector2(px, py);
+                float dist = SignedDistanceToPolygon(p, poly);
+                if (dist > 0.18f)
+                {
+                    continue;
+                }
+
+                float inner = 1f - Smooth01(-0.44f, -0.10f, dist);
+                float rim = Mathf.Exp(-Mathf.Pow((dist + 0.018f) / 0.075f, 2f));
+                float outerGlow = Mathf.Exp(-Mathf.Pow(Mathf.Max(0f, dist) / 0.16f, 2f));
+                float noise = Mathf.PerlinNoise(px * 8.5f + 11.2f, py * 8.5f + 3.4f);
+                Color cosmicCore = Color.Lerp(new Color(0.030f, 0.022f, 0.035f, 1f), new Color(0.24f, 0.135f, 0.055f, 1f), noise);
+                Color rimColor = Color.Lerp(new Color(1f, 0.86f, 0.32f, 1f), new Color(1f, 1f, 0.90f, 1f), rim);
+                Color c = Color.Lerp(cosmicCore, rimColor, Mathf.Clamp01(rim * 0.92f + outerGlow * 0.42f));
+                c.a = Mathf.Clamp01(inner * 0.92f + rim * 0.80f + outerGlow * 0.30f);
+                pixels[y * width + x] = c;
+            }
+        }
+
+        tex.SetPixels(pixels);
+        tex.Apply();
+        return tex;
+    }
+
+    private static float SignedDistanceToPolygon(Vector2 p, Vector2[] vertices)
+    {
+        bool inside = false;
+        float minDist = 1000f;
+        for (int i = 0, j = vertices.Length - 1; i < vertices.Length; j = i++)
+        {
+            Vector2 a = vertices[j];
+            Vector2 b = vertices[i];
+            Vector2 pa = p - a;
+            Vector2 ba = b - a;
+            float h = Mathf.Clamp01(Vector2.Dot(pa, ba) / Mathf.Max(0.0001f, Vector2.Dot(ba, ba)));
+            minDist = Mathf.Min(minDist, (pa - ba * h).magnitude);
+            if (((a.y > p.y) != (b.y > p.y)) && (p.x < (b.x - a.x) * (p.y - a.y) / Mathf.Max(0.0001f, b.y - a.y) + a.x))
+            {
+                inside = !inside;
+            }
+        }
+        return inside ? -minDist : minDist;
     }
 
     private static Texture2D CreateDaoguangTexture(int width, int height)
@@ -2457,6 +4101,19 @@ Shader ""Steria/ChristashaDawnCrescentFlow""
                 c.a = alpha;
                 pixels[y * width + x] = c;
             }
+        }
+        tex.SetPixels(pixels);
+        tex.Apply();
+        return tex;
+    }
+
+    private static Texture2D CreateSolidTexture(int width, int height, Color color)
+    {
+        Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        Color[] pixels = new Color[width * height];
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = color;
         }
         tex.SetPixels(pixels);
         tex.Apply();

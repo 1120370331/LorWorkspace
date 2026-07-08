@@ -224,7 +224,7 @@ public static class AnhierBlueWhiteCombatBundleBuilder
         var shape = ps.shape;
         shape.enabled = true;
         shape.shapeType = ParticleSystemShapeType.Box;
-        shape.box = new Vector3(3.2f, 0.48f, 0.05f);
+        shape.scale = new Vector3(3.2f, 0.48f, 0.05f);
 
         var velocity = ps.velocityOverLifetime;
         velocity.enabled = true;

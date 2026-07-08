@@ -24,6 +24,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAtt
     private readonly List<GameObject> _objects = new List<GameObject>();
     private readonly List<ParticleSystem> _systems = new List<ParticleSystem>();
     private readonly List<TrailRenderer> _runtimeTrails = new List<TrailRenderer>();
+    private readonly List<Material> _crescentRevealMaterials = new List<Material>();
 
     private BattleUnitView _selfView;
     private Transform _selfRoot;
@@ -145,6 +146,8 @@ public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAtt
 
             AlignAssetBundleEffect(main);
             SetLayerAndSorting(main);
+            CacheCrescentRevealMaterials(main);
+            AnimateCrescentRevealMaterials();
             _objects.Add(main);
 
             if (UseRuntimeProjectile)
@@ -312,6 +315,83 @@ public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAtt
         ParticleSystemRenderer shadeRenderer = shade.GetComponent<ParticleSystemRenderer>();
         shadeRenderer.renderMode = ParticleSystemRenderMode.Billboard;
         shadeRenderer.sortingOrder = 82;
+    }
+
+    private void CacheCrescentRevealMaterials(GameObject root)
+    {
+        _crescentRevealMaterials.Clear();
+        if (root == null)
+        {
+            return;
+        }
+
+        Renderer[] renderers = root.GetComponentsInChildren<Renderer>(true);
+        foreach (Renderer renderer in renderers)
+        {
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            Material[] materials = renderer.sharedMaterials;
+            bool changed = false;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                Material source = materials[i];
+                if (source == null || !source.HasProperty("_Reveal") || !source.HasProperty("_Retreat"))
+                {
+                    continue;
+                }
+
+                Material runtimeMaterial = new Material(source);
+                runtimeMaterial.name = source.name + "_RuntimeReveal";
+                runtimeMaterial.SetFloat("_Reveal", 0f);
+                runtimeMaterial.SetFloat("_Retreat", -0.10f);
+                if (runtimeMaterial.HasProperty("_RevealEdgeWidth"))
+                {
+                    runtimeMaterial.SetFloat("_RevealEdgeWidth", 0.065f);
+                }
+                materials[i] = runtimeMaterial;
+                _crescentRevealMaterials.Add(runtimeMaterial);
+                changed = true;
+            }
+
+            if (changed)
+            {
+                renderer.sharedMaterials = materials;
+            }
+        }
+
+        if (_crescentRevealMaterials.Count > 0)
+        {
+            SteriaLogger.Log($"{LogName}: cached crescent reveal materials={_crescentRevealMaterials.Count}");
+        }
+    }
+
+    private void AnimateCrescentRevealMaterials()
+    {
+        if (_crescentRevealMaterials.Count == 0)
+        {
+            return;
+        }
+
+        float revealRaw = Mathf.Clamp01((_elapsed - 0.02f) / 0.48f);
+        float reveal = Mathf.Clamp(Mathf.Pow(revealRaw, 1.65f) * 1.06f, 0f, 1.06f);
+        float fifoRetreat = reveal - 0.30f;
+        float retreatRaw = Mathf.Clamp01((_elapsed - 0.54f) / 0.36f);
+        float flushRetreat = -0.10f + Mathf.Pow(retreatRaw, 1.35f) * 1.22f;
+        float retreat = Mathf.Clamp(Mathf.Max(fifoRetreat, flushRetreat), -0.10f, 1.12f);
+
+        foreach (Material material in _crescentRevealMaterials)
+        {
+            if (material == null)
+            {
+                continue;
+            }
+
+            material.SetFloat("_Reveal", reveal);
+            material.SetFloat("_Retreat", retreat);
+        }
     }
 
     private void CreateRuntimeProjectileTrail(GameObject root)
@@ -502,6 +582,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAtt
         try
         {
             _elapsed += Time.deltaTime;
+            AnimateCrescentRevealMaterials();
             if (UseRuntimeProjectile)
             {
                 UpdateRuntimeProjectile();
@@ -530,6 +611,14 @@ public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAtt
         _objects.Clear();
         _systems.Clear();
         _runtimeTrails.Clear();
+        foreach (Material material in _crescentRevealMaterials)
+        {
+            if (material != null)
+            {
+                UnityEngine.Object.Destroy(material);
+            }
+        }
+        _crescentRevealMaterials.Clear();
     }
 
     private static AssetBundle GetEffectBundle()

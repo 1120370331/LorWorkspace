@@ -116,7 +116,7 @@ public static class HanzhouVfxReferenceDumper
                 var pr = t.GetComponent<ParticleSystemRenderer>();
                 sb.AppendLine("  PARTICLE duration=" + main.duration + " loop=" + main.loop + " playOnAwake=" + main.playOnAwake + " delay=" + Curve(main.startDelay) + " lifetime=" + Curve(main.startLifetime) + " speed=" + Curve(main.startSpeed) + " size=" + Curve(main.startSize) + " color=" + Grad(main.startColor));
                 sb.AppendLine("    emission enabled=" + emission.enabled + " rate=" + Curve(emission.rateOverTime) + " bursts=" + BurstString(emission));
-                sb.AppendLine("    shape enabled=" + shape.enabled + " type=" + shape.shapeType + " radius=" + shape.radius + " box=" + V(shape.box) + " arc=" + shape.arc);
+                sb.AppendLine("    shape enabled=" + shape.enabled + " type=" + shape.shapeType + " radius=" + shape.radius + " box=" + V(shape.scale) + " arc=" + shape.arc);
                 sb.AppendLine("    modules colorOverLifetime=" + col.enabled + " sizeOverLifetime=" + size.enabled + " velocityOverLifetime=" + vel.enabled + " noise=" + noise.enabled);
                 if (pr != null)
                 {
