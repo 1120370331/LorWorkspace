@@ -80,6 +80,10 @@
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
   <!-- 忽略反编译的游戏代码文件夹 -->
@@ -92,6 +96,16 @@
     <Compile Remove="BaseMod\**" />
     <EmbeddedResource Remove="BaseMod\**" />
     <None Remove="BaseMod\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="VFXSource\**" />
+    <EmbeddedResource Remove="VFXSource\**" />
+    <None Remove="VFXSource\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="_analysis\**" />
+    <EmbeddedResource Remove="_analysis\**" />
+    <None Remove="_analysis\**" />
   </ItemGroup>
 
 </Project>

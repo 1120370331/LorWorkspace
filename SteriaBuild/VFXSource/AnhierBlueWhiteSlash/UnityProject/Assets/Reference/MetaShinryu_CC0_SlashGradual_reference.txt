@@ -1,0 +1,7 @@
+Christasha dawn crescent slash reference
+
+Source: OpenGameArt "Slash effect" by MetaShinryu
+License: CC0 / public domain dedication
+URL: https://opengameart.org/content/slash-effect
+
+Usage in this project: used as a permissive reference/source texture for crescent slash silhouette. The builder recolors and reshapes it into Christasha's dawn white/gold combat VFX.

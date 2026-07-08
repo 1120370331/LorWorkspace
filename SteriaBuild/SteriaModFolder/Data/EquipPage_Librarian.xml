@@ -20,6 +20,7 @@
       <PBResist>Normal</PBResist>
       <HBResist>Normal</HBResist>
       <Passive Pid="@origin">10008</Passive>
+      <Passive Pid="@origin">250009</Passive>
       <Passive>9000001</Passive>
       <Passive>9000002</Passive>
       <Passive>9000003</Passive>
@@ -29,7 +30,7 @@
     <Chapter>6</Chapter>
     <Episode>1</Episode>
     <Rarity>Unique</Rarity>
-    <RangeType>Melee</RangeType>
+    <RangeType>Hybrid</RangeType>
     <CharacterSkin>Bada</CharacterSkin>
     <CharacterSkinType>Lor</CharacterSkinType>
   </Book>

@@ -22,5 +22,41 @@ obj/
 # 其他
 *.log
 
+# Unity/VFX source projects: keep source scripts/settings, ignore rebuildable editor caches and generated assets
+SteriaBuild/VFXSource/**/UnityProject/Library/
+SteriaBuild/VFXSource/**/UnityProject/Logs/
+SteriaBuild/VFXSource/**/UnityProject/Temp/
+SteriaBuild/VFXSource/**/UnityProject/Obj/
+SteriaBuild/VFXSource/**/UnityProject/Build/
+SteriaBuild/VFXSource/**/UnityProject/Builds/
+SteriaBuild/VFXSource/**/UnityProject/Preview/
+SteriaBuild/VFXSource/**/UnityProject/UserSettings/
+SteriaBuild/VFXSource/**/UnityProject/AssetBundles/
+SteriaBuild/VFXSource/**/UnityProject/Assets/Materials/
+SteriaBuild/VFXSource/**/UnityProject/Assets/Materials.meta
+SteriaBuild/VFXSource/**/UnityProject/Assets/Meshes/
+SteriaBuild/VFXSource/**/UnityProject/Assets/Meshes.meta
+SteriaBuild/VFXSource/**/UnityProject/Assets/Prefabs/
+SteriaBuild/VFXSource/**/UnityProject/Assets/Prefabs.meta
+SteriaBuild/VFXSource/**/UnityProject/Assets/Textures/
+SteriaBuild/VFXSource/**/UnityProject/Assets/Textures.meta
+SteriaBuild/VFXSource/**/*.log
+SteriaBuild/VFXSource/**/*.inputs.sha256
+SteriaBuild/VFXSource/**/*.alf
+SteriaBuild/VFXSource/**/*preview*.png
+SteriaBuild/VFXSource/**/*contact_sheet*.png
+SteriaBuild/VFXSource/**/hanzhou_vfx_reference_dump.txt
+SteriaBuild/VFXSource/**/references/
+SteriaBuild/VFXSource/ChristashaDawnCombat/references/
+SteriaBuild/VFXSource/**/references/extracted/
+SteriaBuild/VFXSource/**/references/*.zip
+SteriaBuild/VFXSource/**/source_assets/**/model_cutout_preview/
+SteriaBuild/VFXSource/**/source_assets/**/*preview*.png
+SteriaBuild/VFXSource/ChristashaDawnCombat/source_assets/christasha_vertical_crescent/*contact_sheet*.png
+SteriaBuild/VFXSource/ChristashaDawnCombat/source_assets/christasha_vertical_crescent/processed_cropped/*contact_sheet*.png
+
+# Decompiled/reference-analysis scratch output
+SteriaBuild/_analysis/
+
 # 私人对话记录
 SteriaBuild/设定/对话记录_*.md

@@ -1572,6 +1572,16 @@ namespace Steria
 
             // 注册所有自定义特效
             SteriaCustomEffects["Steria_WindSlash"] = typeof(DiceAttackEffect_Steria_WindSlash);
+            SteriaCustomEffects["Steria_AnhierBlueWhiteSlash"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhiteSlash);
+            SteriaCustomEffects["Steria_AnhierBlueWhitePierce"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhitePierce);
+            SteriaCustomEffects["Steria_AnhierBlueWhiteHit"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhiteHit);
+            SteriaCustomEffects["Steria_AnhierBlueWhiteFarHit"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhiteFarHit);
+            SteriaCustomEffects["Steria_ChristashaDawnSlashH"] = typeof(DiceAttackEffect_Steria_ChristashaDawnSlashH);
+            SteriaCustomEffects["Steria_ChristashaDawnSlashV"] = typeof(DiceAttackEffect_Steria_ChristashaDawnSlashV);
+            SteriaCustomEffects["Steria_ChristashaDawnPierceNear"] = typeof(DiceAttackEffect_Steria_ChristashaDawnPierceNear);
+            SteriaCustomEffects["Steria_ChristashaDawnPierceFar"] = typeof(DiceAttackEffect_Steria_ChristashaDawnPierceFar);
+            SteriaCustomEffects["Steria_ChristashaDawnPierce"] = typeof(DiceAttackEffect_Steria_ChristashaDawnPierceFar);
+            SteriaCustomEffects["Steria_ChristashaDawnHit"] = typeof(DiceAttackEffect_Steria_ChristashaDawnHit);
             SteriaCustomEffects["Steria_WaterSlash"] = typeof(DiceAttackEffect_Steria_WaterSlash);
             SteriaCustomEffects["Steria_WaterHit"] = typeof(DiceAttackEffect_Steria_WaterHit);
             SteriaCustomEffects["Steria_WaterPenetrate"] = typeof(DiceAttackEffect_Steria_WaterPenetrate);
@@ -1580,6 +1590,7 @@ namespace Steria
             SteriaCustomEffects["Steria_WaterSurround"] = typeof(DiceAttackEffect_Steria_WaterSurround);
             SteriaCustomEffects["Steria_DarkPurpleSlash"] = typeof(DiceAttackEffect_Steria_DarkPurpleSlash);
             SteriaCustomEffects["VeliaThorn_Z"] = typeof(DiceAttackEffect_VeliaThorn_Z);
+            SteriaCustomEffects["Steria_SivierWishGuard"] = typeof(DiceAttackEffect_Steria_SivierWishGuard);
 
             SteriaLogger.Log($"Initialized {SteriaCustomEffects.Count} custom effects");
             foreach (var kvp in SteriaCustomEffects)
