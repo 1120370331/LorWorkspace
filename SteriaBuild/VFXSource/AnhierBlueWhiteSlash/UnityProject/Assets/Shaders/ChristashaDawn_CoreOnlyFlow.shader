@@ -16,9 +16,10 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
         _RevealEndAge ("Reveal End Age", Float) = 0.439
         _RetreatStartAge ("Retreat Start Age", Float) = 0.561
         _RetreatEndAge ("Retreat End Age", Float) = 0.976
-        _RevealEdgeWidth ("Reveal Edge Width", Float) = 0.075
+        _RevealEdgeWidth ("Reveal Edge Width", Float) = 0.030
         _UseControlUV ("Use Control UV1", Float) = 0.0
-        _CoreFillStrength ("Core Fill Strength", Float) = 1.0
+        _CoreFillStrength ("Core Fill Strength", Float) = 0.80
+        _CoreWidthScale ("Core Width Scale", Float) = 1.50
         _CoreFillTail ("Core Fill Tail", Float) = 0.28
         _DistortStrength ("Distort Strength", Float) = 0.018
         _DistortScale ("Distort Scale", Float) = 22.0
@@ -29,15 +30,35 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
         _FlowTexDistortStrength ("Flow Texture Distort Strength", Float) = 0.020
         _FlowTexTiling ("Flow Texture Tiling", Float) = 2.4
         _BrushCoreStrength ("Brush Core Strength", Float) = 1.0
-        _BrushFiberStrength ("Brush Fiber Strength", Float) = 0.82
-        _BrushAbrasionStrength ("Brush Abrasion Strength", Float) = 0.70
-        _SoftEnvelopeStrength ("Soft Envelope Strength", Float) = 0.78
-        _LuminousBodyStrength ("Luminous Body Strength", Float) = 0.86
-        _CenterPlateauWidth ("Center Plateau Width", Float) = 0.50
-        _CenterFalloffPower ("Center Falloff Power", Float) = 2.10
-        _OuterGoldStrength ("Outer Gold Strength", Float) = 0.52
-        _OuterGoldContact ("Outer Gold Contact", Float) = 0.34
-        _OuterGoldFalloff ("Outer Gold Falloff", Float) = 0.34
+        _BrushFiberStrength ("Brush Fiber Strength", Float) = 0.44
+        _BrushAbrasionStrength ("Brush Abrasion Strength", Float) = 0.16
+        _SoftEnvelopeStrength ("Soft Envelope Strength", Float) = 0.30
+        _LuminousBodyStrength ("Luminous Body Strength", Float) = 0.68
+        _CenterPlateauWidth ("Center Plateau Width", Float) = 0.46
+        _CenterFalloffPower ("Center Falloff Power", Float) = 1.70
+        _GoldBandCenter ("Gold Band Center", Float) = 0.24
+        _GoldBandWidth ("Gold Band Width", Float) = 0.22
+        _GoldBandStrength ("Gold Band Strength", Float) = 0.34
+        _GoldBandAlpha ("Gold Band Alpha", Float) = 0.22
+        _OuterGoldStrength ("Outer Gold Strength", Float) = 0.30
+        _OuterGoldContact ("Outer Gold Contact", Float) = 0.08
+        _OuterGoldFalloff ("Outer Gold Falloff", Float) = 0.055
+        _OuterGoldEdgeWidth ("Outer Gold Edge Width", Float) = 0.12
+        _OuterGoldEdgeSoftness ("Outer Gold Edge Softness", Float) = 0.06
+        _OuterGoldEdgeStrength ("Outer Gold Edge Strength", Float) = 0.45
+        _OuterGoldEdgeAlpha ("Outer Gold Edge Alpha", Float) = 0.06
+        _InnerGoldEdgeWidth ("Inner Gold Edge Width", Float) = 0.12
+        _InnerGoldEdgeSoftness ("Inner Gold Edge Softness", Float) = 0.06
+        _InnerGoldEdgeStrength ("Inner Gold Edge Strength", Float) = 0.30
+        _InnerGoldEdgeAlpha ("Inner Gold Edge Alpha", Float) = 0.04
+        _InnerAfterglowStart ("Inner Afterglow Start", Float) = 0.198
+        _InnerAfterglowEnd ("Inner Afterglow End", Float) = 0.842
+        _InnerAfterglowCenter ("Inner Afterglow Center", Float) = 0.52
+        _InnerAfterglowCrossCenter ("Inner Afterglow Cross Center", Float) = 0.50
+        _InnerAfterglowWidth ("Inner Afterglow Width", Float) = 0.11
+        _InnerAfterglowBrightness ("Inner Afterglow Brightness", Float) = 1.08
+        _InnerAfterglowRetreatDelay ("Inner Afterglow Retreat Delay", Float) = 0.04
+        _DiagnosticMode ("Diagnostic Mode", Float) = 0.0
         _SweepArcDegrees ("Sweep Arc Degrees", Float) = -18.0
         _SweepTrailLength ("Sweep Trail Length", Float) = 0.74
         _SweepTailThinness ("Sweep Tail Thinness", Float) = 0.72
@@ -48,7 +69,7 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
         _TrailRidgeStrength ("Trail Ridge Strength", Float) = 0.46
         _TrailRidgeWidth ("Trail Ridge Width", Float) = 0.14
         _TrailFlowBandStrength ("Trail Flow Band Strength", Float) = 0.24
-        _SweepMotionStrength ("Sweep Motion Strength", Float) = 0.85
+        _SweepMotionStrength ("Sweep Motion Strength", Float) = 0.0
         _SweepPivot ("Sweep Pivot", Vector) = (-1.10,3.10,0,0)
     }
     SubShader
@@ -85,6 +106,7 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
             float _RevealEdgeWidth;
             float _UseControlUV;
             float _CoreFillStrength;
+            float _CoreWidthScale;
             float _CoreFillTail;
             float _DistortStrength;
             float _DistortScale;
@@ -101,9 +123,29 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
             float _LuminousBodyStrength;
             float _CenterPlateauWidth;
             float _CenterFalloffPower;
+            float _GoldBandCenter;
+            float _GoldBandWidth;
+            float _GoldBandStrength;
+            float _GoldBandAlpha;
             float _OuterGoldStrength;
             float _OuterGoldContact;
             float _OuterGoldFalloff;
+            float _OuterGoldEdgeWidth;
+            float _OuterGoldEdgeSoftness;
+            float _OuterGoldEdgeStrength;
+            float _OuterGoldEdgeAlpha;
+            float _InnerGoldEdgeWidth;
+            float _InnerGoldEdgeSoftness;
+            float _InnerGoldEdgeStrength;
+            float _InnerGoldEdgeAlpha;
+            float _InnerAfterglowStart;
+            float _InnerAfterglowEnd;
+            float _InnerAfterglowCenter;
+            float _InnerAfterglowCrossCenter;
+            float _InnerAfterglowWidth;
+            float _InnerAfterglowBrightness;
+            float _InnerAfterglowRetreatDelay;
+            float _DiagnosticMode;
             float _SweepArcDegrees;
             float _SweepTrailLength;
             float _SweepTailThinness;
@@ -175,35 +217,18 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
                 float retreatControl = lerp(_Retreat, retreatT, useParticleAge);
 
                 float retreatProgress = saturate(retreatControl);
+                float retreatThreshold = retreatProgress * (1.0 + edge) - edge;
+                float pathRetreatFade = smoothstep(retreatThreshold, retreatThreshold + edge, pathT);
                 float revealMask = 1.0 - smoothstep(revealControl, revealControl + edge, pathT);
-                float revealEdge = 1.0 - smoothstep(0.0, edge, abs(pathT - revealControl));
-                float retreatEdge = smoothstep(0.02, 0.24, retreatProgress) * (1.0 - smoothstep(0.76, 1.0, retreatProgress));
-                float visible = saturate(revealMask);
+                float sharedVisibility = saturate(revealMask * pathRetreatFade);
 
                 float centerDistance = abs(outerToInner - 0.50) * 2.0;
-                float ageBehindHead = max(0.0, revealControl - pathT);
-                float sweepAge = saturate(ageBehindHead / max(_SweepTrailLength, 0.001));
-                float tailFade = 1.0 - smoothstep(0.70, 1.0, sweepAge);
-                float tailSharpen = pow(saturate((sweepAge - _TailSharpenStart) / max(1.0 - _TailSharpenStart, 0.001)), max(_TailSharpenPower, 0.01));
-                float tailWidth = lerp(1.0 - saturate(_SweepTailThinness), 1.0, tailFade);
-                tailWidth *= lerp(1.0, 0.38, tailSharpen);
-                float tailWidthMask = 1.0 - smoothstep(tailWidth, min(tailWidth + edge * 1.35, 1.0), centerDistance);
-                visible *= lerp(1.0, tailWidthMask, saturate(_SweepTailThinness));
                 float plateauEdge = saturate(_CenterPlateauWidth);
                 float corePlateau = 1.0 - smoothstep(plateauEdge, 1.0, centerDistance);
                 corePlateau = pow(saturate(corePlateau), max(_CenterFalloffPower, 0.01));
-                float ridgeWidth = max(_TrailRidgeWidth, 0.001);
-                float outerBladeRidge = 1.0 - smoothstep(0.0, ridgeWidth, abs(outerToInner - 0.16));
-                float innerLightRidge = 1.0 - smoothstep(0.0, ridgeWidth * 0.72, abs(outerToInner - 0.54));
-                float trailRidge = saturate(outerBladeRidge * 0.72 + innerLightRidge * 0.42 + revealEdge * 0.62);
-                float trailBand = pow(saturate(sin((pathT - _Time.y * _FlowSpeed * 1.35) * (_FlowScale * 0.42) + outerToInner * 6.0) * 0.5 + 0.5), 5.0);
-                trailBand *= saturate(0.35 + corePlateau * 0.65) * (1.0 - tailSharpen * 0.35);
-                float goldContact = saturate(_OuterGoldContact);
-                float goldFalloff = max(_OuterGoldFalloff, 0.001);
-                float goldOutwardFade = smoothstep(0.0, goldContact, outerToInner);
-                float goldInwardFade = 1.0 - smoothstep(goldContact, goldContact + goldFalloff, outerToInner);
-                float outerGoldCurve = saturate(goldOutwardFade * goldInwardFade);
-                float3 outerGoldColor = lerp(float3(1.02, 0.94, 0.34), float3(1.05, 1.03, 0.80), goldOutwardFade);
+                float goldBand = 1.0 - smoothstep(_GoldBandWidth * 0.62, _GoldBandWidth, abs(outerToInner - _GoldBandCenter));
+                float goldBandEnergy = saturate(goldBand * _GoldBandStrength);
+                float3 goldBandColor = lerp(float3(0.88, 0.67, 0.24), float3(1.08, 0.96, 0.62), goldBand);
 
                 float brushDrift = sin(pathT * 10.0 - _Time.y * _FlowSpeed * 0.72 + outerToInner * 4.0) * 0.012;
                 float maskPath = saturate(pathT);
@@ -211,70 +236,125 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
                     saturate(outerToInner + brushDrift),
                     maskPath);
                 float4 brushTex = tex2D(_FlowTex, maskUv);
-                float brushCore = saturate(brushTex.r * _BrushCoreStrength);
+                float brushCoreBase = brushTex.r;
+                float coreSampleU = saturate(0.5 + (saturate(outerToInner + brushDrift) - 0.5) / max(_CoreWidthScale, 0.001));
+                float widenedBrushCore = tex2D(_FlowTex, float2(coreSampleU, maskPath)).r;
+                float brushCore = saturate(max(brushCoreBase * 0.35, widenedBrushCore) * _BrushCoreStrength);
                 float goldFiber = saturate(brushTex.g * _BrushFiberStrength);
                 float abrasionCut = saturate(brushTex.b * _BrushAbrasionStrength);
                 float softEnvelope = saturate(brushTex.a * _SoftEnvelopeStrength);
-                goldFiber *= 0.78 + outerGoldCurve * 0.22;
+                float goldFiberPresence = goldFiber * goldBand;
+                float coreHotspotWidth = saturate(0.30 * _CoreWidthScale);
+                float tipCoreFade = 1.0 - smoothstep(0.94, 0.995, pathT);
+                float coreHotspot = 1.0 - smoothstep(coreHotspotWidth, min(coreHotspotWidth + 0.10, 1.0), centerDistance);
+                coreHotspot *= 0.72 + brushCore * 0.28;
+                coreHotspot *= tipCoreFade;
                 float leadingPressure = smoothstep(0.18, 0.74, pathT) * (1.0 - smoothstep(0.90, 1.0, pathT));
                 float luminousBody = saturate(
-                    corePlateau
-                    * (0.34 + softEnvelope * 0.66)
-                    * (0.58 + leadingPressure * 0.42));
-                luminousBody *= 1.0 - abrasionCut * 0.42;
+                    coreHotspot
+                    * (0.64 + brushCore * 0.24 + softEnvelope * 0.12)
+                    * (0.90 + leadingPressure * 0.10));
+                luminousBody *= 1.0 - abrasionCut * 0.04;
 
                 float2 flowUv = i.uv;
-                float brushSigned = saturate(brushCore * 0.46 + goldFiber * 0.54) * 2.0 - 1.0;
+                float brushSigned = saturate(brushCore * 0.46 + goldFiberPresence * 0.54) * 2.0 - 1.0;
                 flowUv.x += brushSigned * _FlowTexDistortStrength * (0.16 + corePlateau * 0.28);
                 flowUv.y += brushSigned * _FlowTexDistortStrength * 0.08;
 
                 float4 tex = tex2D(_MainTex, flowUv);
-                float freshCore = 1.0 - smoothstep(max(revealControl - _CoreFillTail, 0.0), revealControl, pathT);
-                freshCore *= 1.0 - smoothstep(revealControl, revealControl + edge, pathT);
-                float bodyContinuity = saturate(softEnvelope * 0.46 + corePlateau * 0.04 + freshCore * 0.08);
-                float coreFill = saturate((brushCore * 0.86 + freshCore * 0.14 + revealEdge * 0.08) * _CoreFillStrength);
+                float bodyContinuity = saturate(softEnvelope * 0.50 + corePlateau * 0.08);
+                float coreFill = saturate((coreHotspot * 0.52 + brushCore * 0.48) * _CoreFillStrength);
+                coreFill *= tipCoreFade;
+
+                float afterglowCenter = saturate(_InnerAfterglowCenter);
+                float afterglowHalfLength = max(min(afterglowCenter - _InnerAfterglowStart, _InnerAfterglowEnd - afterglowCenter), 0.001);
+                float afterglowStart = afterglowCenter - afterglowHalfLength;
+                float afterglowEnd = afterglowCenter + afterglowHalfLength;
+                float afterglowFeather = max(afterglowHalfLength * 0.32, 0.001);
+                float afterglowPathMask = smoothstep(afterglowStart, afterglowStart + afterglowFeather, pathT)
+                    * (1.0 - smoothstep(afterglowEnd - afterglowFeather, afterglowEnd, pathT));
+                float afterglowHalfWidth = max(_InnerAfterglowWidth * 0.5, 0.001);
+                float afterglowCrossDistance = abs(outerToInner - _InnerAfterglowCrossCenter);
+                float afterglowCrossMask = 1.0 - smoothstep(afterglowHalfWidth * 0.72, afterglowHalfWidth, afterglowCrossDistance);
+                float afterglowRetreatProgress = saturate((retreatProgress - _InnerAfterglowRetreatDelay) / max(1.0 - _InnerAfterglowRetreatDelay, 0.001));
+                float afterglowExtinction = afterglowRetreatProgress * afterglowRetreatProgress * (3.0 - 2.0 * afterglowRetreatProgress);
+                float afterglowAlphaFade = pow(saturate(1.0 - afterglowExtinction), 1.8);
+                float afterglowRetreatEnergy = lerp(1.0, 0.46, smoothstep(0.0, 0.45, retreatProgress));
+                float afterglowMask = afterglowPathMask * afterglowCrossMask * afterglowAlphaFade * afterglowRetreatEnergy;
+                float3 afterglowColor = float3(_InnerAfterglowBrightness, _InnerAfterglowBrightness, _InnerAfterglowBrightness);
+                float brightnessWeight = saturate(coreFill * 0.72 + goldFiberPresence * 0.18 + bodyContinuity * 0.10);
+                float extinctionRate = lerp(1.12, 1.06, brightnessWeight);
+                float extinctionInput = saturate(retreatProgress * extinctionRate);
+                float extinction = extinctionInput * extinctionInput * (3.0 - 2.0 * extinctionInput);
+                float alphaFade = pow(saturate(1.0 - extinction), 1.8);
+                float finalPathVisibility = sharedVisibility * alphaFade;
 
                 if (_DebugForceVisible > 0.5)
                 {
-                    float previewAlpha = saturate(bodyContinuity * 0.34 + luminousBody * 0.52 + goldFiber * 0.24 + coreFill * 0.48);
-                    float3 previewColor = lerp(float3(0.52, 0.28, 0.035), float3(1.04, 0.86, 0.30), goldFiber);
-                    previewColor = lerp(previewColor, float3(1.06, 1.02, 0.72), saturate(luminousBody * _LuminousBodyStrength));
-                    previewColor = lerp(previewColor, float3(1.08, 1.06, 0.86), coreFill);
-                    return float4(previewColor * _HdrEmission.rgb * max(_EmissionBoost, 1.0), visible * previewAlpha);
+                    float previewBodyAlpha = saturate(
+                        bodyContinuity * 0.19
+                        + softEnvelope * 0.17
+                        + luminousBody * 0.60
+                        + coreFill * 0.66);
+                    float previewAttachedGoldAlphaScale = 1.0 + goldFiberPresence * 0.10 + goldBand * _GoldBandAlpha;
+                    float previewAlpha = saturate(previewBodyAlpha * previewAttachedGoldAlphaScale);
+                    previewAlpha = smoothstep(0.12, 0.40, previewAlpha);
+                    float3 previewColor = float3(0.94, 0.91, 0.82);
+                    previewColor = lerp(previewColor, float3(1.00, 0.98, 0.86), saturate(luminousBody * _LuminousBodyStrength));
+                    previewColor = lerp(previewColor, float3(1.10, 1.08, 0.96), coreFill);
+                    previewColor = lerp(previewColor, goldBandColor, goldBandEnergy);
+                    previewColor = lerp(previewColor, afterglowColor, saturate(afterglowMask * 0.72));
+                    return float4(previewColor * _HdrEmission.rgb * max(_EmissionBoost, 1.0), saturate((previewAlpha + afterglowMask * 0.18) * finalPathVisibility));
                 }
 
                 fixed4 particleColor = lerp(fixed4(1.0, 1.0, 1.0, 1.0), i.color, useParticleAge);
                 particleColor.a = lerp(1.0, i.color.a, useParticleAge);
                 float4 c = tex * particleColor;
-                float3 shadowGold = float3(0.16, 0.075, 0.010);
-                float3 warmGold = lerp(float3(0.82, 0.54, 0.075), outerGoldColor, outerGoldCurve);
-                float3 whiteCoreColor = float3(1.10, 1.07, 0.84);
-                float3 brushColor = lerp(shadowGold, warmGold, saturate(bodyContinuity * 0.42 + goldFiber * 0.94));
-                float3 luminousBodyColor = lerp(warmGold, whiteCoreColor, saturate(0.44 + luminousBody * 0.46));
+                float3 whiteCoreColor = float3(1.10, 1.08, 0.96);
+                float3 neutralBodyColor = float3(0.94, 0.91, 0.82);
+                float3 brushColor = neutralBodyColor;
+                float3 luminousBodyColor = lerp(float3(1.00, 0.98, 0.86), whiteCoreColor, saturate(0.58 + luminousBody * 0.42));
                 brushColor = lerp(brushColor, luminousBodyColor, saturate(luminousBody * _LuminousBodyStrength));
                 brushColor = lerp(brushColor, whiteCoreColor, coreFill);
-                brushColor += goldFiber * float3(0.26, 0.18, 0.025);
-                brushColor *= 1.0 - abrasionCut * 0.72;
-                brushColor += revealEdge * float3(0.18, 0.15, 0.07);
+                brushColor += goldFiberPresence * float3(0.035, 0.025, 0.008);
+                brushColor = lerp(brushColor, goldBandColor, goldBandEnergy);
+                brushColor = lerp(brushColor, afterglowColor, saturate(afterglowMask * 0.72));
+                brushColor *= 1.0 - abrasionCut * 0.04;
                 c.rgb = c.rgb * brushColor * _TintColor.rgb * _HdrEmission.rgb * _EmissionBoost;
 
-                float alphaProfile = saturate(
-                    bodyContinuity * 0.12
-                    + luminousBody * 0.52
-                    + goldFiber * 0.40
-                    + coreFill * 0.62
-                    + revealEdge * 0.10
-                    + trailRidge * 0.05
-                    + retreatEdge * 0.02);
-                alphaProfile *= 1.0 - abrasionCut * 0.72;
-                alphaProfile *= lerp(0.86, 1.0, tailFade);
-                float brightnessWeight = saturate(coreFill * 0.72 + goldFiber * 0.18 + bodyContinuity * 0.10);
-                float tailExtinction = tailSharpen * saturate(_TailExtinctionBoost);
-                float extinctionInput = saturate(retreatProgress * lerp(1.85 + tailExtinction, 0.78 + tailExtinction * 0.35, brightnessWeight) + tailExtinction * 0.28);
-                float extinction = extinctionInput * extinctionInput * (3.0 - 2.0 * extinctionInput);
-                float alphaFade = saturate(1.0 - extinction);
-                c.rgb *= lerp(0.35, 1.0, alphaFade);
-                c.a *= visible * alphaProfile * alphaFade;
+                float bodyAlphaProfile = saturate(
+                    bodyContinuity * 0.19
+                    + softEnvelope * 0.17
+                    + luminousBody * 0.60
+                    + coreFill * 0.66);
+                float attachedGoldAlphaScale = 1.0 + goldFiberPresence * 0.10 + goldBand * _GoldBandAlpha;
+                float alphaProfile = saturate(bodyAlphaProfile * attachedGoldAlphaScale);
+                alphaProfile *= 1.0 - abrasionCut * 0.04;
+                alphaProfile = smoothstep(0.12, 0.40, alphaProfile);
+
+                if (_DiagnosticMode > 2.5)
+                {
+                    return float4(afterglowColor * _HdrEmission.rgb * max(_EmissionBoost, 1.0), afterglowMask * 0.82 * finalPathVisibility);
+                }
+                if (_DiagnosticMode > 1.5)
+                {
+                    float goldDiagnosticAlpha = finalPathVisibility * saturate(goldBand * 0.58 + goldFiberPresence * 0.42);
+                    float3 goldDiagnosticColor = goldBandColor;
+                    return float4(goldDiagnosticColor * _HdrEmission.rgb * max(_EmissionBoost, 1.0), goldDiagnosticAlpha);
+                }
+                if (_DiagnosticMode > 0.5)
+                {
+                    float bodyLocalAlpha = saturate(bodyContinuity * 0.19 + softEnvelope * 0.17 + luminousBody * 0.60 + coreFill * 0.66);
+                    bodyLocalAlpha = smoothstep(0.12, 0.40, bodyLocalAlpha);
+                    float bodyDiagnosticAlpha = bodyLocalAlpha * finalPathVisibility;
+                    float3 bodyDiagnosticColor = lerp(neutralBodyColor, whiteCoreColor, saturate(luminousBody * 0.68 + coreFill));
+                    return float4(bodyDiagnosticColor * _HdrEmission.rgb * max(_EmissionBoost, 1.0), bodyDiagnosticAlpha);
+                }
+
+                c.rgb *= lerp(0.01, 1.0, alphaFade);
+                float3 afterglowRgb = afterglowColor * _TintColor.rgb * _HdrEmission.rgb * _EmissionBoost;
+                c.rgb = lerp(c.rgb, afterglowRgb, saturate(afterglowMask * 0.82));
+                c.a = saturate((c.a * alphaProfile + afterglowMask * 0.18) * finalPathVisibility);
                 return c;
             }
             ENDCG

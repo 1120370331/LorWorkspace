@@ -4,8 +4,8 @@ Shader "Steria/ChristashaDawnCoreOnlyEdgeGlow"
     Properties
     {
         _MainTex ("Energy Mask", 2D) = "white" {}
-        _TintColor ("Tint Color", Color) = (1.08,1.00,0.42,0.85)
-        _HdrEmission ("HDR Emission", Color) = (1.08,1.00,0.52,1)
+        _TintColor ("Tint Color", Color) = (1.00,0.82,0.50,0.42)
+        _HdrEmission ("HDR Emission", Color) = (1.18,1.08,0.72,1)
         _EmissionBoost ("Emission Boost", Float) = 1.0
         _Reveal ("Reveal", Float) = 1.0
         _Retreat ("Retreat", Float) = -0.08
@@ -14,19 +14,16 @@ Shader "Steria/ChristashaDawnCoreOnlyEdgeGlow"
         _RevealEndAge ("Reveal End Age", Float) = 0.439
         _RetreatStartAge ("Retreat Start Age", Float) = 0.561
         _RetreatEndAge ("Retreat End Age", Float) = 0.976
-        _RevealEdgeWidth ("Reveal Edge Width", Float) = 0.070
+        _RevealEdgeWidth ("Reveal Edge Width", Float) = 0.030
         _UseControlUV ("Use Control UV1", Float) = 0.0
-        _EdgeGlowWidth ("Edge Glow Width", Float) = 0.24
-        _EdgeGlowSoftness ("Edge Glow Softness", Float) = 0.42
         _FlowSpeed ("Flow Speed", Float) = 0.52
         _FlowTexTiling ("Flow Tiling", Float) = 2.6
-        _FlowTexStrength ("Flow Strength", Float) = 0.92
-        _SoftEnvelopeStrength ("Soft Envelope Strength", Float) = 0.62
+        _SoftEnvelopeStrength ("Soft Envelope Strength", Float) = 0.60
     }
     SubShader
     {
         Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
-        Blend SrcAlpha One
+        Blend One One
         Cull Off
         Lighting Off
         ZTest Always
@@ -53,11 +50,8 @@ Shader "Steria/ChristashaDawnCoreOnlyEdgeGlow"
             float _RetreatEndAge;
             float _RevealEdgeWidth;
             float _UseControlUV;
-            float _EdgeGlowWidth;
-            float _EdgeGlowSoftness;
             float _FlowSpeed;
             float _FlowTexTiling;
-            float _FlowTexStrength;
             float _SoftEnvelopeStrength;
 
             struct appdata
@@ -102,17 +96,14 @@ Shader "Steria/ChristashaDawnCoreOnlyEdgeGlow"
                 float revealControl = lerp(_Reveal, revealT, useParticleAge);
                 float retreatControl = lerp(_Retreat, retreatT, useParticleAge);
                 float retreatProgress = saturate(retreatControl);
-                float retreatThreshold = 1.0 - retreatProgress * (1.0 + edge);
+                float retreatThreshold = retreatProgress * (1.0 + edge) - edge;
+                float pathRetreatFade = smoothstep(retreatThreshold, retreatThreshold + edge, pathT);
                 float revealMask = 1.0 - smoothstep(revealControl, revealControl + edge, pathT);
-                float retreatMask = 1.0 - smoothstep(retreatThreshold, retreatThreshold + edge, outerToInner);
-                float revealEdge = 1.0 - smoothstep(0.0, edge, abs(pathT - revealControl));
-                float retreatEdge = 1.0 - smoothstep(0.0, edge, abs(outerToInner - retreatThreshold));
-                float visible = saturate(revealMask * retreatMask);
-
-                float bladeContact = 1.0 - smoothstep(0.32, 0.58, outerToInner);
-                float outerRim = 1.0 - smoothstep(_EdgeGlowWidth, _EdgeGlowWidth + _EdgeGlowSoftness, outerToInner);
-                float innerRim = smoothstep(1.0 - _EdgeGlowWidth - _EdgeGlowSoftness, 1.0 - _EdgeGlowWidth, outerToInner);
-                float rimMask = saturate(max(outerRim, bladeContact * 0.92) + innerRim * 0.06);
+                float sharedVisibility = saturate(revealMask * pathRetreatFade);
+                float extinctionInput = saturate(retreatProgress * 1.08);
+                float extinction = extinctionInput * extinctionInput * (3.0 - 2.0 * extinctionInput);
+                float alphaFade = pow(saturate(1.0 - extinction), 1.8);
+                float finalPathVisibility = sharedVisibility * alphaFade;
 
                 float brushDrift = sin(pathT * 8.0 - _Time.y * _FlowSpeed * 0.56) * 0.008;
                 float glowMaskPath = saturate(pathT);
@@ -120,15 +111,16 @@ Shader "Steria/ChristashaDawnCoreOnlyEdgeGlow"
                     saturate(outerToInner + brushDrift),
                     glowMaskPath);
                 float4 brushTex = tex2D(_MainTex, brushUv);
-                float softEnvelope = saturate(brushTex.a * _SoftEnvelopeStrength);
-                float goldFiber = saturate(brushTex.g * _FlowTexStrength);
-                float energy = saturate(0.30 + softEnvelope * 0.46 + goldFiber * 0.14 + revealEdge * 0.08);
+                float softEnvelope = pow(saturate(brushTex.a * _SoftEnvelopeStrength), 0.75);
+                float energy = saturate(0.78 + softEnvelope * 0.22);
+                float attachedCrossMask = 1.0 - smoothstep(0.03, 0.11, abs(outerToInner - 0.28));
+                float glowEnvelope = smoothstep(0.16, 0.58, softEnvelope);
 
-                float alpha = visible * _TintColor.a * saturate(
-                    rimMask
-                    * (0.08 + softEnvelope * 0.22 + goldFiber * 0.08 + revealEdge * 0.08 + retreatEdge * 0.02));
+                float localGlowAlpha = _TintColor.a * attachedCrossMask * glowEnvelope * 0.70;
                 float3 rgb = _TintColor.rgb * _HdrEmission.rgb * _EmissionBoost * energy;
-                return float4(rgb, alpha);
+                rgb *= lerp(0.01, 1.0, alphaFade);
+                float3 premultipliedGlow = rgb * localGlowAlpha * finalPathVisibility;
+                return float4(premultipliedGlow, 0.0);
             }
             ENDCG
         }
