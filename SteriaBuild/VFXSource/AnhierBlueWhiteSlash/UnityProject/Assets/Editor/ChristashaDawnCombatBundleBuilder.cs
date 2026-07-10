@@ -31,6 +31,12 @@ public static class ChristashaDawnCombatBundleBuilder
         Debug.Log("Built Christasha dawn combat AssetBundle: " + output);
     }
 
+    public static void BuildBundleAndRenderPreview()
+    {
+        BuildBundle();
+        RenderVerticalCoreOnlyPreview();
+    }
+
     public static void EnsurePrefabs()
     {
         Directory.CreateDirectory("Assets/Materials");
@@ -106,7 +112,7 @@ public static class ChristashaDawnCombatBundleBuilder
         Material crescentOuterBlade = CreateOuterBladeSlashMaterial("Assets/Textures/christasha_dawn_crescent_core.png", "Assets/Materials/ChristashaDawn_CrescentOuterBlade_Flow.mat", new Color(1f, 0.95f, 0.34f, 0.68f), new Color(1.58f, 1.48f, 0.96f, 1f), new Color(1.24f, 1.08f, 0.26f, 1f), 1.10f, 0.10f, 0.58f, 0.10f, 0.28f, 0.020f, 25f, 2.05f, 0.54f, 2.85f);
         Material crescentShadow = CreateMaterial("Assets/Textures/christasha_dawn_crescent_shadow.png", "Assets/Materials/ChristashaDawn_CrescentShadow_Alpha.mat", new Color(0.13f, 0.075f, 0.025f, 0.42f), true);
         Material crescentCoreOnlyWhite = CreateCoreOnlyWhiteMaterial("Assets/Textures/christasha_dawn_solid_white.png", "Assets/Materials/ChristashaDawn_CrescentCoreOnly_WhiteHdr.mat", new Color(1.14f, 1.12f, 0.98f, 1f), 3160);
-        Material crescentCoreOnlyEdgeGlow = CreateCoreOnlyEdgeGlowMaterial("Assets/Textures/Generated/ChristashaDawn_CoreFlowMask_512.png", "Assets/Materials/ChristashaDawn_CrescentCoreOnly_GoldEdgeGlow.mat", new Color(1.08f, 1.00f, 0.42f, 0.85f), 3155);
+        Material crescentCoreOnlyEdgeGlow = CreateCoreOnlyEdgeGlowMaterial("Assets/Textures/Generated/ChristashaDawn_BrushMask_512.png", "Assets/Materials/ChristashaDawn_CrescentCoreOnly_GoldEdgeGlow.mat", new Color(1.06f, 0.96f, 0.38f, 0.30f), 3155);
         AnimationClip crescentCoreOnlyReveal = CreateCoreOnlyRevealClip("Assets/Animations/ChristashaDawn_CoreOnly_RevealPreview.anim");
         Mesh[] wideSegments = { arcSegA, arcSegB, arcSegC };
         Mesh[] thinSegments = { thinSegA, thinSegB, thinSegC };
@@ -134,7 +140,7 @@ public static class ChristashaDawnCombatBundleBuilder
 
         GenerateShaders();
         SavePng("Assets/Textures/christasha_dawn_solid_white.png", CreateSolidTexture(8, 8, Color.white));
-        SavePng("Assets/Textures/Generated/ChristashaDawn_CoreFlowMask_512.png", CreateEnergyFlowMaskTexture(512, 512));
+        SavePng("Assets/Textures/Generated/ChristashaDawn_BrushMask_512.png", CreateDirectionalBrushMaskTexture(512, 512));
 
         Mesh coreMesh = CreateOrReplaceMesh(
             "Assets/Meshes/ChristashaDawn_UserCrescentCoreOnly.asset",
@@ -146,9 +152,9 @@ public static class ChristashaDawnCombatBundleBuilder
             new Color(1.14f, 1.12f, 0.98f, 1f),
             3160);
         Material edgeGlowMaterial = CreateCoreOnlyEdgeGlowMaterial(
-            "Assets/Textures/Generated/ChristashaDawn_CoreFlowMask_512.png",
+            "Assets/Textures/Generated/ChristashaDawn_BrushMask_512.png",
             "Assets/Materials/ChristashaDawn_CrescentCoreOnly_GoldEdgeGlow.mat",
-            new Color(1.08f, 1.00f, 0.42f, 0.85f),
+            new Color(1.06f, 0.96f, 0.38f, 0.30f),
             3155);
         AnimationClip revealClip = CreateCoreOnlyRevealClip("Assets/Animations/ChristashaDawn_CoreOnly_RevealPreview.anim");
 
@@ -156,6 +162,110 @@ public static class ChristashaDawnCombatBundleBuilder
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+    }
+
+    [MenuItem("Steria/Render Christasha Dawn Core Only Preview")]
+    public static void RenderVerticalCoreOnlyPreview()
+    {
+        EnsureVerticalCoreOnlyPrefab();
+
+        const string prefabPath = "Assets/Prefabs/ChristashaDawnSlashVerticalCoreOnlyPrefab.prefab";
+        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+        if (prefab == null)
+        {
+            throw new Exception("Christasha core-only preview prefab not found: " + prefabPath);
+        }
+
+        string previewDir = Path.GetFullPath("Assets/../Preview/ChristashaDawnBrushwork");
+        Directory.CreateDirectory(previewDir);
+
+        GameObject root = UnityEngine.Object.Instantiate(prefab);
+        root.name = "ChristashaDawnBrushworkPreview";
+        root.transform.position = Vector3.zero;
+        root.transform.rotation = Quaternion.identity;
+        root.transform.localScale = Vector3.one;
+
+        ChristashaDawnCoreOnlyAnimator animator = root.GetComponent<ChristashaDawnCoreOnlyAnimator>();
+        if (animator != null)
+        {
+            animator.enabled = false;
+        }
+
+        Renderer[] renderers = root.GetComponentsInChildren<Renderer>(true);
+        if (renderers.Length == 0)
+        {
+            UnityEngine.Object.DestroyImmediate(root);
+            throw new Exception("Christasha core-only preview has no renderers.");
+        }
+
+        Bounds bounds = renderers[0].bounds;
+        for (int i = 1; i < renderers.Length; i++)
+        {
+            bounds.Encapsulate(renderers[i].bounds);
+        }
+
+        GameObject cameraObject = new GameObject("ChristashaDawnBrushworkPreviewCamera");
+        Camera camera = cameraObject.AddComponent<Camera>();
+        camera.clearFlags = CameraClearFlags.SolidColor;
+        camera.backgroundColor = new Color(0.018f, 0.020f, 0.026f, 1f);
+        camera.orthographic = true;
+        float aspect = 16f / 9f;
+        camera.orthographicSize = Mathf.Max(3.8f, Mathf.Max(bounds.extents.y * 1.22f, bounds.extents.x / aspect * 1.22f));
+        camera.transform.position = new Vector3(bounds.center.x, bounds.center.y, bounds.min.z - 20f);
+        camera.transform.rotation = Quaternion.identity;
+
+        float[] reveals = { 0.22f, 0.56f, 0.92f, 1.00f, 1.00f };
+        float[] retreats = { -0.08f, -0.08f, -0.08f, 0.16f, 0.56f };
+        float[] emissions = { 1.02f, 1.10f, 1.16f, 1.10f, 1.04f };
+        int revealId = Shader.PropertyToID("_Reveal");
+        int retreatId = Shader.PropertyToID("_Retreat");
+        int emissionId = Shader.PropertyToID("_EmissionBoost");
+        MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+
+        for (int frame = 0; frame < reveals.Length; frame++)
+        {
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.GetPropertyBlock(propertyBlock);
+                propertyBlock.SetFloat(revealId, reveals[frame]);
+                propertyBlock.SetFloat(retreatId, retreats[frame]);
+                propertyBlock.SetFloat(emissionId, emissions[frame]);
+                renderer.SetPropertyBlock(propertyBlock);
+            }
+
+            string outputPath = Path.Combine(
+                previewDir,
+                "christasha_dawn_brushwork_" + frame.ToString("00")
+                + "_r" + Mathf.RoundToInt(reveals[frame] * 100f).ToString("000")
+                + "_x" + Mathf.RoundToInt(Mathf.Max(0f, retreats[frame]) * 100f).ToString("000")
+                + ".png");
+            CaptureCoreOnlyPreviewCamera(camera, outputPath, 1280, 720);
+            Debug.Log("Christasha brushwork preview frame: " + outputPath);
+        }
+
+        UnityEngine.Object.DestroyImmediate(cameraObject);
+        UnityEngine.Object.DestroyImmediate(root);
+        Debug.Log("Christasha brushwork preview complete: " + previewDir);
+    }
+
+    private static void CaptureCoreOnlyPreviewCamera(Camera camera, string path, int width, int height)
+    {
+        RenderTexture renderTexture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
+        Texture2D texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        RenderTexture previousActive = RenderTexture.active;
+        RenderTexture previousTarget = camera.targetTexture;
+
+        camera.targetTexture = renderTexture;
+        RenderTexture.active = renderTexture;
+        camera.Render();
+        texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        texture.Apply();
+        File.WriteAllBytes(path, texture.EncodeToPNG());
+
+        camera.targetTexture = previousTarget;
+        RenderTexture.active = previousActive;
+        UnityEngine.Object.DestroyImmediate(texture);
+        UnityEngine.Object.DestroyImmediate(renderTexture);
     }
 
     private static void CreateSlashHorizontalPrefab(Material blade, Material glow, Material star, Material dots, Material black, Material daoguang, Material daoguangGold, Material daoguangDark, Mesh sweepEnter, Mesh sweepMid, Mesh sweepFull, Mesh sweepCore, Mesh sweepRetreat, Mesh daoguangEnter, Mesh daoguangMid, Mesh daoguangFull, Mesh daoguangBelly, Mesh daoguangExit)
@@ -236,6 +346,7 @@ public static class ChristashaDawnCombatBundleBuilder
         travelRoot.localRotation = Quaternion.identity;
         travelRoot.localScale = Vector3.one;
         ConfigureCoreOnlyMeshRenderer(travelRoot.gameObject, whiteCoreMaterial, coreMesh);
+        ConfigureCoreOnlyEdgeGlowRenderer(travelRoot.gameObject, edgeGlowMaterial, coreMesh);
         ConfigureCoreOnlyAnimation(root, revealClip);
         ConfigureCoreOnlyPreviewAnimator(root);
 
@@ -291,7 +402,7 @@ public static class ChristashaDawnCombatBundleBuilder
         glow.transform.SetParent(root.transform, false);
         glow.transform.localPosition = new Vector3(0f, 0f, -0.018f);
         glow.transform.localRotation = Quaternion.identity;
-        glow.transform.localScale = new Vector3(1.075f, 1.075f, 1f);
+        glow.transform.localScale = new Vector3(1.035f, 1.035f, 1f);
 
         MeshFilter filter = glow.AddComponent<MeshFilter>();
         filter.sharedMesh = coreMesh;
@@ -1361,7 +1472,7 @@ public static class ChristashaDawnCombatBundleBuilder
         SavePng("Assets/Textures/christasha_dawn_crescent_shadow.png", CreateCrescentShadowTexture(512, 1024));
         SavePng("Assets/Textures/christasha_dawn_cosmic_shard.png", CreateCosmicShardTexture(256, 256));
         SavePng("Assets/Textures/christasha_dawn_solid_white.png", CreateSolidTexture(8, 8, Color.white));
-        SavePng("Assets/Textures/Generated/ChristashaDawn_CoreFlowMask_512.png", CreateEnergyFlowMaskTexture(512, 512));
+        SavePng("Assets/Textures/Generated/ChristashaDawn_BrushMask_512.png", CreateDirectionalBrushMaskTexture(512, 512));
         AssetDatabase.Refresh();
     }
 
@@ -1397,6 +1508,10 @@ Shader ""Steria/ChristashaDawnCoreOnlyFlow""
         _FlowTexStrength (""Flow Texture Strength"", Float) = 0.28
         _FlowTexDistortStrength (""Flow Texture Distort Strength"", Float) = 0.020
         _FlowTexTiling (""Flow Texture Tiling"", Float) = 2.4
+        _BrushCoreStrength (""Brush Core Strength"", Float) = 1.0
+        _BrushFiberStrength (""Brush Fiber Strength"", Float) = 0.82
+        _BrushAbrasionStrength (""Brush Abrasion Strength"", Float) = 0.70
+        _SoftEnvelopeStrength (""Soft Envelope Strength"", Float) = 0.78
         _CenterPlateauWidth (""Center Plateau Width"", Float) = 0.50
         _CenterFalloffPower (""Center Falloff Power"", Float) = 2.10
         _OuterGoldStrength (""Outer Gold Strength"", Float) = 0.52
@@ -1458,6 +1573,10 @@ Shader ""Steria/ChristashaDawnCoreOnlyFlow""
             float _FlowTexStrength;
             float _FlowTexDistortStrength;
             float _FlowTexTiling;
+            float _BrushCoreStrength;
+            float _BrushFiberStrength;
+            float _BrushAbrasionStrength;
+            float _SoftEnvelopeStrength;
             float _CenterPlateauWidth;
             float _CenterFalloffPower;
             float _OuterGoldStrength;
@@ -1564,49 +1683,59 @@ Shader ""Steria/ChristashaDawnCoreOnlyFlow""
                 float outerGoldCurve = saturate(goldOutwardFade * goldInwardFade);
                 float3 outerGoldColor = lerp(float3(1.02, 0.94, 0.34), float3(1.05, 1.03, 0.80), goldOutwardFade);
 
-                float2 flowUv = i.uv;
-                float distortA = sin(pathT * _DistortScale + _Time.y * _DistortSpeed + outerToInner * 5.0);
-                float distortB = sin(pathT * _DistortScale * 0.37 - _Time.y * _DistortSpeed * 0.70 + outerToInner * 8.0);
-                float distort = distortA * distortB;
+                float brushDrift = sin(pathT * 10.0 - _Time.y * _FlowSpeed * 0.72 + outerToInner * 4.0) * 0.012;
                 float2 maskUv = float2(
-                    outerToInner * _FlowTexTiling + _Time.y * _FlowSpeed * 0.18 + distort * 0.16,
-                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.55 + distort * 0.10);
-                float4 flowTex = tex2D(_FlowTex, maskUv);
-                float flowMask = saturate(max(flowTex.a, dot(flowTex.rgb, float3(0.299, 0.587, 0.114))));
-                float flowSigned = flowMask * 2.0 - 1.0;
-                flowUv.x += distort * _DistortStrength * (0.20 + corePlateau * 0.80);
-                flowUv.y += distort * _DistortStrength * 0.22;
-                flowUv.x += flowSigned * _FlowTexDistortStrength * (0.30 + corePlateau * 0.70);
-                flowUv.y += flowSigned * _FlowTexDistortStrength * 0.28;
+                    saturate(outerToInner + brushDrift),
+                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.18);
+                float4 brushTex = tex2D(_FlowTex, maskUv);
+                float brushCore = saturate(brushTex.r * _BrushCoreStrength);
+                float goldFiber = saturate(brushTex.g * _BrushFiberStrength);
+                float abrasionCut = saturate(brushTex.b * _BrushAbrasionStrength);
+                float softEnvelope = saturate(brushTex.a * _SoftEnvelopeStrength);
+                goldFiber *= 0.78 + outerGoldCurve * 0.22;
+
+                float2 flowUv = i.uv;
+                float brushSigned = saturate(brushCore * 0.46 + goldFiber * 0.54) * 2.0 - 1.0;
+                flowUv.x += brushSigned * _FlowTexDistortStrength * (0.16 + corePlateau * 0.28);
+                flowUv.y += brushSigned * _FlowTexDistortStrength * 0.08;
 
                 float4 tex = tex2D(_MainTex, flowUv);
-                float flowA = pow(saturate(sin((pathT + _Time.y * _FlowSpeed) * _FlowScale) * 0.5 + 0.5), 3.0);
-                float flowB = pow(saturate(sin((pathT - _Time.y * _FlowSpeed * 0.82) * _FlowScale + outerToInner * 7.0) * 0.5 + 0.5), 4.0);
                 float freshCore = 1.0 - smoothstep(max(revealControl - _CoreFillTail, 0.0), revealControl, pathT);
                 freshCore *= 1.0 - smoothstep(revealControl, revealControl + edge, pathT);
-                float flowTextureEnergy = saturate(0.96 + flowMask * 0.04 + flowA * 0.03 + flowB * 0.03);
-                float coreFill = (0.52 + corePlateau * 0.22 + trailRidge * _TrailRidgeStrength + trailBand * _TrailFlowBandStrength + freshCore * 0.10 + flowA * 0.02 + flowB * 0.02) * _CoreFillStrength;
-                coreFill *= lerp(1.0, flowTextureEnergy, saturate(_FlowTexStrength));
-                coreFill = saturate(coreFill);
+                float bodyContinuity = saturate(softEnvelope * 0.46 + corePlateau * 0.04 + freshCore * 0.08);
+                float coreFill = saturate((brushCore * 0.86 + freshCore * 0.14 + revealEdge * 0.08) * _CoreFillStrength);
 
                 if (_DebugForceVisible > 0.5)
                 {
-                    float previewFill = saturate((0.78 + corePlateau * 0.20 + revealEdge * 0.12) * lerp(1.0, flowTextureEnergy, saturate(_FlowTexStrength)));
-                    return float4(_TintColor.rgb * _HdrEmission.rgb * max(_EmissionBoost, 1.0) * previewFill, visible);
+                    float previewAlpha = saturate(bodyContinuity * 0.48 + goldFiber * 0.28 + coreFill * 0.52);
+                    float3 previewColor = lerp(float3(0.52, 0.28, 0.035), float3(1.04, 0.86, 0.30), goldFiber);
+                    previewColor = lerp(previewColor, float3(1.08, 1.06, 0.86), coreFill);
+                    return float4(previewColor * _HdrEmission.rgb * max(_EmissionBoost, 1.0), visible * previewAlpha);
                 }
 
                 fixed4 particleColor = lerp(fixed4(1.0, 1.0, 1.0, 1.0), i.color, useParticleAge);
                 particleColor.a = lerp(1.0, i.color.a, useParticleAge);
-                float4 c = tex * _TintColor * particleColor;
-                c.rgb = c.rgb * _HdrEmission.rgb * _EmissionBoost * coreFill;
-                float goldStrength = saturate(_OuterGoldStrength);
-                c.rgb = lerp(c.rgb, c.rgb * outerGoldColor, saturate(outerGoldCurve * goldStrength));
-                float trackHighlight = saturate(trailRidge * 0.42 + trailBand * 0.22 + revealEdge * 0.34);
-                c.rgb = lerp(c.rgb, float3(1.0, 0.98, 0.72) * _HdrEmission.rgb * _EmissionBoost, trackHighlight);
-                float alphaProfile = saturate(_TrailBodyAlpha * (0.58 + corePlateau * 0.18) + trailRidge * 0.26 + trailBand * 0.18 + revealEdge * 0.16 + retreatEdge * 0.03);
-                alphaProfile = max(alphaProfile, outerGoldCurve * goldStrength * 0.52);
+                float4 c = tex * particleColor;
+                float3 shadowGold = float3(0.16, 0.075, 0.010);
+                float3 warmGold = lerp(float3(0.82, 0.54, 0.075), outerGoldColor, outerGoldCurve);
+                float3 whiteCoreColor = float3(1.10, 1.07, 0.84);
+                float3 brushColor = lerp(shadowGold, warmGold, saturate(bodyContinuity * 0.42 + goldFiber * 0.94));
+                brushColor = lerp(brushColor, whiteCoreColor, coreFill);
+                brushColor += goldFiber * float3(0.26, 0.18, 0.025);
+                brushColor *= 1.0 - abrasionCut * 0.72;
+                brushColor += revealEdge * float3(0.18, 0.15, 0.07);
+                c.rgb = c.rgb * brushColor * _TintColor.rgb * _HdrEmission.rgb * _EmissionBoost;
+
+                float alphaProfile = saturate(
+                    bodyContinuity * 0.18
+                    + goldFiber * 0.48
+                    + coreFill * 0.68
+                    + revealEdge * 0.10
+                    + trailRidge * 0.05
+                    + retreatEdge * 0.02);
+                alphaProfile *= 1.0 - abrasionCut * 0.72;
                 alphaProfile *= lerp(0.86, 1.0, tailFade);
-                float brightnessWeight = saturate(coreFill * 0.64 + corePlateau * 0.24 + outerGoldCurve * goldStrength * 0.12);
+                float brightnessWeight = saturate(coreFill * 0.72 + goldFiber * 0.18 + bodyContinuity * 0.10);
                 float tailExtinction = tailSharpen * saturate(_TailExtinctionBoost);
                 float extinctionInput = saturate(retreatProgress * lerp(1.85 + tailExtinction, 0.78 + tailExtinction * 0.35, brightnessWeight) + tailExtinction * 0.28);
                 float extinction = extinctionInput * extinctionInput * (3.0 - 2.0 * extinctionInput);
@@ -1787,6 +1916,7 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
         _FlowSpeed (""Flow Speed"", Float) = 0.52
         _FlowTexTiling (""Flow Tiling"", Float) = 2.6
         _FlowTexStrength (""Flow Strength"", Float) = 0.92
+        _SoftEnvelopeStrength (""Soft Envelope Strength"", Float) = 0.62
     }
     SubShader
     {
@@ -1823,6 +1953,7 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
             float _FlowSpeed;
             float _FlowTexTiling;
             float _FlowTexStrength;
+            float _SoftEnvelopeStrength;
 
             struct appdata
             {
@@ -1878,19 +2009,18 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
                 float innerRim = smoothstep(1.0 - _EdgeGlowWidth - _EdgeGlowSoftness, 1.0 - _EdgeGlowWidth, outerToInner);
                 float rimMask = saturate(max(outerRim, bladeContact * 0.92) + innerRim * 0.06);
 
-                float2 flowUv = float2(
-                    outerToInner * _FlowTexTiling + _Time.y * _FlowSpeed * 0.24,
-                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.62);
-                float4 flowTex = tex2D(_MainTex, flowUv);
-                float flow = saturate(max(flowTex.a, dot(flowTex.rgb, float3(0.299, 0.587, 0.114))));
-                float pulse = pow(saturate(sin((pathT - _Time.y * _FlowSpeed) * 26.0 + outerToInner * 5.0) * 0.5 + 0.5), 3.0);
-                float energy = lerp(0.34, 1.08, saturate(flow * _FlowTexStrength + pulse * 0.22));
-                float particleCells = floor(pathT * 70.0) * 17.0 + floor(outerToInner * 26.0) * 31.0;
-                float particleRand = frac(sin(particleCells + floor(_Time.y * 18.0) * 13.7) * 43758.5453);
-                float outwardParticleFade = 1.0 - smoothstep(0.12, 0.72, outerToInner);
-                float outwardParticles = step(0.86, particleRand) * outwardParticleFade * saturate(flow * 0.70 + pulse * 0.30);
+                float brushDrift = sin(pathT * 8.0 - _Time.y * _FlowSpeed * 0.56) * 0.008;
+                float2 brushUv = float2(
+                    saturate(outerToInner + brushDrift),
+                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.12);
+                float4 brushTex = tex2D(_MainTex, brushUv);
+                float softEnvelope = saturate(brushTex.a * _SoftEnvelopeStrength);
+                float goldFiber = saturate(brushTex.g * _FlowTexStrength);
+                float energy = saturate(0.30 + softEnvelope * 0.46 + goldFiber * 0.14 + revealEdge * 0.08);
 
-                float alpha = visible * _TintColor.a * saturate(rimMask * (0.56 + flow * 0.36 + revealEdge * 0.16 + retreatEdge * 0.03) + outwardParticles * 0.22);
+                float alpha = visible * _TintColor.a * saturate(
+                    rimMask
+                    * (0.08 + softEnvelope * 0.22 + goldFiber * 0.08 + revealEdge * 0.08 + retreatEdge * 0.02));
                 float3 rgb = _TintColor.rgb * _HdrEmission.rgb * _EmissionBoost * energy;
                 return float4(rgb, alpha);
             }
@@ -2003,11 +2133,11 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
         }
         if (mat.HasProperty("_HdrEmission"))
         {
-            mat.SetColor("_HdrEmission", new Color(1.08f, 1.00f, 0.52f, 1f));
+            mat.SetColor("_HdrEmission", new Color(1.04f, 0.96f, 0.46f, 1f));
         }
         if (mat.HasProperty("_EmissionBoost"))
         {
-            mat.SetFloat("_EmissionBoost", 1.04f);
+            mat.SetFloat("_EmissionBoost", 1.00f);
         }
         if (mat.HasProperty("_Reveal"))
         {
@@ -2031,23 +2161,27 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
         }
         if (mat.HasProperty("_EdgeGlowWidth"))
         {
-            mat.SetFloat("_EdgeGlowWidth", 0.24f);
+            mat.SetFloat("_EdgeGlowWidth", 0.20f);
         }
         if (mat.HasProperty("_EdgeGlowSoftness"))
         {
-            mat.SetFloat("_EdgeGlowSoftness", 0.42f);
+            mat.SetFloat("_EdgeGlowSoftness", 0.48f);
         }
         if (mat.HasProperty("_FlowSpeed"))
         {
-            mat.SetFloat("_FlowSpeed", 0.52f);
+            mat.SetFloat("_FlowSpeed", 0.32f);
         }
         if (mat.HasProperty("_FlowTexTiling"))
         {
-            mat.SetFloat("_FlowTexTiling", 2.6f);
+            mat.SetFloat("_FlowTexTiling", 1.55f);
         }
         if (mat.HasProperty("_FlowTexStrength"))
         {
-            mat.SetFloat("_FlowTexStrength", 0.92f);
+            mat.SetFloat("_FlowTexStrength", 0.22f);
+        }
+        if (mat.HasProperty("_SoftEnvelopeStrength"))
+        {
+            mat.SetFloat("_SoftEnvelopeStrength", 0.48f);
         }
         mat.color = tint;
         mat.renderQueue = renderQueue;
@@ -2099,7 +2233,7 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
 
     private static Material CreateCoreOnlyWhiteMaterial(string texturePath, string materialPath, Color hdrTint, int renderQueue)
     {
-        const string coreOnlyFlowTexturePath = "Assets/Textures/Generated/ChristashaDawn_CoreFlowMask_512.png";
+        const string coreOnlyFlowTexturePath = "Assets/Textures/Generated/ChristashaDawn_BrushMask_512.png";
         TextureImporter ti = AssetImporter.GetAtPath(texturePath) as TextureImporter;
         if (ti != null)
         {
@@ -2229,7 +2363,7 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
         }
         if (mat.HasProperty("_FlowSpeed"))
         {
-            mat.SetFloat("_FlowSpeed", 0.48f);
+            mat.SetFloat("_FlowSpeed", 0.34f);
         }
         if (mat.HasProperty("_FlowScale"))
         {
@@ -2237,19 +2371,35 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
         }
         if (mat.HasProperty("_FlowTexStrength"))
         {
-            mat.SetFloat("_FlowTexStrength", 0.28f);
+            mat.SetFloat("_FlowTexStrength", 0.18f);
         }
         if (mat.HasProperty("_FlowTexDistortStrength"))
         {
-            mat.SetFloat("_FlowTexDistortStrength", 0.020f);
+            mat.SetFloat("_FlowTexDistortStrength", 0.012f);
         }
         if (mat.HasProperty("_FlowTexTiling"))
         {
-            mat.SetFloat("_FlowTexTiling", 2.4f);
+            mat.SetFloat("_FlowTexTiling", 1.65f);
+        }
+        if (mat.HasProperty("_BrushCoreStrength"))
+        {
+            mat.SetFloat("_BrushCoreStrength", 1.04f);
+        }
+        if (mat.HasProperty("_BrushFiberStrength"))
+        {
+            mat.SetFloat("_BrushFiberStrength", 0.86f);
+        }
+        if (mat.HasProperty("_BrushAbrasionStrength"))
+        {
+            mat.SetFloat("_BrushAbrasionStrength", 0.78f);
+        }
+        if (mat.HasProperty("_SoftEnvelopeStrength"))
+        {
+            mat.SetFloat("_SoftEnvelopeStrength", 0.54f);
         }
         if (mat.HasProperty("_CenterPlateauWidth"))
         {
-            mat.SetFloat("_CenterPlateauWidth", 0.50f);
+            mat.SetFloat("_CenterPlateauWidth", 0.42f);
         }
         if (mat.HasProperty("_CenterFalloffPower"))
         {
@@ -4555,7 +4705,7 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
         return tex;
     }
 
-    private static Texture2D CreateEnergyFlowMaskTexture(int width, int height)
+    private static Texture2D CreateDirectionalBrushMaskTexture(int width, int height)
     {
         Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
         Color[] pixels = ClearPixels(width, height);
@@ -4565,16 +4715,58 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
             for (int x = 0; x < width; x++)
             {
                 float u = x / (width - 1f);
-                float n1 = Mathf.PerlinNoise(u * 3.7f + 7.13f, v * 6.1f + 1.91f);
-                float n2 = Mathf.PerlinNoise(u * 13.0f + 31.7f, v * 9.3f + 4.2f);
-                float n3 = Mathf.PerlinNoise(u * 29.0f + 2.5f, v * 19.0f + 18.6f);
-                float warped = v * 7.6f + Mathf.Sin(u * Mathf.PI * 4.8f + n1 * 2.1f) * 0.22f + n2 * 0.68f;
-                float streak = Mathf.Pow(Mathf.Clamp01(1f - Mathf.Abs(Mathf.Sin(warped * Mathf.PI))), 3.2f);
-                float fine = Mathf.Pow(Mathf.Clamp01(n3 * 1.38f - 0.34f), 2.1f);
-                float crossing = Mathf.Pow(Mathf.Clamp01(1f - Mathf.Abs(Mathf.Sin((u * 5.4f - v * 3.2f + n1) * Mathf.PI))), 5.6f);
-                float coreBias = 0.48f + 0.52f * (1f - Mathf.Abs(u - 0.5f) * 2f);
-                float alpha = Mathf.Clamp01((streak * 0.66f + fine * 0.24f + crossing * 0.18f) * coreBias);
-                pixels[y * width + x] = new Color(alpha, alpha, alpha, alpha);
+                float pathNoise = Mathf.PerlinNoise(v * 4.6f + 11.3f, u * 0.72f + 2.1f);
+                float pressureNoise = Mathf.PerlinNoise(v * 2.3f + 23.7f, 0.41f);
+                float fiberNoise = Mathf.PerlinNoise(v * 17.0f + 5.4f, u * 2.2f + 17.9f);
+                float fineNoise = Mathf.PerlinNoise(v * 41.0f + 9.8f, u * 6.3f + 31.4f);
+
+                float edgeEnvelope = Mathf.Pow(Mathf.Clamp01(Mathf.Sin(u * Mathf.PI)), 0.64f);
+                float pressure = Mathf.Lerp(0.72f, 1.0f, pressureNoise);
+                pressure *= 0.93f + Mathf.Sin(v * Mathf.PI * 4.0f + pathNoise * 1.8f) * 0.07f;
+                float edgeDistance = Mathf.Min(u, 1f - u);
+                float edgeThreshold = 0.018f + (1f - pathNoise) * 0.036f + fineNoise * 0.012f;
+                float edgeBreakup = Smooth01(edgeThreshold, edgeThreshold + 0.070f, edgeDistance);
+                float softEnvelope = Mathf.Clamp01(edgeEnvelope * edgeBreakup * pressure * (0.84f + pathNoise * 0.16f));
+
+                float drift = Mathf.Sin(v * Mathf.PI * 3.0f + pathNoise * 2.2f) * 0.020f;
+                drift += (pathNoise - 0.5f) * 0.026f;
+                float coreCenter = 0.55f + drift;
+                float coreDistance = Mathf.Abs(u - coreCenter);
+                float corePrimary = Mathf.Exp(-Mathf.Pow(coreDistance / 0.036f, 2f));
+                float coreSecondaryCenter = 0.47f + drift * 0.45f;
+                float coreSecondary = Mathf.Exp(-Mathf.Pow((u - coreSecondaryCenter) / 0.017f, 2f)) * 0.36f;
+                float coreBreaks = Mathf.Lerp(0.78f, 1.0f, Smooth01(0.30f, 0.78f, fiberNoise));
+                float coreFiber = Mathf.Clamp01(
+                    (corePrimary * (0.78f + coreBreaks * 0.22f) + coreSecondary * coreBreaks)
+                    * pressure);
+
+                float fiberPhase = u + drift * 1.6f + (pathNoise - 0.5f) * 0.018f;
+                float strandFrequency = 10.2f + pathNoise * 4.4f;
+                float broadStrands = Mathf.Pow(
+                    Mathf.Clamp01(1f - Mathf.Abs(Mathf.Sin((fiberPhase * strandFrequency + v * 0.20f) * Mathf.PI))),
+                    5.4f);
+                float fineStrands = Mathf.Pow(
+                    Mathf.Clamp01(1f - Mathf.Abs(Mathf.Sin((fiberPhase * 27.0f - v * 0.34f + fineNoise * 0.12f) * Mathf.PI))),
+                    8.0f);
+                float strandBreaks = Mathf.Lerp(0.24f, 1.0f, Smooth01(0.34f, 0.72f, fiberNoise));
+                float outerBias = Mathf.Clamp01(1.08f - Mathf.Abs(u - 0.34f) * 1.62f);
+                float goldFiber = Mathf.Clamp01(
+                    (broadStrands * 0.52f + fineStrands * 0.58f)
+                    * strandBreaks
+                    * softEnvelope
+                    * (0.46f + outerBias * 0.54f));
+
+                float scratchPhase = u * 18.0f + v * 0.42f + pathNoise * 0.86f;
+                float directionalScratch = Mathf.Pow(
+                    Mathf.Clamp01(1f - Mathf.Abs(Mathf.Sin(scratchPhase * Mathf.PI))),
+                    11.0f);
+                float chippedGap = Smooth01(0.68f, 0.88f, fineNoise);
+                float abrasion = Mathf.Clamp01(
+                    (directionalScratch * (0.28f + chippedGap * 0.72f) + chippedGap * 0.34f)
+                    * softEnvelope
+                    * (1f - coreFiber * 0.68f));
+
+                pixels[y * width + x] = new Color(coreFiber, goldFiber, abrasion, softEnvelope);
             }
         }
         tex.SetPixels(pixels);

@@ -21,6 +21,7 @@ Shader "Steria/ChristashaDawnCoreOnlyEdgeGlow"
         _FlowSpeed ("Flow Speed", Float) = 0.52
         _FlowTexTiling ("Flow Tiling", Float) = 2.6
         _FlowTexStrength ("Flow Strength", Float) = 0.92
+        _SoftEnvelopeStrength ("Soft Envelope Strength", Float) = 0.62
     }
     SubShader
     {
@@ -57,6 +58,7 @@ Shader "Steria/ChristashaDawnCoreOnlyEdgeGlow"
             float _FlowSpeed;
             float _FlowTexTiling;
             float _FlowTexStrength;
+            float _SoftEnvelopeStrength;
 
             struct appdata
             {
@@ -112,19 +114,18 @@ Shader "Steria/ChristashaDawnCoreOnlyEdgeGlow"
                 float innerRim = smoothstep(1.0 - _EdgeGlowWidth - _EdgeGlowSoftness, 1.0 - _EdgeGlowWidth, outerToInner);
                 float rimMask = saturate(max(outerRim, bladeContact * 0.92) + innerRim * 0.06);
 
-                float2 flowUv = float2(
-                    outerToInner * _FlowTexTiling + _Time.y * _FlowSpeed * 0.24,
-                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.62);
-                float4 flowTex = tex2D(_MainTex, flowUv);
-                float flow = saturate(max(flowTex.a, dot(flowTex.rgb, float3(0.299, 0.587, 0.114))));
-                float pulse = pow(saturate(sin((pathT - _Time.y * _FlowSpeed) * 26.0 + outerToInner * 5.0) * 0.5 + 0.5), 3.0);
-                float energy = lerp(0.34, 1.08, saturate(flow * _FlowTexStrength + pulse * 0.22));
-                float particleCells = floor(pathT * 70.0) * 17.0 + floor(outerToInner * 26.0) * 31.0;
-                float particleRand = frac(sin(particleCells + floor(_Time.y * 18.0) * 13.7) * 43758.5453);
-                float outwardParticleFade = 1.0 - smoothstep(0.12, 0.72, outerToInner);
-                float outwardParticles = step(0.86, particleRand) * outwardParticleFade * saturate(flow * 0.70 + pulse * 0.30);
+                float brushDrift = sin(pathT * 8.0 - _Time.y * _FlowSpeed * 0.56) * 0.008;
+                float2 brushUv = float2(
+                    saturate(outerToInner + brushDrift),
+                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.12);
+                float4 brushTex = tex2D(_MainTex, brushUv);
+                float softEnvelope = saturate(brushTex.a * _SoftEnvelopeStrength);
+                float goldFiber = saturate(brushTex.g * _FlowTexStrength);
+                float energy = saturate(0.30 + softEnvelope * 0.46 + goldFiber * 0.14 + revealEdge * 0.08);
 
-                float alpha = visible * _TintColor.a * saturate(rimMask * (0.56 + flow * 0.36 + revealEdge * 0.16 + retreatEdge * 0.03) + outwardParticles * 0.22);
+                float alpha = visible * _TintColor.a * saturate(
+                    rimMask
+                    * (0.08 + softEnvelope * 0.22 + goldFiber * 0.08 + revealEdge * 0.08 + retreatEdge * 0.02));
                 float3 rgb = _TintColor.rgb * _HdrEmission.rgb * _EmissionBoost * energy;
                 return float4(rgb, alpha);
             }

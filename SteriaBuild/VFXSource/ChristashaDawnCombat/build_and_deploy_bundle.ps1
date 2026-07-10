@@ -29,7 +29,7 @@ function Get-InputFiles {
         (Join-Path $project "Assets\Scripts\CrescentSlashVolumeMesh.cs"),
         (Join-Path $project "Assets\Shaders\ChristashaDawn_CoreOnlyFlow.shader"),
         (Join-Path $project "Assets\Shaders\ChristashaDawn_CoreOnlyEdgeGlow.shader"),
-        (Join-Path $project "Assets\Textures\Generated\ChristashaDawn_CoreFlowMask_512.png"),
+        (Join-Path $project "Assets\Textures\Generated\ChristashaDawn_BrushMask_512.png"),
         (Join-Path $repoRoot "SteriaBuild\DiceAttackEffect_Steria_ChristashaDawnCombat.cs")
     )
 

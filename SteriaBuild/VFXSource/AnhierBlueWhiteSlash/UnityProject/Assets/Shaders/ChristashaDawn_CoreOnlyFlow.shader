@@ -28,6 +28,10 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
         _FlowTexStrength ("Flow Texture Strength", Float) = 0.28
         _FlowTexDistortStrength ("Flow Texture Distort Strength", Float) = 0.020
         _FlowTexTiling ("Flow Texture Tiling", Float) = 2.4
+        _BrushCoreStrength ("Brush Core Strength", Float) = 1.0
+        _BrushFiberStrength ("Brush Fiber Strength", Float) = 0.82
+        _BrushAbrasionStrength ("Brush Abrasion Strength", Float) = 0.70
+        _SoftEnvelopeStrength ("Soft Envelope Strength", Float) = 0.78
         _CenterPlateauWidth ("Center Plateau Width", Float) = 0.50
         _CenterFalloffPower ("Center Falloff Power", Float) = 2.10
         _OuterGoldStrength ("Outer Gold Strength", Float) = 0.52
@@ -89,6 +93,10 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
             float _FlowTexStrength;
             float _FlowTexDistortStrength;
             float _FlowTexTiling;
+            float _BrushCoreStrength;
+            float _BrushFiberStrength;
+            float _BrushAbrasionStrength;
+            float _SoftEnvelopeStrength;
             float _CenterPlateauWidth;
             float _CenterFalloffPower;
             float _OuterGoldStrength;
@@ -195,49 +203,59 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
                 float outerGoldCurve = saturate(goldOutwardFade * goldInwardFade);
                 float3 outerGoldColor = lerp(float3(1.02, 0.94, 0.34), float3(1.05, 1.03, 0.80), goldOutwardFade);
 
-                float2 flowUv = i.uv;
-                float distortA = sin(pathT * _DistortScale + _Time.y * _DistortSpeed + outerToInner * 5.0);
-                float distortB = sin(pathT * _DistortScale * 0.37 - _Time.y * _DistortSpeed * 0.70 + outerToInner * 8.0);
-                float distort = distortA * distortB;
+                float brushDrift = sin(pathT * 10.0 - _Time.y * _FlowSpeed * 0.72 + outerToInner * 4.0) * 0.012;
                 float2 maskUv = float2(
-                    outerToInner * _FlowTexTiling + _Time.y * _FlowSpeed * 0.18 + distort * 0.16,
-                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.55 + distort * 0.10);
-                float4 flowTex = tex2D(_FlowTex, maskUv);
-                float flowMask = saturate(max(flowTex.a, dot(flowTex.rgb, float3(0.299, 0.587, 0.114))));
-                float flowSigned = flowMask * 2.0 - 1.0;
-                flowUv.x += distort * _DistortStrength * (0.20 + corePlateau * 0.80);
-                flowUv.y += distort * _DistortStrength * 0.22;
-                flowUv.x += flowSigned * _FlowTexDistortStrength * (0.30 + corePlateau * 0.70);
-                flowUv.y += flowSigned * _FlowTexDistortStrength * 0.28;
+                    saturate(outerToInner + brushDrift),
+                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.18);
+                float4 brushTex = tex2D(_FlowTex, maskUv);
+                float brushCore = saturate(brushTex.r * _BrushCoreStrength);
+                float goldFiber = saturate(brushTex.g * _BrushFiberStrength);
+                float abrasionCut = saturate(brushTex.b * _BrushAbrasionStrength);
+                float softEnvelope = saturate(brushTex.a * _SoftEnvelopeStrength);
+                goldFiber *= 0.78 + outerGoldCurve * 0.22;
+
+                float2 flowUv = i.uv;
+                float brushSigned = saturate(brushCore * 0.46 + goldFiber * 0.54) * 2.0 - 1.0;
+                flowUv.x += brushSigned * _FlowTexDistortStrength * (0.16 + corePlateau * 0.28);
+                flowUv.y += brushSigned * _FlowTexDistortStrength * 0.08;
 
                 float4 tex = tex2D(_MainTex, flowUv);
-                float flowA = pow(saturate(sin((pathT + _Time.y * _FlowSpeed) * _FlowScale) * 0.5 + 0.5), 3.0);
-                float flowB = pow(saturate(sin((pathT - _Time.y * _FlowSpeed * 0.82) * _FlowScale + outerToInner * 7.0) * 0.5 + 0.5), 4.0);
                 float freshCore = 1.0 - smoothstep(max(revealControl - _CoreFillTail, 0.0), revealControl, pathT);
                 freshCore *= 1.0 - smoothstep(revealControl, revealControl + edge, pathT);
-                float flowTextureEnergy = saturate(0.96 + flowMask * 0.04 + flowA * 0.03 + flowB * 0.03);
-                float coreFill = (0.52 + corePlateau * 0.22 + trailRidge * _TrailRidgeStrength + trailBand * _TrailFlowBandStrength + freshCore * 0.10 + flowA * 0.02 + flowB * 0.02) * _CoreFillStrength;
-                coreFill *= lerp(1.0, flowTextureEnergy, saturate(_FlowTexStrength));
-                coreFill = saturate(coreFill);
+                float bodyContinuity = saturate(softEnvelope * 0.46 + corePlateau * 0.04 + freshCore * 0.08);
+                float coreFill = saturate((brushCore * 0.86 + freshCore * 0.14 + revealEdge * 0.08) * _CoreFillStrength);
 
                 if (_DebugForceVisible > 0.5)
                 {
-                    float previewFill = saturate((0.78 + corePlateau * 0.20 + revealEdge * 0.12) * lerp(1.0, flowTextureEnergy, saturate(_FlowTexStrength)));
-                    return float4(_TintColor.rgb * _HdrEmission.rgb * max(_EmissionBoost, 1.0) * previewFill, visible);
+                    float previewAlpha = saturate(bodyContinuity * 0.48 + goldFiber * 0.28 + coreFill * 0.52);
+                    float3 previewColor = lerp(float3(0.52, 0.28, 0.035), float3(1.04, 0.86, 0.30), goldFiber);
+                    previewColor = lerp(previewColor, float3(1.08, 1.06, 0.86), coreFill);
+                    return float4(previewColor * _HdrEmission.rgb * max(_EmissionBoost, 1.0), visible * previewAlpha);
                 }
 
                 fixed4 particleColor = lerp(fixed4(1.0, 1.0, 1.0, 1.0), i.color, useParticleAge);
                 particleColor.a = lerp(1.0, i.color.a, useParticleAge);
-                float4 c = tex * _TintColor * particleColor;
-                c.rgb = c.rgb * _HdrEmission.rgb * _EmissionBoost * coreFill;
-                float goldStrength = saturate(_OuterGoldStrength);
-                c.rgb = lerp(c.rgb, c.rgb * outerGoldColor, saturate(outerGoldCurve * goldStrength));
-                float trackHighlight = saturate(trailRidge * 0.42 + trailBand * 0.22 + revealEdge * 0.34);
-                c.rgb = lerp(c.rgb, float3(1.0, 0.98, 0.72) * _HdrEmission.rgb * _EmissionBoost, trackHighlight);
-                float alphaProfile = saturate(_TrailBodyAlpha * (0.58 + corePlateau * 0.18) + trailRidge * 0.26 + trailBand * 0.18 + revealEdge * 0.16 + retreatEdge * 0.03);
-                alphaProfile = max(alphaProfile, outerGoldCurve * goldStrength * 0.52);
+                float4 c = tex * particleColor;
+                float3 shadowGold = float3(0.16, 0.075, 0.010);
+                float3 warmGold = lerp(float3(0.82, 0.54, 0.075), outerGoldColor, outerGoldCurve);
+                float3 whiteCoreColor = float3(1.10, 1.07, 0.84);
+                float3 brushColor = lerp(shadowGold, warmGold, saturate(bodyContinuity * 0.42 + goldFiber * 0.94));
+                brushColor = lerp(brushColor, whiteCoreColor, coreFill);
+                brushColor += goldFiber * float3(0.26, 0.18, 0.025);
+                brushColor *= 1.0 - abrasionCut * 0.72;
+                brushColor += revealEdge * float3(0.18, 0.15, 0.07);
+                c.rgb = c.rgb * brushColor * _TintColor.rgb * _HdrEmission.rgb * _EmissionBoost;
+
+                float alphaProfile = saturate(
+                    bodyContinuity * 0.18
+                    + goldFiber * 0.48
+                    + coreFill * 0.68
+                    + revealEdge * 0.10
+                    + trailRidge * 0.05
+                    + retreatEdge * 0.02);
+                alphaProfile *= 1.0 - abrasionCut * 0.72;
                 alphaProfile *= lerp(0.86, 1.0, tailFade);
-                float brightnessWeight = saturate(coreFill * 0.64 + corePlateau * 0.24 + outerGoldCurve * goldStrength * 0.12);
+                float brightnessWeight = saturate(coreFill * 0.72 + goldFiber * 0.18 + bodyContinuity * 0.10);
                 float tailExtinction = tailSharpen * saturate(_TailExtinctionBoost);
                 float extinctionInput = saturate(retreatProgress * lerp(1.85 + tailExtinction, 0.78 + tailExtinction * 0.35, brightnessWeight) + tailExtinction * 0.28);
                 float extinction = extinctionInput * extinctionInput * (3.0 - 2.0 * extinctionInput);
