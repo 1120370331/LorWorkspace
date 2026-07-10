@@ -83,7 +83,8 @@ public static class ChristashaDawnCombatBundleBuilder
         Mesh[] vCrescentGlowReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleGlow", "ChristashaDawn_VParticleGlow", 7.20f, 6.40f, 8.20f, 0.08f, 0.56f, 0.025f);
         Mesh[] vCrescentCoreReveal = CreateVerticalCrescentRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleCore", "ChristashaDawn_VParticleCore", 6.52f, 4.10f, 5.70f, 0.26f, 0.24f, -0.070f);
         Mesh[] vCrescentOuterBladeReveal = CreateVerticalCrescentOuterBladeRevealMeshes("Assets/Meshes/ChristashaDawn_VParticleOuterBlade", "ChristashaDawn_VParticleOuterBlade", 6.95f, 5.70f, 7.55f, 0.10f, 0.48f, -0.095f);
-        Mesh vCrescentUserCoreOnly = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_UserCrescentCoreOnly.asset", CreateUserProvidedCrescentVolumeMesh("ChristashaDawn_UserCrescentCoreOnly"));
+        Mesh vSlashUserCoreOnly = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_UserSlashCoreOnly.asset", CreateUserProvidedSlashVolumeMesh("ChristashaDawn_UserSlashCoreOnly", 0f, 1f));
+        Mesh vSlashUserGlowEnvelope = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_UserSlashGlowEnvelope.asset", CreateUserProvidedSlashVolumeMesh("ChristashaDawn_UserSlashGlowEnvelope", 0.24f, 0.42f));
         Mesh lanceMesh = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_LanceMesh.asset", CreateNeedleMesh("ChristashaDawn_LanceMesh", 1.35f, 0.16f, 16));
         Mesh cleaveMesh = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_CleaveMesh.asset", CreateNeedleMesh("ChristashaDawn_CleaveMesh", 1.22f, 0.26f, 16));
         Mesh diamondMesh = CreateOrReplaceMesh("Assets/Meshes/ChristashaDawn_DiamondMesh.asset", CreateDiamondMesh("ChristashaDawn_DiamondMesh", 0.92f, 0.38f));
@@ -118,7 +119,7 @@ public static class ChristashaDawnCombatBundleBuilder
         Mesh[] thinSegments = { thinSegA, thinSegB, thinSegC };
         CreateSlashHorizontalPrefab(blade, glow, star, dots, black, daoguang, daoguangGold, daoguangDark, hSlashSweepEnter, hSlashSweepMid, hSlashSweep, hSlashSweepCore, hSlashSweepRetreat, hDaoguangEnter, hDaoguangMid, hDaoguangFull, hDaoguangBelly, hDaoguangExit);
         CreateSlashVerticalPrefab(star, starHdr, cosmicShard, dots, black, crescentGlow, crescentOuter, crescentInner, crescentCore, crescentOuterBlade, crescentShadow, vCrescentGlowReveal, vCrescentOuterReveal, vCrescentInnerReveal, vCrescentCoreReveal, vCrescentOuterBladeReveal, vCrescentShadowReveal, quadMesh, crossStarCoreMesh, cosmicShardMesh);
-        CreateSlashVerticalCoreOnlyPrefab(crescentCoreOnlyWhite, crescentCoreOnlyEdgeGlow, vCrescentUserCoreOnly, crescentCoreOnlyReveal);
+        CreateSlashVerticalCoreOnlyPrefab(crescentCoreOnlyWhite, crescentCoreOnlyEdgeGlow, vSlashUserCoreOnly, vSlashUserGlowEnvelope, crescentCoreOnlyReveal);
         CreateMeleePiercePrefab(blade, glow, star, dots, black, lanceMesh, diamondMesh);
         CreateFarPiercePrefab(blade, glow, star, dots, black, circle, lanceMesh, diamondMesh, quadMesh);
         CreateHitPrefab(blade, glow, star, dots, black, cleaveMesh, diamondMesh, quadMesh);
@@ -143,8 +144,11 @@ public static class ChristashaDawnCombatBundleBuilder
         SavePng("Assets/Textures/Generated/ChristashaDawn_BrushMask_512.png", CreateDirectionalBrushMaskTexture(512, 512));
 
         Mesh coreMesh = CreateOrReplaceMesh(
-            "Assets/Meshes/ChristashaDawn_UserCrescentCoreOnly.asset",
-            CreateUserProvidedCrescentVolumeMesh("ChristashaDawn_UserCrescentCoreOnly"));
+            "Assets/Meshes/ChristashaDawn_UserSlashCoreOnly.asset",
+            CreateUserProvidedSlashVolumeMesh("ChristashaDawn_UserSlashCoreOnly", 0f, 1f));
+        Mesh glowMesh = CreateOrReplaceMesh(
+            "Assets/Meshes/ChristashaDawn_UserSlashGlowEnvelope.asset",
+            CreateUserProvidedSlashVolumeMesh("ChristashaDawn_UserSlashGlowEnvelope", 0.24f, 0.42f));
 
         Material coreMaterial = CreateCoreOnlyWhiteMaterial(
             "Assets/Textures/christasha_dawn_solid_white.png",
@@ -158,7 +162,7 @@ public static class ChristashaDawnCombatBundleBuilder
             3155);
         AnimationClip revealClip = CreateCoreOnlyRevealClip("Assets/Animations/ChristashaDawn_CoreOnly_RevealPreview.anim");
 
-        CreateSlashVerticalCoreOnlyPrefab(coreMaterial, edgeGlowMaterial, coreMesh, revealClip);
+        CreateSlashVerticalCoreOnlyPrefab(coreMaterial, edgeGlowMaterial, coreMesh, glowMesh, revealClip);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -336,7 +340,7 @@ public static class ChristashaDawnCombatBundleBuilder
         SavePrefab(root, "Assets/Prefabs/ChristashaDawnSlashVerticalPrefab.prefab");
     }
 
-    private static void CreateSlashVerticalCoreOnlyPrefab(Material whiteCoreMaterial, Material edgeGlowMaterial, Mesh coreMesh, AnimationClip revealClip)
+    private static void CreateSlashVerticalCoreOnlyPrefab(Material whiteCoreMaterial, Material edgeGlowMaterial, Mesh coreMesh, Mesh glowMesh, AnimationClip revealClip)
     {
         GameObject root = CreateRoot(SlashVerticalCoreOnlyPrefabName);
         root.name = SlashVerticalCoreOnlyPrefabName;
@@ -346,7 +350,7 @@ public static class ChristashaDawnCombatBundleBuilder
         travelRoot.localRotation = Quaternion.identity;
         travelRoot.localScale = Vector3.one;
         ConfigureCoreOnlyMeshRenderer(travelRoot.gameObject, whiteCoreMaterial, coreMesh);
-        ConfigureCoreOnlyEdgeGlowRenderer(travelRoot.gameObject, edgeGlowMaterial, coreMesh);
+        ConfigureCoreOnlyEdgeGlowRenderer(travelRoot.gameObject, edgeGlowMaterial, glowMesh);
         ConfigureCoreOnlyAnimation(root, revealClip);
         ConfigureCoreOnlyPreviewAnimator(root);
 
@@ -389,7 +393,7 @@ public static class ChristashaDawnCombatBundleBuilder
         renderer.sortingOrder = 180;
     }
 
-    private static void ConfigureCoreOnlyEdgeGlowRenderer(GameObject root, Material edgeGlowMaterial, Mesh coreMesh)
+    private static void ConfigureCoreOnlyEdgeGlowRenderer(GameObject root, Material edgeGlowMaterial, Mesh glowMesh)
     {
         Transform existing = root.transform.Find("AB_DawnSlashV_CoreOnlyGoldEdgeGlow");
         if (existing != null)
@@ -402,10 +406,10 @@ public static class ChristashaDawnCombatBundleBuilder
         glow.transform.SetParent(root.transform, false);
         glow.transform.localPosition = new Vector3(0f, 0f, -0.018f);
         glow.transform.localRotation = Quaternion.identity;
-        glow.transform.localScale = new Vector3(1.035f, 1.035f, 1f);
+        glow.transform.localScale = Vector3.one;
 
         MeshFilter filter = glow.AddComponent<MeshFilter>();
-        filter.sharedMesh = coreMesh;
+        filter.sharedMesh = glowMesh;
 
         MeshRenderer renderer = glow.AddComponent<MeshRenderer>();
         renderer.enabled = true;
@@ -1512,6 +1516,7 @@ Shader ""Steria/ChristashaDawnCoreOnlyFlow""
         _BrushFiberStrength (""Brush Fiber Strength"", Float) = 0.82
         _BrushAbrasionStrength (""Brush Abrasion Strength"", Float) = 0.70
         _SoftEnvelopeStrength (""Soft Envelope Strength"", Float) = 0.78
+        _LuminousBodyStrength (""Luminous Body Strength"", Float) = 0.86
         _CenterPlateauWidth (""Center Plateau Width"", Float) = 0.50
         _CenterFalloffPower (""Center Falloff Power"", Float) = 2.10
         _OuterGoldStrength (""Outer Gold Strength"", Float) = 0.52
@@ -1577,6 +1582,7 @@ Shader ""Steria/ChristashaDawnCoreOnlyFlow""
             float _BrushFiberStrength;
             float _BrushAbrasionStrength;
             float _SoftEnvelopeStrength;
+            float _LuminousBodyStrength;
             float _CenterPlateauWidth;
             float _CenterFalloffPower;
             float _OuterGoldStrength;
@@ -1684,15 +1690,22 @@ Shader ""Steria/ChristashaDawnCoreOnlyFlow""
                 float3 outerGoldColor = lerp(float3(1.02, 0.94, 0.34), float3(1.05, 1.03, 0.80), goldOutwardFade);
 
                 float brushDrift = sin(pathT * 10.0 - _Time.y * _FlowSpeed * 0.72 + outerToInner * 4.0) * 0.012;
+                float maskPath = saturate(pathT);
                 float2 maskUv = float2(
                     saturate(outerToInner + brushDrift),
-                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.18);
+                    maskPath);
                 float4 brushTex = tex2D(_FlowTex, maskUv);
                 float brushCore = saturate(brushTex.r * _BrushCoreStrength);
                 float goldFiber = saturate(brushTex.g * _BrushFiberStrength);
                 float abrasionCut = saturate(brushTex.b * _BrushAbrasionStrength);
                 float softEnvelope = saturate(brushTex.a * _SoftEnvelopeStrength);
                 goldFiber *= 0.78 + outerGoldCurve * 0.22;
+                float leadingPressure = smoothstep(0.18, 0.74, pathT) * (1.0 - smoothstep(0.90, 1.0, pathT));
+                float luminousBody = saturate(
+                    corePlateau
+                    * (0.34 + softEnvelope * 0.66)
+                    * (0.58 + leadingPressure * 0.42));
+                luminousBody *= 1.0 - abrasionCut * 0.42;
 
                 float2 flowUv = i.uv;
                 float brushSigned = saturate(brushCore * 0.46 + goldFiber * 0.54) * 2.0 - 1.0;
@@ -1707,8 +1720,9 @@ Shader ""Steria/ChristashaDawnCoreOnlyFlow""
 
                 if (_DebugForceVisible > 0.5)
                 {
-                    float previewAlpha = saturate(bodyContinuity * 0.48 + goldFiber * 0.28 + coreFill * 0.52);
+                    float previewAlpha = saturate(bodyContinuity * 0.34 + luminousBody * 0.52 + goldFiber * 0.24 + coreFill * 0.48);
                     float3 previewColor = lerp(float3(0.52, 0.28, 0.035), float3(1.04, 0.86, 0.30), goldFiber);
+                    previewColor = lerp(previewColor, float3(1.06, 1.02, 0.72), saturate(luminousBody * _LuminousBodyStrength));
                     previewColor = lerp(previewColor, float3(1.08, 1.06, 0.86), coreFill);
                     return float4(previewColor * _HdrEmission.rgb * max(_EmissionBoost, 1.0), visible * previewAlpha);
                 }
@@ -1720,6 +1734,8 @@ Shader ""Steria/ChristashaDawnCoreOnlyFlow""
                 float3 warmGold = lerp(float3(0.82, 0.54, 0.075), outerGoldColor, outerGoldCurve);
                 float3 whiteCoreColor = float3(1.10, 1.07, 0.84);
                 float3 brushColor = lerp(shadowGold, warmGold, saturate(bodyContinuity * 0.42 + goldFiber * 0.94));
+                float3 luminousBodyColor = lerp(warmGold, whiteCoreColor, saturate(0.44 + luminousBody * 0.46));
+                brushColor = lerp(brushColor, luminousBodyColor, saturate(luminousBody * _LuminousBodyStrength));
                 brushColor = lerp(brushColor, whiteCoreColor, coreFill);
                 brushColor += goldFiber * float3(0.26, 0.18, 0.025);
                 brushColor *= 1.0 - abrasionCut * 0.72;
@@ -1727,9 +1743,10 @@ Shader ""Steria/ChristashaDawnCoreOnlyFlow""
                 c.rgb = c.rgb * brushColor * _TintColor.rgb * _HdrEmission.rgb * _EmissionBoost;
 
                 float alphaProfile = saturate(
-                    bodyContinuity * 0.18
-                    + goldFiber * 0.48
-                    + coreFill * 0.68
+                    bodyContinuity * 0.12
+                    + luminousBody * 0.52
+                    + goldFiber * 0.40
+                    + coreFill * 0.62
                     + revealEdge * 0.10
                     + trailRidge * 0.05
                     + retreatEdge * 0.02);
@@ -2010,9 +2027,10 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
                 float rimMask = saturate(max(outerRim, bladeContact * 0.92) + innerRim * 0.06);
 
                 float brushDrift = sin(pathT * 8.0 - _Time.y * _FlowSpeed * 0.56) * 0.008;
+                float glowMaskPath = saturate(pathT);
                 float2 brushUv = float2(
                     saturate(outerToInner + brushDrift),
-                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.12);
+                    glowMaskPath);
                 float4 brushTex = tex2D(_MainTex, brushUv);
                 float softEnvelope = saturate(brushTex.a * _SoftEnvelopeStrength);
                 float goldFiber = saturate(brushTex.g * _FlowTexStrength);
@@ -2396,6 +2414,10 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
         if (mat.HasProperty("_SoftEnvelopeStrength"))
         {
             mat.SetFloat("_SoftEnvelopeStrength", 0.54f);
+        }
+        if (mat.HasProperty("_LuminousBodyStrength"))
+        {
+            mat.SetFloat("_LuminousBodyStrength", 0.86f);
         }
         if (mat.HasProperty("_CenterPlateauWidth"))
         {
@@ -3163,24 +3185,15 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
         return mesh;
     }
 
-    private static Mesh CreateUserProvidedCrescentVolumeMesh(string name)
+    private static Mesh CreateUserProvidedSlashVolumeMesh(string name, float envelopeWidth, float depthScale)
     {
         const float outerRadius = 2.0f;
         const float horizontalScale = 1.35f;
         const float verticalScale = 1.15f;
-        const float tipBladeWidth = 0.03f;
-        const float middleBladeWidth = 0.90f;
-        const float middleBulgePower = 1.4f;
-        const float widthChangeRate = 1.875f;
-        const float outwardWidthRatio = 0.3f;
-        const float outerGlowExtension = 1.5f;
-        const float depth = 0.12f;
-        const float ridgeAmplitude = 0.025f;
+        const float depth = 0.10f;
+        const float ridgeAmplitude = 0.010f;
         const float startAngle = 65f;
         const float endAngle = -135f;
-        const float tipLength = 0.45f;
-        const float edgeNoise = 0.03f;
-        const float noiseSeed = 3.17f;
         const int lengthSegments = 96;
         const int widthSegments = 10;
 
@@ -3200,8 +3213,8 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
             for (int j = 0; j <= widthSegments; j++)
             {
                 float u = j / (float)widthSegments;
-                Vector3 p = GetProvidedCrescentPoint(t, u, outerRadius, horizontalScale, verticalScale, tipBladeWidth, middleBladeWidth, middleBulgePower, widthChangeRate, outwardWidthRatio, outerGlowExtension, startAngle, endAngle, tipLength, edgeNoise, noiseSeed);
-                float halfZ = GetProvidedCrescentHalfDepth(t, u, depth, ridgeAmplitude, middleBulgePower, widthChangeRate);
+                Vector3 p = GetUserSlashPoint(t, u, outerRadius, horizontalScale, verticalScale, startAngle, endAngle, envelopeWidth);
+                float halfZ = GetUserSlashHalfDepth(t, u, depth * depthScale, ridgeAmplitude * depthScale);
                 vertices.Add(new Vector3(p.x, p.y, halfZ));
                 uvs.Add(new Vector2(u, 1f - t));
                 controlUvs.Add(new Vector2(t, u));
@@ -3214,8 +3227,8 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
             for (int j = 0; j <= widthSegments; j++)
             {
                 float u = j / (float)widthSegments;
-                Vector3 p = GetProvidedCrescentPoint(t, u, outerRadius, horizontalScale, verticalScale, tipBladeWidth, middleBladeWidth, middleBulgePower, widthChangeRate, outwardWidthRatio, outerGlowExtension, startAngle, endAngle, tipLength, edgeNoise, noiseSeed);
-                float halfZ = GetProvidedCrescentHalfDepth(t, u, depth, ridgeAmplitude, middleBulgePower, widthChangeRate);
+                Vector3 p = GetUserSlashPoint(t, u, outerRadius, horizontalScale, verticalScale, startAngle, endAngle, envelopeWidth);
+                float halfZ = GetUserSlashHalfDepth(t, u, depth * depthScale, ridgeAmplitude * depthScale);
                 vertices.Add(new Vector3(p.x, p.y, -halfZ));
                 uvs.Add(new Vector2(u, 1f - t));
                 controlUvs.Add(new Vector2(t, u));
@@ -3293,62 +3306,69 @@ Shader ""Steria/ChristashaDawnCoreOnlyEdgeGlow""
         return mesh;
     }
 
-    private static Vector3 GetProvidedCrescentPoint(float t, float u, float outerRadius, float horizontalScale, float verticalScale, float tipBladeWidth, float middleBladeWidth, float middleBulgePower, float widthChangeRate, float outwardWidthRatio, float outerGlowExtension, float startAngle, float endAngle, float tipLength, float edgeNoise, float noiseSeed)
+    private static Vector3 GetUserSlashPoint(float t, float u, float outerRadius, float horizontalScale, float verticalScale, float startAngle, float endAngle, float envelopeWidth)
     {
-        float angle = Mathf.Lerp(startAngle, endAngle, t) * Mathf.Deg2Rad;
-        float cos = Mathf.Cos(angle);
-        float sin = Mathf.Sin(angle);
-        float baseProfile = Mathf.Sin(Mathf.PI * t);
-        float widthProfile = Mathf.Pow(baseProfile, middleBulgePower * widthChangeRate);
-        float bladeWidth = Mathf.Lerp(tipBladeWidth, middleBladeWidth, widthProfile);
-        bladeWidth = Mathf.Min(bladeWidth, outerRadius * 0.95f);
+        const float tangentSample = 0.0025f;
+        Vector2 center = GetUserSlashCenterline(t, outerRadius, horizontalScale, verticalScale, startAngle, endAngle);
+        Vector2 previous = GetUserSlashCenterline(Mathf.Max(0f, t - tangentSample), outerRadius, horizontalScale, verticalScale, startAngle, endAngle);
+        Vector2 next = GetUserSlashCenterline(Mathf.Min(1f, t + tangentSample), outerRadius, horizontalScale, verticalScale, startAngle, endAngle);
+        Vector2 tangent = (next - previous).normalized;
+        Vector2 normal = new Vector2(-tangent.y, tangent.x);
 
-        float outwardWidth = bladeWidth * outwardWidthRatio;
-        float inwardWidth = bladeWidth * (1f - outwardWidthRatio);
-        float outerR = outerRadius + outwardWidth;
-        float innerR = outerRadius - inwardWidth;
-        outerR += outerGlowExtension;
-
-        Vector2 outer = new Vector2(cos * outerR * horizontalScale, sin * outerR * verticalScale);
-        Vector2 inner = new Vector2(cos * innerR * horizontalScale, sin * innerR * verticalScale);
-
-        float tipFactor = Mathf.Pow(Mathf.Abs(t - 0.5f) * 2f, 2.5f);
-        outer.x -= tipLength * tipFactor;
-        inner.x -= tipLength * tipFactor * 0.65f;
-
+        float bladeWidth = GetUserSlashBladeWidth(t, envelopeWidth);
         float easedU = Smooth01Unit(u);
-        Vector2 p = Vector2.Lerp(outer, inner, easedU);
+        float acrossBlade = Mathf.Lerp(0.62f, -0.38f, easedU);
+        Vector2 p = center + normal * bladeWidth * acrossBlade;
 
-        float edgeFactor = Mathf.Pow(Mathf.Max(1f - u, u), 3f);
-        float n1 = Mathf.PerlinNoise(noiseSeed + t * 13.7f, u * 4.1f) - 0.5f;
-        float n2 = Mathf.PerlinNoise(noiseSeed + 10.0f + t * 27.3f, u * 2.9f) - 0.5f;
-
-        Vector2 radial = new Vector2(cos, sin).normalized;
-        Vector2 tangent = new Vector2(-sin, cos).normalized;
-
-        p += radial * n1 * edgeNoise * edgeFactor;
-        p += tangent * n2 * edgeNoise * edgeFactor;
-
-        return new Vector3(-p.x, p.y, 0f);
+        float cuttingReach = Smooth01(0.86f, 1.00f, t);
+        p += tangent * cuttingReach * 0.34f;
+        return new Vector3(p.x, p.y, 0f);
     }
 
-    private static float GetProvidedCrescentHalfDepth(float t, float u, float depth, float ridgeAmplitude, float middleBulgePower, float widthChangeRate)
+    private static Vector2 GetUserSlashCenterline(float t, float outerRadius, float horizontalScale, float verticalScale, float startAngle, float endAngle)
     {
-        float baseProfile = Mathf.Sin(Mathf.PI * t);
-        float lengthProfile = Mathf.Pow(baseProfile, middleBulgePower * widthChangeRate);
+        float angleT = t + Mathf.Sin(Mathf.PI * t) * (0.018f + 0.030f * t);
+        float angle = Mathf.Lerp(startAngle, endAngle, angleT) * Mathf.Deg2Rad;
+        float pressureRadius = outerRadius * (1f + Smooth01(0.34f, 0.82f, t) * 0.035f);
+        Vector2 center = new Vector2(
+            -Mathf.Cos(angle) * pressureRadius * horizontalScale,
+            Mathf.Sin(angle) * pressureRadius * verticalScale);
 
-        float widthProfile = Mathf.Sin(Mathf.PI * u);
-        widthProfile = Mathf.Pow(widthProfile, 0.55f);
+        float trailingLift = 1f - Smooth01(0.00f, 0.18f, t);
+        center += new Vector2(-0.10f, 0.08f) * trailingLift;
 
-        float thicknessProfile = (0.25f + 0.75f * widthProfile) * lengthProfile;
+        float leadingDrive = Smooth01(0.60f, 1.00f, t);
+        center += new Vector2(0.38f, -0.12f) * leadingDrive;
+        return center;
+    }
 
+    private static float GetUserSlashBladeWidth(float t, float envelopeWidth)
+    {
+        const float trailingWidth = 0.035f;
+        const float leadingBodyWidth = 1.10f;
+        const float leadingTipWidth = 0.012f;
+
+        float trailingTaper = Smooth01(0.00f, 0.58f, t);
+        float leadingBody = Smooth01(0.12f, 0.68f, t);
+        float cuttingTip = 1f - Smooth01(0.88f, 1.00f, t);
+        float bladeWidth = trailingWidth + leadingBodyWidth * trailingTaper * leadingBody * cuttingTip;
+        bladeWidth = Mathf.Lerp(leadingTipWidth, bladeWidth, Smooth01(0.00f, 0.035f, cuttingTip));
+
+        float envelopePressure = 0.30f + 0.70f * trailingTaper * cuttingTip;
+        return bladeWidth + envelopeWidth * envelopePressure;
+    }
+
+    private static float GetUserSlashHalfDepth(float t, float u, float depth, float ridgeAmplitude)
+    {
+        float bladePressure = Mathf.Clamp01((GetUserSlashBladeWidth(t, 0f) - 0.035f) / 1.10f);
+        float widthProfile = Mathf.Pow(Mathf.Max(0f, Mathf.Sin(Mathf.PI * u)), 0.62f);
+        float thicknessProfile = (0.24f + 0.76f * widthProfile) * (0.16f + 0.84f * bladePressure);
         float ridge =
-            Mathf.Sin(t * Mathf.PI * 10f + u * 2.3f) *
+            Mathf.Sin(t * Mathf.PI * 7f + u * 1.7f) *
             Mathf.Sin(u * Mathf.PI) *
-            ridgeAmplitude;
-
-        float halfDepth = depth * thicknessProfile + ridge;
-        return Mathf.Max(0.003f, halfDepth);
+            ridgeAmplitude *
+            bladePressure;
+        return Mathf.Max(0.002f, depth * thicknessProfile + ridge);
     }
 
     private static Vector3 GetUserCrescentVolumePoint(float t, float u, float height, float middleBladeWidth, float tipBladeWidth, float depthBend, float tipLength, float edgeNoise, float noiseSeed)

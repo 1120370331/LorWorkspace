@@ -115,9 +115,10 @@ Shader "Steria/ChristashaDawnCoreOnlyEdgeGlow"
                 float rimMask = saturate(max(outerRim, bladeContact * 0.92) + innerRim * 0.06);
 
                 float brushDrift = sin(pathT * 8.0 - _Time.y * _FlowSpeed * 0.56) * 0.008;
+                float glowMaskPath = saturate(pathT);
                 float2 brushUv = float2(
                     saturate(outerToInner + brushDrift),
-                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.12);
+                    glowMaskPath);
                 float4 brushTex = tex2D(_MainTex, brushUv);
                 float softEnvelope = saturate(brushTex.a * _SoftEnvelopeStrength);
                 float goldFiber = saturate(brushTex.g * _FlowTexStrength);

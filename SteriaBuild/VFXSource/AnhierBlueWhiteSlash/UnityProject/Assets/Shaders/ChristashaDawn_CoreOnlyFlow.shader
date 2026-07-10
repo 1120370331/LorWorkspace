@@ -32,6 +32,7 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
         _BrushFiberStrength ("Brush Fiber Strength", Float) = 0.82
         _BrushAbrasionStrength ("Brush Abrasion Strength", Float) = 0.70
         _SoftEnvelopeStrength ("Soft Envelope Strength", Float) = 0.78
+        _LuminousBodyStrength ("Luminous Body Strength", Float) = 0.86
         _CenterPlateauWidth ("Center Plateau Width", Float) = 0.50
         _CenterFalloffPower ("Center Falloff Power", Float) = 2.10
         _OuterGoldStrength ("Outer Gold Strength", Float) = 0.52
@@ -97,6 +98,7 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
             float _BrushFiberStrength;
             float _BrushAbrasionStrength;
             float _SoftEnvelopeStrength;
+            float _LuminousBodyStrength;
             float _CenterPlateauWidth;
             float _CenterFalloffPower;
             float _OuterGoldStrength;
@@ -204,15 +206,22 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
                 float3 outerGoldColor = lerp(float3(1.02, 0.94, 0.34), float3(1.05, 1.03, 0.80), goldOutwardFade);
 
                 float brushDrift = sin(pathT * 10.0 - _Time.y * _FlowSpeed * 0.72 + outerToInner * 4.0) * 0.012;
+                float maskPath = saturate(pathT);
                 float2 maskUv = float2(
                     saturate(outerToInner + brushDrift),
-                    pathT * _FlowTexTiling - _Time.y * _FlowSpeed * 0.18);
+                    maskPath);
                 float4 brushTex = tex2D(_FlowTex, maskUv);
                 float brushCore = saturate(brushTex.r * _BrushCoreStrength);
                 float goldFiber = saturate(brushTex.g * _BrushFiberStrength);
                 float abrasionCut = saturate(brushTex.b * _BrushAbrasionStrength);
                 float softEnvelope = saturate(brushTex.a * _SoftEnvelopeStrength);
                 goldFiber *= 0.78 + outerGoldCurve * 0.22;
+                float leadingPressure = smoothstep(0.18, 0.74, pathT) * (1.0 - smoothstep(0.90, 1.0, pathT));
+                float luminousBody = saturate(
+                    corePlateau
+                    * (0.34 + softEnvelope * 0.66)
+                    * (0.58 + leadingPressure * 0.42));
+                luminousBody *= 1.0 - abrasionCut * 0.42;
 
                 float2 flowUv = i.uv;
                 float brushSigned = saturate(brushCore * 0.46 + goldFiber * 0.54) * 2.0 - 1.0;
@@ -227,8 +236,9 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
 
                 if (_DebugForceVisible > 0.5)
                 {
-                    float previewAlpha = saturate(bodyContinuity * 0.48 + goldFiber * 0.28 + coreFill * 0.52);
+                    float previewAlpha = saturate(bodyContinuity * 0.34 + luminousBody * 0.52 + goldFiber * 0.24 + coreFill * 0.48);
                     float3 previewColor = lerp(float3(0.52, 0.28, 0.035), float3(1.04, 0.86, 0.30), goldFiber);
+                    previewColor = lerp(previewColor, float3(1.06, 1.02, 0.72), saturate(luminousBody * _LuminousBodyStrength));
                     previewColor = lerp(previewColor, float3(1.08, 1.06, 0.86), coreFill);
                     return float4(previewColor * _HdrEmission.rgb * max(_EmissionBoost, 1.0), visible * previewAlpha);
                 }
@@ -240,6 +250,8 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
                 float3 warmGold = lerp(float3(0.82, 0.54, 0.075), outerGoldColor, outerGoldCurve);
                 float3 whiteCoreColor = float3(1.10, 1.07, 0.84);
                 float3 brushColor = lerp(shadowGold, warmGold, saturate(bodyContinuity * 0.42 + goldFiber * 0.94));
+                float3 luminousBodyColor = lerp(warmGold, whiteCoreColor, saturate(0.44 + luminousBody * 0.46));
+                brushColor = lerp(brushColor, luminousBodyColor, saturate(luminousBody * _LuminousBodyStrength));
                 brushColor = lerp(brushColor, whiteCoreColor, coreFill);
                 brushColor += goldFiber * float3(0.26, 0.18, 0.025);
                 brushColor *= 1.0 - abrasionCut * 0.72;
@@ -247,9 +259,10 @@ Shader "Steria/ChristashaDawnCoreOnlyFlow"
                 c.rgb = c.rgb * brushColor * _TintColor.rgb * _HdrEmission.rgb * _EmissionBoost;
 
                 float alphaProfile = saturate(
-                    bodyContinuity * 0.18
-                    + goldFiber * 0.48
-                    + coreFill * 0.68
+                    bodyContinuity * 0.12
+                    + luminousBody * 0.52
+                    + goldFiber * 0.40
+                    + coreFill * 0.62
                     + revealEdge * 0.10
                     + trailRidge * 0.05
                     + retreatEdge * 0.02);
