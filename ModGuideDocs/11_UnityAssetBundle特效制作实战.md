@@ -835,3 +835,64 @@ D:\Game Center\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Mods\
 - 命中点要优先使用目标攻击 pivot 的世界坐标；看到 `targetLocal.z` 很大时，说明只调 X/Y 一定不够。
 - 每次视觉修正都要同时考虑 AB 和 DLL 两条部署链。
 - 日志版本标记非常重要，它能立刻判断游戏跑的是不是你刚编译的代码。
+
+## 12. 月牙斩击的圆周扫出与先来先退
+
+高质量月牙斩击不要只做“整块 Mesh 淡入”。更好的做法是把月牙当作一段沿弧线运动的刀痕：
+
+1. 在 Mesh 上写入两组控制坐标：
+   - `pathT`：沿月牙从起刀端到收刀端的进度。
+   - `outerToInner`：从外弧到内弧的宽度进度。
+2. Shader 用 `_Reveal` 控制 `pathT` 的显示阈值，让上端先出现，随后沿月牙方向向下推进。
+3. 在 vertex shader 中设置 `_SweepPivot` 为起刀点，例如角色头顶附近或月牙上端。
+4. 用 `ageBehindHead = revealControl - pathT` 判断某个片段比刀头早出现多久。
+5. 根据 `ageBehindHead` 让早出现的顶端片段绕 `_SweepPivot` 多旋转一点，后出现的部分少旋转一点。
+6. 在 fragment shader 中用同一套 `ageBehindHead` 做拖尾收窄和衰减：先出现的先变细、先退场，后出现的仍保持饱满。
+
+这个方法的核心不是“分段 reveal”，而是“完整 Mesh + Shader 运动函数”。分段 Mesh 适合快速验证形状，但高级斩击更应该用连续变量控制：
+
+```text
+revealControl = f(time)
+ageBehindHead = max(0, revealControl - pathT)
+sweepRotation = arcDegrees * motionStrength * g(revealControl) * h(ageBehindHead)
+tailWidth = lerp(thinTail, fullWidth, tailFade(ageBehindHead))
+```
+
+这样做出来的效果会像刀痕从角色头顶起刀、沿圆周扫下去，而不是像一张贴图突然显隐。
+
+## 13. 斩击调色：亮度、质感和噪声要分开
+
+这次踩坑很明显：把光芒降得过头以后，月牙会失去发光体质感，变成“沙子”或“灰黄粉尘”。原因通常不是颜色不对，而是把三个职责混在一起了：
+
+- **核心亮度**：由白黄核心、`_HdrEmission`、`_EmissionBoost` 决定。
+- **外缘金光**：由外弧色相和 alpha 决定，不应该大面积乘亮度。
+- **流动纹理**：只负责局部明暗和扭曲，不应该成为整片 alpha 的主要来源。
+
+推荐调参顺序：
+
+1. 先关低噪声影响，只保留稳定白黄核心。
+2. 把核心 HDR 控制在约 `1.05 ~ 1.20`，不要直接降到 `0.6` 一类的非发光区间。
+3. `_EmissionBoost` 用小范围曲线，例如 `1.02 -> 1.16 -> 1.02`，而不是 `0.7 -> 1.9` 或 `0.36 -> 0.55` 这种极端摆动。
+4. `coreFill` 必须 `saturate` 到 `<= 1.0`，避免多项相乘后过曝。
+5. `flowTextureEnergy` 应该围绕 `0.9 ~ 1.05` 微扰，不能用噪声把整片亮度压成颗粒。
+6. 外金边可以提高 alpha 和黄白色相，但不要再额外乘 `1.2x` 以上的亮度。
+7. 如果画面“像沙子”，优先降低 `flowMask` 对 alpha 的贡献，并提高平滑核心底亮。
+8. 如果画面“像爆闪”，优先检查 `_HdrEmission * _EmissionBoost * coreFill * flowTextureEnergy` 的乘积，而不是盲目降 alpha。
+
+一个比较稳的月牙核心范围：
+
+```text
+HdrEmission        = 1.10 左右的黄白
+EmissionBoost      = 1.02 ~ 1.16
+CoreFillStrength   = 1.10 ~ 1.20
+FlowTexStrength    = 0.35 ~ 0.55
+OuterGoldStrength  = 0.45 ~ 0.55
+CenterPlateauWidth = 0.38 ~ 0.48
+```
+
+验收标准：
+
+- 缩小看仍然是一道完整明亮的月牙，而不是碎沙。
+- 中心白黄有稳定亮面，不靠噪声点撑亮度。
+- 外弧有金色光韵，但不把整片画面染成橙色。
+- 流动纹理能感觉到运动，但不会破坏主形体。

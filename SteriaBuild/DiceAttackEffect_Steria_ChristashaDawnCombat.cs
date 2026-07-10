@@ -10,7 +10,7 @@ using UnityEngine;
 public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAttackEffect
 {
     private const string BundleName = "steria_christasha_dawn_combat";
-    private const string EffectVersion = "AB-christasha-dawn-combat-20260706";
+    private const string EffectVersion = "AB-christasha-dawn-combat-20260709-head-down-sweep";
 
     private static readonly Color ColorDawnWhite = new Color(1f, 0.98f, 0.78f, 1f);
     private static readonly Color ColorDawnGold = new Color(1f, 0.78f, 0.10f, 0.95f);
@@ -141,7 +141,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAtt
             main.name = LogName + "_AB";
             main.transform.SetParent(parent, false);
             main.transform.localPosition = Vector3.zero;
-            main.transform.localRotation = Quaternion.identity;
+            main.transform.localRotation = _atkDir == Direction.LEFT ? Quaternion.Euler(0f, 180f, 0f) : Quaternion.identity;
             main.transform.localScale = Vector3.one;
 
             AlignAssetBundleEffect(main);
@@ -182,6 +182,10 @@ public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAtt
 
             _travelRoot = FindChildRecursive(root.transform, "AB_TravelRoot");
             _impactRoot = FindChildRecursive(root.transform, "AB_ImpactRoot");
+            if (_travelRoot == null && PrefabName == "ChristashaDawnSlashVerticalCoreOnlyPrefab")
+            {
+                _travelRoot = root.transform;
+            }
 
             if (!AnchorOnTarget && _targetRoot != null)
             {
@@ -212,7 +216,9 @@ public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAtt
                     _travelRoot.localPosition = CenterSlashTravelOnCaster
                         ? new Vector3(Mathf.Abs(authoredTravelOffset.x) * slashSide, CenterSlashYOffset + authoredTravelOffset.y, authoredTravelOffset.z)
                         : new Vector3(targetLocal.x * 0.5f, targetLocal.y * 0.22f, targetLocal.z * 0.5f);
-                    _travelRoot.localScale = new Vector3(distanceScale * slashSide, 1f, 1f);
+
+                    float visualSide = PrefabName == "ChristashaDawnSlashVerticalCoreOnlyPrefab" ? 1f : slashSide;
+                    _travelRoot.localScale = new Vector3(distanceScale * visualSide, 1f, 1f);
                 }
                 if (_impactRoot != null)
                 {
@@ -375,12 +381,13 @@ public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAtt
             return;
         }
 
-        float revealRaw = Mathf.Clamp01((_elapsed - 0.02f) / 0.48f);
-        float reveal = Mathf.Clamp(Mathf.Pow(revealRaw, 1.65f) * 1.06f, 0f, 1.06f);
-        float fifoRetreat = reveal - 0.30f;
-        float retreatRaw = Mathf.Clamp01((_elapsed - 0.54f) / 0.36f);
-        float flushRetreat = -0.10f + Mathf.Pow(retreatRaw, 1.35f) * 1.22f;
-        float retreat = Mathf.Clamp(Mathf.Max(fifoRetreat, flushRetreat), -0.10f, 1.12f);
+        float revealRaw = Mathf.Clamp01((_elapsed - 0.02f) / 0.34f);
+        float reveal = 1f - Mathf.Pow(1f - revealRaw, 3f);
+        float retreatRaw = Mathf.Clamp01((_elapsed - 0.50f) / 0.34f);
+        float easedRetreat = retreatRaw < 0.5f
+            ? 4f * retreatRaw * retreatRaw * retreatRaw
+            : 1f - Mathf.Pow(-2f * retreatRaw + 2f, 3f) * 0.5f;
+        float retreat = retreatRaw <= 0f ? -0.08f : Mathf.Clamp(-0.08f + easedRetreat * 1.18f, -0.08f, 1.10f);
 
         foreach (Material material in _crescentRevealMaterials)
         {
@@ -753,13 +760,13 @@ public abstract class DiceAttackEffect_Steria_ChristashaDawnCombatBase : DiceAtt
 
 public class DiceAttackEffect_Steria_ChristashaDawnSlashH : DiceAttackEffect_Steria_ChristashaDawnCombatBase
 {
-    protected override string PrefabName => "ChristashaDawnSlashVerticalPrefab";
+    protected override string PrefabName => "ChristashaDawnSlashVerticalCoreOnlyPrefab";
     protected override string LogName => "ChristashaDawnSlashHAsV";
     protected override ActionDetail PivotAction => ActionDetail.Slash;
     protected override bool AnchorOnTarget => false;
     protected override bool CenterSlashTravelOnCaster => true;
     protected override bool CenterSlashTravelUsesTargetSide => true;
-    protected override float CenterSlashYOffset => -0.06f;
+    protected override float CenterSlashYOffset => -1.95f;
     protected override float Duration => 2.37f;
     protected override float HitYOffset => 0.18f;
     protected override float HitForwardOffset => 0.08f;
@@ -774,13 +781,13 @@ public class DiceAttackEffect_Steria_ChristashaDawnSlashH : DiceAttackEffect_Ste
 
 public class DiceAttackEffect_Steria_ChristashaDawnSlashV : DiceAttackEffect_Steria_ChristashaDawnCombatBase
 {
-    protected override string PrefabName => "ChristashaDawnSlashVerticalPrefab";
+    protected override string PrefabName => "ChristashaDawnSlashVerticalCoreOnlyPrefab";
     protected override string LogName => "ChristashaDawnSlashV";
     protected override ActionDetail PivotAction => ActionDetail.Slash;
     protected override bool AnchorOnTarget => false;
     protected override bool CenterSlashTravelOnCaster => true;
     protected override bool CenterSlashTravelUsesTargetSide => true;
-    protected override float CenterSlashYOffset => -0.06f;
+    protected override float CenterSlashYOffset => -1.95f;
     protected override float Duration => 2.37f;
     protected override float HitYOffset => 0.18f;
     protected override float HitForwardOffset => 0.08f;

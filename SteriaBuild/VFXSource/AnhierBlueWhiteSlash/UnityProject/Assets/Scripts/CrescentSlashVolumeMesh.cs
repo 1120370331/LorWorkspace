@@ -35,6 +35,9 @@ public class CrescentSlashVolumeMesh : MonoBehaviour
     [Range(0f, 1f)]
     public float outwardWidthRatio = 0.3f;
 
+    [Tooltip("主Mesh向外额外延伸，用于承载外层金光渐变")]
+    public float outerGlowExtension = 1.5f;
+
     [Header("Volume Thickness")]
     [Tooltip("整体厚度，Z方向")]
     public float depth = 0.12f;
@@ -43,11 +46,11 @@ public class CrescentSlashVolumeMesh : MonoBehaviour
     public float ridgeAmplitude = 0.025f;
 
     [Header("Arc Range")]
-    [Tooltip("起始角度。原来145，上方减少60度后为85")]
-    public float startAngle = 85f;
+    [Tooltip("起始角度。上端开口更小")]
+    public float startAngle = 65f;
 
-    [Tooltip("结束角度。原来-145，下方减少30度后为-115")]
-    public float endAngle = -115f;
+    [Tooltip("结束角度。下端覆盖度更大")]
+    public float endAngle = -135f;
 
     [Tooltip("让两端向左拉长，形成尖端感")]
     public float tipLength = 0.45f;
@@ -89,6 +92,7 @@ public class CrescentSlashVolumeMesh : MonoBehaviour
 
         middleBulgePower = Mathf.Max(0.1f, middleBulgePower);
         widthChangeRate = Mathf.Max(0.1f, widthChangeRate);
+        outerGlowExtension = Mathf.Max(0f, outerGlowExtension);
 
         depth = Mathf.Max(0.001f, depth);
 
@@ -139,7 +143,7 @@ public class CrescentSlashVolumeMesh : MonoBehaviour
                 float halfZ = GetHalfDepth(t, u);
 
                 vertices.Add(new Vector3(p.x, p.y, halfZ));
-                uvs.Add(new Vector2(t, u));
+                uvs.Add(new Vector2(u, 1f - t));
                 controlUvs.Add(new Vector2(t, u));
             }
         }
@@ -159,7 +163,7 @@ public class CrescentSlashVolumeMesh : MonoBehaviour
                 float halfZ = GetHalfDepth(t, u);
 
                 vertices.Add(new Vector3(p.x, p.y, -halfZ));
-                uvs.Add(new Vector2(t, u));
+                uvs.Add(new Vector2(u, 1f - t));
                 controlUvs.Add(new Vector2(t, u));
             }
         }
@@ -291,6 +295,7 @@ public class CrescentSlashVolumeMesh : MonoBehaviour
 
         float outerR = outerRadius + outwardWidth;
         float innerR = outerRadius - inwardWidth;
+        outerR += outerGlowExtension;
 
         Vector2 outer = new Vector2(
             cos * outerR * horizontalScale,
@@ -325,7 +330,7 @@ public class CrescentSlashVolumeMesh : MonoBehaviour
         p += radial * n1 * edgeNoise * edgeFactor;
         p += tangent * n2 * edgeNoise * edgeFactor;
 
-        return new Vector3(p.x, p.y, 0f);
+        return new Vector3(-p.x, p.y, 0f);
     }
 
     /// <summary>

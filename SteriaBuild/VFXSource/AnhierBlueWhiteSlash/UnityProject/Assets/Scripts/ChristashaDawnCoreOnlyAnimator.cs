@@ -6,10 +6,10 @@ using UnityEditor;
 [ExecuteAlways]
 public class ChristashaDawnCoreOnlyAnimator : MonoBehaviour
 {
-    public float duration = 0.82f;
+    public float duration = 0.84f;
     public float revealStartDelay = 0.02f;
     public float revealDuration = 0.34f;
-    public float holdDuration = 0.10f;
+    public float holdDuration = 0.14f;
     public float retreatDuration = 0.34f;
     public bool loopInEditor = true;
     public bool loopInPlay = true;
@@ -19,12 +19,12 @@ public class ChristashaDawnCoreOnlyAnimator : MonoBehaviour
     private static readonly int EmissionBoostId = Shader.PropertyToID("_EmissionBoost");
 
     private MaterialPropertyBlock propertyBlock;
-    private Renderer targetRenderer;
+    private Renderer[] targetRenderers;
     private float startTime;
 
     private void OnEnable()
     {
-        targetRenderer = GetComponent<Renderer>();
+        RefreshRenderers();
         if (propertyBlock == null)
         {
             propertyBlock = new MaterialPropertyBlock();
@@ -43,25 +43,24 @@ public class ChristashaDawnCoreOnlyAnimator : MonoBehaviour
 
     private void OnDisable()
     {
-        if (targetRenderer == null)
+        RefreshRenderers();
+        foreach (Renderer renderer in targetRenderers)
         {
-            targetRenderer = GetComponent<Renderer>();
-        }
-
-        if (targetRenderer != null)
-        {
-            targetRenderer.SetPropertyBlock(null);
+            if (renderer != null)
+            {
+                renderer.SetPropertyBlock(null);
+            }
         }
     }
 
     private void Update()
     {
-        if (targetRenderer == null)
+        if (targetRenderers == null || targetRenderers.Length == 0)
         {
-            targetRenderer = GetComponent<Renderer>();
+            RefreshRenderers();
         }
 
-        if (targetRenderer == null)
+        if (targetRenderers == null || targetRenderers.Length == 0)
         {
             return;
         }
@@ -105,13 +104,26 @@ public class ChristashaDawnCoreOnlyAnimator : MonoBehaviour
         float reveal = EaseOutCubic(revealT);
         float retreat = retreatT <= 0f ? -0.08f : EaseInOutCubic(retreatT);
         float peak = Mathf.Sin(Mathf.Clamp01(elapsed / duration) * Mathf.PI);
-        float emission = Mathf.Lerp(0.85f, 1.90f, Mathf.Pow(Mathf.Clamp01(peak), 0.72f));
+        float emission = Mathf.Lerp(1.02f, 1.16f, Mathf.Pow(Mathf.Clamp01(peak), 0.72f));
 
-        targetRenderer.GetPropertyBlock(propertyBlock);
-        propertyBlock.SetFloat(RevealId, reveal);
-        propertyBlock.SetFloat(RetreatId, retreat);
-        propertyBlock.SetFloat(EmissionBoostId, emission);
-        targetRenderer.SetPropertyBlock(propertyBlock);
+        foreach (Renderer renderer in targetRenderers)
+        {
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            renderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetFloat(RevealId, reveal);
+            propertyBlock.SetFloat(RetreatId, retreat);
+            propertyBlock.SetFloat(EmissionBoostId, emission);
+            renderer.SetPropertyBlock(propertyBlock);
+        }
+    }
+
+    private void RefreshRenderers()
+    {
+        targetRenderers = GetComponentsInChildren<Renderer>(true);
     }
 
     private static float EaseOutCubic(float t)

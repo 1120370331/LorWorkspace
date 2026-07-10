@@ -24,6 +24,12 @@ $gameModAbs = @(
 function Get-InputFiles {
     $inputs = @(
         (Join-Path $project "Assets\Editor\ChristashaDawnCombatBundleBuilder.cs"),
+        (Join-Path $project "Assets\Editor\ChristashaDawnCoreOnlyAutoEnsure.cs"),
+        (Join-Path $project "Assets\Scripts\ChristashaDawnCoreOnlyAnimator.cs"),
+        (Join-Path $project "Assets\Scripts\CrescentSlashVolumeMesh.cs"),
+        (Join-Path $project "Assets\Shaders\ChristashaDawn_CoreOnlyFlow.shader"),
+        (Join-Path $project "Assets\Shaders\ChristashaDawn_CoreOnlyEdgeGlow.shader"),
+        (Join-Path $project "Assets\Textures\Generated\ChristashaDawn_CoreFlowMask_512.png"),
         (Join-Path $repoRoot "SteriaBuild\DiceAttackEffect_Steria_ChristashaDawnCombat.cs")
     )
 
@@ -126,7 +132,6 @@ if (Test-Path -LiteralPath $log) {
 $args = @(
     "-batchmode",
     "-quit",
-    "-nographics",
     "-projectPath", $project,
     "-executeMethod", "ChristashaDawnCombatBundleBuilder.BuildBundle",
     "-logFile", $log
