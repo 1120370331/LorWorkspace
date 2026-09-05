@@ -3,8 +3,8 @@ Shader "Steria/SlazeyaStormLightning"
     Properties
     {
         _Pulse("Explicit finite discharge",Float)=0
-        _Core("Near-white core",Color)=(0.914,1,1,1)
-        _Edge("Cyan feather",Color)=(0.451,0.867,0.922,1)
+        _Core("Near-white core",Color)=(0.953,0.973,1,1)
+        _Edge("Cold steel feather",Color)=(0.659,0.749,0.820,1)
     }
     SubShader
     {

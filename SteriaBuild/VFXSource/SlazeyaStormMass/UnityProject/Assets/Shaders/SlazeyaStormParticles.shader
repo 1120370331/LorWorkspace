@@ -5,11 +5,12 @@ Shader "Steria/SlazeyaStormParticles"
         _Atlas("Native lifetime atlas",2D)="white"{}
         _Grid("Columns rows animated mist",Vector)=(4,4,1,0)
         _Alpha("Opacity",Float)=0
+        _DetailOpacity("Material detail contribution",Range(0,1))=1
         _Phase("Explicit clock",Float)=0
         _DebugAge("Builder-only native stream probe",Float)=0
         _SheetBreakup("Open asymmetric spray membranes",Float)=0
-        _MistDark("Mist absorption",Color)=(0.12,0.32,0.39,1)
-        _MistLight("Mist broad illumination",Color)=(0.51,0.75,0.78,1)
+        _MistDark("Mist absorption",Color)=(0.208,0.275,0.322,1)
+        _MistLight("Mist broad illumination",Color)=(0.604,0.671,0.722,1)
     }
     SubShader
     {
@@ -28,7 +29,7 @@ Shader "Steria/SlazeyaStormParticles"
             sampler2D _Atlas;
             float4 _Grid;
             float4 _MistDark,_MistLight;
-            float _Alpha,_Phase,_DebugAge,_SheetBreakup;
+            float _Alpha,_Phase,_DebugAge,_SheetBreakup,_DetailOpacity;
             // Native streams pack UV.xy, AgePercent.z, StableRandomX.w.
             struct appdata {float4 vertex:POSITION;float4 color:COLOR;float4 uvAge:TEXCOORD0;};
             struct v2f {float4 position:SV_POSITION;float4 color:COLOR;float4 uvAge:TEXCOORD0;};
@@ -58,7 +59,7 @@ Shader "Steria/SlazeyaStormParticles"
                 }
                 else
                 {
-                    color=lerp(float3(0.13,0.47,0.60),float3(0.83,0.98,1),saturate(data.g*0.76+data.b*0.23));
+                    color=lerp(float3(0.145,0.204,0.251),float3(0.863,0.898,0.922),saturate(data.g*0.76+data.b*0.23));
                     alpha=data.a*(0.45+0.55*max(data.r,data.g))*_Alpha*i.color.a;
                     // Remove the closed basin silhouette while retaining the authored membrane,
                     // fingers and evolving holes. Different seeded cuts stay coherent over lifetime.
@@ -67,6 +68,7 @@ Shader "Steria/SlazeyaStormParticles"
                     float openSide=smoothstep(0.03,0.18,i.uvAge.x+i.uvAge.w*0.13);
                     alpha*=lerp(1,openBase*openSide,_SheetBreakup);
                 }
+                alpha*=_DetailOpacity;
                 return float4(color*alpha,alpha);
             }
             ENDCG

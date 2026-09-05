@@ -18,9 +18,9 @@ public static class SlazeyaStormMassBundleBuilder
     private static float ActualCallbackTime;
     private static readonly Vector3[] Feet={new Vector3(4,0,-3),new Vector3(10,0,3),new Vector3(16,0,-2),new Vector3(7,0,5),new Vector3(15,0,5)};
     private static readonly Vector3 Caster=new Vector3(-15,0,0);
-    private static readonly string[] SampleNames={"01_bubble_established","02_bubble_swirl","02a_foam_inflow","02b_compressing","02c_charge_rise","03_foam_gathered","03a_charge_ready","04_rupture","04a_flash_gap","04b_secondary_flash","05_ring_peak_018","06_ring_peak_023","07_open_fragments","08_low_mist","09_clear"};
-    private static readonly float[] GatherSamples={0.25f,0.85f,0.95f,1.10f,1.23f,1.28f,80f/60f};
-    private static readonly float[] BurstSamples={2f/60f,4f/60f,7f/60f,0.18f,0.23f,0.45f,0.90f,1.25f};
+    private static readonly string[] SampleNames={"01_bubble_established","02_initial_envelope","02a_collapse_start","02b_collapse_inflow","02c_half_collapse","03_core_charge","03a_core_arrived","03b_core_peak","03c_core_hold","03d_callback_before","04_core_B0","04a_front_B1","04b_front_B2","04c_gap_B4","04d_flash_B7","05_front_B11","06_waterfall_B14","07_falling_fragments","08_low_mist","09_clear"};
+    private static readonly float[] GatherSamples={0.25f,0.80f,0.82f,0.95f,1.10f,1.23f,1.28f,80f/60f,1.35f,92f/60f};
+    private static readonly float[] BurstSamples={0,1f/60f,2f/60f,4f/60f,7f/60f,11f/60f,14f/60f,0.45f,0.90f,1.25f};
     private static readonly List<float> ActualSampleTimes=new List<float>();
     private static readonly string[] TextureFiles={"water_body_rgba.png","water_normal_roughness.png","water_flow_rg.png","foam_spray_4x4.png","mist_density_lighting_4x4.png","droplet_spindrift_4x2.png"};
     private static readonly List<string> TextureHashes=new List<string>();
@@ -36,8 +36,8 @@ public static class SlazeyaStormMassBundleBuilder
             AssetDatabase.Refresh();
             Shader waterShader=Shader.Find(SlazeyaStormVisualController.ShaderName), particleShader=Shader.Find(SlazeyaStormVisualController.ParticleShaderName);
             Shader lightningShader=Shader.Find(SlazeyaStormVisualController.LightningShaderName);
-            Require(waterShader!=null&&waterShader.isSupported&&!ShaderUtil.ShaderHasError(waterShader),"R3 deformed water shader supported");
-            Require(particleShader!=null&&particleShader.isSupported&&!ShaderUtil.ShaderHasError(particleShader),"R3 native age atlas shader supported");
+            Require(waterShader!=null&&waterShader.isSupported&&!ShaderUtil.ShaderHasError(waterShader),"R4 deformed water shader supported");
+            Require(particleShader!=null&&particleShader.isSupported&&!ShaderUtil.ShaderHasError(particleShader),"R4 native age atlas shader supported");
             Require(lightningShader!=null&&lightningShader.isSupported&&!ShaderUtil.ShaderHasError(lightningShader),"finite local lightning shader supported");
             Texture2D[] textures=ImportWorkerTextures();
             Material water=WaterMaterial("BreakerWater",waterShader,textures,false);
@@ -47,15 +47,17 @@ public static class SlazeyaStormMassBundleBuilder
             spray.SetFloat("_SheetBreakup",0);
             Material mist=ParticleMaterial("VolumeMist",particleShader,textures[4],new Vector4(4,4,1,1));
             Material returnMist=ParticleMaterial("ReturnMist",particleShader,textures[4],new Vector4(4,4,1,1));
-            returnMist.SetColor("_MistDark",new Color(0.165f,0.4f,0.459f));returnMist.SetColor("_MistLight",new Color(0.54f,0.78f,0.808f));
+            returnMist.SetColor("_MistDark",new Color(0.208f,0.275f,0.322f));returnMist.SetColor("_MistLight",new Color(0.604f,0.671f,0.722f));
             Material liftMist=ParticleMaterial("CrestLiftMist",particleShader,textures[4],new Vector4(4,4,1,1));
-            liftMist.SetColor("_MistDark",new Color(0.204f,0.459f,0.510f));liftMist.SetColor("_MistLight",new Color(0.773f,0.957f,0.957f));
+            liftMist.SetColor("_MistDark",new Color(0.208f,0.275f,0.322f));liftMist.SetColor("_MistLight",new Color(0.784f,0.835f,0.875f));
             Material drops=ParticleMaterial("Spindrift",particleShader,textures[5],new Vector4(4,2,0,0));
             Material gatheredFoam=ParticleMaterial("GatheredWhitewater",particleShader,textures[4],new Vector4(4,4,1,0));
+            Material parcelFoam=ParticleMaterial("TransportFoamDetail",particleShader,textures[4],new Vector4(4,4,1,0));
+            parcelFoam.SetFloat("_DetailOpacity",0.30f);
             var root=new GameObject(SlazeyaStormVisualController.PrefabName);
             Transform ground=Child(root.transform,"AB_GroundRoot"),storm=Child(root.transform,"AB_StormRoot");
             Transform lightning=Child(Child(root.transform,"AB_BurstRoot"),"LightningRoot");
-            var lightningMaterial=new Material(lightningShader){name="FiniteDischarge"};SaveAsset(lightningMaterial,"Assets/Materials/Round3/FiniteDischarge.mat");
+            var lightningMaterial=new Material(lightningShader){name="FiniteDischarge"};lightningMaterial.SetColor("_Core",new Color(0.953f,0.973f,1));lightningMaterial.SetColor("_Edge",new Color(0.659f,0.749f,0.820f));SaveAsset(lightningMaterial,"Assets/Materials/Round3/FiniteDischarge.mat");
             MakeLightning(lightning,"PrimaryBolt",lightningMaterial,0);MakeLightning(lightning,"SecondaryBolt",lightningMaterial,1);
             Transform particles=Child(root.transform,"AB_ParticleRoot");
             MakeBubbleSurface(storm,"BubbleEnvelope",false,water);
@@ -66,15 +68,15 @@ public static class SlazeyaStormMassBundleBuilder
             MakeParticles(particles,"BurstDroplets",drops,180,true);
             MakeParticles(particles,"ReturnMist",returnMist,32,false);
             MakeParticles(particles,"CrestLiftMist",liftMist,24,false);
-            MakeParticles(particles,"GatherFoam",gatheredFoam,168,false);
+            MakeParticles(particles,"GatherFoam",parcelFoam,168,false);
             MakeParticles(particles,"WaterfallStreaks",gatheredFoam,72,true);
             PrefabUtility.SaveAsPrefabAsset(root,PrefabPath); Object.DestroyImmediate(root); AssetDatabase.SaveAssets();
             string output=Path.GetFullPath(Path.Combine(Application.dataPath,"../AssetBundles")); Directory.CreateDirectory(output);
             var build=BuildPipeline.BuildAssetBundles(output,new[]{new AssetBundleBuild{assetBundleName=SlazeyaStormVisualController.BundleName,assetNames=new[]{PrefabPath}}},
                 BuildAssetBundleOptions.ChunkBasedCompression|BuildAssetBundleOptions.ForceRebuildAssetBundle,BuildTarget.StandaloneWindows64);
-            Require(build!=null,"Windows64 LZ4 R3 bundle");
+            Require(build!=null,"Windows64 LZ4 R4 bundle");
             string bundlePath=Path.Combine(output,SlazeyaStormVisualController.BundleName);
-            AssetBundle bundle=AssetBundle.LoadFromFile(bundlePath); Require(bundle!=null,"R3 bundle readback");
+            AssetBundle bundle=AssetBundle.LoadFromFile(bundlePath); Require(bundle!=null,"R4 bundle readback");
             try
             {
                 GameObject prefab=bundle.LoadAsset<GameObject>(SlazeyaStormVisualController.PrefabName);
@@ -85,7 +87,7 @@ public static class SlazeyaStormMassBundleBuilder
                 WriteManifest(previews,bundlePath);
             }
             finally {bundle.Unload(true);}
-            Debug.Log("SLAZEYA_ROUND3_BUILD_PREVIEW_PASS "+bundlePath);
+            Debug.Log("SLAZEYA_ROUND4_BUILD_PREVIEW_PASS "+bundlePath);
         }
         catch(Exception ex) {Debug.LogException(ex);EditorApplication.Exit(1);}
     }
@@ -157,7 +159,7 @@ public static class SlazeyaStormMassBundleBuilder
                 AddPatch(u0,u1,0,1,angle,1,around,6,vertices,uv,patch,triangles);
             }
         }
-        var mesh=new Mesh{name=name+"_R3",vertices=vertices.ToArray(),uv=uv.ToArray(),triangles=triangles.ToArray()};mesh.SetUVs(1,patch);
+        var mesh=new Mesh{name=name+"_R4",vertices=vertices.ToArray(),uv=uv.ToArray(),triangles=triangles.ToArray()};mesh.SetUVs(1,patch);
         mesh.bounds=new Bounds(Vector3.zero,Vector3.one*8);SaveAsset(mesh,"Assets/Meshes/Round3/"+name+".asset");
         Transform node=Child(parent,name);node.gameObject.AddComponent<MeshFilter>().sharedMesh=mesh;
         var renderer=node.gameObject.AddComponent<MeshRenderer>();renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;
@@ -253,7 +255,7 @@ public static class SlazeyaStormMassBundleBuilder
 
     private static void VerifyPrefab(GameObject prefab)
     {
-        Require(prefab!=null,"fixed-name R3 prefab readback");
+        Require(prefab!=null,"fixed-name R4 prefab readback");
         foreach(Transform node in prefab.GetComponentsInChildren<Transform>(true))
             foreach(Component c in node.GetComponents<Component>())
                 Require(c!=null&&!(c is MonoBehaviour),"native component "+node.name);
@@ -263,7 +265,7 @@ public static class SlazeyaStormMassBundleBuilder
             Require(m!=null&&m.shader!=null&&m.shader.isSupported,"readback supported shader "+r.name);
             bool water=m.shader.name==SlazeyaStormVisualController.ShaderName;
             bool particle=m.shader.name==SlazeyaStormVisualController.ParticleShaderName;
-            Require(water||particle||m.shader.name==SlazeyaStormVisualController.LightningShaderName,"R3 shader whitelist "+r.name);
+            Require(water||particle||m.shader.name==SlazeyaStormVisualController.LightningShaderName,"R4 shader whitelist "+r.name);
             foreach(string prop in water?new[]{"_BodyTex","_NormalRoughness","_FlowTex"}:particle?new[]{"_Atlas"}:new string[0])
                 Require(m.GetTexture(prop)!=null,"real texture dependency "+r.name+prop);
         }
@@ -299,6 +301,7 @@ public static class SlazeyaStormMassBundleBuilder
         public SlazeyaStormVisualController.Footprint footprint;
         public RecipientGeometry[] recipients;
         public float topY,poleGap,seamGap,bottomJoinGap;
+        public float[] initialSampleTimes={0.25f,0.80f};
     }
     [Serializable] private class EnvelopeReport {public List<EnvelopeCase> cases=new List<EnvelopeCase>();}
     private static void VerifyEnvelopeCases(GameObject prefab)
@@ -312,7 +315,7 @@ public static class SlazeyaStormMassBundleBuilder
             Bounds[] bodies=PreviewBodies(feet,H);
             if(scenario==2)bodies[2]=new Bounds(feet[2]+Vector3.up*H*0.9f,new Vector3(2.18f,H*1.8f,0.7f));
             var f=SlazeyaStormVisualController.FitFootprint(feet,H,bodies);
-            var item=new EnvelopeCase{name=name,footprint=f,topY=f.EnvelopeCenter.y+f.EnvelopeRadii.y,recipients=new RecipientGeometry[feet.Length]};
+            var item=new EnvelopeCase{name=name,footprint=f,topY=f.EnvelopeCenter.y+f.EnvelopeRadii.y*1.14f,recipients=new RecipientGeometry[feet.Length]};
             for(int i=0;i<feet.Length;i++)
             {
                 var samples=SlazeyaStormVisualController.BodySamples(feet[i],bodies[i]);float maximum=0;
@@ -323,13 +326,13 @@ public static class SlazeyaStormMassBundleBuilder
             for(int i=0;i<=32;i++)
             {
                 float theta=i/32f*Mathf.PI*2;
-                var pole=SlazeyaStormVisualController.BubblePoint(f,theta,1,theta,0.72f,1,false,1,2.4f,-1);
+                var pole=SlazeyaStormVisualController.BubblePoint(f,theta,1,theta,0.72f,1,false,0.8f/1.35f,2.4f,-1);
                 item.poleGap=Mathf.Max(item.poleGap,Vector3.Distance(pole,new Vector3(f.EnvelopeCenter.x,item.topY,f.EnvelopeCenter.z)));
-                var bottom=SlazeyaStormVisualController.BubblePoint(f,theta,0,theta,0,0.38f,false,1,2.4f,-1);
-                var cap=SlazeyaStormVisualController.BubblePoint(f,theta,1,theta,0,1,true,1,2.4f,-1);
+                var bottom=SlazeyaStormVisualController.BubblePoint(f,theta,0,theta,0,0.38f,false,0.8f/1.35f,2.4f,-1);
+                var cap=SlazeyaStormVisualController.BubblePoint(f,theta,1,theta,0,1,true,0.8f/1.35f,2.4f,-1);
                 item.bottomJoinGap=Mathf.Max(item.bottomJoinGap,Vector3.Distance(bottom,cap));
-                var seam0=SlazeyaStormVisualController.BubblePoint(f,0,i/32f,0,0,1,false,1,2.4f,-1);
-                var seam1=SlazeyaStormVisualController.BubblePoint(f,Mathf.PI*2,i/32f,Mathf.PI*2,0,1,false,1,2.4f,-1);
+                var seam0=SlazeyaStormVisualController.BubblePoint(f,0,i/32f,0,0,1,false,0.8f/1.35f,2.4f,-1);
+                var seam1=SlazeyaStormVisualController.BubblePoint(f,Mathf.PI*2,i/32f,Mathf.PI*2,0,1,false,0.8f/1.35f,2.4f,-1);
                 item.seamGap=Mathf.Max(item.seamGap,Vector3.Distance(seam0,seam1));
                 Require(SlazeyaStormVisualController.IsFinite(pole)&&SlazeyaStormVisualController.IsFinite(seam0),"finite pole / shell "+name);
             }
@@ -346,7 +349,7 @@ public static class SlazeyaStormMassBundleBuilder
         var rt=new RenderTexture(1280,720,24,RenderTextureFormat.ARGB32);var pixels=new Texture2D(1280,720,TextureFormat.RGB24,false);camera.targetTexture=rt;
         using(var driver=new SlazeyaStormVisualController(root,f))
         {
-            driver.Advance(1.35f);foreach(var r in root.GetComponentsInChildren<Renderer>())r.enabled=false;
+            driver.Advance(0.80f);foreach(var r in root.GetComponentsInChildren<Renderer>())r.enabled=false;
             root.transform.Find("AB_StormRoot/BubbleEnvelope").GetComponent<Renderer>().enabled=true;
             var bodyMaterial=StageMaterial(new Color(0.50f,0.47f,0.23f));var footMaterial=StageMaterial(new Color(1,0.85f,0.20f));var headMaterial=StageMaterial(new Color(1,0.35f,0.72f));
             for(int i=0;i<feet.Length;i++)
@@ -382,7 +385,7 @@ public static class SlazeyaStormMassBundleBuilder
             Require(driver.TriggerBurst()&&!driver.TriggerBurst(),"burst callback idempotent");
             Require(driver.AliveParticles>0,"native crest emission");
             for(int i=0;i<79;i++)driver.Advance(1f/60f);
-            Require(driver.IsComplete&&driver.AliveParticles==0,"R3 tail clears native particles");
+            Require(driver.IsComplete&&driver.AliveParticles==0,"R4 tail clears native particles");
             foreach(Renderer r in root.GetComponentsInChildren<Renderer>())Require(!r.enabled,"clear renderer "+r.name);
         }
         Object.DestroyImmediate(root);
@@ -391,35 +394,95 @@ public static class SlazeyaStormMassBundleBuilder
             missing.Advance(1.4f);missing.TriggerBurst();missing.Advance(1.3f);Require(missing.IsComplete,"missing bundle lifecycle");
         }
     }
+    private static float InspectCoreSupport(GameObject root,SlazeyaStormVisualController driver,SlazeyaStormVisualController.Footprint f,StringBuilder csv)
+    {
+        float maximum=0;
+        foreach(Renderer renderer in root.GetComponentsInChildren<Renderer>())
+        {
+            if(!renderer.enabled)continue;float support=0;
+            var ps=renderer.GetComponent<ParticleSystem>();
+            if(ps!=null)
+            {
+                var particles=new ParticleSystem.Particle[ps.main.maxParticles];int count=ps.GetParticles(particles);
+                var pr=(ParticleSystemRenderer)renderer;
+                for(int i=0;i<count;i++)
+                {
+                    float half=particles[i].GetCurrentSize(ps)*0.707107f;
+                    if(pr.renderMode==ParticleSystemRenderMode.Stretch)half=half*(1+pr.lengthScale)+particles[i].velocity.magnitude*pr.velocityScale;
+                    support=Mathf.Max(support,Vector3.Distance(ps.transform.TransformPoint(particles[i].position),driver.CoreCenter)+half);
+                }
+            }
+            else
+            {
+                Mesh mesh=renderer.GetComponent<MeshFilter>().sharedMesh;
+                if(renderer.name.EndsWith("Bolt"))
+                {foreach(Vector3 v in mesh.vertices)support=Mathf.Max(support,Vector3.Distance(renderer.transform.TransformPoint(v),driver.CoreCenter));}
+                else
+                {
+                    var patches=new List<Vector4>();mesh.GetUVs(1,patches);Vector2[] uv=mesh.uv;
+                    for(int i=0;i<uv.Length;i++)
+                    {
+                        Vector4 patch=patches[i];float theta=uv[i].x*Mathf.PI*2;
+                        Vector3 point=patch.w>1.5f?SlazeyaStormVisualController.RingPoint(f,theta,uv[i].y,driver.BurstAge):SlazeyaStormVisualController.BubblePoint(f,theta,uv[i].y,patch.x,patch.y,patch.z,patch.w>0.5f,Mathf.Clamp01(driver.Elapsed/1.35f),driver.ShapePhase,driver.BurstAge);
+                        RequireFinite(point,renderer.name);support=Mathf.Max(support,Vector3.Distance(point,driver.CoreCenter));
+                    }
+                }
+            }
+            csv.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0:F6},{1:F6},{2},{3:F6},{4:F6}",driver.Elapsed,driver.BurstAge,renderer.name,support,driver.CoreVisibleLimit));
+            if(support>driver.CoreVisibleLimit+H*0.0001f)throw new Exception("Core support exceeded by "+renderer.name+": "+support);
+            maximum=Mathf.Max(maximum,support);
+        }
+        return maximum;
+    }
+    private static void RequireFinite(Vector3 point,string name)
+    {if(!SlazeyaStormVisualController.IsFinite(point))throw new Exception("Nonfinite deformed point "+name);}
     private static void VerifyFoamTransport(GameObject prefab,SlazeyaStormVisualController.Footprint footprint)
     {
-        var root=Object.Instantiate(prefab);
-        var parcels=new ParticleSystem.Particle[168];
-        var csv=new StringBuilder("time,parcel,world_x,world_y,world_z,band_distance,closed_scale,charge\n");
-        float firstSpread=0,lastSpread=0;
+        Directory.CreateDirectory(PreviewDirectory());var root=Object.Instantiate(prefab);
+        var parcels=new ParticleSystem.Particle[168];var previousRadii=new float[168];for(int i=0;i<168;i++)previousRadii[i]=float.MaxValue;
+        var csv=new StringBuilder("time,parcel,x,y,z,core_distance,collapse,charge\n");
+        var support=new StringBuilder("time,burst_age,renderer,support_radius,limit\n");
         using(var driver=new SlazeyaStormVisualController(root,footprint))
         {
             var ps=root.transform.Find("AB_ParticleRoot/GatherFoam").GetComponent<ParticleSystem>();
-            float[] samples={0.8f,0.95f,1.10f,1.23f,1.28f,1.333333f};float previous=0;
-            for(int s=0;s<samples.Length;s++)
+            float[] samples={0.82f,0.95f,1.10f,1.23f,1.28f,1.333333f,1.35f,2.0f};float previous=0;
+            foreach(float time in samples)
             {
-                driver.Advance(samples[s]-previous);previous=samples[s];
-                int count=ps.GetParticles(parcels);Require(count==168,"persistent native foam identities "+samples[s]);
-                float spread=0;
+                while(previous<time-0.000001f){float dt=Mathf.Min(1f/120f,time-previous);driver.Advance(dt);previous+=dt;}
+                int count=ps.GetParticles(parcels);Require(count==168,"persistent native foam identities "+time);
                 for(int i=0;i<count;i++)
                 {
-                    Vector3 world=parcels[i].position+footprint.Center;
-                    if(Vector3.Distance(world,driver.FoamParcelPosition(i))>0.0001f)throw new Exception("Native foam transport differs from parcel position "+i);
-                    float distance=Mathf.Abs(world.y-footprint.BandY);spread+=distance/count;
-                    csv.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0:F4},{1},{2:F5},{3:F5},{4:F5},{5:F5},{6:F5},{7:F5}",samples[s],i,world.x,world.y,world.z,distance,driver.RadiusRatio,driver.Charge));
+                    Vector3 world=ps.transform.TransformPoint(parcels[i].position);float distance=Vector3.Distance(world,driver.CoreCenter);
+                    if(Vector3.Distance(world,driver.FoamParcelPosition(i))>0.0001f)throw new Exception("Native parcel mismatch "+i);
+                    if(distance>previousRadii[i]+H*0.0001f)throw new Exception("3D contraction reversed seed "+i);
+                    previousRadii[i]=distance;
+                    if(time>=1.28f&&distance>driver.CoreRadius+H*0.0001f)throw new Exception("Seed outside core "+i);
+                    csv.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0:F5},{1},{2:F5},{3:F5},{4:F5},{5:F5},{6:F5},{7:F5}",time,i,world.x,world.y,world.z,distance,driver.CollapseProgress,driver.Charge));
                 }
-                if(s==0)firstSpread=spread;lastSpread=spread;
+                if(time>=1.32f)InspectCoreSupport(root,driver,footprint,support);
             }
-            Require(firstSpread>H*0.20f&&lastSpread<firstSpread*0.12f,"existing native foam moves into narrow band: "+firstSpread+" -> "+lastSpread);
-            Require(driver.RadiusRatio>=1&&driver.RadiusRatio<1.001f&&driver.Charge>0.95f,"compression reaches legal envelope before short charge peak");
+            Require(!driver.BurstTriggered&&driver.Charge>=0.75f,"holds ONLY the lit core until manager callback");
+            Camera camera=CreateCamera(true);var stage=CreateStage(true);var rt=new RenderTexture(1280,720,24,RenderTextureFormat.ARGB32);var pixels=new Texture2D(1280,720,TextureFormat.RGB24,false);camera.targetTexture=rt;
+            File.WriteAllBytes(Path.Combine(PreviewDirectory(),"battlefield_core_hold_G2.png"),Render(camera,rt,pixels));
+            camera.targetTexture=null;Object.DestroyImmediate(camera.gameObject);Object.DestroyImmediate(stage);Object.DestroyImmediate(rt);Object.DestroyImmediate(pixels);
+            driver.TriggerBurst();InspectCoreSupport(root,driver,footprint,support);
+            Require(driver.Propagation==0,"B0 starts inside core with zero propagation");
         }
         Object.DestroyImmediate(root);
         File.WriteAllText(Path.Combine(PreviewDirectory(),"native-foam-transport.csv"),csv.ToString());
+        File.WriteAllText(Path.Combine(PreviewDirectory(),"native-core-support.csv"),support.ToString());
+        var wave=new StringBuilder("burst_age,w,water_x,water_y,water_z,water_radius,adjacent_step\n");Vector3 previousPoint=SlazeyaStormVisualController.RingPoint(footprint,2.25f,0.72f,0);
+        float previousRadius=0;
+        for(int i=0;i<=56;i++)
+        {
+            float b=i/240f;Vector3 point=SlazeyaStormVisualController.RingPoint(footprint,2.25f,0.72f,b);
+            float radius=Vector3.Distance(point,footprint.EnvelopeCenter),step=Vector3.Distance(point,previousPoint);
+            if(step>H*0.15f||radius+0.0001f<previousRadius)throw new Exception("Wavefront discontinuity "+b);
+            wave.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0:F6},{1:F6},{2:F6},{3:F6},{4:F6},{5:F6},{6:F6}",b,SlazeyaStormVisualController.WaveProgress(b),point.x,point.y,point.z,radius,step));
+            previousRadius=radius;previousPoint=point;
+        }
+        File.WriteAllText(Path.Combine(PreviewDirectory(),"native-wavefront.csv"),wave.ToString());
+        Require(true,"R4 3D core seeds, all rendered support, B0 and continuous wavefront");
     }
     private static byte[] Render(Camera camera,RenderTexture rt,Texture2D pixels)
     {
@@ -459,8 +522,8 @@ public static class SlazeyaStormMassBundleBuilder
                     {
                         string name=label+"_"+SampleNames[nextSample];File.WriteAllBytes(Path.Combine(output,name+".png"),png);
                         if(label=="black")ActualSampleTimes.Add(time);
-                        Debug.Log("Native R3 "+name+" t="+time+" B="+burstAge+" particles="+controller.AliveParticles);
-                        if(SampleNames[nextSample]=="03_foam_gathered"||SampleNames[nextSample]=="06_ring_peak_023")
+                        Debug.Log("Native R4 "+name+" t="+time+" B="+burstAge+" particles="+controller.AliveParticles);
+                        if(SampleNames[nextSample]=="03b_core_peak"||SampleNames[nextSample]=="06_waterfall_B14")
                         {
                             var particleRenderers=root.GetComponentsInChildren<ParticleSystemRenderer>();
                             foreach(var r in particleRenderers)r.enabled=false;
@@ -489,7 +552,7 @@ public static class SlazeyaStormMassBundleBuilder
             string name=atlas==0?"foam":"mist";
             ParticleSystem target=root.transform.Find("AB_ParticleRoot/"+(atlas==0?"BurstSheets":"ReturnMist")).GetComponent<ParticleSystem>();
             var renderer=target.GetComponent<ParticleSystemRenderer>();
-            int[] steps=atlas==0?new[]{0,12,24}:new[]{22,40,61};
+            int[] steps=atlas==0?new[]{4,12,24}:new[]{24,40,61};
             var particleData=new ParticleSystem.Particle[target.main.maxParticles];
             using(var controller=new SlazeyaStormVisualController(root,SlazeyaStormVisualController.FitFootprint(Feet,H,PreviewBodies(Feet,H))))
             {
@@ -528,6 +591,8 @@ public static class SlazeyaStormMassBundleBuilder
         public string source="AssetBundle.LoadFromFile -> script-free prefab -> canonical controller -> native shader and particles";
         public int width=1280,height=720,sequenceFps=30,simulationHz=60;
         public float referenceBodyHeight=H,callbackTime,orthographicSize=13.8f;
+        public float coreRadius=H*0.06f,coreVisibleLimit=H*0.12f;
+        public string propagation="smoothstep(B/0.23); B0,+1,+2,+4,+7,+11,+14 native 60Hz samples";
         public float gatherDuration=SlazeyaStormVisualController.GatherDuration,tailDuration=SlazeyaStormVisualController.TailDuration;
         public Vector3 cameraPosition=new Vector3(2,27,-56),cameraLookAt=new Vector3(2,2,1),casterFoot=Caster;
         public Vector3[] recipientFeet=Feet;
@@ -557,7 +622,7 @@ public static class SlazeyaStormMassBundleBuilder
         var dir=new DirectoryInfo(Application.dataPath);
         while(dir!=null&&!File.Exists(Path.Combine(dir.FullName,"AGENTS.md")))dir=dir.Parent;
         if(dir==null)throw new Exception("Cannot locate repository preview directory");
-        return Path.Combine(dir.FullName,"preview_exports/slazeya_storm_mass/round3");
+        return Path.Combine(dir.FullName,"preview_exports/slazeya_storm_mass/round4");
     }
 
     private static Camera CreateCamera(bool stage)

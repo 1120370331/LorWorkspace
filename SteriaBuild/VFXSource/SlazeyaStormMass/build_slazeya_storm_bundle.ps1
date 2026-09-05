@@ -4,7 +4,7 @@ $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $project = Join-Path $PSScriptRoot 'UnityProject'
 $canonical = Join-Path $repo 'SteriaBuild/SlazeyaStormVisualController.cs'
 $mirror = Join-Path $project 'Assets/Scripts/SlazeyaStormVisualController.cs'
-$preview = Join-Path $repo 'preview_exports/slazeya_storm_mass/round3'
+$preview = Join-Path $repo 'preview_exports/slazeya_storm_mass/round4'
 New-Item -ItemType Directory -Force -Path (Split-Path $mirror),$preview | Out-Null
 Copy-Item -LiteralPath $canonical -Destination $mirror -Force
 $sourceHash = (Get-FileHash -LiteralPath $canonical -Algorithm SHA256).Hash
@@ -32,7 +32,7 @@ $freshLog = (Test-Path -LiteralPath $log) -and (Get-Item -LiteralPath $log).Leng
 if (!$freshLog) { throw "Unity process $($process.Id) exited $($process.ExitCode) without a new log for run $runId. No previous licensing log was used." }
 Copy-Item -LiteralPath $log -Destination (Join-Path $preview 'unity-build.log') -Force
 if ($process.ExitCode -ne 0) { Get-Content -LiteralPath $log -Tail 65; throw "Unity process $($process.Id) exit $($process.ExitCode); fresh log: $log" }
-if (!(Select-String -LiteralPath $log -SimpleMatch 'SLAZEYA_ROUND3_BUILD_PREVIEW_PASS' -Quiet)) { throw "This run's R3 success marker absent: $log" }
+if (!(Select-String -LiteralPath $log -SimpleMatch 'SLAZEYA_ROUND4_BUILD_PREVIEW_PASS' -Quiet)) { throw "This run's R4 success marker absent: $log" }
 if ((Get-FileHash -LiteralPath $canonical -Algorithm SHA256).Hash -ne $sourceHash -or
     (Get-FileHash -LiteralPath $mirror -Algorithm SHA256).Hash -ne $sourceHash) { throw 'Controller changed during build; preview is stale' }
 $bundle = Join-Path $project 'AssetBundles/steria_slazeya_storm_mass'

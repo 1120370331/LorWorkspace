@@ -17,7 +17,7 @@ Check (([regex]::Matches($bridge,'GetVolumeEffect\(').Count -eq 1) -and $bridge 
 Check ($bridge -notmatch 'damagedUnitList.Count|override bool ActionPhase|\.GiveDamage\(|\.TakeDamage\(') 'empty damage list allowed; default gameplay unchanged'
 $visual=Join-Path $repo 'SteriaBuild/SlazeyaStormVisualController.cs'
 $bundle=Join-Path $PSScriptRoot 'UnityProject/AssetBundles/steria_slazeya_storm_mass'
-if(!$CandidateDirectory){$CandidateDirectory=Join-Path $repo 'preview_exports/slazeya_storm_mass/round3'}
+if(!$CandidateDirectory){$CandidateDirectory=Join-Path $repo 'preview_exports/slazeya_storm_mass/round4'}
 $manifestPath=Join-Path $CandidateDirectory 'manifest.json'
 if(!(Test-Path -LiteralPath $manifestPath)){throw "Build the current candidate first; no integrity manifest at $manifestPath"}
 $candidate=Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
