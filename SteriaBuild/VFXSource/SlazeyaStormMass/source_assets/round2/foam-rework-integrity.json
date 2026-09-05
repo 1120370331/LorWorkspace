@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "changed_functions": [
+    "foam_frame",
+    "boards",
+    "manifest"
+  ],
+  "preserved_png_sha256": {
+    "droplet_spindrift_4x2.png": "e12d1835f191bb04f62c6ef4f6ce75485339fbfc44a8d578972a42373b7abc6c",
+    "mist_density_lighting_4x4.png": "48f9edadd9ac23c63b813b53576207227740ed528f94694f8ff256ca3399e029",
+    "water_body_rgba.png": "384c69a438ff279cb70ac40951fb2375a96a6e8ab9b988037173ef9a6d12930e",
+    "water_flow_rg.png": "8706ad8c97d1f2dadf09c0cee7d83f1b26993e2b648b8567237629d8d121e56d",
+    "water_normal_roughness.png": "1a395a68babe027e0892fda1d6133a44e94eaf0e418570bd60cb0795e844ddf8"
+  },
+  "foam_sha256": "49497b48f47d786502d53dbc6c0c0cb34c61e2ddaece767aa8bdfac9358a9385",
+  "source_sha256": "d8dc142d13075372c9b66d98aeffb1a8620869b850568987cbbed3974e646f39",
+  "verify": {
+    "exit_code": 0,
+    "status": "PASS",
+    "output": "verification.json"
+  },
+  "verify_repro": {
+    "exit_code": 0,
+    "status": "PASS",
+    "stable_candidate_runs": 1,
+    "output": "all six regenerated PNGs are byte-identical"
+  }
+}

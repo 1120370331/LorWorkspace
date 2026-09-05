@@ -262,9 +262,6 @@ public class DiceCardSelfAbility_SlazeyaMassAttackTeamLightGain : DiceCardSelfAb
     public static string Desc = "[On Use] Consume all Flow (no regular Flow power bonus). For every 8 Flow spent, this page's dice gain +1 power";
     public override void OnUseCard()
     {
-        // 创建海洋波浪特效
-        CreateOceanWaveEffect();
-
         // 使用新的群攻卡牌流消耗记录
         int flowConsumedByThisCard = HarmonyHelpers.GetMassAttackFlowConsumed(this.card);
 
@@ -282,22 +279,6 @@ public class DiceCardSelfAbility_SlazeyaMassAttackTeamLightGain : DiceCardSelfAb
         }
     }
 
-    private void CreateOceanWaveEffect()
-    {
-        if (owner?.view == null) return;
-        try
-        {
-            GameObject effectObj = new GameObject("OceanWaveEffect");
-            effectObj.transform.position = owner.view.WorldPosition;
-            var effect = effectObj.AddComponent<OceanWaveEffectComponent>();
-            effect.Init(owner);
-            SteriaEffectHelper.AddScreenShake(0.04f, 0.03f, 70f, 0.6f);
-        }
-        catch (System.Exception ex)
-        {
-            SteriaLogger.Log($"SlazeyaMassAttack: Effect error: {ex.Message}");
-        }
-    }
 }
 
 // --- Slazeya Dice Abilities ---

@@ -1,0 +1,495 @@
+{
+  "schema_version": 2,
+  "round": 2,
+  "seed": 20260905,
+  "authoring": "Original deterministic numpy/Pillow fields; no external image inputs",
+  "generator": "../../generate_slazeya_storm_textures.py",
+  "generator_sha256": "d8dc142d13075372c9b66d98aeffb1a8620869b850568987cbbed3974e646f39",
+  "command": "py -3.12 SteriaBuild/VFXSource/SlazeyaStormMass/generate_slazeya_storm_textures.py",
+  "seed_families": {
+    "water": "20260905+10..220",
+    "spray": "20260905+300..301",
+    "mist": "20260905+400..412",
+    "droplets": "20260905+500..547"
+  },
+  "semantics": {
+    "height_normal": "same medium field; Nx=-dH/dU, Ny=-dH/dV; strength .022 with foam flattening",
+    "flow": "decode RG * 2 - 1; perturbation, not full velocity; base direction stays +U",
+    "spray": "one diagonal curved water tongue, one long pressure edge and two short offshoots; material-coordinate pores; three staggered heavy fragments with continuous tip release",
+    "mist": "28-slice integration of fixed 3D field, inverse curl/expansion advection, front transmittance plus directional gradient/occlusion",
+    "atlas_lifetime": "nonlooping; use frame blending as needed and native confirmation of top-left order"
+  },
+  "assets": {
+    "water_body_rgba.png": {
+      "path": "water_body_rgba.png",
+      "size": [
+        1024,
+        512
+      ],
+      "mode": "RGBA8",
+      "channels": {
+        "R": "wide water density",
+        "G": "clustered lip/shoulder foam",
+        "B": "independent directional rupture threshold",
+        "A": "coverage / thickness windows"
+      },
+      "sha256": "384c69a438ff279cb70ac40951fb2375a96a6e8ab9b988037173ef9a6d12930e",
+      "sRGB": false,
+      "alpha": "straight data, not premultiplied",
+      "wrapU": "Repeat",
+      "wrapV": "Clamp",
+      "filter": "Bilinear",
+      "recommended_mipmaps": false,
+      "recommended_compression": "Uncompressed",
+      "uv_convention": "U along flow; +V from foot to lip; PNG row 0 is lip; repeated endpoint samples at U=0/1"
+    },
+    "water_normal_roughness.png": {
+      "path": "water_normal_roughness.png",
+      "size": [
+        1024,
+        512
+      ],
+      "mode": "RGBA8",
+      "channels": {
+        "R": "tangent normal X * .5 + .5",
+        "G": "tangent normal Y * .5 + .5 (+V toward lip)",
+        "B": "tangent normal Z * .5 + .5",
+        "A": "roughness"
+      },
+      "sha256": "1a395a68babe027e0892fda1d6133a44e94eaf0e418570bd60cb0795e844ddf8",
+      "sRGB": false,
+      "alpha": "straight data, not premultiplied",
+      "wrapU": "Repeat",
+      "wrapV": "Clamp",
+      "filter": "Bilinear",
+      "recommended_mipmaps": false,
+      "recommended_compression": "Uncompressed",
+      "uv_convention": "U along flow; +V from foot to lip; PNG row 0 is lip; repeated endpoint samples at U=0/1"
+    },
+    "water_flow_rg.png": {
+      "path": "water_flow_rg.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA8",
+      "channels": {
+        "R": "slow flow perturbation X * .5 + .5",
+        "G": "slow flow perturbation Y * .5 + .5",
+        "B": "shared medium height",
+        "A": "one"
+      },
+      "sha256": "8706ad8c97d1f2dadf09c0cee7d83f1b26993e2b648b8567237629d8d121e56d",
+      "sRGB": false,
+      "alpha": "straight data, not premultiplied",
+      "wrapU": "Repeat",
+      "wrapV": "Clamp",
+      "filter": "Bilinear",
+      "recommended_mipmaps": false,
+      "recommended_compression": "Uncompressed",
+      "uv_convention": "U along flow; +V from foot to lip; PNG row 0 is lip; repeated endpoint samples at U=0/1"
+    },
+    "foam_spray_4x4.png": {
+      "path": "foam_spray_4x4.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA8",
+      "channels": {
+        "R": "membrane density",
+        "G": "foam / heavy drops",
+        "B": "local lit face",
+        "A": "coverage"
+      },
+      "sha256": "49497b48f47d786502d53dbc6c0c0cb34c61e2ddaece767aa8bdfac9358a9385",
+      "sRGB": false,
+      "alpha": "straight data, not premultiplied",
+      "wrapU": "Clamp",
+      "wrapV": "Clamp",
+      "filter": "Bilinear",
+      "recommended_mipmaps": false,
+      "recommended_compression": "Uncompressed",
+      "atlas": {
+        "columns": 4,
+        "rows": 4,
+        "tile_size": [
+          256,
+          256
+        ],
+        "gutter_px": 12,
+        "frame_order": "PNG top-left; row-major; first row frames 0,1,2,3",
+        "unity_tile_origin": "((frame % 4)/4, 1 - (floor(frame/4)+1)/rows)",
+        "time": "t=frame/15, continuous nonlooping"
+      }
+    },
+    "mist_density_lighting_4x4.png": {
+      "path": "mist_density_lighting_4x4.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA8",
+      "channels": {
+        "R": "integrated density",
+        "G": "upper/front light",
+        "B": "bottom/interior occlusion",
+        "A": "soft coverage"
+      },
+      "sha256": "48f9edadd9ac23c63b813b53576207227740ed528f94694f8ff256ca3399e029",
+      "sRGB": false,
+      "alpha": "straight data, not premultiplied",
+      "wrapU": "Clamp",
+      "wrapV": "Clamp",
+      "filter": "Bilinear",
+      "recommended_mipmaps": false,
+      "recommended_compression": "Uncompressed",
+      "atlas": {
+        "columns": 4,
+        "rows": 4,
+        "tile_size": [
+          256,
+          256
+        ],
+        "gutter_px": 12,
+        "frame_order": "PNG top-left; row-major; first row frames 0,1,2,3",
+        "unity_tile_origin": "((frame % 4)/4, 1 - (floor(frame/4)+1)/rows)",
+        "time": "t=frame/15, continuous nonlooping"
+      }
+    },
+    "droplet_spindrift_4x2.png": {
+      "path": "droplet_spindrift_4x2.png",
+      "size": [
+        1024,
+        512
+      ],
+      "mode": "RGBA8",
+      "channels": {
+        "R": "grayscale light",
+        "G": "grayscale light",
+        "B": "grayscale light",
+        "A": "shape coverage"
+      },
+      "sha256": "e12d1835f191bb04f62c6ef4f6ce75485339fbfc44a8d578972a42373b7abc6c",
+      "sRGB": false,
+      "alpha": "straight data, not premultiplied",
+      "wrapU": "Clamp",
+      "wrapV": "Clamp",
+      "filter": "Bilinear",
+      "recommended_mipmaps": false,
+      "recommended_compression": "Uncompressed",
+      "atlas": {
+        "columns": 4,
+        "rows": 2,
+        "tile_size": [
+          256,
+          256
+        ],
+        "gutter_px": 12,
+        "frame_order": "PNG top-left; row-major; first row frames 0,1,2,3",
+        "unity_tile_origin": "((frame % 4)/4, 1 - (floor(frame/4)+1)/rows)",
+        "time": "8 independent shape variants; do not animate as a lifecycle"
+      }
+    }
+  },
+  "checks": {
+    "status": "PASS",
+    "assets": {
+      "water_body_rgba.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "channel_ranges": [
+          [
+            37,
+            230
+          ],
+          [
+            0,
+            245
+          ],
+          [
+            50,
+            217
+          ],
+          [
+            0,
+            248
+          ]
+        ],
+        "u_edge_max_lsb": 0,
+        "v_alpha_edge_max_lsb": 0,
+        "density_rupture_correlation": -0.0455,
+        "foam_white_fraction": 0.0
+      },
+      "water_normal_roughness.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "channel_ranges": [
+          [
+            107,
+            159
+          ],
+          [
+            96,
+            162
+          ],
+          [
+            247,
+            255
+          ],
+          [
+            103,
+            232
+          ]
+        ],
+        "u_edge_max_lsb": 0,
+        "normal_length_max_error": 0.005042
+      },
+      "water_flow_rg.png": {
+        "size": [
+          512,
+          512
+        ],
+        "channel_ranges": [
+          [
+            91,
+            159
+          ],
+          [
+            104,
+            155
+          ],
+          [
+            48,
+            221
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "u_edge_max_lsb": 0
+      },
+      "foam_spray_4x4.png": {
+        "size": [
+          1024,
+          1024
+        ],
+        "channel_ranges": [
+          [
+            0,
+            203
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            181
+          ],
+          [
+            0,
+            235
+          ]
+        ],
+        "gutter_rgba_max_lsb": 0,
+        "alpha_mass": [
+          2246.03,
+          2229.78,
+          2244.02,
+          2266.35,
+          2247.88,
+          2187.06,
+          2100.56,
+          1873.08,
+          1584.7,
+          1132.4,
+          600.47,
+          386.9,
+          347.85,
+          301.42,
+          115.44,
+          0.0
+        ],
+        "adjacent_alpha_mae": [
+          0.00304,
+          0.00561,
+          0.0073,
+          0.0088,
+          0.00947,
+          0.00908,
+          0.00978,
+          0.00966,
+          0.00966,
+          0.0112,
+          0.00757,
+          0.0066,
+          0.00708,
+          0.00555,
+          0.00176
+        ],
+        "adjacent_alpha_cosine": [
+          0.98,
+          0.9498,
+          0.9301,
+          0.9104,
+          0.8979,
+          0.8991,
+          0.8836,
+          0.8688,
+          0.8647,
+          0.7022,
+          0.5794,
+          0.4634,
+          0.3317,
+          0.227,
+          null
+        ]
+      },
+      "mist_density_lighting_4x4.png": {
+        "size": [
+          1024,
+          1024
+        ],
+        "channel_ranges": [
+          [
+            0,
+            233
+          ],
+          [
+            0,
+            230
+          ],
+          [
+            0,
+            115
+          ],
+          [
+            0,
+            235
+          ]
+        ],
+        "gutter_rgba_max_lsb": 0,
+        "alpha_mass": [
+          10735.24,
+          10791.27,
+          10824.69,
+          10835.53,
+          10824.4,
+          10789.29,
+          10730.46,
+          10647.31,
+          10403.32,
+          9320.07,
+          7584.73,
+          5525.67,
+          3459.67,
+          1679.03,
+          450.67,
+          0.0
+        ],
+        "adjacent_alpha_mae": [
+          0.00888,
+          0.00904,
+          0.00918,
+          0.00932,
+          0.00947,
+          0.00961,
+          0.00975,
+          0.01078,
+          0.0195,
+          0.0278,
+          0.03202,
+          0.03178,
+          0.02724,
+          0.01875,
+          0.00688
+        ],
+        "adjacent_alpha_cosine": [
+          0.9982,
+          0.9982,
+          0.9982,
+          0.9982,
+          0.9982,
+          0.9982,
+          0.9981,
+          0.9981,
+          0.9981,
+          0.9981,
+          0.998,
+          0.998,
+          0.9978,
+          0.9961,
+          null
+        ]
+      },
+      "droplet_spindrift_4x2.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "channel_ranges": [
+          [
+            0,
+            223
+          ],
+          [
+            0,
+            223
+          ],
+          [
+            0,
+            223
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "gutter_rgba_max_lsb": 0,
+        "alpha_mass": [
+          1033.82,
+          957.17,
+          973.69,
+          642.51,
+          630.69,
+          3068.4,
+          1998.28,
+          2047.73
+        ],
+        "adjacent_alpha_mae": [
+          0.02526,
+          0.02709,
+          0.02344,
+          0.0183,
+          0.05342,
+          0.03922,
+          0.03775
+        ],
+        "adjacent_alpha_cosine": [
+          0.1783,
+          0.0855,
+          0.0545,
+          0.0634,
+          0.0766,
+          0.5553,
+          0.4275
+        ]
+      }
+    },
+    "limits": "Offline data checks only; native material, particle UV orientation, interpolation, compression and mip behavior remain unverified."
+  },
+  "inspection_boards": "inspection/*.png; OFFLINE data only, not Unity output",
+  "unverified": [
+    "Unity import/readback and atlas playback direction",
+    "Material color/lighting and tangent handedness on actual deformed mesh",
+    "Particle blend/overdraw and perceptual continuity at gameplay size",
+    "Mip/compression sampling (recommended disabled/uncompressed)",
+    "Final AAA visual acceptance, native bundle and game deployment"
+  ]
+}
