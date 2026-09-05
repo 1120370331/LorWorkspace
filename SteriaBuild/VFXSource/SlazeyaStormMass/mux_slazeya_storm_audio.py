@@ -1,4 +1,5 @@
-"""Verify the frozen source mix and mux skill SFX onto the accepted video without re-encoding it."""
+"""Verify the frozen source mix and mux skill SFX onto the candidate video without re-encoding it."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -10,10 +11,10 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
 SOURCE = Path(__file__).resolve().parent / "source_audio"
-VISUAL = ROOT / "preview_exports/slazeya_storm_mass/round2"
+VISUAL = ROOT / "preview_exports/slazeya_storm_mass/round3"
 OUTPUT = VISUAL / "audio"
-ACCEPTED_BUNDLE = "03E113FCBD45DE93E79620824B59C8E7D9E8D2EDBD3B92FC1FC43415DDAC4E3A"
-ACCEPTED_DRIVER = "5D6532FAF0C86382E0BE86CA0662A765A797151924F3EFEFE95ED57EDD515E8A"
+ACCEPTED_BUNDLE = None
+ACCEPTED_DRIVER = None
 
 
 def digest(path):
@@ -55,6 +56,17 @@ def encoded_stream_hash(ffmpeg, path, stream):
 
 
 def main():
+    global VISUAL, OUTPUT, ACCEPTED_BUNDLE, ACCEPTED_DRIVER
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--candidate-dir', type=Path, required=True)
+    parser.add_argument('--expected-bundle', required=True)
+    parser.add_argument('--expected-driver', required=True)
+    args = parser.parse_args()
+    VISUAL = args.candidate_dir.resolve()
+    OUTPUT = VISUAL / 'audio'
+    ACCEPTED_BUNDLE = args.expected_bundle.upper()
+    ACCEPTED_DRIVER = args.expected_driver.upper()
+    assert len(ACCEPTED_BUNDLE) == 64 and len(ACCEPTED_DRIVER) == 64
     OUTPUT.mkdir(parents=True, exist_ok=True)
     manifest = json.loads((SOURCE / "manifest.json").read_text(encoding="utf-8-sig"))
     visual = json.loads((VISUAL / "manifest.json").read_text(encoding="utf-8-sig"))
@@ -97,8 +109,8 @@ def main():
          "-ar", "44100", "-ac", "2", "-shortest", "-movflags", "+faststart", str(output_video)])
     before_stream = encoded_stream_hash(ffmpeg, video, "0:v:0")
     after_stream = encoded_stream_hash(ffmpeg, output_video, "0:v:0")
-    assert before_stream == after_stream, "Accepted encoded video stream changed"
-    assert digest(video) == video_file_hash, "Original accepted MP4 was modified"
+    assert before_stream == after_stream, "Candidate encoded video stream changed"
+    assert digest(video) == video_file_hash, "Original candidate MP4 was modified"
     decoded = run([ffmpeg, "-v", "error", "-xerror", "-i", str(output_video), "-map", "0:v:0",
                    "-progress", "pipe:1", "-f", "null", "-"]).stdout.decode()
     frames = [int(line.split("=")[1]) for line in decoded.splitlines() if line.startswith("frame=")]
@@ -131,7 +143,7 @@ def main():
         "decodedAudioFrames": len(decoded_audio) // 4,
         "audioEncoding": "AAC 192kbps is lossy; source PCM and encoded/decoded audio hashes are deliberately distinct",
         "streams": streams, "output": str(output_video), "outputSha256": digest(output_video),
-        "acceptedVisualBundleSha256": ACCEPTED_BUNDLE, "acceptedVisualControllerSha256": ACCEPTED_DRIVER,
+        "candidateVisualBundleSha256": ACCEPTED_BUNDLE, "candidateVisualControllerSha256": ACCEPTED_DRIVER,
     }
     (OUTPUT / "av-verification.json").write_text(json.dumps(evidence, indent=2), encoding="utf-8")
     print(json.dumps(evidence, indent=2))

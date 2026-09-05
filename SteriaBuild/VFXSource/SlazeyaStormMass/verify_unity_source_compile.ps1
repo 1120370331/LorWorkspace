@@ -1,7 +1,7 @@
 param([string]$UnityData = 'C:/Program Files/Unity/Editor/Data')
 $ErrorActionPreference = 'Stop'
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
-$output = Join-Path $repo 'preview_exports/slazeya_storm_mass/round2'
+$output = Join-Path $repo 'preview_exports/slazeya_storm_mass/round3'
 New-Item -ItemType Directory -Force -Path $output | Out-Null
 $managed = Join-Path $UnityData 'Managed'
 $framework = 'C:/Windows/Microsoft.NET/Framework64/v4.0.30319'

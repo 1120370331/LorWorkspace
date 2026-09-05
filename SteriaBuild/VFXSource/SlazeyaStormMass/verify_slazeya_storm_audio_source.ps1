@@ -1,3 +1,4 @@
+param([string]$CandidateDirectory='')
 $ErrorActionPreference='Stop'
 $repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $audioPath=Join-Path $repo 'SteriaBuild/SlazeyaStormAudioController.cs'
@@ -16,6 +17,11 @@ Check (([regex]::Matches($bridge,'GetVolumeEffect\(').Count -eq 1) -and $bridge 
 Check ($bridge -notmatch 'damagedUnitList.Count|override bool ActionPhase|\.GiveDamage\(|\.TakeDamage\(') 'empty damage list allowed; default gameplay unchanged'
 $visual=Join-Path $repo 'SteriaBuild/SlazeyaStormVisualController.cs'
 $bundle=Join-Path $PSScriptRoot 'UnityProject/AssetBundles/steria_slazeya_storm_mass'
-Check ((Get-FileHash -LiteralPath $visual -Algorithm SHA256).Hash -eq '5D6532FAF0C86382E0BE86CA0662A765A797151924F3EFEFE95ED57EDD515E8A') 'accepted visual controller frozen'
-Check ((Get-FileHash -LiteralPath $bundle -Algorithm SHA256).Hash -eq '03E113FCBD45DE93E79620824B59C8E7D9E8D2EDBD3B92FC1FC43415DDAC4E3A') 'accepted visual Bundle frozen'
+if(!$CandidateDirectory){$CandidateDirectory=Join-Path $repo 'preview_exports/slazeya_storm_mass/round3'}
+$manifestPath=Join-Path $CandidateDirectory 'manifest.json'
+if(!(Test-Path -LiteralPath $manifestPath)){throw "Build the current candidate first; no integrity manifest at $manifestPath"}
+$candidate=Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+Check ((Get-FileHash -LiteralPath $visual -Algorithm SHA256).Hash -eq $candidate.controllerSha256) 'current candidate visual controller matches manifest'
+Check ((Get-FileHash -LiteralPath $bundle -Algorithm SHA256).Hash -eq $candidate.bundleSha256) 'current candidate visual Bundle matches manifest'
+Check ($candidate.gatherDuration -gt 1.349 -and $candidate.gatherDuration -lt 1.351 -and $candidate.tailDuration -gt 1.199 -and $candidate.tailDuration -lt 1.201) 'current visual timings match unchanged SFX'
 if($failed.Count){throw "Audio source contract failed: $($failed.Count)"}

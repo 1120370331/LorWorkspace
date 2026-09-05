@@ -33,11 +33,25 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
             List<BattleUnitModel> recipients = FindRecipients(self);
             if (recipients.Count > 0) audioPosition = recipients[0].view.WorldPosition;
             float height = RepresentativeHeight(recipients, self);
+            if (recipients.Count > 0 && height <= 0f)
+            {
+                height = 6f;
+                SteriaLogger.Log("Slazeya R3: no measurable body renderer; reference H=6 fallback, each missing body conservatively 1.5H.");
+            }
             if (recipients.Count > 0 && height > 0f)
             {
                 var feet = new Vector3[recipients.Count];
-                for (int i = 0; i < feet.Length; i++) feet[i] = recipients[i].view.WorldPosition;
-                footprint = SlazeyaStormVisualController.FitFootprint(feet, height);
+                var bodies = new Bounds[recipients.Count];
+                for (int i = 0; i < feet.Length; i++)
+                {
+                    feet[i] = recipients[i].view.WorldPosition;
+                    if (!TryBodyBounds(recipients[i], out bodies[i]))
+                    {
+                        bodies[i] = SlazeyaStormVisualController.ConservativeBody(feet[i], height * 1.5f);
+                        SteriaLogger.Log("Slazeya R3 recipient " + i + " missing body bounds; conservative 1.5 x representative H at actual foot " + feet[i]);
+                    }
+                }
+                footprint = SlazeyaStormVisualController.FitFootprint(feet, height, bodies);
                 // This component and the visual are world roots, never children of the caster.
                 transform.SetParent(null, true);
                 transform.position = footprint.Center;
@@ -52,6 +66,8 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
                 }
                 SteriaLogger.Log(string.Format("SlazeyaStormMass frozen XZ center={0} Rx={1:F3} Rz={2:F3} visible H={3:F3} recipients={4}",
                     footprint.Center, footprint.RadiusX, footprint.RadiusZ, height, recipients.Count));
+                SteriaLogger.Log(string.Format("Slazeya R3 envelope center={0} radii={1} ground={2:F3} maxNormalizedRadius={3:F5}",
+                    footprint.EnvelopeCenter, footprint.EnvelopeRadii, footprint.GroundY, footprint.MaxNormalizedRadius));
             }
             else SteriaLogger.Log("SlazeyaStormMass: no valid recipient/body bounds; completing without visible resources.");
             _visual = new SlazeyaStormVisualController(_instance, footprint);
@@ -166,17 +182,31 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
 
     private static float BodyHeight(BattleUnitModel unit)
     {
-        if (unit == null || unit.view == null || unit.view.charAppearance == null) return 0f;
+        Bounds bounds;
+        return TryBodyBounds(unit, out bounds) ? bounds.size.y : 0f;
+    }
+
+    private static bool TryBodyBounds(BattleUnitModel unit, out Bounds bounds)
+    {
+        bounds = new Bounds();
+        if (unit == null || unit.view == null || unit.view.charAppearance == null) return false;
         bool found = false;
-        Bounds bounds = new Bounds();
-        // Active body sprites only; excludes inactive motions, attached particle effects and UI.
-        foreach (SpriteRenderer renderer in unit.view.charAppearance.GetComponentsInChildren<SpriteRenderer>())
+        var appearance = unit.view.charAppearance;
+        var bodyRenderers = new HashSet<SpriteRenderer>();
+        var motion = appearance.GetCurrentMotion();
+        if (motion != null && motion.motionSpriteSet != null)
+            foreach (var sprite in motion.motionSpriteSet)
+                if (sprite.sprType != CharacterAppearanceType.Effect && sprite.sprRenderer != null) bodyRenderers.Add(sprite.sprRenderer);
+        if (appearance.CustomAppearance != null)
+            foreach (var renderer in appearance.CustomAppearance.allSpriteList) if (renderer != null) bodyRenderers.Add(renderer);
+        // Only registered body/customization sprites, not arbitrary attached effect renderers.
+        foreach (SpriteRenderer renderer in bodyRenderers)
         {
-            if (!renderer.enabled || renderer.sprite == null || renderer.color.a <= 0.01f) continue;
+            if (!renderer.enabled || !renderer.gameObject.activeInHierarchy || renderer.sprite == null || renderer.color.a <= 0.01f || !SlazeyaStormVisualController.IsFinite(renderer.bounds.size)) continue;
             if (!found) { bounds = renderer.bounds; found = true; }
             else bounds.Encapsulate(renderer.bounds);
         }
-        return found && SlazeyaStormVisualController.IsFinite(bounds.size) ? bounds.size.y : 0f;
+        return found && bounds.size.y > 0f && SlazeyaStormVisualController.IsFinite(bounds.center) && SlazeyaStormVisualController.IsFinite(bounds.size);
     }
 
     private static GameObject LoadPrefab()
