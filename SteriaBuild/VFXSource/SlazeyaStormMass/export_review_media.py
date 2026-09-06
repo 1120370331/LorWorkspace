@@ -9,7 +9,7 @@ import subprocess
 from PIL import Image, ImageDraw, ImageFont
 
 REPO = Path(__file__).resolve().parents[3]
-OUTPUT = REPO / "preview_exports" / "slazeya_storm_mass" / "round4"
+OUTPUT = REPO / "preview_exports" / "slazeya_storm_mass" / "round5"
 
 
 def select_encoder():

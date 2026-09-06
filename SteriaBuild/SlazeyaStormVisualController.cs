@@ -2,15 +2,18 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>R3 shared enclosing bubble, foam transport and flexible circumferential rupture.</summary>
+/// <summary>R5 open cloud clusters, three-dimensional core collapse and continuous waterfall release.</summary>
 public sealed class SlazeyaStormVisualController : IDisposable
 {
     public const string BundleName="steria_slazeya_storm_mass";
     public const string PrefabName="SlazeyaStormMassPrefab";
     public const string ShaderName="Steria/SlazeyaStormFlow";
+    public const string CloudVolumeShaderName="Steria/SlazeyaStormCloudVolume";
+    public const int MacroCount=1;
+    public const string CloudShaderName="Steria/SlazeyaStormCloud";
     public const string ParticleShaderName="Steria/SlazeyaStormParticles";
     public const string LightningShaderName="Steria/SlazeyaStormLightning";
-    public const string Version="2026-09-06.round4.1";
+    public const string Version="2026-09-06.cloud-recovery.1";
     public const float GatherDuration = 1.35f;
     public const float TailDuration = 1.20f;
     public const int SectorCount=14;
@@ -20,6 +23,7 @@ public sealed class SlazeyaStormVisualController : IDisposable
         public Vector3 Center;
         public float RadiusX,RadiusZ,Height;
         public Vector3 EnvelopeCenter,EnvelopeRadii;
+        public Vector2 CloudInnerRadii;
         public float GroundY,MaxNormalizedRadius,BandY;
     }
     public static bool IsFinite(Vector3 v)
@@ -73,6 +77,13 @@ public sealed class SlazeyaStormVisualController : IDisposable
         f.MaxNormalizedRadius=0;foreach(var p in samples)f.MaxNormalizedRadius=Mathf.Max(f.MaxNormalizedRadius,NormalizedRadius(f,p));
         f.GroundY=Mathf.Min(min.y,footMin.y)-0.02f*height;
         f.BandY=footMin.y+0.58f*height;
+        float cloudExpansion=1;
+        foreach(Vector3 p in samples)
+        {
+            float x=(p.x-f.EnvelopeCenter.x)/f.RadiusX,z=(p.z-f.EnvelopeCenter.z)/f.RadiusZ;
+            cloudExpansion=Mathf.Max(cloudExpansion,Mathf.Sqrt(x*x+z*z)/0.95f);
+        }
+        f.CloudInnerRadii=new Vector2(f.RadiusX*cloudExpansion,f.RadiusZ*cloudExpansion);
         return f;
     }
     public static float NormalizedRadius(Footprint f,Vector3 p)
@@ -153,17 +164,18 @@ public sealed class SlazeyaStormVisualController : IDisposable
 
     private readonly GameObject _root;
     private readonly Footprint _f;
-    private readonly Renderer _bubble,_ring;
+    private readonly Renderer _ring;
+    private readonly Renderer[] _macros=new Renderer[MacroCount];
+    private readonly Vector4[] _macroCenters=new Vector4[12],_macroAxisX=new Vector4[12],_macroAxisY=new Vector4[12],_macroAxisZ=new Vector4[12];
+    private readonly CloudMacroPose[] _macroPoses=new CloudMacroPose[MacroCount];
     private readonly Renderer[] _bolts,_renderers;
     private readonly ParticleSystem[] _particles;
     private readonly ParticleSystem.Particle[] _foamParcels=new ParticleSystem.Particle[168];
     private readonly MaterialPropertyBlock _block=new MaterialPropertyBlock();
     private readonly bool[] _boltAnchored=new bool[2],_jetReleased=new bool[SectorCount];
     private readonly bool[] _waterfallReleased=new bool[3];
-    private float _phase,_burstAge,_burstPhase,_emitCredit,_capturedGather,_collapsePhase;
+    private float _phase,_burstAge,_burstPhase,_capturedGather,_collapsePhase;
     private bool _collapseStarted;
-    private readonly ParticleSystem.Particle[] _gatherScratch=new ParticleSystem.Particle[64];
-    private int _emitted;
     private bool _disposed,_primaryLiftReleased,_secondaryLiftReleased,_primaryReturnReleased,_secondaryReturnReleased;
     private Vector3 _lightningPoint;
     public float Elapsed {get;private set;}
@@ -187,10 +199,10 @@ public sealed class SlazeyaStormVisualController : IDisposable
     {
         _root=root;_f=footprint;if(root==null)return;
         root.transform.SetParent(null,true);root.transform.position=footprint.Center;root.transform.rotation=Quaternion.identity;root.transform.localScale=Vector3.one;
-        Transform storm=Required("AB_StormRoot"),ring=Required("AB_BurstRoot/RingJet");
-        storm.localPosition=footprint.EnvelopeCenter-footprint.Center;storm.localScale=footprint.EnvelopeRadii;
+        Transform ring=Required("AB_BurstRoot/RingJet");
         ring.localPosition=footprint.EnvelopeCenter-footprint.Center;ring.localScale=footprint.EnvelopeRadii;
-        _bubble=Required("AB_StormRoot/BubbleEnvelope").GetComponent<Renderer>();_ring=ring.GetComponent<Renderer>();
+        _ring=ring.GetComponent<Renderer>();
+        for(int i=0;i<MacroCount;i++)_macros[i]=Required("AB_StormRoot/CloudMacroRoot/CloudMacro_"+i.ToString("D2")).GetComponent<Renderer>();
         _bolts=new[]{Required("AB_BurstRoot/LightningRoot/PrimaryBolt").GetComponent<Renderer>(),Required("AB_BurstRoot/LightningRoot/SecondaryBolt").GetComponent<Renderer>()};
         _particles=new ParticleSystem[ParticleNames.Length];
         for(int i=0;i<_particles.Length;i++){var p=Required("AB_ParticleRoot/"+ParticleNames[i]).GetComponent<ParticleSystem>();_particles[i]=p;p.Stop(false,ParticleSystemStopBehavior.StopEmittingAndClear);var main=p.main;main.loop=false;main.playOnAwake=false;var emission=p.emission;emission.enabled=false;p.Pause(false);}
@@ -201,22 +213,16 @@ public sealed class SlazeyaStormVisualController : IDisposable
     {
         if(_disposed||IsComplete||BurstTriggered)return false;
         _burstPhase=ShapePhase;_capturedGather=Elapsed;BurstTriggered=true;_burstAge=0;
-        if(_root!=null){EmitSector(5);_jetReleased[5]=true;UpdateFoamParcels();ApplyVisuals();}return true;
+        if(_root!=null){EmitSector(5);_jetReleased[5]=true;SimulateParticles(0);UpdateFoamParcels();ApplyVisuals();}return true;
     }
     public void Advance(float deltaTime)
     {
         if(_disposed||IsComplete||deltaTime<=0||float.IsNaN(deltaTime)||float.IsInfinity(deltaTime))return;
-        float previousCollapse=CollapseProgress;
         Elapsed+=deltaTime;_phase+=deltaTime*(BurstTriggered?0.65f:0.50f+0.70f*Mathf.Clamp01(Elapsed/GatherDuration));if(BurstTriggered)_burstAge+=deltaTime;
         if(!_collapseStarted&&Elapsed>=0.82f){_collapseStarted=true;_collapsePhase=_phase;}
         if(_root!=null)
         {
-            if(!BurstTriggered&&Elapsed<0.82f)
-            {
-                _emitCredit+=deltaTime*26;int count=Mathf.Min(12,(int)_emitCredit);_emitCredit-=(int)_emitCredit;
-                for(int i=0;i<count;i++)EmitSpray(1,_emitted++,(_emitted*2.399963f)%(Mathf.PI*2));
-            }
-            else if(BurstTriggered)
+            if(BurstTriggered)
             {
                 for(int i=0;i<SectorCount;i++)if(!_jetReleased[i]&&_burstAge>=0.02f+0.025f*Hash(i,4)){_jetReleased[i]=true;if(_burstAge<0.16f)EmitSector(i);}
                 for(int i=0;i<3;i++)if(!_waterfallReleased[i]&&_burstAge>=0.06f+i*0.09f){_waterfallReleased[i]=true;if(_burstAge<0.36f)EmitWaterfallStreaks(i);}
@@ -225,8 +231,7 @@ public sealed class SlazeyaStormVisualController : IDisposable
                 if(!_primaryReturnReleased&&_burstAge>=0.36f){_primaryReturnReleased=true;if(_burstAge<0.6f)EmitMist(4,12,0);}
                 if(!_secondaryReturnReleased&&_burstAge>=0.50f){_secondaryReturnReleased=true;if(_burstAge<0.7f)EmitMist(4,10,1);}
             }
-            foreach(var p in _particles)p.Simulate(deltaTime, false, false, false);
-            if(!BurstTriggered)ConstrainGatherParticles(previousCollapse);
+            SimulateParticles(deltaTime);
             UpdateFoamParcels();
             ApplyVisuals();
         }
@@ -234,7 +239,7 @@ public sealed class SlazeyaStormVisualController : IDisposable
     }
     private void ApplyVisuals()
     {
-        ApplyLightning();float gather=Mathf.Clamp01((BurstTriggered?_capturedGather:Elapsed)/GatherDuration);
+        ApplyLightning();ApplyMacroClouds();float gather=Mathf.Clamp01((BurstTriggered?_capturedGather:Elapsed)/GatherDuration);
         RadiusRatio=BurstTriggered?Mathf.Lerp(0.06f,1.52f,Propagation):ClosedScale(gather);
         _block.Clear();_block.SetFloat("_Phase",_phase);_block.SetFloat("_ShapePhase",ShapePhase);_block.SetFloat("_Collapse",CollapseProgress);_block.SetFloat("_CoreRadius",CoreRadius);_block.SetFloat("_FoamGather",FoamGather);_block.SetFloat("_Gather",gather);_block.SetFloat("_Charge",Charge);
         _block.SetFloat("_BurstAge",BurstAge);_block.SetFloat("_Rupture",BurstTriggered?Mathf.Clamp01(_burstAge/0.10f):0);
@@ -242,51 +247,164 @@ public sealed class SlazeyaStormVisualController : IDisposable
         _block.SetFloat("_Ground",_f.GroundY-_f.EnvelopeCenter.y);_block.SetFloat("_Band",_f.BandY-_f.EnvelopeCenter.y);
         _block.SetFloat("_Alpha",Mathf.Clamp01(Elapsed/0.18f));
         _block.SetVector("_LightningPosition",_lightningPoint+_f.Center);_block.SetFloat("_LightningEnergy",LightningEnergy);_block.SetFloat("_LightningRadius",Mathf.Lerp(CoreRadius,_f.Height*0.6f,Propagation));
-        _bubble.SetPropertyBlock(_block);_ring.SetPropertyBlock(_block);
-        _bubble.enabled=Elapsed>0&&(!BurstTriggered||_burstAge<0.065f);_ring.enabled=BurstTriggered&&_burstAge<0.72f;
-        for(int i=0;i<_particles.Length;i++){_block.Clear();_block.SetFloat("_Phase",_phase);_block.SetFloat("_Alpha",i==0?0.20f:i==4?0.34f:i==5?0.24f:i==6?0.85f+0.15f*Charge:i==7?1:0.9f);_particles[i].GetComponent<Renderer>().SetPropertyBlock(_block);}
+        _ring.SetPropertyBlock(_block);
+        _ring.enabled=BurstTriggered&&_burstAge<0.72f;
+        for(int i=0;i<_particles.Length;i++)
+        {
+            _block.Clear();_block.SetFloat("_Phase",_phase);
+            _block.SetFloat("_Alpha",i==0?0.20f:i==4?0.34f:i==5?0.24f:i==6?1:i==7?1:0.9f);
+            if(i==6)
+            {
+                _block.SetVector("_CloudCenter",CoreCenter);_block.SetFloat("_CloudHeight",_f.Height);
+                _block.SetVector("_CloudInnerRadii",new Vector4(_f.CloudInnerRadii.x,_f.CloudInnerRadii.y,0,0));
+                _block.SetFloat("_CloudSpinAngle",-ShapePhase*0.80f-0.55f*CollapseProgress);_block.SetFloat("_DensityPhase",Elapsed);
+                _block.SetFloat("_Collapse",CollapseProgress);
+                _block.SetFloat("_Charge",BurstTriggered?1-Ease(_burstAge/0.065f):Charge);
+                _block.SetFloat("_WaterMix",BurstTriggered?Ease(_burstAge/0.10f):0);
+                _block.SetVector("_LightningPosition",_lightningPoint+_f.Center);_block.SetFloat("_LightningEnergy",LightningEnergy);
+                _block.SetFloat("_LightningRadius",Mathf.Lerp(CoreRadius,_f.Height*0.6f,Propagation));
+            }
+            _particles[i].GetComponent<Renderer>().SetPropertyBlock(_block);
+        }
     }
-    // Fixed identities travel through 3D space into the ONE core, then enter the same wavefront.
+    private void SimulateParticles(float deltaTime)
+    {
+        // Zero-time callback flush makes just-emitted native geometry visible without aging it.
+        foreach(var p in _particles)p.Simulate(deltaTime, false, false, false);
+    }
+    [Serializable] public struct CloudMacroPose
+    {
+        public Vector3 Center,Radii;
+        public Quaternion Rotation;
+        public float Scale;
+        public Vector3 AxisX {get{return Rotation*Vector3.right;}}
+        public Vector3 AxisY {get{return Rotation*Vector3.up;}}
+        public Vector3 AxisZ {get{return Rotation*Vector3.forward;}}
+    }
+    // Public diagnostic: Radii are BOX half extents, not ellipsoid axes.
+    public static CloudMacroPose InitialMacroPose(Footprint f,int index,float phase)
+    {
+        if(index!=0)throw new ArgumentOutOfRangeException("index");
+        // Max positive distance perturbation=.175H: radial support -.025..925H;
+        // the hole mask removes r<=0. Vertical half support .56*(1+.175/.30)+.10 < 1H.
+        return new CloudMacroPose{Center=new Vector3(f.EnvelopeCenter.x,f.GroundY+f.Height*0.75f,f.EnvelopeCenter.z),
+            Rotation=Quaternion.identity,Radii=new Vector3(f.CloudInnerRadii.x+0.935f*f.Height,1.0f*f.Height,f.CloudInnerRadii.y+0.935f*f.Height),Scale=1};
+    }
+    public float CloudUniformScale
+    {
+        get
+        {
+            var p=InitialMacroPose(_f,0,0);
+            float minimumScale=0.056f*_f.Height/((p.Center-CoreCenter).magnitude+p.Radii.magnitude);
+            return Mathf.Lerp(1,minimumScale,CollapseProgress);
+        }
+    }
+    public CloudMacroPose CloudContainerPose {get{return MacroPose(0);}}
+    public CloudMacroPose MacroPose(int index)
+    {
+        CloudMacroPose pose=InitialMacroPose(_f,index,ShapePhase);
+        float collapse=CollapseProgress;pose.Scale=CloudUniformScale;
+        pose.Center=CoreCenter+RotateY(pose.Center-CoreCenter,0.55f*collapse)*pose.Scale;
+        pose.Radii*=pose.Scale;
+        pose.Rotation=Quaternion.AngleAxis(0.55f*collapse*Mathf.Rad2Deg,Vector3.up);
+        return pose;
+    }
+    private void ApplyMacroClouds()
+    {
+        for(int i=0;i<MacroCount;i++)
+        {
+            CloudMacroPose pose=MacroPose(i);_macroPoses[i]=pose;
+            Transform node=_macros[i].transform;node.localPosition=pose.Center-_f.Center;node.localRotation=pose.Rotation;node.localScale=pose.Radii;
+            _macroCenters[i]=pose.Center;_macroAxisX[i]=pose.AxisX/pose.Radii.x;_macroAxisY[i]=pose.AxisY/pose.Radii.y;_macroAxisZ[i]=pose.AxisZ/pose.Radii.z;
+        }
+        float opacity=Ease(Elapsed/0.18f)*(BurstTriggered?1-Ease(_burstAge/0.065f):1);
+        float charge=BurstTriggered?1-Ease(_burstAge/0.065f):Charge;
+        for(int i=0;i<MacroCount;i++)
+        {
+            _block.Clear();_block.SetFloat("_MacroCount",MacroCount);_block.SetFloat("_ProxyIndex",i);
+            _block.SetVectorArray("_MacroCenters",_macroCenters);_block.SetVectorArray("_MacroAxisX",_macroAxisX);_block.SetVectorArray("_MacroAxisY",_macroAxisY);_block.SetVectorArray("_MacroAxisZ",_macroAxisZ);
+            _block.SetVector("_CloudCenter",CoreCenter);_block.SetVector("_CloudInnerRadii",new Vector4(_f.CloudInnerRadii.x,_f.CloudInnerRadii.y,0,0));
+            _block.SetFloat("_CloudHeight",_f.Height);_block.SetFloat("_CloudGroundY",_f.GroundY);_block.SetFloat("_CloudSpinAngle",-ShapePhase*0.80f);
+            _block.SetFloat("_DensityPhase",Elapsed);_block.SetFloat("_Collapse",CollapseProgress);
+            _block.SetFloat("_Charge",charge);_block.SetFloat("_Opacity",opacity);_block.SetFloat("_ExtinctionScale",1/_macroPoses[i].Scale);
+            _block.SetFloat("_LocalScale",_macroPoses[i].Scale);
+            _block.SetVector("_LightningPosition",_lightningPoint+_f.Center);_block.SetFloat("_LightningEnergy",LightningEnergy);
+            _block.SetFloat("_LightningRadius",Mathf.Lerp(CoreRadius,_f.Height*0.6f,Propagation));
+            _macros[i].SetPropertyBlock(_block);_macros[i].enabled=Elapsed>0&&(!BurstTriggered||_burstAge<0.065f);
+        }
+    }
+    public static float CloudTheta(int group,float phase)
+    {
+        float step=Mathf.PI*2/24;
+        return (group+0.5f)*step+(Hash(group,91)-0.5f)*step*0.40f-phase*0.80f;
+    }
+    public static Vector3 CloudSpine(Footprint f,int group,float phase)
+    {
+        float theta=CloudTheta(group,phase);Vector2 r=f.CloudInnerRadii;
+        Vector3 normal=new Vector3(Mathf.Cos(theta)/r.x,0,Mathf.Sin(theta)/r.y).normalized;
+        return new Vector3(f.EnvelopeCenter.x+r.x*Mathf.Cos(theta),f.GroundY+f.Height*(0.48f+0.14f*Mathf.Sin(theta)+0.035f*Mathf.Sin(3*theta)),f.EnvelopeCenter.z+r.y*Mathf.Sin(theta))+normal*f.Height*0.45f;
+    }
+    public static Vector2 CloudInitialSize(Footprint f,int index,float phase)
+    {
+        int role=index%7,group=index/7;float theta=CloudTheta(group,phase);
+        float strength=RingLobes(theta),h=f.Height;
+        float width=role<2?0.60f+Hash(index,92)*0.03f:role<4?0.51f+Hash(index,92)*0.06f:role==4?0.36f+Hash(index,92)*0.08f:0.55f+Hash(index,92)*0.15f;
+        float height=role<2?0.48f+Hash(index,93)*0.06f:role<4?0.39f+Hash(index,93)*0.07f:role==4?0.30f+Hash(index,93)*0.08f:0.08f+Hash(index,93)*0.06f;
+        if(Mathf.Sin(theta)<0)height*=0.85f;
+        // Width connects neighbouring clusters; vertical size carries their strong/weak hierarchy.
+        return new Vector2(width*(0.92f+0.08f*strength),height*(0.82f+0.18f*strength))*h;
+    }
+    public static Vector3 CloudInitialPosition(Footprint f,int index,float phase)
+    {
+        int role=index%7,group=index/7;float theta=CloudTheta(group,phase),h=f.Height;
+        Vector2 r=f.CloudInnerRadii,size=CloudInitialSize(f,index,phase);
+        Vector3 n=new Vector3(Mathf.Cos(theta)/r.x,0,Mathf.Sin(theta)/r.y).normalized;
+        Vector3 t=new Vector3(-r.x*Mathf.Sin(theta),0,r.y*Mathf.Cos(theta)).normalized;
+        float along=role==0?-0.060f:role==1?0.040f:role==2?-0.080f:role==3?0.065f:role==4?0:role==5?-0.110f:0.110f;
+        float lift=role==0?-0.055f:role==1?0.055f:role==2?0.065f:role==3?-0.015f:role==4?0.10f:0;
+        Vector3 offset=h*(n*((Hash(index,94)-0.5f)*0.06f)+t*(along+(Hash(index,95)-0.5f)*0.035f+phase*(role-3)*0.004f)+Vector3.up*(lift+(Hash(index,96)-0.5f)*0.025f));
+        // Entire nonuniform card plus offset fits the cloud's outer support ball.
+        offset=Vector3.ClampMagnitude(offset,Mathf.Max(0,0.44f*h-size.magnitude*0.5f));
+        return CloudSpine(f,group,phase)+offset;
+    }
+    public static float CloudRoleEnd(int role)
+    {return role<2?0:role==2?0.35f:role==3?0.55f:role==4?0.80f:role==5?1:0.65f;}
     public Vector3 FoamParcelPosition(int index)
     {
-        float q=0.035f+0.89f*Hash(index,47),theta=index*2.399963f+ShapePhase*0.68f;
-        Vector3 p=BubblePoint(_f,theta,q,theta,0,1,false,Mathf.Clamp01((BurstTriggered?_capturedGather:Elapsed)/GatherDuration),ShapePhase,-1);
-        if(BurstTriggered)p=Vector3.Lerp(p,ExpandedRingPoint(_f,theta+0.55f,0.28f+0.62f*Hash(index,48),_burstAge),Propagation);
+        Vector3 initial=CloudInitialPosition(_f,index,ShapePhase);
+        Vector3 p=CoreCenter+RotateY(initial-CoreCenter,0.55f*CollapseProgress)*CloudUniformScale;
+        p=Vector3.Lerp(p,CoreCenter, Ease((CollapseProgress-0.95f)/0.05f)*(1-CloudRoleEnd(index%7)));
+        if(BurstTriggered)p=Vector3.Lerp(p,ExpandedRingPoint(_f,CloudTheta(index/7,ShapePhase)-0.55f,0.28f+0.62f*Hash(index,48),_burstAge),Propagation);
         return p;
     }
-    private void ConstrainGatherParticles(float previous)
+    public Vector2 CloudParcelSize(int index)
     {
-        if(CollapseProgress<=0)return;
-        _emitCredit=0;
-        for(int system=0;system<2;system++)
-        {
-            var ps=_particles[system];var renderer=ps.GetComponent<ParticleSystemRenderer>();renderer.renderMode=ParticleSystemRenderMode.Billboard;
-            int count=ps.GetParticles(_gatherScratch);
-            for(int i=0;i<count;i++)
-            {
-                Vector3 d=_gatherScratch[i].position+_f.Center-CoreCenter;
-                float radius=d.magnitude,initial=previous<0.99999f?(radius-CoreRadius*previous)/(1-previous):CoreRadius;
-                Vector3 origin=RotateY(radius>0.000001f?d/radius:Vector3.down,-0.55f*previous)*Mathf.Max(CoreRadius,initial);
-                _gatherScratch[i].position=CoreCenter-_f.Center+CollapseOffset(origin,CollapseProgress,_f.Height);
-                _gatherScratch[i].velocity=Vector3.zero;
-                _gatherScratch[i].startSize*=Mathf.Lerp(1,0.08f,CollapseProgress)/Mathf.Lerp(1,0.08f,previous);
-            }
-            ps.SetParticles(_gatherScratch,count);
-        }
+        Vector2 core=Vector2.one*_f.Height*(0.035f+0.012f*Hash(index,97));
+        Vector2 size=CloudInitialSize(_f,index,ShapePhase)*CloudUniformScale;
+        size=Vector2.Lerp(size,core,Ease((CollapseProgress-0.95f)/0.05f));
+        if(BurstTriggered)size=Vector2.Lerp(size,Vector2.one*_f.Height*(0.09f+0.06f*Hash(index,52)),Propagation);
+        return size;
     }
     private void UpdateFoamParcels()
     {
         if(BurstTriggered&&_burstAge>0.65f){_particles[6].SetParticles(_foamParcels,0);return;}
-        float visible=Ease(Elapsed/0.22f)*(BurstTriggered?1-Ease((_burstAge-0.18f)/0.47f):1);
+        float visible=Ease(Elapsed/0.18f)*(BurstTriggered?1-Ease((_burstAge-0.18f)/0.47f):1);
         for(int i=0;i<_foamParcels.Length;i++)
         {
+            int role=i%7;float theta=CloudTheta(i/7,ShapePhase);
+            float strength=0.80f+0.20f*RingLobes(theta);
+            float alpha=role<2?0.62f+0.10f*Hash(i,98):role<4?0.48f+0.10f*Hash(i,98):role==4?0.44f:0.055f+0.035f*Hash(i,98);
+            if(Mathf.Sin(theta)<0)alpha*=0.80f;
+            Vector2 size=CloudParcelSize(i);
             _foamParcels[i].position=FoamParcelPosition(i)-_f.Center;
             _foamParcels[i].velocity=Vector3.zero;
-            _foamParcels[i].startLifetime=8;
-            _foamParcels[i].remainingLifetime=8*(0.64f-0.16f*Hash(i,51));
-            _foamParcels[i].startSize=_f.Height*Mathf.Lerp(0.09f+0.12f*Hash(i,52),0.025f+0.025f*Hash(i,52),CollapseProgress)*(BurstTriggered?Mathf.Lerp(1,2.8f,Propagation):1);
-            _foamParcels[i].startColor=new Color(1,1,1,visible*(0.62f+0.28f*Hash(i,53))*Mathf.Lerp(1,0.26f,CollapseProgress)*(BurstTriggered?Mathf.Lerp(1,2.8f,Propagation):1));
-            _foamParcels[i].rotation=Hash(i,54)*360+_phase*22;
+            _foamParcels[i].startLifetime=8;_foamParcels[i].remainingLifetime=4;
+            _foamParcels[i].startSize3D=new Vector3(size.x,size.y,1);
+            _foamParcels[i].startColor=new Color(role<2?0.15f:role==4?1:0.55f,role<5?1:0,1,visible*alpha*strength*Mathf.Lerp(1,0.28f,CollapseProgress)*(BurstTriggered?Mathf.Lerp(0.18f,1,Propagation):role>=5?0.65f:0.12f));
+            Vector3 tangent=RingTangent(_f,theta);
+            float tangentAngle=Mathf.Atan2(tangent.z*0.402f,tangent.x)*Mathf.Rad2Deg;
+            _foamParcels[i].rotation=role>=5?tangentAngle:(role==1?180:role==2?-32:role==3?38:0)+(Hash(i,99)-0.5f)*32+tangentAngle*0.20f;
+            if(role<5)_foamParcels[i].rotation+=Mathf.Sin(_phase*(0.7f+Hash(i,100)*0.5f)+i*0.73f)*12*(1-CollapseProgress);
             _foamParcels[i].randomSeed=(uint)(i+7141);
         }
         _particles[6].SetParticles(_foamParcels,_foamParcels.Length);
@@ -340,7 +458,7 @@ public sealed class SlazeyaStormVisualController : IDisposable
     {
         float h=_f.Height;Vector3 n=RingNormal(_f,theta),t=RingTangent(_f,theta);
         float q=0.28f+0.45f*Hash(index,3);
-        Vector3 p=(BurstTriggered?RingPoint(_f,theta,q,_burstAge):BubblePoint(_f,theta,q,theta,0,1,false,Mathf.Clamp01(Elapsed/GatherDuration),ShapePhase,-1))-_f.Center;
+        Vector3 p=RingPoint(_f,theta,q,_burstAge)-_f.Center;
         float side=1-0.60f*Mathf.Pow(Mathf.Max(0,Mathf.Cos(theta)),6);
         Vector3 velocity=BurstTriggered?WaveVelocity(theta,q)+h*Propagation*((3.5f+2f*Hash(index,5))*side*n+(0.2f+0.4f*Hash(index,6))*t+(0.3f+0.6f*Hash(index,7))*Vector3.up):t*h*0.65f;
         float tilt=Mathf.Atan2(velocity.y*0.916f+velocity.z*0.402f,velocity.x)*Mathf.Rad2Deg-(system==2?55f:90f);

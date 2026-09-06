@@ -4,7 +4,7 @@ $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $project = Join-Path $PSScriptRoot 'UnityProject'
 $canonical = Join-Path $repo 'SteriaBuild/SlazeyaStormVisualController.cs'
 $mirror = Join-Path $project 'Assets/Scripts/SlazeyaStormVisualController.cs'
-$preview = Join-Path $repo 'preview_exports/slazeya_storm_mass/round4'
+$preview = Join-Path $repo 'preview_exports/slazeya_storm_mass/round5'
 New-Item -ItemType Directory -Force -Path (Split-Path $mirror),$preview | Out-Null
 Copy-Item -LiteralPath $canonical -Destination $mirror -Force
 $sourceHash = (Get-FileHash -LiteralPath $canonical -Algorithm SHA256).Hash
@@ -32,7 +32,7 @@ $freshLog = (Test-Path -LiteralPath $log) -and (Get-Item -LiteralPath $log).Leng
 if (!$freshLog) { throw "Unity process $($process.Id) exited $($process.ExitCode) without a new log for run $runId. No previous licensing log was used." }
 Copy-Item -LiteralPath $log -Destination (Join-Path $preview 'unity-build.log') -Force
 if ($process.ExitCode -ne 0) { Get-Content -LiteralPath $log -Tail 65; throw "Unity process $($process.Id) exit $($process.ExitCode); fresh log: $log" }
-if (!(Select-String -LiteralPath $log -SimpleMatch 'SLAZEYA_ROUND4_BUILD_PREVIEW_PASS' -Quiet)) { throw "This run's R4 success marker absent: $log" }
+if (!(Select-String -LiteralPath $log -SimpleMatch 'SLAZEYA_ROUND5_BUILD_PREVIEW_PASS' -Quiet)) { throw "This run's R5 success marker absent: $log" }
 if ((Get-FileHash -LiteralPath $canonical -Algorithm SHA256).Hash -ne $sourceHash -or
     (Get-FileHash -LiteralPath $mirror -Algorithm SHA256).Hash -ne $sourceHash) { throw 'Controller changed during build; preview is stale' }
 $bundle = Join-Path $project 'AssetBundles/steria_slazeya_storm_mass'
@@ -50,6 +50,20 @@ $inputs = @($canonical, $mirror, (Join-Path $repo 'SteriaBuild/FarAreaEffect_Ste
     (Join-Path $project 'Assets/Shaders/SlazeyaStormFlow.shader'),
     (Join-Path $project 'Assets/Shaders/SlazeyaStormParticles.shader'), $bundle)
 $inputs += Join-Path $project 'Assets/Shaders/SlazeyaStormLightning.shader'
+$inputs += Join-Path $project 'Assets/Shaders/SlazeyaStormCloud.shader'
+$inputs += Join-Path $project 'Assets/Shaders/SlazeyaStormCloudVolume.shader'
+$inputs += Join-Path $project 'Assets/Shaders/SlazeyaStormCloudNoise.cginc'
+$inputs += Join-Path $project 'Assets/Shaders/SlazeyaStormCloudDensity.cginc'
+$inputs += Join-Path $project 'Assets/Shaders/CloudDensitySlice.compute'
+$inputs += Join-Path $project 'Assets/Shaders/CloudNoiseBake.compute'
+$inputs += Join-Path $project 'Assets/Shaders/CloudNoise/PeriodicPerlin.hlsl'
+$inputs += Join-Path $project 'Assets/Editor/SlazeyaStormCloudNoiseBaker.cs'
+$inputs += Join-Path $project 'Assets/Textures/CloudVolume/CloudShape64.asset'
+$inputs += Join-Path $project 'Assets/Textures/CloudVolume/CloudErosion32.asset'
+$inputs += Join-Path $project 'Assets/Textures/CloudVolume/CloudNoiseCache.json'
+$inputs += Join-Path $PSScriptRoot 'ThirdParty/NOTICE.txt'
+$inputs += Join-Path $PSScriptRoot 'ThirdParty/cloud-source-references.json'
+
 $inputs += Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'source_assets/round2') -Filter '*.png' -File | ForEach-Object { $_.FullName }
 $hashes = $inputs | ForEach-Object { Get-FileHash -LiteralPath $_ -Algorithm SHA256 | Select-Object Path,Hash }
 $hashes | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $preview 'candidate-sha256.json') -Encoding utf8

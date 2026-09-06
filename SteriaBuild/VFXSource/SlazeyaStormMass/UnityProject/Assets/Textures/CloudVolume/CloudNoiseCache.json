@@ -1,0 +1,57 @@
+{
+    "recipe": "PW-v1: Pnoise4/8/16 amplitude1/.5/.25; inverse normalized F1; shapePW,W4,W8,W16; erosionW2,W4,W8,1",
+    "cacheKey": "19DAA56B5577DE66965916E8CE6DB39B3CAD8170EF890759EF2DF4EF941226BA",
+    "unity": "2019.3.15f1",
+    "device": "NVIDIA GeForce RTX 4090 Laptop GPU",
+    "graphicsApi": "Direct3D11",
+    "seed": 20260906,
+    "bakeMilliseconds": 1017.0504000000001,
+    "shape": {
+        "asset": "Assets/Textures/CloudVolume/CloudShape64.asset",
+        "channels": "R=PerlinWorley,G=W4,B=W8,A=W16",
+        "allMipSha256": "1A783601B5E0221528A62D94B8BB62C09075A14E74B3E8B629B4BEC644E74CC8",
+        "baseVoxelSha256": "D4CBE90966E6533993C908C6FDDDC9C18D73A0E31F18C112730F771F5180190E",
+        "size": 64,
+        "mips": 7,
+        "minimum": [
+            0.4117647111415863,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "maximum": [
+            0.9686274528503418,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "rawPeriodError": 0.0,
+        "seamFunctionDifference": 0.0001496934419265017,
+        "filteredPeriodError": 0.0000019073486328125,
+        "filteredSeamDifference": 0.0002612471580505371
+    },
+    "erosion": {
+        "asset": "Assets/Textures/CloudVolume/CloudErosion32.asset",
+        "channels": "R=W2,G=W4,B=W8,A=1; independent seeds",
+        "allMipSha256": "F8FBD208124621730D09E9832CFEF2699FDCD41695D561CC0D43B9D462BA415D",
+        "baseVoxelSha256": "4F020160CC01A0F0EEEE490C00D94620DFCDE843A7CE5983D4C4F3E27555BD5E",
+        "size": 32,
+        "mips": 6,
+        "minimum": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "maximum": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "rawPeriodError": 0.0,
+        "seamFunctionDifference": 0.0001507187553215772,
+        "filteredPeriodError": 7.450580596923828e-7,
+        "filteredSeamDifference": 0.00013339519500732422
+    }
+}

@@ -1,0 +1,55 @@
+/*
+MIT License
+
+Copyright (c) 2019 Sebastian Lague
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+#pragma kernel CSSlice
+#pragma kernel CSRingSupport
+#include "SlazeyaStormCloudNoise.cginc"
+#include "SlazeyaStormCloudDensity.cginc"
+RWStructuredBuffer<float4> _SliceOutput;
+int _SliceResolution;
+float4 _SliceCenter,_SliceHalfSize;
+float _SliceWorldStep;
+[numthreads(8,8,1)]void CSSlice(uint3 id:SV_DispatchThreadID)
+{
+    if(any(id.xy>=(uint)_SliceResolution))return;
+    float2 uv=(id.xy+0.5)/(float)_SliceResolution;
+    float3 world=_SliceCenter.xyz+float3((uv.x*2-1)*_SliceHalfSize.x,0,(uv.y*2-1)*_SliceHalfSize.y);
+    CloudBaseSample baseData=SampleCloudBase(world,_SliceWorldStep);
+    float2 density=SampleCloudDensityFromBase(world,_SliceWorldStep,baseData);
+    _SliceOutput[id.x+id.y*_SliceResolution]=float4(baseData.baseDensity,density.x,max(0,baseData.baseDensity-density.x),baseData.unionEnvelope);
+}
+// Runtime density coverage, not proxy occupancy: 12 sectors x16 angles x8 radii x8 heights.
+// Called only during the uncollapsed gather samples by the native builder verifier.
+[numthreads(64,1,1)]void CSRingSupport(uint3 id:SV_DispatchThreadID)
+{
+    if(id.x>=12288)return;
+    uint angleIndex=id.x/64,radialIndex=(id.x/8)%8,heightIndex=id.x%8;
+    float theta=(angleIndex+0.5)*6.28318530718/192;
+    float2 normal=normalize(float2(cos(theta)/_CloudInnerRadii.x,sin(theta)/_CloudInnerRadii.y));
+    float radial=lerp(0.10,0.80,(radialIndex+0.5)/8);
+    float vertical=lerp(-0.98,0.98,(heightIndex+0.5)/8)*(0.48+0.08*sin(theta));
+    float3 world=_CloudCenter.xyz;
+    world.xz+=_CloudInnerRadii.xy*float2(cos(theta),sin(theta))+normal*radial*_CloudHeight;
+    world.y=_CloudGroundY+_CloudHeight*(0.75+0.10*sin(theta)+vertical);
+    _SliceOutput[id.x]=float4(SampleCloudDensity(world,_SliceWorldStep).x,radial,theta,vertical);
+}

@@ -1,0 +1,66 @@
+/*
+MIT License
+
+Copyright (c) 2019 Sebastian Lague
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+// Periodic Worley neighbor search adapted from Sebastian Lague, Clouds (2019), MIT.
+// Full notice is prepended by source preparation and retained in ThirdParty/NOTICE.txt.
+#pragma kernel CSRaw
+#pragma kernel CSProbe
+#include "CloudNoise/PeriodicPerlin.hlsl"
+StructuredBuffer<float3> _PointsA,_PointsB,_PointsC,_ProbePositions;
+RWStructuredBuffer<float4> _Output;
+int _Resolution,_ProbeCount;
+int3 _Cells;
+float3 _PerlinSeedOffset;
+
+float WorleyF1(StructuredBuffer<float3> points,int cells,float3 samplePos)
+{
+    samplePos=frac(samplePos);int3 cellID=(int3)floor(samplePos*cells);float minimum=1;
+    // Same current + 26 neighbors and periodic F1 distance as the pinned Seb worley().
+    // A wrapped cell's integer translation gives its periodic image directly.
+    [loop]for(int z=-1;z<=1;z++)[loop]for(int y=-1;y<=1;y++)[loop]for(int x=-1;x<=1;x++)
+    {
+        int3 adjacent=cellID+int3(x,y,z),wrapped=((adjacent%cells)+cells)%cells;
+        int index=wrapped.x+cells*(wrapped.y+wrapped.z*cells);
+        float3 feature=points[index]+(float3)(adjacent-wrapped)/cells;
+        float3 delta=samplePos-feature;minimum=min(minimum,dot(delta,delta));
+    }
+    return sqrt(minimum);
+}
+float4 RawNoise(float3 uv)
+{
+    float perlin=(PeriodicPerlin(uv*4+_PerlinSeedOffset,float3(4,4,4))
+        +0.5*PeriodicPerlin(uv*8+_PerlinSeedOffset,float3(8,8,8))
+        +0.25*PeriodicPerlin(uv*16+_PerlinSeedOffset,float3(16,16,16)))/1.75;
+    float3 f1=float3(WorleyF1(_PointsA,_Cells.x,uv),WorleyF1(_PointsB,_Cells.y,uv),WorleyF1(_PointsC,_Cells.z,uv));
+    return float4(perlin,f1);
+}
+[numthreads(4,4,4)]void CSRaw(uint3 id:SV_DispatchThreadID)
+{
+    if(any(id>=(uint)_Resolution))return;
+    uint index=id.x+_Resolution*(id.y+id.z*_Resolution);
+    _Output[index]=RawNoise((id+0.5)/(float)_Resolution);
+}
+[numthreads(32,1,1)]void CSProbe(uint3 id:SV_DispatchThreadID)
+{
+    if(id.x>=(uint)_ProbeCount)return;_Output[id.x]=RawNoise(_ProbePositions[id.x]);
+}

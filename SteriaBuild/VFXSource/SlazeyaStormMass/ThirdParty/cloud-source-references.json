@@ -1,0 +1,79 @@
+[
+  {
+    "Repo": "SebLague/Clouds",
+    "Commit": "fcc997c40d36c7bedf95a294cd2136b8c5127009",
+    "Path": "Assets/Scripts/Clouds/Shaders/Clouds.shader",
+    "URL": "https://raw.githubusercontent.com/SebLague/Clouds/fcc997c40d36c7bedf95a294cd2136b8c5127009/Assets/Scripts/Clouds/Shaders/Clouds.shader",
+    "SHA256": "932543D8297E92B812FFAA602957EB167279642939664802EA30C9AB25621402"
+  },
+  {
+    "Repo": "SebLague/Clouds",
+    "Commit": "fcc997c40d36c7bedf95a294cd2136b8c5127009",
+    "Path": "Assets/Scripts/Clouds/Noise/Compute/NoiseGenCompute.compute",
+    "URL": "https://raw.githubusercontent.com/SebLague/Clouds/fcc997c40d36c7bedf95a294cd2136b8c5127009/Assets/Scripts/Clouds/Noise/Compute/NoiseGenCompute.compute",
+    "SHA256": "97E7977062871EB28F63E26B835F46D979D5378299318DBDB621F1D41E7EB189"
+  },
+  {
+    "Repo": "SebLague/Clouds",
+    "Commit": "fcc997c40d36c7bedf95a294cd2136b8c5127009",
+    "Path": "LICENSE",
+    "URL": "https://raw.githubusercontent.com/SebLague/Clouds/fcc997c40d36c7bedf95a294cd2136b8c5127009/LICENSE",
+    "SHA256": "24F060A992CF2DD33A9B2045645EA70A67380B439A99F121841E84915370D4D7"
+  },
+  {
+    "Repo": "sebh/TileableVolumeNoise",
+    "Commit": "1f879a26b89aaa4b5a7f112f14ec149d08057661",
+    "Path": "TileableVolumeNoise.cpp",
+    "URL": "https://raw.githubusercontent.com/sebh/TileableVolumeNoise/1f879a26b89aaa4b5a7f112f14ec149d08057661/TileableVolumeNoise.cpp",
+    "SHA256": "A52192BF509B1152B3D3369DC2A67814F5640C0B425608F2A8D5A656E3249848"
+  },
+  {
+    "Repo": "sebh/TileableVolumeNoise",
+    "Commit": "1f879a26b89aaa4b5a7f112f14ec149d08057661",
+    "Path": "main.cpp",
+    "URL": "https://raw.githubusercontent.com/sebh/TileableVolumeNoise/1f879a26b89aaa4b5a7f112f14ec149d08057661/main.cpp",
+    "SHA256": "21E6AB49F830DB00DFD9C922ABA154D34D1DE9CDB3DBC55E0F75218687D3186D"
+  },
+  {
+    "Repo": "sebh/TileableVolumeNoise",
+    "Commit": "1f879a26b89aaa4b5a7f112f14ec149d08057661",
+    "Path": "LICENSE.md",
+    "URL": "https://raw.githubusercontent.com/sebh/TileableVolumeNoise/1f879a26b89aaa4b5a7f112f14ec149d08057661/LICENSE.md",
+    "SHA256": "F0362ADECC3CB133C87679F23EBAAFFFFE17915425166FFFF2007C9F6FFCA75B"
+  },
+  {
+    "Repo": "Unity-Technologies/Graphics",
+    "Commit": "a7e4c051d256a781ab362c64316b125a1e104694",
+    "Path": "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/VolumetricClouds/VolumetricCloudsUtilities.hlsl",
+    "URL": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/a7e4c051d256a781ab362c64316b125a1e104694/Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/VolumetricClouds/VolumetricCloudsUtilities.hlsl",
+    "SHA256": "3D50DB296EB4092E6003C6EE5F8F44AF038F10A019FA43D45C8B498C4D17B38C"
+  },
+  {
+    "Repo": "Unity-Technologies/Graphics",
+    "Commit": "a7e4c051d256a781ab362c64316b125a1e104694",
+    "Path": "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/VolumetricClouds/WorleyUtilities.hlsl",
+    "URL": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/a7e4c051d256a781ab362c64316b125a1e104694/Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/VolumetricClouds/WorleyUtilities.hlsl",
+    "SHA256": "2E43FF39C9530A618E074F4534320149FF2B3CAD7FE0A8D823948770490A04F7"
+  },
+  {
+    "Repo": "Unity-Technologies/Graphics",
+    "Commit": "a7e4c051d256a781ab362c64316b125a1e104694",
+    "Path": "LICENSE.md",
+    "URL": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/a7e4c051d256a781ab362c64316b125a1e104694/LICENSE.md",
+    "SHA256": "25E85C2476FA3872DBBF730215ED46635D4BE0A99D2EEEEED84183EE95DF5DC9"
+  },
+  {
+    "Repo": "stegu/webgl-noise",
+    "Commit": "22434e04d7753f7e949e8d724ab3da2864c17a0f",
+    "Path": "src/classicnoise3D.glsl",
+    "URL": "https://raw.githubusercontent.com/stegu/webgl-noise/22434e04d7753f7e949e8d724ab3da2864c17a0f/src/classicnoise3D.glsl",
+    "SHA256": "AE29BA259DF8D1DC44DF822558CEB21444A053D1FE57A0B631EF7E48EDD4BB33"
+  },
+  {
+    "Repo": "stegu/webgl-noise",
+    "Commit": "22434e04d7753f7e949e8d724ab3da2864c17a0f",
+    "Path": "LICENSE",
+    "URL": "https://raw.githubusercontent.com/stegu/webgl-noise/22434e04d7753f7e949e8d724ab3da2864c17a0f/LICENSE",
+    "SHA256": "BDAFCE1BB01517C9AE6C4F3620C01340790B5E9D039AE9E356347D1174250916"
+  }
+]

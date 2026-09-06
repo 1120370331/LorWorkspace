@@ -1,0 +1,32 @@
+#pragma kernel CSRawInputs
+#include "SlazeyaStormCloudNoise.cginc"
+#include "SlazeyaStormCloudDensity.cginc"
+StructuredBuffer<float4> _ProbeQueries;
+struct CloudInputRecord
+{
+    float4 worldStep;
+    float4 carrier;
+    float4 shapeUVLod;
+    float4 shapeRGBA;
+    float4 detailUVLod;
+    float4 detailRGBA;
+    float4 density;
+};
+RWStructuredBuffer<CloudInputRecord> _ProbeResults;
+int _ProbeCount;
+[numthreads(32,1,1)]void CSRawInputs(uint3 id:SV_DispatchThreadID)
+{
+    if(id.x>=(uint)_ProbeCount)return;
+    float4 query=_ProbeQueries[id.x];CloudInputRecord result;
+    float3 carrier=cloudCarrier(query.xyz,_CloudCenter.xyz,_CloudInnerRadii.xy,_CloudHeight,_CloudSpinAngle,_DensityPhase,_Collapse);
+    float shapeLOD=CloudTextureLOD(query.w,_ShapePeriodH,64),detailLOD=CloudTextureLOD(query.w,_DetailPeriodH,32);
+    float3 shapeUV=carrier/_ShapePeriodH,detailUV=carrier/_DetailPeriodH+_DensityPhase*float3(0.015,-0.025,0.010);
+    result.worldStep=query;result.carrier=float4(carrier,1);
+    result.shapeUVLod=float4(shapeUV,shapeLOD);result.detailUVLod=float4(detailUV,detailLOD);
+    result.shapeRGBA=_CloudShapeTex.SampleLevel(sampler_CloudShapeTex,shapeUV,shapeLOD);
+    result.detailRGBA=_CloudErosionTex.SampleLevel(sampler_CloudErosionTex,detailUV,detailLOD);
+    CloudBaseSample baseData=SampleCloudBase(query.xyz,query.w);
+    float2 density=SampleCloudDensityFromBase(query.xyz,query.w,baseData);
+    result.density=float4(baseData.unionEnvelope,baseData.baseDensity,density.x,baseData.coreBlend);
+    _ProbeResults[id.x]=result;
+}

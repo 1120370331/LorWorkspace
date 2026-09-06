@@ -1,7 +1,7 @@
 param([switch]$WithWaves)
 $ErrorActionPreference='Stop'
 $repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
-$output=Join-Path $repo 'preview_exports/slazeya_storm_mass/round4/audio'
+$output=Join-Path $repo 'preview_exports/slazeya_storm_mass/round5/audio'
 New-Item -ItemType Directory -Force -Path $output | Out-Null
 & (Join-Path $PSScriptRoot 'verify_slazeya_storm_audio_source.ps1') *> (Join-Path $output 'source-verification.log')
 $unityData='C:/Program Files/Unity/Editor/Data'
