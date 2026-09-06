@@ -1,11 +1,25 @@
 {
-  "status": "first-r5 independent visual review PASS, accepted by main thread; frozen for Reviewed packaging",
-  "design": "docs/superpowers/specs/2026-09-06-velia-tide-mist-vfx-design.md",
+  "status": "Native first-r7 independent visual review PASS, accepted by main-thread frame inspection; formal package and deployment evidence is recorded separately.",
+  "design": "docs/superpowers/specs/2026-09-07-velia-tide-mist-reference-refinement.md",
+  "cloudPlate": {
+    "path": "SteriaBuild/VFXSource/VeliaTideMist/source_assets/reference_refinement/dawn_cloud_frame_v1.png",
+    "sha256": "E91219D7B89D152B8EE32E320E5BD679C8D89D124CB843E9087A66C918AD24E8",
+    "width": 1672,
+    "height": 941,
+    "sRGB": true,
+    "alpha": "straight",
+    "sourceSplitU": 0.55,
+    "sourceSplitReason": "Approved art left lower billow crosses U=.50. U=.54..56 is genuinely clear; sample banks there without cutting authored silhouette or modifying the PNG.",
+    "use": "Two disconnected asymmetrical cloud banks. RGB is authored color/volume, A is coverage. Sun and rays are shader-only. Main thread owns image generation and prompt provenance.",
+    "import": "8-bit RGBA color, sRGB=true, FromInput alpha, Clamp, Bilinear, no mipmaps, uncompressed RGBA32, NPOT unchanged, maximum 2048",
+    "userReference": "SteriaBuild/VFXSource/VeliaTideMist/source_assets/reference_20260907/user_dawn_clouds.png",
+    "userReferenceSha256": "732EE14EF17A896EB098282198573C65FDBD0B36CAD26E174CA08E7FFF760B28"
+  },
   "mist": {
     "path": "SteriaBuild/VFXSource/SlazeyaStormMass/source_assets/round2/mist_density_lighting_4x4.png",
     "sha256": "48F9EDADD9AC23C63B813B53576207227740ED528F94694F8FF256CA3399E029",
     "provenance": "Repository-authored read-only atlas reused for this VFX implementation; original deterministic numpy/Pillow fields per round2/manifest.json",
-    "use": "Read-only original, byte-identical independent Unity import; A is density/lifetime, R/G/B only lighting; interpolated middle frames 5..8",
+    "use": "Low foreground fog only. Read-only original, byte-identical independent Unity import; A is density/lifetime, R/G/B only lighting; interpolated middle frames 5..8",
     "import": "linear RGBA, no alpha transparency transform, Clamp, Bilinear, no mipmaps, uncompressed, 1024"
   },
   "preview": {
@@ -16,6 +30,6 @@
     ],
     "shipping": false
   },
-  "productionDependencies": ["VeliaTideMistMaterial", "Steria/VeliaTideMist", "mist_density_lighting_4x4.png"],
-  "noNewArt": "No painted/generated character, no new cloud/noise algorithm; smooth light masks and reused mist atlas only."
+  "productionDependencies": ["VeliaTideMistMaterial", "Steria/VeliaTideMist", "mist_density_lighting_4x4.png", "dawn_cloud_frame_v1.png"],
+  "historicalDelivery": "R5 was accepted/delivered separately; its PASS does not apply to the refinement candidate. See docs/superpowers/plans/2026-09-07-velia-tide-mist-delivery.md."
 }

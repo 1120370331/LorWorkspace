@@ -14,6 +14,8 @@ public static class VeliaTideMistBundleBuilder
     private const int Width = 1280, Height = 720;
     private const string MaterialPath = "Assets/Materials/VeliaTideMistMaterial.mat";
     private const string MistSource = "SteriaBuild/VFXSource/SlazeyaStormMass/source_assets/round2/mist_density_lighting_4x4.png";
+    private const string CloudSource = "SteriaBuild/VFXSource/VeliaTideMist/source_assets/reference_refinement/dawn_cloud_frame_v1.png";
+    private const string CloudPath = "Assets/Textures/dawn_cloud_frame_v1.png";
     private static readonly List<Object> Owned = new List<Object>();
     private static readonly List<Rect> Protection = new List<Rect>();
     private static readonly List<Vector2> Hits = new List<Vector2>();
@@ -40,6 +42,7 @@ public static class VeliaTideMistBundleBuilder
         try
         {
             Require(Application.unityVersion == "2019.3.15f1", "Exact Unity version");
+            Require(SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Direct3D11, "Native D3D11 is required");
             PrepareMaterial();
             string output = Path.GetFullPath("AssetBundles"); Directory.CreateDirectory(output);
             var builds = new[] { new AssetBundleBuild { assetBundleName = VeliaTideMistVisualController.BundleName, assetNames = new[] { MaterialPath } } };
@@ -52,7 +55,8 @@ public static class VeliaTideMistBundleBuilder
             {
                 Require(bundle.GetAllAssetNames().Length == 1 && bundle.GetAllAssetNames()[0] == MaterialPath.ToLowerInvariant(), "Exactly one explicit material root, no prefab or MonoBehaviour");
                 var material = bundle.LoadAsset<Material>(VeliaTideMistVisualController.MaterialName);
-                Require(material != null && material.shader.isSupported && material.GetTexture("_MistAtlas") != null, "Material/shader/atlas readback");
+                Require(material != null && material.shader.isSupported && material.GetTexture("_MistAtlas") != null && material.GetTexture("_CloudPlate") != null, "Material/shader/atlas/cloud readback");
+                var cloudReceipt = VerifyCloudTexture((Texture2D)material.GetTexture("_CloudPlate"));
                 VerifyDriver();
                 Export(material, Revision("reviewed"), true);
                 File.WriteAllText(Path.Combine(PreviewRoot(), Revision("reviewed"), "bundle-sha256.txt"), Digest(path) + "  " + path + "\n");
@@ -64,7 +68,8 @@ public static class VeliaTideMistBundleBuilder
                     materialName=material.name,shaderName=material.shader.name,shaderSupported=material.shader.isSupported,
                     atlasWidth=texture.width,atlasHeight=texture.height,atlasFormat=texture.format.ToString(),
                     atlasFilter=texture.filterMode.ToString(),atlasWrap=texture.wrapMode.ToString(),
-                    sourceAtlasSha256=Digest(Path.Combine(Repo(),MistSource))
+                    sourceAtlasSha256=Digest(Path.Combine(Repo(),MistSource)), cloudPlate=cloudReceipt,
+                    revision=Revision("reviewed")
                 };
                 File.WriteAllText(Path.Combine(PreviewRoot(),Revision("reviewed"),"bundle-readback.json"),JsonUtility.ToJson(receipt,true));
             }
@@ -79,6 +84,8 @@ public static class VeliaTideMistBundleBuilder
         Directory.CreateDirectory("Assets/Materials");
         Texture2D mist = ImportTexture(MistSource, "Assets/Textures/mist_density_lighting_4x4.png", true);
         Require(Digest(Path.Combine(Repo(), MistSource)) == "48F9EDADD9AC23C63B813B53576207227740ED528F94694F8FF256CA3399E029", "Read-only source atlas SHA");
+        Texture2D cloud = ImportTexture(CloudSource, CloudPath, false);
+        VerifyCloudTexture(cloud);
         Shader shader = AssetDatabase.LoadAssetAtPath<Shader>("Assets/Shaders/VeliaTideMist.shader");
         Require(shader != null && !ShaderUtil.ShaderHasError(shader) && shader.isSupported, "Native shader compilation");
         Material material = AssetDatabase.LoadAssetAtPath<Material>(MaterialPath);
@@ -86,8 +93,13 @@ public static class VeliaTideMistBundleBuilder
         material.name = VeliaTideMistVisualController.MaterialName;
         material.shader = shader;
         material.SetTexture("_MistAtlas", mist);
+        material.SetTexture("_CloudPlate", cloud);
         material.SetVector("_State", Vector4.zero);
         EditorUtility.SetDirty(material); AssetDatabase.SaveAssets();
+        var allowed = new HashSet<string> { MaterialPath, "Assets/Shaders/VeliaTideMist.shader", "Assets/Textures/mist_density_lighting_4x4.png", CloudPath };
+        string[] dependencies = AssetDatabase.GetDependencies(MaterialPath, true);
+        Require(dependencies.Length == allowed.Count, "Material must contain exactly shader, data atlas and cloud color dependencies");
+        foreach (string dependency in dependencies) Require(allowed.Contains(dependency), "Unexpected shipping dependency: " + dependency);
         return material;
     }
 
@@ -109,8 +121,49 @@ public static class VeliaTideMistBundleBuilder
         importer.filterMode = FilterMode.Bilinear;
         importer.textureCompression = TextureImporterCompression.Uncompressed;
         importer.maxTextureSize = 2048;
+        // Preserve the actual generated art ratio. Leave the old atlas/sprite import unchanged.
+        if (source == CloudSource) importer.npotScale = TextureImporterNPOTScale.None;
         importer.SaveAndReimport();
         return AssetDatabase.LoadAssetAtPath<Texture2D>(destination);
+    }
+
+    private static CloudReadbackReceipt VerifyCloudTexture(Texture2D texture)
+    {
+        var reference = JsonUtility.FromJson<SourceReferences>(File.ReadAllText(Path.Combine(Repo(), "SteriaBuild/VFXSource/VeliaTideMist/source_assets/references.json"))).cloudPlate;
+        Require(reference != null && reference.path == CloudSource, "Fixed cloud source contract");
+        string path = Path.Combine(Repo(), CloudSource);
+        Require(Digest(path) == reference.sha256 && reference.sRGB && reference.alpha == "straight", "Cloud source hash / color semantics");
+        byte[] png = File.ReadAllBytes(path);
+        Require(png.Length > 33 && png[0] == 137 && png[1] == 80 && png[2] == 78 && png[3] == 71 && png[24] == 8 && png[25] == 6, "True 8-bit RGBA PNG source");
+        Require(texture != null && texture.width == reference.width && texture.height == reference.height, "Native cloud dimensions / no NPOT scaling");
+        Require(texture.width > texture.height && texture.width <= 2048 && texture.height <= 2048, "Landscape art within import limit");
+        Require(texture.format == TextureFormat.RGBA32 && texture.mipmapCount == 1 && texture.filterMode == FilterMode.Bilinear && texture.wrapMode == TextureWrapMode.Clamp, "Native cloud RGBA32 / no mips / Bilinear / Clamp");
+        var importer = (TextureImporter)AssetImporter.GetAtPath(CloudPath);
+        Require(importer.sRGBTexture && importer.alphaSource == TextureImporterAlphaSource.FromInput && importer.textureCompression == TextureImporterCompression.Uncompressed, "Color importer settings");
+        Color32[] pixels = texture.GetPixels32();
+        var raw = new Texture2D(2,2,TextureFormat.RGBA32,false);
+        int minimum=255,maximum=0,opaque=0,soft=0,corridor=0,corridorClear=0,lower=0,lowerClear=0;
+        try
+        {
+            Require(raw.LoadImage(png) && raw.width == texture.width && raw.height == texture.height, "Decode original cloud PNG");
+            Color32[] original = raw.GetPixels32();
+            for(int y=0;y<texture.height;y++) for(int x=0;x<texture.width;x++)
+            {
+                int p=y*texture.width+x, a=pixels[p].a;
+                if(a != original[p].a) Require(false, "Native cloud alpha must match source at pixel " + p);
+                minimum=Math.Min(minimum,a); maximum=Math.Max(maximum,a);
+                if(a>=230)opaque++; if(a>0&&a<230)soft++;
+                if(x>=texture.width*.54f&&x<texture.width*.56f){corridor++;if(a<=5)corridorClear++;}
+                if(y<texture.height*.35f&&x>=texture.width*.15f&&x<texture.width*.85f){lower++;if(a<=5)lowerClear++;}
+            }
+        }
+        finally {Object.DestroyImmediate(raw);}
+        Require(minimum==0&&maximum>=250&&opaque/(float)pixels.Length>=.05f&&soft/(float)pixels.Length>.001f, "Cloud clear pixels, substantial cores and soft alpha edges");
+        Require(corridorClear/(float)corridor>=.90f&&lowerClear/(float)lower>=.90f, "Cloud transparent central passage and lower battlefield");
+        return new CloudReadbackReceipt {sourcePath=CloudSource,sourceSha256=Digest(path),width=texture.width,height=texture.height,
+            format=texture.format.ToString(),filter=texture.filterMode.ToString(),wrap=texture.wrapMode.ToString(),sRGB=importer.sRGBTexture,
+            alphaMin=minimum,alphaMax=maximum,opaqueFraction=opaque/(float)pixels.Length,softFraction=soft/(float)pixels.Length,
+            centralClearFraction=corridorClear/(float)corridor,lowerClearFraction=lowerClear/(float)lower,alphaMatchesSource=true};
     }
 
     private static void VerifyDriver()
@@ -138,6 +191,7 @@ public static class VeliaTideMistBundleBuilder
     private static void Export(Material template, string revision, bool bundleReadback=false)
     {
         string output = Path.Combine(PreviewRoot(), revision);
+        Require(!Directory.Exists(output), "Use a unique preview revision; preserve previous review evidence: " + output);
         string sequence = Path.Combine(output, "sequence60"); Directory.CreateDirectory(sequence);
         var root = new GameObject("PROXY battlefield - real sprites - NOT actual combat HUD");
         Camera camera = new GameObject("OwnedNativePreviewCamera").AddComponent<Camera>();
@@ -160,6 +214,7 @@ public static class VeliaTideMistBundleBuilder
             driver.BeginDice(0);
             Color32[] baseline = null;
             int nearWhiteNewMax = 0;
+            int completeDelta = 0;
             for (int frame=0;frame<=144;frame++)
             {
                 if(frame>0) driver.Advance(1f/60f);
@@ -173,6 +228,12 @@ public static class VeliaTideMistBundleBuilder
                 string label=Label(frame);
                 if(label!=null) { string named=Path.Combine(output,label+".png"); File.WriteAllBytes(named,png); hashes.AppendLine(Digest(named)+"  "+label+".png"); Debug.Log("VELIA_NATIVE_FRAME "+named); }
                 if(frame==0) baseline=pixels.GetPixels32();
+                if(frame==140)
+                {
+                    Color32[] complete=pixels.GetPixels32();
+                    for(int p=0;p<complete.Length;p++) completeDelta=Math.Max(completeDelta,PixelDelta(baseline[p],complete[p]));
+                    Require(completeDelta<=1,"Completed frame restores source before filter release");
+                }
                 if(frame==39 || frame==93)
                 {
                     Color32[] peak=pixels.GetPixels32(); int added=0;
@@ -193,11 +254,14 @@ public static class VeliaTideMistBundleBuilder
             File.WriteAllText(Path.Combine(output,"timing.csv"),csv.ToString());
             File.WriteAllText(Path.Combine(output,"frame-sha256.txt"),hashes.ToString());
             File.WriteAllText(Path.Combine(output,"native-report.txt"),
-                (bundleReadback?"REVIEWED_R5: independent visual review PASS; accepted by main thread; native Bundle readback export.\n":"FIRST_PREVIEW: source material native export.\n")+
+                (bundleReadback?"NATIVE_BUNDLE_READBACK_EXPORT: technical checks completed.\n":"FIRST_PREVIEW: source material native export.\n")+
+                "Revision="+revision+"\nIndependent visual acceptance=NOT DETERMINED BY EXPORT; main-thread review required.\n"+
                 "Unity="+Application.unityVersion+"\nGPU="+SystemInfo.graphicsDeviceName+"\nAPI="+SystemInfo.graphicsDeviceType+"\nColorSpace="+QualitySettings.activeColorSpace+
                 "\nNative Camera.Render -> same VeliaTideMistScreenFilter.OnRenderImage -> Graphics.Blit\nMaterial origin="+(bundleReadback?"native AssetBundle.LoadFromFile / LoadAsset<Material>":"editor source material")+
                 "\nActual repository sprites, proxy gloomy stage and proxy numbers/UI; NOT actual game/HUD acceptance.\nBottom-left viewport origin; red TOP LEFT / cyan BOTTOM RIGHT markers are source orientation probes.\n145 frames at 60Hz; callbacks frame36 and90; next dice Begin at72; Finish only after second pulse tail.\nAdditional exact pulse ages .10 and .18 seconds for each dice use fresh instances of the same driver, same scene and native filter.\nMax additional near-white pixels (peaks + propagation samples)="+nearWhiteNewMax+"/"+(Width*Height)+"\nSource restore max 8-bit delta="+releaseDelta+"\nTemplate untouched; OnRenderImage has no clock advancement.\n");
             WriteSourceReceipt(output);
+            File.WriteAllText(Path.Combine(output,"cloud-readback.json"),JsonUtility.ToJson(VerifyCloudTexture((Texture2D)template.GetTexture("_CloudPlate")),true));
+            File.WriteAllText(Path.Combine(output,"completion-check.txt"),"Frame140 source restore max 8-bit delta="+completeDelta+"\n");
         }
         finally
         {
@@ -306,9 +370,10 @@ public static class VeliaTideMistBundleBuilder
     private static int PixelDelta(Color32 a,Color32 b){return Math.Max(Math.Abs(a.r-b.r),Math.Max(Math.Abs(a.g-b.g),Math.Abs(a.b-b.b)));}
     private static void WriteSourceReceipt(string output)
     {
-        var files=new[]{"SteriaBuild/VeliaTideMistVisualController.cs","SteriaBuild/VeliaTideMistScreenFilter.cs","SteriaBuild/FarAreaEffect_Steria_VeliaTideMist.cs","SteriaBuild/BehaviourAction_Steria_VeliaTideMist.cs",MistSource,
+        var files=new[]{"SteriaBuild/VeliaTideMistVisualController.cs","SteriaBuild/VeliaTideMistScreenFilter.cs","SteriaBuild/FarAreaEffect_Steria_VeliaTideMist.cs","SteriaBuild/BehaviourAction_Steria_VeliaTideMist.cs",MistSource,CloudSource,
             "SteriaBuild/VFXSource/VeliaTideMist/UnityProject/Assets/Shaders/VeliaTideMist.shader","SteriaBuild/VFXSource/VeliaTideMist/UnityProject/Assets/Editor/VeliaTideMistBundleBuilder.cs",
-            "SteriaBuild/VFXSource/VeliaTideMist/source_assets/references.json","SteriaBuild/VFXSource/VeliaTideMist/build_velia_tide_mist.ps1","SteriaBuild/VeliaCards.cs"};
+            "SteriaBuild/VFXSource/VeliaTideMist/source_assets/references.json","SteriaBuild/VFXSource/VeliaTideMist/verify_velia_tide_mist_source.ps1",
+            "SteriaBuild/VFXSource/VeliaTideMist/export_velia_tide_mist_video.ps1","SteriaBuild/VFXSource/VeliaTideMist/build_velia_tide_mist.ps1","SteriaBuild/VeliaCards.cs"};
         var receipt=new StringBuilder();foreach(string file in files)receipt.AppendLine(Digest(Path.Combine(Repo(),file))+"  "+file);
         File.WriteAllText(Path.Combine(output,"source-sha256.txt"),receipt.ToString());
     }
@@ -327,11 +392,21 @@ public static class VeliaTideMistBundleBuilder
     [Serializable]
     private sealed class BundleReadbackReceipt
     {
-        public string status="REVIEWED_R5_BUNDLE_READBACK_PASS",visualAcceptance="first-r5: independent PASS accepted by main thread";
+        public string status="NATIVE_BUNDLE_READBACK_CHECKS_COMPLETED",visualAcceptance="Not determined by exporter; consult main-thread independent review",revision;
         public string bundlePath,bundleSha256,materialName,shaderName,atlasFormat,atlasFilter,atlasWrap,sourceAtlasSha256;
         public string[] explicitAssetNames;
         public bool shaderSupported;
         public int atlasWidth,atlasHeight;
+        public CloudReadbackReceipt cloudPlate;
+    }
+    [Serializable] private sealed class SourceReferences { public CloudSourceReference cloudPlate; }
+    [Serializable] private sealed class CloudSourceReference { public string path,sha256,alpha; public int width,height; public bool sRGB; }
+    [Serializable] private sealed class CloudReadbackReceipt
+    {
+        public string sourcePath,sourceSha256,format,filter,wrap;
+        public int width,height,alphaMin,alphaMax;
+        public bool sRGB,alphaMatchesSource;
+        public float opaqueFraction,softFraction,centralClearFraction,lowerClearFraction;
     }
     private static void Require(bool condition,string message){if(!condition)throw new InvalidOperationException("Velia verification: "+message);}
 }

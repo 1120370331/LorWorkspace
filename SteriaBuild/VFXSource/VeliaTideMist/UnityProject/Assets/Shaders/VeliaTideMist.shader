@@ -4,6 +4,7 @@ Shader "Steria/VeliaTideMist"
     {
         _MainTex("Unmodified camera source",2D)="white"{}
         _MistAtlas("Read-only imported density and lighting atlas",2D)="black"{}
+        _CloudPlate("Straight RGBA sRGB cloud color and coverage",2D)="black"{}
         _State("Envelope pulse explicit-clock second-die",Vector)=(0,0,0,0)
         _PulseAge("Seconds since current callback, explicit driver clock",Float)=-1
         _SunReveal("Delayed sun reveal",Float)=0
@@ -20,8 +21,8 @@ Shader "Steria/VeliaTideMist"
             #pragma vertex vert
             #pragma fragment frag
             #include "UnityCG.cginc"
-            sampler2D _MainTex, _MistAtlas;
-            float4 _MainTex_TexelSize, _MistAtlas_TexelSize, _State;
+            sampler2D _MainTex, _MistAtlas, _CloudPlate;
+            float4 _MainTex_TexelSize, _MistAtlas_TexelSize, _CloudPlate_TexelSize, _State;
             float _SunReveal, _HitStrength, _Aspect, _PulseAge;
             int _PointCount, _ProtectionCount;
             float4 _HitPoints[16], _ProtectionRects[16];
@@ -44,7 +45,7 @@ Shader "Steria/VeliaTideMist"
             }
             float4 mist(float2 uv,float2 center,float2 extent,float mirror,float tilt)
             {
-                float drift=sin(_State.z*0.16)*0.012;
+                float drift=sin(_State.z*0.34)*0.025;
                 float2 local=(uv-center-float2(drift*mirror,0))/extent;
                 float cs=cos(tilt),sn=sin(tilt);
                 float2 q=float2(cs*local.x+sn*local.y,-sn*local.x+cs*local.y)+0.5;
@@ -65,92 +66,130 @@ Shader "Steria/VeliaTideMist"
                 float ellipse=dot(q,q);
                 return exp(-0.55*ellipse*ellipse);
             }
-            float beam(float2 uv,float slope,float startX,float width)
+            float2 cloudUV(float2 uv,float side)
             {
-                float y=0.98-uv.y;
-                float x=uv.x-(startX+slope*y);
-                return exp(-x*x/(width*width))*smoothstep(0.08,0.24,y)*(1-smoothstep(0.35,0.85,y));
+                // Match physical art aspect, anchored at its authored upper-center opening.
+                // Neither dice index nor pulse affects silhouette, scale or motion clock.
+                float artAspect=_CloudPlate_TexelSize.z/_CloudPlate_TexelSize.w;
+                float entry=0.015*(1-smoothstep(0,0.32,_State.z));
+                float drift=sin(_State.z*(side<0 ? 0.13 : 0.11))*0.008;
+                float2 q=float2(uv.x-side*(entry+drift),(uv.y-0.74)*artAspect/_Aspect+0.72);
+                // Only 1.5 source pixels of broad fold drift; never warp the large masses.
+                q+=float2(sin(q.y*12+_State.z*0.15),sin(q.x*10-_State.z*0.12))*_CloudPlate_TexelSize.xy*1.5;
+                return q;
+            }
+            float4 cloudBank(float2 uv,float side)
+            {
+                float2 q=cloudUV(uv,side);
+                float4 c=tex2Dlod(_CloudPlate,float4(q,0,0));
+                // The approved asymmetric plate's clear passage is at U=.55; its left
+                // lower billow extends beyond .50. Split only inside genuine transparent art.
+                float halfMask=side<0 ? 1-smoothstep(0.54,0.55,q.x) : smoothstep(0.55,0.56,q.x);
+                c.a*=halfMask*step(0,q.y)*step(q.y,1);
+                return c;
+            }
+            float cloudShadow(float2 uv,float2 sun)
+            {
+                float depth=0;
+                [unroll] for(int stepIndex=0;stepIndex<6;stepIndex++)
+                {
+                    float t=(stepIndex+0.5)/6.0;
+                    float2 p=lerp(uv,sun,t);
+                    // One low-frequency coverage sample per step, never camera RGB or bodies.
+                    float a=cloudBank(p,p.x<0.55 ? -1 : 1).a;
+                    depth+=smoothstep(0.06,0.88,a);
+                }
+                return exp(-depth*0.85);
+            }
+            float beam(float2 uv,float2 sun,float slope,float width,float spread)
+            {
+                float y=sun.y-uv.y;
+                float x=(uv.x-sun.x-slope*y)*_Aspect;
+                float w=(width+max(0,y)*spread)*_Aspect;
+                return exp(-pow(x/w,2))*smoothstep(0.025,0.13,y)*(1-smoothstep(0.40,0.70,y));
             }
             float4 frag(v2f i):SV_Target
             {
                 float4 source=tex2D(_MainTex,i.sourceUV);
                 float2 uv=i.viewportUV;
                 float envelope=saturate(_State.x), pulse=saturate(_State.y);
+                if(envelope<=0) return source;
                 float protection=0;
                 [loop] for(int r=0;r<16;r++) { if(r>=_ProtectionCount) break; protection=max(protection,softBody(uv,_ProtectionRects[r])); }
-                // Conservatively preserve the central character band and the HUD margins too.
+                // Use a central fallback only when no projected body bounds are available.
                 float band=smoothstep(0.18,0.30,uv.y)*(1-smoothstep(0.49,0.61,uv.y));
                 float hud=smoothstep(0.055,0.15,uv.y)*(1-smoothstep(0.91,0.99,uv.y));
-                // Body interiors still receive at least 25% of the light. Combine protection
-                // fields with max, not multiplication, so the band cannot cut another hole.
                 float lightBand=exp(-pow((uv.y-0.38)/0.18,2));
-                float preserve=(1-0.75*max(protection,lightBand*0.55))*hud;
-                // Different-height banks enter the frame without adding another opacity layer.
-                float4 left=mist(uv,float2(0.16,0.60),float2(0.80,0.89),1,0.34);
-                float4 right=mist(uv,float2(0.84,0.52),float2(0.86,0.92),-1,-0.22);
-                // The existing third bank crests across the sun's lower-left edge. Its
-                // coverage, baked light and shadow all come from the same authored atlas.
-                float4 low=mist(uv,float2(0.41,0.47),float2(0.78,0.47),1,0.08);
-                // Middle-frame A peaks at .83-.87; normalize once, then cap the combined
-                // mist amount rather than independently stacking opacity from each bank.
-                float lowDensity=low.a*0.90;
-                float density=saturate(max(max(left.a,right.a),lowDensity)/0.86);
-                float3 cloudData=(left.rgb*left.a+right.rgb*right.a+low.rgb*lowDensity)/max(left.a+right.a+lowDensity,0.0001);
-                float lighting=cloudData.g;
-                float absorption=cloudData.r;
-                // Baked light versus absorption separates the cool belly from the lit surface.
-                float cloudShade=saturate(lighting*0.85-absorption*0.35);
-                float3 cold=lerp(float3(0.204,0.294,0.376),float3(0.56,0.65,0.706),cloudShade);
-                // R5 approved opacity budget: unoccupied cloud bodies may reach .48.
-                // Registered bodies receive the existing .08 light mist through a wider
-                // elliptical feather; the global horizontal band is fallback only.
-                float mistProtection=_ProtectionCount>0 ? 1-pow(1-protection,3) : band;
-                float mistAlpha=density*lerp(0.48,0.08,mistProtection)*envelope*hud;
-                float cloudPreserve=(1-0.75*(_ProtectionCount>0 ? protection : lightBand*0.55))*hud;
+                float preserve=(1-0.75*(_ProtectionCount>0 ? protection : lightBand*0.55))*hud;
+                // Keep the soft-body core budget while avoiding r6's tripled broad dark patch.
+                float bodyProtection=_ProtectionCount>0 ? 1-pow(1-protection,1.5) : band;
+                float4 left=cloudBank(uv,-1), right=cloudBank(uv,1);
+                float coverage=left.a+right.a*(1-left.a);
+                // Straight-alpha input becomes associated only here, once; no RGB averaging
+                // across three transparent density layers. Independent art banks retain folds.
+                float3 cloudColor=(left.rgb*left.a+right.rgb*right.a*(1-left.a))/max(coverage,0.0001);
+                float cloudAlpha=coverage*lerp(0.86,0.075,bodyProtection)*envelope*hud;
                 float3 color=source.rgb;
+                // Move the light into the existing scalloped aperture, closer to its lower
+                // left billow. The art banks themselves retain their original placement.
+                float2 sun=float2(0.515,0.70);
+                float2 sunDelta=(uv-sun)*float2(_Aspect,1);
+                float radius=length(sunDelta)/(0.074*_Aspect);
+                // A compact high-gradient core fades into two lower-energy atmospheric
+                // scales. No finite disk edge and no broad saturated body plateau.
+                float sunCore=exp(-radius*radius*5.2);
+                float shoulder=exp(-radius*radius*1.05);
+                float halo=exp(-dot(sunDelta,sunDelta)/pow(0.22*_Aspect,2)*2.0);
+                float lightEnvelope=pow(envelope,1.30)*_SunReveal;
+                // Three broad shafts have dark angular intervals. The same art's opacity
+                // blocks them along the light path; source RGB and body ellipses never cast.
+                // The opening is asymmetric: at y=.54 its clear span is approximately
+                // x=.515..665. Route all three shafts through that real opening instead
+                // of sending a nominal left shaft into the opaque bank as r6 did.
+                float beams=beam(uv,sun,0.11,0.011,0.030)*0.95+
+                    beam(uv,sun,0.41,0.010,0.040)+beam(uv,sun,0.73,0.012,0.045)*0.72;
+                float transmission=1;
+                [branch] if(beams>0.002) transmission=cloudShadow(uv,sun);
+                float beamLight=beams*transmission*(0.13+0.63*pulse);
+                float3 energy=float3(1,0.97,0.88)*sunCore*(0.72+3.65*pulse);
+                energy+=float3(1,0.85,0.62)*shoulder*(0.22+0.65*pulse);
+                energy+=float3(1,0.74,0.43)*halo*(0.075+0.20*pulse);
+                energy+=float3(1,0.84,0.57)*beamLight;
+                energy*=lightEnvelope*preserve;
+                color+=color*(1-color)*(0.035*pulse*envelope*preserve);
+                color+=(1-color)*(1-exp(-energy));
 
-                float expand=1+0.15*_State.w*pulse;
-                float2 sunQ=(uv-float2(0.50,0.72))*float2(1,_Aspect>0 ? 1/_Aspect : 0.5625)/(0.225*expand);
-                float radius2=dot(sunQ,sunQ);
-                float lowerCut=smoothstep(0.36,0.69,uv.y-density*0.10);
-                // Continuous Gaussian energy from a small warm-white core through a golden
-                // shoulder to a much weaker halo. No uniform disk or channel-clipped plateau.
-                float sunBody=exp(-radius2*3.2)*lowerCut;
-                float sunCore=exp(-radius2*8.5)*lowerCut;
-                float halo=exp(-radius2*1.1)*lowerCut;
-                float occlusion=exp(-density*1.1);
-                float beams=beam(uv,-0.45,0.43,0.058)+beam(uv,0.32,0.56,0.072)+beam(uv,0.10,0.51,0.042)*0.40;
-                // Cloud illumination has its own much wider field. It is not multiplied by
-                // the narrow solar halo, which previously left the banks effectively unlit.
-                float2 cloudQ=(uv-float2(0.50,0.69))/float2(0.58,0.68);
-                float cloudDistance=length(cloudQ);
-                float cloudField=exp(-dot(cloudQ,cloudQ)*0.55);
-                // Narrow the warm-facing surface continuously, retaining the opaque cool
-                // belly underneath; no binary threshold or independent glowing ribbon.
-                float litSurface=pow(saturate(lighting*(1-absorption*0.35)),2.2);
-                litSurface*=1-cloudData.b*0.80;
-                float innerCloud=exp(-pow((abs(uv.x-0.5)-0.23)/0.15,2))*smoothstep(0.27,0.58,uv.y);
-                float front=0.63+0.55*smoothstep(0.035,0.18,max(_PulseAge,0));
-                // A filled, broadly feathered arrival field, NEVER the difference of two
-                // radii: there is no ring silhouette, and it exists only on authored clouds.
-                float arrival=1-smoothstep(front,front+0.28,cloudDistance);
-                float rimPulse=pulse*lerp(innerCloud,arrival,_State.w);
-                float cloudRim=density*litSurface*cloudField*(0.045+0.90*rimPulse);
-                float warmWeight=(sunBody*(0.21+0.95*pulse)+halo*(0.025+0.080*pulse))*occlusion;
-                warmWeight+=beams*(0.030+0.080*pulse)*(1-density*0.6);
-                warmWeight*=envelope*_SunReveal*preserve;
-                float coreWeight=sunCore*(0.16+3.25*pulse)*envelope*_SunReveal*preserve*occlusion;
-                float3 energy=float3(1,0.64,0.28)*warmWeight+float3(1,0.93,0.78)*coreWeight;
-                float3 emission=1-exp(-energy);
-                // Soft global gain also avoids clipping fine source detail in bright UI/skin.
-                color+=color*(1-color)*(0.06*pulse*envelope*preserve);
-                color=color+(1-color)*emission;
-                // Place the cloud body in front of the light, so its natural contour can
-                // interrupt the lower sun instead of being washed out by a later sun add.
-                // All solar energy/propagation curves remain the approved R4 values.
-                color=color*(1-mistAlpha)+cold*mistAlpha;
-                float3 cloudEmission=1-exp(-float3(1,0.82,0.50)*cloudRim*envelope*_SunReveal*cloudPreserve);
-                color=color+(1-color)*cloudEmission;
+                // Use the authored neutral lit planes, weighted toward the implied sun.
+                // Shadowed blue-gray bellies stay cold even at peak; no uniform alpha outline.
+                float luminance=dot(cloudColor,float3(0.2126,0.7152,0.0722));
+                float facing=smoothstep(0.30,0.61,uv.y)*(0.68+0.32*(1-smoothstep(0.12,0.52,abs(uv.x-sun.x))));
+                float litSurface=smoothstep(0.37,0.75,luminance)*facing;
+                float distanceFromSun=length((uv-sun)/float2(0.48,0.52));
+                float inner=exp(-distanceFromSun*distanceFromSun*3.2);
+                float travel=smoothstep(0.035,0.18,max(_PulseAge,0));
+                float arrival=1-smoothstep(0.38+travel*0.67,0.68+travel*0.67,distanceFromSun);
+                // Filled broad propagation: farther surfaces arrive as inner surfaces relax.
+                // This changes lighting only. There is no annulus and no expanding cloud UV.
+                float outward=arrival*lerp(1,0.28+1.42*smoothstep(0.25,0.90,distanceFromSun),travel);
+                // Compensate the spread's delayed arrival within the existing pulse tail;
+                // this still reaches zero at the original .32s and never extends the clock.
+                float spreadPulse=pulse*(1+0.75*travel);
+                float cloudLight=litSurface*(0.08+lerp(pulse*inner*1.65,spreadPulse*outward*2.10,_State.w));
+                float3 warmSurface=1-exp(-float3(1,0.63,0.20)*cloudLight*lightEnvelope);
+                cloudColor+=(1-cloudColor)*warmSurface;
+                // Thick clouds sit in front of sun/shafts exactly once, including dark cores.
+                color=lerp(color,cloudColor,cloudAlpha);
+
+                // Only two low, thin foreground wisps use the old data atlas.
+                float4 fogLeft=mist(uv,float2(0.23,0.215),float2(0.76,0.21),1,0.035);
+                float4 fogRight=mist(uv,float2(0.77,0.245),float2(0.70,0.18),-1,-0.045);
+                float fogDensity=saturate(max(fogLeft.a,fogRight.a)/0.86);
+                // Visible cold air between feet, with a low actor-core budget and no solid
+                // horizontal white strip. Texture gaps and unequal bank heights remain.
+                float fogAlpha=fogDensity*lerp(0.21,0.025,bodyProtection)*envelope*hud;
+                float3 fogColor=float3(0.48,0.57,0.64);
+                fogColor+=(1-fogColor)*(1-exp(-float3(1,0.80,0.45)*(beamLight*1.1+0.07*pulse)*lightEnvelope));
+                color=lerp(color,fogColor,fogAlpha);
 
                 float local=0;
                 [loop] for(int h=0;h<16;h++)
