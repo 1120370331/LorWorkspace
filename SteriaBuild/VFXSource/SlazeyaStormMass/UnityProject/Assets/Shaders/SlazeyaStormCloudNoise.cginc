@@ -16,6 +16,24 @@
 
 // Continuous radial/vertical cross-section roll. The angular modulation is periodic
 // at the wrap; inverse spin transports the same material in the cloud's wind direction.
+// Analytic monotone sink, H-normalized. CPU controller implements these same P/I functions.
+float cloudSinkP(float r) {return r>=0.35?((r+0.25)*(r+0.25)-0.36)*0.5:0.21*log(max(r,1e-12)/0.35);}
+float cloudSinkI(float s) {return s>=0?sqrt(0.36+2*s)-0.25:0.35*exp(s/0.21);}
+float cloudSinkDerivative(float r) {return r>=0.35?r+0.25:0.21/max(r,1e-12);}
+float3 cloudSinkInverse(float3 q,float travel,out float compensation,out float inverseGradient)
+{
+    compensation=1;inverseGradient=1;if(travel<=0)return q;
+    float r=length(q.xz),u=saturate(r/0.35),sy=u*u*(3-2*u);
+    float safeSy=max(sy,1e-12);
+    if(r<1e-12){compensation=8;inverseGradient=1e12;return float3(0,q.y/safeSy,0);}
+    float r0=cloudSinkI(cloudSinkP(r)+travel);
+    float radial=cloudSinkDerivative(r0)/cloudSinkDerivative(r);
+    float J=(r/r0)*radial*sy;
+    float syDerivative=r<0.35?6*u*(1-u)/0.35:0;
+    compensation=min(8,1/max(J,1e-20));
+    inverseGradient=max(max(r0/r,1/max(radial,1e-20)),1/safeSy)+abs(q.y)*syDerivative/(safeSy*safeSy);
+    return float3(q.x*r0/r,q.y/safeSy,q.z*r0/r);
+}
 float3 cloudRingCarrier(float3 q,float2 radii,float ground,float spin,float phase)
 {
     float radius=(radii.x+radii.y)*0.5;
@@ -33,7 +51,7 @@ float3 cloudCarrier(float3 world,float3 center,float2 innerRadii,float height,fl
 {
     float3 local=world-center;
     float radius=(innerRadii.x+innerRadii.y)/(2*height);
-    float3 p=float3(local.x/innerRadii.x*radius,local.y/height,local.z/innerRadii.y*radius)/lerp(1,0.08,collapse);
+    float3 p=float3(local.x/innerRadii.x*radius,local.y/height,local.z/innerRadii.y*radius);
     float c=cos(spin),s=sin(spin);p.xz=float2(c*p.x+s*p.z,-s*p.x+c*p.z);
     p.y-=phase*0.10;float3 original=p;
     return p+0.06*sin(original.zxy*0.8+float3(0.9,0.7,0.8)*phase);

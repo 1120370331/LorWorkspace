@@ -31,23 +31,25 @@ SamplerState sampler_CloudShapeTex;
 SamplerState sampler_CloudErosionTex;
 float _ShapePeriodH,_DetailPeriodH,_Coverage,_ErosionStrength;
 float _CloudHeight,_CloudSpinAngle,_DensityPhase,_Collapse,_MacroCount,_ProxyIndex;
-float _LocalScale,_CloudGroundY;
+float _LocalScale,_CloudGroundY,_SinkTravel,_SinkMaxRadius,_CoreAccumulation;
 float4 _CloudCenter,_CloudInnerRadii;
 float4 _MacroCenters[12],_MacroAxisX[12],_MacroAxisY[12],_MacroAxisZ[12];
 
 struct CloudBaseSample
 {
     float baseDensity,unionEnvelope,owned,total,coreBlend;
-    float signedDistance,bodyStrength,holeMask;
+    float signedDistance,bodyStrength,holeMask,compensation,inverseGradient;
     float3 carrier;
 };
-float CloudTextureLOD(float worldStep,float period,float resolution)
+float CloudTextureLOD(float worldStep,float period,float resolution,float inverseGradient)
 {
     float averageRadius=(_CloudInnerRadii.x+_CloudInnerRadii.y)*0.5;
     float maximumCarrierGradient=max(1,max(averageRadius/_CloudInnerRadii.x,averageRadius/_CloudInnerRadii.y));
-    float voxelWorld=_CloudHeight*period*_LocalScale/(resolution*maximumCarrierGradient);
+    float voxelWorld=_CloudHeight*period/(resolution*maximumCarrierGradient*max(1,inverseGradient));
     return max(0,log2(max(1,worldStep/max(1e-6,voxelWorld))));
 }
+float CloudTextureLOD(float worldStep,float period,float resolution)
+{return CloudTextureLOD(worldStep,period,resolution,1);}
 // Both eye and light rays use the same single box. Directions are not normalized
 // after transformation, so all intersections and integration lengths stay in world units.
 float2 CloudBoxInterval(float3 o,float3 d)
@@ -63,39 +65,40 @@ CloudBaseSample SampleCloudBase(float3 world,float worldStep)
     float3 delta=world-_MacroCenters[0].xyz;
     float3 box=float3(dot(delta,_MacroAxisX[0].xyz),dot(delta,_MacroAxisY[0].xyz),dot(delta,_MacroAxisZ[0].xyz));
     if(any(abs(box)>1))return result;
-    // Inverse of the ONE common finite shrink and clockwise collapse rotation.
-    float angle=0.55*_Collapse,c=cos(angle),s=sin(angle);
-    float3 q=(world-_CloudCenter.xyz)/(_CloudHeight*_LocalScale);
-    q.xz=float2(c*q.x-s*q.z,s*q.x+c*q.z);
+    float3 currentQ=(world-_CloudCenter.xyz)/_CloudHeight;
+    float currentRadius=length(currentQ);
+    // Visual accumulation comes only from transported identities entering the nucleus.
+    result.unionEnvelope=8*_CoreAccumulation*(1-smoothstep(0.70,1,currentRadius/0.03));
+    result.baseDensity=result.unionEnvelope;
+    float3 q=cloudSinkInverse(currentQ,_SinkTravel,result.compensation,result.inverseGradient);
     float2 radii=_CloudInnerRadii.xy/_CloudHeight;
+    float ground=(_CloudGroundY-_CloudCenter.y)/_CloudHeight;
+    if((_SinkTravel>0&&length(q.xz)>_SinkMaxRadius)||abs(q.x)>radii.x+0.935||abs(q.z)>radii.y+0.935||abs(q.y-ground-0.75)>1)return result;
     float theta=atan2(q.z/radii.y,q.x/radii.x);
     float2 edge=radii*float2(cos(theta),sin(theta));
     float r=length(q.xz-edge)*(length(q.xz/radii)>=1?1:-1);
-    float ground=(_CloudGroundY-_CloudCenter.y)/_CloudHeight;
     float v=q.y-(ground+0.75+0.10*sin(theta));
     float h=0.48+0.08*sin(theta);
     float D=0.30*(1-length(float2((r-0.45)/0.30,v/h)));
     result.holeMask=smoothstep(0,0.035,r); // Frozen inner hole remains empty before final core fill.
     result.carrier=cloudRingCarrier(q,radii,ground,_CloudSpinAngle,_DensityPhase);
-    float4 shapeTex=_CloudShapeTex.SampleLevel(sampler_CloudShapeTex,result.carrier/_ShapePeriodH,CloudTextureLOD(worldStep,_ShapePeriodH,64));
+    float4 shapeTex=_CloudShapeTex.SampleLevel(sampler_CloudShapeTex,result.carrier/_ShapePeriodH,CloudTextureLOD(worldStep,_ShapePeriodH,64,result.inverseGradient));
     float n=0.090*(2*shapeTex.g-1)+0.060*(2*shapeTex.b-1)+0.025*(2*shapeTex.a-1);
     result.signedDistance=D+n;
     float bodyField=dot(shapeTex.gba,float3(0.25,0.50,0.25));
     result.bodyStrength=max(0,(bodyField-0.38)*5);
-    result.coreBlend=smoothstep(0.95,1,_Collapse);
-    // Filled final center lives inside the same contracted box; no new outer shell.
-    result.unionEnvelope=1-smoothstep(0.70,1,length(box));
-    result.baseDensity=lerp(smoothstep(0,0.035,D+n)*result.bodyStrength*result.holeMask,result.unionEnvelope,result.coreBlend);
+    result.baseDensity=max(smoothstep(0,0.035,D+n)*result.bodyStrength*result.holeMask*result.compensation,result.unionEnvelope);
     result.owned=1;result.total=1;
     return result;
 }
 float2 SampleCloudDensityFromBase(float3 world,float worldStep,CloudBaseSample source)
 {
     if(source.baseDensity<=0)return float2(0,0);
+    if(source.bodyStrength<=0)return source.unionEnvelope.xx;
     float3 uv=source.carrier/_DetailPeriodH+_DensityPhase*float3(0.015,-0.025,0.010);
-    float detail=dot(_CloudErosionTex.SampleLevel(sampler_CloudErosionTex,uv,CloudTextureLOD(worldStep,_DetailPeriodH,32)).rgb,float3(0.625,0.25,0.125));
+    float detail=dot(_CloudErosionTex.SampleLevel(sampler_CloudErosionTex,uv,CloudTextureLOD(worldStep,_DetailPeriodH,32,source.inverseGradient)).rgb,float3(0.625,0.25,0.125));
     float density=smoothstep(0,0.035,source.signedDistance-0.035*(1-detail))*source.bodyStrength*source.holeMask;
-    density=lerp(density,source.unionEnvelope,source.coreBlend);
+    density=max(density*source.compensation,source.unionEnvelope);
     return float2(density,density);
 }
 float2 SampleCloudDensity(float3 world,float worldStep)

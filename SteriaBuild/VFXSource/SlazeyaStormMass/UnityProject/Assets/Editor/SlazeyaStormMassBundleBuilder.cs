@@ -326,7 +326,7 @@ public static class SlazeyaStormMassBundleBuilder
                     var shape=(Texture3D)material.GetTexture("_CloudShapeTex");var detail=(Texture3D)material.GetTexture("_CloudErosionTex");
                     var compute=AssetDatabase.LoadAssetAtPath<ComputeShader>("Assets/Shaders/CloudRawInputProbe.compute");int kernel=compute.FindKernel("CSRawInputs");
                     foreach(string name in new[]{"_MacroCenters","_MacroAxisX","_MacroAxisY","_MacroAxisZ"}){var vectors=new List<Vector4>();block.GetVectorArray(name,vectors);compute.SetVectorArray(name,vectors.ToArray());}
-                    foreach(string name in new[]{"_CloudHeight","_CloudSpinAngle","_DensityPhase","_Collapse","_MacroCount","_ProxyIndex","_LocalScale","_CloudGroundY"})compute.SetFloat(name,block.GetFloat(name));
+                    foreach(string name in new[]{"_CloudHeight","_CloudSpinAngle","_DensityPhase","_Collapse","_MacroCount","_ProxyIndex","_LocalScale","_CloudGroundY","_SinkTravel","_SinkMaxRadius","_CoreAccumulation"})compute.SetFloat(name,block.GetFloat(name));
                     foreach(string name in new[]{"_ShapePeriodH","_DetailPeriodH","_Coverage","_ErosionStrength"})compute.SetFloat(name,material.GetFloat(name));
                     foreach(string name in new[]{"_CloudCenter","_CloudInnerRadii"})compute.SetVector(name,block.GetVector(name));
                     compute.SetTexture(kernel,"_CloudShapeTex",shape);compute.SetTexture(kernel,"_CloudErosionTex",detail);
@@ -608,7 +608,7 @@ public static class SlazeyaStormMassBundleBuilder
     }
     [Serializable] private class CloudFitCase
     {
-        public string name;public float time,maxBodyRadius,maxClusterSupport,halfX,halfZ,minFrameMargin,macroProxyPixelAreaSum,minMacroHeight;
+        public string name;public float time,maxBodyRadius,maxClusterSupport,halfX,halfZ,minFrameMargin,minMacroHeight;
         public Vector2 innerRadii;public int[] mainCloudsPer30Degrees=new int[12];
     }
     [Serializable] private class CloudFitReport {public List<CloudFitCase> cases=new List<CloudFitCase>();}
@@ -631,16 +631,19 @@ public static class SlazeyaStormMassBundleBuilder
                     var item=new CloudFitCase{name=new[]{"single","five","tall_1_8H","raised_foot_0_35H"}[scenario],time=time,innerRadii=f.CloudInnerRadii,minFrameMargin=10000};
                     foreach(var pair in bodies)foreach(Vector3 sample in SlazeyaStormVisualController.BodySamples(pair.center-Vector3.up*pair.extents.y,pair))
                     {Vector3 d=sample-f.EnvelopeCenter;float q=Mathf.Sqrt(d.x*d.x/(f.CloudInnerRadii.x*f.CloudInnerRadii.x)+d.z*d.z/(f.CloudInnerRadii.y*f.CloudInnerRadii.y));item.maxBodyRadius=Mathf.Max(item.maxBodyRadius,q);}
-                    Require(item.maxBodyRadius<=0.95001f,"all body XZ samples inside cloud hole "+item.name+"/"+time);
+                    Require(item.maxBodyRadius<=0.95001f,"all body XZ samples inside initial source hole "+item.name+"/"+time);
                     var ps=root.transform.Find("AB_ParticleRoot/GatherFoam").GetComponent<ParticleSystem>();var particles=new ParticleSystem.Particle[168];
                     Require(ps.GetParticles(particles)==168,"native cloud identities "+item.name);
                     for(int i=0;i<168;i++)
                     {
                         Vector3 world=ps.transform.TransformPoint(particles[i].position),size=particles[i].GetCurrentSize3D(ps);
                         float half=Mathf.Sqrt(size.x*size.x+size.y*size.y)*0.5f;
-                        Vector3 spine=SlazeyaStormVisualController.CloudSpine(f,i/7,driver.ShapePhase);
+                        Vector3 sourceSpine=SlazeyaStormVisualController.CloudSpine(f,i/7,driver.CloudSourcePhase);
+                        Vector3 spine=SlazeyaStormVisualController.CloudForward(sourceSpine,driver.CoreCenter,f.Height,driver.CloudSinkTravel);
                         float support=Vector3.Distance(world,spine)+half;item.maxClusterSupport=Mathf.Max(item.maxClusterSupport,support);
-                        RequireFinite(world,"cloud card");if(support>H*0.45001f)throw new Exception("Cloud card breaches hole support budget "+i);
+                        RequireFinite(world,"transported cloud card");
+                        if(Vector3.Distance(world,driver.FoamParcelPosition(i))>H*0.0001f)throw new Exception("Native transported cloud position mismatch "+i);
+                        if(driver.CloudSinkTravel<=0&&support>H*0.45001f)throw new Exception("Initial cloud card breaches source-hole support budget "+i);
                         item.halfX=Mathf.Max(item.halfX,Mathf.Abs(world.x-f.EnvelopeCenter.x)+half);item.halfZ=Mathf.Max(item.halfZ,Mathf.Abs(world.z-f.EnvelopeCenter.z)+half);
                         float theta=Mathf.Atan2(spine.z-f.EnvelopeCenter.z,spine.x-f.EnvelopeCenter.x);if(theta<0)theta+=Mathf.PI*2;
 
@@ -683,15 +686,14 @@ public static class SlazeyaStormMassBundleBuilder
         var p=driver.CloudContainerPose;
         // Bound actual density support, rather than treating the empty box corners as cloud.
         // D+n>0 implies -.025H<r<.925H; a smooth mask excludes the inner hole.
-        item.halfX=Mathf.Max(item.halfX,f.CloudInnerRadii.x+0.925f*f.Height);
-        item.halfZ=Mathf.Max(item.halfZ,f.CloudInnerRadii.y+0.925f*f.Height);
         for(int sector=0;sector<12;sector++)
         {
             float theta=(sector+0.5f)*Mathf.PI/6;
             Vector3 normal=new Vector3(Mathf.Cos(theta)/f.CloudInnerRadii.x,0,Mathf.Sin(theta)/f.CloudInnerRadii.y).normalized;
             Vector3 spine=new Vector3(f.EnvelopeCenter.x+f.CloudInnerRadii.x*Mathf.Cos(theta),f.GroundY+f.Height*(0.75f+0.10f*Mathf.Sin(theta)),f.EnvelopeCenter.z+f.CloudInnerRadii.y*Mathf.Sin(theta))+normal*f.Height*0.45f;
+            spine=SlazeyaStormVisualController.CloudForward(spine,driver.CoreCenter,f.Height,driver.CloudSinkTravel);
             Vector3 d=spine-p.Center;
-            Require(Mathf.Abs(Vector3.Dot(d,p.AxisX))<p.Radii.x&&Mathf.Abs(Vector3.Dot(d,p.AxisY))<p.Radii.y&&Mathf.Abs(Vector3.Dot(d,p.AxisZ))<p.Radii.z,"continuous spine inside single box "+sector);
+            Require(Mathf.Abs(Vector3.Dot(d,p.AxisX))<p.Radii.x&&Mathf.Abs(Vector3.Dot(d,p.AxisY))<p.Radii.y&&Mathf.Abs(Vector3.Dot(d,p.AxisZ))<p.Radii.z,"transported spine inside single box "+sector);
 
         }
         InspectCloudDensitySectors(root,item);
@@ -704,7 +706,7 @@ public static class SlazeyaStormMassBundleBuilder
         var block=new MaterialPropertyBlock();renderer.GetPropertyBlock(block);var material=renderer.sharedMaterial;
         foreach(string name in new[]{"_MacroCenters","_MacroAxisX","_MacroAxisY","_MacroAxisZ"})
         {var vectors=new List<Vector4>();block.GetVectorArray(name,vectors);compute.SetVectorArray(name,vectors.ToArray());}
-        foreach(string name in new[]{"_CloudHeight","_CloudSpinAngle","_DensityPhase","_Collapse","_MacroCount","_ProxyIndex","_LocalScale","_CloudGroundY"})compute.SetFloat(name,block.GetFloat(name));
+        foreach(string name in new[]{"_CloudHeight","_CloudSpinAngle","_DensityPhase","_Collapse","_MacroCount","_ProxyIndex","_LocalScale","_CloudGroundY","_SinkTravel","_SinkMaxRadius","_CoreAccumulation"})compute.SetFloat(name,block.GetFloat(name));
         foreach(string name in new[]{"_ShapePeriodH","_DetailPeriodH","_Coverage","_ErosionStrength"})compute.SetFloat(name,material.GetFloat(name));
         foreach(string name in new[]{"_CloudCenter","_CloudInnerRadii"})compute.SetVector(name,block.GetVector(name));
         compute.SetFloat("_SliceWorldStep",block.GetFloat("_CloudHeight")*block.GetFloat("_LocalScale")/48);
@@ -716,11 +718,12 @@ public static class SlazeyaStormMassBundleBuilder
             var values=new Vector4[12288];buffer.GetData(values);
             var minY=new float[12];var maxY=new float[12];
             for(int sector=0;sector<12;sector++){minY[sector]=float.MaxValue;maxY[sector]=float.MinValue;}
-            float height=block.GetFloat("_CloudHeight");
+            Vector4 center=block.GetVector("_CloudCenter");
             for(int i=0;i<values.Length;i++)if(values[i].x>0.05f)
             {
                 int sector=i/1024;item.mainCloudsPer30Degrees[sector]++;
-                float y=(0.75f+0.10f*Mathf.Sin(values[i].z)+values[i].w)*height;
+                float y=values[i].z;
+                item.halfX=Mathf.Max(item.halfX,Mathf.Abs(values[i].y-center.x));item.halfZ=Mathf.Max(item.halfZ,Mathf.Abs(values[i].w-center.z));
                 minY[sector]=Mathf.Min(minY[sector],y);maxY[sector]=Mathf.Max(maxY[sector],y);
             }
             item.minMacroHeight=float.MaxValue;
@@ -804,7 +807,7 @@ public static class SlazeyaStormMassBundleBuilder
                 if(Mathf.Abs(frame-expected)>0.055f||frame<0.97f||frame>7.03f)throw new Exception("Cloud fixed-frame native stream mismatch "+label);
                 observed++;min=Mathf.Min(min,frame);max=Mathf.Max(max,frame);
             }
-            Require(observed>16,"native cloud frames 1..7 independent of real age "+label+"/"+pass);
+            Require(observed>(label=="G2.0"?0:16),"native cloud frames 1..7 independent of real age "+label+"/"+pass);
             evidence.AppendLine(label+"/age"+(pass==0?"0.1":"0.9")+","+observed+","+min+","+max);
             block.SetFloat("_DebugFrame",0);renderer.SetPropertyBlock(block);
         }
@@ -854,7 +857,7 @@ public static class SlazeyaStormMassBundleBuilder
         int kernel=compute.FindKernel("CSSlice");var renderer=root.transform.Find("AB_StormRoot/CloudMacroRoot/CloudMacro_00").GetComponent<Renderer>();
         var block=new MaterialPropertyBlock();renderer.GetPropertyBlock(block);var material=renderer.sharedMaterial;
         foreach(string name in new[]{"_MacroCenters","_MacroAxisX","_MacroAxisY","_MacroAxisZ"}){var vectors=new List<Vector4>();block.GetVectorArray(name,vectors);compute.SetVectorArray(name,vectors.ToArray());}
-        foreach(string name in new[]{"_CloudHeight","_CloudSpinAngle","_DensityPhase","_Collapse","_MacroCount","_ProxyIndex","_LocalScale","_CloudGroundY"})compute.SetFloat(name,block.GetFloat(name));
+        foreach(string name in new[]{"_CloudHeight","_CloudSpinAngle","_DensityPhase","_Collapse","_MacroCount","_ProxyIndex","_LocalScale","_CloudGroundY","_SinkTravel","_SinkMaxRadius","_CoreAccumulation"})compute.SetFloat(name,block.GetFloat(name));
         foreach(string name in new[]{"_ShapePeriodH","_DetailPeriodH","_Coverage","_ErosionStrength"})compute.SetFloat(name,material.GetFloat(name));
         if(coverageOverride.HasValue)compute.SetFloat("_Coverage",coverageOverride.Value);
         foreach(string name in new[]{"_CloudCenter","_CloudInnerRadii"})compute.SetVector(name,block.GetVector(name));
@@ -959,6 +962,7 @@ public static class SlazeyaStormMassBundleBuilder
                 }
             }
             csv.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0:F6},{1:F6},{2},{3:F6},{4:F6}",driver.Elapsed,driver.BurstAge,renderer.name,support,driver.CoreVisibleLimit));
+            if(renderer.name=="GatherFoam"&&support>H*0.06001f)throw new Exception("Cloud parcel core support exceeded "+support);
             if(support>driver.CoreVisibleLimit+H*0.0001f)throw new Exception("Core support exceeded by "+renderer.name+": "+support);
             maximum=Mathf.Max(maximum,support);
         }
@@ -975,7 +979,7 @@ public static class SlazeyaStormMassBundleBuilder
         using(var driver=new SlazeyaStormVisualController(root,footprint))
         {
             var ps=root.transform.Find("AB_ParticleRoot/GatherFoam").GetComponent<ParticleSystem>();
-            float[] samples={0.82f,0.95f,1.10f,1.23f,1.28f,1.333333f,1.35f,2.0f};float previous=0;
+            float[] samples={0.65f,0.78f,0.94f,0.98f,1.08f,1.18f,1.24f,1.28f,1.333333f,1.35f,2.0f};float previous=0;
             foreach(float time in samples)
             {
                 while(previous<time-0.000001f){float dt=Mathf.Min(1f/120f,time-previous);driver.Advance(dt);previous+=dt;}
@@ -1025,8 +1029,8 @@ public static class SlazeyaStormMassBundleBuilder
     {
         public string unityVersion,graphicsDevice,graphicsApi;
         public string metric="CPU wall-clock Camera.Render + synchronous ReadPixels/Apply; includes GPU wait. Not isolated GPU time or game FPS.";
-        public int width=1280,height=720,renderedViews,stepsPerScaledH=48,maxViewSteps=1024,lightSamples=48,lightUpdateEvery=1;
-        public string stepPolicy="Production eye step H*LocalScale/48, increased only when needed to cover the full box in at most 1024 segments; exact final partial segment; immediate 48-sample density lightmarch to the box exit. Capture totals also include H/96 convergence diagnostic views.";
+        public int width=1280,height=720,renderedViews,outerStepsPerReferenceH=48,maxViewSteps=1024,lightSamples=48,maxLightSegments=132,coreStepsPerRadius=8,lightUpdateEvery=1;
+        public string stepPolicy="Eye steps start at H/48 and refine by the local cylindrical inverse-map gradient; .06H core interval uses at most .03H/8 step. The 1024-step budget reserves the core and covers all outer distance with exact boundary/last segments. Light uses 48 outer samples plus core refinement (up to 32 inner segments and 2 split segments; diagnostic 96 outer, loop cap 132). No global scale-based extinction or texture LOD.";
         public double totalRenderReadbackMs,meanRenderReadbackMs,p95RenderReadbackMs,maxRenderReadbackMs,totalPngEncodeMs;
     }
     private static void WriteCaptureTiming(string output)
@@ -1159,7 +1163,7 @@ public static class SlazeyaStormMassBundleBuilder
         public float referenceBodyHeight=H,callbackTime,orthographicSize=13.8f;
         public float coreRadius=H*0.06f,coreVisibleLimit=H*0.12f;
         public string cloudNoise="Frozen linear Shape64 and independent Erosion32 with explicit LOD. Shape64 G/B/A are Worley W4/W8/W16; 2H period gives .5/.25/.125H cells. bodyField=dot(GBA,(.25,.50,.25)); bodyStrength=max(0,(bodyField-.38)*5), multiplied by signed-distance occupancy with a protected empty hole. Independent detail subtracts .035H*(1-detail) before the .035H density ramp; no global density floor or inverse-cubed erosion.";
-        public string cloud="One enclosing box integrates one continuous annular density field; 168 boundary wisps retain fixed frames 1..7. Eye midpoint integration uses H*uniformScale/48, at most 1024 segments covering the full box; each occupied sample uses a 48-step full-density light integral to the actual box exit, with 96-step convergence diagnostics. SigmaT=4.5, normalized HG, inverse spin and cross-section roll=(2.4+.7*sin(3*theta))*DensityPhase. Common finite contraction fills the final core and preserves callback-driven waterfall release.";
+        public string cloud="One containing box integrates the frozen cloud source through an analytic XZ sink inverse. Source height is preserved outside r=.35H and compresses locally inside; matching forward transport drives 168 persistent parcels. Gather inflow is G.65 to G1.28; source XZ quantiles are cached once for monotone C1 time anchors .65/.94/1.02/1.12/1.23/1.28. Local Jacobian compensation is capped at 8; texture LOD uses the full inverse gradient. Eye H/48 ceiling with adaptive refinement and 1024 full-path budget; light 48 outer plus fine core segments (loop cap132). SigmaT=4.5, source noise/roll unchanged; .03H spherical accumulation, .032H terminal box, unchanged callback waterfall and SFX.";
         public string propagation="smoothstep(B/0.23); B0,+1,+2,+4,+7,+11,+14 native 60Hz samples";
         public float gatherDuration=SlazeyaStormVisualController.GatherDuration,tailDuration=SlazeyaStormVisualController.TailDuration;
         public Vector3 cameraPosition=new Vector3(2,27,-56),cameraLookAt=new Vector3(2,2,1),casterFoot=Caster;

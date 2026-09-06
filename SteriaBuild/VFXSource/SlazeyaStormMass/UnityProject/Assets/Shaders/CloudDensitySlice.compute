@@ -39,7 +39,7 @@ float _SliceWorldStep;
     _SliceOutput[id.x+id.y*_SliceResolution]=float4(baseData.baseDensity,density.x,max(0,baseData.baseDensity-density.x),baseData.unionEnvelope);
 }
 // Runtime density coverage, not proxy occupancy: 12 sectors x16 angles x8 radii x8 heights.
-// Called only during the uncollapsed gather samples by the native builder verifier.
+// Source samples are transported by the same cylindrical P/I map before density readback.
 [numthreads(64,1,1)]void CSRingSupport(uint3 id:SV_DispatchThreadID)
 {
     if(id.x>=12288)return;
@@ -51,5 +51,12 @@ float _SliceWorldStep;
     float3 world=_CloudCenter.xyz;
     world.xz+=_CloudInnerRadii.xy*float2(cos(theta),sin(theta))+normal*radial*_CloudHeight;
     world.y=_CloudGroundY+_CloudHeight*(0.75+0.10*sin(theta)+vertical);
-    _SliceOutput[id.x]=float4(SampleCloudDensity(world,_SliceWorldStep).x,radial,theta,vertical);
+    if(_SinkTravel>0)
+    {
+        float3 q=(world-_CloudCenter.xyz)/_CloudHeight;float r0=length(q.xz);
+        float r=cloudSinkI(cloudSinkP(r0)-_SinkTravel),sy=smoothstep(0,0.35,r);
+        world=_CloudCenter.xyz+_CloudHeight*float3(q.x*r/r0,q.y*sy,q.z*r/r0);
+    }
+    // Actual positive-density world positions; sector identity remains the source angular sector.
+    _SliceOutput[id.x]=float4(SampleCloudDensity(world,_SliceWorldStep).x,world);
 }

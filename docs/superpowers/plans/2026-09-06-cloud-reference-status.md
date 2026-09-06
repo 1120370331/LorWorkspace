@@ -1,5 +1,10 @@
 # 成熟云函数参考与交付状态
 
+**当前交付已更新为 cloud-inflow.1。** 用户指出此前的整体缩放不符合“云被吸入”的要求后，
+已改为保持高度的XZ向内输运，进入中心附近才局部压缩。完整视觉复审及54项原生运行检查通过，
+2026-09-06 20:53再次同步三个Mod目录、18个文件。当前Bundle为`918B3213…AACB8C5`，
+详见[吸入修正交付](2026-09-06-slazeya-cloud-inflow-delivery.md)。下文为此前云形版本的交付记录。
+
 用户要求寻找已实现云函数后，已实际下载、读取并固定下列来源：
 
 - Sebastian Lague / Clouds：周期Worley、sampleDensity的逆密度边缘侵蚀、lightmarch及HG相位。MIT。
