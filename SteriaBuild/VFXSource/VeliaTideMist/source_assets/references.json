@@ -1,0 +1,21 @@
+{
+  "status": "first-r5 independent visual review PASS, accepted by main thread; frozen for Reviewed packaging",
+  "design": "docs/superpowers/specs/2026-09-06-velia-tide-mist-vfx-design.md",
+  "mist": {
+    "path": "SteriaBuild/VFXSource/SlazeyaStormMass/source_assets/round2/mist_density_lighting_4x4.png",
+    "sha256": "48F9EDADD9AC23C63B813B53576207227740ED528F94694F8FF256CA3399E029",
+    "provenance": "Repository-authored read-only atlas reused for this VFX implementation; original deterministic numpy/Pillow fields per round2/manifest.json",
+    "use": "Read-only original, byte-identical independent Unity import; A is density/lifetime, R/G/B only lighting; interpolated middle frames 5..8",
+    "import": "linear RGBA, no alpha transparency transform, Clamp, Bilinear, no mipmaps, uncompressed, 1024"
+  },
+  "preview": {
+    "label": "Native Unity proxy battlefield, real repository character sprites, proxy numbers/UI. Not actual combat/HUD acceptance.",
+    "sprites": [
+      "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Velia/ClothCustom/Default.png",
+      "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Sivier/ClothCustom/Default.png"
+    ],
+    "shipping": false
+  },
+  "productionDependencies": ["VeliaTideMistMaterial", "Steria/VeliaTideMist", "mist_density_lighting_4x4.png"],
+  "noNewArt": "No painted/generated character, no new cloud/noise algorithm; smooth light masks and reused mist atlas only."
+}

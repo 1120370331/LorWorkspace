@@ -551,8 +551,8 @@
     <Keyword>SteriaMusicDice</Keyword>
     <Script>VeliaTideMist</Script>
     <BehaviourList>
-      <Behaviour Min="1" Dice="3" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealHP" ActionScript="" Desc=""/>
-      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealBP" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="3" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealHP" ActionScript="Steria_VeliaTideMist" Desc=""/>
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealBP" ActionScript="Steria_VeliaTideMist" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>200</Priority>
