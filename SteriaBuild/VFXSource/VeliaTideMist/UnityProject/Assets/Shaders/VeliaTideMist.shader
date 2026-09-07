@@ -72,10 +72,13 @@ Shader "Steria/VeliaTideMist"
                 // Neither dice index nor pulse affects silhouette, scale or motion clock.
                 float artAspect=_CloudPlate_TexelSize.z/_CloudPlate_TexelSize.w;
                 float entry=0.015*(1-smoothstep(0,0.32,_State.z));
-                float drift=sin(_State.z*(side<0 ? 0.13 : 0.11))*0.008;
+                // Continuous post-intro slowdown shared by rendered banks and ray shadows.
+                // Keep real time for the entry, fog and early surface-light propagation.
+                float motionTime=min(_State.z,0.32)+max(_State.z-0.32,0)*0.65;
+                float drift=sin(motionTime*(side<0 ? 0.13 : 0.11))*0.008;
                 float2 q=float2(uv.x-side*(entry+drift),(uv.y-0.74)*artAspect/_Aspect+0.72);
                 // Only 1.5 source pixels of broad fold drift; never warp the large masses.
-                q+=float2(sin(q.y*12+_State.z*0.15),sin(q.x*10-_State.z*0.12))*_CloudPlate_TexelSize.xy*1.5;
+                q+=float2(sin(q.y*12+motionTime*0.15),sin(q.x*10-motionTime*0.12))*_CloudPlate_TexelSize.xy*1.5;
                 return q;
             }
             float4 cloudBank(float2 uv,float side)
@@ -171,8 +174,8 @@ Shader "Steria/VeliaTideMist"
                 // Filled broad propagation: farther surfaces arrive as inner surfaces relax.
                 // This changes lighting only. There is no annulus and no expanding cloud UV.
                 float outward=arrival*lerp(1,0.28+1.42*smoothstep(0.25,0.90,distanceFromSun),travel);
-                // Compensate the spread's delayed arrival within the existing pulse tail;
-                // this still reaches zero at the original .32s and never extends the clock.
+                // Spread follows the driver's held/extended pulse through its new endpoint;
+                // early travel still uses the unchanged .035-.18s real callback age.
                 float spreadPulse=pulse*(1+0.75*travel);
                 float cloudLight=litSurface*(0.08+lerp(pulse*inner*1.65,spreadPulse*outward*2.10,_State.w));
                 float3 warmSurface=1-exp(-float3(1,0.63,0.20)*cloudLight*lightEnvelope);

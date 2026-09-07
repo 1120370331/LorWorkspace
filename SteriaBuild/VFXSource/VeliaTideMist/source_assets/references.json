@@ -1,6 +1,15 @@
 {
-  "status": "Native first-r7 independent visual review PASS, accepted by main-thread frame inspection; formal package and deployment evidence is recorded separately.",
-  "design": "docs/superpowers/specs/2026-09-07-velia-tide-mist-reference-refinement.md",
+  "status": "Sustained-light first-r8 independent visual review PASS, accepted by main-thread inspection. Final packaging/runtime/deployment evidence is recorded separately; r7 remains the accepted art baseline.",
+  "design": "docs/superpowers/specs/2026-09-07-velia-tide-mist-sustained-scatter.md",
+  "appearanceDesign": "docs/superpowers/specs/2026-09-07-velia-tide-mist-reference-refinement.md",
+  "timing": {
+    "earlyCurveUnchangedThrough": 0.18,
+    "holdEnd": 0.48,
+    "firstPulseDuration": 0.72,
+    "secondPulseDuration": 0.77,
+    "cloudShadowMotionRateAfterIntro": 0.65,
+    "note": "Beam geometry is static. Only shared cloud drift/fold/shadow time slows after the unchanged .32s intro; fog and early .035..0.18 propagation clocks stay unchanged."
+  },
   "cloudPlate": {
     "path": "SteriaBuild/VFXSource/VeliaTideMist/source_assets/reference_refinement/dawn_cloud_frame_v1.png",
     "sha256": "E91219D7B89D152B8EE32E320E5BD679C8D89D124CB843E9087A66C918AD24E8",

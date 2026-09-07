@@ -25,7 +25,7 @@ public sealed class VeliaTideMistVisualController
     public bool PulseFinished { get { return _fired && _pulseAge >= PulseDuration; } }
     public bool IsComplete { get { return _complete; } }
     public bool IsFinishing { get { return _finishing; } }
-    public float PulseDuration { get { return _ordinal > 0 ? 0.32f : 0.27f; } }
+    public float PulseDuration { get { return _ordinal > 0 ? 0.77f : 0.72f; } }
     public float Envelope
     {
         get
@@ -39,9 +39,15 @@ public sealed class VeliaTideMistVisualController
         get
         {
             if (!_fired || _complete) return 0f;
-            if (_pulseAge < 0.04f) return Smooth(_pulseAge / 0.04f);
-            if (_pulseAge <= 0.07f) return 1f;
-            return 1f - Smooth((_pulseAge - 0.07f) / (PulseDuration - 0.07f));
+            // Preserve r7's exact first .18s, hold that light for .30s, then extend
+            // the remaining original fall by .15s. The real callback clock keeps running.
+            float baseDuration = _ordinal > 0 ? 0.32f : 0.27f;
+            float age = _pulseAge;
+            if (age > 0.18f)
+                age = age <= 0.48f ? 0.18f : 0.18f + (age - 0.48f) * (baseDuration - 0.18f) / (PulseDuration - 0.48f);
+            if (age < 0.04f) return Smooth(age / 0.04f);
+            if (age <= 0.07f) return 1f;
+            return 1f - Smooth((age - 0.07f) / (baseDuration - 0.07f));
         }
     }
 

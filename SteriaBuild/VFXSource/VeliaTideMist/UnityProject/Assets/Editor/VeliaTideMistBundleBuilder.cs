@@ -12,6 +12,7 @@ using Object = UnityEngine.Object;
 public static class VeliaTideMistBundleBuilder
 {
     private const int Width = 1280, Height = 720;
+    private const int FrameRate = 60, FrameCount = 205, FirstCallbackFrame = 36, SecondBeginFrame = 99, SecondCallbackFrame = 117, CompleteFrame = 200;
     private const string MaterialPath = "Assets/Materials/VeliaTideMistMaterial.mat";
     private const string MistSource = "SteriaBuild/VFXSource/SlazeyaStormMass/source_assets/round2/mist_density_lighting_4x4.png";
     private const string CloudSource = "SteriaBuild/VFXSource/VeliaTideMist/source_assets/reference_refinement/dawn_cloud_frame_v1.png";
@@ -168,6 +169,7 @@ public static class VeliaTideMistBundleBuilder
 
     private static void VerifyDriver()
     {
+        VerifySustainedPulseSamples();
         var d = new VeliaTideMistVisualController(); d.BeginDice(0);
         d.Advance(0.16f); float paused = d.Envelope;
         d.Advance(0f); d.Advance(float.NaN); d.Advance(-1f);
@@ -176,16 +178,61 @@ public static class VeliaTideMistBundleBuilder
         d.TriggerPulse(new[] { new Vector2(0.3f,0.4f), new Vector2(0.3f,0.4f) }); d.TriggerPulse(null); d.BeginDice(0);
         Require(d.PulseCount == 1 && d.SuccessfulPointCount == 1, "Same dice/callback/target idempotency");
         d.Advance(0.05f); Require(d.Pulse > 0.99f, "First fast peak");
-        d.Advance(0.23f); Require(d.PulseFinished && !d.IsComplete, "First tail holds same session");
+        d.Advance(0.68f); Require(d.PulseFinished && !d.IsComplete, "First .72-second tail holds same session");
         d.Advance(2f); Require(d.Pulse == 0 && d.Envelope == 1, "No idle re-flash");
         d.BeginDice(1); Require(d.DiceReady && !d.PulseFinished, "Second dice skips intro, resets gate");
         d.TriggerPulse(new Vector2[0]); d.Advance(0.05f);
         Require(d.PulseCount == 2 && d.Pulse > 0.99f && d.SuccessfulPointCount == 0, "Empty callback pulses without false hit");
-        d.Advance(0.28f); Require(d.PulseFinished, "Second tail"); d.Finish(); d.Advance(0.41f);
+        d.Advance(0.73f); Require(d.PulseFinished, "Second .77-second tail"); d.Finish(); d.Advance(0.41f);
         Require(d.IsComplete && d.Envelope == 0, "Single final fade clears");
         d = new VeliaTideMistVisualController(); d.BeginDice(0); d.Advance(0.1f); d.Cancel(); d.Advance(1f);
         Require(d.IsComplete && d.Envelope == 0 && d.PulseCount == 0, "Interrupted intro returns to zero");
         Debug.Log("VELIA_NATIVE_DRIVER_CHECKS_PASS");
+    }
+
+    private static void VerifySustainedPulseSamples()
+    {
+        // Fixed observable values from accepted r7, followed by the approved hold/tail.
+        // These checks precede the controller change and must reject the old short pulse.
+        float[] ages={.02f,.04f,.07f,.10f,.14f,.18f,.30f,.48f,.60f,.70f};
+        float[][] expected={
+            new[]{.5f,1f,1f,.93925f,.71825f,.42525f,.42525f,.42525f,.12909375f,.00411328125f},
+            new[]{.5f,1f,1f,.960256f,.808704f,.589568f,.589568f,.589568f,.2525418f,.049875117f}
+        };
+        var material=new Material(Shader.Find("Steria/VeliaTideMist"));
+        try
+        {
+            for(int die=0;die<2;die++)
+            {
+                float end=die==0 ? .72f : .77f;
+                for(int i=0;i<ages.Length;i++)
+                {
+                    var d=new VeliaTideMistVisualController();d.BeginDice(die);d.Advance(.32f);
+                    d.TriggerPulse(new[]{new Vector2(.3f,.4f)});d.Advance(ages[i]);
+                    Require(Mathf.Abs(d.Pulse-expected[die][i])<.00002f,"Dice "+(die+1)+" pulse at +"+ages[i]+": "+d.Pulse+" expected "+expected[die][i]);
+                    Require(!d.PulseFinished,"Hold/tail must retain the current dice gate");
+                    d.Apply(material,16f/9f);
+                    Require(Mathf.Abs(material.GetFloat("_PulseAge")-ages[i])<.000001f,"Shader sees real callback age, not held evaluation age");
+                    if(ages[i]>=.14f)Require(material.GetFloat("_HitStrength")==0,"Local hit ends at .14s during sustained global light");
+                    float pulse=d.Pulse,elapsed=d.Elapsed;
+                    d.TriggerPulse(null);d.BeginDice(die);d.Advance(0);d.Apply(material,16f/9f);
+                    Require(d.Pulse==pulse&&d.Elapsed==elapsed&&d.PulseCount==1,"Duplicate/pause/render apply cannot restart or advance held light");
+                    if(ages[i]==.30f)
+                    {
+                        d.Cancel();d.Advance(1);d.Apply(material,16f/9f);
+                        Require(d.IsComplete&&d.Envelope==0&&d.Pulse==0&&material.GetFloat("_HitStrength")==0,"Cancel clears a live hold immediately");
+                    }
+                }
+                var tail=new VeliaTideMistVisualController();tail.BeginDice(die);tail.Advance(.32f);tail.TriggerPulse(new Vector2[0]);
+                Require(Mathf.Abs(tail.PulseDuration-end)<.000001f,"Approved total pulse duration");
+                tail.Advance(end-.0001f);Require(!tail.PulseFinished,"No premature dice release");
+                tail.Advance(.0002f);Require(tail.PulseFinished&&tail.Pulse==0&&!tail.IsComplete&&tail.SuccessfulPointCount==0,"New end releases without false hits or early disposal");
+                tail.Finish();tail.Advance(.39f);Require(!tail.IsComplete,"Normal fade still owns its .40s lifetime");
+                tail.Advance(.02f);Require(tail.IsComplete&&tail.Envelope==0,"Normal fade completes after .40s");
+            }
+        }
+        finally {Object.DestroyImmediate(material);}
+        Debug.Log("VELIA_SUSTAINED_PULSE_SAMPLES_PASS: r7 early samples, .30/.48 hold, late tail, real shader age, local hit, pause, duplicates, cancel, endpoints");
     }
 
     private static void Export(Material template, string revision, bool bundleReadback=false)
@@ -215,33 +262,33 @@ public static class VeliaTideMistBundleBuilder
             Color32[] baseline = null;
             int nearWhiteNewMax = 0;
             int completeDelta = 0;
-            for (int frame=0;frame<=144;frame++)
+            for (int frame=0;frame<FrameCount;frame++)
             {
-                if(frame>0) driver.Advance(1f/60f);
-                if(frame==36) driver.TriggerPulse(Hits.ToArray());
-                if(frame==72) driver.BeginDice(1);
-                if(frame==90) driver.TriggerPulse(Hits.ToArray());
-                if(frame>=90 && driver.PulseFinished && !driver.IsFinishing) driver.Finish();
+                if(frame>0) driver.Advance(1f/FrameRate);
+                if(frame==FirstCallbackFrame) driver.TriggerPulse(Hits.ToArray());
+                if(frame==SecondBeginFrame) { Require(driver.PulseFinished,"Next dice scheduled after the sustained first tail"); driver.BeginDice(1); }
+                if(frame==SecondCallbackFrame) driver.TriggerPulse(Hits.ToArray());
+                if(frame>=SecondCallbackFrame && driver.PulseFinished && !driver.IsFinishing) driver.Finish();
                 byte[] png=Capture(camera,rt,pixels);
                 string path=Path.Combine(sequence,"frame_"+frame.ToString("D4")+".png");
                 File.WriteAllBytes(path,png);
                 string label=Label(frame);
                 if(label!=null) { string named=Path.Combine(output,label+".png"); File.WriteAllBytes(named,png); hashes.AppendLine(Digest(named)+"  "+label+".png"); Debug.Log("VELIA_NATIVE_FRAME "+named); }
                 if(frame==0) baseline=pixels.GetPixels32();
-                if(frame==140)
+                if(frame==CompleteFrame)
                 {
                     Color32[] complete=pixels.GetPixels32();
                     for(int p=0;p<complete.Length;p++) completeDelta=Math.Max(completeDelta,PixelDelta(baseline[p],complete[p]));
                     Require(completeDelta<=1,"Completed frame restores source before filter release");
                 }
-                if(frame==39 || frame==93)
+                if(frame==FirstCallbackFrame+3 || frame==SecondCallbackFrame+3)
                 {
                     Color32[] peak=pixels.GetPixels32(); int added=0;
                     for(int p=0;p<peak.Length;p++) if(NearWhite(peak[p])&&!NearWhite(baseline[p])) added++;
                     nearWhiteNewMax=Math.Max(nearWhiteNewMax,added);
                     Require((float)added/peak.Length<=0.15f,"New near-white area <=15% at peak");
                 }
-                csv.AppendFormat(CultureInfo.InvariantCulture,"{0},{1:F6},{2:F6},{3:F6},{4},{5},{6},{7},{8}\n",frame,frame/60f,driver.Envelope,driver.Pulse,driver.PulseCount,driver.DiceReady,driver.PulseFinished,driver.IsComplete,driver.SuccessfulPointCount);
+                csv.AppendFormat(CultureInfo.InvariantCulture,"{0},{1:F6},{2:F6},{3:F6},{4},{5},{6},{7},{8}\n",frame,frame/(float)FrameRate,driver.Envelope,driver.Pulse,driver.PulseCount,driver.DiceReady,driver.PulseFinished,driver.IsComplete,driver.SuccessfulPointCount);
             }
             Require(driver.PulseCount==2&&driver.IsComplete,"Native sequence one reveal two peaks one fade");
             // Repeated camera renders must not advance any visual state.
@@ -258,10 +305,10 @@ public static class VeliaTideMistBundleBuilder
                 "Revision="+revision+"\nIndependent visual acceptance=NOT DETERMINED BY EXPORT; main-thread review required.\n"+
                 "Unity="+Application.unityVersion+"\nGPU="+SystemInfo.graphicsDeviceName+"\nAPI="+SystemInfo.graphicsDeviceType+"\nColorSpace="+QualitySettings.activeColorSpace+
                 "\nNative Camera.Render -> same VeliaTideMistScreenFilter.OnRenderImage -> Graphics.Blit\nMaterial origin="+(bundleReadback?"native AssetBundle.LoadFromFile / LoadAsset<Material>":"editor source material")+
-                "\nActual repository sprites, proxy gloomy stage and proxy numbers/UI; NOT actual game/HUD acceptance.\nBottom-left viewport origin; red TOP LEFT / cyan BOTTOM RIGHT markers are source orientation probes.\n145 frames at 60Hz; callbacks frame36 and90; next dice Begin at72; Finish only after second pulse tail.\nAdditional exact pulse ages .10 and .18 seconds for each dice use fresh instances of the same driver, same scene and native filter.\nMax additional near-white pixels (peaks + propagation samples)="+nearWhiteNewMax+"/"+(Width*Height)+"\nSource restore max 8-bit delta="+releaseDelta+"\nTemplate untouched; OnRenderImage has no clock advancement.\n");
+                "\nActual repository sprites, proxy gloomy stage and proxy numbers/UI; NOT actual game/HUD acceptance.\nBottom-left viewport origin; red TOP LEFT / cyan BOTTOM RIGHT markers are source orientation probes.\n"+FrameCount+" frames at "+FrameRate+"Hz; callbacks frame"+FirstCallbackFrame+" and"+SecondCallbackFrame+"; next dice Begin at"+SecondBeginFrame+"; Finish only after second pulse tail.\nAdditional exact pulse ages .10/.18/.30/.48/.60 seconds for each dice use fresh instances of the same driver, same scene and native filter.\nPulse first/second=.72/.77s; original 0..0.18, hold .18..48, remaining fall .24/.29s. Shared cloud/fold/shadow motion time slows to .65 after .32s intro; static beam geometry unchanged.\nMax additional near-white pixels (peaks + propagation samples)="+nearWhiteNewMax+"/"+(Width*Height)+"\nSource restore max 8-bit delta="+releaseDelta+"\nTemplate untouched; OnRenderImage has no clock advancement.\n");
             WriteSourceReceipt(output);
             File.WriteAllText(Path.Combine(output,"cloud-readback.json"),JsonUtility.ToJson(VerifyCloudTexture((Texture2D)template.GetTexture("_CloudPlate")),true));
-            File.WriteAllText(Path.Combine(output,"completion-check.txt"),"Frame140 source restore max 8-bit delta="+completeDelta+"\n");
+            File.WriteAllText(Path.Combine(output,"completion-check.txt"),"Frame"+CompleteFrame+" source restore max 8-bit delta="+completeDelta+"\n");
         }
         finally
         {
@@ -281,19 +328,19 @@ public static class VeliaTideMistBundleBuilder
     private static int ExportPropagation(Material template,VeliaTideMistScreenFilter filter,Camera camera,RenderTexture rt,Texture2D pixels,Color32[] baseline,string output)
     {
         int maximum=0;
-        var csv=new StringBuilder("dice,pulse_age,absolute_time,file,sha256\n");
-        for(int dice=0;dice<2;dice++) foreach(float age in new[]{0.10f,0.18f})
+        var csv=new StringBuilder("dice,pulse_age,absolute_time,pulse,file,sha256\n");
+        for(int dice=0;dice<2;dice++) foreach(float age in new[]{0.10f,0.18f,0.30f,0.48f,0.60f})
         {
             var sample=new VeliaTideMistVisualController();sample.SetProtectionRects(Protection.ToArray());sample.BeginDice(0);
-            sample.Advance(0.60f);sample.TriggerPulse(Hits.ToArray());
-            if(dice==1){sample.Advance(0.60f);sample.BeginDice(1);sample.Advance(0.30f);sample.TriggerPulse(Hits.ToArray());}
+            sample.Advance(FirstCallbackFrame/(float)FrameRate);sample.TriggerPulse(Hits.ToArray());
+            if(dice==1){sample.Advance((SecondBeginFrame-FirstCallbackFrame)/(float)FrameRate);Require(sample.PulseFinished,"Propagation second dice follows first tail");sample.BeginDice(1);sample.Advance((SecondCallbackFrame-SecondBeginFrame)/(float)FrameRate);sample.TriggerPulse(Hits.ToArray());}
             sample.Advance(age);filter.Initialize(sample,template);
-            string name="pulse"+(dice+1)+"_plus_"+(age<0.15f?"0p10":"0p18")+"s.png";
+            string name="pulse"+(dice+1)+"_plus_"+age.ToString("0.00",CultureInfo.InvariantCulture).Replace('.', 'p')+"s.png";
             string path=Path.Combine(output,name);File.WriteAllBytes(path,Capture(camera,rt,pixels));
             int added=0;Color32[] frame=pixels.GetPixels32();
             for(int p=0;p<frame.Length;p++)if(NearWhite(frame[p])&&!NearWhite(baseline[p]))added++;
             Require((float)added/frame.Length<=0.15f,"Near-white limit during cloud propagation");maximum=Math.Max(maximum,added);
-            csv.AppendFormat(CultureInfo.InvariantCulture,"{0},{1:F2},{2:F2},{3},{4}\n",dice+1,age,sample.Elapsed,name,Digest(path));
+            csv.AppendFormat(CultureInfo.InvariantCulture,"{0},{1:F2},{2:F2},{3:F6},{4},{5}\n",dice+1,age,sample.Elapsed,sample.Pulse,name,Digest(path));
             Debug.Log("VELIA_NATIVE_PROPAGATION "+path);filter.Release();
         }
         File.WriteAllText(Path.Combine(output,"propagation.csv"),csv.ToString());
@@ -303,8 +350,8 @@ public static class VeliaTideMistBundleBuilder
     {
         switch(frame) {
             case 0:return "00_initial";case 10:return "01_reveal";case 30:return "02_wait";
-            case 39:return "03_peak1";case 49:return "04_post_peak1";case 66:return "05_between_dice";
-            case 93:return "06_peak2";case 105:return "07_post_peak2";case 122:return "08_fade";case 140:return "09_complete";
+            case 39:return "03_peak1";case 49:return "04_post_peak1";case 90:return "05_between_dice";
+            case 120:return "06_peak2";case 130:return "07_post_peak2";case 176:return "08_fade";case 200:return "09_complete";
             default:return null;
         }
     }
