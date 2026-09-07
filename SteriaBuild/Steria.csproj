@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
@@ -108,4 +108,10 @@
     <None Remove="_analysis\**" />
   </ItemGroup>
 
+  <!-- Authored music UI pixels are embedded: no first-use vector rasterization in the game. -->
+  <ItemGroup>
+    <EmbeddedResource Include="VisualAssets\MusicDice\Card.png" LogicalName="Steria.VisualAssets.MusicDice.Card.png" />
+    <EmbeddedResource Include="VisualAssets\MusicDice\Glyph.png" LogicalName="Steria.VisualAssets.MusicDice.Glyph.png" />
+    <EmbeddedResource Include="VisualAssets\MusicDice\BlankFrame.png" LogicalName="Steria.VisualAssets.MusicDice.BlankFrame.png" />
+  </ItemGroup>
 </Project>

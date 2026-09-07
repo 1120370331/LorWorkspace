@@ -1,16 +1,15 @@
-# 乐章骰子统一原创中心交付
+# 乐章骰子：干净自绘图标交付
 
-- 最终用户合同：中心自行绘制，所有乐章骰子共用一种图案；保留原版骰框风格并修复卡色显示。
-- 中心由代码定义的原创连音符路径超采样生成，不依赖字体、Emoji 或既有音乐图标。卡面固定使用同一原版框，清除旧攻击中心后合成；动作与伤害使用同一透明中心。
-- 乐章样式不再修改整卡稀有度框、费用、正文、材质或布局；防御与反击仍使用原版图标。恢复逻辑保留普通骰复用后的原始状态。
-- 设计、实现、独立复核分别由 music_visual_design、music_visual_impl、music_visual_review 完成，主线程检查源码和预览、执行验收与部署。
-- 最终 MusicDiceSystem.cs SHA256：75504D8C76746D13D4E72AD1FED681325DF6B4F7459221F3D68E14D8EB076530。
-- HarmonyPatches.cs 工作树 SHA256：E47FD07264D0203ABA02D53841A1340EC5E4835B27B72BE8B496FAF37D515A61。含上一任务已修复的专属书页逻辑；本次改动仅涉及乐章 UI。
-- 主线程 Unity 2019 验收：2026-09-07 16:47:06，34 项 PASS，包括唯一中心、动作/伤害一致、复用恢复、不可读原生图集及 37,989 个外围像素 alpha 误差为 0。预览使用真实 Unity 渲染和生产视觉源码，游戏模型/布局/交互状态为 fixture 代理。
-- 独立最终预览 PASS：完成两次局部框内留白调整，24/32 px 中心可辨。报告和三张预览位于 output/music-dice-ui/implementation/。
-- 最终 Release 构建通过：0 错误、7 个既有警告；前一任务的斯拉泽雅编入回归检查通过。无 AssetBundle 变更。
-- 已更新仓库模组包及 C、D 两处既有游戏模组目录，三处 DLL 均匹配 SHA256 A1D81D17349EBCE82E8BB2227867E8729F0962710A614C6D9A142B09585E192D。
-- 候选、备份、部署回执：output/music-dice-ui/delivery-original-20260907-165049/。
-- 复现：在仓库根执行 output/music-dice-ui/implementation/run_preview.ps1。若旧 Unity 启动阶段出现 0xc0000005，可在启动 shell 临时设置 OPENSSL_ia32cap=:~0x20000000；主线程最终运行使用该环境，无应用代码影响。
-- 未声称完成真实游戏界面、TMP 字体布局、完整悬停/禁用/目标抗性状态机或战斗动画联调；这些仍留待游戏内验收。
-- 工作树原有其他未提交更改保留；交付 DLL 是当前完整工作树构建，源提交仅包含本次 UI 改动。
+- 最终合同：同一自绘乐章中心，清除旧斩击剪影，边缘衔接自然，保留卡色显示修复。
+- 删除旧攻击图像采样、清白和扩散补底。图形完全自绘：圆滑单线六边框、仅全局高度变化的暗蓝灰底、柔白连音符；无旧攻击像素输入、局部补色或光晕。
+- 卡面和详情共用完整图标，动作两个中心和伤害三层共用透明音符；恢复逻辑、Guard/Standby、稀有度框、费用、正文和战斗机制保持既有行为。
+- 完整绘制源和离线再生成入口：SteriaBuild/VFXSource/MusicDiceUI/。自有PNG位于SteriaBuild/VisualAssets/MusicDice/，嵌入程序集；运行时只解码和缓存。
+- 设计/实施/独立视觉复核：music_visual_design、music_visual_impl、music_visual_review。主线程检查源码、裸底框、新旧图、混合骰，执行Unity验收、计时、构建和部署。
+- 独立视觉PASS对应绘图源D92B1892FBAC2822ED3AC793851A5832A5950EF3A586A7F4D2D5EA024A32500C；无遮挡底框确认旧Slash残影消失。新方向更平整、线条化。
+- 最终运行时源码SHA256：92036E71316BD7C19012999DC911C14BBAE4155291F1BA13E2A9FFF02A4E3176；csproj：83FE3304CB2359B283D9CC60D8CA98E3A12869FE5AE891DBD112E470187EA22C。
+- 主线程最终Unity运行（2026-09-07 17:51）44项PASS：真实manifest加载、三图RGBA与已接受图完全一致、裸底色场、连接alpha、统一中心和状态恢复。加载优化复用完全相同图像的视觉PASS。
+- 冷进程实测卡图首次18458→10.14ms，中心首次4502→1.42ms，缓存卡图0.021ms；证据为implementation/factory-timing-loaded.log。
+- 最终Release构建0错误、7个既有警告；从实际Steria.dll读取三份manifest资源并核对SHA256与源资产一致。无AssetBundle变更。
+- 已更新仓库模组包和C、D两处既有游戏目录；三处DLL SHA256均为B45B1DCA9468F933681FC754597CABD6E28DFD01F52F4F99F900CA9E3616A8FC。备份和回执：output/music-dice-ui/delivery-clean-20260907-175406/。
+- 复现：output/music-dice-ui/implementation/run_preview.ps1。主线程为旧Unity启动0xc0000005设置临时环境OPENSSL_ia32cap=:~0x20000000，没有修改应用环境设置。
+- 证据边界：真实Unity渲染和生产视觉/加载代码；游戏模型、字体布局和完整交互状态机为fixture代理，未声称游戏内手动联调。原有其他工作树改动保留；DLL由完整工作树构建，源提交仅含本任务改动。

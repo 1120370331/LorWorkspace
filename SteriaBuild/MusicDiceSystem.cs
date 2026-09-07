@@ -245,230 +245,66 @@ namespace Steria
         }
     }
 
-    // Native silhouettes and white strokes are preserved; only chromatic pixels change.
+    // Music UI sprite factory: baked original artwork embedded in this assembly.
     internal static class MusicDiceSpriteFactory
     {
         private static Sprite _cardSprite;
         private static Sprite _glyphSprite;
+        private static Sprite _blankFrameSprite;
+        private static bool _cardResolved, _glyphResolved, _blankFrameResolved;
 
         public static Sprite GetCardSprite()
         {
-            if (_cardSprite != null) return _cardSprite;
-            // A single fixed native frame, independent of the former attack detail.
-            Sprite source = UI.UISpriteDataManager.instance?._cardBehaviourDetailIcons[(int)BehaviourDetail.Slash];
-            if (source == null) return null;
-            RenderTexture previous = RenderTexture.active;
-            RenderTexture target = null;
+            return GetCached(ref _cardSprite, ref _cardResolved,
+                "Steria.VisualAssets.MusicDice.Card.png", "SteriaCleanMusicCard");
+        }
+
+        public static Sprite GetGlyphSprite()
+        {
+            return GetCached(ref _glyphSprite, ref _glyphResolved,
+                "Steria.VisualAssets.MusicDice.Glyph.png", "SteriaOriginalMusicGlyph");
+        }
+
+        public static Sprite GetBlankFrameSprite()
+        {
+            return GetCached(ref _blankFrameSprite, ref _blankFrameResolved,
+                "Steria.VisualAssets.MusicDice.BlankFrame.png", "SteriaCleanMusicFrame");
+        }
+
+        private static Sprite GetCached(ref Sprite sprite, ref bool resolved, string resourceName, string name)
+        {
+            if (resolved) return sprite;
+            resolved = true;
             Texture2D texture = null;
-            Texture2D readableAtlas = null;
             try
             {
-                // Readable copies also work for the game's non-readable atlas textures.
-                // Non-packed native icons contain the complete rect, including transparent margins.
-                Rect area = source.packed ? source.textureRect : source.rect;
-                Vector2 offset = source.packed ? source.textureRectOffset : Vector2.zero;
-                int width = Mathf.RoundToInt(source.rect.width);
-                int height = Mathf.RoundToInt(source.rect.height);
-                target = RenderTexture.GetTemporary(source.texture.width, source.texture.height, 0,
-                    RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
-                Graphics.Blit(source.texture, target);
-                RenderTexture.active = target;
-                // Read the complete target before cropping. Unity 2019 D3D sub-rect ReadPixels
-                // can address a different atlas row when the destination texture is smaller.
-                readableAtlas = new Texture2D(source.texture.width, source.texture.height, TextureFormat.RGBA32, false);
-                readableAtlas.ReadPixels(new Rect(0, 0, source.texture.width, source.texture.height), 0, 0, false);
-                int areaWidth = Mathf.RoundToInt(area.width);
-                int areaHeight = Mathf.RoundToInt(area.height);
-                Color[] region = readableAtlas.GetPixels(Mathf.RoundToInt(area.x), Mathf.RoundToInt(area.y), areaWidth, areaHeight);
-                texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
-                texture.SetPixels(new Color[width * height]);
-                texture.SetPixels(Mathf.RoundToInt(offset.x), Mathf.RoundToInt(offset.y), areaWidth, areaHeight, region);
-                Color[] pixels = texture.GetPixels();
-                ClearBakedAttackCenter(pixels, width, height);
-                float targetHue, targetSaturation, targetValue;
-                Color.RGBToHSV(MusicDiceVisuals.FaceColor, out targetHue, out targetSaturation, out targetValue);
-                for (int i = 0; i < pixels.Length; i++)
+                byte[] bytes;
+                using (System.IO.Stream stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
                 {
-                    Color original = pixels[i];
-                    float h, s, v;
-                    Color.RGBToHSV(original, out h, out s, out v);
-                    // Neutral ink, white strokes and their antialiased edges keep their luminance.
-                    float weight = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.08f, 0.35f, s));
-                    Color recolored = Color.HSVToRGB(targetHue, targetSaturation, v * targetValue);
-                    Color result = Color.Lerp(original, recolored, weight);
-                    result.a = original.a;
-                    pixels[i] = result;
+                    if (stream == null) throw new InvalidOperationException("Missing embedded music artwork: " + resourceName);
+                    using (var buffer = new System.IO.MemoryStream())
+                    {
+                        stream.CopyTo(buffer);
+                        bytes = buffer.ToArray();
+                    }
                 }
-                CompositeGlyph(pixels, width, height);
-                texture.SetPixels(pixels);
-                texture.Apply(false, true);
-                texture.name = source.name + "_SteriaMusic";
-                texture.filterMode = source.texture.filterMode;
+                texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+                if (!ImageConversion.LoadImage(texture, bytes, true))
+                    throw new InvalidOperationException("Invalid embedded music artwork: " + resourceName);
+                texture.name = name;
+                texture.filterMode = FilterMode.Bilinear;
                 texture.wrapMode = TextureWrapMode.Clamp;
-                Sprite variant = Sprite.Create(texture, new Rect(0, 0, width, height),
-                    new Vector2(source.pivot.x / width, source.pivot.y / height), source.pixelsPerUnit,
-                    0, SpriteMeshType.FullRect, source.border);
-                variant.name = texture.name;
-                _cardSprite = variant;
-                return variant;
+                sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f), 100f);
+                sprite.name = name;
+                return sprite;
             }
             catch (Exception ex)
             {
                 if (texture != null) UnityEngine.Object.Destroy(texture);
-                // Unsupported atlas layouts retain the native icon rather than inventing a fallback.
-                Debug.LogError("[Steria] Native music icon conversion failed: " + ex);
-                return source;
+                Debug.LogError("[Steria] Music artwork load failed: " + ex);
+                // Never rasterize the expensive authoring geometry on a game UI path.
+                return null;
             }
-            finally
-            {
-                RenderTexture.active = previous;
-                if (readableAtlas != null) UnityEngine.Object.Destroy(readableAtlas);
-                if (target != null) RenderTexture.ReleaseTemporary(target);
-            }
-        }
-        // Original hand-drawn paths in a 100 x 100 design space. No font or resource glyph.
-        public static Sprite GetGlyphSprite()
-        {
-            if (_glyphSprite != null) return _glyphSprite;
-            const int size = 128;
-            Color[] pixels = new Color[size * size];
-            for (int y = 0; y < size; y++)
-                for (int x = 0; x < size; x++)
-                {
-                    int coverage = 0;
-                    for (int sy = 0; sy < 4; sy++)
-                        for (int sx = 0; sx < 4; sx++)
-                            if (InGlyph((x + (sx + .5f) / 4f) * 100f / size,
-                                100f - (y + (sy + .5f) / 4f) * 100f / size)) coverage++;
-                    pixels[y * size + x] = new Color(1f, 1f, 1f, coverage / 16f);
-                }
-            Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
-            texture.name = "SteriaOriginalMusicGlyph";
-            texture.filterMode = FilterMode.Bilinear;
-            texture.wrapMode = TextureWrapMode.Clamp;
-            texture.SetPixels(pixels);
-            texture.Apply(false, false);
-            _glyphSprite = Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(.5f, .5f), 100f);
-            _glyphSprite.name = texture.name;
-            return _glyphSprite;
-        }
-
-        private static readonly Vector2[] LeftStem = { new Vector2(34, 78), new Vector2(36, 28),
-            new Vector2(39, 24), new Vector2(46, 26), new Vector2(44, 77) };
-        private static readonly Vector2[] RightStem = { new Vector2(77, 67), new Vector2(78, 17),
-            new Vector2(82, 12), new Vector2(88, 13), new Vector2(87, 65) };
-        private static readonly Vector2[] Beam = { new Vector2(38, 25), new Vector2(84, 11),
-            new Vector2(88, 13), new Vector2(86, 24), new Vector2(39, 37) };
-
-        private static bool InGlyph(float x, float y)
-        {
-            return InEllipse(x, y, 29f, 78f, 16f, 10.5f, -.35f)
-                || InEllipse(x, y, 73f, 67f, 14.5f, 10f, -.26f)
-                || InPolygon(x, y, LeftStem) || InPolygon(x, y, RightStem) || InPolygon(x, y, Beam);
-        }
-
-        private static bool InEllipse(float x, float y, float cx, float cy, float rx, float ry, float angle)
-        {
-            float dx = x - cx, dy = y - cy;
-            float u = dx * Mathf.Cos(angle) + dy * Mathf.Sin(angle);
-            float v = -dx * Mathf.Sin(angle) + dy * Mathf.Cos(angle);
-            return u * u / (rx * rx) + v * v / (ry * ry) <= 1f;
-        }
-
-        private static bool InPolygon(float x, float y, Vector2[] polygon)
-        {
-            bool inside = false;
-            for (int i = 0, j = polygon.Length - 1; i < polygon.Length; j = i++)
-                if ((polygon[i].y > y) != (polygon[j].y > y)
-                    && x < (polygon[j].x - polygon[i].x) * (y - polygon[i].y)
-                        / (polygon[j].y - polygon[i].y) + polygon[i].x) inside = !inside;
-            return inside;
-        }
-
-        private static void ClearBakedAttackCenter(Color[] pixels, int width, int height)
-        {
-            // Locate only the largest neutral white connected component inside the frame.
-            bool[] candidate = new bool[pixels.Length];
-            for (int y = (int)(height * .18f); y < height * .84f; y++)
-                for (int x = (int)(width * .18f); x < width * .82f; x++)
-                {
-                    Color c = pixels[y * width + x];
-                    float low = Mathf.Min(c.r, Mathf.Min(c.g, c.b));
-                    float high = Mathf.Max(c.r, Mathf.Max(c.g, c.b));
-                    candidate[y * width + x] = c.a > .5f && low > .65f && high - low < .24f;
-                }
-            List<int> largest = new List<int>();
-            int[] directions = { -1, 1, -width, width };
-            for (int i = 0; i < candidate.Length; i++)
-            {
-                if (!candidate[i]) continue;
-                List<int> component = new List<int> { i };
-                candidate[i] = false;
-                for (int n = 0; n < component.Count; n++)
-                    foreach (int direction in directions)
-                    {
-                        int next = component[n] + direction;
-                        if (next >= 0 && next < candidate.Length && candidate[next])
-                        { candidate[next] = false; component.Add(next); }
-                    }
-                if (component.Count > largest.Count) largest = component;
-            }
-            if (largest.Count < width * height / 100)
-                throw new InvalidOperationException("Native Slash center could not be isolated.");
-            bool[] mask = new bool[pixels.Length];
-            foreach (int index in largest)
-                for (int dy = -3; dy <= 3; dy++)
-                    for (int dx = -3; dx <= 3; dx++)
-                    {
-                        int x = index % width + dx, y = index / width + dy;
-                        if (x > width * .18f && x < width * .82f && y > height * .18f && y < height * .84f)
-                            mask[y * width + x] = true;
-                    }
-            // Propagate surrounding colored ground inward, then relax only the removed center.
-            bool[] unresolved = (bool[])mask.Clone();
-            List<int> frontier = new List<int>();
-            for (int i = 0; i < mask.Length; i++)
-                if (mask[i]) foreach (int direction in directions)
-                    if (!mask[i + direction]) { frontier.Add(i); break; }
-            for (int n = 0; n < frontier.Count; n++)
-            {
-                int i = frontier[n];
-                if (!unresolved[i]) continue;
-                Color sum = Color.clear; int count = 0;
-                foreach (int direction in directions)
-                    if (!unresolved[i + direction]) { sum += pixels[i + direction]; count++; }
-                if (count == 0) continue;
-                pixels[i] = sum / count; unresolved[i] = false;
-                foreach (int direction in directions)
-                    if (unresolved[i + direction]) frontier.Add(i + direction);
-            }
-            Color[] nextPixels = (Color[])pixels.Clone();
-            for (int pass = 0; pass < 120; pass++)
-            {
-                for (int i = 0; i < mask.Length; i++)
-                    if (mask[i]) nextPixels[i] = (pixels[i - 1] + pixels[i + 1] + pixels[i - width] + pixels[i + width]) / 4f;
-                for (int i = 0; i < mask.Length; i++) if (mask[i]) pixels[i] = nextPixels[i];
-            }
-        }
-
-        private static void CompositeGlyph(Color[] pixels, int width, int height)
-        {
-            Texture2D glyph = GetGlyphSprite().texture;
-            // At 24px card size the occupied music center is about 13px high, with sturdy stems.
-            float size = Mathf.Min(width, height) * .50f;
-            float left = (width - size) * .5f - width * .01f, bottom = (height - size) * .5f - height * .015f;
-            for (int y = Mathf.CeilToInt(bottom); y < bottom + size; y++)
-                for (int x = Mathf.CeilToInt(left); x < left + size; x++)
-                {
-                    Color ink = glyph.GetPixelBilinear((x + .5f - left) / size, (y + .5f - bottom) / size);
-                    int i = y * width + x;
-                    Color ground = pixels[i];
-                    float alpha = ink.a + ground.a * (1f - ink.a);
-                    if (alpha <= 0f) continue;
-                    Color blended = (ink * ink.a + ground * ground.a * (1f - ink.a)) / alpha;
-                    blended.a = alpha;
-                    pixels[i] = blended;
-                }
         }
     }
 
