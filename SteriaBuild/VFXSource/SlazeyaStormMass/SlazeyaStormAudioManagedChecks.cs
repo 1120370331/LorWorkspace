@@ -94,6 +94,13 @@ public static class SlazeyaStormAudioManagedChecks
         try
         {
             _waves=args[0];_scratch=args[1];Directory.CreateDirectory(_scratch);
+            Run("crafted gather establishes early sound then grows to .55",()=>
+            {
+                Near(SlazeyaStormAudioController.GatherEnvelope(0),0,"initial gather");
+                Near(SlazeyaStormAudioController.GatherEnvelope(.03f),.32033525f,"30ms cast onset");
+                Near(SlazeyaStormAudioController.GatherEnvelope(1.35f),.55f,"full gather gain");
+                Near(SlazeyaStormAudioController.GatherEnvelope(4f),.55f,"waiting gain cap");
+            });
             Run("actual PCM files: exact duration/interleaving and cached AudioClip samples",()=>
             {
                 var g=SlazeyaStormAudioController.ReadPcm16Wave(Path.Combine(_waves,"gather_loop.wav"),44100);
@@ -112,12 +119,12 @@ public static class SlazeyaStormAudioManagedChecks
                 float option=0.25f;
                 using(var c=Create(()=>option))
                 {
-                    c.Advance(1.35f);Near(c.GatherVolume,0.075f,"option squared");
+                    c.Advance(1.35f);Near(c.GatherVolume,0.1375f,"option squared");
                     c.Advance(0.4f);Require(!c.BurstTriggered&&c.BurstStartCount==0,"waiting invented burst");
                     var source=c.GatherSource;
                     Require(source.loop&&!source.playOnAwake&&!source.ignoreListenerPause&&source.spatialBlend==0&&source.dopplerLevel==0,"source flags");
                     option=0;c.Advance(0);Near(c.GatherVolume,0,"mute");
-                    option=0.5f;c.Advance(0);Near(c.GatherVolume,0.15f,"restore");
+                    option=0.5f;c.Advance(0);Near(c.GatherVolume,0.275f,"restore");
                     Require(source.PlayCount==1,"volume change restarted loop");
                 }
             });
@@ -127,7 +134,7 @@ public static class SlazeyaStormAudioManagedChecks
                 {
                     c.Advance(1.55f);Require(c.TriggerBurst()&&!c.TriggerBurst(),"burst latch");
                     Near(c.BurstVolume,0.78f,"burst gain");Require(c.BurstStartCount==1&&c.BurstSource.PlayCount==1,"duplicate playback");
-                    c.Advance(0.02f);Near(c.GatherVolume,0.15f,"gather release midpoint");
+                    c.Advance(0.02f);Near(c.GatherVolume,0.275f,"gather release midpoint");
                     var gather=c.GatherSource;c.Advance(0.021f);
                     Require(!gather.isPlaying&&gather.volume==0,"loop leaked after release");
                     c.Advance(1.16f);Require(c.IsComplete&&c.Root==null,"tail source cleanup");

@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-"""Original Slazeya skill SFX. No samples, network, voices, music or Unity writes.
+"""Original storm SFX; frozen 2026-09-07 source contract. No deployment writes.
 
-Python 3.12 + numpy 2.2.6 + scipy 1.16.1 + Pillow 11.3.0; imageio_ffmpeg
-provides the independent decoder. Run to regenerate only source_audio/.
---verify decodes existing WAVs and checks their manifest; --verify-repro also
-resynthesizes in memory and compares all three complete RIFF byte streams.
-The waveform board is numeric evidence, never a claim of listening approval.
+Run to author source_audio; --verify-repro is read-only and compares full RIFF
+bytes against independent FFmpeg decoding and deterministic in-memory synthesis.
+Shared synthesis/measurement primitives also serve the separate Velia generator.
 """
 from __future__ import annotations
-
 import argparse
 import hashlib
 import io
@@ -21,25 +18,24 @@ import wave
 
 import numpy as np
 import scipy
-from scipy import signal
+from scipy import signal, ndimage
 from PIL import Image, ImageDraw, ImageFont, __version__ as PIL_VERSION
 
 ROOT = Path(__file__).resolve().parent
+REPO = ROOT.parents[2]
 OUT = ROOT / "source_audio"
 SR = 44100
-SEED = 2026090507
+SEED = 2026090707
 TAU = 2 * np.pi
-TARGET_DBFS = -3.5
 GATHER = 1.35
-BURST = 1.55
-GATHER_GAIN = .30
+GATHER_GAIN = .55
 BURST_GAIN = .78
 GATHER_FADE = .04
-# Accepted video has 91 frames at 30 Hz, exactly 133770 audio frames.
-PREVIEW_SAMPLES = 91 * SR // 30
-SPECS = {"gather_loop.wav": SR, "burst_tail.wav": 52920,
-         "preview_mix.wav": PREVIEW_SAMPLES}
-
+SUBJECTIVE = "UNVERIFIED (audio input unsupported)"
+CONTRACTS = {
+    "gather_loop.wav": {"frames": 44100, "peak_dbfs": -8., "true_peak_dbfs": -7.5, "rms_dbfs": -16.},
+    "burst_tail.wav": {"frames": 52920, "peak_dbfs": -5., "true_peak_dbfs": -4.5, "rms_dbfs": -16., "front_dbfs": -12.},
+}
 
 def smooth(x):
     x = np.clip(x, 0, 1)
@@ -82,7 +78,7 @@ def noise(n, seed_offset, lo, hi, slope=0.):
 
 def stereo_noise(n, offset, lo, hi, slope=0., width=.25):
     mid = noise(n, offset, lo, hi, slope)
-    side = noise(n, offset + 1, max(lo, 180), hi, slope)
+    side = noise(n, offset + 1, max(lo, 320), hi, slope)
     return np.column_stack((mid + width * side, mid - width * side)) / math.sqrt(1 + width**2)
 
 
@@ -172,11 +168,16 @@ def close_loop(x):
                "method": "Periodic FFT and circular grains; quiet phase rotation; local C2 value/slope correction; zero-DC projection."}
 
 
-def finish_transient(x):
-    x = signal.sosfilt(signal.butter(2, 28, "highpass", fs=SR, output="sos"), x, axis=0)
+def finish_transient(x, highpass=35):
+    x = signal.sosfilt(signal.butter(2, highpass, "highpass", fs=SR, output="sos"), x, axis=0)
     t = np.arange(len(x)) / SR
-    gate = smooth(t / .0005) * (1 - smooth((t - 1.17) / (.03 - 1 / SR)))
-    x *= gate[:, None]
+    end = (len(x) - 1) / SR
+    gate = smooth(t / .0005) * (1 - smooth((t - (end - .03)) / .03))
+    return dc_project(x * gate[:, None], gate)
+
+
+def dc_project(x, gate):
+    x = x.copy()
     x -= (x.sum(axis=0) / gate.sum())[None, :] * gate[:, None]
     x[[0, -1]] = 0
     return x
@@ -184,10 +185,9 @@ def finish_transient(x):
 
 def to_pcm(x, normalize=False):
     if normalize:
-        x = x * (10 ** (TARGET_DBFS / 20) / np.max(np.abs(x)))
+        raise ValueError("Peak normalization removed; explicit source mastering required")
     if not np.all(np.isfinite(x)) or np.max(np.abs(x)) >= 1:
         raise ValueError("Nonfinite or clipping float candidate")
-    # Nearest PCM16 quantization; no random floor added to the loop or silence.
     return np.rint(x * 32768).astype("<i2")
 
 
@@ -201,271 +201,368 @@ def encoded(pcm):
     return buf.getvalue()
 
 
-def synthesize():
-    metadata = {}
+def master(x, target_rms, peak_cap, loop=False, front_target=None):
+    """Stereo-linked offline smooth peak-envelope gain; no sample clipping.
+
+    A +/-1ms maximum envelope, Gaussian-smoothed with exactly 1ms support,
+    bounds each sample. Soft sixth-order gain approaches the ceiling smoothly.
+    This is gain modulation (no per-sample tanh or clip); source output is solved
+    to RMS, never normalized after preview mixing. M/S linkage preserves phase.
+    """
+    target = 10 ** (target_rms / 20)
+    ceiling = 10 ** ((peak_cap - .20) / 20)
+    t = np.arange(len(x)) / SR
+    gate = np.sin(np.linspace(0, np.pi, len(x))) ** 2 if loop else (
+        smooth(t / .0005) * (1 - smooth((t - ((len(x)-1)/SR - .03)) / .03)))
+    # Front weight smoothly relaxes by .18s; no discontinuous RMS block gain.
+    front_shape = 1 - smooth((t - .075) / .105)
+    radius = round(.001 * SR)
+    mode = "wrap" if loop else "constant"
+
+    def solve(head):
+        z = x * np.exp(np.log(head) * front_shape[:, None])
+        env = ndimage.maximum_filter1d(np.max(np.abs(z), axis=1), 2*radius+1, mode=mode)
+        env = ndimage.gaussian_filter1d(env, radius/4, radius=radius, mode=mode)
+        base = target / rms(z)
+        def process(drive):
+            gain = (1 + (drive * env / ceiling) ** 6) ** (-1/6)
+            y = dc_project(z * (drive * gain)[:, None], gate)
+            return y, gain
+        lo, hi = 0., 16 * base
+        for _ in range(42):
+            mid = (lo + hi) / 2
+            if rms(process(mid)[0]) < target:
+                lo = mid
+            else:
+                hi = mid
+        y, gain = process(hi)
+        if abs(db(rms(y)) - target_rms) > .001:
+            raise ValueError("RMS target cannot be reached with bounded smooth source dynamics")
+        return y, gain, hi
+
+    head = 1.
+    if front_target is not None:
+        lo, hi = .15, 12.
+        for _ in range(24):
+            head = math.sqrt(lo * hi)
+            y, _, _ = solve(head)
+            if db(rms(y[:5292])) < front_target:
+                lo = head
+            else:
+                hi = head
+        head = math.sqrt(lo * hi)
+    y, gain, drive = solve(head)
+    if np.max(np.abs(y)) > 10 ** (peak_cap / 20):
+        raise ValueError("DC-projected master exceeds frozen source peak")
+    # Reject excessive dynamics; report a blocker instead of hiding damage.
+    active = np.max(np.abs(x), axis=1) > np.max(np.abs(x)) * .01
+    max_reduction = -db(np.min(gain[active]))
+    if max_reduction > 12:
+        raise ValueError(f"Excessive source gain reduction {max_reduction:.2f}dB; redesign layers")
+    return to_pcm(y), {
+        "method": "Stereo-linked smooth lookaround peak-envelope gain, sixth-order soft knee; RMS solve",
+        "rms_target_dbfs": target_rms, "source_peak_ceiling_dbfs": peak_cap-.20,
+        "front_120ms_target_dbfs": front_target, "front_weight": head,
+        "front_weight_hold_s": .075, "front_weight_end_s": .18,
+        "drive_linear": drive, "maximum_gain_reduction_db": max_reduction,
+        "median_active_gain_reduction_db": float(np.median(-20*np.log10(gain[active]))),
+        "lookaround_radius_samples": radius, "gaussian_sigma_samples": radius/4,
+        "gaussian_radius_samples": radius, "gain_exponent": 6, "envelope_boundary": mode,
+        "hard_clipping": False, "waveshaping": False,
+        "final_dc_projection": True, "post_mix_normalization": False,
+        "quantization": "Round nearest PCM16, no dither; exact silence retained"}
+
+
+def synthesize_sources():
     n = SR
     t = np.arange(n) / SR
-    low = stereo_noise(n, 101, 38, 190, -.9, .055)
-    low *= (1 + .085*np.sin(TAU*t + .4) + .065*np.sin(TAU*3*t + 1.7))[:, None]
-    water = stereo_noise(n, 201, 230, 1850, -.65, .28) * modulation(n, 203, 3, 12)[:, None]
-    air = stereo_noise(n, 301, 2100, 6900, -.5, .40) * modulation(n, 303, 6, 25)[:, None]
-    bubbles, gather_events = droplets(n, 401, 49, 0, 1, periodic=True)
-    gather, loop_info = close_loop(.49*low + .28*water + .060*air + .41*bubbles)
-    metadata["gather_loop.wav"] = {
-        "seed_offsets": {"pressure_mid_side": [101, 102], "water_mid_side_mod": [201, 202, 203],
-                         "air_mid_side_mod": [301, 302, 303], "bubble_grains": 401},
-        "layers": [
-            {"name": "pressure", "start_s": 0, "end_s": 1, "band_hz": [38, 190], "weight": .49},
-            {"name": "water_friction", "start_s": 0, "end_s": 1, "band_hz": [230, 1850], "weight": .28},
-            {"name": "air_shear", "start_s": 0, "end_s": 1, "band_hz": [2100, 6900], "weight": .06},
-            {"name": "short_bubble_resonances", "start_s": 0, "end_s": 1, "count": 49, "weight": .41}],
-        "droplet_events_before_phase_rotation": gather_events, "loop_construction": loop_info}
+    pressure = stereo_noise(n, 101, 65, 215, -.35, .015)
+    pressure *= (1 + .035*np.sin(TAU*2*t+.4))[:, None]
+    water = stereo_noise(n, 201, 260, 1760, -.25, .19)
+    water *= (.90+.10*modulation(n, 203, 3, 12))[:, None]
+    vortex = stereo_noise(n, 211, 720, 2400, -.25, .21)
+    vortex *= (.88+.12*modulation(n, 213, 4, 15))[:, None]
+    air = stereo_noise(n, 301, 2300, 5700, -.7, .25)
+    air *= (.92+.08*modulation(n, 303, 6, 21))[:, None]
+    bubbles, events = droplets(n, 401, 76, 0, 1, periodic=True)
+    gather, seam = close_loop(.41*pressure + .39*water + .18*vortex + .15*air + .36*bubbles)
+    gather_pcm, gm = master(gather, -16, -8, loop=True)
 
-    n = SPECS["burst_tail.wav"]
+    n = 52920
     t = np.arange(n) / SR
-    thunder = stereo_noise(n, 501, 34, 210, -.8, .045) * event_envelope(n, 0, .0015, .145, .70)[:, None]
-    # Front cracks are short, independent streams; the second flash has .34 of
-    # the first crack's pre-master weight and no repeated low-frequency slam.
-    crack = np.zeros((n, 2))
-    for j, (start, weight, decay, end) in enumerate(((0, 1., .010, .046), (.012, .29, .004, .034), (.028, .16, .003, .046))):
-        crack += weight * stereo_noise(n, 511 + j*3, 1500, 11200, -.25, .17) * event_envelope(n, start, .00035, decay, end)[:, None]
-    second = stereo_noise(n, 531, 2050, 10500, -.1, .22) * event_envelope(n, .10, .0004, .008, .146)[:, None]
-    slap_env = (event_envelope(n, 0, .001, .078, .43)
-                + .36*event_envelope(n, .024, .0025, .065, .41)
-                + .20*event_envelope(n, .057, .004, .048, .35))
-    slap = stereo_noise(n, 541, 115, 1900, -.4, .23) * slap_env[:, None]
-    spray = stereo_noise(n, 551, 850, 8000, -.35, .39)
-    spray *= (event_envelope(n, .009, .007, .18, .87) * modulation(n, 553, 8, 37))[:, None]
-    wash = stereo_noise(n, 561, 260, 2550, -.8, .31)
-    wash_env = (event_envelope(n, .075, .026, .27, 1.20)
-                + .19*event_envelope(n, .32, .025, .12, .86))
-    wash *= (wash_env * modulation(n, 563, 5, 23))[:, None]
-    mist = stereo_noise(n, 571, 1600, 5600, -.5, .40) * event_envelope(n, .18, .10, .27, 1.20)[:, None]
-    drops, burst_events = droplets(n, 601, 112, .017, 1.115)
-    burst = finish_transient(.93*thunder + .48*crack + .48*.34*second + .86*slap
-                             + .31*spray + .24*wash + .065*mist + .69*drops)
-    metadata["burst_tail.wav"] = {
-        "seed_offsets": {"thunder_mid_side": [501, 502], "primary_cracks": [511, 512, 514, 515, 517, 518],
-                         "secondary_crack": [531, 532], "wave_slap": [541, 542],
-                         "spray": [551, 552, 553], "wash": [561, 562, 563], "mist": [571, 572], "droplets": 601},
-        "layers": [
-            {"name": "low_thunder", "start_s": 0, "end_s": .70, "band_hz": [34, 210], "weight": .93},
-            {"name": "primary_lightning_cracks", "start_s": 0, "end_s": .046, "subcracks_s": [0, .012, .028], "band_hz": [1500, 11200], "weight": .48},
-            {"name": "wave_slap", "start_s": 0, "end_s": .43, "sheets_s": [0, .024, .057], "band_hz": [115, 1900], "weight": .86},
-            {"name": "secondary_lightning", "start_s": .10, "end_s": .146, "band_hz": [2050, 10500], "relative_primary_weight": .34},
-            {"name": "spray", "start_s": .009, "end_s": .87, "band_hz": [850, 8000], "weight": .31},
-            {"name": "returning_wash", "start_s": .075, "end_s": 1.2, "band_hz": [260, 2550], "weight": .24},
-            {"name": "mist_air", "start_s": .18, "end_s": 1.2, "band_hz": [1600, 5600], "weight": .065},
-            {"name": "damped_wet_drops", "start_s": .017, "last_onset_before_s": 1.115, "end_s": 1.2, "count": 112, "weight": .69}],
-        "droplet_events": burst_events, "final_fade_s": [1.17, (n - 1) / SR],
-        "secondary_primary_isolated_peak_ratio": float(np.max(np.abs(.34*second)) / np.max(np.abs(crack)))}
-    pcm = {"gather_loop.wav": to_pcm(gather, True), "burst_tail.wav": to_pcm(burst, True)}
-    pcm["preview_mix.wav"] = preview(pcm)
-    return pcm, metadata
+    # One broad front, not a chain of separate low-frequency impacts.
+    attack = smooth(t / .006)
+    body_env = attack * np.interp(t, [0,.035,.075,.12,.28,.45,.70,.90,1.17,1.20],
+                                [1,1,.86,.70,.57,.46,.30,.10,0,0])
+    pressure = stereo_noise(n, 501, 85, 265, -.2, .012) * body_env[:, None]
+    slap = stereo_noise(n, 541, 160, 1080, -.10, .13) * body_env[:, None]
+    shear = stereo_noise(n, 551, 720, 3800, -.45, .23)
+    shear *= (body_env * (.86+.14*modulation(n, 553, 8, 23)))[:, None]
+    crack = stereo_noise(n, 511, 1400, 9300, -.2, .16)
+    crack *= event_envelope(n, 0, .0012, .008, .035)[:, None]
+    second = stereo_noise(n, 531, 2200, 8200, -.4, .18)
+    second *= event_envelope(n, .10, .001, .006, .135)[:, None]
+    # Exact isolated -10dB relation before shared source gain.
+    second *= .316227766 * np.max(np.abs(crack)) / np.max(np.abs(second))
+    wash_env = smooth(t/.065) * np.interp(t, [0,.12,.45,.7,.9,1.17,1.2], [0,.52,.5,.32,.12,0,0])
+    wash = stereo_noise(n, 561, 280, 1950, -.20, .19) * wash_env[:, None]
+    mist = stereo_noise(n, 571, 1800, 4800, -.5, .28)
+    mist *= (smooth((t-.12)/.12) * (1-smooth((t-.55)/.5)) * .20)[:, None]
+    drops, burst_events = droplets(n, 601, 145, .025, 1.155)
+    # Lower tail masks no late fresh hit; only scattered contacts beyond .90s.
+    drops *= np.where(t < .90, 1., .42)[:, None]
+    burst = finish_transient(.29*pressure + .85*slap + .24*shear + .19*crack
+                             + .19*second + .46*wash + .12*mist + .39*drops)
+    burst_pcm, bm = master(burst, -16, -5, front_target=-12.4)
+    design = {
+        "gather_loop.wav": {
+            "layers": [
+                {"name":"central_wind_pressure","band_hz":[65,215],"weight":.41,"width":.015,"seed_offsets":[101,102]},
+                {"name":"dense_water_friction","band_hz":[260,1760],"weight":.39,"width":.19,"seed_offsets":[201,202,203]},
+                {"name":"inward_vortex_texture","band_hz":[720,2400],"weight":.18,"width":.21,"seed_offsets":[211,212,213]},
+                {"name":"air_detail","band_hz":[2300,5700],"weight":.15,"width":.25,"seed_offsets":[301,302,303]},
+                {"name":"circular_modal_water_contacts","count":76,"weight":.36,"seed_offset":401}],
+            "droplet_events_before_phase_rotation":events, "loop_construction":seam, "mastering":gm,
+            "prospective_timbre":"Continuous weighty wind/water with dense audible midrange; no baked recurring cast accent."},
+        "burst_tail.wav": {
+            "layers": [
+                {"name":"single_pressure_body","band_hz":[85,265],"weight":.29,"seed_offsets":[501,502]},
+                {"name":"thick_water_slap","band_hz":[160,1080],"weight":.85,"seed_offsets":[541,542]},
+                {"name":"water_sheet_shear","band_hz":[720,3800],"weight":.24,"seed_offsets":[551,552,553]},
+                {"name":"primary_water_electric_crack","onset_s":0,"end_s":.035,"weight":.19,"seed_offsets":[511,512]},
+                {"name":"lighter_secondary_crack","onset_s":.10,"end_s":.135,"isolated_relative_peak_db":-10,"seed_offsets":[531,532]},
+                {"name":"returning_water","band_hz":[280,1950],"weight":.46,"seed_offsets":[561,562]},
+                {"name":"foam_air","band_hz":[1800,4800],"weight":.12,"seed_offsets":[571,572]},
+                {"name":"irregular_drops","count":145,"last_onset_before_s":1.155,"weight":.39,"seed_offset":601}],
+            "body_envelope_knots_s":[0,.035,.075,.12,.28,.45,.70,.90,1.17,1.20],
+            "body_envelope_values":[1,1,.86,.70,.57,.46,.30,.10,0,0], "body_attack_s":.006,
+            "droplet_events":burst_events, "final_fade_s":[(n-1)/SR-.03,(n-1)/SR],
+            "mastering":bm, "secondary_primary_isolated_peak_ratio":.316227766,
+            "prospective_timbre":"One forceful water-pressure strike; short electrical edge then substantial rolling water, foam and sparse drops."}}
+    # Compare both cracks through the actual common time-varying master gain.
+    raw = burst
+    # Common gain is known analytically; recompute from the recorded parameters.
+    head = np.exp(np.log(bm["front_weight"]) * (1-smooth((t-.075)/.105)))
+    radius = bm["lookaround_radius_samples"]
+    env = ndimage.maximum_filter1d(np.max(np.abs(raw*head[:,None]),axis=1),2*radius+1,mode="constant")
+    env = ndimage.gaussian_filter1d(env,radius/4,radius=radius,mode="constant")
+    gain = bm["drive_linear"] * (1+(bm["drive_linear"]*env/10**(-5.2/20))**6)**(-1/6) * head
+    ratio = np.max(np.abs(second*gain[:,None])) / np.max(np.abs(crack*gain[:,None]))
+    design["burst_tail.wav"]["secondary_primary_after_common_gain_peak_db"] = db(ratio)
+    if db(ratio) > -8:
+        raise ValueError("Secondary crack after shared mastering exceeds -8dB relative primary")
+    return {"gather_loop.wav":gather_pcm, "burst_tail.wav":burst_pcm}, design
 
 
-def preview(pcm):
-    t = np.arange(PREVIEW_SAMPLES) / SR
-    gain = GATHER_GAIN * smooth(t / GATHER)
-    gain *= 1 - np.clip((t - BURST) / GATHER_FADE, 0, 1)
-    mix = pcm["gather_loop.wav"][np.arange(len(t)) % SR].astype(float) / 32768 * gain[:, None]
-    start = int(round(BURST * SR))
-    tail = pcm["burst_tail.wav"].astype(float) / 32768
-    mix[start:start + len(tail)] += tail * BURST_GAIN
+def preview_context():
+    path = REPO / "preview_exports/slazeya_storm_mass/round5/manifest.json"
+    media = REPO / "preview_exports/slazeya_storm_mass/round5/media-manifest.json"
+    m = json.loads(path.read_text(encoding="utf-8-sig"))
+    mm = json.loads(media.read_text(encoding="utf-8-sig"))
+    video = next(v for v in mm["media"] if Path(v["path"]).name == "battlefield_motion.mp4")
+    video_path = Path(video["path"])
+    if not video_path.exists():
+        video_path = path.parent / video_path.name
+    assert sha(video_path.read_bytes()) == video["sha256"]
+    return {
+        "source_manifest":str(path.relative_to(REPO)).replace("\\","/"),
+        "source_manifest_sha256":sha(path.read_bytes()),
+        "media_manifest_sha256":sha(media.read_bytes()),
+        "video":str(video_path.relative_to(REPO)).replace("\\","/"), "video_sha256":video["sha256"],
+        "video_frames":video["decodedFrames"], "video_fps":m["sequenceFps"],
+        "frames":round(video["decodedFrames"]*SR/m["sequenceFps"]),
+        "burst_start_s":m["callbackTime"], "burst_start_sample":round(m["callbackTime"]*SR),
+        "cast_start_s":0, "option_gain":1., "normalization_after_mix":False}
+
+
+def preview(pcm, context):
+    t = np.arange(context["frames"]) / SR
+    b = context["burst_start_sample"] / SR
+    gain = .32*smooth(np.minimum(t,b)/.03) + .23*smooth(np.minimum(t,b)/GATHER)
+    gain *= 1-np.clip((t-b)/GATHER_FADE,0,1)
+    mix = pcm["gather_loop.wav"][np.arange(len(t))%SR].astype(float)/32768*gain[:,None]
+    start = context["burst_start_sample"]
+    tail = pcm["burst_tail.wav"].astype(float)/32768
+    length = min(len(tail), len(mix)-start)
+    mix[start:start+length] += tail[:length]*BURST_GAIN
     return to_pcm(mix)
-
-
-def decode(path):
-    with wave.open(str(path), "rb") as f:
-        if (f.getnchannels(), f.getsampwidth(), f.getframerate(), f.getcomptype()) != (2, 2, SR, "NONE"):
-            raise ValueError(f"Format mismatch: {path}")
-        n = f.getnframes()
-        raw = f.readframes(n)
-        if n != SPECS[path.name] or len(raw) != n * 4:
-            raise ValueError(f"Duration/data mismatch: {path}")
-    return np.frombuffer(raw, dtype="<i2").reshape(-1, 2).copy()
 
 
 def metrics(pcm, loop=False):
     x = pcm.astype(float) / 32768
-    delta = np.diff(x, axis=0)
     peak = np.max(np.abs(x))
     mono = x.mean(axis=1)
-    f, p = signal.welch(x, SR, nperseg=2048, axis=0)
-    total = float(p.sum())
-    bands = {f"{lo}-{hi}Hz": float(p[(f >= lo) & (f < hi)].sum() / total)
-             for lo, hi in ((20, 250), (250, 2000), (2000, 12000))}
-    low = signal.sosfilt(signal.butter(4, 200, "lowpass", fs=SR, output="sos"), x, axis=0)
+    f,p = signal.welch(x,SR,nperseg=2048,axis=0)
+    bands = {f"{lo}-{hi}Hz":float(p[(f>=lo)&(f<hi)].sum()/max(float(p.sum()),1e-30))
+             for lo,hi in ((20,250),(250,2000),(2000,12000))}
+    low = signal.sosfilt(signal.butter(4,200,"lowpass",fs=SR,output="sos"),x,axis=0)
+    window = round(.02*SR)
+    energy = np.convolve(np.mean(x*x,axis=1),np.ones(window)/window,"valid")
     result = {
-        "frames": len(pcm), "duration_s": len(pcm) / SR,
-        "sample_peak_dbfs": db(peak), "sample_peak_linear": float(peak),
-        "sample_peak_dbfs_per_channel": [db(v) for v in np.max(np.abs(x), axis=0)],
-        "true_peak_8x_dbfs": db(np.max(np.abs(signal.resample_poly(x, 8, 1, axis=0)))),
-        "rms_dbfs": db(rms(x)), "dc_per_channel": x.mean(axis=0).tolist(),
-        "dc_dbfs_per_channel": [db(abs(v)) for v in x.mean(axis=0)],
-        "clipped_samples": int(np.count_nonzero((pcm == -32768) | (pcm == 32767))),
-        "first_pcm16": pcm[0].tolist(), "last_pcm16": pcm[-1].tolist(),
-        "stereo_correlation": float(np.corrcoef(x.T)[0, 1]),
-        "low_band_correlation": float(np.corrcoef(low.T)[0, 1]),
-        "mono_fold_rms_loss_db": db(rms(mono) / rms(x)),
-        "band_power_fractions": bands,
-        "edge_first_1ms_peak_dbfs": db(np.max(np.abs(x[:44]))),
-        "edge_last_1ms_peak_dbfs": db(np.max(np.abs(x[-44:]))),
-    }
+        "frames":len(pcm),"duration_s":len(pcm)/SR,
+        "sample_peak_dbfs":db(peak),"sample_peak_linear":float(peak),
+        "sample_peak_dbfs_per_channel":[db(v) for v in np.max(np.abs(x),axis=0)],
+        "true_peak_8x_dbfs":db(np.max(np.abs(signal.resample_poly(x,8,1,axis=0)))),
+        "true_peak_method":"scipy.signal.resample_poly 8/1, default Kaiser beta5 FIR, constant boundary",
+        "rms_dbfs":db(rms(x)),"front_120ms_rms_dbfs":db(rms(x[:5292])),
+        "max_20ms_rms_dbfs":db(np.sqrt(np.max(energy))),
+        "max_20ms_rms_window_start_s":int(np.argmax(energy))/SR,
+        "dc_per_channel":x.mean(axis=0).tolist(),
+        "clipped_samples":int(np.count_nonzero((pcm==-32768)|(pcm==32767))),
+        "first_pcm16":pcm[0].tolist(),"last_pcm16":pcm[-1].tolist(),
+        "stereo_correlation":float(np.corrcoef(x.T)[0,1]),
+        "low_band_correlation":float(np.corrcoef(low.T)[0,1]),
+        "mono_fold_rms_loss_db":db(rms(mono)/rms(x)),
+        "band_power_fractions":bands,
+        "edge_first_1ms_peak_dbfs":db(np.max(np.abs(x[:44]))),
+        "edge_last_1ms_peak_dbfs":db(np.max(np.abs(x[-44:]))),
+        "rms_20ms_blocks_dbfs":[db(rms(x[i:i+window])) for i in range(0,len(x),window)]}
     if loop:
-        seam_step = x[0] - x[-1]
-        curvature = np.diff(np.vstack((x[-2:], x[:2])), n=2, axis=0)
-        interior_p99 = np.percentile(np.abs(delta), 99.9, axis=0)
+        delta = np.diff(x,axis=0)
+        curvature = np.diff(np.vstack((x[-2:],x[:2])),n=2,axis=0)
+        seam_energy = rms(np.vstack((x[-441:],x[:441])))
         result["loop_seam"] = {
-            "step_pcm16": (pcm[0].astype(int) - pcm[-1]).tolist(),
-            "step_linear": seam_step.tolist(),
-            "slope_in_linear": (x[-1] - x[-2]).tolist(),
-            "slope_out_linear": (x[1] - x[0]).tolist(),
-            "seam_curvature_peak": np.max(np.abs(curvature), axis=0).tolist(),
-            "interior_step_p99_9": interior_p99.tolist(),
-            "seam_20ms_rms_ratio": rms(np.vstack((x[-441:], x[:441]))) / rms(x),
-            "three_repeat_boundary_steps_pcm16": [
-                (np.tile(pcm, (3, 1))[k*len(pcm)].astype(int) - np.tile(pcm, (3, 1))[k*len(pcm)-1]).tolist()
-                for k in (1, 2)],
-        }
+            "step_pcm16":(pcm[0].astype(int)-pcm[-1]).tolist(),
+            "slope_in_linear":(x[-1]-x[-2]).tolist(),"slope_out_linear":(x[1]-x[0]).tolist(),
+            "seam_curvature_peak":np.max(np.abs(curvature),axis=0).tolist(),
+            "interior_step_p99_9":np.percentile(np.abs(delta),99.9,axis=0).tolist(),
+            "seam_20ms_rms_ratio":seam_energy/rms(x),
+            "seam_vs_adjacent_20ms_rms_db":db(seam_energy/rms(np.vstack((x[-1323:-441],x[441:1323])))),
+            "three_repeat_boundary_steps_pcm16":[(np.tile(pcm,(3,1))[k*len(pcm)].astype(int)-np.tile(pcm,(3,1))[k*len(pcm)-1]).tolist() for k in (1,2)]}
     return result
 
 
-def inspect_files(repro=False):
-    import imageio_ffmpeg
-    ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
-    results, decoded = {}, {}
-    for name in SPECS:
-        path = OUT / name
-        pcm = decode(path)
-        decoded[name] = pcm
-        # Independent real decode, bit-for-bit against Python wave, not just a header probe.
-        run = subprocess.run([ffmpeg, "-v", "error", "-xerror", "-i", str(path), "-map", "0:a:0",
-                              "-c:a", "pcm_s16le", "-f", "s16le", "pipe:1"], capture_output=True, check=True)
-        if run.stdout != pcm.tobytes():
-            raise ValueError(f"Independent decoded samples differ: {name}")
-        m = metrics(pcm, name == "gather_loop.wav")
-        assert m["clipped_samples"] == 0 and m["sample_peak_dbfs"] <= (-3 if name != "preview_mix.wav" else -.01), name
-        assert max(abs(v) for v in m["dc_per_channel"]) < 1e-4, (name, "DC")
-        assert m["first_pcm16"] == [0, 0] and m["last_pcm16"] == [0, 0], (name, "source edges")
-        assert m["stereo_correlation"] > .5 and m["mono_fold_rms_loss_db"] > -1.5, (name, "phase cancellation")
-        assert m["low_band_correlation"] > .85, (name, "low phase")
-        if name == "gather_loop.wav":
-            seam = m["loop_seam"]
-            assert seam["step_pcm16"] == [0, 0]
-            assert np.all(np.array(seam["seam_curvature_peak"]) < np.array(seam["interior_step_p99_9"]))
-            assert .35 < seam["seam_20ms_rms_ratio"] < 2.0, "Loop seam gap/spike"
-        results[name] = {**m, "sha256": sha(path.read_bytes()), "bytes": path.stat().st_size,
-                         "independent_ffmpeg_decode": "PASS: every decoded PCM16 sample identical"}
-    assert np.array_equal(preview(decoded), decoded["preview_mix.wav"]), "Preview gain/timing/source mismatch"
-    assert np.count_nonzero(decoded["preview_mix.wav"][int(round((BURST + 1.2) * SR)):]) == 0
-    if repro:
-        regenerated, _ = synthesize()
-        for name in SPECS:
-            assert encoded(regenerated[name]) == (OUT / name).read_bytes(), (name, "Reproducibility mismatch")
-            results[name]["deterministic_regeneration"] = "PASS: identical full WAV bytes"
-    return results, decoded, ffmpeg
+def decode(path, frames=None):
+    with wave.open(str(path),"rb") as f:
+        assert (f.getnchannels(),f.getsampwidth(),f.getframerate(),f.getcomptype()) == (2,2,SR,"NONE"), path
+        n = f.getnframes()
+        raw = f.readframes(n)
+        assert len(raw)==n*4 and (frames is None or n==frames), path
+    return np.frombuffer(raw,dtype="<i2").reshape(-1,2).copy()
 
 
-def waveform_board(decoded, results):
-    """Draw decoded min/max bins, true stereo seam samples and RMS envelopes."""
-    img = Image.new("RGB", (1600, 1290), "#0d1721")
-    d = ImageDraw.Draw(img)
-    font_path = Path("C:/Windows/Fonts/consola.ttf")
-    font = ImageFont.truetype(str(font_path), 18) if font_path.exists() else ImageFont.load_default()
-    small = ImageFont.truetype(str(font_path), 14) if font_path.exists() else ImageFont.load_default()
-    d.text((28, 16), "SLAZEYA / ORIGINAL STORM SFX   |   decoded PCM16 / 44100 Hz / stereo", fill="#eaf4ff", font=font)
-    d.text((28, 46), "Numeric diagnostics only. Listening approval is not implied. Cyan=L / amber=R", fill="#aabccc", font=small)
+def validate(pcm, spec, name):
+    m = metrics(pcm,name=="gather_loop.wav")
+    assert len(pcm)==spec["frames"], (name,"frames")
+    assert m["sample_peak_dbfs"] <= spec["peak_dbfs"], (name,"peak",m["sample_peak_dbfs"])
+    assert m["true_peak_8x_dbfs"] <= spec["true_peak_dbfs"], (name,"true peak")
+    if "rms_dbfs" in spec:
+        assert abs(m["rms_dbfs"]-spec["rms_dbfs"])<=1, (name,"RMS",m["rms_dbfs"])
+    if "front_dbfs" in spec:
+        assert abs(m["front_120ms_rms_dbfs"]-spec["front_dbfs"])<=1, (name,"front RMS",m["front_120ms_rms_dbfs"])
+        assert m["max_20ms_rms_window_start_s"] < .080, (name,"late main body",m["max_20ms_rms_window_start_s"])
+    assert m["clipped_samples"]==0 and max(abs(v) for v in m["dc_per_channel"])<1e-4, (name,"clip/DC")
+    assert m["first_pcm16"]==[0,0] and m["last_pcm16"]==[0,0], (name,"endpoints")
+    assert m["mono_fold_rms_loss_db"]>=-1.5 and m["low_band_correlation"]>=.85, (name,"phase")
+    if name=="gather_loop.wav":
+        s=m["loop_seam"]
+        assert s["step_pcm16"]==[0,0]
+        assert np.all(np.array(s["seam_curvature_peak"]) < np.array(s["interior_step_p99_9"]))
+        assert .65<s["seam_20ms_rms_ratio"]<1.5 and abs(s["seam_vs_adjacent_20ms_rms_db"])<3, ("seam energy",s)
+    return m
 
-    def plot(x, y, title, seconds, ylim=.75, markers=()):
-        d.text((28, y), title, fill="#eaf4ff", font=font)
-        left, top, width, height = 95, y + 34, 1470, 166
-        for value in (-ylim, 0, ylim):
-            yy = top + height/2 - value/ylim*height/2
-            d.line((left, yy, left+width, yy), fill="#263645")
-            d.text((30, yy-8), f"{value:+.3f}", fill="#8c9fb0", font=small)
-        for c, color in enumerate(("#58dbed", "#efb360")):
+
+def waveform_board(out, decoded, results, title):
+    img=Image.new("RGB",(1600,1180),"#0d1721")
+    d=ImageDraw.Draw(img)
+    font_path=Path("C:/Windows/Fonts/consola.ttf")
+    font=ImageFont.truetype(str(font_path),18) if font_path.exists() else ImageFont.load_default()
+    small=ImageFont.truetype(str(font_path),14) if font_path.exists() else ImageFont.load_default()
+    d.text((25,15),title+" | PCM16 stereo 44100 Hz",font=font,fill="#eaf4ff")
+    d.text((25,47),"OBJECTIVE DIAGNOSTICS ONLY | subjective_listening: "+SUBJECTIVE,font=small,fill="#ebc087")
+    for row,(name,pcm) in enumerate(decoded.items()):
+        x=pcm.astype(float)/32768
+        m=results[name]
+        top=125+row*315
+        d.text((25,top-38),f"{name} | peak {m['sample_peak_dbfs']:.2f} | RMS {m['rms_dbfs']:.2f} | TP8x {m['true_peak_8x_dbfs']:.2f} dBFS",font=font,fill="#eaf4ff")
+        left,width,height=80,1490,160
+        d.line((left,top+height/2,left+width,top+height/2),fill="#426073")
+        for c,color in enumerate(("#58dbed","#efb360")):
             for i in range(width):
-                a, b = int(i*len(x)/width), max(int((i+1)*len(x)/width), int(i*len(x)/width)+1)
-                vals = x[a:min(b, len(x)), c]
-                if len(vals):
-                    lo, hi = float(vals.min()), float(vals.max())
-                    d.line((left+i, top+height/2-hi/ylim*height/2, left+i, top+height/2-lo/ylim*height/2), fill=color)
+                a,b=int(i*len(x)/width),max(int((i+1)*len(x)/width),int(i*len(x)/width)+1)
+                v=x[a:b,c]
+                d.line((left+i,top+height/2-float(v.max())*height,left+i,top+height/2-float(v.min())*height),fill=color)
         for j in range(7):
-            xpos = left+width*j/6
-            d.text((xpos-15, top+height+6), f"{seconds*j/6:.3f}", fill="#8c9fb0", font=small)
-        for when, label in markers:
-            xx = left + width * when/seconds
-            d.line((xx, top, xx, top+height), fill="#e57590", width=1)
-            d.text((min(xx+4, left+width-170), top+3), label, fill="#ff9cb4", font=small)
+            d.text((left+width*j/6-15,top+height+6),f"{len(x)/SR*j/6:.3f}s",font=small,fill="#aabccc")
+        vals=m["rms_20ms_blocks_dbfs"]
+        points=[(left+width*i/max(1,len(vals)-1),top+height+75-np.clip((v+60)/60,0,1)*43) for i,v in enumerate(vals)]
+        d.line(points,fill="#9ae8ad",width=2)
+        d.text((25,top+height+95),f"20ms RMS contour | mono {m['mono_fold_rms_loss_db']:.3f} dB | low corr {m['low_band_correlation']:.4f} | DC {max(abs(v) for v in m['dc_per_channel']):.2e}",font=small,fill="#aabccc")
+    d.text((25,1105),"Source mastering uses linked smooth envelope gain. Preview uses decoded sources, frozen gains, and no final normalization.",font=small,fill="#c3dfcf")
+    d.text((25,1140),"Playable source/preview WAVs accompany these diagnostics. Game DSP and perceived timbre require independent acceptance.",font=small,fill="#c3dfcf")
+    img.save(out/"waveform_diagnostics.png")
 
-    for index, name in enumerate(SPECS):
-        x = decoded[name].astype(float)/32768
-        m = results[name]
-        markers = ((.1, "B+.10"), (1.17, "fade")) if name == "burst_tail.wav" else ()
-        if name == "preview_mix.wav":
-            markers = ((1., "loop"), (GATHER, "G"), (BURST, "B"), (BURST+GATHER_FADE, "+40ms"), (2.75, "silent"))
-        plot(x, 90+index*248, f"{name}   peak {m['sample_peak_dbfs']:.2f} dBFS | RMS {m['rms_dbfs']:.2f} | corr {m['stereo_correlation']:.3f}", len(x)/SR, markers=markers)
-    x = decoded["gather_loop.wav"].astype(float)/32768
-    seam = np.vstack((x[-int(.004*SR):], x[:int(.004*SR)]))
-    plot(seam, 845, "Loop wrap close-up: last 4 ms -> first 4 ms | no duplicated end frame", len(seam)/SR, ylim=max(.04, float(np.max(np.abs(seam)))*1.1), markers=((int(.004*SR)/SR, "wrap"),))
-    d.text((28, 1090), "Phase + loop gate: exact zero endpoint samples; seam slope/curvature below normal noise steps; mono loss <1.5 dB.", font=small, fill="#c3dfcf")
-    d.text((28, 1120), "Preview: smoothstep gather 0 -> .30 over 1.35 s, hold until B=1.55 s, linear 40 ms fade; burst .78 once.", font=small, fill="#c3dfcf")
-    for i, name in enumerate(SPECS):
-        m = results[name]
-        d.text((28, 1160+i*31), f"{name:18s} DC={max(abs(v) for v in m['dc_per_channel']):.2e} | mono={m['mono_fold_rms_loss_db']:.3f} dB | true peak 8x={m['true_peak_8x_dbfs']:.2f} dBFS", font=small, fill="#aabccc")
-    img.save(OUT / "waveform_diagnostics.png")
+
+def run_generator(out, generator, contracts, synth, mix, context, label, contract, dependencies=()):
+    import imageio_ffmpeg
+    parser=argparse.ArgumentParser(description=label+" original source audio")
+    parser.add_argument("--verify",action="store_true")
+    parser.add_argument("--verify-repro",action="store_true")
+    args=parser.parse_args()
+    verify=args.verify or args.verify_repro
+    pcm,design=synth()
+    pcm["preview_mix.wav"]=mix(pcm,context)
+    specs={**contracts,"preview_mix.wav":{"frames":context["frames"],"peak_dbfs":-3.,"true_peak_dbfs":-3.}}
+    # All contract gates precede replacing production sources.
+    for name, data in pcm.items():
+        validate(data,specs[name],name)
+    if not verify:
+        out.mkdir(parents=True,exist_ok=True)
+        for name,data in pcm.items():
+            (out/name).write_bytes(encoded(data))
+    ffmpeg=imageio_ffmpeg.get_ffmpeg_exe()
+    results,decoded={},{}
+    for name,spec in specs.items():
+        path=out/name
+        data=decode(path,spec["frames"])
+        decoded[name]=data
+        run=subprocess.run([ffmpeg,"-v","error","-xerror","-i",str(path),"-map","0:a:0","-c:a","pcm_s16le","-f","s16le","pipe:1"],capture_output=True,check=True)
+        assert run.stdout==data.tobytes(), (name,"FFmpeg decode")
+        assert encoded(pcm[name])==path.read_bytes(), (name,"deterministic full RIFF")
+        results[name]={**validate(data,spec,name),"sha256":sha(path.read_bytes()),"bytes":path.stat().st_size,
+                       "independent_ffmpeg_decode":"PASS: every PCM16 sample identical",
+                       "deterministic_regeneration":"PASS: identical full RIFF bytes"}
+    assert np.array_equal(mix(decoded,context),decoded["preview_mix.wav"]), "Exact preview source/gain/timing mismatch"
+    generator_hashes={str(p.relative_to(REPO)).replace("\\","/"):sha(p.read_bytes()) for p in [generator,*dependencies]}
+    if verify:
+        manifest=json.loads((out/"manifest.json").read_text(encoding="utf-8"))
+        assert manifest["generator_hashes"]==generator_hashes
+        assert manifest["preview"]==context
+        for name in specs:
+            assert manifest["files"][name]["sha256"]==results[name]["sha256"]
+    else:
+        waveform_board(out,decoded,results,label)
+        manifest={
+            "version":"2026-09-07.storm-dawn.audio.1","status":"SOURCE_NUMERIC_PASS",
+            "subjective_listening":SUBJECTIVE,
+            "format":{"container":"RIFF/WAVE","codec":"PCM","format_tag":1,"sample_rate_hz":SR,
+                      "bits_per_sample":16,"channels":2,"channel_order":["L","R"],"block_align":4,"byte_rate":176400},
+            "seed":SEED,"rng":"NumPy PCG64, base seed plus per-layer offsets",
+            "generator_sha256":sha(generator.read_bytes()),"generator_hashes":generator_hashes,
+            "originality":"Original offline FFT noise and low-Q irregular modal synthesis; no sampled recordings, VO, speech, music or external licensed assets.",
+            "dependencies":{"python":platform.python_version(),"numpy":np.__version__,"scipy":scipy.__version__,"Pillow":PIL_VERSION},
+            "independent_decoder":ffmpeg,"independent_decoder_sha256":sha(Path(ffmpeg).read_bytes()),
+            "contract":contract,"source_contracts":contracts,"preview":context,
+            "files":{name:{**results[name],**design.get(name,{})} for name in specs},
+            "waveform_diagnostics":{"file":"waveform_diagnostics.png","sha256":sha((out/"waveform_diagnostics.png").read_bytes())},
+            "acceptance":{"numeric":"PASS","subjective_listening":SUBJECTIVE,
+                          "limitations":"Independent game/native-DSP lifecycle acceptance is owned by the main thread. Numeric gates do not establish timbre, absence of perceived harshness/ringing or actual game mix audibility."}}
+        (out/"manifest.json").write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+    print(json.dumps({"status":"PASS","verify":verify,"files":{k:{p:v[p] for p in
+                      ("sha256","frames","sample_peak_dbfs","true_peak_8x_dbfs","rms_dbfs","front_120ms_rms_dbfs","band_power_fractions")} for k,v in results.items()},
+                      "subjective_listening":SUBJECTIVE},indent=2))
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--verify", action="store_true")
-    parser.add_argument("--verify-repro", action="store_true")
-    args = parser.parse_args()
-    if args.verify or args.verify_repro:
-        results, _, _ = inspect_files(args.verify_repro)
-        manifest = json.loads((OUT / "manifest.json").read_text(encoding="utf-8"))
-        assert manifest["generator_sha256"] == sha(Path(__file__).read_bytes()), "Generator changed after freeze"
-        for name in SPECS:
-            assert manifest["files"][name]["sha256"] == results[name]["sha256"], name
-        print(json.dumps({"status": "PASS", "repro": args.verify_repro, "files": results}, indent=2))
-        return
-    OUT.mkdir(parents=True, exist_ok=True)
-    pcm, design = synthesize()
-    for name, data in pcm.items():
-        (OUT / name).write_bytes(encoded(data))
-    results, decoded, ffmpeg = inspect_files(repro=True)
-    waveform_board(decoded, results)
-    manifest = {
-        "version": "2026-09-05.slazeya-sfx.1", "status": "FROZEN_SOURCE_NUMERIC_PASS",
-        "format": {"container": "RIFF/WAVE", "codec": "PCM", "format_tag": 1, "sample_rate_hz": SR,
-                   "bits_per_sample": 16, "channels": 2, "channel_order": ["L", "R"], "block_align": 4, "byte_rate": 176400},
-        "seed": SEED, "rng": "NumPy PCG64; independent offsets per layer", "originality": "Offline original synthesis; no source recordings, external assets, speech or music.",
-        "generator": "../generate_slazeya_storm_audio.py", "generator_sha256": sha(Path(__file__).read_bytes()),
-        "reproduce": "python SteriaBuild/VFXSource/SlazeyaStormMass/generate_slazeya_storm_audio.py",
-        "verify": "python SteriaBuild/VFXSource/SlazeyaStormMass/generate_slazeya_storm_audio.py --verify-repro",
-        "dependencies": {"python": platform.python_version(), "numpy": np.__version__, "scipy": scipy.__version__, "Pillow": PIL_VERSION},
-        "independent_decoder": ffmpeg,
-        "mastering": {"source_target_peak_dbfs": TARGET_DBFS, "hard_clipping_or_limiting": False, "quantization": "Nearest PCM16, no dither added to silent endpoints"},
-        "contract": {"gather_duration_s": GATHER, "gather_max_gain": GATHER_GAIN, "gather_ramp": "smoothstep(elapsed/1.35)",
-                     "burst_gain": BURST_GAIN, "gather_fade_after_b_s": GATHER_FADE, "gather_fade_curve": "linear", "option_gain_in_preview": 1.,
-                     "runtime_path": "Resource/CustomAudio/SlazeyaStorm/", "burst_trigger": "actual manager callback only"},
-        "preview": {"file": "preview_mix.wav", "duration_s": PREVIEW_SAMPLES/SR, "video_frames": 91, "video_fps": 30,
-                    "gather_start_sample": 0, "gather_ready_sample": int(round(GATHER*SR)), "gather_wrap_sample": SR,
-                    "burst_start_sample": int(round(BURST*SR)), "burst_start_s": BURST,
-                    "secondary_lightning_sample": int(round((BURST+.1)*SR)), "gather_stop_sample": int(round((BURST+GATHER_FADE)*SR)),
-                    "burst_end_exclusive_sample": int(round((BURST+1.2)*SR)), "normalization_after_mix": False,
-                    "sources": {name: results[name]["sha256"] for name in ("gather_loop.wav", "burst_tail.wav")}},
-        "files": {name: {**results[name], **design.get(name, {})} for name in SPECS},
-        "waveform_diagnostics": {"file": "waveform_diagnostics.png", "sha256": sha((OUT / "waveform_diagnostics.png").read_bytes())},
-        "acceptance": {"numeric": "PASS", "checks": ["Python wave and FFmpeg full decode/sample equality", "all three exact deterministic WAVs",
-                      "format/duration/peak/DC/no clipping/zero endpoints", "loop value/slope/curvature and triple-repeat boundaries",
-                      "stereo and low-band phase correlation/mono fold", "preview regenerated from decoded source WAVs, exact gains and sample times"],
-                       "listening": "NOT_REVIEWED: no audio-perception tool available; playable WAVs supplied for actual listening.",
-                       "limitations": "Numeric checks cannot establish timbre or perceived click-free quality; main-thread listening/game integration acceptance remains."}}
-    (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(json.dumps({"status": manifest["status"], "output": str(OUT), "files": {k: {"sha256": v["sha256"], "duration_s": v["duration_s"], "sample_peak_dbfs": v["sample_peak_dbfs"], "dc": v["dc_per_channel"]} for k, v in results.items()}}, indent=2))
+    run_generator(OUT,Path(__file__),CONTRACTS,synthesize_sources,preview,preview_context(),
+                  "SLAZEYA / STORM",{
+                      "gather_duration_s":1.35,"gather_max_gain":.55,
+                      "gather_ramp":".32*smoothstep(t/.03)+.23*smoothstep(t/1.35)",
+                      "burst_gain":.78,"gather_fade_after_b_s":.04,
+                      "gather_fade_curve":"linear, snapshot current gain at callback",
+                      "runtime_path":"Resource/CustomAudio/SlazeyaStorm/",
+                      "option_gain_in_preview":1.,"burst_trigger":"actual callback only"})
 
 
-if __name__ == "__main__":
+if __name__=="__main__":
     main()

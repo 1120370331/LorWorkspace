@@ -19,6 +19,7 @@ public class FarAreaEffect_Steria_VeliaTideMist : FarAreaEffect
     private AssetBundle _bundle;
     private VeliaTideMistVisualController _visual;
     private VeliaTideMistScreenFilter _filter;
+    private VeliaTideMistAudioController _audio;
 
     public override bool HasIndependentAction { get { return false; } }
 
@@ -52,6 +53,13 @@ public class FarAreaEffect_Steria_VeliaTideMist : FarAreaEffect
         var stage = Singleton<StageController>.Instance;
         _visual.SetMirrored((self != null && self.faction == Faction.Player)
             ^ (stage != null && stage.AllyFormationDirection == Direction.LEFT));
+        // Audio is optional and independent of the camera/material path below.
+        try
+        {
+            if (_audio == null && !OwnerEnded())
+                _audio = VeliaTideMistAudioController.TryCreate(self.view.WorldPosition, ReadEffectVolume);
+        }
+        catch (Exception ex) { Debug.LogWarning("VeliaTideMist optional audio unavailable: " + ex.Message); }
         BeginDice();
         try
         {
@@ -81,6 +89,7 @@ public class FarAreaEffect_Steria_VeliaTideMist : FarAreaEffect
         _waitAge = 0f;
         _isDoneEffect = false;
         _visual.BeginDice(_ordinal);
+        if (_audio != null) _audio.BeginDice(_ordinal);
         isRunning = !_visual.DiceReady;
     }
 
@@ -108,6 +117,7 @@ public class FarAreaEffect_Steria_VeliaTideMist : FarAreaEffect
             }
         }
         _visual.TriggerPulse(points.ToArray());
+        if (_audio != null) _audio.TriggerHit(_ordinal);
         // Do not inspect remaining dice here: the manager calls OnEnd immediately after us.
     }
 
@@ -118,6 +128,7 @@ public class FarAreaEffect_Steria_VeliaTideMist : FarAreaEffect
         if (OwnerEnded()) { Complete(); return; }
         float dt = Time.deltaTime;
         _visual.Advance(dt);
+        if (_audio != null) _audio.Advance(dt);
         if (dt > 0f && !float.IsNaN(dt) && !float.IsInfinity(dt)) _waitAge += dt;
         if (_visual.DiceReady) isRunning = false;
         // Includes no callback and a manager that never advances after a completed die.
@@ -133,7 +144,11 @@ public class FarAreaEffect_Steria_VeliaTideMist : FarAreaEffect
             // Read in Update after settlement hooks may have cleared or appended the queue.
             bool hasNextDice = _originCard != null && _originCard.cardBehaviorQueue != null && _originCard.cardBehaviorQueue.Count > 0;
             if (hasNextDice) _isDoneEffect = true;
-            else _visual.Finish();
+            else
+            {
+                _visual.Finish();
+                if (_audio != null) _audio.Finish();
+            }
         }
         if (_visual.IsComplete) { Complete(); return; }
         if (_camera != null)
@@ -238,6 +253,7 @@ public class FarAreaEffect_Steria_VeliaTideMist : FarAreaEffect
         isRunning = false;
         _isDoneEffect = true;
         if (_visual != null) _visual.Cancel();
+        ReleaseAudio();
         ReleaseRendering();
         if (ReferenceEquals(Active, this)) Active = null;
         Destroy(gameObject); // This module's root only; never the EffectCam GameObject.
@@ -248,6 +264,18 @@ public class FarAreaEffect_Steria_VeliaTideMist : FarAreaEffect
         if (_filter != null) { _filter.Release(); Destroy(_filter); _filter = null; }
         if (_bundle != null) { _bundle.Unload(true); _bundle = null; }
         _camera = null;
+    }
+
+    private static float ReadEffectVolume()
+    {
+        var game = GlobalGameManager.Instance;
+        var option = game != null ? game.CurrentOption : null;
+        return option != null ? option.GetVolumeEffect() : 1f;
+    }
+
+    private void ReleaseAudio()
+    {
+        if (_audio != null) { _audio.Dispose(); _audio = null; }
     }
 
     protected override void OnDisable()
@@ -261,6 +289,7 @@ public class FarAreaEffect_Steria_VeliaTideMist : FarAreaEffect
         isRunning = false;
         _isDoneEffect = true;
         if (_visual != null) _visual.Cancel();
+        ReleaseAudio();
         ReleaseRendering();
         if (ReferenceEquals(Active, this)) Active = null;
     }

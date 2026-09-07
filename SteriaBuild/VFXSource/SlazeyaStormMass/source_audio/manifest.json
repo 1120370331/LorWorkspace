@@ -1,6 +1,7 @@
 {
-  "version": "2026-09-05.slazeya-sfx.1",
-  "status": "FROZEN_SOURCE_NUMERIC_PASS",
+  "version": "2026-09-07.storm-dawn.audio.1",
+  "status": "SOURCE_NUMERIC_PASS",
+  "subjective_listening": "UNVERIFIED (audio input unsupported)",
   "format": {
     "container": "RIFF/WAVE",
     "codec": "PCM",
@@ -15,13 +16,13 @@
     "block_align": 4,
     "byte_rate": 176400
   },
-  "seed": 2026090507,
-  "rng": "NumPy PCG64; independent offsets per layer",
-  "originality": "Offline original synthesis; no source recordings, external assets, speech or music.",
-  "generator": "../generate_slazeya_storm_audio.py",
-  "generator_sha256": "1DBE50182936698EB96FB055275D703D1CA760F8A03735C7143667BD6A802703",
-  "reproduce": "python SteriaBuild/VFXSource/SlazeyaStormMass/generate_slazeya_storm_audio.py",
-  "verify": "python SteriaBuild/VFXSource/SlazeyaStormMass/generate_slazeya_storm_audio.py --verify-repro",
+  "seed": 2026090707,
+  "rng": "NumPy PCG64, base seed plus per-layer offsets",
+  "generator_sha256": "06DFF7262E1A7DB0918824E96C09E17CCB51C0D4219AD02EBC6515553F17C2A0",
+  "generator_hashes": {
+    "SteriaBuild/VFXSource/SlazeyaStormMass/generate_slazeya_storm_audio.py": "06DFF7262E1A7DB0918824E96C09E17CCB51C0D4219AD02EBC6515553F17C2A0"
+  },
+  "originality": "Original offline FFT noise and low-Q irregular modal synthesis; no sampled recordings, VO, speech, music or external licensed assets.",
   "dependencies": {
     "python": "3.12.4",
     "numpy": "2.2.6",
@@ -29,60 +30,67 @@
     "Pillow": "11.3.0"
   },
   "independent_decoder": "C:\\Users\\rog\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\imageio_ffmpeg\\binaries\\ffmpeg-win-x86_64-v7.1.exe",
-  "mastering": {
-    "source_target_peak_dbfs": -3.5,
-    "hard_clipping_or_limiting": false,
-    "quantization": "Nearest PCM16, no dither added to silent endpoints"
-  },
+  "independent_decoder_sha256": "2CE797A0F88D7F067180338FB227F7B1928EA727BD9A4D7A1D022F7C52AF71A3",
   "contract": {
     "gather_duration_s": 1.35,
-    "gather_max_gain": 0.3,
-    "gather_ramp": "smoothstep(elapsed/1.35)",
+    "gather_max_gain": 0.55,
+    "gather_ramp": ".32*smoothstep(t/.03)+.23*smoothstep(t/1.35)",
     "burst_gain": 0.78,
     "gather_fade_after_b_s": 0.04,
-    "gather_fade_curve": "linear",
-    "option_gain_in_preview": 1.0,
+    "gather_fade_curve": "linear, snapshot current gain at callback",
     "runtime_path": "Resource/CustomAudio/SlazeyaStorm/",
-    "burst_trigger": "actual manager callback only"
+    "option_gain_in_preview": 1.0,
+    "burst_trigger": "actual callback only"
+  },
+  "source_contracts": {
+    "gather_loop.wav": {
+      "frames": 44100,
+      "peak_dbfs": -8.0,
+      "true_peak_dbfs": -7.5,
+      "rms_dbfs": -16.0
+    },
+    "burst_tail.wav": {
+      "frames": 52920,
+      "peak_dbfs": -5.0,
+      "true_peak_dbfs": -4.5,
+      "rms_dbfs": -16.0,
+      "front_dbfs": -12.0
+    }
   },
   "preview": {
-    "file": "preview_mix.wav",
-    "duration_s": 3.033333333333333,
+    "source_manifest": "preview_exports/slazeya_storm_mass/round5/manifest.json",
+    "source_manifest_sha256": "E44D93C1F60F1F72518894C059B22C7D86BE034CE568D34DD1AD314C17BFECAE",
+    "media_manifest_sha256": "18E20C1839E1255F27D91EC9DFF664C423C75B85BC84B1FBBC0F38C7678FC0BB",
+    "video": "preview_exports/slazeya_storm_mass/round5/battlefield_motion.mp4",
+    "video_sha256": "027D7376EBFA77366C61F605D996F003682C68C1968081897A4D4AA7FDF2046D",
     "video_frames": 91,
     "video_fps": 30,
-    "gather_start_sample": 0,
-    "gather_ready_sample": 59535,
-    "gather_wrap_sample": 44100,
+    "frames": 133770,
+    "burst_start_s": 1.5499999523162842,
     "burst_start_sample": 68355,
-    "burst_start_s": 1.55,
-    "secondary_lightning_sample": 72765,
-    "gather_stop_sample": 70119,
-    "burst_end_exclusive_sample": 121275,
-    "normalization_after_mix": false,
-    "sources": {
-      "gather_loop.wav": "FA4907228FE9408C9634227FB1CAF3D944F6C4D083A562294B46806AF5427C31",
-      "burst_tail.wav": "D344F12283073F67918A7F97CC2B062275146F6F275A5906FCEAC2B480AE202C"
-    }
+    "cast_start_s": 0,
+    "option_gain": 1.0,
+    "normalization_after_mix": false
   },
   "files": {
     "gather_loop.wav": {
       "frames": 44100,
       "duration_s": 1.0,
-      "sample_peak_dbfs": -3.500116402391992,
-      "sample_peak_linear": 0.6683349609375,
+      "sample_peak_dbfs": -8.183820501846213,
+      "sample_peak_linear": 0.3897705078125,
       "sample_peak_dbfs_per_channel": [
-        -3.500116402391992,
-        -3.641262466003731
+        -8.183820501846213,
+        -8.18994331445476
       ],
-      "true_peak_8x_dbfs": -3.489107267836202,
-      "rms_dbfs": -15.704119581406676,
+      "true_peak_8x_dbfs": -8.148842650534917,
+      "true_peak_method": "scipy.signal.resample_poly 8/1, default Kaiser beta5 FIR, constant boundary",
+      "rms_dbfs": -16.000002382779243,
+      "front_120ms_rms_dbfs": -15.890787444752029,
+      "max_20ms_rms_dbfs": -14.677587550471236,
+      "max_20ms_rms_window_start_s": 0.2002721088435374,
       "dc_per_channel": [
-        2.491230867346939e-08,
-        -1.1764145762471655e-08
-      ],
-      "dc_dbfs_per_channel": [
-        -152.07172047320537,
-        -158.58879206098567
+        8.996111465419502e-09,
+        2.0760257227891155e-08
       ],
       "clipped_samples": 0,
       "first_pcm16": [
@@ -93,42 +101,91 @@
         0,
         0
       ],
-      "stereo_correlation": 0.9721327172572589,
-      "low_band_correlation": 0.9956255981895402,
-      "mono_fold_rms_loss_db": -0.06094154444233002,
+      "stereo_correlation": 0.9508007823937354,
+      "low_band_correlation": 0.9972292593066041,
+      "mono_fold_rms_loss_db": -0.10817194302884425,
       "band_power_fractions": {
-        "20-250Hz": 0.8439505359888287,
-        "250-2000Hz": 0.14311169252968547,
-        "2000-12000Hz": 0.009198722470435452
+        "20-250Hz": 0.41836998625164834,
+        "250-2000Hz": 0.4874270659256344,
+        "2000-12000Hz": 0.09340903057947507
       },
-      "edge_first_1ms_peak_dbfs": -14.518794617389272,
-      "edge_last_1ms_peak_dbfs": -20.94500697774211,
+      "edge_first_1ms_peak_dbfs": -8.669817373184788,
+      "edge_last_1ms_peak_dbfs": -11.472809239017593,
+      "rms_20ms_blocks_dbfs": [
+        -15.6432966655309,
+        -16.540426253245634,
+        -16.16088079013047,
+        -15.152100875701082,
+        -15.757900372546265,
+        -16.233559604852232,
+        -15.047715923294458,
+        -16.540379203962743,
+        -16.310352419202317,
+        -15.145934135893942,
+        -14.7520019203603,
+        -16.066488104734383,
+        -16.891116421865025,
+        -16.548862529605096,
+        -16.28058278520514,
+        -15.66605255898492,
+        -15.782784117853566,
+        -15.963096210289686,
+        -16.224218022816036,
+        -16.75924996640098,
+        -16.12752850770576,
+        -16.65501332586845,
+        -16.068569374702413,
+        -15.99889343902699,
+        -16.412568183357347,
+        -16.341266098698473,
+        -15.357581057332457,
+        -16.088555738375064,
+        -16.108245792615058,
+        -16.01681927912001,
+        -15.457366398510455,
+        -15.727041815262545,
+        -16.33657351597313,
+        -16.07422711400352,
+        -16.919086150101368,
+        -15.381884801954595,
+        -16.738837516458467,
+        -16.39797896667852,
+        -16.701539826877337,
+        -15.887519230682756,
+        -15.599354573662492,
+        -16.051927455053296,
+        -15.595280255290183,
+        -15.972751326651867,
+        -16.70174522883412,
+        -15.373210877552069,
+        -16.23397274794857,
+        -16.183258967198405,
+        -15.079829489367674,
+        -16.497598667250003
+      ],
       "loop_seam": {
         "step_pcm16": [
           0,
           0
         ],
-        "step_linear": [
-          0.0,
-          0.0
-        ],
         "slope_in_linear": [
-          -0.001220703125,
-          -0.004974365234375
+          0.041229248046875,
+          0.026641845703125
         ],
         "slope_out_linear": [
-          0.00018310546875,
-          0.00274658203125
+          -0.032196044921875,
+          -0.02459716796875
         ],
         "seam_curvature_peak": [
-          0.001220703125,
-          0.004974365234375
+          0.041229248046875,
+          0.026641845703125
         ],
         "interior_step_p99_9": [
-          0.04641424560546881,
-          0.04534613037109381
+          0.0992012939453133,
+          0.10087017822265665
         ],
-        "seam_20ms_rms_ratio": 0.8233846600180039,
+        "seam_20ms_rms_ratio": 1.0079658231729098,
+        "seam_vs_adjacent_20ms_rms_db": 0.3602987948028611,
         "three_repeat_boundary_steps_pcm16": [
           [
             0,
@@ -140,486 +197,732 @@
           ]
         ]
       },
-      "sha256": "FA4907228FE9408C9634227FB1CAF3D944F6C4D083A562294B46806AF5427C31",
+      "sha256": "F85082469BA9FF6971BEA4D00B4979D5C6F301943BD97F168D16C41B80D61996",
       "bytes": 176444,
-      "independent_ffmpeg_decode": "PASS: every decoded PCM16 sample identical",
-      "deterministic_regeneration": "PASS: identical full WAV bytes",
-      "seed_offsets": {
-        "pressure_mid_side": [
-          101,
-          102
-        ],
-        "water_mid_side_mod": [
-          201,
-          202,
-          203
-        ],
-        "air_mid_side_mod": [
-          301,
-          302,
-          303
-        ],
-        "bubble_grains": 401
-      },
+      "independent_ffmpeg_decode": "PASS: every PCM16 sample identical",
+      "deterministic_regeneration": "PASS: identical full RIFF bytes",
       "layers": [
         {
-          "name": "pressure",
-          "start_s": 0,
-          "end_s": 1,
+          "name": "central_wind_pressure",
           "band_hz": [
-            38,
-            190
+            65,
+            215
           ],
-          "weight": 0.49
+          "weight": 0.41,
+          "width": 0.015,
+          "seed_offsets": [
+            101,
+            102
+          ]
         },
         {
-          "name": "water_friction",
-          "start_s": 0,
-          "end_s": 1,
+          "name": "dense_water_friction",
           "band_hz": [
-            230,
-            1850
+            260,
+            1760
           ],
-          "weight": 0.28
+          "weight": 0.39,
+          "width": 0.19,
+          "seed_offsets": [
+            201,
+            202,
+            203
+          ]
         },
         {
-          "name": "air_shear",
-          "start_s": 0,
-          "end_s": 1,
+          "name": "inward_vortex_texture",
           "band_hz": [
-            2100,
-            6900
+            720,
+            2400
           ],
-          "weight": 0.06
+          "weight": 0.18,
+          "width": 0.21,
+          "seed_offsets": [
+            211,
+            212,
+            213
+          ]
         },
         {
-          "name": "short_bubble_resonances",
-          "start_s": 0,
-          "end_s": 1,
-          "count": 49,
-          "weight": 0.41
+          "name": "air_detail",
+          "band_hz": [
+            2300,
+            5700
+          ],
+          "weight": 0.15,
+          "width": 0.25,
+          "seed_offsets": [
+            301,
+            302,
+            303
+          ]
+        },
+        {
+          "name": "circular_modal_water_contacts",
+          "count": 76,
+          "weight": 0.36,
+          "seed_offset": 401
         }
       ],
       "droplet_events_before_phase_rotation": [
         {
-          "sample": 38092,
-          "time_s": 0.863771,
-          "f0_hz": 1147.884,
-          "decay_s": 0.003351,
-          "amplitude": 0.865299,
-          "pan": 0.12215
+          "sample": 34067,
+          "time_s": 0.772502,
+          "f0_hz": 1002.364,
+          "decay_s": 0.007902,
+          "amplitude": 0.814547,
+          "pan": -0.444
         },
         {
-          "sample": 26078,
-          "time_s": 0.591342,
-          "f0_hz": 852.678,
-          "decay_s": 0.008855,
-          "amplitude": 0.618872,
-          "pan": -0.26782
+          "sample": 3298,
+          "time_s": 0.074787,
+          "f0_hz": 1394.98,
+          "decay_s": 0.008394,
+          "amplitude": 0.867602,
+          "pan": 0.10594
         },
         {
-          "sample": 24883,
-          "time_s": 0.564234,
-          "f0_hz": 447.058,
-          "decay_s": 0.00811,
-          "amplitude": 0.430221,
-          "pan": -0.5461
+          "sample": 2117,
+          "time_s": 0.048002,
+          "f0_hz": 879.986,
+          "decay_s": 0.006912,
+          "amplitude": 0.994109,
+          "pan": -0.57595
         },
         {
-          "sample": 19083,
-          "time_s": 0.432714,
-          "f0_hz": 356.56,
-          "decay_s": 0.011801,
-          "amplitude": 0.966151,
-          "pan": 0.23868
+          "sample": 20743,
+          "time_s": 0.470361,
+          "f0_hz": 575.659,
+          "decay_s": 0.010539,
+          "amplitude": 0.953091,
+          "pan": 0.41584
         },
         {
-          "sample": 2696,
-          "time_s": 0.061143,
-          "f0_hz": 1341.488,
-          "decay_s": 0.006271,
-          "amplitude": 0.736674,
-          "pan": 0.29692
+          "sample": 12228,
+          "time_s": 0.277287,
+          "f0_hz": 937.148,
+          "decay_s": 0.012274,
+          "amplitude": 0.815054,
+          "pan": -0.36794
         },
         {
-          "sample": 23713,
-          "time_s": 0.537708,
-          "f0_hz": 1053.229,
-          "decay_s": 0.00439,
-          "amplitude": 0.954489,
-          "pan": 0.557
+          "sample": 29194,
+          "time_s": 0.661984,
+          "f0_hz": 1297.163,
+          "decay_s": 0.00427,
+          "amplitude": 0.402296,
+          "pan": 0.17315
         },
         {
-          "sample": 37311,
-          "time_s": 0.846054,
-          "f0_hz": 707.348,
-          "decay_s": 0.009862,
-          "amplitude": 0.838107,
-          "pan": -0.51931
+          "sample": 15023,
+          "time_s": 0.340648,
+          "f0_hz": 1939.606,
+          "decay_s": 0.009746,
+          "amplitude": 0.376636,
+          "pan": 0.07315
         },
         {
-          "sample": 9235,
-          "time_s": 0.209414,
-          "f0_hz": 917.959,
-          "decay_s": 0.009203,
-          "amplitude": 0.924735,
-          "pan": -0.0008
+          "sample": 31814,
+          "time_s": 0.721414,
+          "f0_hz": 1363.436,
+          "decay_s": 0.004436,
+          "amplitude": 0.896462,
+          "pan": -0.51344
         },
         {
-          "sample": 22732,
-          "time_s": 0.515454,
-          "f0_hz": 847.76,
-          "decay_s": 0.010243,
-          "amplitude": 0.912085,
-          "pan": 0.36101
+          "sample": 13203,
+          "time_s": 0.299385,
+          "f0_hz": 674.767,
+          "decay_s": 0.013352,
+          "amplitude": 0.91136,
+          "pan": -0.19409
         },
         {
-          "sample": 28267,
-          "time_s": 0.640982,
-          "f0_hz": 865.078,
-          "decay_s": 0.007465,
-          "amplitude": 0.813099,
-          "pan": 0.51412
+          "sample": 15755,
+          "time_s": 0.357265,
+          "f0_hz": 1311.986,
+          "decay_s": 0.004349,
+          "amplitude": 0.804888,
+          "pan": -0.15766
         },
         {
-          "sample": 24091,
-          "time_s": 0.546276,
-          "f0_hz": 1807.649,
-          "decay_s": 0.005279,
-          "amplitude": 0.51847,
-          "pan": -0.12581
+          "sample": 24681,
+          "time_s": 0.559666,
+          "f0_hz": 377.855,
+          "decay_s": 0.005708,
+          "amplitude": 0.522877,
+          "pan": -0.35509
         },
         {
-          "sample": 22666,
-          "time_s": 0.513965,
-          "f0_hz": 1869.951,
+          "sample": 37735,
+          "time_s": 0.855668,
+          "f0_hz": 1389.111,
+          "decay_s": 0.005663,
+          "amplitude": 0.599939,
+          "pan": 0.16561
+        },
+        {
+          "sample": 34899,
+          "time_s": 0.791356,
+          "f0_hz": 573.536,
+          "decay_s": 0.008939,
+          "amplitude": 0.367271,
+          "pan": 0.40603
+        },
+        {
+          "sample": 32442,
+          "time_s": 0.735654,
+          "f0_hz": 1929.429,
+          "decay_s": 0.008214,
+          "amplitude": 0.547262,
+          "pan": -0.19673
+        },
+        {
+          "sample": 22643,
+          "time_s": 0.513439,
+          "f0_hz": 1774.514,
+          "decay_s": 0.010531,
+          "amplitude": 0.91377,
+          "pan": 0.31618
+        },
+        {
+          "sample": 1793,
+          "time_s": 0.040659,
+          "f0_hz": 340.273,
+          "decay_s": 0.010604,
+          "amplitude": 0.891424,
+          "pan": 0.25404
+        },
+        {
+          "sample": 4079,
+          "time_s": 0.092489,
+          "f0_hz": 1167.442,
+          "decay_s": 0.003264,
+          "amplitude": 0.484977,
+          "pan": -0.01938
+        },
+        {
+          "sample": 34189,
+          "time_s": 0.775261,
+          "f0_hz": 1471.627,
+          "decay_s": 0.00578,
+          "amplitude": 0.426466,
+          "pan": -0.21835
+        },
+        {
+          "sample": 16987,
+          "time_s": 0.385196,
+          "f0_hz": 1278.341,
+          "decay_s": 0.005294,
+          "amplitude": 0.878635,
+          "pan": 0.28066
+        },
+        {
+          "sample": 34974,
+          "time_s": 0.793053,
+          "f0_hz": 1793.262,
+          "decay_s": 0.006349,
+          "amplitude": 0.483135,
+          "pan": -0.10215
+        },
+        {
+          "sample": 30409,
+          "time_s": 0.689539,
+          "f0_hz": 1623.026,
+          "decay_s": 0.004215,
+          "amplitude": 0.533992,
+          "pan": -0.14373
+        },
+        {
+          "sample": 9976,
+          "time_s": 0.226206,
+          "f0_hz": 1414.529,
+          "decay_s": 0.005691,
+          "amplitude": 0.868604,
+          "pan": -0.61763
+        },
+        {
+          "sample": 40962,
+          "time_s": 0.928836,
+          "f0_hz": 1012.209,
+          "decay_s": 0.007005,
+          "amplitude": 0.401499,
+          "pan": -0.36784
+        },
+        {
+          "sample": 19477,
+          "time_s": 0.441654,
+          "f0_hz": 905.863,
+          "decay_s": 0.007594,
+          "amplitude": 0.907205,
+          "pan": -0.55775
+        },
+        {
+          "sample": 21436,
+          "time_s": 0.486079,
+          "f0_hz": 1317.449,
+          "decay_s": 0.005551,
+          "amplitude": 0.507965,
+          "pan": -0.19887
+        },
+        {
+          "sample": 8715,
+          "time_s": 0.197628,
+          "f0_hz": 1833.099,
+          "decay_s": 0.00812,
+          "amplitude": 0.778873,
+          "pan": -0.33559
+        },
+        {
+          "sample": 31875,
+          "time_s": 0.72279,
+          "f0_hz": 410.179,
+          "decay_s": 0.004464,
+          "amplitude": 0.868837,
+          "pan": -0.04662
+        },
+        {
+          "sample": 25184,
+          "time_s": 0.57106,
+          "f0_hz": 482.983,
+          "decay_s": 0.012336,
+          "amplitude": 0.746828,
+          "pan": -0.58709
+        },
+        {
+          "sample": 33595,
+          "time_s": 0.761785,
+          "f0_hz": 798.659,
+          "decay_s": 0.009642,
+          "amplitude": 0.605009,
+          "pan": 0.45602
+        },
+        {
+          "sample": 4108,
+          "time_s": 0.09315,
+          "f0_hz": 1469.454,
           "decay_s": 0.006915,
-          "amplitude": 0.92653,
-          "pan": 0.58185
+          "amplitude": 0.939772,
+          "pan": 0.53077
         },
         {
-          "sample": 32542,
-          "time_s": 0.737905,
-          "f0_hz": 902.054,
-          "decay_s": 0.007778,
-          "amplitude": 0.448379,
-          "pan": 0.20047
+          "sample": 22155,
+          "time_s": 0.502378,
+          "f0_hz": 1325.018,
+          "decay_s": 0.010394,
+          "amplitude": 0.366583,
+          "pan": 0.02194
         },
         {
-          "sample": 41713,
-          "time_s": 0.94587,
-          "f0_hz": 342.138,
-          "decay_s": 0.008986,
-          "amplitude": 0.710001,
-          "pan": 0.1896
+          "sample": 21615,
+          "time_s": 0.490133,
+          "f0_hz": 629.915,
+          "decay_s": 0.012952,
+          "amplitude": 0.959832,
+          "pan": 0.44771
         },
         {
-          "sample": 12946,
-          "time_s": 0.293564,
-          "f0_hz": 498.688,
-          "decay_s": 0.006378,
-          "amplitude": 0.489519,
-          "pan": 0.05288
+          "sample": 22438,
+          "time_s": 0.50879,
+          "f0_hz": 972.537,
+          "decay_s": 0.010869,
+          "amplitude": 0.495081,
+          "pan": -0.60447
         },
         {
-          "sample": 39625,
-          "time_s": 0.898516,
-          "f0_hz": 523.279,
-          "decay_s": 0.01258,
-          "amplitude": 0.93739,
-          "pan": -0.54884
+          "sample": 132,
+          "time_s": 0.003002,
+          "f0_hz": 561.126,
+          "decay_s": 0.010148,
+          "amplitude": 0.456197,
+          "pan": 0.62605
         },
         {
-          "sample": 30847,
-          "time_s": 0.699473,
-          "f0_hz": 983.391,
-          "decay_s": 0.003706,
-          "amplitude": 0.651338,
-          "pan": 0.28194
+          "sample": 32462,
+          "time_s": 0.736103,
+          "f0_hz": 539.823,
+          "decay_s": 0.011599,
+          "amplitude": 0.7142,
+          "pan": 0.61191
         },
         {
-          "sample": 38757,
-          "time_s": 0.878839,
-          "f0_hz": 1876.831,
-          "decay_s": 0.004237,
-          "amplitude": 0.355535,
-          "pan": 0.62214
+          "sample": 35558,
+          "time_s": 0.806306,
+          "f0_hz": 1282.932,
+          "decay_s": 0.006527,
+          "amplitude": 0.773483,
+          "pan": 0.65583
         },
         {
-          "sample": 15332,
-          "time_s": 0.34767,
-          "f0_hz": 333.362,
-          "decay_s": 0.014938,
-          "amplitude": 0.591525,
-          "pan": 0.31272
+          "sample": 15919,
+          "time_s": 0.360982,
+          "f0_hz": 1701.957,
+          "decay_s": 0.007925,
+          "amplitude": 0.724423,
+          "pan": -0.44446
         },
         {
-          "sample": 24665,
-          "time_s": 0.559299,
-          "f0_hz": 339.333,
-          "decay_s": 0.00984,
-          "amplitude": 0.43406,
-          "pan": 0.61987
+          "sample": 4911,
+          "time_s": 0.111355,
+          "f0_hz": 925.894,
+          "decay_s": 0.006448,
+          "amplitude": 0.542262,
+          "pan": 0.40247
         },
         {
-          "sample": 17512,
-          "time_s": 0.397096,
-          "f0_hz": 417.17,
-          "decay_s": 0.013376,
-          "amplitude": 0.534137,
-          "pan": 0.61182
+          "sample": 3827,
+          "time_s": 0.086784,
+          "f0_hz": 1082.99,
+          "decay_s": 0.008584,
+          "amplitude": 0.838968,
+          "pan": 0.35906
         },
         {
-          "sample": 22465,
-          "time_s": 0.509405,
-          "f0_hz": 426.267,
-          "decay_s": 0.011209,
-          "amplitude": 0.967774,
-          "pan": 0.20857
+          "sample": 25216,
+          "time_s": 0.57179,
+          "f0_hz": 693.835,
+          "decay_s": 0.006651,
+          "amplitude": 0.917893,
+          "pan": -0.57493
         },
         {
-          "sample": 29151,
-          "time_s": 0.661014,
-          "f0_hz": 1206.804,
-          "decay_s": 0.009651,
-          "amplitude": 0.777032,
-          "pan": -0.59371
+          "sample": 29136,
+          "time_s": 0.66069,
+          "f0_hz": 357.301,
+          "decay_s": 0.011593,
+          "amplitude": 0.77262,
+          "pan": -0.26526
         },
         {
-          "sample": 23049,
-          "time_s": 0.52265,
-          "f0_hz": 345.107,
-          "decay_s": 0.00965,
-          "amplitude": 0.803695,
-          "pan": -0.50226
+          "sample": 1180,
+          "time_s": 0.026767,
+          "f0_hz": 708.201,
+          "decay_s": 0.003883,
+          "amplitude": 0.74377,
+          "pan": 0.39858
         },
         {
-          "sample": 7705,
-          "time_s": 0.174723,
-          "f0_hz": 969.392,
-          "decay_s": 0.005319,
-          "amplitude": 0.394614,
-          "pan": 0.16844
+          "sample": 10363,
+          "time_s": 0.234983,
+          "f0_hz": 655.935,
+          "decay_s": 0.01152,
+          "amplitude": 0.973317,
+          "pan": -0.59004
         },
         {
-          "sample": 35169,
-          "time_s": 0.797484,
-          "f0_hz": 1372.793,
-          "decay_s": 0.009667,
-          "amplitude": 0.832353,
-          "pan": 0.15048
+          "sample": 16395,
+          "time_s": 0.371769,
+          "f0_hz": 1562.973,
+          "decay_s": 0.006941,
+          "amplitude": 0.982365,
+          "pan": 0.32115
         },
         {
-          "sample": 29925,
-          "time_s": 0.678582,
-          "f0_hz": 320.216,
-          "decay_s": 0.006913,
-          "amplitude": 0.870685,
-          "pan": -0.5098
+          "sample": 37295,
+          "time_s": 0.845682,
+          "f0_hz": 1044.886,
+          "decay_s": 0.007381,
+          "amplitude": 0.883174,
+          "pan": -0.34517
         },
         {
-          "sample": 22673,
-          "time_s": 0.514123,
-          "f0_hz": 459.374,
-          "decay_s": 0.013871,
-          "amplitude": 0.540983,
-          "pan": -0.52578
+          "sample": 21775,
+          "time_s": 0.493764,
+          "f0_hz": 599.366,
+          "decay_s": 0.013068,
+          "amplitude": 0.691436,
+          "pan": 0.55779
         },
         {
-          "sample": 6558,
-          "time_s": 0.148705,
-          "f0_hz": 708.381,
-          "decay_s": 0.006877,
-          "amplitude": 0.647057,
-          "pan": 0.63166
+          "sample": 35663,
+          "time_s": 0.80869,
+          "f0_hz": 796.728,
+          "decay_s": 0.011552,
+          "amplitude": 0.560706,
+          "pan": 0.48763
         },
         {
-          "sample": 17940,
-          "time_s": 0.406809,
-          "f0_hz": 1034.076,
-          "decay_s": 0.011888,
-          "amplitude": 0.526972,
-          "pan": 0.56313
+          "sample": 24590,
+          "time_s": 0.557589,
+          "f0_hz": 1856.129,
+          "decay_s": 0.009348,
+          "amplitude": 0.760931,
+          "pan": -0.23725
         },
         {
-          "sample": 30390,
-          "time_s": 0.689122,
-          "f0_hz": 1534.154,
-          "decay_s": 0.007167,
-          "amplitude": 0.409402,
-          "pan": 0.11355
+          "sample": 2278,
+          "time_s": 0.051657,
+          "f0_hz": 1368.533,
+          "decay_s": 0.010333,
+          "amplitude": 0.735186,
+          "pan": 0.35981
         },
         {
-          "sample": 2812,
-          "time_s": 0.063765,
-          "f0_hz": 1756.292,
-          "decay_s": 0.005842,
-          "amplitude": 0.562291,
-          "pan": 0.37185
+          "sample": 42829,
+          "time_s": 0.971185,
+          "f0_hz": 1741.604,
+          "decay_s": 0.008441,
+          "amplitude": 0.697107,
+          "pan": 0.04073
         },
         {
-          "sample": 26730,
-          "time_s": 0.606132,
-          "f0_hz": 1261.03,
-          "decay_s": 0.006436,
-          "amplitude": 0.63569,
-          "pan": 0.1757
+          "sample": 20146,
+          "time_s": 0.456828,
+          "f0_hz": 322.579,
+          "decay_s": 0.006358,
+          "amplitude": 0.485299,
+          "pan": 0.43227
         },
         {
-          "sample": 19141,
-          "time_s": 0.434045,
-          "f0_hz": 857.869,
-          "decay_s": 0.009454,
-          "amplitude": 0.448557,
-          "pan": -0.00544
+          "sample": 38151,
+          "time_s": 0.865099,
+          "f0_hz": 713.594,
+          "decay_s": 0.013074,
+          "amplitude": 0.941304,
+          "pan": -0.14956
         },
         {
-          "sample": 41132,
-          "time_s": 0.932705,
-          "f0_hz": 435.481,
-          "decay_s": 0.005973,
-          "amplitude": 0.444055,
-          "pan": 0.61757
+          "sample": 5536,
+          "time_s": 0.125536,
+          "f0_hz": 707.529,
+          "decay_s": 0.009902,
+          "amplitude": 0.777118,
+          "pan": 0.08427
         },
         {
-          "sample": 29399,
-          "time_s": 0.666643,
-          "f0_hz": 931.779,
-          "decay_s": 0.011577,
-          "amplitude": 0.571991,
-          "pan": -0.0162
+          "sample": 8493,
+          "time_s": 0.192588,
+          "f0_hz": 374.759,
+          "decay_s": 0.011566,
+          "amplitude": 0.452451,
+          "pan": 0.02552
         },
         {
-          "sample": 21451,
-          "time_s": 0.486422,
-          "f0_hz": 975.615,
-          "decay_s": 0.008187,
-          "amplitude": 0.733096,
-          "pan": -0.66527
+          "sample": 1367,
+          "time_s": 0.030988,
+          "f0_hz": 859.656,
+          "decay_s": 0.004324,
+          "amplitude": 0.521143,
+          "pan": 0.4595
         },
         {
-          "sample": 6606,
-          "time_s": 0.149786,
-          "f0_hz": 693.519,
-          "decay_s": 0.00967,
-          "amplitude": 0.534079,
-          "pan": 0.60039
+          "sample": 5261,
+          "time_s": 0.119307,
+          "f0_hz": 736.651,
+          "decay_s": 0.010876,
+          "amplitude": 0.734572,
+          "pan": 0.10232
         },
         {
-          "sample": 39720,
-          "time_s": 0.90068,
-          "f0_hz": 873.896,
-          "decay_s": 0.00601,
-          "amplitude": 0.671957,
-          "pan": -0.48276
+          "sample": 36304,
+          "time_s": 0.823212,
+          "f0_hz": 374.045,
+          "decay_s": 0.008229,
+          "amplitude": 0.539594,
+          "pan": 0.30919
         },
         {
-          "sample": 42940,
-          "time_s": 0.97369,
-          "f0_hz": 952.227,
-          "decay_s": 0.005893,
-          "amplitude": 0.486882,
-          "pan": 0.2353
+          "sample": 11286,
+          "time_s": 0.255927,
+          "f0_hz": 734.326,
+          "decay_s": 0.005351,
+          "amplitude": 0.606109,
+          "pan": -0.07341
         },
         {
-          "sample": 17257,
-          "time_s": 0.391312,
-          "f0_hz": 1059.124,
-          "decay_s": 0.007537,
-          "amplitude": 0.86134,
-          "pan": 0.54256
+          "sample": 16976,
+          "time_s": 0.384935,
+          "f0_hz": 452.835,
+          "decay_s": 0.008112,
+          "amplitude": 0.578143,
+          "pan": -0.06795
         },
         {
-          "sample": 34800,
-          "time_s": 0.789124,
-          "f0_hz": 638.372,
-          "decay_s": 0.011703,
-          "amplitude": 0.851572,
-          "pan": 0.24488
+          "sample": 122,
+          "time_s": 0.002774,
+          "f0_hz": 785.931,
+          "decay_s": 0.008789,
+          "amplitude": 0.687393,
+          "pan": 0.64369
         },
         {
-          "sample": 27411,
-          "time_s": 0.621571,
-          "f0_hz": 590.431,
-          "decay_s": 0.008787,
-          "amplitude": 0.736231,
-          "pan": 0.32919
+          "sample": 19535,
+          "time_s": 0.442962,
+          "f0_hz": 1534.015,
+          "decay_s": 0.006634,
+          "amplitude": 0.976909,
+          "pan": -0.55839
         },
         {
-          "sample": 21165,
-          "time_s": 0.479942,
-          "f0_hz": 1292.159,
-          "decay_s": 0.006237,
-          "amplitude": 0.876729,
-          "pan": -0.05612
+          "sample": 18749,
+          "time_s": 0.425154,
+          "f0_hz": 1406.89,
+          "decay_s": 0.004802,
+          "amplitude": 0.717633,
+          "pan": 0.63406
         },
         {
-          "sample": 39733,
-          "time_s": 0.900985,
-          "f0_hz": 1562.797,
-          "decay_s": 0.007783,
-          "amplitude": 0.791946,
-          "pan": -0.55137
+          "sample": 29569,
+          "time_s": 0.670505,
+          "f0_hz": 326.408,
+          "decay_s": 0.007191,
+          "amplitude": 0.884659,
+          "pan": 0.44596
         },
         {
-          "sample": 23535,
-          "time_s": 0.533664,
-          "f0_hz": 339.624,
-          "decay_s": 0.015649,
-          "amplitude": 0.516769,
-          "pan": 0.29058
+          "sample": 9245,
+          "time_s": 0.209645,
+          "f0_hz": 1900.182,
+          "decay_s": 0.009172,
+          "amplitude": 0.89781,
+          "pan": -0.3398
         },
         {
-          "sample": 13428,
-          "time_s": 0.304492,
-          "f0_hz": 493.025,
-          "decay_s": 0.005049,
-          "amplitude": 0.514521,
-          "pan": 0.26076
+          "sample": 36313,
+          "time_s": 0.823413,
+          "f0_hz": 470.189,
+          "decay_s": 0.014001,
+          "amplitude": 0.385073,
+          "pan": -0.66433
         },
         {
-          "sample": 13468,
-          "time_s": 0.305405,
-          "f0_hz": 746.715,
-          "decay_s": 0.011955,
-          "amplitude": 0.947692,
-          "pan": -0.58634
+          "sample": 9244,
+          "time_s": 0.209621,
+          "f0_hz": 925.737,
+          "decay_s": 0.004606,
+          "amplitude": 0.598794,
+          "pan": 0.26767
         },
         {
-          "sample": 23405,
-          "time_s": 0.530716,
-          "f0_hz": 1018.317,
-          "decay_s": 0.011997,
-          "amplitude": 0.424839,
-          "pan": 0.0089
+          "sample": 6944,
+          "time_s": 0.157449,
+          "f0_hz": 516.686,
+          "decay_s": 0.004433,
+          "amplitude": 0.871665,
+          "pan": 0.39586
+        },
+        {
+          "sample": 35979,
+          "time_s": 0.81586,
+          "f0_hz": 338.457,
+          "decay_s": 0.012062,
+          "amplitude": 0.679756,
+          "pan": 0.45408
+        },
+        {
+          "sample": 13043,
+          "time_s": 0.29575,
+          "f0_hz": 1661.901,
+          "decay_s": 0.008199,
+          "amplitude": 0.849694,
+          "pan": -0.65992
+        },
+        {
+          "sample": 17825,
+          "time_s": 0.404203,
+          "f0_hz": 1633.289,
+          "decay_s": 0.006004,
+          "amplitude": 0.44365,
+          "pan": -0.42376
+        },
+        {
+          "sample": 8482,
+          "time_s": 0.19233,
+          "f0_hz": 1858.318,
+          "decay_s": 0.009811,
+          "amplitude": 0.38616,
+          "pan": 0.0427
+        },
+        {
+          "sample": 5200,
+          "time_s": 0.117909,
+          "f0_hz": 1308.823,
+          "decay_s": 0.005566,
+          "amplitude": 0.575538,
+          "pan": 0.66721
+        },
+        {
+          "sample": 25581,
+          "time_s": 0.580073,
+          "f0_hz": 384.023,
+          "decay_s": 0.004783,
+          "amplitude": 0.854764,
+          "pan": -0.61085
+        },
+        {
+          "sample": 38149,
+          "time_s": 0.865054,
+          "f0_hz": 568.052,
+          "decay_s": 0.013941,
+          "amplitude": 0.809443,
+          "pan": -0.07249
+        },
+        {
+          "sample": 43103,
+          "time_s": 0.977394,
+          "f0_hz": 463.399,
+          "decay_s": 0.011957,
+          "amplitude": 0.496466,
+          "pan": 0.31913
+        },
+        {
+          "sample": 20707,
+          "time_s": 0.469539,
+          "f0_hz": 410.467,
+          "decay_s": 0.015247,
+          "amplitude": 0.392507,
+          "pan": 0.03692
         }
       ],
       "loop_construction": {
-        "phase_rotation_samples": 22120,
+        "phase_rotation_samples": 21797,
         "periodic_fft_samples": 44100,
         "seam_correction_radius_s": 0.008,
-        "correction_rms_relative_db": -44.37743869147002,
+        "correction_rms_relative_db": -33.85305614385985,
         "method": "Periodic FFT and circular grains; quiet phase rotation; local C2 value/slope correction; zero-DC projection."
-      }
+      },
+      "mastering": {
+        "method": "Stereo-linked smooth lookaround peak-envelope gain, sixth-order soft knee; RMS solve",
+        "rms_target_dbfs": -16,
+        "source_peak_ceiling_dbfs": -8.2,
+        "front_120ms_target_dbfs": null,
+        "front_weight": 1.0,
+        "front_weight_hold_s": 0.075,
+        "front_weight_end_s": 0.18,
+        "drive_linear": 0.3340085086670841,
+        "maximum_gain_reduction_db": 7.706938018284718,
+        "median_active_gain_reduction_db": 1.4505911668754414,
+        "lookaround_radius_samples": 44,
+        "gaussian_sigma_samples": 11.0,
+        "gaussian_radius_samples": 44,
+        "gain_exponent": 6,
+        "envelope_boundary": "wrap",
+        "hard_clipping": false,
+        "waveshaping": false,
+        "final_dc_projection": true,
+        "post_mix_normalization": false,
+        "quantization": "Round nearest PCM16, no dither; exact silence retained"
+      },
+      "prospective_timbre": "Continuous weighty wind/water with dense audible midrange; no baked recurring cast accent."
     },
     "burst_tail.wav": {
       "frames": 52920,
       "duration_s": 1.2,
-      "sample_peak_dbfs": -3.500116402391992,
-      "sample_peak_linear": 0.6683349609375,
+      "sample_peak_dbfs": -5.204513749597486,
+      "sample_peak_linear": 0.54925537109375,
       "sample_peak_dbfs_per_channel": [
-        -3.500116402391992,
-        -3.9452268161584394
+        -5.214171177363628,
+        -5.204513749597486
       ],
-      "true_peak_8x_dbfs": -3.465057411110925,
-      "rms_dbfs": -24.720126692526932,
+      "true_peak_8x_dbfs": -5.188834511604782,
+      "true_peak_method": "scipy.signal.resample_poly 8/1, default Kaiser beta5 FIR, constant boundary",
+      "rms_dbfs": -16.000000895682007,
+      "front_120ms_rms_dbfs": -12.400001488891792,
+      "max_20ms_rms_dbfs": -11.29051937676916,
+      "max_20ms_rms_window_start_s": 0.005419501133786848,
       "dc_per_channel": [
-        -5.882072881235828e-08,
-        8.650107178287982e-09
-      ],
-      "dc_dbfs_per_channel": [
-        -144.6093919742653,
-        -161.25957022839
+        -5.939740262424414e-08,
+        7.150755267384732e-08
       ],
       "clipped_samples": 0,
       "first_pcm16": [
@@ -630,1069 +933,1407 @@
         0,
         0
       ],
-      "stereo_correlation": 0.9435351148595967,
-      "low_band_correlation": 0.9959318491271123,
-      "mono_fold_rms_loss_db": -0.12444639892550498,
+      "stereo_correlation": 0.9574544404973435,
+      "low_band_correlation": 0.9988296316798488,
+      "mono_fold_rms_loss_db": -0.09339725899526351,
       "band_power_fractions": {
-        "20-250Hz": 0.6073122647069636,
-        "250-2000Hz": 0.3308588483181119,
-        "2000-12000Hz": 0.05930348247560189
+        "20-250Hz": 0.13546713713822806,
+        "250-2000Hz": 0.8238452064926196,
+        "2000-12000Hz": 0.04060813203122689
       },
-      "edge_first_1ms_peak_dbfs": -9.51516546621384,
+      "edge_first_1ms_peak_dbfs": -17.078423896554707,
       "edge_last_1ms_peak_dbfs": -300.0,
-      "sha256": "D344F12283073F67918A7F97CC2B062275146F6F275A5906FCEAC2B480AE202C",
+      "rms_20ms_blocks_dbfs": [
+        -12.359884768036357,
+        -11.531755298022723,
+        -12.376323388161111,
+        -12.275975775966296,
+        -13.215351994817047,
+        -12.828010278454272,
+        -12.292384650669268,
+        -12.221598863883491,
+        -12.537509139495198,
+        -12.900276881108486,
+        -12.612615913863463,
+        -12.998414496511991,
+        -14.143012067741015,
+        -13.810976217170586,
+        -13.342033853919745,
+        -14.761449488862212,
+        -12.961455377053824,
+        -13.298950312744275,
+        -14.62117925575481,
+        -14.106999428210315,
+        -15.552924179716612,
+        -13.922903779481594,
+        -14.05082542143713,
+        -13.527308339052,
+        -14.70078089852403,
+        -15.814968381555667,
+        -15.488286963002286,
+        -16.718649722253254,
+        -16.759831329781456,
+        -15.015371960573985,
+        -16.11219010260073,
+        -17.924469263028687,
+        -18.04481195869919,
+        -15.851475913639884,
+        -17.10509476573336,
+        -18.67818320450102,
+        -19.151903801644924,
+        -20.594154500816906,
+        -20.516178459920944,
+        -19.706501113779396,
+        -21.082885551345942,
+        -22.949215997826794,
+        -23.438833637464754,
+        -25.31935415672596,
+        -26.49778815375198,
+        -28.051919132467017,
+        -28.224801464439096,
+        -29.83671975589408,
+        -30.63907774617149,
+        -31.680083481815345,
+        -32.57889418179833,
+        -33.036255134048226,
+        -33.53899583268283,
+        -35.247430529315615,
+        -38.20319584634871,
+        -40.91284678327807,
+        -42.48781762136042,
+        -49.92371845155773,
+        -61.85898913380255,
+        -77.3023932938782
+      ],
+      "sha256": "D8673169FDADB38EB46419FC42214E5227919EC80723D5DEADB47A80059BB6BE",
       "bytes": 211724,
-      "independent_ffmpeg_decode": "PASS: every decoded PCM16 sample identical",
-      "deterministic_regeneration": "PASS: identical full WAV bytes",
-      "seed_offsets": {
-        "thunder_mid_side": [
-          501,
-          502
-        ],
-        "primary_cracks": [
-          511,
-          512,
-          514,
-          515,
-          517,
-          518
-        ],
-        "secondary_crack": [
-          531,
-          532
-        ],
-        "wave_slap": [
-          541,
-          542
-        ],
-        "spray": [
-          551,
-          552,
-          553
-        ],
-        "wash": [
-          561,
-          562,
-          563
-        ],
-        "mist": [
-          571,
-          572
-        ],
-        "droplets": 601
-      },
+      "independent_ffmpeg_decode": "PASS: every PCM16 sample identical",
+      "deterministic_regeneration": "PASS: identical full RIFF bytes",
       "layers": [
         {
-          "name": "low_thunder",
-          "start_s": 0,
-          "end_s": 0.7,
+          "name": "single_pressure_body",
           "band_hz": [
-            34,
-            210
+            85,
+            265
           ],
-          "weight": 0.93
+          "weight": 0.29,
+          "seed_offsets": [
+            501,
+            502
+          ]
         },
         {
-          "name": "primary_lightning_cracks",
-          "start_s": 0,
-          "end_s": 0.046,
-          "subcracks_s": [
-            0,
-            0.012,
-            0.028
-          ],
+          "name": "thick_water_slap",
           "band_hz": [
-            1500,
-            11200
+            160,
+            1080
           ],
-          "weight": 0.48
+          "weight": 0.85,
+          "seed_offsets": [
+            541,
+            542
+          ]
         },
         {
-          "name": "wave_slap",
-          "start_s": 0,
-          "end_s": 0.43,
-          "sheets_s": [
-            0,
-            0.024,
-            0.057
-          ],
+          "name": "water_sheet_shear",
           "band_hz": [
-            115,
-            1900
+            720,
+            3800
           ],
-          "weight": 0.86
+          "weight": 0.24,
+          "seed_offsets": [
+            551,
+            552,
+            553
+          ]
         },
         {
-          "name": "secondary_lightning",
-          "start_s": 0.1,
-          "end_s": 0.146,
-          "band_hz": [
-            2050,
-            10500
-          ],
-          "relative_primary_weight": 0.34
+          "name": "primary_water_electric_crack",
+          "onset_s": 0,
+          "end_s": 0.035,
+          "weight": 0.19,
+          "seed_offsets": [
+            511,
+            512
+          ]
         },
         {
-          "name": "spray",
-          "start_s": 0.009,
-          "end_s": 0.87,
-          "band_hz": [
-            850,
-            8000
-          ],
-          "weight": 0.31
+          "name": "lighter_secondary_crack",
+          "onset_s": 0.1,
+          "end_s": 0.135,
+          "isolated_relative_peak_db": -10,
+          "seed_offsets": [
+            531,
+            532
+          ]
         },
         {
-          "name": "returning_wash",
-          "start_s": 0.075,
-          "end_s": 1.2,
+          "name": "returning_water",
           "band_hz": [
-            260,
-            2550
+            280,
+            1950
           ],
-          "weight": 0.24
+          "weight": 0.46,
+          "seed_offsets": [
+            561,
+            562
+          ]
         },
         {
-          "name": "mist_air",
-          "start_s": 0.18,
-          "end_s": 1.2,
+          "name": "foam_air",
           "band_hz": [
-            1600,
-            5600
+            1800,
+            4800
           ],
-          "weight": 0.065
+          "weight": 0.12,
+          "seed_offsets": [
+            571,
+            572
+          ]
         },
         {
-          "name": "damped_wet_drops",
-          "start_s": 0.017,
-          "last_onset_before_s": 1.115,
-          "end_s": 1.2,
-          "count": 112,
-          "weight": 0.69
+          "name": "irregular_drops",
+          "count": 145,
+          "last_onset_before_s": 1.155,
+          "weight": 0.39,
+          "seed_offset": 601
         }
       ],
+      "body_envelope_knots_s": [
+        0,
+        0.035,
+        0.075,
+        0.12,
+        0.28,
+        0.45,
+        0.7,
+        0.9,
+        1.17,
+        1.2
+      ],
+      "body_envelope_values": [
+        1,
+        1,
+        0.86,
+        0.7,
+        0.57,
+        0.46,
+        0.3,
+        0.1,
+        0,
+        0
+      ],
+      "body_attack_s": 0.006,
       "droplet_events": [
         {
-          "sample": 38156,
-          "time_s": 0.865207,
-          "f0_hz": 1986.799,
-          "decay_s": 0.00666,
-          "amplitude": 0.161481,
-          "pan": -0.35506
-        },
-        {
-          "sample": 21042,
-          "time_s": 0.477137,
-          "f0_hz": 1587.393,
-          "decay_s": 0.007052,
-          "amplitude": 0.402532,
-          "pan": 0.45643
-        },
-        {
-          "sample": 47771,
-          "time_s": 1.083249,
-          "f0_hz": 1739.356,
-          "decay_s": 0.010187,
-          "amplitude": 0.136837,
-          "pan": 0.14279
-        },
-        {
-          "sample": 3422,
-          "time_s": 0.077605,
-          "f0_hz": 3983.693,
-          "decay_s": 0.002693,
-          "amplitude": 0.348586,
-          "pan": 0.37284
-        },
-        {
-          "sample": 14617,
-          "time_s": 0.331459,
-          "f0_hz": 554.602,
-          "decay_s": 0.00854,
-          "amplitude": 0.315485,
-          "pan": -0.4207
-        },
-        {
-          "sample": 28741,
-          "time_s": 0.651729,
-          "f0_hz": 1012.186,
-          "decay_s": 0.004551,
-          "amplitude": 0.128009,
-          "pan": 0.2029
-        },
-        {
-          "sample": 25947,
-          "time_s": 0.588364,
-          "f0_hz": 2002.494,
-          "decay_s": 0.005565,
-          "amplitude": 0.157663,
-          "pan": -0.26456
-        },
-        {
-          "sample": 5362,
-          "time_s": 0.121578,
-          "f0_hz": 1878.882,
-          "decay_s": 0.004018,
-          "amplitude": 0.329621,
-          "pan": 0.1421
-        },
-        {
-          "sample": 29474,
-          "time_s": 0.668343,
-          "f0_hz": 594.83,
-          "decay_s": 0.005531,
-          "amplitude": 0.269566,
-          "pan": -0.48952
-        },
-        {
-          "sample": 44210,
-          "time_s": 1.002496,
-          "f0_hz": 1132.328,
-          "decay_s": 0.004584,
-          "amplitude": 0.143209,
-          "pan": -0.45209
-        },
-        {
-          "sample": 32615,
-          "time_s": 0.739559,
-          "f0_hz": 1033.918,
-          "decay_s": 0.003934,
-          "amplitude": 0.10603,
-          "pan": -0.53678
-        },
-        {
-          "sample": 33202,
-          "time_s": 0.75289,
-          "f0_hz": 2022.394,
-          "decay_s": 0.004313,
-          "amplitude": 0.205832,
-          "pan": -0.01429
-        },
-        {
-          "sample": 1886,
-          "time_s": 0.042763,
-          "f0_hz": 844.8,
-          "decay_s": 0.005928,
-          "amplitude": 0.594007,
-          "pan": 0.2741
-        },
-        {
-          "sample": 28961,
-          "time_s": 0.656705,
-          "f0_hz": 1355.935,
-          "decay_s": 0.010408,
-          "amplitude": 0.251993,
-          "pan": -0.32456
-        },
-        {
-          "sample": 36950,
-          "time_s": 0.837868,
-          "f0_hz": 672.038,
-          "decay_s": 0.005975,
-          "amplitude": 0.131655,
-          "pan": -0.31436
-        },
-        {
-          "sample": 21649,
-          "time_s": 0.490904,
-          "f0_hz": 1513.745,
-          "decay_s": 0.003686,
-          "amplitude": 0.296208,
-          "pan": -0.52855
-        },
-        {
-          "sample": 31254,
-          "time_s": 0.708701,
-          "f0_hz": 2661.742,
-          "decay_s": 0.003755,
-          "amplitude": 0.154547,
-          "pan": 0.33867
-        },
-        {
-          "sample": 39705,
-          "time_s": 0.900332,
-          "f0_hz": 3101.286,
-          "decay_s": 0.00759,
-          "amplitude": 0.150738,
-          "pan": 0.4889
-        },
-        {
-          "sample": 26472,
-          "time_s": 0.600272,
-          "f0_hz": 2109.499,
-          "decay_s": 0.010081,
-          "amplitude": 0.25641,
-          "pan": 0.20475
-        },
-        {
-          "sample": 4762,
-          "time_s": 0.107972,
-          "f0_hz": 2631.705,
-          "decay_s": 0.006279,
-          "amplitude": 0.60162,
-          "pan": 0.3202
-        },
-        {
-          "sample": 33018,
-          "time_s": 0.748716,
-          "f0_hz": 1053.464,
-          "decay_s": 0.004725,
-          "amplitude": 0.08728,
-          "pan": -0.15151
-        },
-        {
-          "sample": 7830,
-          "time_s": 0.17754,
-          "f0_hz": 762.373,
-          "decay_s": 0.006171,
-          "amplitude": 0.383496,
-          "pan": 0.02285
-        },
-        {
-          "sample": 32284,
-          "time_s": 0.732063,
-          "f0_hz": 828.229,
-          "decay_s": 0.003953,
-          "amplitude": 0.088318,
-          "pan": -0.47994
-        },
-        {
-          "sample": 41439,
-          "time_s": 0.939653,
-          "f0_hz": 1200.513,
-          "decay_s": 0.00966,
-          "amplitude": 0.170506,
-          "pan": -0.1781
-        },
-        {
-          "sample": 29824,
-          "time_s": 0.676279,
-          "f0_hz": 2135.077,
-          "decay_s": 0.006551,
-          "amplitude": 0.246605,
-          "pan": -0.54654
-        },
-        {
-          "sample": 1367,
-          "time_s": 0.031004,
-          "f0_hz": 3814.936,
-          "decay_s": 0.004217,
-          "amplitude": 0.660502,
-          "pan": -0.64985
-        },
-        {
-          "sample": 23731,
-          "time_s": 0.538118,
-          "f0_hz": 3844.789,
-          "decay_s": 0.003611,
-          "amplitude": 0.154305,
-          "pan": 0.62024
-        },
-        {
-          "sample": 26194,
-          "time_s": 0.593975,
-          "f0_hz": 1125.437,
-          "decay_s": 0.006644,
-          "amplitude": 0.27609,
-          "pan": -0.30015
-        },
-        {
-          "sample": 41305,
-          "time_s": 0.936618,
-          "f0_hz": 571.098,
-          "decay_s": 0.012408,
-          "amplitude": 0.099099,
-          "pan": -0.26034
-        },
-        {
-          "sample": 14510,
-          "time_s": 0.329034,
-          "f0_hz": 740.82,
-          "decay_s": 0.00539,
-          "amplitude": 0.389802,
-          "pan": -0.3389
-        },
-        {
-          "sample": 19616,
-          "time_s": 0.444813,
-          "f0_hz": 1776.481,
-          "decay_s": 0.00909,
-          "amplitude": 0.235439,
-          "pan": -0.37157
-        },
-        {
-          "sample": 48341,
-          "time_s": 1.096165,
-          "f0_hz": 1632.72,
-          "decay_s": 0.003948,
-          "amplitude": 0.072538,
-          "pan": 0.40392
-        },
-        {
-          "sample": 17205,
-          "time_s": 0.390131,
-          "f0_hz": 2756.661,
-          "decay_s": 0.005889,
-          "amplitude": 0.297086,
-          "pan": 0.31396
-        },
-        {
-          "sample": 27587,
-          "time_s": 0.625554,
-          "f0_hz": 744.147,
-          "decay_s": 0.003636,
-          "amplitude": 0.242128,
-          "pan": -0.01081
+          "sample": 20816,
+          "time_s": 0.472017,
+          "f0_hz": 1915.28,
+          "decay_s": 0.008254,
+          "amplitude": 0.18282,
+          "pan": 0.07502
         },
         {
           "sample": 36481,
-          "time_s": 0.827224,
-          "f0_hz": 852.893,
-          "decay_s": 0.010361,
-          "amplitude": 0.150066,
-          "pan": -0.29373
+          "time_s": 0.827244,
+          "f0_hz": 618.382,
+          "decay_s": 0.007419,
+          "amplitude": 0.074759,
+          "pan": 0.60031
         },
         {
-          "sample": 30170,
-          "time_s": 0.684128,
-          "f0_hz": 622.49,
-          "decay_s": 0.012209,
-          "amplitude": 0.217591,
-          "pan": -0.1043
+          "sample": 5513,
+          "time_s": 0.125018,
+          "f0_hz": 2549.609,
+          "decay_s": 0.004334,
+          "amplitude": 0.85325,
+          "pan": 0.61863
         },
         {
-          "sample": 48403,
-          "time_s": 1.097565,
-          "f0_hz": 3966.186,
-          "decay_s": 0.006577,
-          "amplitude": 0.07359,
-          "pan": 0.42093
+          "sample": 1306,
+          "time_s": 0.029617,
+          "f0_hz": 2009.95,
+          "decay_s": 0.005738,
+          "amplitude": 0.395711,
+          "pan": -0.59634
         },
         {
-          "sample": 27559,
-          "time_s": 0.624915,
-          "f0_hz": 595.64,
-          "decay_s": 0.003911,
-          "amplitude": 0.291721,
-          "pan": 0.43795
+          "sample": 36064,
+          "time_s": 0.817776,
+          "f0_hz": 2960.738,
+          "decay_s": 0.006671,
+          "amplitude": 0.195795,
+          "pan": 0.436
         },
         {
-          "sample": 44225,
-          "time_s": 1.002834,
-          "f0_hz": 642.008,
-          "decay_s": 0.004999,
-          "amplitude": 0.055988,
-          "pan": -0.37928
+          "sample": 10285,
+          "time_s": 0.233218,
+          "f0_hz": 703.247,
+          "decay_s": 0.005879,
+          "amplitude": 0.609019,
+          "pan": -0.03488
         },
         {
-          "sample": 1880,
-          "time_s": 0.042632,
-          "f0_hz": 4074.772,
-          "decay_s": 0.005367,
-          "amplitude": 0.71612,
-          "pan": 0.40435
+          "sample": 23762,
+          "time_s": 0.538828,
+          "f0_hz": 1343.633,
+          "decay_s": 0.006306,
+          "amplitude": 0.366185,
+          "pan": -0.12696
         },
         {
-          "sample": 21715,
-          "time_s": 0.492397,
-          "f0_hz": 1278.865,
-          "decay_s": 0.007025,
-          "amplitude": 0.29288,
-          "pan": -0.26534
+          "sample": 3018,
+          "time_s": 0.068447,
+          "f0_hz": 1340.709,
+          "decay_s": 0.009668,
+          "amplitude": 0.73306,
+          "pan": 0.11897
         },
         {
-          "sample": 7119,
-          "time_s": 0.161422,
-          "f0_hz": 1678.875,
-          "decay_s": 0.006301,
-          "amplitude": 0.74726,
-          "pan": 0.62129
+          "sample": 10511,
+          "time_s": 0.238356,
+          "f0_hz": 1863.986,
+          "decay_s": 0.008556,
+          "amplitude": 0.374083,
+          "pan": 0.32054
         },
         {
-          "sample": 44433,
-          "time_s": 1.007546,
-          "f0_hz": 891.217,
-          "decay_s": 0.007602,
-          "amplitude": 0.054922,
-          "pan": 0.17356
+          "sample": 43111,
+          "time_s": 0.977572,
+          "f0_hz": 2688.373,
+          "decay_s": 0.004737,
+          "amplitude": 0.064768,
+          "pan": -0.24327
         },
         {
-          "sample": 43305,
-          "time_s": 0.981983,
-          "f0_hz": 2095.703,
-          "decay_s": 0.004576,
-          "amplitude": 0.059912,
-          "pan": -0.22223
+          "sample": 34334,
+          "time_s": 0.778549,
+          "f0_hz": 4063.344,
+          "decay_s": 0.004734,
+          "amplitude": 0.224391,
+          "pan": 0.62074
         },
         {
-          "sample": 24734,
-          "time_s": 0.560873,
-          "f0_hz": 1899.435,
-          "decay_s": 0.009995,
-          "amplitude": 0.349845,
-          "pan": 0.10036
+          "sample": 11852,
+          "time_s": 0.26876,
+          "f0_hz": 3773.306,
+          "decay_s": 0.008343,
+          "amplitude": 0.624345,
+          "pan": -0.32208
         },
         {
-          "sample": 17526,
-          "time_s": 0.397422,
-          "f0_hz": 728.778,
-          "decay_s": 0.008183,
-          "amplitude": 0.421068,
-          "pan": -0.29774
+          "sample": 50803,
+          "time_s": 1.151986,
+          "f0_hz": 2953.349,
+          "decay_s": 0.004448,
+          "amplitude": 0.088881,
+          "pan": -0.59032
         },
         {
-          "sample": 32807,
-          "time_s": 0.743912,
-          "f0_hz": 1075.825,
-          "decay_s": 0.008437,
-          "amplitude": 0.167656,
-          "pan": -0.05071
+          "sample": 2269,
+          "time_s": 0.051443,
+          "f0_hz": 1041.993,
+          "decay_s": 0.009878,
+          "amplitude": 0.718792,
+          "pan": -0.5479
         },
         {
-          "sample": 5862,
-          "time_s": 0.132925,
-          "f0_hz": 958.807,
-          "decay_s": 0.012245,
-          "amplitude": 0.58582,
-          "pan": 0.57618
+          "sample": 31309,
+          "time_s": 0.709964,
+          "f0_hz": 2178.524,
+          "decay_s": 0.004972,
+          "amplitude": 0.10016,
+          "pan": 0.47752
         },
         {
-          "sample": 13611,
-          "time_s": 0.308642,
-          "f0_hz": 1932.217,
-          "decay_s": 0.00975,
-          "amplitude": 0.253622,
-          "pan": 0.56537
+          "sample": 42470,
+          "time_s": 0.963043,
+          "f0_hz": 761.005,
+          "decay_s": 0.006228,
+          "amplitude": 0.07418,
+          "pan": 0.49861
         },
         {
-          "sample": 22036,
-          "time_s": 0.49969,
-          "f0_hz": 2582.767,
-          "decay_s": 0.008154,
-          "amplitude": 0.329169,
-          "pan": 0.05606
+          "sample": 37180,
+          "time_s": 0.843094,
+          "f0_hz": 1736.664,
+          "decay_s": 0.009177,
+          "amplitude": 0.093905,
+          "pan": 0.0282
         },
         {
-          "sample": 7273,
-          "time_s": 0.164916,
-          "f0_hz": 901.216,
-          "decay_s": 0.006155,
-          "amplitude": 0.850572,
-          "pan": -0.32916
+          "sample": 49955,
+          "time_s": 1.132756,
+          "f0_hz": 899.123,
+          "decay_s": 0.012121,
+          "amplitude": 0.089338,
+          "pan": -0.60792
         },
         {
-          "sample": 28869,
-          "time_s": 0.654636,
-          "f0_hz": 730.32,
+          "sample": 37960,
+          "time_s": 0.860766,
+          "f0_hz": 1564.882,
+          "decay_s": 0.007351,
+          "amplitude": 0.097564,
+          "pan": -0.39078
+        },
+        {
+          "sample": 19292,
+          "time_s": 0.437462,
+          "f0_hz": 555.46,
+          "decay_s": 0.007417,
+          "amplitude": 0.397687,
+          "pan": -0.64524
+        },
+        {
+          "sample": 45018,
+          "time_s": 1.020816,
+          "f0_hz": 1929.235,
+          "decay_s": 0.008334,
+          "amplitude": 0.133965,
+          "pan": 0.43507
+        },
+        {
+          "sample": 1944,
+          "time_s": 0.04408,
+          "f0_hz": 2721.893,
+          "decay_s": 0.005335,
+          "amplitude": 0.649371,
+          "pan": 0.44329
+        },
+        {
+          "sample": 48485,
+          "time_s": 1.099436,
+          "f0_hz": 720.124,
+          "decay_s": 0.006114,
+          "amplitude": 0.070132,
+          "pan": 0.44348
+        },
+        {
+          "sample": 7762,
+          "time_s": 0.175998,
+          "f0_hz": 3849.32,
+          "decay_s": 0.00578,
+          "amplitude": 0.459706,
+          "pan": 0.28625
+        },
+        {
+          "sample": 23642,
+          "time_s": 0.536105,
+          "f0_hz": 1705.529,
+          "decay_s": 0.003887,
+          "amplitude": 0.150574,
+          "pan": 0.58753
+        },
+        {
+          "sample": 15654,
+          "time_s": 0.354971,
+          "f0_hz": 828.56,
+          "decay_s": 0.004806,
+          "amplitude": 0.364097,
+          "pan": 0.52678
+        },
+        {
+          "sample": 42853,
+          "time_s": 0.971734,
+          "f0_hz": 2564.415,
+          "decay_s": 0.00426,
+          "amplitude": 0.084256,
+          "pan": 0.54911
+        },
+        {
+          "sample": 20739,
+          "time_s": 0.470276,
+          "f0_hz": 861.103,
+          "decay_s": 0.004461,
+          "amplitude": 0.397433,
+          "pan": 0.32444
+        },
+        {
+          "sample": 32402,
+          "time_s": 0.734741,
+          "f0_hz": 3008.465,
+          "decay_s": 0.006451,
+          "amplitude": 0.187431,
+          "pan": -0.33927
+        },
+        {
+          "sample": 37848,
+          "time_s": 0.85823,
+          "f0_hz": 877.559,
+          "decay_s": 0.008974,
+          "amplitude": 0.071137,
+          "pan": 0.54123
+        },
+        {
+          "sample": 15434,
+          "time_s": 0.349978,
+          "f0_hz": 1332.087,
+          "decay_s": 0.007733,
+          "amplitude": 0.55264,
+          "pan": 0.45275
+        },
+        {
+          "sample": 24897,
+          "time_s": 0.564557,
+          "f0_hz": 2735.943,
+          "decay_s": 0.004006,
+          "amplitude": 0.33047,
+          "pan": 0.11136
+        },
+        {
+          "sample": 34463,
+          "time_s": 0.781465,
+          "f0_hz": 926.363,
+          "decay_s": 0.01144,
+          "amplitude": 0.200605,
+          "pan": -0.32897
+        },
+        {
+          "sample": 22852,
+          "time_s": 0.51818,
+          "f0_hz": 588.193,
+          "decay_s": 0.009655,
+          "amplitude": 0.326724,
+          "pan": 0.11598
+        },
+        {
+          "sample": 46677,
+          "time_s": 1.058427,
+          "f0_hz": 1248.739,
+          "decay_s": 0.010743,
+          "amplitude": 0.133137,
+          "pan": -0.44585
+        },
+        {
+          "sample": 46616,
+          "time_s": 1.057049,
+          "f0_hz": 3903.685,
+          "decay_s": 0.00756,
+          "amplitude": 0.139741,
+          "pan": -0.0927
+        },
+        {
+          "sample": 30574,
+          "time_s": 0.69329,
+          "f0_hz": 928.394,
+          "decay_s": 0.00449,
+          "amplitude": 0.223816,
+          "pan": -0.09162
+        },
+        {
+          "sample": 27808,
+          "time_s": 0.630575,
+          "f0_hz": 1414.079,
+          "decay_s": 0.008428,
+          "amplitude": 0.136939,
+          "pan": 0.24041
+        },
+        {
+          "sample": 1386,
+          "time_s": 0.031417,
+          "f0_hz": 2728.14,
+          "decay_s": 0.007739,
+          "amplitude": 0.714515,
+          "pan": -0.09014
+        },
+        {
+          "sample": 12031,
+          "time_s": 0.272811,
+          "f0_hz": 2622.138,
+          "decay_s": 0.004977,
+          "amplitude": 0.315811,
+          "pan": -0.57215
+        },
+        {
+          "sample": 46986,
+          "time_s": 1.065441,
+          "f0_hz": 3792.387,
+          "decay_s": 0.008416,
+          "amplitude": 0.056868,
+          "pan": 0.18865
+        },
+        {
+          "sample": 34335,
+          "time_s": 0.778578,
+          "f0_hz": 1034.554,
+          "decay_s": 0.01135,
+          "amplitude": 0.219535,
+          "pan": -0.12545
+        },
+        {
+          "sample": 35424,
+          "time_s": 0.803275,
+          "f0_hz": 2741.253,
+          "decay_s": 0.009234,
+          "amplitude": 0.079743,
+          "pan": 0.37638
+        },
+        {
+          "sample": 21264,
+          "time_s": 0.482175,
+          "f0_hz": 2522.064,
+          "decay_s": 0.005937,
+          "amplitude": 0.215771,
+          "pan": -0.04375
+        },
+        {
+          "sample": 30132,
+          "time_s": 0.68327,
+          "f0_hz": 653.981,
+          "decay_s": 0.013151,
+          "amplitude": 0.096342,
+          "pan": -0.07868
+        },
+        {
+          "sample": 11842,
+          "time_s": 0.26853,
+          "f0_hz": 1395.734,
+          "decay_s": 0.007311,
+          "amplitude": 0.276901,
+          "pan": -0.45803
+        },
+        {
+          "sample": 37952,
+          "time_s": 0.860594,
+          "f0_hz": 3633.918,
+          "decay_s": 0.007753,
+          "amplitude": 0.188385,
+          "pan": 0.3295
+        },
+        {
+          "sample": 12048,
+          "time_s": 0.273198,
+          "f0_hz": 2518.586,
+          "decay_s": 0.00771,
+          "amplitude": 0.290448,
+          "pan": 0.14511
+        },
+        {
+          "sample": 10638,
+          "time_s": 0.241229,
+          "f0_hz": 1316.437,
+          "decay_s": 0.00725,
+          "amplitude": 0.417681,
+          "pan": -0.17375
+        },
+        {
+          "sample": 8067,
+          "time_s": 0.182929,
+          "f0_hz": 661.447,
+          "decay_s": 0.005244,
+          "amplitude": 0.799884,
+          "pan": 0.05956
+        },
+        {
+          "sample": 30584,
+          "time_s": 0.693511,
+          "f0_hz": 3446.681,
+          "decay_s": 0.008287,
+          "amplitude": 0.156149,
+          "pan": 0.07717
+        },
+        {
+          "sample": 43460,
+          "time_s": 0.985498,
+          "f0_hz": 1644.75,
+          "decay_s": 0.004426,
+          "amplitude": 0.065442,
+          "pan": -0.32235
+        },
+        {
+          "sample": 50224,
+          "time_s": 1.138877,
+          "f0_hz": 2818.089,
+          "decay_s": 0.007761,
+          "amplitude": 0.052957,
+          "pan": -0.37339
+        },
+        {
+          "sample": 6931,
+          "time_s": 0.157173,
+          "f0_hz": 1105.354,
+          "decay_s": 0.011331,
+          "amplitude": 0.890966,
+          "pan": 0.38748
+        },
+        {
+          "sample": 11142,
+          "time_s": 0.252643,
+          "f0_hz": 1298.4,
+          "decay_s": 0.008671,
+          "amplitude": 0.609938,
+          "pan": 0.34375
+        },
+        {
+          "sample": 6356,
+          "time_s": 0.144122,
+          "f0_hz": 1518.551,
+          "decay_s": 0.003414,
+          "amplitude": 0.538572,
+          "pan": 0.08274
+        },
+        {
+          "sample": 14078,
+          "time_s": 0.319222,
+          "f0_hz": 903.245,
+          "decay_s": 0.004916,
+          "amplitude": 0.259776,
+          "pan": 0.25427
+        },
+        {
+          "sample": 45758,
+          "time_s": 1.037595,
+          "f0_hz": 3420.182,
+          "decay_s": 0.007329,
+          "amplitude": 0.064621,
+          "pan": -0.28952
+        },
+        {
+          "sample": 17965,
+          "time_s": 0.407377,
+          "f0_hz": 1195.144,
+          "decay_s": 0.010143,
+          "amplitude": 0.390532,
+          "pan": -0.25611
+        },
+        {
+          "sample": 22621,
+          "time_s": 0.512944,
+          "f0_hz": 556.435,
+          "decay_s": 0.011678,
+          "amplitude": 0.146493,
+          "pan": 0.54975
+        },
+        {
+          "sample": 22824,
+          "time_s": 0.517547,
+          "f0_hz": 3771.754,
+          "decay_s": 0.002828,
+          "amplitude": 0.229869,
+          "pan": -0.13013
+        },
+        {
+          "sample": 46141,
+          "time_s": 1.046279,
+          "f0_hz": 1421.47,
+          "decay_s": 0.005809,
+          "amplitude": 0.145207,
+          "pan": -0.32591
+        },
+        {
+          "sample": 34960,
+          "time_s": 0.79274,
+          "f0_hz": 4099.869,
+          "decay_s": 0.005081,
+          "amplitude": 0.124036,
+          "pan": -0.31531
+        },
+        {
+          "sample": 27895,
+          "time_s": 0.63254,
+          "f0_hz": 3397.967,
+          "decay_s": 0.003881,
+          "amplitude": 0.262931,
+          "pan": -0.55746
+        },
+        {
+          "sample": 24270,
+          "time_s": 0.550342,
+          "f0_hz": 3978.171,
+          "decay_s": 0.00528,
+          "amplitude": 0.29704,
+          "pan": 0.46523
+        },
+        {
+          "sample": 14564,
+          "time_s": 0.330251,
+          "f0_hz": 3793.199,
+          "decay_s": 0.008186,
+          "amplitude": 0.363656,
+          "pan": 0.15874
+        },
+        {
+          "sample": 36455,
+          "time_s": 0.826652,
+          "f0_hz": 2013.567,
+          "decay_s": 0.004879,
+          "amplitude": 0.129157,
+          "pan": -0.1799
+        },
+        {
+          "sample": 19432,
+          "time_s": 0.440628,
+          "f0_hz": 2323.989,
+          "decay_s": 0.007499,
+          "amplitude": 0.279213,
+          "pan": -0.0605
+        },
+        {
+          "sample": 16602,
+          "time_s": 0.376452,
+          "f0_hz": 1099.599,
+          "decay_s": 0.008644,
+          "amplitude": 0.269517,
+          "pan": -0.40918
+        },
+        {
+          "sample": 22095,
+          "time_s": 0.501026,
+          "f0_hz": 3233.494,
+          "decay_s": 0.004016,
+          "amplitude": 0.142861,
+          "pan": -0.27799
+        },
+        {
+          "sample": 29011,
+          "time_s": 0.657846,
+          "f0_hz": 706.588,
+          "decay_s": 0.00797,
+          "amplitude": 0.19414,
+          "pan": -0.47244
+        },
+        {
+          "sample": 28045,
+          "time_s": 0.635945,
+          "f0_hz": 682.623,
+          "decay_s": 0.012366,
+          "amplitude": 0.116854,
+          "pan": 0.49002
+        },
+        {
+          "sample": 40588,
+          "time_s": 0.920364,
+          "f0_hz": 717.905,
+          "decay_s": 0.006783,
+          "amplitude": 0.146501,
+          "pan": -0.09176
+        },
+        {
+          "sample": 12707,
+          "time_s": 0.288142,
+          "f0_hz": 2623.707,
+          "decay_s": 0.008744,
+          "amplitude": 0.403087,
+          "pan": 0.47442
+        },
+        {
+          "sample": 41769,
+          "time_s": 0.947137,
+          "f0_hz": 559.363,
+          "decay_s": 0.005719,
+          "amplitude": 0.062201,
+          "pan": -0.30511
+        },
+        {
+          "sample": 44909,
+          "time_s": 1.018354,
+          "f0_hz": 924.849,
+          "decay_s": 0.007449,
+          "amplitude": 0.10835,
+          "pan": -0.29721
+        },
+        {
+          "sample": 27118,
+          "time_s": 0.614915,
+          "f0_hz": 2038.856,
+          "decay_s": 0.006931,
+          "amplitude": 0.202211,
+          "pan": 0.12827
+        },
+        {
+          "sample": 45022,
+          "time_s": 1.020904,
+          "f0_hz": 2456.444,
+          "decay_s": 0.008239,
+          "amplitude": 0.088531,
+          "pan": 0.20857
+        },
+        {
+          "sample": 1723,
+          "time_s": 0.039077,
+          "f0_hz": 829.649,
+          "decay_s": 0.00373,
+          "amplitude": 0.445643,
+          "pan": -0.37254
+        },
+        {
+          "sample": 39645,
+          "time_s": 0.898988,
+          "f0_hz": 1080.313,
+          "decay_s": 0.011824,
+          "amplitude": 0.181359,
+          "pan": 0.39457
+        },
+        {
+          "sample": 24774,
+          "time_s": 0.561765,
+          "f0_hz": 2116.544,
+          "decay_s": 0.008359,
+          "amplitude": 0.185012,
+          "pan": -0.37134
+        },
+        {
+          "sample": 31874,
+          "time_s": 0.722767,
+          "f0_hz": 2074.682,
+          "decay_s": 0.003575,
+          "amplitude": 0.192104,
+          "pan": 0.54293
+        },
+        {
+          "sample": 13037,
+          "time_s": 0.295613,
+          "f0_hz": 2410.581,
+          "decay_s": 0.009338,
+          "amplitude": 0.578538,
+          "pan": 0.20306
+        },
+        {
+          "sample": 25151,
+          "time_s": 0.570321,
+          "f0_hz": 574.112,
+          "decay_s": 0.010232,
+          "amplitude": 0.324031,
+          "pan": 0.23423
+        },
+        {
+          "sample": 20590,
+          "time_s": 0.466904,
+          "f0_hz": 766.826,
+          "decay_s": 0.00829,
+          "amplitude": 0.398466,
+          "pan": -0.39884
+        },
+        {
+          "sample": 30644,
+          "time_s": 0.694882,
+          "f0_hz": 693.678,
+          "decay_s": 0.011422,
+          "amplitude": 0.230411,
+          "pan": -0.2026
+        },
+        {
+          "sample": 48089,
+          "time_s": 1.090447,
+          "f0_hz": 572.953,
+          "decay_s": 0.007037,
+          "amplitude": 0.049661,
+          "pan": 0.47993
+        },
+        {
+          "sample": 27614,
+          "time_s": 0.62616,
+          "f0_hz": 2753.303,
+          "decay_s": 0.003544,
+          "amplitude": 0.281045,
+          "pan": 0.54367
+        },
+        {
+          "sample": 16686,
+          "time_s": 0.378378,
+          "f0_hz": 1492.135,
+          "decay_s": 0.006244,
+          "amplitude": 0.355578,
+          "pan": -0.53689
+        },
+        {
+          "sample": 49177,
+          "time_s": 1.115118,
+          "f0_hz": 1464.468,
+          "decay_s": 0.007477,
+          "amplitude": 0.053562,
+          "pan": -0.18837
+        },
+        {
+          "sample": 35281,
+          "time_s": 0.800022,
+          "f0_hz": 3232.521,
+          "decay_s": 0.00628,
+          "amplitude": 0.09609,
+          "pan": 0.2088
+        },
+        {
+          "sample": 19902,
+          "time_s": 0.45129,
+          "f0_hz": 759.832,
+          "decay_s": 0.012886,
+          "amplitude": 0.43612,
+          "pan": -0.54202
+        },
+        {
+          "sample": 44387,
+          "time_s": 1.006506,
+          "f0_hz": 1896.182,
+          "decay_s": 0.008448,
+          "amplitude": 0.086285,
+          "pan": 0.53653
+        },
+        {
+          "sample": 31624,
+          "time_s": 0.717102,
+          "f0_hz": 3829.3,
+          "decay_s": 0.003219,
+          "amplitude": 0.177471,
+          "pan": 0.33705
+        },
+        {
+          "sample": 31399,
+          "time_s": 0.711985,
+          "f0_hz": 2169.733,
+          "decay_s": 0.004313,
+          "amplitude": 0.124771,
+          "pan": 0.39228
+        },
+        {
+          "sample": 42272,
+          "time_s": 0.958558,
+          "f0_hz": 2711.94,
+          "decay_s": 0.008998,
+          "amplitude": 0.061884,
+          "pan": 0.43513
+        },
+        {
+          "sample": 25652,
+          "time_s": 0.581688,
+          "f0_hz": 1996.718,
+          "decay_s": 0.009291,
+          "amplitude": 0.237495,
+          "pan": 0.56108
+        },
+        {
+          "sample": 43324,
+          "time_s": 0.982407,
+          "f0_hz": 741.884,
+          "decay_s": 0.010668,
+          "amplitude": 0.09369,
+          "pan": -0.01214
+        },
+        {
+          "sample": 44402,
+          "time_s": 1.006852,
+          "f0_hz": 1407.628,
+          "decay_s": 0.01039,
+          "amplitude": 0.06585,
+          "pan": 0.18429
+        },
+        {
+          "sample": 23060,
+          "time_s": 0.522911,
+          "f0_hz": 1583.26,
+          "decay_s": 0.010453,
+          "amplitude": 0.134001,
+          "pan": -0.05117
+        },
+        {
+          "sample": 31672,
+          "time_s": 0.718178,
+          "f0_hz": 2812.708,
+          "decay_s": 0.004917,
+          "amplitude": 0.130426,
+          "pan": 0.00867
+        },
+        {
+          "sample": 34462,
+          "time_s": 0.781453,
+          "f0_hz": 650.747,
+          "decay_s": 0.008011,
+          "amplitude": 0.213588,
+          "pan": -0.15886
+        },
+        {
+          "sample": 2481,
+          "time_s": 0.056265,
+          "f0_hz": 2767.225,
+          "decay_s": 0.004537,
+          "amplitude": 0.692781,
+          "pan": -0.15021
+        },
+        {
+          "sample": 5296,
+          "time_s": 0.120099,
+          "f0_hz": 1016.884,
+          "decay_s": 0.00415,
+          "amplitude": 0.797231,
+          "pan": 0.14677
+        },
+        {
+          "sample": 27713,
+          "time_s": 0.628419,
+          "f0_hz": 596.13,
+          "decay_s": 0.007097,
+          "amplitude": 0.26787,
+          "pan": 0.10597
+        },
+        {
+          "sample": 15116,
+          "time_s": 0.34276,
+          "f0_hz": 1799.809,
+          "decay_s": 0.008384,
+          "amplitude": 0.452847,
+          "pan": 0.07367
+        },
+        {
+          "sample": 35841,
+          "time_s": 0.812718,
+          "f0_hz": 1655.156,
+          "decay_s": 0.004789,
+          "amplitude": 0.096942,
+          "pan": -0.12062
+        },
+        {
+          "sample": 22187,
+          "time_s": 0.503103,
+          "f0_hz": 1582.973,
+          "decay_s": 0.010675,
+          "amplitude": 0.275156,
+          "pan": -0.20405
+        },
+        {
+          "sample": 9263,
+          "time_s": 0.210054,
+          "f0_hz": 1644.617,
+          "decay_s": 0.005665,
+          "amplitude": 0.734791,
+          "pan": 0.06356
+        },
+        {
+          "sample": 37414,
+          "time_s": 0.848394,
+          "f0_hz": 3058.926,
+          "decay_s": 0.005847,
+          "amplitude": 0.089908,
+          "pan": -0.2707
+        },
+        {
+          "sample": 44873,
+          "time_s": 1.017519,
+          "f0_hz": 3978.235,
+          "decay_s": 0.004839,
+          "amplitude": 0.149337,
+          "pan": -0.13648
+        },
+        {
+          "sample": 22796,
+          "time_s": 0.51691,
+          "f0_hz": 2850.769,
+          "decay_s": 0.007853,
+          "amplitude": 0.315397,
+          "pan": -0.23296
+        },
+        {
+          "sample": 6226,
+          "time_s": 0.141176,
+          "f0_hz": 3872.349,
+          "decay_s": 0.004069,
+          "amplitude": 0.705227,
+          "pan": -0.25097
+        },
+        {
+          "sample": 47342,
+          "time_s": 1.073524,
+          "f0_hz": 2021.106,
+          "decay_s": 0.004981,
+          "amplitude": 0.102894,
+          "pan": 0.40057
+        },
+        {
+          "sample": 47235,
+          "time_s": 1.071091,
+          "f0_hz": 2251.234,
           "decay_s": 0.009949,
-          "amplitude": 0.218809,
-          "pan": 0.30852
+          "amplitude": 0.09693,
+          "pan": 0.5213
         },
         {
-          "sample": 30083,
-          "time_s": 0.68216,
-          "f0_hz": 3428.535,
-          "decay_s": 0.006805,
-          "amplitude": 0.267358,
-          "pan": 0.23468
+          "sample": 23290,
+          "time_s": 0.528111,
+          "f0_hz": 2773.527,
+          "decay_s": 0.00704,
+          "amplitude": 0.333605,
+          "pan": 0.27586
         },
         {
-          "sample": 29586,
-          "time_s": 0.670887,
-          "f0_hz": 1819.774,
-          "decay_s": 0.008613,
-          "amplitude": 0.205745,
-          "pan": -0.27474
+          "sample": 10609,
+          "time_s": 0.240563,
+          "f0_hz": 3861.109,
+          "decay_s": 0.007878,
+          "amplitude": 0.303586,
+          "pan": 0.40377
         },
         {
-          "sample": 26274,
-          "time_s": 0.595775,
-          "f0_hz": 3749.052,
-          "decay_s": 0.003656,
-          "amplitude": 0.27595,
-          "pan": 0.35827
+          "sample": 13956,
+          "time_s": 0.316458,
+          "f0_hz": 2612.459,
+          "decay_s": 0.00306,
+          "amplitude": 0.603246,
+          "pan": 0.55994
         },
         {
-          "sample": 13333,
-          "time_s": 0.302338,
-          "f0_hz": 1698.764,
-          "decay_s": 0.006104,
-          "amplitude": 0.500343,
-          "pan": -0.44775
+          "sample": 26175,
+          "time_s": 0.593536,
+          "f0_hz": 695.795,
+          "decay_s": 0.007779,
+          "amplitude": 0.202708,
+          "pan": 0.57191
         },
         {
-          "sample": 38074,
-          "time_s": 0.863357,
-          "f0_hz": 2047.106,
-          "decay_s": 0.010131,
-          "amplitude": 0.107805,
-          "pan": -0.1843
+          "sample": 25190,
+          "time_s": 0.571197,
+          "f0_hz": 671.619,
+          "decay_s": 0.009606,
+          "amplitude": 0.233911,
+          "pan": 0.1273
         },
         {
-          "sample": 23963,
-          "time_s": 0.543376,
-          "f0_hz": 2576.823,
-          "decay_s": 0.003469,
-          "amplitude": 0.168102,
-          "pan": 0.37093
+          "sample": 26512,
+          "time_s": 0.601189,
+          "f0_hz": 776.058,
+          "decay_s": 0.009992,
+          "amplitude": 0.123732,
+          "pan": -0.19616
         },
         {
-          "sample": 7686,
-          "time_s": 0.174288,
-          "f0_hz": 1044.345,
-          "decay_s": 0.009033,
-          "amplitude": 0.315313,
-          "pan": 0.34358
+          "sample": 27410,
+          "time_s": 0.62155,
+          "f0_hz": 678.081,
+          "decay_s": 0.008057,
+          "amplitude": 0.155245,
+          "pan": -0.46788
         },
         {
-          "sample": 34097,
-          "time_s": 0.773168,
-          "f0_hz": 564.815,
-          "decay_s": 0.004912,
-          "amplitude": 0.08932,
-          "pan": -0.57284
+          "sample": 31123,
+          "time_s": 0.705731,
+          "f0_hz": 1777.508,
+          "decay_s": 0.003763,
+          "amplitude": 0.166831,
+          "pan": 0.33124
         },
         {
-          "sample": 1929,
-          "time_s": 0.043748,
-          "f0_hz": 2176.496,
-          "decay_s": 0.003241,
-          "amplitude": 0.666532,
-          "pan": -0.15736
+          "sample": 42843,
+          "time_s": 0.971505,
+          "f0_hz": 659.554,
+          "decay_s": 0.008597,
+          "amplitude": 0.079485,
+          "pan": 0.57238
         },
         {
-          "sample": 35176,
-          "time_s": 0.797652,
-          "f0_hz": 2216.958,
-          "decay_s": 0.008714,
-          "amplitude": 0.08073,
-          "pan": -0.14679
+          "sample": 48289,
+          "time_s": 1.094998,
+          "f0_hz": 3678.936,
+          "decay_s": 0.004892,
+          "amplitude": 0.089009,
+          "pan": 0.58264
         },
         {
-          "sample": 37522,
-          "time_s": 0.850847,
-          "f0_hz": 2014.812,
-          "decay_s": 0.006275,
-          "amplitude": 0.158872,
-          "pan": -0.34456
+          "sample": 27943,
+          "time_s": 0.63363,
+          "f0_hz": 791.48,
+          "decay_s": 0.012376,
+          "amplitude": 0.14843,
+          "pan": -0.46021
         },
         {
-          "sample": 40936,
-          "time_s": 0.928245,
-          "f0_hz": 1606.115,
-          "decay_s": 0.010331,
-          "amplitude": 0.091918,
-          "pan": 0.01019
+          "sample": 7617,
+          "time_s": 0.172725,
+          "f0_hz": 1031.357,
+          "decay_s": 0.007134,
+          "amplitude": 0.543475,
+          "pan": -0.53208
         },
         {
-          "sample": 38899,
-          "time_s": 0.882058,
-          "f0_hz": 3196.625,
-          "decay_s": 0.006651,
-          "amplitude": 0.168157,
-          "pan": -0.52961
+          "sample": 7019,
+          "time_s": 0.159153,
+          "f0_hz": 2847.326,
+          "decay_s": 0.009126,
+          "amplitude": 0.897321,
+          "pan": -0.47961
         },
         {
-          "sample": 19282,
-          "time_s": 0.437223,
-          "f0_hz": 2103.061,
-          "decay_s": 0.00635,
-          "amplitude": 0.44206,
-          "pan": -0.51993
+          "sample": 5931,
+          "time_s": 0.134485,
+          "f0_hz": 3350.713,
+          "decay_s": 0.005908,
+          "amplitude": 0.841756,
+          "pan": 0.12172
         },
         {
-          "sample": 16374,
-          "time_s": 0.371295,
-          "f0_hz": 619.552,
-          "decay_s": 0.005305,
-          "amplitude": 0.307249,
-          "pan": -0.06226
+          "sample": 41141,
+          "time_s": 0.932894,
+          "f0_hz": 2678.012,
+          "decay_s": 0.004969,
+          "amplitude": 0.151003,
+          "pan": -0.57161
         },
         {
-          "sample": 6509,
-          "time_s": 0.1476,
-          "f0_hz": 1396.207,
-          "decay_s": 0.009274,
-          "amplitude": 0.331255,
-          "pan": 0.1912
+          "sample": 13434,
+          "time_s": 0.30462,
+          "f0_hz": 1020.806,
+          "decay_s": 0.007867,
+          "amplitude": 0.272214,
+          "pan": 0.19734
         },
         {
-          "sample": 20235,
-          "time_s": 0.458843,
-          "f0_hz": 1323.634,
-          "decay_s": 0.005316,
-          "amplitude": 0.329482,
-          "pan": -0.31137
+          "sample": 47897,
+          "time_s": 1.086108,
+          "f0_hz": 2783.238,
+          "decay_s": 0.004141,
+          "amplitude": 0.091693,
+          "pan": -0.62262
         },
         {
-          "sample": 13372,
-          "time_s": 0.303226,
-          "f0_hz": 691.672,
-          "decay_s": 0.011379,
-          "amplitude": 0.553933,
-          "pan": 0.39201
+          "sample": 2528,
+          "time_s": 0.057328,
+          "f0_hz": 619.728,
+          "decay_s": 0.013606,
+          "amplitude": 0.552652,
+          "pan": -0.34877
         },
         {
-          "sample": 27069,
-          "time_s": 0.6138,
-          "f0_hz": 1471.162,
-          "decay_s": 0.005837,
-          "amplitude": 0.294883,
-          "pan": -0.38337
+          "sample": 10363,
+          "time_s": 0.234993,
+          "f0_hz": 1431.693,
+          "decay_s": 0.010997,
+          "amplitude": 0.50915,
+          "pan": 0.35248
         },
         {
-          "sample": 41100,
-          "time_s": 0.931982,
-          "f0_hz": 2249.855,
-          "decay_s": 0.00994,
-          "amplitude": 0.155279,
-          "pan": 0.30859
+          "sample": 16235,
+          "time_s": 0.368143,
+          "f0_hz": 1553.462,
+          "decay_s": 0.008341,
+          "amplitude": 0.339628,
+          "pan": 0.40563
         },
         {
-          "sample": 18986,
-          "time_s": 0.430525,
-          "f0_hz": 1434.141,
-          "decay_s": 0.009225,
-          "amplitude": 0.444922,
-          "pan": 0.57324
+          "sample": 41905,
+          "time_s": 0.950235,
+          "f0_hz": 1761.724,
+          "decay_s": 0.005832,
+          "amplitude": 0.097084,
+          "pan": -0.00461
         },
         {
-          "sample": 44396,
-          "time_s": 1.006704,
-          "f0_hz": 4110.266,
-          "decay_s": 0.006,
-          "amplitude": 0.153498,
-          "pan": 0.35499
+          "sample": 33671,
+          "time_s": 0.763503,
+          "f0_hz": 772.268,
+          "decay_s": 0.009589,
+          "amplitude": 0.12778,
+          "pan": 0.63231
         },
         {
-          "sample": 30200,
-          "time_s": 0.684805,
-          "f0_hz": 2684.823,
-          "decay_s": 0.007313,
-          "amplitude": 0.208841,
-          "pan": -0.37657
+          "sample": 1769,
+          "time_s": 0.040114,
+          "f0_hz": 2756.854,
+          "decay_s": 0.00585,
+          "amplitude": 0.387997,
+          "pan": -0.63796
         },
         {
-          "sample": 29017,
-          "time_s": 0.657985,
-          "f0_hz": 3254.648,
-          "decay_s": 0.007109,
-          "amplitude": 0.233508,
-          "pan": -0.42241
+          "sample": 44400,
+          "time_s": 1.00681,
+          "f0_hz": 558.291,
+          "decay_s": 0.009497,
+          "amplitude": 0.119962,
+          "pan": 0.0025
         },
         {
-          "sample": 10561,
-          "time_s": 0.239483,
-          "f0_hz": 2258.283,
-          "decay_s": 0.009953,
-          "amplitude": 0.567259,
-          "pan": 0.15079
+          "sample": 44203,
+          "time_s": 1.002336,
+          "f0_hz": 857.028,
+          "decay_s": 0.011486,
+          "amplitude": 0.054277,
+          "pan": -0.43475
         },
         {
-          "sample": 42922,
-          "time_s": 0.973287,
-          "f0_hz": 2616.948,
-          "decay_s": 0.009558,
-          "amplitude": 0.122304,
-          "pan": 0.25746
+          "sample": 1675,
+          "time_s": 0.037971,
+          "f0_hz": 3783.52,
+          "decay_s": 0.008562,
+          "amplitude": 0.369834,
+          "pan": 0.14656
         },
         {
-          "sample": 27087,
-          "time_s": 0.614229,
-          "f0_hz": 631.961,
-          "decay_s": 0.005341,
-          "amplitude": 0.222237,
-          "pan": 0.59915
+          "sample": 24399,
+          "time_s": 0.553258,
+          "f0_hz": 2002.112,
+          "decay_s": 0.009724,
+          "amplitude": 0.227728,
+          "pan": 0.59025
         },
         {
-          "sample": 22064,
-          "time_s": 0.500328,
-          "f0_hz": 2577.671,
-          "decay_s": 0.009528,
-          "amplitude": 0.273418,
-          "pan": 0.22621
+          "sample": 18637,
+          "time_s": 0.422599,
+          "f0_hz": 1002.952,
+          "decay_s": 0.006735,
+          "amplitude": 0.277154,
+          "pan": 0.65751
         },
         {
-          "sample": 47123,
-          "time_s": 1.068556,
-          "f0_hz": 1758.016,
-          "decay_s": 0.004358,
-          "amplitude": 0.091026,
-          "pan": 0.31767
+          "sample": 30624,
+          "time_s": 0.694416,
+          "f0_hz": 2519.811,
+          "decay_s": 0.004508,
+          "amplitude": 0.230374,
+          "pan": 0.50679
         },
         {
-          "sample": 38172,
-          "time_s": 0.865589,
-          "f0_hz": 1204.32,
-          "decay_s": 0.010289,
-          "amplitude": 0.087162,
-          "pan": -0.21665
-        },
-        {
-          "sample": 7212,
-          "time_s": 0.163544,
-          "f0_hz": 1419.914,
-          "decay_s": 0.008484,
-          "amplitude": 0.656299,
-          "pan": -0.56937
-        },
-        {
-          "sample": 14008,
-          "time_s": 0.317646,
-          "f0_hz": 911.651,
-          "decay_s": 0.010052,
-          "amplitude": 0.393467,
-          "pan": -0.06686
-        },
-        {
-          "sample": 14284,
-          "time_s": 0.32389,
-          "f0_hz": 2889.381,
-          "decay_s": 0.005166,
-          "amplitude": 0.368365,
-          "pan": 0.11834
-        },
-        {
-          "sample": 17026,
-          "time_s": 0.386069,
-          "f0_hz": 2156.254,
-          "decay_s": 0.006522,
-          "amplitude": 0.444199,
-          "pan": 0.17919
-        },
-        {
-          "sample": 8810,
-          "time_s": 0.199766,
-          "f0_hz": 612.351,
-          "decay_s": 0.008389,
-          "amplitude": 0.577531,
-          "pan": -0.43418
-        },
-        {
-          "sample": 18847,
-          "time_s": 0.42736,
-          "f0_hz": 747.065,
-          "decay_s": 0.00891,
-          "amplitude": 0.462374,
-          "pan": -0.57506
-        },
-        {
-          "sample": 10613,
-          "time_s": 0.240654,
-          "f0_hz": 2989.414,
-          "decay_s": 0.003419,
-          "amplitude": 0.607404,
-          "pan": -0.22435
-        },
-        {
-          "sample": 49095,
-          "time_s": 1.113262,
-          "f0_hz": 3170.342,
-          "decay_s": 0.00818,
-          "amplitude": 0.086223,
-          "pan": 0.52531
-        },
-        {
-          "sample": 27218,
-          "time_s": 0.617192,
-          "f0_hz": 1032.178,
-          "decay_s": 0.003444,
-          "amplitude": 0.15039,
-          "pan": 0.64808
-        },
-        {
-          "sample": 32426,
-          "time_s": 0.735276,
-          "f0_hz": 2643.031,
-          "decay_s": 0.007012,
-          "amplitude": 0.151109,
-          "pan": 0.11962
-        },
-        {
-          "sample": 15835,
-          "time_s": 0.359081,
-          "f0_hz": 3812.922,
-          "decay_s": 0.008336,
-          "amplitude": 0.363088,
-          "pan": 0.50419
-        },
-        {
-          "sample": 16585,
-          "time_s": 0.376072,
-          "f0_hz": 1574.896,
-          "decay_s": 0.00591,
-          "amplitude": 0.499081,
-          "pan": -0.1366
-        },
-        {
-          "sample": 42780,
-          "time_s": 0.970065,
-          "f0_hz": 937.323,
-          "decay_s": 0.012383,
-          "amplitude": 0.061435,
-          "pan": -0.25264
-        },
-        {
-          "sample": 5883,
-          "time_s": 0.133395,
-          "f0_hz": 1273.892,
-          "decay_s": 0.011198,
-          "amplitude": 0.75459,
-          "pan": -0.45074
-        },
-        {
-          "sample": 844,
-          "time_s": 0.019145,
-          "f0_hz": 1620.187,
-          "decay_s": 0.004798,
-          "amplitude": 0.543033,
-          "pan": 0.42007
-        },
-        {
-          "sample": 44134,
-          "time_s": 1.000762,
-          "f0_hz": 3718.72,
-          "decay_s": 0.006425,
-          "amplitude": 0.085025,
-          "pan": 0.16215
-        },
-        {
-          "sample": 13585,
-          "time_s": 0.308042,
-          "f0_hz": 555.573,
-          "decay_s": 0.006176,
-          "amplitude": 0.525237,
-          "pan": -0.41377
-        },
-        {
-          "sample": 27060,
-          "time_s": 0.6136,
-          "f0_hz": 3420.25,
-          "decay_s": 0.008678,
-          "amplitude": 0.263293,
-          "pan": -0.20817
-        },
-        {
-          "sample": 20570,
-          "time_s": 0.466441,
-          "f0_hz": 783.097,
-          "decay_s": 0.004357,
-          "amplitude": 0.198307,
-          "pan": -0.57143
-        },
-        {
-          "sample": 49090,
-          "time_s": 1.11316,
-          "f0_hz": 4154.314,
-          "decay_s": 0.004023,
-          "amplitude": 0.11843,
-          "pan": -0.45905
-        },
-        {
-          "sample": 40194,
-          "time_s": 0.911436,
-          "f0_hz": 4191.607,
-          "decay_s": 0.00342,
-          "amplitude": 0.090709,
-          "pan": 0.59375
-        },
-        {
-          "sample": 37632,
-          "time_s": 0.853336,
-          "f0_hz": 2359.098,
-          "decay_s": 0.002716,
-          "amplitude": 0.093743,
-          "pan": -0.03885
-        },
-        {
-          "sample": 26849,
-          "time_s": 0.608822,
-          "f0_hz": 1472.137,
-          "decay_s": 0.010295,
-          "amplitude": 0.130201,
-          "pan": 0.49921
-        },
-        {
-          "sample": 1528,
-          "time_s": 0.034659,
-          "f0_hz": 1842.424,
-          "decay_s": 0.008959,
-          "amplitude": 0.857746,
-          "pan": -0.06509
-        },
-        {
-          "sample": 30380,
-          "time_s": 0.688891,
-          "f0_hz": 2956.037,
-          "decay_s": 0.004097,
-          "amplitude": 0.13561,
-          "pan": -0.36274
-        },
-        {
-          "sample": 25688,
-          "time_s": 0.582492,
-          "f0_hz": 669.442,
-          "decay_s": 0.008392,
-          "amplitude": 0.239308,
-          "pan": -0.4236
-        },
-        {
-          "sample": 16713,
-          "time_s": 0.378985,
-          "f0_hz": 1530.896,
-          "decay_s": 0.005608,
-          "amplitude": 0.242052,
-          "pan": 0.14816
-        },
-        {
-          "sample": 25472,
-          "time_s": 0.577606,
-          "f0_hz": 2687.368,
-          "decay_s": 0.005504,
-          "amplitude": 0.176149,
-          "pan": 0.11384
-        },
-        {
-          "sample": 45489,
-          "time_s": 1.031487,
-          "f0_hz": 2607.176,
-          "decay_s": 0.007749,
-          "amplitude": 0.146931,
-          "pan": -0.15208
-        },
-        {
-          "sample": 25175,
-          "time_s": 0.570857,
-          "f0_hz": 1951.637,
-          "decay_s": 0.00654,
-          "amplitude": 0.276835,
-          "pan": 0.28117
+          "sample": 46289,
+          "time_s": 1.049647,
+          "f0_hz": 1748.055,
+          "decay_s": 0.006337,
+          "amplitude": 0.075227,
+          "pan": -0.27591
         }
       ],
       "final_fade_s": [
-        1.17,
+        1.1699773242630385,
         1.1999773242630385
       ],
-      "secondary_primary_isolated_peak_ratio": 0.29853316795479706
+      "mastering": {
+        "method": "Stereo-linked smooth lookaround peak-envelope gain, sixth-order soft knee; RMS solve",
+        "rms_target_dbfs": -16,
+        "source_peak_ceiling_dbfs": -5.2,
+        "front_120ms_target_dbfs": -12.4,
+        "front_weight": 1.1049717233776357,
+        "front_weight_hold_s": 0.075,
+        "front_weight_end_s": 0.18,
+        "drive_linear": 0.4084796147039121,
+        "maximum_gain_reduction_db": 7.264584385878548,
+        "median_active_gain_reduction_db": 0.1018799941044195,
+        "lookaround_radius_samples": 44,
+        "gaussian_sigma_samples": 11.0,
+        "gaussian_radius_samples": 44,
+        "gain_exponent": 6,
+        "envelope_boundary": "constant",
+        "hard_clipping": false,
+        "waveshaping": false,
+        "final_dc_projection": true,
+        "post_mix_normalization": false,
+        "quantization": "Round nearest PCM16, no dither; exact silence retained"
+      },
+      "secondary_primary_isolated_peak_ratio": 0.316227766,
+      "prospective_timbre": "One forceful water-pressure strike; short electrical edge then substantial rolling water, foam and sparse drops.",
+      "secondary_primary_after_common_gain_peak_db": -9.404512409330607
     },
     "preview_mix.wav": {
       "frames": 133770,
       "duration_s": 3.033333333333333,
-      "sample_peak_dbfs": -5.587327001293433,
-      "sample_peak_linear": 0.52557373046875,
+      "sample_peak_dbfs": -4.933696150237133,
+      "sample_peak_linear": 0.566650390625,
       "sample_peak_dbfs_per_channel": [
-        -5.587327001293433,
-        -5.7133147423816695
+        -5.602975892794545,
+        -4.933696150237133
       ],
-      "true_peak_8x_dbfs": -5.563460157728107,
-      "rms_dbfs": -28.52188797015652,
+      "true_peak_8x_dbfs": -4.908128900989911,
+      "true_peak_method": "scipy.signal.resample_poly 8/1, default Kaiser beta5 FIR, constant boundary",
+      "rms_dbfs": -20.57874534290641,
+      "front_120ms_rms_dbfs": -26.505924269986746,
+      "max_20ms_rms_dbfs": -13.155632728138038,
+      "max_20ms_rms_window_start_s": 1.5672108843537416,
       "dc_per_channel": [
-        -2.682864010989011e-07,
-        -3.228105931589669e-07
-      ],
-      "dc_dbfs_per_channel": [
-        -131.42802680577736,
-        -129.82104444337358
+        1.1828099521917284e-05,
+        8.805999219742843e-06
       ],
       "clipped_samples": 0,
       "first_pcm16": [
@@ -1703,37 +2344,183 @@
         0,
         0
       ],
-      "stereo_correlation": 0.9557102315712438,
-      "low_band_correlation": 0.9956396340728163,
-      "mono_fold_rms_loss_db": -0.09728467185645576,
+      "stereo_correlation": 0.9552890924762316,
+      "low_band_correlation": 0.9979286221858135,
+      "mono_fold_rms_loss_db": -0.0981959797183639,
       "band_power_fractions": {
-        "20-250Hz": 0.6955077730220156,
-        "250-2000Hz": 0.2607317832954791,
-        "2000-12000Hz": 0.04067800755856563
+        "20-250Hz": 0.21329058211262425,
+        "250-2000Hz": 0.7289805617294095,
+        "2000-12000Hz": 0.05736085902515654
       },
-      "edge_first_1ms_peak_dbfs": -300.0,
+      "edge_first_1ms_peak_dbfs": -74.74597369152148,
       "edge_last_1ms_peak_dbfs": -300.0,
-      "sha256": "CEB3883C4243C989D8A8788DF57F5BBF995A6C3BFC0F51FBF8B1BAB33EE75214",
+      "rms_20ms_blocks_dbfs": [
+        -33.88042568448682,
+        -26.822018855413464,
+        -26.03309453557766,
+        -25.00094943339976,
+        -25.578147444223006,
+        -26.01445645756514,
+        -24.786126602548798,
+        -26.222675753839507,
+        -25.941760982254635,
+        -24.71252716908012,
+        -24.249100297123228,
+        -25.492987036156265,
+        -26.24181697667381,
+        -25.818049521893403,
+        -25.466687096955965,
+        -24.77376392979407,
+        -24.788912229742476,
+        -24.878879860060632,
+        -25.048132481274827,
+        -25.47816837454326,
+        -24.745000345361007,
+        -25.170278847209513,
+        -24.484933519319515,
+        -24.315384894178585,
+        -24.61183289672631,
+        -24.440010021247094,
+        -23.34339640703744,
+        -23.96929995819093,
+        -23.887565282091174,
+        -23.684800707635144,
+        -23.02552564766662,
+        -23.18695953262391,
+        -23.6947594863122,
+        -23.323958063606778,
+        -24.075999786743374,
+        -22.435610768481148,
+        -23.689232132771856,
+        -23.262345625319387,
+        -23.46253873330094,
+        -22.559381555942952,
+        -22.173434028653446,
+        -22.53635374585024,
+        -21.994161286631737,
+        -22.283873867570176,
+        -22.93286605900751,
+        -21.521790789943978,
+        -22.306596190096677,
+        -22.179447121150396,
+        -21.00947484200197,
+        -22.353079329665412,
+        -21.430404159960336,
+        -22.26428426535355,
+        -21.82631692351627,
+        -20.759964662570155,
+        -21.31467405770701,
+        -21.73658704919786,
+        -20.50508949312968,
+        -21.949215245578245,
+        -21.68322778941587,
+        -20.480818690260776,
+        -20.053503918749037,
+        -21.340270831677035,
+        -22.14094800061124,
+        -21.778299845081783,
+        -21.49443030684347,
+        -20.86936954570076,
+        -20.977993350310395,
+        -21.155973356387435,
+        -21.416959936127768,
+        -21.951955845860205,
+        -21.320257212134116,
+        -21.8477203984453,
+        -21.26131071174996,
+        -21.19161890005501,
+        -21.605255792708206,
+        -21.533966051012385,
+        -20.550281487739944,
+        -16.259016358181988,
+        -13.469504886934851,
+        -14.432708824410799,
+        -14.447652608902889,
+        -14.619767406048446,
+        -15.442140316193269,
+        -14.28059936898618,
+        -15.319406887678877,
+        -14.037244731371747,
+        -15.588321168853152,
+        -14.171481169815843,
+        -15.45994544095599,
+        -15.623216726941818,
+        -16.296598680199146,
+        -15.077703241227137,
+        -16.575878489435055,
+        -15.597467870591082,
+        -15.511885062688037,
+        -16.51374771476555,
+        -16.155715594391125,
+        -17.047120300263327,
+        -16.47562869019196,
+        -16.684402755897388,
+        -15.76337628264687,
+        -15.847536908710637,
+        -17.791758584068113,
+        -17.59506649751839,
+        -18.55906451464307,
+        -19.259781866895334,
+        -17.150443208977965,
+        -18.535991576611753,
+        -18.83347879038674,
+        -20.428978628055635,
+        -19.229661319258256,
+        -18.813213584490782,
+        -19.11938504144689,
+        -21.02687598304096,
+        -21.727178033466572,
+        -24.210252886039704,
+        -21.138274195474583,
+        -23.42075197409556,
+        -23.72949183878871,
+        -25.52006995823159,
+        -26.427362437391267,
+        -27.90280136145441,
+        -30.640247259316457,
+        -29.822520988878782,
+        -30.717338878230397,
+        -32.73639539751444,
+        -34.182783232883295,
+        -33.904142126620684,
+        -34.74911855459166,
+        -35.60588475635005,
+        -36.23396631471635,
+        -38.425627387284536,
+        -41.54390934755061,
+        -44.75481677610756,
+        -46.49873870060763,
+        -55.740185887354905,
+        -73.44047850470155,
+        -91.1753060362267,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0,
+        -300.0
+      ],
+      "sha256": "ECDDB8241B68962F5C87B1492C4027BAAFDCF624F9483A25A005C978D4925A68",
       "bytes": 535124,
-      "independent_ffmpeg_decode": "PASS: every decoded PCM16 sample identical",
-      "deterministic_regeneration": "PASS: identical full WAV bytes"
+      "independent_ffmpeg_decode": "PASS: every PCM16 sample identical",
+      "deterministic_regeneration": "PASS: identical full RIFF bytes"
     }
   },
   "waveform_diagnostics": {
     "file": "waveform_diagnostics.png",
-    "sha256": "F20C462174BE7564026697B548B52D339B415AF97E785E310738ED01FC76DE44"
+    "sha256": "3A9DBFDAB0467FD34C1A468B073719E82E57ADF92744DD18A616FC202DCBE53C"
   },
   "acceptance": {
     "numeric": "PASS",
-    "checks": [
-      "Python wave and FFmpeg full decode/sample equality",
-      "all three exact deterministic WAVs",
-      "format/duration/peak/DC/no clipping/zero endpoints",
-      "loop value/slope/curvature and triple-repeat boundaries",
-      "stereo and low-band phase correlation/mono fold",
-      "preview regenerated from decoded source WAVs, exact gains and sample times"
-    ],
-    "listening": "NOT_REVIEWED: no audio-perception tool available; playable WAVs supplied for actual listening.",
-    "limitations": "Numeric checks cannot establish timbre or perceived click-free quality; main-thread listening/game integration acceptance remains."
+    "subjective_listening": "UNVERIFIED (audio input unsupported)",
+    "limitations": "Independent game/native-DSP lifecycle acceptance is owned by the main thread. Numeric gates do not establish timbre, absence of perceived harshness/ringing or actual game mix audibility."
   }
 }

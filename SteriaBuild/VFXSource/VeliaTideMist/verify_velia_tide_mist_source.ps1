@@ -6,6 +6,10 @@ $driver = Get-Content -Raw (Join-Path $runtime 'VeliaTideMistVisualController.cs
 $filter = Get-Content -Raw (Join-Path $runtime 'VeliaTideMistScreenFilter.cs')
 $effect = Get-Content -Raw (Join-Path $runtime 'FarAreaEffect_Steria_VeliaTideMist.cs')
 $action = Get-Content -Raw (Join-Path $runtime 'BehaviourAction_Steria_VeliaTideMist.cs')
+$audio = Get-Content -Raw (Join-Path $runtime 'VeliaTideMistAudioController.cs')
+Require ($audio -notmatch '\b(BattleUnitModel|StageController|Faction|MonoBehaviour|UnityWebRequest)\b|Time\.deltaTime') 'Audio companion must use only explicit host delta and Unity audio APIs'
+Require (($audio+$effect) -notmatch 'AudioListener\.(volume|pause)\s*=|PlayOneShot\(|soundVolume_all|soundVolume_effect') 'No global audio mutation, extra layered hits or squared options'
+Require ([regex]::Matches($effect,'GetVolumeEffect\(').Count -eq 1) 'Velia host reads the existing master-times-effects option in one bridge'
 Require ($driver -notmatch '\b(BattleUnitModel|BattleCamManager|FarAreaEffect|Faction|StageController|Direction|Time\.deltaTime)\b') 'Controller must be pure Unity with an explicit clock'
 Require ($filter -notmatch '\b(BattleUnitModel|BattleCamManager|FarAreaEffect|Faction|StageController|Direction)\b|\.Advance\(') 'Filter must render only, without game dependencies or clock advancement'
 Require ($filter -match 'new Material\(materialTemplate\)' -and $filter -match 'Graphics.Blit') 'Filter must clone its template and use native Blit'
