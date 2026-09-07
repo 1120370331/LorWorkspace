@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -89,8 +87,7 @@ namespace Steria
 
         public static DiceBehaviour TryGetDiceBehaviourAt(BattleDiceCardModel cardModel, int index)
         {
-            DiceCardXmlInfo xml = cardModel?.XmlData;
-            IList<DiceBehaviour> list = xml?.DiceBehaviourList;
+            IList<DiceBehaviour> list = cardModel?.GetBehaviourList();
             if (list == null || index < 0 || index >= list.Count)
             {
                 return null;
@@ -102,8 +99,7 @@ namespace Steria
         /// <summary>卡组 / 卡面条 UI 使用的 DiceCardItemModel（ClassInfo 等同 Xml）。</summary>
         public static DiceBehaviour TryGetDiceBehaviourAt(DiceCardItemModel cardModel, int index)
         {
-            DiceCardXmlInfo xml = cardModel?.ClassInfo;
-            IList<DiceBehaviour> list = xml?.DiceBehaviourList;
+            IList<DiceBehaviour> list = cardModel?.GetBehaviourList();
             if (list == null || index < 0 || index >= list.Count)
             {
                 return null;
@@ -249,1247 +245,420 @@ namespace Steria
         }
     }
 
-    // ===== UI 视觉：蓝白渐变 =====
-
-    /// <summary>
-    /// 程序化生成（或从 Resource/ArtWork 加载）乐章型骰子的 UI 贴图：
-    ///   - "music_dice_die_icon.png"（可选）：整张自定义骰面图（书页描述行专用）。
-    ///     若存在则只用这一层，并隐藏原版斩击/打击/突刺线稿，避免叠两层。
-    ///   - "music_dice_face.png"：放在图标后面的蓝色渐变骰子面板（无 die_icon 时使用）
-    ///   - "music_dice_glow.png"：覆盖在面板上、骰子外缘亮起的软白光
-    /// 如果硬盘上找到同名 PNG，则优先使用 PNG；face/glow 找不到则生成默认的程序贴图。
-    /// 后续手绘 PNG 替换不需要重新编译。
-    /// </summary>
+    // Native silhouettes and white strokes are preserved; only chromatic pixels change.
     internal static class MusicDiceSpriteFactory
     {
-        private const string FaceFileName = "music_dice_face";
-        private const string GlowFileName = "music_dice_glow";
-        private const string DieIconFileName = "music_dice_die_icon";
+        private static Sprite _cardSprite;
+        private static Sprite _glyphSprite;
 
-        private static Sprite _faceSprite;
-        private static Sprite _glowSprite;
-        private static Sprite _dieIconSprite;
-        private static bool _dieIconResolved;
-        private static bool _dieIconLoadLogged;
-        private static string _artworkPath;
-
-        public static Sprite GetFaceSprite()
+        public static Sprite GetCardSprite()
         {
-            if (_faceSprite == null)
-            {
-                _faceSprite = TryLoadPng(FaceFileName) ?? BuildProceduralFace();
-            }
-            return _faceSprite;
-        }
-
-        public static Sprite GetGlowSprite()
-        {
-            if (_glowSprite == null)
-            {
-                _glowSprite = TryLoadPng(GlowFileName) ?? BuildProceduralGlow();
-            }
-            return _glowSprite;
-        }
-
-        /// <summary>
-        /// 可选整张骰面 PNG（无程序兜底）。存在时书页 UI 仅此一层 + 隐藏原版行为图标。
-        /// </summary>
-        public static Sprite GetDieIconSprite()
-        {
-            if (!_dieIconResolved)
-            {
-                _dieIconResolved = true;
-                string dir = GetArtworkPath();
-                string path = Path.Combine(dir, DieIconFileName + ".png");
-                _dieIconSprite = TryLoadPng(DieIconFileName);
-                if (!_dieIconLoadLogged)
-                {
-                    _dieIconLoadLogged = true;
-                    if (_dieIconSprite == null)
-                    {
-                        SteriaLogger.Log($"MusicDice: die icon NOT loaded. Tried={path}, exists={File.Exists(path)}, artworkDir={dir}, dirExists={Directory.Exists(dir)}");
-                    }
-                    else
-                    {
-                        SteriaLogger.Log($"MusicDice: die icon loaded OK ({path})");
-                    }
-                }
-            }
-
-            return _dieIconSprite;
-        }
-
-        private static Sprite TryLoadPng(string baseName)
-        {
+            if (_cardSprite != null) return _cardSprite;
+            // A single fixed native frame, independent of the former attack detail.
+            Sprite source = UI.UISpriteDataManager.instance?._cardBehaviourDetailIcons[(int)BehaviourDetail.Slash];
+            if (source == null) return null;
+            RenderTexture previous = RenderTexture.active;
+            RenderTexture target = null;
+            Texture2D texture = null;
+            Texture2D readableAtlas = null;
             try
             {
-                string path = Path.Combine(GetArtworkPath(), baseName + ".png");
-                if (!File.Exists(path))
+                // Readable copies also work for the game's non-readable atlas textures.
+                // Non-packed native icons contain the complete rect, including transparent margins.
+                Rect area = source.packed ? source.textureRect : source.rect;
+                Vector2 offset = source.packed ? source.textureRectOffset : Vector2.zero;
+                int width = Mathf.RoundToInt(source.rect.width);
+                int height = Mathf.RoundToInt(source.rect.height);
+                target = RenderTexture.GetTemporary(source.texture.width, source.texture.height, 0,
+                    RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+                Graphics.Blit(source.texture, target);
+                RenderTexture.active = target;
+                // Read the complete target before cropping. Unity 2019 D3D sub-rect ReadPixels
+                // can address a different atlas row when the destination texture is smaller.
+                readableAtlas = new Texture2D(source.texture.width, source.texture.height, TextureFormat.RGBA32, false);
+                readableAtlas.ReadPixels(new Rect(0, 0, source.texture.width, source.texture.height), 0, 0, false);
+                int areaWidth = Mathf.RoundToInt(area.width);
+                int areaHeight = Mathf.RoundToInt(area.height);
+                Color[] region = readableAtlas.GetPixels(Mathf.RoundToInt(area.x), Mathf.RoundToInt(area.y), areaWidth, areaHeight);
+                texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+                texture.SetPixels(new Color[width * height]);
+                texture.SetPixels(Mathf.RoundToInt(offset.x), Mathf.RoundToInt(offset.y), areaWidth, areaHeight, region);
+                Color[] pixels = texture.GetPixels();
+                ClearBakedAttackCenter(pixels, width, height);
+                float targetHue, targetSaturation, targetValue;
+                Color.RGBToHSV(MusicDiceVisuals.FaceColor, out targetHue, out targetSaturation, out targetValue);
+                for (int i = 0; i < pixels.Length; i++)
                 {
-                    return null;
+                    Color original = pixels[i];
+                    float h, s, v;
+                    Color.RGBToHSV(original, out h, out s, out v);
+                    // Neutral ink, white strokes and their antialiased edges keep their luminance.
+                    float weight = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.08f, 0.35f, s));
+                    Color recolored = Color.HSVToRGB(targetHue, targetSaturation, v * targetValue);
+                    Color result = Color.Lerp(original, recolored, weight);
+                    result.a = original.a;
+                    pixels[i] = result;
                 }
-
-                byte[] data = File.ReadAllBytes(path);
-                Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-                tex.filterMode = FilterMode.Bilinear;
-                tex.wrapMode = TextureWrapMode.Clamp;
-                if (!ImageConversion.LoadImage(tex, data))
-                {
-                    UnityEngine.Object.Destroy(tex);
-                    return null;
-                }
-                tex.name = baseName;
-                return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+                CompositeGlyph(pixels, width, height);
+                texture.SetPixels(pixels);
+                texture.Apply(false, true);
+                texture.name = source.name + "_SteriaMusic";
+                texture.filterMode = source.texture.filterMode;
+                texture.wrapMode = TextureWrapMode.Clamp;
+                Sprite variant = Sprite.Create(texture, new Rect(0, 0, width, height),
+                    new Vector2(source.pivot.x / width, source.pivot.y / height), source.pixelsPerUnit,
+                    0, SpriteMeshType.FullRect, source.border);
+                variant.name = texture.name;
+                _cardSprite = variant;
+                return variant;
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Steria] MusicDiceSpriteFactory.TryLoadPng({baseName}) error: {ex}");
-                return null;
+                if (texture != null) UnityEngine.Object.Destroy(texture);
+                // Unsupported atlas layouts retain the native icon rather than inventing a fallback.
+                Debug.LogError("[Steria] Native music icon conversion failed: " + ex);
+                return source;
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                if (readableAtlas != null) UnityEngine.Object.Destroy(readableAtlas);
+                if (target != null) RenderTexture.ReleaseTemporary(target);
             }
         }
-
-        private static string GetArtworkPath()
+        // Original hand-drawn paths in a 100 x 100 design space. No font or resource glyph.
+        public static Sprite GetGlyphSprite()
         {
-            if (_artworkPath != null)
-            {
-                return _artworkPath;
-            }
-
-            try
-            {
-                // 与 SteriaLogger 一致：优先 Assembly.Location（Windows 下 CodeBase 可能带 “/C:/” 前缀）
-                string dllDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                if (string.IsNullOrEmpty(dllDir))
+            if (_glyphSprite != null) return _glyphSprite;
+            const int size = 128;
+            Color[] pixels = new Color[size * size];
+            for (int y = 0; y < size; y++)
+                for (int x = 0; x < size; x++)
                 {
-                    dllDir = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path));
+                    int coverage = 0;
+                    for (int sy = 0; sy < 4; sy++)
+                        for (int sx = 0; sx < 4; sx++)
+                            if (InGlyph((x + (sx + .5f) / 4f) * 100f / size,
+                                100f - (y + (sy + .5f) / 4f) * 100f / size)) coverage++;
+                    pixels[y * size + x] = new Color(1f, 1f, 1f, coverage / 16f);
                 }
+            Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            texture.name = "SteriaOriginalMusicGlyph";
+            texture.filterMode = FilterMode.Bilinear;
+            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.SetPixels(pixels);
+            texture.Apply(false, false);
+            _glyphSprite = Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(.5f, .5f), 100f);
+            _glyphSprite.name = texture.name;
+            return _glyphSprite;
+        }
 
-                string modRoot = Directory.GetParent(dllDir)?.FullName ?? dllDir;
-                string candidate = Path.Combine(modRoot, "Resource", "ArtWork");
-                if (!Directory.Exists(candidate))
+        private static readonly Vector2[] LeftStem = { new Vector2(34, 78), new Vector2(36, 28),
+            new Vector2(39, 24), new Vector2(46, 26), new Vector2(44, 77) };
+        private static readonly Vector2[] RightStem = { new Vector2(77, 67), new Vector2(78, 17),
+            new Vector2(82, 12), new Vector2(88, 13), new Vector2(87, 65) };
+        private static readonly Vector2[] Beam = { new Vector2(38, 25), new Vector2(84, 11),
+            new Vector2(88, 13), new Vector2(86, 24), new Vector2(39, 37) };
+
+        private static bool InGlyph(float x, float y)
+        {
+            return InEllipse(x, y, 29f, 78f, 16f, 10.5f, -.35f)
+                || InEllipse(x, y, 73f, 67f, 14.5f, 10f, -.26f)
+                || InPolygon(x, y, LeftStem) || InPolygon(x, y, RightStem) || InPolygon(x, y, Beam);
+        }
+
+        private static bool InEllipse(float x, float y, float cx, float cy, float rx, float ry, float angle)
+        {
+            float dx = x - cx, dy = y - cy;
+            float u = dx * Mathf.Cos(angle) + dy * Mathf.Sin(angle);
+            float v = -dx * Mathf.Sin(angle) + dy * Mathf.Cos(angle);
+            return u * u / (rx * rx) + v * v / (ry * ry) <= 1f;
+        }
+
+        private static bool InPolygon(float x, float y, Vector2[] polygon)
+        {
+            bool inside = false;
+            for (int i = 0, j = polygon.Length - 1; i < polygon.Length; j = i++)
+                if ((polygon[i].y > y) != (polygon[j].y > y)
+                    && x < (polygon[j].x - polygon[i].x) * (y - polygon[i].y)
+                        / (polygon[j].y - polygon[i].y) + polygon[i].x) inside = !inside;
+            return inside;
+        }
+
+        private static void ClearBakedAttackCenter(Color[] pixels, int width, int height)
+        {
+            // Locate only the largest neutral white connected component inside the frame.
+            bool[] candidate = new bool[pixels.Length];
+            for (int y = (int)(height * .18f); y < height * .84f; y++)
+                for (int x = (int)(width * .18f); x < width * .82f; x++)
                 {
-                    string alt = Path.Combine(dllDir, "Resource", "ArtWork");
-                    if (Directory.Exists(alt))
+                    Color c = pixels[y * width + x];
+                    float low = Mathf.Min(c.r, Mathf.Min(c.g, c.b));
+                    float high = Mathf.Max(c.r, Mathf.Max(c.g, c.b));
+                    candidate[y * width + x] = c.a > .5f && low > .65f && high - low < .24f;
+                }
+            List<int> largest = new List<int>();
+            int[] directions = { -1, 1, -width, width };
+            for (int i = 0; i < candidate.Length; i++)
+            {
+                if (!candidate[i]) continue;
+                List<int> component = new List<int> { i };
+                candidate[i] = false;
+                for (int n = 0; n < component.Count; n++)
+                    foreach (int direction in directions)
                     {
-                        candidate = alt;
+                        int next = component[n] + direction;
+                        if (next >= 0 && next < candidate.Length && candidate[next])
+                        { candidate[next] = false; component.Add(next); }
                     }
-                }
-
-                _artworkPath = candidate;
+                if (component.Count > largest.Count) largest = component;
             }
-            catch
+            if (largest.Count < width * height / 100)
+                throw new InvalidOperationException("Native Slash center could not be isolated.");
+            bool[] mask = new bool[pixels.Length];
+            foreach (int index in largest)
+                for (int dy = -3; dy <= 3; dy++)
+                    for (int dx = -3; dx <= 3; dx++)
+                    {
+                        int x = index % width + dx, y = index / width + dy;
+                        if (x > width * .18f && x < width * .82f && y > height * .18f && y < height * .84f)
+                            mask[y * width + x] = true;
+                    }
+            // Propagate surrounding colored ground inward, then relax only the removed center.
+            bool[] unresolved = (bool[])mask.Clone();
+            List<int> frontier = new List<int>();
+            for (int i = 0; i < mask.Length; i++)
+                if (mask[i]) foreach (int direction in directions)
+                    if (!mask[i + direction]) { frontier.Add(i); break; }
+            for (int n = 0; n < frontier.Count; n++)
             {
-                _artworkPath = string.Empty;
+                int i = frontier[n];
+                if (!unresolved[i]) continue;
+                Color sum = Color.clear; int count = 0;
+                foreach (int direction in directions)
+                    if (!unresolved[i + direction]) { sum += pixels[i + direction]; count++; }
+                if (count == 0) continue;
+                pixels[i] = sum / count; unresolved[i] = false;
+                foreach (int direction in directions)
+                    if (unresolved[i + direction]) frontier.Add(i + direction);
             }
-
-            return _artworkPath;
+            Color[] nextPixels = (Color[])pixels.Clone();
+            for (int pass = 0; pass < 120; pass++)
+            {
+                for (int i = 0; i < mask.Length; i++)
+                    if (mask[i]) nextPixels[i] = (pixels[i - 1] + pixels[i + 1] + pixels[i - width] + pixels[i + width]) / 4f;
+                for (int i = 0; i < mask.Length; i++) if (mask[i]) pixels[i] = nextPixels[i];
+            }
         }
 
-        /// <summary>
-        /// 程序生成的蓝色骰子面板：垂直蓝白渐变（顶部浅蓝、底部深蓝），周边圆角软化。
-        /// </summary>
-        private static Sprite BuildProceduralFace()
+        private static void CompositeGlyph(Color[] pixels, int width, int height)
         {
-            const int size = 64;
-            Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
-            tex.filterMode = FilterMode.Bilinear;
-            tex.wrapMode = TextureWrapMode.Clamp;
-            tex.name = "music_dice_face_procedural";
-
-            Color top = new Color(0.62f, 0.86f, 1.00f, 1f);   // 浅蓝白
-            Color bottom = new Color(0.18f, 0.36f, 0.78f, 1f); // 深蓝
-
-            // 圆角软化所用半径
-            const float cornerRadius = 10f;
-            for (int y = 0; y < size; y++)
-            {
-                float t = (float)y / (size - 1);
-                Color baseColor = Color.Lerp(bottom, top, t);
-                for (int x = 0; x < size; x++)
+            Texture2D glyph = GetGlyphSprite().texture;
+            // At 24px card size the occupied music center is about 13px high, with sturdy stems.
+            float size = Mathf.Min(width, height) * .50f;
+            float left = (width - size) * .5f - width * .01f, bottom = (height - size) * .5f - height * .015f;
+            for (int y = Mathf.CeilToInt(bottom); y < bottom + size; y++)
+                for (int x = Mathf.CeilToInt(left); x < left + size; x++)
                 {
-                    float alpha = ComputeRoundedRectAlpha(x, y, size, size, cornerRadius);
-                    tex.SetPixel(x, y, new Color(baseColor.r, baseColor.g, baseColor.b, baseColor.a * alpha));
+                    Color ink = glyph.GetPixelBilinear((x + .5f - left) / size, (y + .5f - bottom) / size);
+                    int i = y * width + x;
+                    Color ground = pixels[i];
+                    float alpha = ink.a + ground.a * (1f - ink.a);
+                    if (alpha <= 0f) continue;
+                    Color blended = (ink * ink.a + ground * ground.a * (1f - ink.a)) / alpha;
+                    blended.a = alpha;
+                    pixels[i] = blended;
                 }
-            }
-            tex.Apply();
-            return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
-        }
-
-        /// <summary>
-        /// 程序生成的白色软光：径向渐变，中心透明、外缘高亮，模仿 linearDodge 的"骰子白边"。
-        /// </summary>
-        private static Sprite BuildProceduralGlow()
-        {
-            const int size = 64;
-            Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
-            tex.filterMode = FilterMode.Bilinear;
-            tex.wrapMode = TextureWrapMode.Clamp;
-            tex.name = "music_dice_glow_procedural";
-
-            Vector2 center = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
-            float maxDist = size * 0.5f;
-            const float cornerRadius = 10f;
-            for (int y = 0; y < size; y++)
-            {
-                for (int x = 0; x < size; x++)
-                {
-                    float d = Vector2.Distance(new Vector2(x, y), center);
-                    // 外缘亮，靠近中心 t 减弱
-                    float t = Mathf.Clamp01(d / maxDist);
-                    // 边缘部分（最外 30%）亮度抬升
-                    float edge = Mathf.Clamp01((t - 0.7f) / 0.3f);
-                    edge = edge * edge;
-                    float rectAlpha = ComputeRoundedRectAlpha(x, y, size, size, cornerRadius);
-                    float alpha = edge * 0.85f * rectAlpha;
-                    tex.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
-                }
-            }
-            tex.Apply();
-            return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
-        }
-
-        private static float ComputeRoundedRectAlpha(int px, int py, int w, int h, float radius)
-        {
-            float left = radius;
-            float right = w - radius - 1;
-            float bottom = radius;
-            float top = h - radius - 1;
-
-            float cx = Mathf.Clamp(px, left, right);
-            float cy = Mathf.Clamp(py, bottom, top);
-            float dist = Vector2.Distance(new Vector2(px, py), new Vector2(cx, cy));
-            if (dist <= radius - 1f)
-            {
-                return 1f;
-            }
-            if (dist >= radius)
-            {
-                return 0f;
-            }
-            return 1f - (dist - (radius - 1f));
         }
     }
 
     public static class MusicDiceVisuals
     {
-        private sealed class SteriaMusicDiceStyleTag : MonoBehaviour
+        public static readonly Color FaceColor = new Color32(143, 175, 196, 255);
+        public static readonly Color EdgeColor = new Color32(201, 216, 225, 255);
+
+        // State belongs only to explicitly changed Graphics. Never restore frame, material or enabled state.
+        private sealed class GraphicState
         {
+            public Graphic Graphic;
+            public Sprite OriginalSprite, AppliedSprite;
+            public Color OriginalColor, AppliedColor;
+            public bool HasSprite, HasColor;
         }
 
-        /// <summary>标记：因自定义整张骰面图而暂时隐藏了 img_detail。</summary>
-        private sealed class SteriaMusicDiceSuppressedVanillaDetailTag : MonoBehaviour
+        private sealed class MusicStyleState : MonoBehaviour
         {
+            public readonly List<GraphicState> Graphics = new List<GraphicState>();
+            public bool ActionIsMusic;
+            public bool HasOriginColor;
+            public Color OriginColor;
+            public bool DamageIsMusic;
         }
 
-        /// <summary>整张骰面模式下暂时关掉 linearDodge 高光层。</summary>
-        private sealed class SteriaMusicDiceSuppressedLinearDodgeTag : MonoBehaviour
+        public static bool IsMusicUiBehaviour(DiceBehaviour behaviour)
         {
-            public bool WasEnabled = true;
+            return behaviour != null && behaviour.Type == BehaviourType.Atk
+                && (behaviour.Detail == BehaviourDetail.Slash || behaviour.Detail == BehaviourDetail.Penetrate
+                    || behaviour.Detail == BehaviourDetail.Hit);
         }
 
-        private sealed class SteriaMusicDamageTextTag : MonoBehaviour
+        private static MusicStyleState State(Component owner)
         {
+            return owner.GetComponent<MusicStyleState>() ?? owner.gameObject.AddComponent<MusicStyleState>();
         }
 
-        // 蓝白渐变：面板使用淡蓝，边缘使用白色亮边，整体呈现冷色调白蓝感
-        private static readonly Color MusicDiceFaceColor = new Color(0.48f, 0.74f, 1f, 1f);
-        private static readonly Color MusicDiceEdgeColor = Color.white;
-        private static readonly Color MusicDiceTextColor = Color.white;
-        // 给原版小图标使用的轻微调色（仅在没贴自定义面板的回退场景里用）
-        private static readonly Color MusicDiceIconTint = new Color(0.62f, 0.86f, 1f, 1f);
-        // 书页 face 节点的相对放大倍率（相对原图标尺寸），用来让蓝色骰子面板比图标稍大
-        private const float BookFaceScale = 1.35f;
-        private const float BookGlowScale = 1.5f;
-        private const float BookDieIconScale = 1.18f * 0.7f;
-        private const float BookCardFaceScaleMultiplier = 0.75f;
-        private const float BookCardFaceLayoutCompactness = 0.62f;
+        private static GraphicState Track(Component owner, Graphic graphic)
+        {
+            MusicStyleState state = State(owner);
+            GraphicState entry = state.Graphics.Find(x => x.Graphic == graphic);
+            if (entry == null)
+            {
+                entry = new GraphicState { Graphic = graphic };
+                state.Graphics.Add(entry);
+            }
+            return entry;
+        }
 
+        private static void StyleIcon(Component owner, Image image, bool glyphOnly = false)
+        {
+            if (image == null || image.sprite == null) return;
+            GraphicState entry = Track(owner, image);
+            // A refresh must not consume another mod's sprite or compound our conversion.
+            if (entry.HasSprite) return;
+            entry.OriginalSprite = image.sprite;
+            entry.AppliedSprite = glyphOnly ? MusicDiceSpriteFactory.GetGlyphSprite() : MusicDiceSpriteFactory.GetCardSprite();
+            if (entry.AppliedSprite == null) return;
+            entry.HasSprite = true;
+            image.sprite = entry.AppliedSprite;
+        }
+
+        private static void StyleColor(Component owner, Graphic graphic, Color color)
+        {
+            if (graphic == null) return;
+            GraphicState entry = Track(owner, graphic);
+            if (entry.HasColor) return;
+            entry.OriginalColor = graphic.color;
+            color.a = graphic.color.a;
+            entry.AppliedColor = color;
+            entry.HasColor = true;
+            graphic.color = color;
+        }
+
+        public static void RestoreBeforeBind(Component owner)
+        {
+            if (owner == null) return;
+            MusicStyleState state = owner.GetComponent<MusicStyleState>();
+            if (state == null) return;
+            foreach (GraphicState entry in state.Graphics)
+            {
+                if (entry.Graphic == null) continue;
+                Image image = entry.Graphic as Image;
+                if (entry.HasSprite && image != null && image.sprite == entry.AppliedSprite)
+                    image.sprite = entry.OriginalSprite;
+                // Respect any later external color or alpha updates instead of restoring stale values.
+                if (entry.HasColor && entry.Graphic.color == entry.AppliedColor)
+                    entry.Graphic.color = entry.OriginalColor;
+            }
+            state.Graphics.Clear();
+            BattleSimpleActionUI_Dice action = owner as BattleSimpleActionUI_Dice;
+            if (action != null && state.HasOriginColor)
+                AccessTools.Field(typeof(BattleSimpleActionUI_Dice), "originColor").SetValue(action, state.OriginColor);
+            state.HasOriginColor = false;
+            state.ActionIsMusic = false;
+            state.DamageIsMusic = false;
+        }
+
+        public static void RestoreCardBeforeBind(BattleDiceCardUI cardUi)
+        {
+            if (cardUi == null) return;
+            RestoreBeforeBind(cardUi);
+            if (cardUi.ui_behaviourDescList != null)
+                foreach (BattleDiceCard_BehaviourDescUI desc in cardUi.ui_behaviourDescList)
+                    RestoreBeforeBind(desc);
+        }
+
+        public static void PrepareAction(BattleSimpleActionUI_Dice diceUi, BattleDiceCardModel card, DiceBehaviour behaviour)
+        {
+            if (diceUi == null) return;
+            RestoreBeforeBind(diceUi);
+            State(diceUi).ActionIsMusic = MusicDiceSystem.IsMusicCard(card) && IsMusicUiBehaviour(behaviour);
+        }
+
+        // Called only after vanilla SetColors succeeded, including the three PrepareDice overloads.
         public static void ApplyOnActionDice(BattleSimpleActionUI_Dice diceUi)
         {
-            if (diceUi == null)
+            if (diceUi == null) return;
+            MusicStyleState state = diceUi.GetComponent<MusicStyleState>();
+            if (state == null || !state.ActionIsMusic) return;
+            StyleIcon(diceUi, diceUi.imgIcon, true);
+            StyleIcon(diceUi, diceUi.imgDetailIcon_Center, true);
+            StyleColor(diceUi, diceUi.img_diceFace, FaceColor);
+            StyleColor(diceUi, diceUi.img_diceFaceClone, FaceColor);
+            StyleColor(diceUi, diceUi.img_diceFaceLinearDodge, EdgeColor);
+            StyleColor(diceUi, diceUi.img_diceFaceLinearDodgeClone, EdgeColor);
+            StyleColor(diceUi, AccessTools.Field(typeof(BattleSimpleActionUI_Dice), "img_ActionDefeatDestoryed")?.GetValue(diceUi) as Graphic, FaceColor);
+            StyleColor(diceUi, AccessTools.Field(typeof(BattleSimpleActionUI_Dice), "img_ActionDefeatDestoryedLinear")?.GetValue(diceUi) as Graphic, EdgeColor);
+            StyleColor(diceUi, diceUi.txt_diceRange, FaceColor);
+            StyleColor(diceUi, diceUi.img_hundredsPlace, FaceColor);
+            StyleColor(diceUi, diceUi.img_tensPlace, FaceColor);
+            StyleColor(diceUi, diceUi.img_unitsPlace, FaceColor);
+            var field = AccessTools.Field(typeof(BattleSimpleActionUI_Dice), "originColor");
+            if (!state.HasOriginColor)
             {
-                return;
+                state.OriginColor = (Color)field.GetValue(diceUi);
+                state.HasOriginColor = true;
             }
-
-            if (diceUi.img_diceFace != null)
-            {
-                diceUi.img_diceFace.color = MusicDiceFaceColor;
-            }
-            if (diceUi.img_diceFaceLinearDodge != null)
-            {
-                diceUi.img_diceFaceLinearDodge.color = MusicDiceEdgeColor;
-            }
-            if (diceUi.img_diceFaceClone != null)
-            {
-                diceUi.img_diceFaceClone.color = MusicDiceFaceColor;
-            }
-            if (diceUi.img_diceFaceLinearDodgeClone != null)
-            {
-                diceUi.img_diceFaceLinearDodgeClone.color = MusicDiceEdgeColor;
-            }
-
-            AccessTools.Field(typeof(BattleSimpleActionUI_Dice), "originColor")?.SetValue(diceUi, MusicDiceFaceColor);
-            diceUi.SetValueColor(BattleDiceValueColor.Normal);
+            field.SetValue(diceUi, FaceColor);
+            // Do not call SetValueColor: vanilla owns Increase / Decrease and number HSV states.
         }
 
         public static bool IsMusicDamageText(DamageTextEffect effect)
         {
-            return effect != null && effect.GetComponent<SteriaMusicDamageTextTag>() != null;
+            return effect != null && effect.GetComponent<MusicStyleState>()?.DamageIsMusic == true;
         }
 
         public static void ApplyOnDamageText(DamageTextEffect effect)
         {
-            if (effect == null)
-            {
-                return;
-            }
-
-            Sprite sprite = MusicDiceSpriteFactory.GetDieIconSprite() ?? MusicDiceSpriteFactory.GetFaceSprite();
-            if (sprite == null || effect.img_resistIcon == null)
-            {
-                return;
-            }
-
-            effect.img_resistIcon.sprite = sprite;
-            effect.img_resistIcon.color = Color.white;
-            effect.img_resistIcon.enabled = true;
-            effect.img_resistIcon.preserveAspect = true;
-
-            if (effect.img_resistIconBg != null)
-            {
-                effect.img_resistIconBg.enabled = false;
-            }
-            if (effect.img_resistIconFg != null)
-            {
-                effect.img_resistIconFg.enabled = false;
-            }
-
-            if (effect.GetComponent<SteriaMusicDamageTextTag>() == null)
-            {
-                effect.gameObject.AddComponent<SteriaMusicDamageTextTag>();
-            }
+            if (effect == null) return;
+            // Every existing layer uses the same original music glyph; vanilla retains layer and fade ownership.
+            StyleIcon(effect, effect.img_resistIcon, true);
+            StyleIcon(effect, effect.img_resistIconBg, true);
+            StyleIcon(effect, effect.img_resistIconFg, true);
+            State(effect).DamageIsMusic = true;
         }
 
         public static void ApplyOnCardUI(BattleDiceCardUI cardUi)
         {
-            if (cardUi == null)
-            {
-                return;
-            }
-
-            bool isMusic = MusicDiceSystem.IsMusicCard(cardUi.CardModel);
-            if (!isMusic)
-            {
-                ClearOnCardUI(cardUi);
-                return;
-            }
-
-            try
-            {
-                if (cardUi.ui_behaviourDescList != null)
-                {
-                    for (int i = 0; i < cardUi.ui_behaviourDescList.Count; i++)
-                    {
-                        BattleDiceCard_BehaviourDescUI desc = cardUi.ui_behaviourDescList[i];
-                        DiceBehaviour bh = MusicDiceSystem.TryGetDiceBehaviourAt(cardUi.CardModel, i);
-                        LorId cid = cardUi.CardModel?.XmlData?.id ?? default;
-                        ApplyOnDescUI(desc, cid, bh);
-                    }
-                }
-
-                ApplyBattleDiceCardFaceStrip(cardUi);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] Music dice card UI style error: {ex}");
-            }
+            if (cardUi == null || !MusicDiceSystem.IsMusicCard(cardUi.CardModel)) return;
+            if (cardUi.img_behaviourDetatilList != null)
+                for (int i = 0; i < cardUi.img_behaviourDetatilList.Count; i++)
+                    if (IsMusicUiBehaviour(MusicDiceSystem.TryGetDiceBehaviourAt(cardUi.CardModel, i)))
+                        StyleIcon(cardUi, cardUi.img_behaviourDetatilList[i]);
         }
 
-        /// <summary>SetCard 等路径：由 CardModel 按行解析 DiceBehaviour。</summary>
-        public static void ApplyOnDescUI(BattleDiceCard_BehaviourDescUI desc)
-        {
-            if (desc == null)
-            {
-                return;
-            }
-
-            BattleDiceCardUI cardUi = desc.GetComponentInParent<BattleDiceCardUI>();
-            int idx = cardUi?.ui_behaviourDescList?.IndexOf(desc) ?? -1;
-            DiceBehaviour bh = idx >= 0 ? MusicDiceSystem.TryGetDiceBehaviourAt(cardUi?.CardModel, idx) : null;
-            LorId cid = cardUi?.CardModel?.XmlData?.id ?? default;
-            ApplyOnDescUI(desc, cid, bh);
-        }
-
-        /// <summary>SetBehaviourInfo Postfix：带有可靠的 LorId / DiceBehaviour，不依赖 CardModel 时机。</summary>
         public static void ApplyOnDescUI(BattleDiceCard_BehaviourDescUI desc, LorId cardId, DiceBehaviour behaviour)
         {
-            if (desc == null)
-            {
-                return;
-            }
-
-            BattleDiceCardUI cardUi = desc.GetComponentInParent<BattleDiceCardUI>();
-
-            bool musicCard = MusicDiceSystem.IsMusicCard(cardUi?.CardModel) || MusicDiceSystem.IsMusicCard(cardId);
-            if (!musicCard)
-            {
-                ClearOnDescUI(desc);
-                return;
-            }
-
-            DiceBehaviour rowBehaviour = behaviour;
-            if (rowBehaviour == null && cardUi != null)
-            {
-                int idx = cardUi.ui_behaviourDescList?.IndexOf(desc) ?? -1;
-                if (idx >= 0)
-                {
-                    rowBehaviour = MusicDiceSystem.TryGetDiceBehaviourAt(cardUi.CardModel, idx);
-                }
-            }
-
-            if (!MusicDiceSystem.IsMusicAttackDiceBehaviour(rowBehaviour))
-            {
-                ClearOnDescUI(desc);
-                return;
-            }
-
-            if (!IsMusicDescriptor(desc))
-            {
-                ClearOnDescUI(desc);
-                return;
-            }
-
-            if (desc.img_detail != null)
-            {
-                EnsureBookDiceBackdrop(desc.img_detail);
-                if (desc.img_detail.enabled)
-                {
-                    desc.img_detail.color = Color.white;
-                }
-            }
-
-            if (desc.txt_ability != null)
-            {
-                desc.txt_ability.color = MusicDiceTextColor;
-            }
-
-            if (desc.txt_range != null)
-            {
-                desc.txt_range.color = MusicDiceTextColor;
-            }
+            if (desc == null || !MusicDiceSystem.IsMusicCard(cardId) || !IsMusicUiBehaviour(behaviour)) return;
+            StyleIcon(desc, desc.img_detail);
+            StyleColor(desc, desc.txt_range, FaceColor);
         }
 
         public static void ApplyOnOriginSlot(UI.UIOriginCardSlot slot, DiceCardItemModel cardModel)
         {
-            if (slot == null)
-            {
-                return;
-            }
-
-            if (!MusicDiceSystem.IsMusicCard(cardModel))
-            {
-                ClearOnTransform(slot.transform);
-                return;
-            }
-
-            Image[] behaviourIcons = AccessTools.Field(typeof(UI.UIOriginCardSlot), "img_BehaviourIcons")
-                ?.GetValue(slot) as Image[];
-            Image[] linearDodge = AccessTools.Field(typeof(UI.UIOriginCardSlot), "img_linearDodge")
-                ?.GetValue(slot) as Image[];
-
-            if (behaviourIcons == null)
-            {
-                return;
-            }
-
-            bool useDieArt = MusicDiceSpriteFactory.GetDieIconSprite() != null;
-
-            for (int i = 0; i < behaviourIcons.Length; i++)
-            {
-                Image img = behaviourIcons[i];
-                if (img == null)
-                {
-                    continue;
-                }
-
-                DiceBehaviour bh = MusicDiceSystem.TryGetDiceBehaviourAt(cardModel, i);
-                Image lin = linearDodge != null && i < linearDodge.Length ? linearDodge[i] : null;
-
-                if (!MusicDiceSystem.IsMusicAttackDiceBehaviour(bh))
-                {
-                    ClearSingleBehaviourIconSlot(img, lin);
-                    continue;
-                }
-
-                if (useDieArt)
-                {
-                    EnsureBookDiceBackdrop(img);
-                    if (img.enabled)
-                    {
-                        img.color = Color.white;
-                    }
-
-                    SuppressLinearDodge(lin);
-                }
-                else
-                {
-                    RestoreLinearDodgeIfNeeded(lin);
-                    EnsureBookDiceBackdrop(img);
-                    ApplyBlueTintIcon(img);
-                    if (lin != null)
-                    {
-                        lin.color = MusicDiceEdgeColor;
-                        if (lin.GetComponent<SteriaMusicDiceStyleTag>() == null)
-                        {
-                            lin.gameObject.AddComponent<SteriaMusicDiceStyleTag>();
-                        }
-                    }
-                }
-            }
+            if (slot == null || !MusicDiceSystem.IsMusicCard(cardModel)) return;
+            Image[] icons = AccessTools.Field(typeof(UI.UIOriginCardSlot), "img_BehaviourIcons")?.GetValue(slot) as Image[];
+            if (icons == null) return;
+            for (int i = 0; i < icons.Length; i++)
+                if (IsMusicUiBehaviour(MusicDiceSystem.TryGetDiceBehaviourAt(cardModel, i)))
+                    StyleIcon(slot, icons[i]);
         }
 
         public static void ApplyOnDetailDescSlot(UI.UIDetailCardDescSlot desc, LorId cardId, DiceBehaviour behaviour)
         {
-            if (desc == null)
-            {
-                return;
-            }
-
-            if (!MusicDiceSystem.IsMusicCard(cardId))
-            {
-                ClearDetailDescSlot(desc);
-                return;
-            }
-
-            if (!MusicDiceSystem.IsMusicAttackDiceBehaviour(behaviour))
-            {
-                ClearDetailDescSlot(desc);
-                return;
-            }
-
-            if (desc.img_detail != null)
-            {
-                EnsureBookDiceBackdrop(desc.img_detail);
-                if (desc.img_detail.enabled)
-                {
-                    desc.img_detail.color = Color.white;
-                }
-            }
-        }
-
-        private static void ClearDetailDescSlot(UI.UIDetailCardDescSlot desc)
-        {
-            if (desc == null)
-            {
-                return;
-            }
-
-            DestroyBackdropChildrenIfExists(desc.transform);
-            RestoreVanillaDetailIfNeededOnImage(desc.img_detail);
-            RestoreSuppressedLinearDodgesUnder(desc.transform);
-            ClearTagsUnder(desc.transform);
-        }
-
-        private static bool IsMusicDescriptor(BattleDiceCard_BehaviourDescUI desc)
-        {
-            // 字段都是私有的，我们只能通过 sprite 名 + 字段位置来推断；
-            // 简单起见，按描述文字开头识别（DiceBehaviour.Detail 文本里通常含 Slash/Hit/Penetrate 字样）。
-            // 这里直接对全部 desc 应用蓝色背景影响不大，因此返回 true 保持简单。
-            return true;
-        }
-
-        private static void ApplyBlueTintIcon(Image img)
-        {
-            if (img == null)
-            {
-                return;
-            }
-
-            // 直接把图标染成淡蓝；HSV 仅做轻微提亮，避免覆盖出整块色块
-            img.color = MusicDiceIconTint;
-            RefineHsv hsv = img.GetComponent<RefineHsv>();
-            if (hsv == null)
-            {
-                hsv = img.gameObject.AddComponent<RefineHsv>();
-            }
-            if (img.GetComponent<SteriaMusicDiceStyleTag>() == null)
-            {
-                img.gameObject.AddComponent<SteriaMusicDiceStyleTag>();
-            }
-
-            hsv.ActiveChange = true;
-            hsv._HueShift = 0f;
-            hsv._Saturation = 1f;
-            hsv._ValueBrightness = 1.15f;
-            hsv.CallUpdate();
-        }
-
-        private static string IconBackdropSuffix(Image icon)
-        {
-            return "_" + icon.GetInstanceID();
-        }
-
-        private static bool TryGetBattleDiceCardBehaviourIconArrays(BattleDiceCardUI cardUi, out Image[] icons, out Image[] linearDodge)
-        {
-            icons = null;
-            linearDodge = AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodges")?.GetValue(cardUi) as Image[]
-                ?? AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodge")?.GetValue(cardUi) as Image[];
-
-            List<Image> handCardIcons = AccessTools.Field(typeof(BattleDiceCardUI), "img_behaviourDetatilList")
-                ?.GetValue(cardUi) as List<Image>;
-            if (handCardIcons != null && handCardIcons.Count > 0)
-            {
-                icons = handCardIcons.ToArray();
-                return true;
-            }
-
-            icons = AccessTools.Field(typeof(BattleDiceCardUI), "img_BehaviourIcons")?.GetValue(cardUi) as Image[];
-            if (icons != null && icons.Length > 0)
-            {
-                return true;
-            }
-
-            foreach (FieldInfo fi in typeof(BattleDiceCardUI).GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
-            {
-                string n = fi.Name;
-                if (!n.StartsWith("img_", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                if (n.IndexOf("behaviour", StringComparison.OrdinalIgnoreCase) < 0 && n.IndexOf("Behaviour", StringComparison.OrdinalIgnoreCase) < 0)
-                {
-                    continue;
-                }
-
-                if (n.IndexOf("Desc", StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    continue;
-                }
-
-                if (fi.FieldType == typeof(Image[]))
-                {
-                    icons = fi.GetValue(cardUi) as Image[];
-                    if (icons != null && icons.Length > 0)
-                    {
-                        break;
-                    }
-                }
-                else if (fi.FieldType == typeof(List<Image>))
-                {
-                    List<Image> list = fi.GetValue(cardUi) as List<Image>;
-                    if (list != null && list.Count > 0)
-                    {
-                        icons = list.ToArray();
-                        break;
-                    }
-                }
-            }
-
-            if (linearDodge == null)
-            {
-                linearDodge = AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodge")?.GetValue(cardUi) as Image[]
-                    ?? AccessTools.Field(typeof(BattleDiceCardUI), "img_linearDodges")?.GetValue(cardUi) as Image[];
-            }
-
-            return icons != null && icons.Length > 0;
-        }
-
-        private static bool IsBattleDiceCardFaceIconArray(BattleDiceCardUI cardUi, Image[] icons)
-        {
-            if (cardUi == null || icons == null || icons.Length == 0)
-            {
-                return false;
-            }
-
-            List<Image> handCardIcons = AccessTools.Field(typeof(BattleDiceCardUI), "img_behaviourDetatilList")
-                ?.GetValue(cardUi) as List<Image>;
-            if (handCardIcons == null || handCardIcons.Count == 0)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < icons.Length; i++)
-            {
-                Image icon = icons[i];
-                if (icon != null && handCardIcons.Contains(icon))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private static Vector2 GetMusicAttackDiceCenter(Image[] icons, BattleDiceCardModel model)
-        {
-            Vector2 sum = Vector2.zero;
-            int count = 0;
-            for (int i = 0; i < icons.Length; i++)
-            {
-                Image icon = icons[i];
-                if (icon == null)
-                {
-                    continue;
-                }
-
-                if (!MusicDiceSystem.IsMusicAttackDiceBehaviour(MusicDiceSystem.TryGetDiceBehaviourAt(model, i)))
-                {
-                    continue;
-                }
-
-                sum += icon.rectTransform.anchoredPosition;
-                count++;
-            }
-
-            return count > 0 ? sum / count : Vector2.zero;
-        }
-
-        private static void ApplyBattleDiceCardFaceStrip(BattleDiceCardUI cardUi)
-        {
-            if (cardUi?.CardModel == null || !MusicDiceSystem.IsMusicCard(cardUi.CardModel))
-            {
-                ClearBattleDiceCardFaceStrip(cardUi);
-                return;
-            }
-
-            if (!TryGetBattleDiceCardBehaviourIconArrays(cardUi, out Image[] icons, out Image[] linearDodge))
-            {
-                return;
-            }
-
-            BattleDiceCardModel model = cardUi.CardModel;
-            bool useDieArt = MusicDiceSpriteFactory.GetDieIconSprite() != null;
-            bool isCardFaceStrip = IsBattleDiceCardFaceIconArray(cardUi, icons);
-            Vector2 layoutCenter = isCardFaceStrip ? GetMusicAttackDiceCenter(icons, model) : Vector2.zero;
-            float scaleMultiplier = isCardFaceStrip ? BookCardFaceScaleMultiplier : 1f;
-            float layoutCompactness = isCardFaceStrip ? BookCardFaceLayoutCompactness : 1f;
-
-            for (int i = 0; i < icons.Length; i++)
-            {
-                Image img = icons[i];
-                if (img == null)
-                {
-                    continue;
-                }
-
-                DiceBehaviour bh = MusicDiceSystem.TryGetDiceBehaviourAt(model, i);
-                Image lin = linearDodge != null && i < linearDodge.Length ? linearDodge[i] : null;
-
-                if (!MusicDiceSystem.IsMusicAttackDiceBehaviour(bh))
-                {
-                    ClearSingleBehaviourIconSlot(img, lin);
-                    continue;
-                }
-
-                if (useDieArt)
-                {
-                    EnsureBookDiceBackdrop(img, scaleMultiplier, layoutCompactness, layoutCenter);
-                    if (img.enabled)
-                    {
-                        img.color = Color.white;
-                    }
-
-                    if (isCardFaceStrip)
-                    {
-                        RestoreLinearDodgeIfNeeded(lin);
-                        if (lin != null)
-                        {
-                            lin.color = Color.white;
-                        }
-                    }
-                    else
-                    {
-                        SuppressLinearDodge(lin);
-                    }
-                }
-                else
-                {
-                    RestoreLinearDodgeIfNeeded(lin);
-                    EnsureBookDiceBackdrop(img, scaleMultiplier, layoutCompactness, layoutCenter);
-                    ApplyBlueTintIcon(img);
-                    if (lin != null)
-                    {
-                        lin.color = MusicDiceEdgeColor;
-                        if (lin.GetComponent<SteriaMusicDiceStyleTag>() == null)
-                        {
-                            lin.gameObject.AddComponent<SteriaMusicDiceStyleTag>();
-                        }
-                    }
-                }
-            }
-        }
-
-        private static void ClearBattleDiceCardFaceStrip(BattleDiceCardUI cardUi)
-        {
-            if (cardUi == null || !TryGetBattleDiceCardBehaviourIconArrays(cardUi, out Image[] icons, out Image[] linearDodge))
-            {
-                return;
-            }
-
-            for (int i = 0; i < icons.Length; i++)
-            {
-                Image lin = linearDodge != null && i < linearDodge.Length ? linearDodge[i] : null;
-                ClearSingleBehaviourIconSlot(icons[i], lin);
-            }
-        }
-
-        private static void ClearSingleBehaviourIconSlot(Image behaviourIcon, Image linearDodge)
-        {
-            DestroyBackdropForBehaviourIcon(behaviourIcon);
-            RestoreVanillaDetailIfNeededOnImage(behaviourIcon);
-            RestoreLinearDodgeIfNeeded(linearDodge);
-            RemoveBlueTintFromBehaviourIcon(behaviourIcon);
-
-            if (linearDodge != null)
-            {
-                SteriaMusicDiceStyleTag lt = linearDodge.GetComponent<SteriaMusicDiceStyleTag>();
-                if (lt != null)
-                {
-                    linearDodge.color = Color.white;
-                    UnityEngine.Object.Destroy(lt);
-                }
-            }
-        }
-
-        private static void RemoveBlueTintFromBehaviourIcon(Image img)
-        {
-            if (img == null)
-            {
-                return;
-            }
-
-            SteriaMusicDiceStyleTag tag = img.GetComponent<SteriaMusicDiceStyleTag>();
-            if (tag == null)
-            {
-                return;
-            }
-
-            RefineHsv hsv = img.GetComponent<RefineHsv>();
-            if (hsv != null)
-            {
-                hsv.ActiveChange = true;
-                hsv._HueShift = 0f;
-                hsv._Saturation = 1f;
-                hsv._ValueBrightness = 1f;
-                hsv.CallUpdate();
-            }
-
-            img.color = Color.white;
-            UnityEngine.Object.Destroy(tag);
-        }
-
-        private static void SuppressLinearDodge(Image dodge)
-        {
-            if (dodge == null)
-            {
-                return;
-            }
-
-            SteriaMusicDiceSuppressedLinearDodgeTag tag = dodge.GetComponent<SteriaMusicDiceSuppressedLinearDodgeTag>();
-            if (tag == null)
-            {
-                tag = dodge.gameObject.AddComponent<SteriaMusicDiceSuppressedLinearDodgeTag>();
-                tag.WasEnabled = dodge.enabled;
-            }
-
-            dodge.enabled = false;
-        }
-
-        private static void RestoreLinearDodgeIfNeeded(Image dodge)
-        {
-            if (dodge == null)
-            {
-                return;
-            }
-
-            SteriaMusicDiceSuppressedLinearDodgeTag tag = dodge.GetComponent<SteriaMusicDiceSuppressedLinearDodgeTag>();
-            if (tag != null)
-            {
-                dodge.enabled = tag.WasEnabled;
-                UnityEngine.Object.Destroy(tag);
-            }
-        }
-
-        private static void DestroyBackdropForBehaviourIcon(Image icon)
-        {
-            if (icon == null)
-            {
-                return;
-            }
-
-            Transform parent = icon.transform.parent;
-            if (parent == null)
-            {
-                return;
-            }
-
-            string sfx = IconBackdropSuffix(icon);
-            DestroySteriaBackdropTriple(parent, sfx);
-            DestroySteriaBackdropTriple(parent, string.Empty);
-        }
-
-        private static void DestroySteriaBackdropTriple(Transform parent, string sfx)
-        {
-            DestroyChildIfExists(parent, "SteriaMusicDiceDieIcon" + sfx);
-            DestroyChildIfExists(parent, "SteriaMusicDiceFace" + sfx);
-            DestroyChildIfExists(parent, "SteriaMusicDiceGlow" + sfx);
-        }
-
-        private static void DestroySteriaFaceGlowLayersUnderParent(Transform parent, string sfx)
-        {
-            DestroyChildIfExists(parent, "SteriaMusicDiceFace" + sfx);
-            DestroyChildIfExists(parent, "SteriaMusicDiceGlow" + sfx);
-            if (!string.IsNullOrEmpty(sfx))
-            {
-                DestroyChildIfExists(parent, "SteriaMusicDiceFace");
-                DestroyChildIfExists(parent, "SteriaMusicDiceGlow");
-            }
-        }
-
-        private static void DestroyChildIfExists(Transform parent, string childName)
-        {
-            if (parent == null || string.IsNullOrEmpty(childName))
-            {
-                return;
-            }
-
-            Transform t = parent.Find(childName);
-            if (t != null)
-            {
-                UnityEngine.Object.Destroy(t.gameObject);
-            }
-        }
-
-        private static void RestoreSuppressedLinearDodgesUnder(Transform root)
-        {
-            if (root == null)
-            {
-                return;
-            }
-
-            SteriaMusicDiceSuppressedLinearDodgeTag[] tags = root.GetComponentsInChildren<SteriaMusicDiceSuppressedLinearDodgeTag>(true);
-            foreach (SteriaMusicDiceSuppressedLinearDodgeTag tag in tags)
-            {
-                if (tag == null)
-                {
-                    continue;
-                }
-
-                Image dodge = tag.GetComponent<Image>();
-                if (dodge != null)
-                {
-                    dodge.enabled = tag.WasEnabled;
-                }
-
-                UnityEngine.Object.Destroy(tag);
-            }
-        }
-
-        /// <summary>
-        /// 书页骰子视觉：
-        /// - 若存在 music_dice_die_icon.png：仅铺一层整张骰面，并隐藏原版行为线稿图标；
-        /// - 否则：蓝色面板 + 软光 + 白色线稿图标（face / glow）。
-        /// </summary>
-        private static void EnsureBookDiceBackdrop(Image icon, float scaleMultiplier = 1f, float layoutCompactness = 1f, Vector2 layoutCenter = default(Vector2))
-        {
-            if (icon == null)
-            {
-                return;
-            }
-
-            Transform parent = icon.transform.parent;
-            if (parent == null)
-            {
-                return;
-            }
-
-            string sfx = IconBackdropSuffix(icon);
-            Sprite die = MusicDiceSpriteFactory.GetDieIconSprite();
-            if (die != null)
-            {
-                DestroySteriaFaceGlowLayersUnderParent(parent, sfx);
-                Transform existingDie = parent.Find("SteriaMusicDiceDieIcon" + sfx);
-                if (existingDie != null)
-                {
-                    Image existingDieImg = existingDie.GetComponent<Image>();
-                    if (existingDieImg != null)
-                    {
-                        existingDieImg.sprite = die;
-                        existingDieImg.color = Color.white;
-                        existingDieImg.preserveAspect = true;
-                    }
-                    CopyIconRect(existingDie.GetComponent<RectTransform>(), icon.rectTransform, BookDieIconScale * scaleMultiplier, layoutCompactness, layoutCenter);
-                    SuppressVanillaDetailIcon(icon);
-                    return;
-                }
-
-                GameObject go = new GameObject("SteriaMusicDiceDieIcon" + sfx);
-                go.transform.SetParent(parent, false);
-                Image dieImg = go.AddComponent<Image>();
-                dieImg.sprite = die;
-                dieImg.color = Color.white;
-                dieImg.raycastTarget = false;
-                dieImg.type = Image.Type.Simple;
-                dieImg.preserveAspect = true;
-                CopyIconRect(go.GetComponent<RectTransform>(), icon.rectTransform, BookDieIconScale * scaleMultiplier, layoutCompactness, layoutCenter);
-                go.AddComponent<SteriaMusicDiceStyleTag>();
-                go.transform.SetSiblingIndex(icon.transform.GetSiblingIndex());
-
-                SuppressVanillaDetailIcon(icon);
-                return;
-            }
-
-            Transform legacyDie = parent.Find("SteriaMusicDiceDieIcon" + sfx);
-            if (legacyDie == null)
-            {
-                legacyDie = parent.Find("SteriaMusicDiceDieIcon");
-            }
-
-            if (legacyDie != null)
-            {
-                UnityEngine.Object.Destroy(legacyDie.gameObject);
-            }
-
-            RestoreVanillaDetailIfNeededOnImage(icon);
-
-            Transform existingFace = parent.Find("SteriaMusicDiceFace" + sfx);
-            Transform existingGlow = parent.Find("SteriaMusicDiceGlow" + sfx);
-            if (existingFace != null)
-            {
-                CopyIconRect(existingFace.GetComponent<RectTransform>(), icon.rectTransform, BookFaceScale * scaleMultiplier, layoutCompactness, layoutCenter);
-                if (existingGlow != null)
-                {
-                    CopyIconRect(existingGlow.GetComponent<RectTransform>(), icon.rectTransform, BookGlowScale * scaleMultiplier, layoutCompactness, layoutCenter);
-                }
-                return;
-            }
-
-            RectTransform iconRect = icon.rectTransform;
-
-            GameObject face = new GameObject("SteriaMusicDiceFace" + sfx);
-            face.transform.SetParent(parent, false);
-            Image faceImg = face.AddComponent<Image>();
-            faceImg.sprite = MusicDiceSpriteFactory.GetFaceSprite();
-            faceImg.color = Color.white;
-            faceImg.raycastTarget = false;
-            faceImg.type = Image.Type.Simple;
-            faceImg.preserveAspect = false;
-            CopyIconRect(face.GetComponent<RectTransform>(), iconRect, BookFaceScale * scaleMultiplier, layoutCompactness, layoutCenter);
-            face.AddComponent<SteriaMusicDiceStyleTag>();
-            face.transform.SetSiblingIndex(icon.transform.GetSiblingIndex());
-
-            GameObject glow = new GameObject("SteriaMusicDiceGlow" + sfx);
-            glow.transform.SetParent(parent, false);
-            Image glowImg = glow.AddComponent<Image>();
-            glowImg.sprite = MusicDiceSpriteFactory.GetGlowSprite();
-            glowImg.color = Color.white;
-            glowImg.raycastTarget = false;
-            glowImg.type = Image.Type.Simple;
-            glowImg.preserveAspect = false;
-            CopyIconRect(glow.GetComponent<RectTransform>(), iconRect, BookGlowScale * scaleMultiplier, layoutCompactness, layoutCenter);
-            glow.AddComponent<SteriaMusicDiceStyleTag>();
-            glow.transform.SetSiblingIndex(icon.transform.GetSiblingIndex());
-        }
-
-        private static void SuppressVanillaDetailIcon(Image icon)
-        {
-            if (icon == null)
-            {
-                return;
-            }
-
-            icon.enabled = false;
-            if (icon.GetComponent<SteriaMusicDiceSuppressedVanillaDetailTag>() == null)
-            {
-                icon.gameObject.AddComponent<SteriaMusicDiceSuppressedVanillaDetailTag>();
-            }
-        }
-
-        private static void RestoreVanillaDetailIfNeededOnImage(Image icon)
-        {
-            if (icon == null)
-            {
-                return;
-            }
-
-            SteriaMusicDiceSuppressedVanillaDetailTag tag = icon.GetComponent<SteriaMusicDiceSuppressedVanillaDetailTag>();
-            if (tag != null)
-            {
-                icon.enabled = true;
-                UnityEngine.Object.Destroy(tag);
-            }
-        }
-
-        private static void RestoreVanillaDetailIfNeeded(BattleDiceCard_BehaviourDescUI desc)
-        {
-            if (desc?.img_detail != null)
-            {
-                RestoreVanillaDetailIfNeededOnImage(desc.img_detail);
-            }
-        }
-
-        /// <summary>
-        /// 把 src 的 RectTransform 锚定 / 位移 / 旋转复制到 dst，并把 sizeDelta 按 scale 放大。
-        /// 若 src 是用 anchorMin/Max 撑满父对象（sizeDelta=0），改用 rect.size 推断真实大小。
-        /// </summary>
-        private static void CopyIconRect(RectTransform dst, RectTransform src, float scale, float layoutCompactness = 1f, Vector2 layoutCenter = default(Vector2))
-        {
-            if (dst == null || src == null)
-            {
-                return;
-            }
-
-            dst.anchorMin = src.anchorMin;
-            dst.anchorMax = src.anchorMax;
-            dst.pivot = src.pivot;
-            dst.anchoredPosition = layoutCompactness < 0.999f
-                ? layoutCenter + (src.anchoredPosition - layoutCenter) * layoutCompactness
-                : src.anchoredPosition;
-
-            Vector2 size = src.sizeDelta;
-            if (Mathf.Approximately(size.x, 0f) && Mathf.Approximately(size.y, 0f))
-            {
-                Rect r = src.rect;
-                size = new Vector2(r.width, r.height);
-            }
-            dst.sizeDelta = size * scale;
-            dst.localScale = src.localScale;
-            dst.localRotation = src.localRotation;
-        }
-
-        private static void ClearOnCardUI(BattleDiceCardUI cardUi)
-        {
-            if (cardUi == null)
-            {
-                return;
-            }
-
-            ClearBattleDiceCardFaceStrip(cardUi);
-
-            if (cardUi.ui_behaviourDescList != null)
-            {
-                foreach (BattleDiceCard_BehaviourDescUI desc in cardUi.ui_behaviourDescList)
-                {
-                    ClearOnDescUI(desc);
-                }
-            }
-
-            ClearTagsUnder(cardUi.transform);
-        }
-
-        private static void ClearOnDescUI(BattleDiceCard_BehaviourDescUI desc)
-        {
-            if (desc == null)
-            {
-                return;
-            }
-
-            // 兼容旧版的深蓝背景板残留
-            Transform bg = desc.transform.Find("SteriaMusicDiceBg");
-            if (bg != null)
-            {
-                UnityEngine.Object.Destroy(bg.gameObject);
-            }
-
-            DestroyBackdropChildrenIfExists(desc.transform);
-            RestoreVanillaDetailIfNeeded(desc);
-            ClearTagsUnder(desc.transform);
-        }
-
-        /// <summary>
-        /// 递归销毁我们额外添加的所有装饰 GameObject：
-        /// 旧版的 SteriaMusicDiceHalo / 新版 SteriaMusicDiceFace, SteriaMusicDiceGlow 都包含在内。
-        /// </summary>
-        private static void DestroyBackdropChildrenIfExists(Transform root)
-        {
-            if (root == null)
-            {
-                return;
-            }
-
-            Transform[] all = root.GetComponentsInChildren<Transform>(true);
-            foreach (Transform t in all)
-            {
-                if (t == null)
-                {
-                    continue;
-                }
-                string n = t.name;
-                if (n.StartsWith("SteriaMusicDiceDieIcon", StringComparison.Ordinal)
-                    || n.StartsWith("SteriaMusicDiceFace", StringComparison.Ordinal)
-                    || n.StartsWith("SteriaMusicDiceGlow", StringComparison.Ordinal)
-                    || n == "SteriaMusicDiceHalo")
-                {
-                    UnityEngine.Object.Destroy(t.gameObject);
-                }
-            }
-        }
-
-        private static void ClearOnTransform(Transform root)
-        {
-            if (root == null)
-            {
-                return;
-            }
-
-            DestroyBackdropChildrenIfExists(root);
-            RestoreSuppressedVanillaIconsUnder(root);
-            RestoreSuppressedLinearDodgesUnder(root);
-            ClearTagsUnder(root);
-        }
-
-        private static void RestoreSuppressedVanillaIconsUnder(Transform root)
-        {
-            if (root == null)
-            {
-                return;
-            }
-
-            SteriaMusicDiceSuppressedVanillaDetailTag[] suppressed = root.GetComponentsInChildren<SteriaMusicDiceSuppressedVanillaDetailTag>(true);
-            foreach (SteriaMusicDiceSuppressedVanillaDetailTag s in suppressed)
-            {
-                if (s == null)
-                {
-                    continue;
-                }
-
-                Image img = s.GetComponent<Image>();
-                RestoreVanillaDetailIfNeededOnImage(img);
-            }
-        }
-
-        private static void ClearTagsUnder(Transform root)
-        {
-            SteriaMusicDiceStyleTag[] tags = root.GetComponentsInChildren<SteriaMusicDiceStyleTag>(true);
-            foreach (SteriaMusicDiceStyleTag tag in tags)
-            {
-                if (tag == null)
-                {
-                    continue;
-                }
-
-                RefineHsv hsv = tag.GetComponent<RefineHsv>();
-                if (hsv != null)
-                {
-                    hsv._HueShift = 0f;
-                    hsv._Saturation = 1f;
-                    hsv._ValueBrightness = 1f;
-                    hsv.CallUpdate();
-                }
-
-                Image img = tag.GetComponent<Image>();
-                if (img != null)
-                {
-                    img.color = Color.white;
-                }
-                RawImage raw = tag.GetComponent<RawImage>();
-                if (raw != null)
-                {
-                    raw.color = Color.white;
-                }
-
-                UnityEngine.Object.Destroy(tag);
-            }
+            if (desc == null || !MusicDiceSystem.IsMusicCard(cardId) || !IsMusicUiBehaviour(behaviour)) return;
+            StyleIcon(desc, desc.img_detail);
+            StyleColor(desc, desc.txt_range, FaceColor);
         }
     }
+
 }

@@ -3043,54 +3043,58 @@ namespace Steria
     // 原版"强壮 / 忍耐 / 进攻骰威力提升 / 伤害+"等仍由各自专属的 *_MusicDicePatch
     // （Prefix return false）在调用 ApplyDiceStatBonus 之前就被拦截。
 
-    // --- 乐章型骰子：UI 蓝白渐变 ---
+    // --- 乐章骰 UI: vanilla silhouettes and per-behaviour ownership ---
     [HarmonyPatch(typeof(BattleSimpleActionUI_Dice), "PrepareDice", new Type[] { typeof(List<BattleCardBehaviourResult>) })]
     public static class BattleSimpleActionUI_Dice_PrepareDice_List_MusicStyle_Patch
     {
-        [HarmonyPostfix]
-        public static void Postfix(BattleSimpleActionUI_Dice __instance)
+        [HarmonyPrefix]
+        public static void Prefix(BattleSimpleActionUI_Dice __instance, List<BattleCardBehaviourResult> battleDiceBehaviorResults)
         {
-            try
-            {
-                if (__instance == null || !MusicDiceSystem.IsMusicCard(__instance.cardOfBehaviour))
-                {
-                    return;
-                }
-
-                MusicDiceVisuals.ApplyOnActionDice(__instance);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] Music dice UI patch (list) error: {ex}");
-            }
+            BattleCardBehaviourResult first = battleDiceBehaviorResults != null && battleDiceBehaviorResults.Count > 0
+                ? battleDiceBehaviorResults[0] : null;
+            MusicDiceVisuals.PrepareAction(__instance, first?.cardModel, first?.behaviourRawData);
         }
     }
 
     [HarmonyPatch(typeof(BattleSimpleActionUI_Dice), "PrepareDice", new Type[] { typeof(BattleDiceBehaviourUI) })]
     public static class BattleSimpleActionUI_Dice_PrepareDice_Behavior_MusicStyle_Patch
     {
+        [HarmonyPrefix]
+        public static void Prefix(BattleSimpleActionUI_Dice __instance, BattleDiceBehaviourUI b)
+        {
+            MusicDiceVisuals.PrepareAction(__instance, b?.cardmodel, b?.behaviourInCard);
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleSimpleActionUI_Dice), "PrepareDice", new Type[] { typeof(BattleDiceBehavior) })]
+    public static class BattleSimpleActionUI_Dice_PrepareDice_Runtime_MusicStyle_Patch
+    {
+        [HarmonyPrefix]
+        public static void Prefix(BattleSimpleActionUI_Dice __instance, BattleDiceBehavior b)
+        {
+            MusicDiceVisuals.PrepareAction(__instance, b?.card?.card, b?.behaviourInCard);
+        }
+    }
+
+    [HarmonyPatch(typeof(BattleSimpleActionUI_Dice), "SetColors")]
+    public static class BattleSimpleActionUI_Dice_SetColors_MusicStyle_Patch
+    {
         [HarmonyPostfix]
         public static void Postfix(BattleSimpleActionUI_Dice __instance)
         {
-            try
-            {
-                if (__instance == null || !MusicDiceSystem.IsMusicCard(__instance.cardOfBehaviour))
-                {
-                    return;
-                }
-
-                MusicDiceVisuals.ApplyOnActionDice(__instance);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Steria] Music dice UI patch (behavior) error: {ex}");
-            }
+            MusicDiceVisuals.ApplyOnActionDice(__instance);
         }
     }
 
     [HarmonyPatch(typeof(BattleDiceCardUI), nameof(BattleDiceCardUI.SetCard))]
     public static class BattleDiceCardUI_SetCard_MusicStyle_Patch
     {
+        [HarmonyPrefix]
+        public static void Prefix(BattleDiceCardUI __instance)
+        {
+            MusicDiceVisuals.RestoreCardBeforeBind(__instance);
+        }
+
         [HarmonyPostfix]
         public static void Postfix(BattleDiceCardUI __instance)
         {
@@ -3154,6 +3158,12 @@ namespace Steria
     [HarmonyPatch(typeof(BattleDiceCard_BehaviourDescUI), "SetBehaviourInfo")]
     public static class BattleDiceCard_BehaviourDescUI_SetBehaviourInfo_MusicStyle_Patch
     {
+        [HarmonyPrefix]
+        public static void Prefix(BattleDiceCard_BehaviourDescUI __instance)
+        {
+            MusicDiceVisuals.RestoreBeforeBind(__instance);
+        }
+
         [HarmonyPostfix]
         public static void Postfix(BattleDiceCard_BehaviourDescUI __instance, DiceBehaviour behaviour, LorId cardId, List<DiceBehaviour> behaviourList, bool isHide)
         {
@@ -3295,6 +3305,12 @@ namespace Steria
     [HarmonyPatch(typeof(UI.UIOriginCardSlot), "SetData")]
     public static class UIOriginCardSlot_SetData_MusicStyle_Patch
     {
+        [HarmonyPrefix]
+        public static void Prefix(UI.UIOriginCardSlot __instance)
+        {
+            MusicDiceVisuals.RestoreBeforeBind(__instance);
+        }
+
         [HarmonyPostfix]
         public static void Postfix(UI.UIOriginCardSlot __instance, DiceCardItemModel cardmodel)
         {
@@ -3312,6 +3328,12 @@ namespace Steria
     [HarmonyPatch(typeof(UI.UIDetailCardDescSlot), "SetBehaviourInfo")]
     public static class UIDetailCardDescSlot_SetBehaviourInfo_MusicStyle_Patch
     {
+        [HarmonyPrefix]
+        public static void Prefix(UI.UIDetailCardDescSlot __instance)
+        {
+            MusicDiceVisuals.RestoreBeforeBind(__instance);
+        }
+
         [HarmonyPostfix]
         public static void Postfix(UI.UIDetailCardDescSlot __instance, DiceBehaviour behaviour, LorId cardId, List<DiceBehaviour> behaviourList, bool isHide)
         {
