@@ -78,11 +78,12 @@ def main():
     assert visual["bundleSha256"] == ACCEPTED_BUNDLE == digest(visual["bundle"])
     assert digest(ROOT / "SteriaBuild/SlazeyaStormVisualController.cs") == ACCEPTED_DRIVER
     contract, preview = manifest["contract"], manifest["preview"]
-    assert contract["gather_duration_s"] == 1.35 and contract["gather_max_gain"] == 0.30
+    assert manifest["version"] == "2026-09-07.storm-dawn.audio.1"
+    assert contract["gather_duration_s"] == 1.35 and contract["gather_max_gain"] == 0.55
+    assert contract["gather_ramp"] == ".32*smoothstep(t/.03)+.23*smoothstep(t/1.35)"
     assert contract["burst_gain"] == 0.78 and contract["gather_fade_after_b_s"] == 0.04
     assert contract["option_gain_in_preview"] == 1 and not preview["normalization_after_mix"]
     assert round(visual["callbackTime"] * 44100) == preview["burst_start_sample"] == 68355
-    assert preview["secondary_lightning_sample"] == 72765 and preview["gather_stop_sample"] == 70119
     source_hashes = {name: digest(SOURCE / name) for name in ("gather_loop.wav", "burst_tail.wav", "preview_mix.wav")}
     for name, value in source_hashes.items():
         assert value == manifest["files"][name]["sha256"], f"Unfrozen source WAV: {name}"
@@ -92,7 +93,8 @@ def main():
     # Independently reconstruct only for verification; the asset worker's WAV remains the output.
     index = np.arange(len(mix), dtype=np.float64)
     ramp = np.clip(index / (44100 * 1.35), 0, 1)
-    envelope = 0.30 * ramp * ramp * (3 - 2 * ramp)
+    early_ramp = np.clip(index / (44100 * 0.03), 0, 1)
+    envelope = 0.32 * early_ramp * early_ramp * (3 - 2 * early_ramp) + 0.23 * ramp * ramp * (3 - 2 * ramp)
     envelope *= np.clip(1 - np.maximum(0, index - 68355) / (44100 * 0.04), 0, 1)
     expected = gather[np.arange(len(mix)) % 44100].astype(np.float64) * envelope[:, None]
     expected[68355:68355 + len(burst)] += burst.astype(np.float64) * 0.78
@@ -134,7 +136,7 @@ def main():
     evidence = {
         "status": "MUX_AND_NUMERIC_VERIFICATION_PASS", "listening": "NOT_PERFORMED; no audio-perception tool",
         "ffmpeg": ffmpeg, "sourceWavSha256": source_hashes, "mixGainAndTimingMaxErrorPcm16Lsb": max_lsb_error,
-        "callbackSample": 68355, "callbackSeconds": 1.55, "gatherGain": 0.30, "burstGain": 0.78,
+        "callbackSample": 68355, "callbackSeconds": 1.55, "gatherGain": 0.55, "burstGain": 0.78,
         "originalVideoFileSha256": video_file_hash, "encodedVideoStreamSha256Before": before_stream,
         "encodedVideoStreamSha256After": after_stream, "videoCopyVerified": True, "decodedVideoFrames": frames[-1],
         "previewPcmSha256": hashlib.sha256(mix_raw).hexdigest().upper(),

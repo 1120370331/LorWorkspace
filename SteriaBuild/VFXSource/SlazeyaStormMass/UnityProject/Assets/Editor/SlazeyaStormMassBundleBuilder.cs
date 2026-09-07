@@ -26,11 +26,28 @@ public static class SlazeyaStormMassBundleBuilder
     public static string PreviewOutputOverride; // Isolated native diagnostics only; normal builds leave this null.
     private static readonly string[] TextureFiles={"water_body_rgba.png","water_normal_roughness.png","water_flow_rg.png","foam_spray_4x4.png","mist_density_lighting_4x4.png","droplet_spindrift_4x2.png"};
     private static readonly List<string> TextureHashes=new List<string>();
+    private static bool FirstCandidate;
+    private static string Argument(string name)
+    {
+        string[] args=Environment.GetCommandLineArgs();
+        for(int i=0;i<args.Length-1;i++)if(args[i]==name)return args[i+1];
+        return null;
+    }
+    private static void ConfigurePreview()
+    {
+        string path=Argument("-previewDirectory");
+        Require(!string.IsNullOrEmpty(path),"explicit unique -previewDirectory required");
+        PreviewOutputOverride=Path.GetFullPath(path);
+        Require(!File.Exists(Path.Combine(PreviewOutputOverride,"manifest.json")),"never overwrite an exported preview candidate");
+        Directory.CreateDirectory(PreviewOutputOverride);
+        FirstCandidate=Argument("-previewStage")=="FirstCandidate";
+    }
 
     public static void BuildBundle()
     {
         try
         {
+            ConfigurePreview();
             RenderReadbackMs.Clear();PngEncodeMs.Clear();
             Require(Application.unityVersion=="2019.3.15f1","Unity 2019.3.15f1");
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
@@ -79,11 +96,11 @@ public static class SlazeyaStormMassBundleBuilder
             MakeParticles(particles,"GatherMist",mist,40,false);
             MakeParticles(particles,"CrestSpindrift",drops,64,true);
             MakeParticles(particles,"BurstSheets",spray,48,false);
-            MakeParticles(particles,"BurstDroplets",drops,180,true);
+            MakeParticles(particles,"BurstDroplets",drops,320,true);
             MakeParticles(particles,"ReturnMist",returnMist,32,false);
             MakeParticles(particles,"CrestLiftMist",liftMist,24,false);
             MakeParticles(particles,"GatherFoam",parcelFoam,168,false);
-            MakeParticles(particles,"WaterfallStreaks",gatheredFoam,72,true);
+            MakeParticles(particles,"WaterfallStreaks",gatheredFoam,128,true);
             PrefabUtility.SaveAsPrefabAsset(root,PrefabPath); Object.DestroyImmediate(root); AssetDatabase.SaveAssets();
             string output=Path.GetFullPath(Path.Combine(Application.dataPath,"../AssetBundles")); Directory.CreateDirectory(output);
             var build=BuildPipeline.BuildAssetBundles(output,new[]{new AssetBundleBuild{assetBundleName=SlazeyaStormVisualController.BundleName,assetNames=new[]{PrefabPath}}},
@@ -94,16 +111,66 @@ public static class SlazeyaStormMassBundleBuilder
             try
             {
                 GameObject prefab=bundle.LoadAsset<GameObject>(SlazeyaStormVisualController.PrefabName);
-                VerifyPrefab(prefab);SlazeyaStormCloudNoiseBaker.VerifyBundle(prefab,PreviewDirectory());VerifyController(prefab);
+                VerifyPrefab(prefab);SlazeyaStormCloudNoiseBaker.VerifyBundle(prefab,PreviewDirectory());
+                VerifyBurstAbundance(prefab);VerifyGpuWavefront();
+                if(FirstCandidate)VerifyFoamTransport(prefab,SlazeyaStormVisualController.FitFootprint(Feet,H,PreviewBodies(Feet,H)));
+                else VerifyController(prefab);
                 string previews=PreviewDirectory(); Directory.CreateDirectory(previews);
-                ActualSampleTimes.Clear(); CaptureSet(prefab,previews,"black",false); CaptureSet(prefab,previews,"battlefield",true);
-                CaptureAtlasDiagnostics(prefab,previews);
+                ActualSampleTimes.Clear();
+                if(Argument("-streakFramesOnly")!="true")CaptureSet(prefab,previews,"black",false);
+                CaptureSet(prefab,previews,"battlefield",true);
+                if(!FirstCandidate)CaptureAtlasDiagnostics(prefab,previews);
                 WriteCaptureTiming(previews);WriteManifest(previews,bundlePath);
             }
             finally {bundle.Unload(true);}
-            Debug.Log("SLAZEYA_ROUND5_BUILD_PREVIEW_PASS "+bundlePath);
+            Debug.Log("SLAZEYA_ROUND6_BUILD_PREVIEW_PASS "+bundlePath);
         }
         catch(Exception ex) {Debug.LogException(ex);EditorApplication.Exit(1);}
+    }
+
+    // Run in an isolated project containing the frozen original controller and the original AB.
+    public static void ExportBaselinePreview()
+    {
+        try
+        {
+            ConfigurePreview();RenderReadbackMs.Clear();PngEncodeMs.Clear();ActualSampleTimes.Clear();
+            Require(Application.unityVersion=="2019.3.15f1","baseline Unity version");
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+            PlayerSettings.colorSpace=ColorSpace.Gamma;QualitySettings.antiAliasing=4;
+            string path=Argument("-baselineBundle");
+            Require(Digest(path)=="918B3213A65BA542FAEC7F83CE6926A57CE464A81A8990DD65272B6E3AACB8C5","frozen original baseline AB");
+            Require(Digest(Path.Combine(Application.dataPath,"Scripts/SlazeyaStormVisualController.cs"))=="3DA8605425D84085F1F62704A5BC69BC01629941C188813E17D4C0961EF025C9","frozen original baseline controller");
+            var bundle=AssetBundle.LoadFromFile(path);
+            try {CaptureSet(bundle.LoadAsset<GameObject>(SlazeyaStormVisualController.PrefabName),PreviewDirectory(),"battlefield",true);WriteCaptureTiming(PreviewDirectory());WriteManifest(PreviewDirectory(),path);}
+            finally {bundle.Unload(true);}
+            Debug.Log("SLAZEYA_BASELINE_PREVIEW_PASS");
+        }
+        catch(Exception ex){Debug.LogException(ex);EditorApplication.Exit(1);}
+    }
+
+    public static void ExportBuiltPreview()
+    {
+        try
+        {
+            ConfigurePreview();RenderReadbackMs.Clear();PngEncodeMs.Clear();ActualSampleTimes.Clear();
+            Require(Application.unityVersion=="2019.3.15f1","Unity version for frozen bundle export");
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+            PlayerSettings.colorSpace=ColorSpace.Gamma;QualitySettings.antiAliasing=4;
+            string bundlePath=Argument("-existingBundle");
+            Require(Digest(bundlePath)==Argument("-expectedBundle"),"frozen reviewed-frame bundle hash");
+            Require(Digest(Path.Combine(Application.dataPath,"Scripts/SlazeyaStormVisualController.cs"))==Argument("-expectedController"),"frozen reviewed-frame controller hash");
+            TextureHashes.Clear();foreach(string name in TextureFiles)TextureHashes.Add(Digest(Path.Combine(Application.dataPath,"Textures/Round2/"+name)));
+            var bundle=AssetBundle.LoadFromFile(bundlePath);
+            try
+            {
+                var prefab=bundle.LoadAsset<GameObject>(SlazeyaStormVisualController.PrefabName);
+                CaptureSet(prefab,PreviewDirectory(),"black",false);CaptureSet(prefab,PreviewDirectory(),"battlefield",true);
+                WriteCaptureTiming(PreviewDirectory());WriteManifest(PreviewDirectory(),bundlePath);
+            }
+            finally{bundle.Unload(true);}
+            Debug.Log("SLAZEYA_FROZEN_BUNDLE_EXPORT_PASS");
+        }
+        catch(Exception ex){Debug.LogException(ex);EditorApplication.Exit(1);}
     }
 
     private static void Require(bool ok,string text)
@@ -513,12 +580,13 @@ public static class SlazeyaStormMassBundleBuilder
         }
         var emission=ps.emission;emission.enabled=false;var shape=ps.shape;shape.enabled=false;
         var sheet=ps.textureSheetAnimation;sheet.enabled=false;
-        ps.useAutoRandomSeed=false;ps.randomSeed=(uint)(capacity+1945);
+        ps.useAutoRandomSeed=false;ps.randomSeed=name=="BurstDroplets"?2125u:name=="WaterfallStreaks"?2017u:(uint)(capacity+1945);
         bool mist=name=="GatherMist"||name=="ReturnMist"||name=="CrestLiftMist";
         var color=ps.colorOverLifetime;color.enabled=!mist;
         color.color=new Gradient{colorKeys=new[]{new GradientColorKey(Color.white,0),new GradientColorKey(Color.white,1)},
             alphaKeys=new[]{new GradientAlphaKey(0.4f,0),new GradientAlphaKey(1,0.10f),new GradientAlphaKey(0.8f,0.65f),new GradientAlphaKey(0,1)}};
         if(name=="GatherFoam"){color.enabled=false;main.startSize3D=true;}
+        if(name=="WaterfallStreaks")main.startSize3D=true;
         if(name=="CrestLiftMist"||name=="ReturnMist")
         {
             var size=ps.sizeOverLifetime;size.enabled=true;
@@ -530,7 +598,7 @@ public static class SlazeyaStormMassBundleBuilder
         renderer.renderMode=stretch?ParticleSystemRenderMode.Stretch:ParticleSystemRenderMode.Billboard;
         if(name=="GatherFoam")renderer.sortMode=ParticleSystemSortMode.Distance;
         renderer.lengthScale=1.7f;renderer.velocityScale=0.025f;renderer.cameraVelocityScale=0;
-        if(name=="WaterfallStreaks"){renderer.lengthScale=3.1f;renderer.velocityScale=0.055f;}
+        if(name=="WaterfallStreaks"){renderer.lengthScale=3.35f;renderer.velocityScale=0.055f;}
         renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;
         renderer.SetActiveVertexStreams(new List<ParticleSystemVertexStream>{ParticleSystemVertexStream.Position,ParticleSystemVertexStream.Color,
             ParticleSystemVertexStream.UV,ParticleSystemVertexStream.AgePercent,ParticleSystemVertexStream.StableRandomX});
@@ -890,6 +958,134 @@ public static class SlazeyaStormMassBundleBuilder
         }
         finally{buffer.Release();}
     }
+    public static void DiagnoseStreakStretch()
+    {
+        try
+        {
+            ConfigurePreview();EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+            var root=new GameObject("StreakStretchProbe");var camera=CreateCamera(true);
+            var material=new Material(Shader.Find(SlazeyaStormVisualController.ParticleShaderName));
+            MakeParticles(root.transform,"WaterfallStreaks",material,128,true);
+            var ps=root.GetComponentInChildren<ParticleSystem>();var renderer=ps.GetComponent<ParticleSystemRenderer>();var main=ps.main;main.startSize3D=true;
+            var csv=new StringBuilder("size_x,size_y,size_z,vertex_count,edge01,edge12,uv0x,uv0y,uv0z,uv0w\n");
+            foreach(Vector3 size in new[]{Vector3.one,new Vector3(2,1,1),new Vector3(1,2,1),new Vector3(1,0.25f,1)})
+            {
+                var particle=new ParticleSystem.Particle{position=new Vector3(10,3,1),velocity=new Vector3(3,-2,1),startSize3D=size,startLifetime=1,remainingLifetime=0.6f,startColor=Color.white,randomSeed=9301};
+                ps.Simulate(0,false,false,false);ps.SetParticles(new[]{particle},1);camera.Render();var mesh=new Mesh();renderer.BakeMesh(mesh,camera,false);Vector3[] v=mesh.vertices;var uv=new List<Vector4>();mesh.GetUVs(0,uv);
+                Debug.Log("STRETCH_PROBE alive="+ps.particleCount+" vertices="+v.Length+" uv="+uv.Count);
+                Require(v.Length>=4,"native Stretch quad BakeMesh");Vector4 u=uv.Count>0?uv[0]:Vector4.zero;
+                csv.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",size.x,size.y,size.z,v.Length,(v[1]-v[0]).magnitude,(v[2]-v[1]).magnitude,u.x,u.y,u.z,u.w));
+                Object.DestroyImmediate(mesh);
+            }
+            File.WriteAllText(Path.Combine(PreviewDirectory(),"native-stretch-axis-probe.csv"),csv.ToString());
+            Object.DestroyImmediate(root);Object.DestroyImmediate(camera.gameObject);Object.DestroyImmediate(material);Debug.Log("SLAZEYA_STRETCH_PROBE_PASS");
+        }
+        catch(Exception ex){Debug.LogException(ex);EditorApplication.Exit(1);}
+    }
+    private static void VerifyBurstAbundance(GameObject prefab)
+    {
+        int[] capacities={40,64,48,320,32,24,168,128};
+        Require(prefab.GetComponentsInChildren<ParticleSystem>(true).Length==8,"exactly eight native particle systems");
+        int rings=0;foreach(var r in prefab.GetComponentsInChildren<Renderer>(true))if(r.name=="RingJet")rings++;
+        Require(rings==1,"one original RingJet renderer");
+        var csv=new StringBuilder("hz,cycle,burst_age,system,alive,capacity,unique_emitted\n");
+        var summary=new StringBuilder("hz,cycle,initial_sheets,initial_drops,second_sheets,second_drops,waterfall_streaks,satellite_drops,maximum_alive\n");
+        foreach(int hz in new[]{60,240})for(int cycle=0;cycle<2;cycle++)
+        {
+            var root=Object.Instantiate(prefab);int maximumAlive=0;
+            using(var driver=new SlazeyaStormVisualController(root,SlazeyaStormVisualController.FitFootprint(Feet,H,PreviewBodies(Feet,H))))
+            {
+                var systems=new ParticleSystem[8];var seeds=new HashSet<uint>[8];
+                for(int i=0;i<8;i++)
+                {
+                    systems[i]=root.transform.Find("AB_ParticleRoot/"+SlazeyaStormVisualController.ParticleNames[i]).GetComponent<ParticleSystem>();seeds[i]=new HashSet<uint>();
+                    Require(systems[i].main.maxParticles==capacities[i],"native capacity "+systems[i].name);
+                }
+                Require(systems[3].randomSeed==2125u&&systems[7].randomSeed==2017u,"capacity-independent original native seeds 2125/2017");
+                for(int i=0;i<93;i++)driver.Advance(1f/60f);
+                Require(driver.TriggerBurst()&&!driver.TriggerBurst(),"one burst per fresh instance");
+                for(int step=0;step<=hz*1.25f;step++)
+                {
+                    if(step>0)driver.Advance(1f/hz);
+                    maximumAlive=Mathf.Max(maximumAlive,driver.AliveParticles);
+                    for(int i=0;i<8;i++)
+                    {
+                        var buffer=new ParticleSystem.Particle[capacities[i]];int count=systems[i].GetParticles(buffer);
+                        if(i!=6&&count>=capacities[i])throw new Exception("Dynamic pool saturated: "+systems[i].name);
+                        for(int j=0;j<count;j++)seeds[i].Add(buffer[j].randomSeed);
+                        csv.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0},{1},{2:F6},{3},{4},{5},{6}",hz,cycle,driver.BurstAge,systems[i].name,count,capacities[i],seeds[i].Count));
+                    }
+                    if(step==(int)(hz*0.8f))Require(systems[2].particleCount==0&&systems[7].particleCount==0,"B+.8 has no wide sheets or waterfall streaks");
+                }
+                int firstSheets=0,secondSheets=0,firstDrops=0,secondDrops=0,satellites=0;
+                foreach(uint seed in seeds[2]){if(seed<10000)firstSheets++;else secondSheets++;}
+                foreach(uint seed in seeds[3]){if(seed<9301)firstDrops++;else if(seed<10000)satellites++;else secondDrops++;}
+                summary.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0},{1},{2},{3},{4},{5},{6},{7},{8}",hz,cycle,firstSheets,firstDrops,secondSheets,secondDrops,seeds[7].Count,satellites,maximumAlive));
+                Require(firstSheets==7&&firstDrops==90,"unchanged initial 14-sector 7 sheets / 90 drops");
+                Require(secondSheets==10&&secondDrops==56,"new 14-sector 10 sheets / 56 drops");
+                Require(seeds[7].Count==112&&satellites==112,"four 8/8/8/4 waterfalls and 112 satellite drops");
+                Require(maximumAlive<=640,"native peak <=640, observed "+maximumAlive);
+                Require(driver.IsComplete&&driver.AliveParticles==0,"fresh instance clears at tail end");
+                foreach(var r in root.GetComponentsInChildren<Renderer>())Require(!r.enabled,"tail renderer off "+r.name);
+                driver.Dispose();driver.Dispose();Require(!driver.TriggerBurst(),"disposed instance cannot replay");
+            }
+            Object.DestroyImmediate(root);
+        }
+        File.WriteAllText(Path.Combine(PreviewDirectory(),"native-burst-counts.csv"),csv.ToString());
+        File.WriteAllText(Path.Combine(PreviewDirectory(),"native-burst-summary.csv"),summary.ToString());
+        var staleRoot=Object.Instantiate(prefab);
+        using(var driver=new SlazeyaStormVisualController(staleRoot,SlazeyaStormVisualController.FitFootprint(Feet,H,PreviewBodies(Feet,H))))
+        {
+            driver.Advance(1.55f);driver.TriggerBurst();driver.Advance(0.31f);driver.Advance(0.01f);
+            foreach(var ps in staleRoot.GetComponentsInChildren<ParticleSystem>())
+            {
+                var buffer=new ParticleSystem.Particle[ps.main.maxParticles];int count=ps.GetParticles(buffer);
+                if(ps.name=="WaterfallStreaks")Require(count==0,"missed waterfall window consumed without late emission");
+                if(ps.name=="BurstSheets"||ps.name=="BurstDroplets")for(int i=0;i<count;i++)Require(buffer[i].randomSeed<10000,"missed second sector window consumed without late emission");
+            }
+        }
+        Object.DestroyImmediate(staleRoot);
+    }
+    private static void VerifyGpuWavefront()
+    {
+        // Compile the exact production CGINCLUDE, replacing only the diagnostic output pass.
+        string flow=File.ReadAllText(Path.Combine(Application.dataPath,"Shaders/SlazeyaStormFlow.shader"));
+        int start=flow.IndexOf("CGINCLUDE",StringComparison.Ordinal)+9,end=flow.IndexOf("ENDCG",start,StringComparison.Ordinal);
+        string probe="Shader \"Hidden/SlazeyaBurstFrontProbe\" { SubShader { Pass { ZTest Always Cull Off ZWrite Off\nCGPROGRAM\n#pragma target 3.0\n#pragma vertex vert_img\n#pragma fragment ProbeFrag\n"+flow.Substring(start,end-start)+"\nfloat4 ProbeFrag(v2f_img i):SV_Target{return float4(RingPoint(i.uv),1);}\nENDCG\n} } }";
+        probe=probe.Replace("\r\n","\n");
+        const string path="Assets/Editor/SlazeyaBurstFrontProbe.shader";
+        Require(!File.Exists(path),"temporary GPU probe path unused");File.WriteAllText(path,probe);
+        Material material=null;RenderTexture rt=null;Texture2D pixels=null;RenderTexture previous=RenderTexture.active;
+        try
+        {
+            AssetDatabase.ImportAsset(path,ImportAssetOptions.ForceSynchronousImport);
+            Shader shader=AssetDatabase.LoadAssetAtPath<Shader>(path);
+            if(shader!=null)foreach(var message in ShaderUtil.GetShaderMessages(shader))Debug.Log("GPU_PROBE_DIAGNOSTIC "+message.message+" line="+message.line);
+            Require(shader!=null&&!ShaderUtil.ShaderHasError(shader),"production Flow GPU probe compiles");
+            material=new Material(shader);var f=SlazeyaStormVisualController.FitFootprint(Feet,H,PreviewBodies(Feet,H));
+            material.SetVector("_Radii",f.EnvelopeRadii);material.SetFloat("_Height",H);material.SetFloat("_Ground",f.GroundY-f.EnvelopeCenter.y);material.SetFloat("_CoreRadius",H*0.06f);
+            rt=new RenderTexture(64,9,0,RenderTextureFormat.ARGBFloat,RenderTextureReadWrite.Linear);pixels=new Texture2D(64,9,TextureFormat.RGBAFloat,false,true);
+            var csv=new StringBuilder("burst_age,samples,max_cpu_gpu_world_error\n");
+            foreach(float age in new[]{0f,0.05f,7f/60f,0.25f,0.45f,0.8f})
+            {
+                material.SetFloat("_BurstAge",age);Graphics.Blit(Texture2D.blackTexture,rt,material);RenderTexture.active=rt;pixels.ReadPixels(new Rect(0,0,64,9),0,0);pixels.Apply();
+                Color[] values=pixels.GetPixels();float maximum=0;
+                for(int y=0;y<9;y++)for(int x=0;x<64;x++)
+                {
+                    Color value=values[y*64+x];Vector3 gpu=new Vector3(value.r,value.g,value.b)+f.EnvelopeCenter;
+                    RequireFinite(gpu,"GPU wave point");Vector3 cpu=SlazeyaStormVisualController.RingPoint(f,(x+0.5f)/64*Mathf.PI*2,(y+0.5f)/9,age);
+                    maximum=Mathf.Max(maximum,Vector3.Distance(cpu,gpu));
+                }
+                csv.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0:F6},576,{1:G9}",age,maximum));
+                Require(maximum<0.0001f*H,"actual GPU/CPU front agreement at B+"+age+" error="+maximum);
+            }
+            File.WriteAllText(Path.Combine(PreviewDirectory(),"native-cpu-gpu-wavefront.csv"),csv.ToString());
+        }
+        finally
+        {
+            RenderTexture.active=previous;if(material!=null)Object.DestroyImmediate(material);if(rt!=null)Object.DestroyImmediate(rt);if(pixels!=null)Object.DestroyImmediate(pixels);AssetDatabase.DeleteAsset(path);
+        }
+    }
     private static void VerifyController(GameObject prefab)
     {
         var footprint=SlazeyaStormVisualController.FitFootprint(Feet,H,PreviewBodies(Feet,H));
@@ -1042,8 +1238,15 @@ public static class SlazeyaStormMassBundleBuilder
     }
     private static void CaptureSet(GameObject prefab,string output,string label,bool stage)
     {
+        bool streakFramesOnly=Argument("-streakFramesOnly")=="true";
         string sequence=Path.Combine(output,label+"_sequence"),peak=Path.Combine(output,label+"_peak60"),cloudMotion=Path.Combine(output,label+"_cloud60");
         Directory.CreateDirectory(sequence);Directory.CreateDirectory(peak);Directory.CreateDirectory(cloudMotion);
+        string comparison=Path.Combine(output,"fixed-comparison"),shake=Path.Combine(output,"camera-approximation_sequence");
+        Directory.CreateDirectory(comparison);
+        bool shakeIllustration=stage&&Argument("-cameraApproximation")=="true";
+        if(shakeIllustration)Directory.CreateDirectory(shake);
+        var comparisonTrace=new StringBuilder("file,requested_burst_age,sampled_burst_age,driver_burst_age,alive_particles,sheets,drops,streaks\n");
+        var shakeTrace=new StringBuilder("frame,scaled_time,burst_age,pixel_offset_x,pixel_offset_y\n");
         GameObject scenery=CreateStage(stage);Camera camera=CreateCamera(stage);
         var rt=new RenderTexture(1280,720,24,RenderTextureFormat.ARGB32){antiAliasing=4};
         var pixels=new Texture2D(1280,720,TextureFormat.RGB24,false);camera.targetTexture=rt;
@@ -1061,19 +1264,49 @@ public static class SlazeyaStormMassBundleBuilder
                 trace.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0:F4},{1:F4},{2:F4},{3:F4},{4:F4},{5:F4},{6},{7:F4},{8},{9},{10}",time,burstAge,controller.BurstAge,controller.Phase,controller.FoamGather,controller.RadiusRatio,controller.AliveParticles,controller.LightningEnergy,controller.GatherReady,controller.BurstTriggered,controller.IsComplete));
                 if(burstAge>0.155f||(burstAge>0.055f&&burstAge<0.095f))
                     if(controller.LightningEnergy>0.001f)throw new Exception("Lightning escaped finite pulse windows");
-                bool sample=nextSample<SampleNames.Length&&(nextSample<GatherSamples.Length?time+0.0001f>=GatherSamples[nextSample]:burstAge+0.0001f>=BurstSamples[nextSample-GatherSamples.Length]);
+                bool sample=!streakFramesOnly&&nextSample<SampleNames.Length&&(nextSample<GatherSamples.Length?time+0.0001f>=GatherSamples[nextSample]:burstAge+0.0001f>=BurstSamples[nextSample-GatherSamples.Length]);
                 bool peakFrame=step>=CallbackStep-1&&step<=CallbackStep+14;
-                if(step%2==0||sample||peakFrame||(step>=32&&step<=34))
+                int relativeStep=step-CallbackStep;
+                bool compareFrame=relativeStep==3||relativeStep==7||relativeStep==15||relativeStep==21||relativeStep==27||relativeStep==48;
+                if(compareFrame||(!streakFramesOnly&&(step%2==0||sample||peakFrame||(step>=32&&step<=34))))
                 {
                     byte[] png=Render(camera,rt,pixels);
                     if(step==CallbackStep)VerifyCorePixels(root,camera,rt,pixels,controller,label);
-                    if(step%2==0)File.WriteAllBytes(Path.Combine(sequence,"frame_"+(frame++).ToString("D4")+".png"),png);
+                    if(!streakFramesOnly&&step%2==0)
+                    {
+                        string frameName="frame_"+frame.ToString("D4")+".png";
+                        File.WriteAllBytes(Path.Combine(sequence,frameName),png);
+                        if(shakeIllustration)
+                        {
+                            float dx=0,dy=0;byte[] offsetPng=png;Vector3 fixedPosition=camera.transform.position;
+                            if(burstAge>=0&&burstAge<0.25f)
+                            {
+                                float envelope=1-burstAge/0.25f;dx=20*envelope*Mathf.Cos(65*burstAge);dy=10*envelope*Mathf.Sin(65*burstAge);
+                                try {camera.transform.position=fixedPosition-(camera.transform.right*dx+camera.transform.up*dy)*(camera.orthographicSize*2/720);offsetPng=Render(camera,rt,pixels);}
+                                finally {camera.transform.position=fixedPosition;}
+                            }
+                            File.WriteAllBytes(Path.Combine(shake,frameName),offsetPng);
+                            shakeTrace.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0},{1:F6},{2:F6},{3:F6},{4:F6}",frame,time,burstAge,dx,dy));
+                        }
+                        frame++;
+                    }
+                    if(compareFrame)
+                    {
+                        string name=label+"_B"+relativeStep.ToString("D2")+".png";
+                        File.WriteAllBytes(Path.Combine(comparison,name),png);
+                        float requested=relativeStep==7?0.12f:relativeStep/60f;
+                        int sheets=root.transform.Find("AB_ParticleRoot/BurstSheets").GetComponent<ParticleSystem>().particleCount;
+                        int drops=root.transform.Find("AB_ParticleRoot/BurstDroplets").GetComponent<ParticleSystem>().particleCount;
+                        int streaks=root.transform.Find("AB_ParticleRoot/WaterfallStreaks").GetComponent<ParticleSystem>().particleCount;
+                        comparisonTrace.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0},{1:F6},{2:F6},{3:F6},{4},{5},{6},{7}",name,requested,relativeStep/60f,controller.BurstAge,controller.AliveParticles,sheets,drops,streaks));
+                        if(stage&&(relativeStep==15||relativeStep==21||relativeStep==27))InspectStreakMesh(root,camera,output,relativeStep);
+                    }
                     if(step>=32&&step<=34)File.WriteAllBytes(Path.Combine(cloudMotion,"frame_"+(step-32).ToString("D3")+".png"),png);
                     if(peakFrame)File.WriteAllBytes(Path.Combine(peak,"frame_"+(step-CallbackStep+1).ToString("D3")+".png"),png);
                     if(sample)
                     {
                         string name=label+"_"+SampleNames[nextSample];File.WriteAllBytes(Path.Combine(output,name+".png"),png);
-                        if(label=="black")ActualSampleTimes.Add(time);
+                        if(label=="black"||Argument("-baselineBundle")!=null)ActualSampleTimes.Add(time);
                         Debug.Log("Native R5 "+name+" t="+time+" B="+burstAge+" particles="+controller.AliveParticles);
                         if(SampleNames[nextSample]=="01_cloud_ring"||SampleNames[nextSample]=="02_cloud_swirl"||SampleNames[nextSample]=="03b_core_peak"||SampleNames[nextSample]=="06_waterfall_B14")
                         {
@@ -1086,11 +1319,38 @@ public static class SlazeyaStormMassBundleBuilder
                     }
                 }
             }
-            Require(nextSample==SampleNames.Length,"all actual callback-relative representative frames "+label);
+            Require(streakFramesOnly||nextSample==SampleNames.Length,"all actual callback-relative representative frames "+label);
             Require(controller.IsComplete&&maximumAlive>0,"finite native sequence "+label+" maximumAlive="+maximumAlive);
         }
         File.WriteAllText(Path.Combine(output,label+"_timeline.csv"),trace.ToString());
+        File.WriteAllText(Path.Combine(comparison,label+"-samples.csv"),comparisonTrace.ToString());
+        if(shakeIllustration)
+        {
+            File.WriteAllText(Path.Combine(output,"camera-approximation-offsets.csv"),shakeTrace.ToString());
+            File.WriteAllText(Path.Combine(output,"camera-approximation.txt"),"camera approximation; not native game EarthQuake shader\nSeparate native preview-camera translation only; fixed A/B frames retain the original pose. Duration .25 scaled seconds from B; 1280x720; dx=20*(1-B/.25)*cos(65*B), dy=10*(1-B/.25)*sin(65*B) pixels; zero outside [0,.25). World offset = -(camera.right*dx + camera.up*dy)*(2*13.8/720). Pose restored immediately after each render; simulation is never advanced for this pass. Game API parameters and actual EarthQuake output are NOT inferred from this illustration.\n");
+        }
         Object.DestroyImmediate(root);camera.targetTexture=null;Object.DestroyImmediate(camera.gameObject);Object.DestroyImmediate(scenery);Object.DestroyImmediate(rt);Object.DestroyImmediate(pixels);
+    }
+    private static void InspectStreakMesh(GameObject root,Camera camera,string output,int step)
+    {
+        var ps=root.transform.Find("AB_ParticleRoot/WaterfallStreaks").GetComponent<ParticleSystem>();
+        var renderer=ps.GetComponent<ParticleSystemRenderer>();var mesh=new Mesh();renderer.BakeMesh(mesh,camera,false);
+        Vector3[] vertices=mesh.vertices;var uv=new List<Vector4>();mesh.GetUVs(0,uv);
+        Require(vertices.Length==ps.particleCount*4&&uv.Count==vertices.Length,"native streak quad and packed UV/age stream");
+        var data=new StringBuilder("quad,length_world,width_world,age_percent,stable_random,atlas_frame\n");
+        for(int i=0;i<vertices.Length;i+=4)
+            data.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0},{1:G9},{2:G9},{3:G9},{4:G9},{5:G9}",i/4,(vertices[i+1]-vertices[i]).magnitude,(vertices[i+2]-vertices[i+1]).magnitude,uv[i].z,uv[i].w,Mathf.Clamp01(uv[i].z)*15));
+        File.WriteAllText(Path.Combine(output,"native-streak-mesh-B"+step.ToString("D2")+".csv"),data.ToString());
+        var particles=new ParticleSystem.Particle[ps.main.maxParticles];int count=ps.GetParticles(particles);int longFlows=0;
+        data=new StringBuilder("seed,size_x_width,size_y_length,start_lifetime,remaining_lifetime,long_flow\n");
+        for(int i=0;i<count;i++)
+        {
+            var p=particles[i];Vector3 size=p.GetCurrentSize3D(ps);bool longFlow=size.y>size.x*0.5f;if(longFlow)longFlows++;
+            data.AppendLine(string.Format(CultureInfo.InvariantCulture,"{0},{1:G9},{2:G9},{3:G9},{4:G9},{5}",p.randomSeed,size.x,size.y,p.startLifetime,p.remainingLifetime,longFlow));
+        }
+        if(step==15)Require(count==112&&longFlows==32,"native birth population 32 long / 80 short streaks");
+        Require(renderer.sharedMaterial.GetVector("_Grid")==new Vector4(4,4,1,0),"streaks retain original 16-frame animated foam atlas");
+        File.WriteAllText(Path.Combine(output,"native-streak-particles-B"+step.ToString("D2")+".csv"),data.ToString());Object.DestroyImmediate(mesh);
     }
     private static void VerifyCorePixels(GameObject root,Camera camera,RenderTexture rt,Texture2D pixels,SlazeyaStormVisualController controller,string label)
     {
@@ -1187,6 +1447,11 @@ public static class SlazeyaStormMassBundleBuilder
         var manifest=new Manifest{unityVersion=Application.unityVersion,graphicsDevice=SystemInfo.graphicsDeviceName,colorSpace=QualitySettings.activeColorSpace.ToString(),
             bundle=bundle,bundleSha256=Digest(bundle),controllerSha256=Digest(Path.Combine(Application.dataPath,"Scripts/SlazeyaStormVisualController.cs")),callbackTime=ActualCallbackTime,
             representativeTimes=ActualSampleTimes.ToArray(),textureSha256=TextureHashes.ToArray(),footprint=SlazeyaStormVisualController.FitFootprint(Feet,H,PreviewBodies(Feet,H))};
+        if(Argument("-streakFramesOnly")=="true")
+        {
+            manifest.representativeFiles=new string[0];manifest.representativeTimes=new float[0];
+            manifest.source+="; sparse fixed-comparison frames only, see battlefield-samples.csv; full sequence not exported";
+        }
         File.WriteAllText(Path.Combine(output,"manifest.json"),JsonUtility.ToJson(manifest,true));
     }
     private static string PreviewDirectory()

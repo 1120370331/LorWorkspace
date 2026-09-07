@@ -13,7 +13,7 @@ public sealed class SlazeyaStormVisualController : IDisposable
     public const string CloudShaderName="Steria/SlazeyaStormCloud";
     public const string ParticleShaderName="Steria/SlazeyaStormParticles";
     public const string LightningShaderName="Steria/SlazeyaStormLightning";
-    public const string Version="2026-09-06.cloud-inflow.1";
+    public const string Version="2026-09-07.burst-abundance.2";
     public const float GatherDuration = 1.35f;
     public const float TailDuration = 1.20f;
     public const int SectorCount=14;
@@ -135,9 +135,9 @@ public sealed class SlazeyaStormVisualController : IDisposable
         float progress=Out(burstAge/0.25f);Vector2 section=new Vector2(f.EnvelopeRadii.x,f.EnvelopeRadii.z);
         float strength=RingLobes(theta),fall=Mathf.Max(0,burstAge-0.12f);
         float side=1-0.68f*Mathf.Pow(Mathf.Max(0,Mathf.Cos(theta)),6);
-        float width=0.10f+0.39f*strength+0.02f*Mathf.Sin(theta*11);
+        float width=0.11f+0.45f*strength+0.02f*Mathf.Sin(theta*11);
         float radius=1+progress*(0.025f+q*width)*side+fall*0.10f*side;
-        float crest=0.18f*strength*Mathf.Sin(q*Mathf.PI);
+        float crest=0.20f*strength*Mathf.Sin(q*Mathf.PI);
         float y=f.EnvelopeCenter.y+f.Height*progress*(crest-0.53f*Mathf.Pow(q,1.25f)-0.11f*(1-strength));
         y-=f.Height*(fall*fall*(2.8f+2*q)+Ease((burstAge-0.27f)/0.30f)*0.16f);
         y+=f.Height*0.030f*progress*Mathf.Sin(theta*23+q*9-burstAge*12)*Mathf.Sin(q*Mathf.PI);
@@ -176,7 +176,8 @@ public sealed class SlazeyaStormVisualController : IDisposable
     private readonly ParticleSystem.Particle[] _foamParcels=new ParticleSystem.Particle[168];
     private readonly MaterialPropertyBlock _block=new MaterialPropertyBlock();
     private readonly bool[] _boltAnchored=new bool[2],_jetReleased=new bool[SectorCount];
-    private readonly bool[] _waterfallReleased=new bool[3];
+    private readonly bool[] _secondJetReleased=new bool[SectorCount];
+    private readonly bool[] _waterfallReleased=new bool[4];
     private float _phase,_burstAge,_burstPhase,_capturedGather,_collapsePhase;
     private float _cloudSourcePhase,_burstCloudSourcePhase;
     private bool _collapseStarted;
@@ -244,7 +245,8 @@ public sealed class SlazeyaStormVisualController : IDisposable
             if(BurstTriggered)
             {
                 for(int i=0;i<SectorCount;i++)if(!_jetReleased[i]&&_burstAge>=0.02f+0.025f*Hash(i,4)){_jetReleased[i]=true;if(_burstAge<0.16f)EmitSector(i);}
-                for(int i=0;i<3;i++)if(!_waterfallReleased[i]&&_burstAge>=0.06f+i*0.09f){_waterfallReleased[i]=true;if(_burstAge<0.36f)EmitWaterfallStreaks(i);}
+                for(int i=0;i<SectorCount;i++)if(!_secondJetReleased[i]&&_burstAge>=0.07f+0.025f*Hash(i,41)){_secondJetReleased[i]=true;if(_burstAge<0.16f)EmitSecondSector(i);}
+                for(int i=0;i<_waterfallReleased.Length;i++)if(!_waterfallReleased[i]&&_burstAge>=0.06f+i*0.06f){_waterfallReleased[i]=true;if(_burstAge<0.30f)EmitWaterfallStreaks(i);}
                 if(!_primaryLiftReleased&&_burstAge>=0.04f){_primaryLiftReleased=true;if(_burstAge<0.18f)EmitMist(5,12,0);}
                 if(!_secondaryLiftReleased&&_burstAge>=0.11f){_secondaryLiftReleased=true;if(_burstAge<0.24f)EmitMist(5,8,1);}
                 if(!_primaryReturnReleased&&_burstAge>=0.36f){_primaryReturnReleased=true;if(_burstAge<0.6f)EmitMist(4,12,0);}
@@ -522,26 +524,51 @@ public sealed class SlazeyaStormVisualController : IDisposable
         int droplets=3+Mathf.RoundToInt(strength*9);
         for(int j=0;j<droplets;j++)EmitSpray(3,sector*12+j,angle+(Hash(j,sector+1)-0.5f)*0.26f);
     }
+    private void EmitSecondSector(int sector)
+    {
+        float angle=(sector+0.5f)/SectorCount*Mathf.PI*2,strength=RingLobes(angle);
+        // Separate indices preserve every first-batch hash and native particle random seed.
+        int seed=10000+sector*32;
+        if(strength>0.12f)EmitSpray(2,seed,angle,true);
+        int droplets=2+Mathf.RoundToInt(strength*5);
+        for(int j=0;j<droplets;j++)EmitSpray(3,seed+16+j,angle+(Hash(seed+j,42)-0.5f)*0.26f,true);
+    }
     private void EmitWaterfallStreaks(int batch)
     {
         float[] centers={2.25f,3.72f,5.10f,0.70f};
-        for(int lobe=0;lobe<centers.Length;lobe++)for(int j=0;j<(lobe==3?3:6);j++)
+        float[] spans={0.72f,0.54f,0.54f,0.44f};
+        for(int lobe=0;lobe<centers.Length;lobe++)for(int j=0;j<(lobe==3?4:8);j++)
         {
-            int seed=batch*31+lobe*7+j;float h=_f.Height;
-            float theta=centers[lobe]+(Hash(seed,71)-0.5f)*(lobe==0?0.64f:0.48f);
-            float q=0.28f+0.43f*Hash(seed,72),side=1-0.60f*Mathf.Pow(Mathf.Max(0,Mathf.Cos(theta)),6);
+            int seed=batch*64+lobe*12+j,count=lobe==3?4:8;float h=_f.Height;
+            float theta=centers[lobe]+((j+Hash(seed,71))/count-0.5f)*spans[lobe];
+            float q=0.22f+0.55f*Hash(seed,72),side=1-0.60f*Mathf.Pow(Mathf.Max(0,Mathf.Cos(theta)),6);
             Vector3 n=RingNormal(_f,theta),t=RingTangent(_f,theta);
             Vector3 p=RingPoint(_f,theta,q,_burstAge)-_f.Center+Vector3.up*h*0.025f*Propagation;
             Vector3 velocity=WaveVelocity(theta,q)*0.35f+h*Propagation*(n*(1.6f+Hash(seed,73)*1.2f)*side+t*0.12f-Vector3.up*(0.8f+Hash(seed,74)*0.9f));
-            var emit=new ParticleSystem.EmitParams{position=p,velocity=velocity,startLifetime=0.28f+0.10f*Hash(seed,75),
-                startSize=h*(0.075f+0.07f*Hash(seed,76))*Propagation,startColor=Color.white,randomSeed=(uint)(seed+9301)};
-            _particles[7].Emit(emit,1);
+            var emit=new ParticleSystem.EmitParams{position=p,velocity=velocity,startLifetime=0.32f+0.10f*Hash(seed,75),
+                startSize=h*(0.080f+0.075f*Hash(seed,76))*Propagation,startColor=Color.white,randomSeed=(uint)(seed+9301)};
+            // Native Stretch uses X for width, Y for longitudinal size; verified with BakeMesh.
+            // 32 of 112 are coherent long flows. The other 80 keep broad, short foam bodies.
+            int longCount=lobe==3?1:((batch+lobe)%3==0?3:2);
+            bool longFlow=(j*5+batch*3+lobe*2)%count<longCount;
+            float streakQ=Mathf.Clamp01(q+(Hash(seed,83)-0.5f)*0.18f);
+            var streak=emit;
+            streak.position=RingPoint(_f,theta,streakQ,_burstAge)-_f.Center+Vector3.up*h*Propagation*(Hash(seed,84)-0.5f)*0.10f;
+            streak.position=new Vector3(streak.position.x,Mathf.Max(_f.GroundY-_f.Center.y+0.015f*h,streak.position.y),streak.position.z);
+            streak.velocity=WaveVelocity(theta,streakQ)*(longFlow?0.30f:0.16f)+h*Propagation*(
+                n*(longFlow?1.4f+0.9f*Hash(seed,73):0.45f+1.1f*Hash(seed,73))*side+
+                t*(Hash(seed,85)-0.5f)*(longFlow?1.0f:2.1f)-
+                Vector3.up*(longFlow?0.9f+0.7f*Hash(seed,74):0.35f+1.55f*Hash(seed,74)));
+            float width=h*Propagation*(longFlow?0.065f+0.045f*Hash(seed,86):0.090f+0.065f*Hash(seed,86));
+            float length=h*Propagation*(longFlow?0.105f+0.070f*Hash(seed,87):0.014f+0.030f*Hash(seed,87));
+            streak.startSize3D=new Vector3(width,length,1);
+            _particles[7].Emit(streak,1);
             // Small detached droplets share the falling tongue's actual position and momentum.
             emit.startSize=h*(0.020f+0.025f*Hash(seed,77))*Propagation;emit.startLifetime=0.30f+0.12f*Hash(seed,78);
             _particles[3].Emit(emit,1);
         }
     }
-    private void EmitSpray(int system,int index,float theta)
+    private void EmitSpray(int system,int index,float theta,bool second=false)
     {
         float h=_f.Height;Vector3 n=RingNormal(_f,theta),t=RingTangent(_f,theta);
         float q=0.28f+0.45f*Hash(index,3);
@@ -551,6 +578,12 @@ public sealed class SlazeyaStormVisualController : IDisposable
         float tilt=Mathf.Atan2(velocity.y*0.916f+velocity.z*0.402f,velocity.x)*Mathf.Rad2Deg-(system==2?55f:90f);
         var emit=new ParticleSystem.EmitParams{position=p,velocity=velocity,startLifetime=system==1?0.35f:system==2?0.32f+Hash(index,8)*0.24f:0.50f+Hash(index,9)*0.32f,
             startSize=h*(BurstTriggered?Mathf.Lerp(0.025f,system==2?0.48f+Hash(index,10)*0.35f:0.035f+Hash(index,11)*0.065f,Propagation):0.035f),startColor=Color.white,rotation=tilt+(Hash(index,12)-0.5f)*20,randomSeed=(uint)(index+101+system*1031)};
+        if(second)
+        {
+            emit.startLifetime=system==2?0.32f+0.12f*Hash(index,8):0.38f+0.16f*Hash(index,9);
+            emit.startSize=h*Mathf.Lerp(0.025f,system==2?0.42f+0.24f*Hash(index,10):0.035f+0.055f*Hash(index,11),Propagation);
+            if(system==2&&RingLobes(theta)<=0.25f)emit.startSize*=0.70f;
+        }
         _particles[system].Emit(emit,1);
     }
     private void EmitMist(int system,int count,int batch)

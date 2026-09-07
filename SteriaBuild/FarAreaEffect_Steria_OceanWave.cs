@@ -15,6 +15,7 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
     private SlazeyaStormAudioController _audio;
     private GameObject _instance;
     private bool _burstTriggered;
+    private bool _hasValidRecipients;
     private bool _managerOwned;
     private BattlePlayingCardDataInUnitModel _originCard;
 
@@ -23,6 +24,7 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
         base.Init(self, args);
         isRunning = true;
         _burstTriggered = false;
+        _hasValidRecipients = false;
         _originCard = self == null ? null : self.currentDiceAction;
         var manager = Singleton<BattleFarAreaPlayManager>.Instance;
         _managerOwned = manager != null && manager.attacker == self;
@@ -31,6 +33,7 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
         try
         {
             List<BattleUnitModel> recipients = FindRecipients(self);
+            _hasValidRecipients = recipients.Count > 0;
             if (recipients.Count > 0) audioPosition = recipients[0].view.WorldPosition;
             float height = RepresentativeHeight(recipients, self);
             if (recipients.Count > 0 && height <= 0f)
@@ -85,21 +88,40 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
     public override void GiveDamageFromManager(List<BattleUnitModel> damagedUnitList)
     {
         if (_isDoneEffect || _burstTriggered) return;
+        if (OwnerEnded())
+        {
+            Complete();
+            return;
+        }
         _burstTriggered = true; // Empty lists (all defenses) still burst exactly once.
         if (_visual != null) _visual.TriggerBurst();
         if (_audio != null) _audio.TriggerBurst();
+        if (_hasValidRecipients)
+        {
+            try
+            {
+                var camera = SingletonBehavior<BattleCamManager>.Instance;
+                // The game owns the quake's duration, restoration and stronger-shake handling.
+                if (camera != null) camera.ShakeCam(65f, .022f, .016f);
+            }
+            catch (Exception ex) { SteriaLogger.Log("SlazeyaStormMass impact shake unavailable: " + ex.Message); }
+        }
+    }
+
+    private bool OwnerEnded()
+    {
+        // Manager can enter End without a damage callback when its attacker is disabled.
+        var manager = Singleton<BattleFarAreaPlayManager>.Instance;
+        return _self == null || _self.IsDead() || _self.IsExtinction()
+            || _self.IsBreakLifeZero() || _self.IsKnockout()
+            || (_originCard != null && _self.currentDiceAction != _originCard)
+            || (_managerOwned && (manager == null || !manager.isRunning || manager.attacker != _self));
     }
 
     protected override void Update()
     {
         if (_isDoneEffect || _visual == null) return;
-        // Manager can enter End without a damage callback when its attacker is disabled.
-        var manager = Singleton<BattleFarAreaPlayManager>.Instance;
-        bool cancelled = _self == null || _self.IsDead() || _self.IsExtinction()
-            || _self.IsBreakLifeZero() || _self.IsKnockout()
-            || (_originCard != null && _self.currentDiceAction != _originCard)
-            || (_managerOwned && (manager == null || !manager.isRunning || manager.attacker != _self));
-        if (cancelled || (!_burstTriggered && _visual.Elapsed >= SlazeyaStormVisualController.GatherDuration + CallbackWatchdog))
+        if (OwnerEnded() || (!_burstTriggered && _visual.Elapsed >= SlazeyaStormVisualController.GatherDuration + CallbackWatchdog))
         {
             SteriaLogger.Log("SlazeyaStormMass cancelled: owner ended or callback wait expired; no synthetic burst.");
             Complete();

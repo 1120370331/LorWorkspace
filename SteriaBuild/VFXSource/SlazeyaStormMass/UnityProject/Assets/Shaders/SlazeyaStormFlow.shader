@@ -55,9 +55,9 @@ Shader "Steria/SlazeyaStormFlow"
    float theta=uv.x*6.283185307,q=uv.y,progress=outCurve(_BurstAge/0.25);
    float strength=ringLobes(theta),fall=max(0,_BurstAge-0.12);
    float side=1-0.68*pow(max(0,cos(theta)),6);
-   float width=0.10+0.39*strength+0.02*sin(theta*11);
+   float width=0.11+0.45*strength+0.02*sin(theta*11);
    float2 radius=bandSection()*(1+progress*(0.025+q*width)*side+fall*0.10*side);
-   float crest=0.18*strength*sin(q*3.14159265);
+   float crest=0.20*strength*sin(q*3.14159265);
    float y=_Height*progress*(crest-0.53*pow(q,1.25)-0.11*(1-strength));
    y-=_Height*(fall*fall*(2.8+2*q)+ease((_BurstAge-0.27)/0.30)*0.16);
    y+=_Height*0.030*progress*sin(theta*23+q*9-_BurstAge*12)*sin(q*3.14159265);
@@ -163,7 +163,7 @@ Shader "Steria/SlazeyaStormFlow"
    {
     float release=ease((_BurstAge-0.04)/0.10),late=ease((_BurstAge-0.24)/0.18);
     float tongues=smoothstep(0.19,0.55,ringStrength),bridges=0.30*(1-release);
-    float survival=1-ease((_BurstAge-0.22-0.12*ringStrength)/0.26);
+    float survival=1-ease((_BurstAge-0.24-0.12*ringStrength)/0.28);
     alpha=(0.50+foam*0.35)*max(bridges,tongues)*saturate(_BurstAge/0.045)*survival;
     float brokenFlow=0.5+0.22*sin(theta*31+flow.x*3+i.uv.y*0.7)+0.17*sin(theta*53+1.7)+0.11*sin(theta*17+i.uv.y*7);
     float outerEdge=0.53+0.39*ringStrength+0.13*(foamData.b-0.5)+0.06*sin(theta*23),innerEdge=0.02+late*(0.15+0.10*(1-ringStrength));

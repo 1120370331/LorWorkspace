@@ -1,7 +1,7 @@
-param([string]$UnityData = 'C:/Program Files/Unity/Editor/Data', [switch]$BakerContractOnly)
+param([string]$UnityData = 'C:/Program Files/Unity/Editor/Data', [switch]$BakerContractOnly, [string]$OutputDirectory)
 $ErrorActionPreference = 'Stop'
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
-$output = Join-Path $repo 'preview_exports/slazeya_storm_mass/round5'
+$output = if ($OutputDirectory) { [IO.Path]::GetFullPath($OutputDirectory) } else { Join-Path $repo ('preview_exports/slazeya_storm_mass/round6/source-compile-' + [Guid]::NewGuid().ToString('N')) }
 New-Item -ItemType Directory -Force -Path $output | Out-Null
 $managed = Join-Path $UnityData 'Managed'
 $framework = 'C:/Windows/Microsoft.NET/Framework64/v4.0.30319'
