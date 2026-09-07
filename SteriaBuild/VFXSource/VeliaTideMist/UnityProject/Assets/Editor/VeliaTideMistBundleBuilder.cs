@@ -29,8 +29,9 @@ public static class VeliaTideMistBundleBuilder
             Require(Application.unityVersion == "2019.3.15f1", "Exact Unity 2019.3.15f1 required");
             Require(SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Direct3D11, "Native D3D11 is required (no -nographics)");
             Material material = PrepareMaterial();
+            VerifyMirrorInput(material);
             VerifyDriver();
-            Export(material, Revision("first"));
+            Export(material, Revision("first"), false, PreviewMirrored());
             Debug.Log("VELIA_FIRST_NATIVE_PREVIEW_PASS");
         }
         catch (Exception ex) { Debug.LogException(ex); EditorApplication.Exit(1); }
@@ -58,21 +59,26 @@ public static class VeliaTideMistBundleBuilder
                 var material = bundle.LoadAsset<Material>(VeliaTideMistVisualController.MaterialName);
                 Require(material != null && material.shader.isSupported && material.GetTexture("_MistAtlas") != null && material.GetTexture("_CloudPlate") != null, "Material/shader/atlas/cloud readback");
                 var cloudReceipt = VerifyCloudTexture((Texture2D)material.GetTexture("_CloudPlate"));
+                VerifyMirrorInput(material);
                 VerifyDriver();
-                Export(material, Revision("reviewed"), true);
-                File.WriteAllText(Path.Combine(PreviewRoot(), Revision("reviewed"), "bundle-sha256.txt"), Digest(path) + "  " + path + "\n");
                 var texture=(Texture2D)material.GetTexture("_MistAtlas");
                 Require(texture.width==1024&&texture.height==1024,"Native atlas dimensions");
                 Require(manifest.GetAllDependencies(VeliaTideMistVisualController.BundleName).Length==0,"Self-contained material Bundle");
-                var receipt=new BundleReadbackReceipt {
-                    bundlePath=path,bundleSha256=Digest(path),explicitAssetNames=bundle.GetAllAssetNames(),
-                    materialName=material.name,shaderName=material.shader.name,shaderSupported=material.shader.isSupported,
-                    atlasWidth=texture.width,atlasHeight=texture.height,atlasFormat=texture.format.ToString(),
-                    atlasFilter=texture.filterMode.ToString(),atlasWrap=texture.wrapMode.ToString(),
-                    sourceAtlasSha256=Digest(Path.Combine(Repo(),MistSource)), cloudPlate=cloudReceipt,
-                    revision=Revision("reviewed")
-                };
-                File.WriteAllText(Path.Combine(PreviewRoot(),Revision("reviewed"),"bundle-readback.json"),JsonUtility.ToJson(receipt,true));
+                bool both=PreviewFacing()=="Both";
+                foreach(bool mirrored in both ? new[]{false,true} : new[]{PreviewMirrored()})
+                {
+                    string revision=Revision("reviewed")+(both ? (mirrored?"-player":"-enemy") : "");
+                    Export(material,revision,true,mirrored);
+                    File.WriteAllText(Path.Combine(PreviewRoot(),revision,"bundle-sha256.txt"),Digest(path)+"  "+path+"\n");
+                    var receipt=new BundleReadbackReceipt {
+                        bundlePath=path,bundleSha256=Digest(path),explicitAssetNames=bundle.GetAllAssetNames(),
+                        materialName=material.name,shaderName=material.shader.name,shaderSupported=material.shader.isSupported,
+                        atlasWidth=texture.width,atlasHeight=texture.height,atlasFormat=texture.format.ToString(),
+                        atlasFilter=texture.filterMode.ToString(),atlasWrap=texture.wrapMode.ToString(),
+                        sourceAtlasSha256=Digest(Path.Combine(Repo(),MistSource)),cloudPlate=cloudReceipt,revision=revision
+                    };
+                    File.WriteAllText(Path.Combine(PreviewRoot(),revision,"bundle-readback.json"),JsonUtility.ToJson(receipt,true));
+                }
             }
             finally { bundle.Unload(true); }
             Debug.Log("VELIA_BUNDLE_NATIVE_EXPORT_PASS");
@@ -96,6 +102,7 @@ public static class VeliaTideMistBundleBuilder
         material.SetTexture("_MistAtlas", mist);
         material.SetTexture("_CloudPlate", cloud);
         material.SetVector("_State", Vector4.zero);
+        material.SetFloat("_MirrorX", 0f);
         EditorUtility.SetDirty(material); AssetDatabase.SaveAssets();
         var allowed = new HashSet<string> { MaterialPath, "Assets/Shaders/VeliaTideMist.shader", "Assets/Textures/mist_density_lighting_4x4.png", CloudPath };
         string[] dependencies = AssetDatabase.GetDependencies(MaterialPath, true);
@@ -167,6 +174,36 @@ public static class VeliaTideMistBundleBuilder
             centralClearFraction=corridorClear/(float)corridor,lowerClearFraction=lowerClear/(float)lower,alphaMatchesSource=true};
     }
 
+    private static void VerifyMirrorInput(Material template)
+    {
+        // Native default/material readback, added before the production orientation change.
+        // Reflection lets the old controller compile so its missing contract fails at runtime.
+        var material=new Material(template.shader);
+        try
+        {
+            Require(material.HasProperty("_MirrorX")&&material.GetFloat("_MirrorX")==0,"Native shader defaults to unmirrored _MirrorX=0");
+            var setter=typeof(VeliaTideMistVisualController).GetMethod("SetMirrored",new[]{typeof(bool)});
+            var getter=typeof(VeliaTideMistVisualController).GetProperty("IsMirrored");
+            Require(setter!=null&&getter!=null,"Pure controller mirror contract exists");
+            var d=new VeliaTideMistVisualController();
+            Require(!(bool)getter.GetValue(d,null),"Controller defaults to unmirrored");
+            setter.Invoke(d,new object[]{true});d.BeginDice(0);d.Advance(.60f);
+            d.SetProtectionRects(new[]{Rect.MinMaxRect(.18f,.22f,.30f,.61f)});
+            d.TriggerPulse(new[]{new Vector2(.27f,.43f)});d.Advance(.30f);d.Apply(material,16f/9f);
+            Require(material.GetFloat("_MirrorX")==1&&(bool)getter.GetValue(d,null),"Mirrored controller reaches native material");
+            Require(material.GetVectorArray("_HitPoints")[0]==new Vector4(.27f,.43f,0,0),"Mirroring must not change projected hit coordinates");
+            Require(material.GetVectorArray("_ProtectionRects")[0]==new Vector4(.18f,.22f,.30f,.61f),"Mirroring must not change projected body bounds");
+            d.Advance(.75f);float elapsed=d.Elapsed;d.BeginDice(1);d.Apply(material,16f/9f);
+            Require(d.Elapsed==elapsed&&material.GetVector("_State").z==elapsed&&material.GetFloat("_MirrorX")==1,"BeginDice retains whole-card motion phase and facing");
+            Vector4 state=material.GetVector("_State");d.Advance(0);d.Apply(material,16f/9f);
+            Require(material.GetVector("_State")==state,"Paused apply does not advance beam clock");
+            setter.Invoke(d,new object[]{false});d.Apply(material,16f/9f);
+            Require(material.GetFloat("_MirrorX")==0,"Unmirrored value reaches native material");
+        }
+        finally {Object.DestroyImmediate(material);}
+        Debug.Log("VELIA_NATIVE_MIRROR_INPUT_PASS: default, native uniform, screen-space hits/bounds, inter-dice phase/facing, pause");
+    }
+
     private static void VerifyDriver()
     {
         VerifySustainedPulseSamples();
@@ -235,7 +272,7 @@ public static class VeliaTideMistBundleBuilder
         Debug.Log("VELIA_SUSTAINED_PULSE_SAMPLES_PASS: r7 early samples, .30/.48 hold, late tail, real shader age, local hit, pause, duplicates, cancel, endpoints");
     }
 
-    private static void Export(Material template, string revision, bool bundleReadback=false)
+    private static void Export(Material template, string revision, bool bundleReadback=false, bool mirrored=false)
     {
         string output = Path.Combine(PreviewRoot(), revision);
         Require(!Directory.Exists(output), "Use a unique preview revision; preserve previous review evidence: " + output);
@@ -253,9 +290,11 @@ public static class VeliaTideMistBundleBuilder
         var filter = camera.gameObject.AddComponent<VeliaTideMistScreenFilter>();
         var csv = new StringBuilder("frame,time,envelope,pulse,pulseCount,ready,pulseFinished,complete,hits\n");
         var hashes = new StringBuilder();
+        var rayProfiles = new StringBuilder("frame,time,dice,pulse,viewport_y,screen_x,radiance\n");
         try
         {
-            CreateStage(root, camera);
+            CreateStage(root, camera, mirrored);
+            driver.SetMirrored(mirrored);
             driver.SetProtectionRects(Protection.ToArray());
             filter.Initialize(driver,template);
             driver.BeginDice(0);
@@ -275,6 +314,15 @@ public static class VeliaTideMistBundleBuilder
                 string label=Label(frame);
                 if(label!=null) { string named=Path.Combine(output,label+".png"); File.WriteAllBytes(named,png); hashes.AppendLine(Digest(named)+"  "+label+".png"); Debug.Log("VELIA_NATIVE_FRAME "+named); }
                 if(frame==0) baseline=pixels.GetPixels32();
+                // Read the real rendered signal over both constant-brightness hold windows.
+                // No analytic beam centers, diagnostic shader or altered source scene.
+                bool firstHold=frame>=FirstCallbackFrame+11&&frame<=FirstCallbackFrame+28;
+                bool secondHold=frame>=SecondCallbackFrame+11&&frame<=SecondCallbackFrame+28;
+                if(firstHold||secondHold)
+                {
+                    Require(Mathf.Abs(driver.Pulse-(firstHold ? .42525f : .589568f))<.000002f,"Ray movement evidence must hold brightness constant");
+                    RecordRayProfiles(rayProfiles,frame,driver,pixels.GetPixels32(),baseline);
+                }
                 if(frame==CompleteFrame)
                 {
                     Color32[] complete=pixels.GetPixels32();
@@ -297,15 +345,22 @@ public static class VeliaTideMistBundleBuilder
             Color32[] released=pixels.GetPixels32(); int releaseDelta=0;
             for(int p=0;p<released.Length;p++) releaseDelta=Math.Max(releaseDelta,PixelDelta(baseline[p],released[p]));
             Require(releaseDelta<=1,"Release restores exact source frame");
-            nearWhiteNewMax=Math.Max(nearWhiteNewMax,ExportPropagation(template,filter,camera,rt,pixels,baseline,output));
+            nearWhiteNewMax=Math.Max(nearWhiteNewMax,ExportPropagation(template,filter,camera,rt,pixels,baseline,output,mirrored));
             File.WriteAllText(Path.Combine(output,"timing.csv"),csv.ToString());
             File.WriteAllText(Path.Combine(output,"frame-sha256.txt"),hashes.ToString());
+            File.WriteAllText(Path.Combine(output,"ray-profiles.csv"),rayProfiles.ToString());
+            File.WriteAllText(Path.Combine(output,"facing.json"),JsonUtility.ToJson(new FacingReceipt {
+                caster=mirrored ? "Player" : "Enemy",mirrored=mirrored,formationDirection="RIGHT (native proxy)",
+                casterWorldX=mirrored ? 5.1f : -5.1f,targetWorldX=mirrored ? new[]{-.9f,-5.1f} : new[]{.9f,5.1f},
+                hitScreenUV=Hits.ToArray(),protectionScreenRects=Protection.ToArray()
+            },true));
             File.WriteAllText(Path.Combine(output,"native-report.txt"),
                 (bundleReadback?"NATIVE_BUNDLE_READBACK_EXPORT: technical checks completed.\n":"FIRST_PREVIEW: source material native export.\n")+
                 "Revision="+revision+"\nIndependent visual acceptance=NOT DETERMINED BY EXPORT; main-thread review required.\n"+
+                "Caster="+(mirrored?"Player, right -> enemy left":"Enemy, left -> player right")+"\nMirrorX="+(mirrored?1:0)+"; source camera UV, hits, bounds and HUD remain in screen coordinates.\n"+
                 "Unity="+Application.unityVersion+"\nGPU="+SystemInfo.graphicsDeviceName+"\nAPI="+SystemInfo.graphicsDeviceType+"\nColorSpace="+QualitySettings.activeColorSpace+
                 "\nNative Camera.Render -> same VeliaTideMistScreenFilter.OnRenderImage -> Graphics.Blit\nMaterial origin="+(bundleReadback?"native AssetBundle.LoadFromFile / LoadAsset<Material>":"editor source material")+
-                "\nActual repository sprites, proxy gloomy stage and proxy numbers/UI; NOT actual game/HUD acceptance.\nBottom-left viewport origin; red TOP LEFT / cyan BOTTOM RIGHT markers are source orientation probes.\n"+FrameCount+" frames at "+FrameRate+"Hz; callbacks frame"+FirstCallbackFrame+" and"+SecondCallbackFrame+"; next dice Begin at"+SecondBeginFrame+"; Finish only after second pulse tail.\nAdditional exact pulse ages .10/.18/.30/.48/.60 seconds for each dice use fresh instances of the same driver, same scene and native filter.\nPulse first/second=.72/.77s; original 0..0.18, hold .18..48, remaining fall .24/.29s. Shared cloud/fold/shadow motion time slows to .65 after .32s intro; static beam geometry unchanged.\nMax additional near-white pixels (peaks + propagation samples)="+nearWhiteNewMax+"/"+(Width*Height)+"\nSource restore max 8-bit delta="+releaseDelta+"\nTemplate untouched; OnRenderImage has no clock advancement.\n");
+                "\nActual repository sprites, proxy gloomy stage and proxy numbers/UI; NOT actual game/HUD acceptance.\nBottom-left viewport origin; red TOP LEFT / cyan BOTTOM RIGHT markers are source orientation probes.\n"+FrameCount+" frames at "+FrameRate+"Hz; callbacks frame"+FirstCallbackFrame+" and"+SecondCallbackFrame+"; next dice Begin at"+SecondBeginFrame+"; Finish only after second pulse tail.\nAdditional exact pulse ages .10/.18/.30/.48/.60 seconds for each dice use fresh instances of the same driver, same scene and native filter.\nPulse first/second=.72/.77s; original 0..0.18, hold .18..48, remaining fall .24/.29s. Shared cloud/fold/shadow motion time slows to .65 after .32s intro; beam angles oscillate on whole-card elapsed with approved 3.6s period; width/spread/strength unchanged.\nMax additional near-white pixels (peaks + propagation samples)="+nearWhiteNewMax+"/"+(Width*Height)+"\nSource restore max 8-bit delta="+releaseDelta+"\nTemplate untouched; OnRenderImage has no clock advancement.\n");
             WriteSourceReceipt(output);
             File.WriteAllText(Path.Combine(output,"cloud-readback.json"),JsonUtility.ToJson(VerifyCloudTexture((Texture2D)template.GetTexture("_CloudPlate")),true));
             File.WriteAllText(Path.Combine(output,"completion-check.txt"),"Frame"+CompleteFrame+" source restore max 8-bit delta="+completeDelta+"\n");
@@ -325,25 +380,28 @@ public static class VeliaTideMistBundleBuilder
         try { camera.Render(); RenderTexture.active=rt; pixels.ReadPixels(new Rect(0,0,Width,Height),0,0); pixels.Apply(); return pixels.EncodeToPNG(); }
         finally { RenderTexture.active=previous; }
     }
-    private static int ExportPropagation(Material template,VeliaTideMistScreenFilter filter,Camera camera,RenderTexture rt,Texture2D pixels,Color32[] baseline,string output)
+    private static int ExportPropagation(Material template,VeliaTideMistScreenFilter filter,Camera camera,RenderTexture rt,Texture2D pixels,Color32[] baseline,string output,bool mirrored)
     {
         int maximum=0;
         var csv=new StringBuilder("dice,pulse_age,absolute_time,pulse,file,sha256\n");
+        var exactProfiles=new StringBuilder("frame,time,dice,pulse,viewport_y,screen_x,radiance\n");
         for(int dice=0;dice<2;dice++) foreach(float age in new[]{0.10f,0.18f,0.30f,0.48f,0.60f})
         {
-            var sample=new VeliaTideMistVisualController();sample.SetProtectionRects(Protection.ToArray());sample.BeginDice(0);
+            var sample=new VeliaTideMistVisualController();sample.SetMirrored(mirrored);sample.SetProtectionRects(Protection.ToArray());sample.BeginDice(0);
             sample.Advance(FirstCallbackFrame/(float)FrameRate);sample.TriggerPulse(Hits.ToArray());
             if(dice==1){sample.Advance((SecondBeginFrame-FirstCallbackFrame)/(float)FrameRate);Require(sample.PulseFinished,"Propagation second dice follows first tail");sample.BeginDice(1);sample.Advance((SecondCallbackFrame-SecondBeginFrame)/(float)FrameRate);sample.TriggerPulse(Hits.ToArray());}
             sample.Advance(age);filter.Initialize(sample,template);
             string name="pulse"+(dice+1)+"_plus_"+age.ToString("0.00",CultureInfo.InvariantCulture).Replace('.', 'p')+"s.png";
             string path=Path.Combine(output,name);File.WriteAllBytes(path,Capture(camera,rt,pixels));
             int added=0;Color32[] frame=pixels.GetPixels32();
+            if(age==.18f||age==.48f)RecordRayProfiles(exactProfiles,-1,sample,frame,baseline);
             for(int p=0;p<frame.Length;p++)if(NearWhite(frame[p])&&!NearWhite(baseline[p]))added++;
             Require((float)added/frame.Length<=0.15f,"Near-white limit during cloud propagation");maximum=Math.Max(maximum,added);
             csv.AppendFormat(CultureInfo.InvariantCulture,"{0},{1:F2},{2:F2},{3:F6},{4},{5}\n",dice+1,age,sample.Elapsed,sample.Pulse,name,Digest(path));
             Debug.Log("VELIA_NATIVE_PROPAGATION "+path);filter.Release();
         }
         File.WriteAllText(Path.Combine(output,"propagation.csv"),csv.ToString());
+        File.WriteAllText(Path.Combine(output,"ray-exact-hold-profiles.csv"),exactProfiles.ToString());
         return maximum;
     }
     private static string Label(int frame)
@@ -356,7 +414,25 @@ public static class VeliaTideMistBundleBuilder
         }
     }
 
-    private static void CreateStage(GameObject root,Camera camera)
+    private static void RecordRayProfiles(StringBuilder csv,int frame,VeliaTideMistVisualController driver,Color32[] image,Color32[] baseline)
+    {
+        // Native ReadPixels arrays use bottom-left origin. Average a 7px band at y=.25
+        // and a second band at y=.20, retaining actor protection/occlusion exactly as seen.
+        foreach(float y in new[]{.25f,.20f}) for(int x=0;x<Width;x++)
+        {
+            double radiance=0;int center=Mathf.RoundToInt(y*Height);
+            for(int row=center-3;row<=center+3;row++)
+            {
+                int p=row*Width+x;Color32 a=image[p],b=baseline[p];
+                double source=.2126*b.r+.7152*b.g+.0722*b.b;
+                double observed=.2126*a.r+.7152*a.g+.0722*a.b;
+                radiance+=(observed-source)/Math.Max(1,255-source);
+            }
+            csv.AppendFormat(CultureInfo.InvariantCulture,"{0},{1:F6},{2},{3:F6},{4:F2},{5},{6:F6}\n",frame,driver.Elapsed,driver.DiceOrdinal+1,driver.Pulse,y,x,radiance/7);
+        }
+    }
+
+    private static void CreateStage(GameObject root,Camera camera,bool mirrored)
     {
         Transform parent=root.transform;
         Quad(parent,new Vector3(0,0,6),new Vector2(18,10),new Color(0.09f,0.115f,0.15f));
@@ -375,14 +451,16 @@ public static class VeliaTideMistBundleBuilder
         Text(parent,"STAGE + NUMBERS + UI ARE PROXIES / REAL REPOSITORY CHARACTER SPRITES",new Vector3(-7.6f,-4.0f,-2),0.13f,new Color(0.55f,0.66f,0.72f));
         Text(parent,"TOP LEFT",new Vector3(-8.45f,4.1f,-2),0.12f,new Color(0.95f,0.35f,0.32f));
         Text(parent,"BOTTOM RIGHT",new Vector3(6.55f,-4.65f,-2),0.12f,new Color(0.25f,0.88f,0.9f));
-        Character(parent,camera,"Velia",-5.1f,-2.7f,2.8f,false);
-        Character(parent,camera,"Sivier",0.9f,-2.55f,3.0f,true);
-        Character(parent,camera,"Sivier",5.1f,-2.7f,2.8f,true);
+        Text(parent,mirrored?"PLAYER CASTER RIGHT  ->  ENEMY TARGETS LEFT":"ENEMY CASTER LEFT  ->  PLAYER TARGETS RIGHT",new Vector3(-7.6f,-4.3f,-2),0.12f,new Color(0.72f,0.75f,0.69f));
+        float placement=mirrored ? -1f : 1f;
+        Character(parent,camera,"Velia",-5.1f*placement,-2.7f,2.8f,false,mirrored);
+        Character(parent,camera,"Sivier",0.9f*placement,-2.55f,3.0f,true,mirrored);
+        Character(parent,camera,"Sivier",5.1f*placement,-2.7f,2.8f,true,mirrored);
         // Fine stripe card panel is part of the source, useful for identifying source blur or UV flip.
         for(int x=0;x<80;x++) Quad(parent,new Vector3(-4.8f+x*0.025f,-4.65f,-1),new Vector2(0.0125f,0.25f),x%2==0?new Color(0.18f,0.2f,0.22f):new Color(0.8f,0.82f,0.84f));
     }
 
-    private static void Character(Transform parent,Camera camera,string name,float x,float foot,float height,bool victim)
+    private static void Character(Transform parent,Camera camera,string name,float x,float foot,float height,bool victim,bool mirrored)
     {
         string source="SteriaBuild/SteriaModFolder/Resource/CharacterSkin/"+name+"/ClothCustom/Default.png";
         Texture2D texture=ImportTexture(source,"Assets/PreviewInputs/"+name+".png",false);
@@ -390,7 +468,7 @@ public static class VeliaTideMistBundleBuilder
         for(int y=0;y<texture.height;y++)for(int px=0;px<texture.width;px++) if(pixels[y*texture.width+px].a>20){minX=Math.Min(minX,px);maxX=Math.Max(maxX,px);minY=Math.Min(minY,y);maxY=Math.Max(maxY,y);}
         var sprite=Sprite.Create(texture,new Rect(minX,minY,maxX-minX+1,maxY-minY+1),new Vector2(0.5f,0),100f);Owned.Add(sprite);
         var go=new GameObject(name+" REAL SPRITE");go.transform.SetParent(parent,false);go.transform.position=new Vector3(x,foot,0);
-        var renderer=go.AddComponent<SpriteRenderer>();renderer.sprite=sprite;renderer.flipX=victim;
+        var renderer=go.AddComponent<SpriteRenderer>();renderer.sprite=sprite;renderer.flipX=victim^mirrored;
         go.transform.localScale=Vector3.one*(height/sprite.bounds.size.y);
         Bounds b=renderer.bounds; Vector3 a=camera.WorldToViewportPoint(b.min),z=camera.WorldToViewportPoint(b.max);
         Protection.Add(Rect.MinMaxRect(a.x-0.006f,a.y-0.006f,z.x+0.006f,z.y+0.016f));
@@ -435,6 +513,22 @@ public static class VeliaTideMistBundleBuilder
         }
         return fallback;
     }
+    private static bool PreviewMirrored()
+    {
+        string facing=PreviewFacing();
+        Require(facing!="Both","First export requires one explicit Enemy or Player facing");
+        return facing=="Player";
+    }
+    private static string PreviewFacing()
+    {
+        string[] args=Environment.GetCommandLineArgs();
+        for(int i=0;i<args.Length-1;i++) if(args[i]=="-veliaFacing")
+        {
+            Require(args[i+1]=="Enemy"||args[i+1]=="Player"||args[i+1]=="Both","Preview facing must be Enemy, Player or Both");
+            return args[i+1];
+        }
+        return "Enemy";
+    }
     private static string Digest(string path){using(var hash=SHA256.Create())using(var file=File.OpenRead(path))return BitConverter.ToString(hash.ComputeHash(file)).Replace("-","");}
     [Serializable]
     private sealed class BundleReadbackReceipt
@@ -447,6 +541,15 @@ public static class VeliaTideMistBundleBuilder
         public CloudReadbackReceipt cloudPlate;
     }
     [Serializable] private sealed class SourceReferences { public CloudSourceReference cloudPlate; }
+    [Serializable] private sealed class FacingReceipt
+    {
+        public string caster,formationDirection;
+        public bool mirrored;
+        public float casterWorldX;
+        public float[] targetWorldX;
+        public Vector2[] hitScreenUV;
+        public Rect[] protectionScreenRects;
+    }
     [Serializable] private sealed class CloudSourceReference { public string path,sha256,alpha; public int width,height; public bool sRGB; }
     [Serializable] private sealed class CloudReadbackReceipt
     {

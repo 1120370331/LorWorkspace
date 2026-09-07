@@ -6,8 +6,8 @@ $driver = Get-Content -Raw (Join-Path $runtime 'VeliaTideMistVisualController.cs
 $filter = Get-Content -Raw (Join-Path $runtime 'VeliaTideMistScreenFilter.cs')
 $effect = Get-Content -Raw (Join-Path $runtime 'FarAreaEffect_Steria_VeliaTideMist.cs')
 $action = Get-Content -Raw (Join-Path $runtime 'BehaviourAction_Steria_VeliaTideMist.cs')
-Require ($driver -notmatch '\b(BattleUnitModel|BattleCamManager|FarAreaEffect|Time\.deltaTime)\b') 'Controller must be pure Unity with an explicit clock'
-Require ($filter -notmatch '\b(BattleUnitModel|BattleCamManager|FarAreaEffect)\b|\.Advance\(') 'Filter must render only, without game dependencies or clock advancement'
+Require ($driver -notmatch '\b(BattleUnitModel|BattleCamManager|FarAreaEffect|Faction|StageController|Direction|Time\.deltaTime)\b') 'Controller must be pure Unity with an explicit clock'
+Require ($filter -notmatch '\b(BattleUnitModel|BattleCamManager|FarAreaEffect|Faction|StageController|Direction)\b|\.Advance\(') 'Filter must render only, without game dependencies or clock advancement'
 Require ($filter -match 'new Material\(materialTemplate\)' -and $filter -match 'Graphics.Blit') 'Filter must clone its template and use native Blit'
 Require (($filter + $effect) -notmatch 'RemoveCameraFilterAll|RenderSettings\.|\.fieldOfView\s*=|\.targetTexture\s*=|\.rect\s*=') 'Do not mutate shared camera/global state'
 Require ($effect -notmatch '\.GiveDamage\(|\.RecoverHP\(|\.RecoverBreakLife\(|\.OnEndFarAreaBehaviourAtk\(') 'Visual host must not perform settlement'

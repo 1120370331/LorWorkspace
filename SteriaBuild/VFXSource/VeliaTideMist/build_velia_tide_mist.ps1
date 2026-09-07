@@ -1,7 +1,10 @@
-param([ValidateSet('First','Reviewed')][string]$Mode='First',[string]$Unity='C:/Program Files/Unity/Editor/Unity.exe',[ValidatePattern('^[A-Za-z0-9_-]*$')][string]$PreviewName='')
+param([ValidateSet('First','Reviewed')][string]$Mode='First',[string]$Unity='C:/Program Files/Unity/Editor/Unity.exe',[ValidatePattern('^[A-Za-z0-9_-]*$')][string]$PreviewName='',[ValidateSet('Enemy','Player','Both')][string]$Facing='Enemy')
 $ErrorActionPreference='Stop'
+if($Mode -eq 'First' -and $Facing -eq 'Both'){throw 'Use distinct First revisions for Enemy and Player; Both is available for one Reviewed bundle readback'}
 $repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $project=Join-Path $PSScriptRoot 'UnityProject'
+$running=@(Get-CimInstance Win32_Process -Filter "Name='Unity.exe'" | Where-Object {$_.CommandLine -like '*VeliaTideMist*'})
+if($running.Count){throw 'A Unity instance is already using the VeliaTideMist project'}
 $output=Join-Path $repo 'output/velia-tide-mist/implementation'
 $preview=Join-Path $repo 'preview_exports/velia_tide_mist'
 New-Item -ItemType Directory -Force $output,$preview,(Join-Path $project 'Assets/Scripts') | Out-Null
@@ -20,8 +23,9 @@ $run=[DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss-fff')
 $log=Join-Path $output ('unity-'+$Mode.ToLowerInvariant()+'-'+$run+'.log')
 $arguments=@('-batchmode','-quit','-force-d3d11','-projectPath',('"'+$project+'"'),'-executeMethod',$method,'-logFile',('"'+$log+'"'))
 if($PreviewName){$arguments+=@('-veliaPreviewName',$PreviewName)}
+$arguments+=@('-veliaFacing',$Facing)
 $process=Start-Process -FilePath $Unity -ArgumentList $arguments -PassThru -WindowStyle Hidden
-@{pid=$process.Id;log=$log;mode=$Mode;startedUtc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json | Set-Content (Join-Path $output 'last-run.json') -Encoding utf8
+@{pid=$process.Id;log=$log;mode=$Mode;facing=$Facing;startedUtc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json | Set-Content (Join-Path $output 'last-run.json') -Encoding utf8
 Write-Host "Unity PID=$($process.Id) log=$log"
 $timer=[Diagnostics.Stopwatch]::StartNew()
 while(!$process.WaitForExit(1000)){

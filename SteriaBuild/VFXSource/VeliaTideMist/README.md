@@ -1,6 +1,8 @@
 # Velia Tide Mist — card 9004004
 
-Native first-r8 applies the approved sustained-light timing in `docs/superpowers/specs/2026-09-07-velia-tide-mist-sustained-scatter.md` and passed independent visual review plus main-thread frame inspection. Final sustained-light delivery evidence is in `docs/superpowers/plans/2026-09-07-velia-tide-mist-sustained-scatter-delivery.md`. Its appearance retains accepted r7 assets, color and static beam geometry. Reference refinement follows `docs/superpowers/specs/2026-09-07-velia-tide-mist-reference-refinement.md`. Native first-r7 passed independent visual review and main-thread frame inspection after one revision of the r6 lighting. Technical export reports remain separate from visual acceptance. Final packaging, native checks and deployment evidence are recorded in `docs/superpowers/plans/2026-09-07-velia-tide-mist-reference-delivery.md`.
+Both first-r9-enemy and first-r9-player passed independent visual review and main-thread frame inspection under `docs/superpowers/specs/2026-09-07-velia-tide-mist-moving-beams-facing.md`. Final runtime/package/deployment evidence is in `docs/superpowers/plans/2026-09-07-velia-tide-mist-moving-beams-facing-delivery.md`.
+
+Native first-r8 applies the approved sustained-light timing in `docs/superpowers/specs/2026-09-07-velia-tide-mist-sustained-scatter.md` and passed independent visual review plus main-thread frame inspection. Final sustained-light delivery evidence is in `docs/superpowers/plans/2026-09-07-velia-tide-mist-sustained-scatter-delivery.md`. That delivered baseline retained accepted r7 assets, color and static beam geometry. Reference refinement follows `docs/superpowers/specs/2026-09-07-velia-tide-mist-reference-refinement.md`. Native first-r7 passed independent visual review and main-thread frame inspection after one revision of the r6 lighting. Technical export reports remain separate from visual acceptance. Final packaging, native checks and deployment evidence are recorded in `docs/superpowers/plans/2026-09-07-velia-tide-mist-reference-delivery.md`.
 
 Historical R5 passed independent review and 31 main-thread native lifecycle/camera checks and was delivered on 2026-09-07, bundle `521DB741...DB42F98`. Its acceptance does not apply to this refinement. See `docs/superpowers/plans/2026-09-07-velia-tide-mist-delivery.md` for the historical evidence and proxy-scene limitations.
 
@@ -15,8 +17,10 @@ Run from repository root in PowerShell:
 ```powershell
 & SteriaBuild/VFXSource/VeliaTideMist/verify_velia_tide_mist_source.ps1
 & SteriaBuild/VFXSource/VeliaTideMist/verify_velia_tide_mist_api.ps1
-& SteriaBuild/VFXSource/VeliaTideMist/build_velia_tide_mist.ps1 -Mode First -PreviewName first-r8
-& SteriaBuild/VFXSource/VeliaTideMist/export_velia_tide_mist_video.ps1 -PreviewName first-r8
+& SteriaBuild/VFXSource/VeliaTideMist/build_velia_tide_mist.ps1 -Mode First -PreviewName first-r9-enemy -Facing Enemy
+& SteriaBuild/VFXSource/VeliaTideMist/build_velia_tide_mist.ps1 -Mode First -PreviewName first-r9-player -Facing Player
+& SteriaBuild/VFXSource/VeliaTideMist/export_velia_tide_mist_video.ps1 -PreviewName first-r9-enemy
+& SteriaBuild/VFXSource/VeliaTideMist/export_velia_tide_mist_video.ps1 -PreviewName first-r9-player
 # Use a unique PreviewName for another export; existing evidence is never overwritten.
 # Reviewed mode belongs to the main thread only after independent preview approval.
 ```
@@ -31,4 +35,10 @@ The source verifier decodes alpha and checks the transparent center/lower battle
 
 Sustained timing preserves the entire original 0..0.18s Pulse curve, including the .04s fast rise and .04..07s peak. Both dice hold their original+.18 values from .18 through .48s: first0.42525, second0.589568. The remaining r7 fall is stretched over .24/.29s, ending at .72/.77s (each+.45s). The shader receives real pulse age, so second-dice travel remains .035..0.18s. Local successful-hit light still ends at .14s; intro remains .32s and final fade .40s. The unchanged host waits for these longer tails, adding .90s across two dice; it does not repeat settlement. Cancellation, duplicate callbacks and the existing watchdog remain unchanged.
 
-In cloudUV, drift and 1.5px fold perturbation share motionTime=min(elapsed,.32)+max(elapsed-.32,0)*.65. Rendered clouds and cloud-shadow samples therefore remain aligned while both move more slowly after intro. Beam positions/slopes are static and unchanged; no sweep is added. Low-fog motion remains at its accepted r7 speed. This controller change requires a new runtime DLL in final delivery alongside the bundle; final packaging/deployment belongs to main, not this First-preview implementation stage.
+In cloudUV, drift and 1.5px fold perturbation share motionTime=min(elapsed,.32)+max(elapsed-.32,0)*.65. Rendered clouds and cloud-shadow samples therefore remain aligned while both move more slowly after intro. The sun stays fixed in effect coordinates; beam slopes now oscillate with whole-card elapsed using the exact approved 3.6s period, 10/7.5/5.3 degree amplitudes and -1.68/-1.62/-1.55 phases. Widths, spread and strengths are unchanged. BeginDice never resets this clock. Low-fog motion remains at its accepted r7 speed. This controller change requires a new runtime DLL in final delivery alongside the bundle; final packaging/deployment belongs to main, not this First-preview implementation stage.
+
+Facing is cached once by the game host: Player XOR LEFT formation, with missing stage treated as RIGHT. The pure controller adds only SetMirrored(bool), IsMirrored and Apply's _MirrorX value (default0). Only fxUV mirrors horizontally; sourceUV, screenUV protection/HUD and successful-hit projections do not. Native Player previews construct caster on the right and targets on the left in world space, then project bounds/hits normally; the asymmetric stage, text and corner probes are never flipped as an image.
+
+Each direction exports facing.json, the original 205-frame sequence and all exact propagation ages. ray-profiles.csv contains measured native frame-minus-baseline luminance normalized by source headroom, averaged across7px bands at viewport y=.25/.20 for all held-light frames47..64 and128..145. These are rendered profiles, not analytic beam centers; individual-ray tracking and the actual PNG/video remain necessary evidence of motion.
+
+After main's independent approval, Reviewed -Facing Both builds a single bundle once and exports both directions from the same loaded material to <PreviewName>-enemy and <PreviewName>-player. First rejects Both to require distinct explicit candidate names. No reviewed build/deployment belongs to this implementation stage.

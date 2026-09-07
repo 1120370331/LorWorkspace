@@ -21,6 +21,7 @@ public sealed class VeliaTideMistVisualController
     public int DiceOrdinal { get { return _ordinal; } }
     public int PulseCount { get; private set; }
     public int SuccessfulPointCount { get { return _pointCount; } }
+    public bool IsMirrored { get; private set; }
     public bool DiceReady { get { return _ordinal >= 0 && (_complete || _elapsed >= IntroDuration); } }
     public bool PulseFinished { get { return _fired && _pulseAge >= PulseDuration; } }
     public bool IsComplete { get { return _complete; } }
@@ -50,6 +51,8 @@ public sealed class VeliaTideMistVisualController
             return 1f - Smooth((age - 0.07f) / (baseDuration - 0.07f));
         }
     }
+
+    public void SetMirrored(bool mirrored) { IsMirrored = mirrored; }
 
     // Zero-based ordinal; duplicate BeginDice and callback calls cannot create another pulse.
     public void BeginDice(int ordinal)
@@ -129,6 +132,7 @@ public sealed class VeliaTideMistVisualController
         material.SetFloat("_SunReveal", Smooth((_elapsed - 0.07f) / (IntroDuration - 0.07f)));
         material.SetFloat("_HitStrength", _fired && !_complete ? (1f - Smooth(_pulseAge / 0.14f)) * Envelope : 0f);
         material.SetFloat("_Aspect", Finite(aspect) && aspect > 0f ? aspect : 16f / 9f);
+        material.SetFloat("_MirrorX", IsMirrored ? 1f : 0f);
         material.SetInt("_PointCount", _pointCount);
         material.SetVectorArray("_HitPoints", _points);
         material.SetInt("_ProtectionCount", _rectCount);

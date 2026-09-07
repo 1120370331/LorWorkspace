@@ -1,7 +1,9 @@
-param([ValidatePattern('^[A-Za-z0-9_-]+$')][string]$PreviewName='first-r8')
+param([ValidatePattern('^[A-Za-z0-9_-]+$')][string]$PreviewName='first-r9-enemy')
 $ErrorActionPreference='Stop'
 $repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $preview=Join-Path $repo ('preview_exports/velia_tide_mist/'+$PreviewName)
+$facingPath=Join-Path $preview 'facing.json'
+$facingRecord=if(Test-Path -LiteralPath $facingPath){Get-Content -Raw -LiteralPath $facingPath | ConvertFrom-Json}else{$null}
 $sequence=Join-Path $preview 'sequence60'
 $frames=@(Get-ChildItem -LiteralPath $sequence -Filter 'frame_*.png' -File | Sort-Object Name)
 $timingPath=Join-Path $preview 'timing.csv'
@@ -35,6 +37,7 @@ if($LASTEXITCODE -ne 0){throw 'Encoded video failed full decode'}
 $record=[ordered]@{
     status='NATIVE_SEQUENCE_VIDEO_ENCODE_DECODE_COMPLETED'
     previewRevision=$PreviewName
+    facing=$facingRecord
     visualAcceptance='Not determined by encoder; independent main-thread review required'
     video=$video
     sha256=(Get-FileHash -LiteralPath $video -Algorithm SHA256).Hash

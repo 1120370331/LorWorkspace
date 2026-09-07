@@ -47,6 +47,11 @@ public class FarAreaEffect_Steria_VeliaTideMist : FarAreaEffect
         _originManager = Singleton<BattleFarAreaPlayManager>.Instance;
         _managerOwned = _originManager != null && _originManager.attacker == self;
         _visual = new VeliaTideMistVisualController();
+        // Cache formation-relative facing once per card session, before its first render.
+        // Missing stage uses the normal RIGHT convention; dice reuse retains this value.
+        var stage = Singleton<StageController>.Instance;
+        _visual.SetMirrored((self != null && self.faction == Faction.Player)
+            ^ (stage != null && stage.AllyFormationDirection == Direction.LEFT));
         BeginDice();
         try
         {

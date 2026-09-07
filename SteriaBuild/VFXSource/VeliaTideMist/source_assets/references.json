@@ -1,6 +1,7 @@
 {
-  "status": "Sustained-light first-r8 independent visual review PASS, accepted by main-thread inspection. Final packaging/runtime/deployment evidence is recorded separately; r7 remains the accepted art baseline.",
-  "design": "docs/superpowers/specs/2026-09-07-velia-tide-mist-sustained-scatter.md",
+  "status": "Both first-r9-enemy and first-r9-player independent visual review PASS, accepted by main-thread inspection; final runtime/package/deployment evidence recorded separately. R8 timing and art are preserved.",
+  "design": "docs/superpowers/specs/2026-09-07-velia-tide-mist-moving-beams-facing.md",
+  "timingDesign": "docs/superpowers/specs/2026-09-07-velia-tide-mist-sustained-scatter.md",
   "appearanceDesign": "docs/superpowers/specs/2026-09-07-velia-tide-mist-reference-refinement.md",
   "timing": {
     "earlyCurveUnchangedThrough": 0.18,
@@ -8,7 +9,15 @@
     "firstPulseDuration": 0.72,
     "secondPulseDuration": 0.77,
     "cloudShadowMotionRateAfterIntro": 0.65,
-    "note": "Beam geometry is static. Only shared cloud drift/fold/shadow time slows after the unchanged .32s intro; fog and early .035..0.18 propagation clocks stay unchanged."
+    "note": "Cloud/fold/shadow clock, fog and early .035..0.18 propagation stay at r8 behavior; new beam angles use whole-card elapsed independently."
+  },
+  "beamMotion": {
+    "periodSeconds": 3.6,
+    "baseSlopes": [0.11, 0.41, 0.73],
+    "amplitudeDegrees": [10.0, 7.5, 5.3],
+    "phaseRadians": [-1.68, -1.62, -1.55],
+    "clock": "Whole-card _State.z, continuous through BeginDice; atan(baseSlope*aspect)+radians(amplitude)*sin(2*pi*t/3.6+phase), converted with tan(angle)/aspect",
+    "facing": "Host caches (self.faction==Player) XOR (stage!=null && AllyFormationDirection==LEFT); absent stage uses RIGHT. Only effect UV is mirrored; camera source, hit positions, actor bounds and HUD remain screen-space."
   },
   "cloudPlate": {
     "path": "SteriaBuild/VFXSource/VeliaTideMist/source_assets/reference_refinement/dawn_cloud_frame_v1.png",
