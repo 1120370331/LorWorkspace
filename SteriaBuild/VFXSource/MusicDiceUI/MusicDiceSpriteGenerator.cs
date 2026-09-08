@@ -47,6 +47,9 @@ namespace Steria.VisualAuthoring
                         {
                             float px = (x + (sx + .5f) / 4f) * 100f / size;
                             float py = 100f - (y + (sy + .5f) / 4f) * 100f / size;
+                            // Shrink every authored element once about the unchanged canvas center.
+                            px = 50f + (px - 50f) / .80f;
+                            py = 50f + (py - 50f) / .80f;
                             Color sample = Color.clear;
                             if (frame)
                             {

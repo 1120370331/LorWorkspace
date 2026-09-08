@@ -1,0 +1,9 @@
+# 乐章小图标尺寸调整
+
+用户反馈图标体积偏大。全部自绘小图标围绕原画布中心缩为80%，通过离线作者坐标变换增加透明边距；图案、配色、画布、pivot、PPU、UI布局和原版动作大骰壳保持不变。运行时仍加载嵌入PNG，没有重新引入实时生成。
+
+主线程执行离线生成和Unity预览，52项检查通过：Card/BlankFrame可见范围198×218→160×174，Glyph为98×102→79×82；居中缩放、实际manifest对新PNG的RGBA一致性、颜色及复用恢复通过。独立尺寸复核PASS，查看了同槽位旧/新/普通对照与24/32px样本。画面属于原生代理场景，未声称游戏内手动联调。
+
+Release构建0错误、7个既有警告；从实际Steria.dll读取三份资源并核对源PNG哈希。已更新仓库包及C/D既有游戏路径，DLL SHA256为2056C80A8EBC936568F7C2768A3E21B588EB84911C40754B8E1D148DAFC5D6A4。备份与回执：output/music-dice-ui/delivery-size80-20260908-172942/。
+
+MusicDiceSystem.cs保持92036E71316BD7C19012999DC911C14BBAE4155291F1BA13E2A9FFF02A4E3176。作者源SHA256为91DB9689DBB92E9025DF0D8C6807E452800568126DD8A5C321D474E8CC4504F6；三PNG哈希记录于作者README和output/music-dice-ui/implementation/size80-assets-hashes.json。复现入口为同目录regenerate_size80_and_preview.ps1；Unity启动使用临时OPENSSL_ia32cap=:~0x20000000。其他工作树改动保留，DLL按当前完整工作树构建。
