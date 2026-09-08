@@ -1,0 +1,3 @@
+# Prompt bytes are inputs in provenance.json; preserve their reviewed LF hashes.
+*.txt text eol=lf
+*.png binary

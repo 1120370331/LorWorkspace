@@ -1,0 +1,8 @@
+Use case: background-extraction / precise-object-edit.
+Edit the attached blank painted blue game icon. This is a production game sprite, not a transparency illustration.
+
+REQUIRED OUTPUT: a PNG with a REAL RGBA ALPHA CHANNEL. Completely REMOVE the painted gray/white checkerboard from the pixels outside the icon. Outside pixels must have alpha=0, and fine exterior brush strokes must have clean fractional alpha. Do NOT draw a checkerboard, paper, white, gray or black background. We explicitly inspected the first file and it was RGB with a baked checkerboard; that is not usable. Return an actual transparent cutout.
+
+Keep the empty dark interior free of ALL attack symbols. Keep the same painted irregular brush silhouette, double borders, subdued thin internal facets and steel-blue light face. No white symbol, no crescent, no arrow, no burst, no music note, no text. Do not invent a new object or a thick crystal/metal edge.
+
+Fit the icon's main visible frame within about 62% of the square canvas width and 66% of canvas height, centered with transparent padding. Tone the bright blue edging slightly toward desaturated steel blue-gray; keep its existing fine painted detail. One blank icon only, actual transparent PNG.

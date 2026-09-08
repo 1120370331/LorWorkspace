@@ -1,0 +1,28 @@
+{
+  "version": "aftericon-material-v1",
+  "selected_source": {
+    "file": "blank-rgb.png",
+    "tool": "built-in image_gen",
+    "original_mode": "RGB",
+    "selection": "First style-directed generation; no attack center. v2 failed to provide alpha and added heavier exterior marks."
+  },
+  "rejected_v2": {
+    "sha256": "78e03031fe503023163d11aed01611ca251ccf8390d4ea8d0ec655a002336c0c",
+    "reason": "Still RGB with painted checker; not an alpha solution."
+  },
+  "transparent_processing": "Deterministic C# exterior/closed checker classification, reviewed source-locked C186 removal, local matte decontamination, 4x premultiplied resampling. Never described as native image_gen alpha.",
+  "normalizer": "../../MusicDiceMaterialAuthorV1.cs",
+  "glyph": "Original geometry preserved in ../../MusicDiceGlyphAuthor.cs; frozen 80% Glyph.png is the default input.",
+  "review": "REVIEW.md",
+  "inputs": {
+    "blank-rgb.png": "2bd2c3085de04c5ba1f7c55fb05efb921980c29059d949526f1965e4450a9fa9",
+    "Glyph.png": "47e28c8779ed74d86208a9a0c4e9b3e03581d2c4c2f3ac6b9197947667d0522a",
+    "generation-prompt.txt": "4639616ea3e3ee1f947c4e86339cd99ea3d69d6da569cee6b74f5c097b7a600d",
+    "rejected-v2-prompt.txt": "0c11bb79eb9ec09d783a03add11381bd44e417a63de3cf5859bf2442e208ff49"
+  },
+  "approved_rgba": {
+    "Card.png": "1843c2d6d283d1ab25097f21a46bfec5bfc61d2d0908d0afdb4092f8ccbec0a1",
+    "BlankFrame.png": "c8e966583d9f6d3dab0db48c3af7d6a417dc2c9b4c59b31876c1a55cdb347813",
+    "Glyph.png": "47e28c8779ed74d86208a9a0c4e9b3e03581d2c4c2f3ac6b9197947667d0522a"
+  }
+}

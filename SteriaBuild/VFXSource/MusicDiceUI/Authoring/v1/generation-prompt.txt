@@ -1,0 +1,10 @@
+Use case: style-transfer / game UI asset.
+Generate ONE clean empty dice icon background for Library of Ruina combat-page SMALL DICE, based strictly on the four attached actual small-card icon references. The four images are STYLE/MATERIAL/SILHOUETTE REFERENCES ONLY: Slash, Pierce, Hit, and gold Counter. Do NOT include or reproduce any of their white attack symbols.
+
+Create a square RGBA PNG on a genuinely TRANSPARENT background. Center one small hand-painted hexagonal dice icon, main visible frame approximately 62% of canvas width and 66% of canvas height, with generous transparent padding. The final sprite will be used at 256x256 canvas and viewed at 24/32px; it must read as the same UI family as the references.
+
+Match the actual references' irregular coarse brush strokes at the outside, broken/chipped ink-like edges, close double borders with unequal brightness, and thin coloured luminous translucent facets. Use desaturated STEEL BLUE / BLUE-GRAY instead of orange or gold. Keep the uneven near-black inner ground and restrained but clearly visible steel-blue transparent light face, with a few brighter pale-blue edges that follow the irregular original brushwork. Preserve painted local light/dark rhythm. This is a 2D painterly game sprite, not a polished rendered object.
+
+The CENTER MUST BE COMPLETELY EMPTY: reconstruct a clean unobstructed dark coloured interior. No slash crescent, no arrow, no impact burst, no music note, no letter, no silhouette, ghost, erased smear or shadow of a removed attack symbol. The blank interior is an actual usable blank base, not an existing attack symbol painted black. Fine facet traces matching the small-card references may remain subordinate, but do not replace the icon with the large wireframe Dice_6 style.
+
+Do not produce a modern vector sign, uniform flat fill, perfectly even thin hexagon, hollow cold-white wireframe cube, thick metal border, faceted gemstone, crystal, 3D blue jewel, large uniform bloom ring, photorealistic object, background square, checkerboard, text, watermark, label or comparison sheet. One transparent empty icon only.
