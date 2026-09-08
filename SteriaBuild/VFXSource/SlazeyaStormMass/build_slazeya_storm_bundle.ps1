@@ -13,17 +13,28 @@ $project = Join-Path $PSScriptRoot 'UnityProject'
 $canonical = Join-Path $repo 'SteriaBuild/SlazeyaStormVisualController.cs'
 $mirror = Join-Path $project 'Assets/Scripts/SlazeyaStormVisualController.cs'
 $runId = [DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss-fff') + '-' + [Guid]::NewGuid().ToString('N').Substring(0,8)
-$preview = if ($PreviewDirectory) { [IO.Path]::GetFullPath($PreviewDirectory) } else { Join-Path $repo ('preview_exports/slazeya_storm_mass/round6/' + $Stage.ToLowerInvariant() + '-' + $runId) }
+$preview = if ($PreviewDirectory) { [IO.Path]::GetFullPath($PreviewDirectory) } else { Join-Path $repo ('preview_exports/slazeya_storm_mass/round7/' + $Stage.ToLowerInvariant() + '-' + $runId) }
 $protectedRound5 = [IO.Path]::GetFullPath((Join-Path $repo 'preview_exports/slazeya_storm_mass/round5')).TrimEnd('\','/')
 if ($preview -eq $protectedRound5 -or $preview.StartsWith($protectedRound5 + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'Round5 is a frozen external baseline' }
+$protectedRound6 = [IO.Path]::GetFullPath((Join-Path $repo 'preview_exports/slazeya_storm_mass/round6')).TrimEnd('\','/')
+if ($preview -eq $protectedRound6 -or $preview.StartsWith($protectedRound6 + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'Round6 is a frozen external baseline' }
 if (Test-Path -LiteralPath (Join-Path $preview 'manifest.json')) { throw 'Preview already exported; choose a new unique PreviewDirectory' }
 New-Item -ItemType Directory -Force -Path (Split-Path $mirror),$preview | Out-Null
 Copy-Item -LiteralPath $canonical -Destination $mirror -Force
+$weatherInputs = @((Join-Path $repo 'SteriaBuild/FarAreaEffect_Steria_OceanWave.cs'), (Join-Path $project 'Assets/Editor/SlazeyaStormWeatherPreview.cs'), (Join-Path $PSScriptRoot 'verify_slazeya_storm_weather_source.ps1'), (Join-Path $project 'Assets/Materials/SlazeyaStormWeatherMaterial.mat'), (Join-Path $project 'Assets/Materials/SlazeyaStormWeatherMaterial.mat.meta'), (Join-Path $project 'Assets/Shaders/SlazeyaStormWeather.shader.meta'))
+foreach ($name in @('SlazeyaStormWeatherController.cs','SlazeyaStormWeatherScreenFilter.cs')) {
+    $weatherSource = Join-Path $repo ('SteriaBuild/' + $name)
+    $weatherMirror = Join-Path $project ('Assets/Scripts/' + $name)
+    Copy-Item -LiteralPath $weatherSource -Destination $weatherMirror -Force
+    $weatherInputs += @($weatherSource,$weatherMirror)
+}
 $sourceHash = (Get-FileHash -LiteralPath $canonical -Algorithm SHA256).Hash
 if ((Get-FileHash -LiteralPath $mirror -Algorithm SHA256).Hash -ne $sourceHash) { throw 'Canonical/mirror SHA256 mismatch' }
 & (Join-Path $PSScriptRoot 'verify_slazeya_storm_source.ps1')
+& (Join-Path $PSScriptRoot 'verify_slazeya_storm_weather_source.ps1')
 if (!(Test-Path -LiteralPath $Unity)) { throw "Unity unavailable: $Unity" }
 $frozenInputs = @($canonical,$mirror,(Join-Path $project 'Assets/Editor/SlazeyaStormMassBundleBuilder.cs'),(Join-Path $project 'Assets/Editor/SlazeyaStormCloudNoiseBaker.cs'),$PSCommandPath,(Join-Path $PSScriptRoot 'verify_slazeya_storm_source.ps1'))
+$frozenInputs += $weatherInputs
 $frozenInputs += Get-ChildItem -LiteralPath (Join-Path $project 'Assets/Shaders') -Recurse -File | Where-Object { $_.Extension -ne '.meta' } | ForEach-Object { $_.FullName }
 $frozenInputs += Get-ChildItem -LiteralPath (Join-Path $project 'Assets/Textures/CloudVolume') -File | Where-Object { $_.Extension -in '.asset','.json' } | ForEach-Object { $_.FullName }
 $frozenInputs += Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'source_assets/round2') -Filter '*.png' -File | ForEach-Object { $_.FullName }
@@ -43,7 +54,11 @@ $arguments = @('-batchmode', '-quit', '-projectPath', ('"' + $project + '"'),
     '-executeMethod', 'SlazeyaStormMassBundleBuilder.BuildBundle', '-previewDirectory', ('"' + $preview + '"'), '-previewStage', $Stage,
     '-cameraApproximation', $CameraApproximation.IsPresent.ToString().ToLowerInvariant(), '-force-d3d11', '-logFile', ('"' + $log + '"'))
 if ($StreakFramesOnly) { $arguments += @('-streakFramesOnly','true') }
-$process = Start-Process -FilePath $Unity -ArgumentList $arguments -PassThru -WindowStyle Hidden
+$savedOpenSsl = $env:OPENSSL_ia32cap
+try {
+    $env:OPENSSL_ia32cap = ':~0x20000000'
+    $process = Start-Process -FilePath $Unity -ArgumentList $arguments -PassThru -WindowStyle Hidden
+} finally { $env:OPENSSL_ia32cap = $savedOpenSsl }
 Write-Host "Unity PID=$($process.Id); native graphics enabled; log=$log"
 @{ RunId=$runId; ProcessId=$process.Id; StartedUtc=$launchTime.ToString('o'); Log=$log } | ConvertTo-Json |
     Set-Content -LiteralPath (Join-Path $preview 'last-build-run.json') -Encoding utf8
@@ -88,6 +103,8 @@ $inputs = @($canonical, $mirror, (Join-Path $repo 'SteriaBuild/FarAreaEffect_Ste
     (Join-Path $project 'Assets/Editor/SlazeyaStormMassBundleBuilder.cs'),
     (Join-Path $project 'Assets/Shaders/SlazeyaStormFlow.shader'),
     (Join-Path $project 'Assets/Shaders/SlazeyaStormParticles.shader'), $bundle)
+$inputs += $weatherInputs
+$inputs += Join-Path $project 'Assets/Shaders/SlazeyaStormWeather.shader'
 $inputs += Join-Path $project 'Assets/Shaders/SlazeyaStormLightning.shader'
 $inputs += Join-Path $project 'Assets/Shaders/SlazeyaStormCloud.shader'
 $inputs += Join-Path $project 'Assets/Shaders/SlazeyaStormCloudVolume.shader'

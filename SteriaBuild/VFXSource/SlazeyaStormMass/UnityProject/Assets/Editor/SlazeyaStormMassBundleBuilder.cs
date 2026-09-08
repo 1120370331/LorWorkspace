@@ -13,6 +13,7 @@ using Object = UnityEngine.Object;
 public static class SlazeyaStormMassBundleBuilder
 {
     private const string PrefabPath="Assets/Prefabs/SlazeyaStormMassPrefab.prefab";
+    private const string WeatherMaterialPath="Assets/Materials/SlazeyaStormWeatherMaterial.mat";
     private const float H=6f;
     private const int CallbackStep=93;
     private static float ActualCallbackTime;
@@ -54,6 +55,10 @@ public static class SlazeyaStormMassBundleBuilder
             PlayerSettings.colorSpace=ColorSpace.Gamma; QualitySettings.antiAliasing=4;
             foreach(string dir in new[]{"Assets/Textures/Round2","Assets/Materials/Round3","Assets/Meshes/Round3","Assets/Materials/Round5","Assets/Meshes/Round5","Assets/Prefabs"}) Directory.CreateDirectory(dir);
             AssetDatabase.Refresh();
+            var weatherMaterial=AssetDatabase.LoadAssetAtPath<Material>(WeatherMaterialPath);
+            Require(weatherMaterial!=null&&weatherMaterial.shader!=null&&weatherMaterial.shader.isSupported,"optional weather material available for this candidate");
+            ShaderUtil.CompilePass(weatherMaterial,0,true);
+            Require(!ShaderUtil.ShaderHasError(weatherMaterial.shader),"weather shader compiled without errors");
             AssetDatabase.ImportAsset("Assets/Shaders/SlazeyaStormCloudNoise.cginc",ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);
             AssetDatabase.ImportAsset("Assets/Shaders/SlazeyaStormCloudDensity.cginc",ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);
             AssetDatabase.ImportAsset("Assets/Shaders/SlazeyaStormCloudVolume.shader",ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);
@@ -103,7 +108,7 @@ public static class SlazeyaStormMassBundleBuilder
             MakeParticles(particles,"WaterfallStreaks",gatheredFoam,128,true);
             PrefabUtility.SaveAsPrefabAsset(root,PrefabPath); Object.DestroyImmediate(root); AssetDatabase.SaveAssets();
             string output=Path.GetFullPath(Path.Combine(Application.dataPath,"../AssetBundles")); Directory.CreateDirectory(output);
-            var build=BuildPipeline.BuildAssetBundles(output,new[]{new AssetBundleBuild{assetBundleName=SlazeyaStormVisualController.BundleName,assetNames=new[]{PrefabPath}}},
+            var build=BuildPipeline.BuildAssetBundles(output,new[]{new AssetBundleBuild{assetBundleName=SlazeyaStormVisualController.BundleName,assetNames=new[]{PrefabPath,WeatherMaterialPath}}},
                 BuildAssetBundleOptions.ChunkBasedCompression|BuildAssetBundleOptions.ForceRebuildAssetBundle,BuildTarget.StandaloneWindows64);
             Require(build!=null,"Windows64 LZ4 R5 bundle");
             string bundlePath=Path.Combine(output,SlazeyaStormVisualController.BundleName);
@@ -120,6 +125,7 @@ public static class SlazeyaStormMassBundleBuilder
                 if(Argument("-streakFramesOnly")!="true")CaptureSet(prefab,previews,"black",false);
                 CaptureSet(prefab,previews,"battlefield",true);
                 if(!FirstCandidate)CaptureAtlasDiagnostics(prefab,previews);
+                SlazeyaStormWeatherPreview.Capture(prefab,bundle.LoadAsset<Material>(SlazeyaStormWeatherController.MaterialName),previews);
                 WriteCaptureTiming(previews);WriteManifest(previews,bundlePath);
             }
             finally {bundle.Unload(true);}
@@ -1417,6 +1423,7 @@ public static class SlazeyaStormMassBundleBuilder
     [Serializable] private class Manifest
     {
         public string version=SlazeyaStormVisualController.Version;
+        public string weatherVersion=SlazeyaStormWeatherController.Version;
         public string unityVersion,graphicsDevice,colorSpace,bundle,bundleSha256,controllerSha256;
         public string source="AssetBundle.LoadFromFile -> script-free prefab -> canonical controller -> native shader and particles";
         public int width=1280,height=720,sequenceFps=30,simulationHz=60;

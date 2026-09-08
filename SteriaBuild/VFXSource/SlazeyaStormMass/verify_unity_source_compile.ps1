@@ -9,6 +9,9 @@ $compilerArgs = @('/nologo','/target:library',('/out:' + (Join-Path $output 'Bui
 $compilerArgs += @('mscorlib.dll','System.dll','System.Core.dll') | ForEach-Object { '/reference:' + $framework + '/' + $_ }
 $compilerArgs += Get-ChildItem -LiteralPath ($managed + '/UnityEngine') -Filter 'UnityEngine*.dll' | ForEach-Object { '/reference:' + $_.FullName }
 $compilerArgs += @((Join-Path $repo 'SteriaBuild/SlazeyaStormVisualController.cs'),
+    (Join-Path $repo 'SteriaBuild/SlazeyaStormWeatherController.cs'),
+    (Join-Path $repo 'SteriaBuild/SlazeyaStormWeatherScreenFilter.cs'),
+    (Join-Path $PSScriptRoot 'UnityProject/Assets/Editor/SlazeyaStormWeatherPreview.cs'),
     (Join-Path $PSScriptRoot 'UnityProject/Assets/Editor/SlazeyaStormMassBundleBuilder.cs'))
 if ($BakerContractOnly) {
     # Compile only the downstream caller against the frozen upstream API. Never run this stub.

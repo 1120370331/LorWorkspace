@@ -13,6 +13,11 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
     private static GameObject _prefab;
     private SlazeyaStormVisualController _visual;
     private SlazeyaStormAudioController _audio;
+    private SlazeyaStormWeatherController _weather;
+    private SlazeyaStormWeatherScreenFilter _weatherFilter;
+    private Camera _weatherCamera;
+    private SlazeyaStormVisualController.Footprint _weatherFootprint;
+    private readonly List<BattleUnitModel> _weatherUnits = new List<BattleUnitModel>();
     private GameObject _instance;
     private bool _burstTriggered;
     private bool _hasValidRecipients;
@@ -83,6 +88,49 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
             _visual = new SlazeyaStormVisualController(null, footprint);
         }
         if (audioPosition.HasValue) _audio = SlazeyaStormAudioController.TryCreate(audioPosition.Value, ReadEffectVolume);
+        if (_hasValidRecipients && _instance != null) InitializeWeather(footprint);
+    }
+
+    private void InitializeWeather(SlazeyaStormVisualController.Footprint footprint)
+    {
+        try
+        {
+            Material template = _bundle == null ? null : _bundle.LoadAsset<Material>(SlazeyaStormWeatherController.MaterialName);
+            var manager = SingletonBehavior<BattleCamManager>.Instance;
+            _weatherCamera = manager == null ? null : manager.EffectCam;
+            if (_weatherCamera == null || template == null || template.shader == null || !template.shader.isSupported) return;
+            _weatherFootprint = footprint;
+            if (BattleObjectManager.instance != null)
+                foreach (var unit in BattleObjectManager.instance.GetAliveList())
+                    if (unit != null && unit.view != null) _weatherUnits.Add(unit);
+            _weather = new SlazeyaStormWeatherController(_visual);
+            RefreshWeatherProjection();
+            _weatherFilter = _weatherCamera.gameObject.AddComponent<SlazeyaStormWeatherScreenFilter>();
+            _weatherFilter.Initialize(_weather, template);
+        }
+        catch (Exception ex) { ReleaseWeather(); SteriaLogger.Log("Slazeya optional weather unavailable: " + ex.Message); }
+    }
+
+    private void RefreshWeatherProjection()
+    {
+        if (_weather == null || _weather.IsComplete || _weatherCamera == null) return;
+        var bodies = new List<Bounds>();
+        foreach (var unit in _weatherUnits)
+        {
+            if (unit == null || unit.view == null) continue;
+            Bounds body;
+            if (!TryBodyBounds(unit, out body)) body = SlazeyaStormVisualController.ConservativeBody(unit.view.WorldPosition, _weatherFootprint.Height * 1.5f);
+            bodies.Add(body);
+        }
+        _weather.Project(_weatherCamera, _weatherFootprint, bodies.ToArray());
+    }
+
+    private void ReleaseWeather()
+    {
+        if (_weather != null) _weather.Cancel();
+        if (_weatherFilter != null) { _weatherFilter.Release(); Destroy(_weatherFilter); _weatherFilter = null; }
+        if (_weather != null) { _weather.Dispose(); _weather = null; }
+        _weatherCamera = null; _weatherUnits.Clear();
     }
 
     public override void GiveDamageFromManager(List<BattleUnitModel> damagedUnitList)
@@ -128,6 +176,7 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
             return;
         }
         _visual.Advance(Time.deltaTime);
+        RefreshWeatherProjection();
         if (_audio != null) _audio.Advance(Time.deltaTime);
         if (_visual.GatherReady) isRunning = false; // Only opens the default manager's gate.
         if (_visual.IsComplete) Complete();
@@ -152,6 +201,7 @@ public class FarAreaEffect_Steria_OceanWave : FarAreaEffect
 
     private void ReleaseVisual()
     {
+        ReleaseWeather();
         if (_audio != null) { _audio.Dispose(); _audio = null; }
         if (_visual != null) { _visual.Dispose(); _visual = null; }
         if (_instance != null) { Destroy(_instance); _instance = null; }
