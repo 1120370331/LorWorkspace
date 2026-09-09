@@ -11,7 +11,7 @@
     <Script>AnhierRecoverLight1</Script>
     <ScriptDesc>[流转] 使用时：恢复1点光芒</ScriptDesc>
     <BehaviourList>
-      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Hit" Motion="F" EffectRes="Steria_AnhierBlueWhiteFarHit" Script="AnhierFlow1" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Hit" Motion="F" EffectRes="Steria_AnhierTextureSeaFarHit" Script="AnhierFlow1" ActionScript="" Desc="" />
     </BehaviourList>
     <AbilityList />
     <Chapter>1</Chapter>
@@ -31,8 +31,8 @@
       <Ability Script="AnhierDiscardRandom1" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierBlueWhiteSlash" Script="AnhierDraw1" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierBlueWhiteSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="AnhierDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -51,8 +51,8 @@
       <Ability Script="AnhierDiscardAllDraw" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="AnhierClashWinDraw1" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierBlueWhiteSlash" Script="AnhierGainLight1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_AnhierTextureMemoryGuard" Script="AnhierClashWinDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="AnhierGainLight1" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -70,9 +70,9 @@
       <Ability Script="AnhierDiscardAllPowerUp" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierBlueWhiteSlash" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_AnhierBlueWhiteHit" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_AnhierBlueWhitePierce" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_AnhierTextureMemoryHit" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_AnhierTextureMemoryPierce" Script="" ActionScript="" Desc="" />
       <Behaviour Min="1" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
@@ -89,8 +89,8 @@
     <ScriptDesc />
     <AbilityList />
     <BehaviourList>
-      <Behaviour Min="3" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierBlueWhiteSlash" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierBlueWhiteSlash" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -110,8 +110,8 @@
       <Ability Script="AnhierPreciousDiscard" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_AnhierTextureMemoryGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_AnhierTextureMemoryGuard" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -129,7 +129,7 @@
       <Ability Script="AnhierGainFlow5Draw2NextTurn" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="4" Dice="10" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_AnhierBlueWhitePierce" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="10" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_AnhierTextureSeaPierce" Script="" ActionScript="" Desc="" />
       <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
@@ -149,7 +149,7 @@
       <Ability Script="AnhierQingSiFengLiu" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="8" Dice="13" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_AnhierBlueWhiteFarHit" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
+      <Behaviour Min="8" Dice="13" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_AnhierTextureSeaFarHit" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
       <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
@@ -169,9 +169,9 @@
       <Ability Script="AnhierDiscardPowerUp" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierBlueWhiteSlash" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_AnhierBlueWhiteHit" Script="AnhierBindingNextTurn" ActionScript="" Desc="" />
-      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_AnhierTextureMemoryHit" Script="AnhierBindingNextTurn" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_AnhierTextureMemoryGuard" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>
@@ -191,7 +191,7 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="2" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierBlueWhiteSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
     <Priority>0</Priority>

@@ -1,0 +1,312 @@
+{
+  "version": 1,
+  "tool": "built-in image_gen.imagegen",
+  "authorship": "New original image generation from role-labelled visual references; no native pixels copied into master artwork.",
+  "user_authorization": "User explicitly permitted imagegen with an easily keyed green background and cleanup.",
+  "calls": 4,
+  "generation_revisions": 0,
+  "reference_images": [
+    {
+      "path": "C:/Users/rog/WorkSpace/projects/games/lor/SteriaBuild/SteriaModFolder/Resource/CombatPageArtwork/9001002.png",
+      "sha256": "ebbac83616b38223c29622e00d7d07f8a9f087225c9d0c1eb70536f227983d43",
+      "role": "Combat page 9001002: mature painted black-purple palette and directional ink material.",
+      "usage": "reference only; never copied into production pixels"
+    },
+    {
+      "path": "C:/Users/rog/WorkSpace/projects/games/lor/SteriaBuild/SteriaModFolder/Resource/CombatPageArtwork/9001009.png",
+      "sha256": "ee37f7934b713f6811ef21fc263a3488c4faa16be99cae1bc6897865838f9d31",
+      "role": "Combat page 9001009: scorched fragments and warm contact lighting.",
+      "usage": "reference only; never copied into production pixels"
+    },
+    {
+      "path": "C:/Users/rog/WorkSpace/projects/games/lor/SteriaBuild/VFXSource/NativeAttackReference/references/all/contact_sheets/theme_ink_purple_001.png",
+      "sha256": "18530ed5cc5cfdfdec66d4cf421076cedabefe0b1fc0d7ea93a3815c5e6c728c",
+      "role": "Native ink/purple sprite contact sheet: directional bristle strata, ripped negative spaces and painterly density; reference only.",
+      "usage": "reference only; never copied into production pixels"
+    },
+    {
+      "path": "C:/Users/rog/WorkSpace/projects/games/lor/SteriaBuild/VFXSource/NativeAttackReference/references/all/contact_sheets/theme_fire_001.png",
+      "sha256": "540e9bdd492954e65db5f5b588031cb8698b72c03477a5722c94bdea9e76aaa4",
+      "role": "Native fire sprite contact sheet: irregular broken burning clusters and hot-edge hierarchy; reference only.",
+      "usage": "reference only; never copied into production pixels"
+    }
+  ],
+  "matting_script": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\key_green.py",
+  "matting_script_sha256": "9953de416491be0e737923d504c3ed6c341f986edfd79707e35a70c5b08483ae",
+  "raw_policy": "Byte-for-byte preserved copies of built-in generated_images PNG sources; no raw repaint or resave.",
+  "deliverable_boundary": "Four static material masters; runtime timing, phase variants, pivots, shipping and final visual acceptance are owned by parent/runtime specialist.",
+  "assets": [
+    {
+      "asset": "MemorySlash",
+      "built_in_source": "C:\\Users\\rog\\.codex\\generated_images\\01a0840c-db82-7003-a6bd-84937eecfc67\\exec-90f44a11-40c1-48f7-8da6-6ff4f733fd81.png",
+      "raw": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\raw\\MemorySlash_green.png",
+      "raw_sha256": "c96156cc4fd81093d2b6976d954328e3e9d802a75380af7f00882f6f35f35020",
+      "keyed": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\keyed\\MemorySlash_master.png",
+      "keyed_sha256": "7c5799ca191c370f23ee7959b3c4989861751bf03a2424ad94e44fca1b7d2af4",
+      "source_dimensions": [
+        2172,
+        724
+      ],
+      "keyed_dimensions": [
+        2390,
+        942
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_bbox": [
+        133,
+        188,
+        2256,
+        751
+      ],
+      "partially_transparent_pixels": 19318,
+      "opaque_dark_pixels_preserved": 222069,
+      "green_dominant_pixels_after_key_above_10pct_alpha": 0,
+      "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\qa\\MemorySlash_dark_light.jpg",
+      "matte_method": "green color dominance; nearest authentic foreground least-squares unmix; residual despill; no brightness key",
+      "transparent_padding_each_edge_px": 109,
+      "prompt_path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\prompts\\MemorySlash.txt",
+      "prompt_sha256": "1027de9b488c86531acfa4050a6b11934ffb3c5ef3bb3242a78eb2e4536837ec",
+      "prompt": "Use case: stylized-concept. Asset type: original production game VFX sprite master, MemorySlash. Create ONE standalone attack slash material using the four images as visual REFERENCE only.\nReferences: image 1 is character combat-card palette and mature painted brush language; image 2 is scorched carbon fragments and restrained warm contact lighting; image 3 is native purple-ink battle material, negative-space ripping and fine striations; image 4 is native burning-edge material and irregular flame clusters. Do not copy any reference pixels, lettering, checkerboard, silhouettes exactly, or characters.\nCanvas/backdrop: a wide landscape canvas with a perfectly flat uniform pure chroma-key GREEN #00FF00 filling ALL empty spaces including every hole inside the gesture. No gradient, no texture, no shadow, no ground, no vignette. Green is backdrop only, never pigment.\nSubject: a broad, LOW HORIZONTAL curved sword sweep moving LEFT TO RIGHT. An elongated open comma-shaped cutting brush stroke, about three times wider than tall. One fine pointed leading tip at FAR RIGHT, with the sweep curving slightly upward into that right tip. The torn trailing ink/fragments extend LEFT. Strong rightward attack direction. This is an open curved low sweep, NOT a complete ring or a vertical crescent. Keep the whole gesture and tiny detached fragments within at least 8 percent green margin.\nStyle/material: mature hand-painted Library of Ruina battle-sprite feel. Mostly dense black-purple carbon ink and desaturated deep-violet pigment with sharp irregular edges, rough fine internal directional bristle striations, ripped negative-space tears and thin forked brush filaments. Brush mass must remain a powerful dark readable silhouette at 300 screen pixels. A FEW unevenly sized, asymmetric orange-red burning clusters are embedded directly in parts of the CUTTING FRONT, with small dim-red scorched fissures continuing into purple. Tiny ivory-white hot flecks ONLY at the true leading right edge. A few small embers behind. Flame must seem integrated into scorched ink; majority of area stays dark-purple. No uniform flame border and no evenly-spaced repeated teeth/loops. Fire has irregular hand-painted ragged material, not smooth cartoon flame shapes. Precise bold material marks, no airbrush haze, no broad neon glow, no 3D glass or glossy plastic, no vector logo, no text, no labels, no border. This is a material sprite, not a scene or an atlas. Render one excellent complete original gesture.\n",
+      "reference_indices": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "intrinsic_direction": "left to right; guard convex side faces right",
+      "solid_opaque_pixels": 382979,
+      "transparent_pixels": 1849096,
+      "output_sha256_confirmed": "7c5799ca191c370f23ee7959b3c4989861751bf03a2424ad94e44fca1b7d2af4",
+      "raw_corner_rgb": [
+        [
+          21,
+          242,
+          15
+        ],
+        [
+          18,
+          241,
+          10
+        ],
+        [
+          16,
+          243,
+          11
+        ],
+        [
+          19,
+          245,
+          12
+        ]
+      ],
+      "original_green_note": "Generated near-flat green has minor pixel variation; original retained byte-for-byte. Green dominance matte removes backdrop variation and preserves dark pigment."
+    },
+    {
+      "asset": "MemoryPierce",
+      "built_in_source": "C:\\Users\\rog\\.codex\\generated_images\\01a0840c-db82-7003-a6bd-84937eecfc67\\exec-c0ad6825-b42e-47b5-89da-9b81056504a8.png",
+      "raw": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\raw\\MemoryPierce_green.png",
+      "raw_sha256": "1851dcacf140daa0d3297ac4a91f60caae76cfd4b823cde4e7f34d08930069bd",
+      "keyed": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\keyed\\MemoryPierce_master.png",
+      "keyed_sha256": "030ccbdd959c2f83881311818dde89b8c2d42b6fea8c3d459eac5809da3006ff",
+      "source_dimensions": [
+        2073,
+        758
+      ],
+      "keyed_dimensions": [
+        2281,
+        966
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_bbox": [
+        166,
+        223,
+        2131,
+        754
+      ],
+      "partially_transparent_pixels": 26850,
+      "opaque_dark_pixels_preserved": 177433,
+      "green_dominant_pixels_after_key_above_10pct_alpha": 0,
+      "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\qa\\MemoryPierce_dark_light.jpg",
+      "matte_method": "green color dominance; nearest authentic foreground least-squares unmix; residual despill; no brightness key",
+      "transparent_padding_each_edge_px": 104,
+      "prompt_path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\prompts\\MemoryPierce.txt",
+      "prompt_sha256": "912f0bf9e0b10d65402469f59672c8fd93f68040da2f72a28583d86e268ea8ff",
+      "prompt": "Use case: stylized-concept. Asset type: original production 2D game VFX sprite master, MemoryPierce. Create ONE standalone thrust material using the four images only as visual REFERENCES.\nReferences: image 1 supplies mature painted purple carbon palette; image 2 supplies scorched fragments and warm contact-light restraint; image 3 native battle purple-ink sprites show ragged striated material and negative-space breaks; image 4 native flame sprites show irregular burning-edge detail. Their lettering, checkerboard, characters and exact pixel shapes must not appear. Author a new original.\nCanvas/backdrop: wide landscape image. Entire empty canvas and every internal hole is a FLAT pure GREEN #00FF00 chroma-key background. No shadow, gradient, scene, textured backdrop or green pigment in the effect. All fragments must fit inside at least 8 percent green margins.\nSubject and direction: one VERY NARROW horizontal black-purple ink lance thrusting LEFT TO RIGHT, sharp needle point at FAR RIGHT. Its main dark solid taper is about six times wider than tall, widest toward the left rear, quickly converging forward. Asymmetric streaming carbon tongues and ripped brush threads trail LEFT; use uneven lengths and irregular spacing, not a geometric arrowhead or winged emblem. There must be one unambiguous leading point at right and minimal curvature so it reads as a thrust, clearly unlike a curved slash. The compact orange-red contact heat is limited to the rightmost leading eighth and a few tiny red fissures further back; tiny ivory accent right at the point. Most of the lance is dark carbon-purple substance, not a beam of light.\nStyle: mature hand-painted Library of Ruina battle effect, tactile charcoal-black ink and deep muted violet brush pigment; strong dark silhouette, directional dry-bristle striation, torn negative-space channels, few irregular embers. Fire is painted fractured burning carbon mixed into the ink, not separate cartoon flame stickers. Irregular broad/tiny marks and a few organic broken tongues, no perfect repeating loops, teeth or stripes. No symmetrical spray, no vector logo, no mechanical spear, no physical weapon, no 3D plastic, no neon magenta, no bloom blur, no haze or long white beam. Must read crisply at 300px screen width. One standalone full gesture only. No text, labels, panels, grids, borders.\n",
+      "reference_indices": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "intrinsic_direction": "left to right; guard convex side faces right",
+      "solid_opaque_pixels": 282196,
+      "transparent_pixels": 1894460,
+      "output_sha256_confirmed": "030ccbdd959c2f83881311818dde89b8c2d42b6fea8c3d459eac5809da3006ff",
+      "raw_corner_rgb": [
+        [
+          18,
+          242,
+          16
+        ],
+        [
+          16,
+          240,
+          11
+        ],
+        [
+          18,
+          242,
+          16
+        ],
+        [
+          19,
+          245,
+          14
+        ]
+      ],
+      "original_green_note": "Generated near-flat green has minor pixel variation; original retained byte-for-byte. Green dominance matte removes backdrop variation and preserves dark pigment."
+    },
+    {
+      "asset": "MemoryHit",
+      "built_in_source": "C:\\Users\\rog\\.codex\\generated_images\\01a0840c-db82-7003-a6bd-84937eecfc67\\exec-28df4a4a-02ed-4fd8-8c31-aeca86868bd2.png",
+      "raw": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\raw\\MemoryHit_green.png",
+      "raw_sha256": "b3ee5d73428f030ff2dbebf8a2db3c24247b225ffa6beca43bd93bd02eb7b533",
+      "keyed": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\keyed\\MemoryHit_master.png",
+      "keyed_sha256": "89b154db3e163ede51b884453aaf2e52b2a8b4b72c0d82f88e532490257f1515",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "keyed_dimensions": [
+        1380,
+        1380
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_bbox": [
+        152,
+        240,
+        1247,
+        1153
+      ],
+      "partially_transparent_pixels": 23596,
+      "opaque_dark_pixels_preserved": 231146,
+      "green_dominant_pixels_after_key_above_10pct_alpha": 0,
+      "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\qa\\MemoryHit_dark_light.jpg",
+      "matte_method": "green color dominance; nearest authentic foreground least-squares unmix; residual despill; no brightness key",
+      "transparent_padding_each_edge_px": 63,
+      "prompt_path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\prompts\\MemoryHit.txt",
+      "prompt_sha256": "9158bda6b80728d1d5cb59e343656ee4054894807bfa3f431e0577c41fcf0619",
+      "prompt": "Use case: stylized-concept. Asset type: original production 2D game VFX sprite master MemoryHit. Author ONE standalone compact impact burst. Input images are visual reference only: 1 mature painted dark-violet card artwork, 2 fractured scorched carbon and warm impact illumination, 3 ragged native purple ink battle-sprite texture, 4 native fire broken detail. Borrow material logic; no native pixels or exact copied shapes, no reference backgrounds, letters, characters or checkerboard.\nBackdrop: perfectly flat pure GREEN #00FF00 chroma-key canvas covering every empty area and internal gap. Square canvas, complete gesture contained in central 72 percent, with detached embers fully inside wide clean green margins. No ground, shadow, gradient or texture in background.\nSubject: a short violent ASYMMETRIC ink-and-carbon impact striking LEFT TO RIGHT. Dense compact purple-black shattered ink body; the ONE orange-red contact mass sits offset to the RIGHT of center, not dead center. Around it a few unequal broad broken brush splinters recoil mainly LEFT and slightly up/down, with coarse charcoal fragments and fine striations. Silhouette should be a squat irregular compact blast, not a long thrust. Leave significant torn green holes between distinct pigment strokes so the recoil reads fractured. Directional irregular counterstrokes, no geometric radial symmetry, no even spokes, no clean starburst, no magic circle or explosion bubble.\nMaterials: mature hand-painted Library of Ruina battle sprite. Opaque deep carbon-black and dark violet paint dominates at least three quarters of the substance, visibly solid, with coarse brush breakup, fine dry bristle marks and splintered pigment. Near the single right-offset contact mass, irregular orange-red burning carbon, dark red fissures, and only a small ivory-hot core. Several tiny red-orange embers. Integrate burning areas into black-purple mass, not separate cartoon flames. Strong readable dark silhouette at 250 screen pixels. No thick white flare, neon aura, broad glow/bloom or blur. No vector logo, smooth stylized emblem, 3D glass, glossy plastic. No physical debris rocks or weapons; this is abstract painterly VFX pigment with coal-like flecks. One original standalone effect only, no text labels borders panels grid or scene.\n",
+      "reference_indices": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "intrinsic_direction": "left to right; guard convex side faces right",
+      "solid_opaque_pixels": 360220,
+      "transparent_pixels": 1520604,
+      "output_sha256_confirmed": "89b154db3e163ede51b884453aaf2e52b2a8b4b72c0d82f88e532490257f1515",
+      "raw_corner_rgb": [
+        [
+          16,
+          242,
+          14
+        ],
+        [
+          16,
+          240,
+          11
+        ],
+        [
+          18,
+          242,
+          15
+        ],
+        [
+          18,
+          244,
+          12
+        ]
+      ],
+      "original_green_note": "Generated near-flat green has minor pixel variation; original retained byte-for-byte. Green dominance matte removes backdrop variation and preserves dark pigment."
+    },
+    {
+      "asset": "MemoryGuard",
+      "built_in_source": "C:\\Users\\rog\\.codex\\generated_images\\01a0840c-db82-7003-a6bd-84937eecfc67\\exec-4f0b5ced-874d-4139-b9a9-6c1e5276782e.png",
+      "raw": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\raw\\MemoryGuard_green.png",
+      "raw_sha256": "86698a252442ad403b8c8b7c9dc69f5e569f62d86cc08136fa9e8fa825aba682",
+      "keyed": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\keyed\\MemoryGuard_master.png",
+      "keyed_sha256": "d4a6c9621cdd914be2e3b3901265a2046beceed34112bc5f103fa4871c32385f",
+      "source_dimensions": [
+        1024,
+        1536
+      ],
+      "keyed_dimensions": [
+        1178,
+        1690
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_bbox": [
+        135,
+        150,
+        1060,
+        1538
+      ],
+      "partially_transparent_pixels": 17226,
+      "opaque_dark_pixels_preserved": 231746,
+      "green_dominant_pixels_after_key_above_10pct_alpha": 0,
+      "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\qa\\MemoryGuard_dark_light.jpg",
+      "matte_method": "green color dominance; nearest authentic foreground least-squares unmix; residual despill; no brightness key",
+      "transparent_padding_each_edge_px": 77,
+      "prompt_path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\prompts\\MemoryGuard.txt",
+      "prompt_sha256": "2b6b96016b5444842a2a8d06e10aadb973ff10db70ec5ab5a64e5d3978e115c5",
+      "prompt": "Use case: stylized-concept. Asset type: original production 2D game VFX sprite master MemoryGuard. Create ONE standalone brush barrier, all four input images are reference only: image 1 mature painted purple material and deep ink color, image 2 scorched fragments/warm contact lighting, image 3 native battle ink fine striation and torn transparent holes, image 4 fire fracture detail. Create original pigment marks; do not copy exact reference shapes, pixels, checkerboards, labels, characters or scenes.\nBackdrop: portrait canvas, perfectly uniform pure GREEN #00FF00 chroma key covering all empty space and every internal hole. No ground, shadow, backdrop texture, gradient or vignette. Keep all tips and embers within at least 10 percent clean green margin.\nShape and orientation: one tall VERTICAL CRESCENT of black-purple brush ink, its convex outer protecting face bows out to the RIGHT, like a right parenthesis ). Its open inner negative space is on the LEFT and stays mostly GREEN. Top and bottom taper toward the left but do not join. A crescent arc occupying about 70 percent of canvas height, modest brush thickness about one quarter of its height at widest. This is an open crescent barrier in front of a defender, not a complete ring, round bubble, disk, wheel, shield object or magical circle. The upper and lower tapered ink ends are asymmetric, with ripped bristle fraying and a few thin broken recoiling fragments leftward. The right convex middle bears ONE small orange-red scorched contact patch, offset slightly above the vertical center; tiny ivory chips in that patch only. Elsewhere deep muted violet and carbon-black pigment dominate.\nMaterial: mature hand-painted Library of Ruina combat sprite. Strong opaque carbon brush silhouette, dry rough directional bristle grain, ragged internal purple-black streaks and ripped negative-space tears, with sparse violet glints. Hand-painted restrained orange-red burning fissures near the contact patch integrate with the ink, not a decorative fire trim. No uniform outline; unequal brush width and materialbreakup along arc. It should read as a solid rough ink barrier with open interior at 300px height, not an airbrushed translucent hologram. No broad white rim, purple neon glow, blur, bloom, glossy 3D glass or plastic, vector-logo outline, evenly repeated flames or ornamental curls. One full standalone original gesture only, no text/labels/grid/borders.\n",
+      "reference_indices": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "intrinsic_direction": "left to right; guard convex side faces right",
+      "solid_opaque_pixels": 360910,
+      "transparent_pixels": 1612707,
+      "output_sha256_confirmed": "d4a6c9621cdd914be2e3b3901265a2046beceed34112bc5f103fa4871c32385f",
+      "raw_corner_rgb": [
+        [
+          18,
+          242,
+          15
+        ],
+        [
+          15,
+          242,
+          10
+        ],
+        [
+          17,
+          241,
+          16
+        ],
+        [
+          16,
+          244,
+          11
+        ]
+      ],
+      "original_green_note": "Generated near-flat green has minor pixel variation; original retained byte-for-byte. Green dominance matte removes backdrop variation and preserves dark pigment."
+    }
+  ]
+}

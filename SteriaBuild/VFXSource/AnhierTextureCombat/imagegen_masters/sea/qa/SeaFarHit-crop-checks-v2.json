@@ -1,0 +1,26 @@
+[
+  {
+    "file": "keyed\\SeaFarHit-body-rgba-v2.png",
+    "dimensions": [
+      1316,
+      458
+    ],
+    "sha256": "c28cd6a77fa0e7055140190758b0bd0be8b5376ad903750062c9bd59d901016c",
+    "rgba": true,
+    "empty_outer_border": true,
+    "partial_alpha": 11990,
+    "opaque_alpha": 193183
+  },
+  {
+    "file": "keyed\\SeaFarHit-splash-rgba-v2.png",
+    "dimensions": [
+      588,
+      388
+    ],
+    "sha256": "3f8c0376fb2dd3f28f6504f28ad0aa7559af8112752c5adec203e090c8d6f6d9",
+    "rgba": true,
+    "empty_outer_border": true,
+    "partial_alpha": 7783,
+    "opaque_alpha": 60462
+  }
+]

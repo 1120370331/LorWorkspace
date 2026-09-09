@@ -1570,6 +1570,13 @@ namespace Steria
         {
             SteriaCustomEffects.Clear();
 
+            SteriaCustomEffects["Steria_AnhierTextureSeaPierce"] = typeof(DiceAttackEffect_Steria_AnhierTextureSeaPierce);
+            SteriaCustomEffects["Steria_AnhierTextureSeaFarHit"] = typeof(DiceAttackEffect_Steria_AnhierTextureSeaFarHit);
+            SteriaCustomEffects["Steria_AnhierTextureMemorySlash"] = typeof(DiceAttackEffect_Steria_AnhierTextureMemorySlash);
+            SteriaCustomEffects["Steria_AnhierTextureMemoryPierce"] = typeof(DiceAttackEffect_Steria_AnhierTextureMemoryPierce);
+            SteriaCustomEffects["Steria_AnhierTextureMemoryHit"] = typeof(DiceAttackEffect_Steria_AnhierTextureMemoryHit);
+            SteriaCustomEffects["Steria_AnhierTextureMemoryGuard"] = typeof(DiceAttackEffect_Steria_AnhierTextureMemoryGuard);
+
             // 注册所有自定义特效
             SteriaCustomEffects["Steria_WindSlash"] = typeof(DiceAttackEffect_Steria_WindSlash);
             SteriaCustomEffects["Steria_AnhierBlueWhiteSlash"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhiteSlash);

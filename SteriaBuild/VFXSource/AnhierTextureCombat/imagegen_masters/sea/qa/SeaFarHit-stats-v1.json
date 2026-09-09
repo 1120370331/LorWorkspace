@@ -1,0 +1,41 @@
+{
+  "asset": "SeaFarHit",
+  "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\source\\SeaFarHit-master-green-v1.png",
+  "source_sha256": "4d4305682f0d152a32df8e85da7b36f2957b0edea2a115db7f6c1cde136b734c",
+  "keyed": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\keyed\\SeaFarHit-master-rgba-v1.png",
+  "keyed_sha256": "3f436be9556d725959a22040c5f1a05703373a77a11861fb9e9c52d70c548f2a",
+  "dimensions": [
+    1536,
+    1024
+  ],
+  "crop": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\keyed\\SeaFarHit-crop-rgba-v1.png",
+  "crop_sha256": "a77d676059c0cd978c8c4a77ca193ed8c244d7903b4fd447988216b50e578134",
+  "crop_box": [
+    159,
+    104,
+    1374,
+    956
+  ],
+  "crop_dimensions": [
+    1215,
+    852
+  ],
+  "alpha_bbox": [
+    171,
+    116,
+    1362,
+    944
+  ],
+  "alpha_zero": 1328684,
+  "alpha_partial": 16834,
+  "alpha_opaque": 227346,
+  "key_median_rgb": [
+    2,
+    248,
+    5
+  ],
+  "green_dominant_visible_pixels_after_despill": 0,
+  "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\qa\\SeaFarHit-light-dark-v1.png",
+  "method": "green color-difference key, soft edge unmix, residual-green despill; never brightness key",
+  "limitation": "Generated visual master and deterministic matte only; runtime timing/game acceptance belong to integration review."
+}

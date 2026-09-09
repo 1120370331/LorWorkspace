@@ -1,0 +1,32 @@
+{
+  "asset": "MemoryHit",
+  "built_in_source": "C:\\Users\\rog\\.codex\\generated_images\\01a0840c-db82-7003-a6bd-84937eecfc67\\exec-28df4a4a-02ed-4fd8-8c31-aeca86868bd2.png",
+  "raw": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\raw\\MemoryHit_green.png",
+  "raw_sha256": "b3ee5d73428f030ff2dbebf8a2db3c24247b225ffa6beca43bd93bd02eb7b533",
+  "keyed": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\keyed\\MemoryHit_master.png",
+  "keyed_sha256": "89b154db3e163ede51b884453aaf2e52b2a8b4b72c0d82f88e532490257f1515",
+  "source_dimensions": [
+    1254,
+    1254
+  ],
+  "keyed_dimensions": [
+    1380,
+    1380
+  ],
+  "alpha_range": [
+    0,
+    255
+  ],
+  "nonzero_alpha_bbox": [
+    152,
+    240,
+    1247,
+    1153
+  ],
+  "partially_transparent_pixels": 23596,
+  "opaque_dark_pixels_preserved": 231146,
+  "green_dominant_pixels_after_key_above_10pct_alpha": 0,
+  "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\qa\\MemoryHit_dark_light.jpg",
+  "matte_method": "green color dominance; nearest authentic foreground least-squares unmix; residual despill; no brightness key",
+  "transparent_padding_each_edge_px": 63
+}

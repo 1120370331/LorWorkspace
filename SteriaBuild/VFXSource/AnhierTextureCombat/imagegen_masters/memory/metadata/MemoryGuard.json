@@ -1,0 +1,32 @@
+{
+  "asset": "MemoryGuard",
+  "built_in_source": "C:\\Users\\rog\\.codex\\generated_images\\01a0840c-db82-7003-a6bd-84937eecfc67\\exec-4f0b5ced-874d-4139-b9a9-6c1e5276782e.png",
+  "raw": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\raw\\MemoryGuard_green.png",
+  "raw_sha256": "86698a252442ad403b8c8b7c9dc69f5e569f62d86cc08136fa9e8fa825aba682",
+  "keyed": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\keyed\\MemoryGuard_master.png",
+  "keyed_sha256": "d4a6c9621cdd914be2e3b3901265a2046beceed34112bc5f103fa4871c32385f",
+  "source_dimensions": [
+    1024,
+    1536
+  ],
+  "keyed_dimensions": [
+    1178,
+    1690
+  ],
+  "alpha_range": [
+    0,
+    255
+  ],
+  "nonzero_alpha_bbox": [
+    135,
+    150,
+    1060,
+    1538
+  ],
+  "partially_transparent_pixels": 17226,
+  "opaque_dark_pixels_preserved": 231746,
+  "green_dominant_pixels_after_key_above_10pct_alpha": 0,
+  "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\qa\\MemoryGuard_dark_light.jpg",
+  "matte_method": "green color dominance; nearest authentic foreground least-squares unmix; residual despill; no brightness key",
+  "transparent_padding_each_edge_px": 77
+}

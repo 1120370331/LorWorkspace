@@ -15,6 +15,7 @@
 | [09_Harmony与BaseMod框架](09_Harmony与BaseMod框架.md) | Harmony补丁、BaseMod初始化、运行时代码修改 |
 | [10_角色外观与特效系统](10_角色外观与特效系统.md) | 角色皮肤、动作素材、基础特效系统 |
 | [11_UnityAssetBundle特效制作实战](11_UnityAssetBundle特效制作实战.md) | Unity AB 特效制作、参考方法、工具链、构建部署与踩坑 |
+| [13_贴图攻击特效制作流程](13_贴图攻击特效制作流程.md) | 多图阶段绘制、参考生图与透明清理、书页绑定、RGBA 时间线和可复现预览 |
 
 ---
 

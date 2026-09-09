@@ -1,0 +1,32 @@
+{
+  "asset": "MemoryPierce",
+  "built_in_source": "C:\\Users\\rog\\.codex\\generated_images\\01a0840c-db82-7003-a6bd-84937eecfc67\\exec-c0ad6825-b42e-47b5-89da-9b81056504a8.png",
+  "raw": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\raw\\MemoryPierce_green.png",
+  "raw_sha256": "1851dcacf140daa0d3297ac4a91f60caae76cfd4b823cde4e7f34d08930069bd",
+  "keyed": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\keyed\\MemoryPierce_master.png",
+  "keyed_sha256": "030ccbdd959c2f83881311818dde89b8c2d42b6fea8c3d459eac5809da3006ff",
+  "source_dimensions": [
+    2073,
+    758
+  ],
+  "keyed_dimensions": [
+    2281,
+    966
+  ],
+  "alpha_range": [
+    0,
+    255
+  ],
+  "nonzero_alpha_bbox": [
+    166,
+    223,
+    2131,
+    754
+  ],
+  "partially_transparent_pixels": 26850,
+  "opaque_dark_pixels_preserved": 177433,
+  "green_dominant_pixels_after_key_above_10pct_alpha": 0,
+  "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-memory\\qa\\MemoryPierce_dark_light.jpg",
+  "matte_method": "green color dominance; nearest authentic foreground least-squares unmix; residual despill; no brightness key",
+  "transparent_padding_each_edge_px": 104
+}

@@ -1,0 +1,39 @@
+{
+  "name": "MemoryHit",
+  "duration": 0.45,
+  "pixelsPerUnit": 88.42105263157895,
+  "pivotX": 0.72,
+  "pivotY": 0.47,
+  "actorScale": 1,
+  "frameTimes": [
+    0.0,
+    0.016666666666666666,
+    0.03333333333333333,
+    0.06666666666666667,
+    0.11666666666666667,
+    0.18333333333333332,
+    0.2833333333333333,
+    0.4166666666666667
+  ],
+  "body": [
+    "MemoryHit_body_00.png",
+    "MemoryHit_body_01.png",
+    "MemoryHit_body_02.png",
+    "MemoryHit_body_03.png",
+    "MemoryHit_body_04.png",
+    "MemoryHit_body_05.png",
+    "MemoryHit_body_06.png",
+    "MemoryHit_body_07.png"
+  ],
+  "accent": [
+    "MemoryHit_accent_00.png",
+    "MemoryHit_accent_01.png",
+    "MemoryHit_accent_02.png",
+    "MemoryHit_accent_03.png",
+    "MemoryHit_accent_04.png",
+    "MemoryHit_accent_05.png",
+    "MemoryHit_accent_06.png",
+    "MemoryHit_accent_07.png"
+  ],
+  "splash": []
+}

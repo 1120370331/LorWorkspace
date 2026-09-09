@@ -1,0 +1,1112 @@
+{
+  "version": 2,
+  "provenance": {
+    "kind": "imagegen-reference-guided-phase-authored",
+    "method": "reference-guided independent imagegen masters; chroma-key and despill by source artists; spatially disjoint primary/detached-fleck layers; authored local-flow phase deformation and tail erosion",
+    "inputManifest": "imagegen_masters/inputs.json",
+    "phaseSource": "import_masters.py",
+    "status": "candidate pending independent visual acceptance"
+  },
+  "profiles": {
+    "SeaPierce": {
+      "name": "SeaPierce",
+      "duration": 0.5,
+      "pixelsPerUnit": 78.76923076923077,
+      "pivotX": 0.14,
+      "pivotY": 0.46,
+      "actorScale": 1,
+      "frameTimes": [
+        0.0,
+        0.016666666666666666,
+        0.03333333333333333,
+        0.06666666666666667,
+        0.11666666666666667,
+        0.18333333333333332,
+        0.2833333333333333,
+        0.4166666666666667
+      ],
+      "body": [
+        "SeaPierce_body_00.png",
+        "SeaPierce_body_01.png",
+        "SeaPierce_body_02.png",
+        "SeaPierce_body_03.png",
+        "SeaPierce_body_04.png",
+        "SeaPierce_body_05.png",
+        "SeaPierce_body_06.png",
+        "SeaPierce_body_07.png"
+      ],
+      "accent": [
+        "SeaPierce_accent_00.png",
+        "SeaPierce_accent_01.png",
+        "SeaPierce_accent_02.png",
+        "SeaPierce_accent_03.png",
+        "SeaPierce_accent_04.png",
+        "SeaPierce_accent_05.png",
+        "SeaPierce_accent_06.png",
+        "SeaPierce_accent_07.png"
+      ],
+      "splash": []
+    },
+    "SeaFarHit": {
+      "name": "SeaFarHit",
+      "duration": 0.4,
+      "pixelsPerUnit": 113.77777777777777,
+      "pivotX": 0.955,
+      "pivotY": 0.4,
+      "actorScale": 1,
+      "frameTimes": [
+        0.0,
+        0.016666666666666666,
+        0.03333333333333333,
+        0.05,
+        0.08333333333333333,
+        0.13333333333333333,
+        0.21666666666666667,
+        0.3333333333333333
+      ],
+      "body": [
+        "SeaFarHit_body_00.png",
+        "SeaFarHit_body_01.png",
+        "SeaFarHit_body_02.png",
+        "SeaFarHit_body_03.png",
+        "SeaFarHit_body_04.png",
+        "SeaFarHit_body_05.png",
+        "SeaFarHit_body_06.png",
+        "SeaFarHit_body_07.png"
+      ],
+      "accent": [
+        "SeaFarHit_accent_00.png",
+        "SeaFarHit_accent_01.png",
+        "SeaFarHit_accent_02.png",
+        "SeaFarHit_accent_03.png",
+        "SeaFarHit_accent_04.png",
+        "SeaFarHit_accent_05.png",
+        "SeaFarHit_accent_06.png",
+        "SeaFarHit_accent_07.png"
+      ],
+      "splash": [
+        "SeaFarHit_splash_00.png",
+        "SeaFarHit_splash_01.png",
+        "SeaFarHit_splash_02.png",
+        "SeaFarHit_splash_03.png",
+        "SeaFarHit_splash_04.png",
+        "SeaFarHit_splash_05.png",
+        "SeaFarHit_splash_06.png",
+        "SeaFarHit_splash_07.png"
+      ],
+      "splashPixelsPerUnit": 100.0,
+      "splashPivotX": 0.26,
+      "splashPivotY": 0.11
+    },
+    "MemorySlash": {
+      "name": "MemorySlash",
+      "duration": 0.5,
+      "pixelsPerUnit": 78.76923076923077,
+      "pivotX": 0.13,
+      "pivotY": 0.48,
+      "actorScale": 1,
+      "frameTimes": [
+        0.0,
+        0.016666666666666666,
+        0.03333333333333333,
+        0.06666666666666667,
+        0.11666666666666667,
+        0.18333333333333332,
+        0.2833333333333333,
+        0.4166666666666667
+      ],
+      "body": [
+        "MemorySlash_body_00.png",
+        "MemorySlash_body_01.png",
+        "MemorySlash_body_02.png",
+        "MemorySlash_body_03.png",
+        "MemorySlash_body_04.png",
+        "MemorySlash_body_05.png",
+        "MemorySlash_body_06.png",
+        "MemorySlash_body_07.png"
+      ],
+      "accent": [
+        "MemorySlash_accent_00.png",
+        "MemorySlash_accent_01.png",
+        "MemorySlash_accent_02.png",
+        "MemorySlash_accent_03.png",
+        "MemorySlash_accent_04.png",
+        "MemorySlash_accent_05.png",
+        "MemorySlash_accent_06.png",
+        "MemorySlash_accent_07.png"
+      ],
+      "splash": []
+    },
+    "MemoryPierce": {
+      "name": "MemoryPierce",
+      "duration": 0.5,
+      "pixelsPerUnit": 78.76923076923077,
+      "pivotX": 0.15,
+      "pivotY": 0.5,
+      "actorScale": 1,
+      "frameTimes": [
+        0.0,
+        0.016666666666666666,
+        0.03333333333333333,
+        0.06666666666666667,
+        0.11666666666666667,
+        0.18333333333333332,
+        0.2833333333333333,
+        0.4166666666666667
+      ],
+      "body": [
+        "MemoryPierce_body_00.png",
+        "MemoryPierce_body_01.png",
+        "MemoryPierce_body_02.png",
+        "MemoryPierce_body_03.png",
+        "MemoryPierce_body_04.png",
+        "MemoryPierce_body_05.png",
+        "MemoryPierce_body_06.png",
+        "MemoryPierce_body_07.png"
+      ],
+      "accent": [
+        "MemoryPierce_accent_00.png",
+        "MemoryPierce_accent_01.png",
+        "MemoryPierce_accent_02.png",
+        "MemoryPierce_accent_03.png",
+        "MemoryPierce_accent_04.png",
+        "MemoryPierce_accent_05.png",
+        "MemoryPierce_accent_06.png",
+        "MemoryPierce_accent_07.png"
+      ],
+      "splash": []
+    },
+    "MemoryHit": {
+      "name": "MemoryHit",
+      "duration": 0.45,
+      "pixelsPerUnit": 88.42105263157895,
+      "pivotX": 0.72,
+      "pivotY": 0.47,
+      "actorScale": 1,
+      "frameTimes": [
+        0.0,
+        0.016666666666666666,
+        0.03333333333333333,
+        0.06666666666666667,
+        0.11666666666666667,
+        0.18333333333333332,
+        0.2833333333333333,
+        0.4166666666666667
+      ],
+      "body": [
+        "MemoryHit_body_00.png",
+        "MemoryHit_body_01.png",
+        "MemoryHit_body_02.png",
+        "MemoryHit_body_03.png",
+        "MemoryHit_body_04.png",
+        "MemoryHit_body_05.png",
+        "MemoryHit_body_06.png",
+        "MemoryHit_body_07.png"
+      ],
+      "accent": [
+        "MemoryHit_accent_00.png",
+        "MemoryHit_accent_01.png",
+        "MemoryHit_accent_02.png",
+        "MemoryHit_accent_03.png",
+        "MemoryHit_accent_04.png",
+        "MemoryHit_accent_05.png",
+        "MemoryHit_accent_06.png",
+        "MemoryHit_accent_07.png"
+      ],
+      "splash": []
+    },
+    "MemoryGuard": {
+      "name": "MemoryGuard",
+      "duration": 0.5,
+      "pixelsPerUnit": 78.26086956521739,
+      "pivotX": 0.85,
+      "pivotY": 0.51,
+      "actorScale": 1,
+      "frameTimes": [
+        0.0,
+        0.016666666666666666,
+        0.03333333333333333,
+        0.06666666666666667,
+        0.11666666666666667,
+        0.18333333333333332,
+        0.2833333333333333,
+        0.4166666666666667
+      ],
+      "body": [
+        "MemoryGuard_body_00.png",
+        "MemoryGuard_body_01.png",
+        "MemoryGuard_body_02.png",
+        "MemoryGuard_body_03.png",
+        "MemoryGuard_body_04.png",
+        "MemoryGuard_body_05.png",
+        "MemoryGuard_body_06.png",
+        "MemoryGuard_body_07.png"
+      ],
+      "accent": [
+        "MemoryGuard_accent_00.png",
+        "MemoryGuard_accent_01.png",
+        "MemoryGuard_accent_02.png",
+        "MemoryGuard_accent_03.png",
+        "MemoryGuard_accent_04.png",
+        "MemoryGuard_accent_05.png",
+        "MemoryGuard_accent_06.png",
+        "MemoryGuard_accent_07.png"
+      ],
+      "splash": []
+    }
+  },
+  "assets": {
+    "SeaPierce_body_00.png": {
+      "sha256": "fdf321ccebdb5649b0ee246787dca5aa9f5410d023f096a9e334e99c6618c9b9",
+      "width": 560,
+      "height": 168,
+      "role": "body",
+      "phase": 0
+    },
+    "SeaPierce_accent_00.png": {
+      "sha256": "7d84a9fd14dc4f3783a5d0344d2ad01bfc94dde32638a0030327c198f6f1c9da",
+      "width": 560,
+      "height": 168,
+      "role": "accent",
+      "phase": 0
+    },
+    "SeaPierce_body_01.png": {
+      "sha256": "d0ab25a68a8de76c689e334f524e57baac1e4adb9e095e8635e45d36cc0642e9",
+      "width": 560,
+      "height": 168,
+      "role": "body",
+      "phase": 1
+    },
+    "SeaPierce_accent_01.png": {
+      "sha256": "ce978cb9b8d1c2d7c85856d1257898c0d7465d045b71d8ed1d0e573619501314",
+      "width": 560,
+      "height": 168,
+      "role": "accent",
+      "phase": 1
+    },
+    "SeaPierce_body_02.png": {
+      "sha256": "a5c1730588e3cecedae539a52066f5a6b93d6ce59a0b7594cb38a4cfd7ce8ae8",
+      "width": 560,
+      "height": 168,
+      "role": "body",
+      "phase": 2
+    },
+    "SeaPierce_accent_02.png": {
+      "sha256": "ed8dd3f7d82c337429cbc60adff75cf7f9b7154864a393747335410b3018d51f",
+      "width": 560,
+      "height": 168,
+      "role": "accent",
+      "phase": 2
+    },
+    "SeaPierce_body_03.png": {
+      "sha256": "b44e2b9dbfac9b4000be204be147010eb8d38bdc086401ae4e4545d6691222ae",
+      "width": 560,
+      "height": 168,
+      "role": "body",
+      "phase": 3
+    },
+    "SeaPierce_accent_03.png": {
+      "sha256": "8f1eef1314362b0e6d54aa7ed63b6c8a79e24ea42ff437ff7b87cb24eb7edb07",
+      "width": 560,
+      "height": 168,
+      "role": "accent",
+      "phase": 3
+    },
+    "SeaPierce_body_04.png": {
+      "sha256": "9a25cd59ffa85b6052309f94110475054145a0b2b1b63b82bddb9ab8d44b257c",
+      "width": 560,
+      "height": 168,
+      "role": "body",
+      "phase": 4
+    },
+    "SeaPierce_accent_04.png": {
+      "sha256": "f896c86f92fb490d16036fdf34e9a172909ffe3e096c4041414aec5826dcddf5",
+      "width": 560,
+      "height": 168,
+      "role": "accent",
+      "phase": 4
+    },
+    "SeaPierce_body_05.png": {
+      "sha256": "6dcd113da4476f9f7df4c3aa5627bd1be57f46eb459b21aa829c97abb1545cea",
+      "width": 560,
+      "height": 168,
+      "role": "body",
+      "phase": 5
+    },
+    "SeaPierce_accent_05.png": {
+      "sha256": "44a253c172c98b1d53befe283e0c115fab5951472f9d96ac7155ce49d73ee498",
+      "width": 560,
+      "height": 168,
+      "role": "accent",
+      "phase": 5
+    },
+    "SeaPierce_body_06.png": {
+      "sha256": "9463e7f48d1291388f46df677ec70d9412384471df8f1c802c6e49254c3d02f8",
+      "width": 560,
+      "height": 168,
+      "role": "body",
+      "phase": 6
+    },
+    "SeaPierce_accent_06.png": {
+      "sha256": "632aa01afcc3e25fa7638bcd6cb841a8667d22ee9c3839becd0498efd07b2b50",
+      "width": 560,
+      "height": 168,
+      "role": "accent",
+      "phase": 6
+    },
+    "SeaPierce_body_07.png": {
+      "sha256": "ff4c94432228423c1b2c390fc57cdbdd47c1323fa73eafdcf08f6923c090211e",
+      "width": 560,
+      "height": 168,
+      "role": "body",
+      "phase": 7
+    },
+    "SeaPierce_accent_07.png": {
+      "sha256": "ff4c94432228423c1b2c390fc57cdbdd47c1323fa73eafdcf08f6923c090211e",
+      "width": 560,
+      "height": 168,
+      "role": "accent",
+      "phase": 7
+    },
+    "SeaFarHit_body_00.png": {
+      "sha256": "80ae5bdabaa8fdb8f3baddedabd0d8f09404cb3e70e4c9af7dbb671c185c0129",
+      "width": 560,
+      "height": 220,
+      "role": "body",
+      "phase": 0
+    },
+    "SeaFarHit_accent_00.png": {
+      "sha256": "72cb27b999bbaea16da07cae0675ec7edf7bbf3dda0f7c6128339757874970b3",
+      "width": 560,
+      "height": 220,
+      "role": "accent",
+      "phase": 0
+    },
+    "SeaFarHit_splash_00.png": {
+      "sha256": "462e0cf93768e6aa49464bc2f4841e2994964be933233bde49a2b9ee5e6c8bb1",
+      "width": 328,
+      "height": 229,
+      "role": "splash",
+      "phase": 0
+    },
+    "SeaFarHit_body_01.png": {
+      "sha256": "43a49b1c8bf3df8ac8247697c8e25d730bec8896b8412de701cb1087026bd023",
+      "width": 560,
+      "height": 220,
+      "role": "body",
+      "phase": 1
+    },
+    "SeaFarHit_accent_01.png": {
+      "sha256": "97466a7045b9dd5b9891a2797dbe8cef5b51b901671b5647b4527f4f849bf4be",
+      "width": 560,
+      "height": 220,
+      "role": "accent",
+      "phase": 1
+    },
+    "SeaFarHit_splash_01.png": {
+      "sha256": "f621532a6e648a444932141ce7845575223f4d752d9f705867557add34eea574",
+      "width": 328,
+      "height": 229,
+      "role": "splash",
+      "phase": 1
+    },
+    "SeaFarHit_body_02.png": {
+      "sha256": "43dc0da1dd45094e1d37353fc406dad7b76cacdb252356d760082314b4f96ca8",
+      "width": 560,
+      "height": 220,
+      "role": "body",
+      "phase": 2
+    },
+    "SeaFarHit_accent_02.png": {
+      "sha256": "cd07671230d92aea2b9a997252c4009280a9bc32c2c17d618c7033c2c5041eab",
+      "width": 560,
+      "height": 220,
+      "role": "accent",
+      "phase": 2
+    },
+    "SeaFarHit_splash_02.png": {
+      "sha256": "c69c25fb341ccae681cfe5ac425508665820ae2809c701cdc683392fbb5f1d7b",
+      "width": 328,
+      "height": 229,
+      "role": "splash",
+      "phase": 2
+    },
+    "SeaFarHit_body_03.png": {
+      "sha256": "3347ce176eb82d6f4f480e27ba55ab355727ce117e90e09e5700923a7da6c093",
+      "width": 560,
+      "height": 220,
+      "role": "body",
+      "phase": 3
+    },
+    "SeaFarHit_accent_03.png": {
+      "sha256": "1fa0d25c9336588a1b1471c2df9b09b49480e3ff6714182a974e8b6206594381",
+      "width": 560,
+      "height": 220,
+      "role": "accent",
+      "phase": 3
+    },
+    "SeaFarHit_splash_03.png": {
+      "sha256": "80cd0f8cfb76c3f25d1bd23bc3660f2377a99fcd01f4f9f9db9cd10c2c53db10",
+      "width": 328,
+      "height": 229,
+      "role": "splash",
+      "phase": 3
+    },
+    "SeaFarHit_body_04.png": {
+      "sha256": "11cef1696b5f9f524ae5fb1c74236196924ff5e04961579668d5ca85c3a5f2c5",
+      "width": 560,
+      "height": 220,
+      "role": "body",
+      "phase": 4
+    },
+    "SeaFarHit_accent_04.png": {
+      "sha256": "28c7079096acfb2829148eb1c7a427d52b290088029cd8cb00c98d54f0b965b6",
+      "width": 560,
+      "height": 220,
+      "role": "accent",
+      "phase": 4
+    },
+    "SeaFarHit_splash_04.png": {
+      "sha256": "95e3815d7ec4e6fcef877a56ae968cf25c7f92709704e396d14483f5829f82ec",
+      "width": 328,
+      "height": 229,
+      "role": "splash",
+      "phase": 4
+    },
+    "SeaFarHit_body_05.png": {
+      "sha256": "b9f9ff716e8271c18f8819a6c616a43815e80dd15eb3f6647d64307a5cfdc8d1",
+      "width": 560,
+      "height": 220,
+      "role": "body",
+      "phase": 5
+    },
+    "SeaFarHit_accent_05.png": {
+      "sha256": "911bbae2c04a190db5fb34ad76ed87d364075bab822c70c2b8aa203f7aa89e23",
+      "width": 560,
+      "height": 220,
+      "role": "accent",
+      "phase": 5
+    },
+    "SeaFarHit_splash_05.png": {
+      "sha256": "83df65fda7c5e80532b642d93c324e85300ae2b706f02fa9151e3fff3450db54",
+      "width": 328,
+      "height": 229,
+      "role": "splash",
+      "phase": 5
+    },
+    "SeaFarHit_body_06.png": {
+      "sha256": "53fcf1dff16ae597f16dfefab971fdace74326dde97f3178db6bff3e3f8e600d",
+      "width": 560,
+      "height": 220,
+      "role": "body",
+      "phase": 6
+    },
+    "SeaFarHit_accent_06.png": {
+      "sha256": "d04bdd344d0939d483a90b25dec7da3cd266327a0e21a6165e4cfafd78639f3d",
+      "width": 560,
+      "height": 220,
+      "role": "accent",
+      "phase": 6
+    },
+    "SeaFarHit_splash_06.png": {
+      "sha256": "a93c4fb5f156927772cb5b44127c45c7799311abd3fb1d6c28cea27be66caae5",
+      "width": 328,
+      "height": 229,
+      "role": "splash",
+      "phase": 6
+    },
+    "SeaFarHit_body_07.png": {
+      "sha256": "3f8e01c0b91ba316319cd11a09919d520762288bb4756ed30cd37c9a81b5add7",
+      "width": 560,
+      "height": 220,
+      "role": "body",
+      "phase": 7
+    },
+    "SeaFarHit_accent_07.png": {
+      "sha256": "baaeee721c78f12d8d09c2e6e0d04385d6ef09a33310570584e860f4263363dd",
+      "width": 560,
+      "height": 220,
+      "role": "accent",
+      "phase": 7
+    },
+    "SeaFarHit_splash_07.png": {
+      "sha256": "25a0b9579421c5765e79d37d4af4c0366311048904884ae26f815f96436782de",
+      "width": 328,
+      "height": 229,
+      "role": "splash",
+      "phase": 7
+    },
+    "MemorySlash_body_00.png": {
+      "sha256": "8c1207033349888b56197e4458b2304fbf82d3facf09dc663a70234351241c9c",
+      "width": 560,
+      "height": 184,
+      "role": "body",
+      "phase": 0
+    },
+    "MemorySlash_accent_00.png": {
+      "sha256": "a46fd52dce3dff455d33218685bc54a2a8f6dbd63c5d204c8890027fe2242ca8",
+      "width": 560,
+      "height": 184,
+      "role": "accent",
+      "phase": 0
+    },
+    "MemorySlash_body_01.png": {
+      "sha256": "2c8ae53d715a9f2842ee8fd998b93315bb9801773e9c7febb5e811b15d5df99b",
+      "width": 560,
+      "height": 184,
+      "role": "body",
+      "phase": 1
+    },
+    "MemorySlash_accent_01.png": {
+      "sha256": "044a062d2c35215fc6a29bc77ce6d8f549034b817e150572d188d859c3062719",
+      "width": 560,
+      "height": 184,
+      "role": "accent",
+      "phase": 1
+    },
+    "MemorySlash_body_02.png": {
+      "sha256": "7fd9f839a0aa57af6ff1cb5c10b0c7c89a8f19746918e9d4c8ea427949f878c0",
+      "width": 560,
+      "height": 184,
+      "role": "body",
+      "phase": 2
+    },
+    "MemorySlash_accent_02.png": {
+      "sha256": "3719d73dd179b0fce6680ef2e7b84bb63a87761a350f6112f971bcff7c670591",
+      "width": 560,
+      "height": 184,
+      "role": "accent",
+      "phase": 2
+    },
+    "MemorySlash_body_03.png": {
+      "sha256": "fe5cc7101e71cea7ccf50bac38f70a3be3ff5da52216c70faa5b7c466d41cc5d",
+      "width": 560,
+      "height": 184,
+      "role": "body",
+      "phase": 3
+    },
+    "MemorySlash_accent_03.png": {
+      "sha256": "61570914affb69223ca671860d30bd6ca63b5fe5c74037038d17bee785927b16",
+      "width": 560,
+      "height": 184,
+      "role": "accent",
+      "phase": 3
+    },
+    "MemorySlash_body_04.png": {
+      "sha256": "67bcacdb4ecb41c7daa0dc8d2db0c99e6c9565658d88b6684d5b3251234aa3c8",
+      "width": 560,
+      "height": 184,
+      "role": "body",
+      "phase": 4
+    },
+    "MemorySlash_accent_04.png": {
+      "sha256": "36f87eb52502c2383c3debfbe069c71877e2c1cd05be665518a5e4cdb4f1f0f3",
+      "width": 560,
+      "height": 184,
+      "role": "accent",
+      "phase": 4
+    },
+    "MemorySlash_body_05.png": {
+      "sha256": "c4b5a01f7cbe48c685cb309ca10c5a953222a83874d7a300c8457d604eb93c73",
+      "width": 560,
+      "height": 184,
+      "role": "body",
+      "phase": 5
+    },
+    "MemorySlash_accent_05.png": {
+      "sha256": "2173b976153dc3ad012e48e2589d6c52c3bce9eb26f749cc41cb375147c7c76f",
+      "width": 560,
+      "height": 184,
+      "role": "accent",
+      "phase": 5
+    },
+    "MemorySlash_body_06.png": {
+      "sha256": "994f04a1eb1d9a3885685334f93ce078c00c47b9e62cbd120c0cece696cc4f61",
+      "width": 560,
+      "height": 184,
+      "role": "body",
+      "phase": 6
+    },
+    "MemorySlash_accent_06.png": {
+      "sha256": "c1afc79afa13bb190251d9a6f573b64d3a4647325aa5f819b81e4916a5a6d194",
+      "width": 560,
+      "height": 184,
+      "role": "accent",
+      "phase": 6
+    },
+    "MemorySlash_body_07.png": {
+      "sha256": "17af88adce82a5d46a13596d5cd0dc9780efe47c0a0ce0a21479c01eb4fa2bd7",
+      "width": 560,
+      "height": 184,
+      "role": "body",
+      "phase": 7
+    },
+    "MemorySlash_accent_07.png": {
+      "sha256": "17af88adce82a5d46a13596d5cd0dc9780efe47c0a0ce0a21479c01eb4fa2bd7",
+      "width": 560,
+      "height": 184,
+      "role": "accent",
+      "phase": 7
+    },
+    "MemoryPierce_body_00.png": {
+      "sha256": "eb6e4915936ed7ee501baa5b5ec8544487b0474d9e2cae30c2147f9390ab04b5",
+      "width": 560,
+      "height": 186,
+      "role": "body",
+      "phase": 0
+    },
+    "MemoryPierce_accent_00.png": {
+      "sha256": "a269ed9690f9ddd694d26d81c9ee3e780eb6614ad64d9320887cfc31ec3f1fb0",
+      "width": 560,
+      "height": 186,
+      "role": "accent",
+      "phase": 0
+    },
+    "MemoryPierce_body_01.png": {
+      "sha256": "f0617c83427f4c12f40bbf5fd494933b7f1d2207dea34af7fc88f1ae4accfe13",
+      "width": 560,
+      "height": 186,
+      "role": "body",
+      "phase": 1
+    },
+    "MemoryPierce_accent_01.png": {
+      "sha256": "ec34c368688cd2267dd08c4e477a79692faa77ee6231ed6227b07ed11aa278f5",
+      "width": 560,
+      "height": 186,
+      "role": "accent",
+      "phase": 1
+    },
+    "MemoryPierce_body_02.png": {
+      "sha256": "cd8f34b17a66d9fe3d538d81fdda859d27bd4ce0d4e5aa0aaafe9854d40dafcc",
+      "width": 560,
+      "height": 186,
+      "role": "body",
+      "phase": 2
+    },
+    "MemoryPierce_accent_02.png": {
+      "sha256": "6022d1b0a8f2758be8226a336d54281637e88adbcaa8a0102fc20a46aca067ad",
+      "width": 560,
+      "height": 186,
+      "role": "accent",
+      "phase": 2
+    },
+    "MemoryPierce_body_03.png": {
+      "sha256": "4e11ae5d95bc7b6a6fab65981eb8c87016ba701eb4f94f3b44a77b4be8623cd5",
+      "width": 560,
+      "height": 186,
+      "role": "body",
+      "phase": 3
+    },
+    "MemoryPierce_accent_03.png": {
+      "sha256": "6ee8b4aeef589d784ebb5cc957d7ddf01b3cbef5444fac14d6120bebdddd1aaa",
+      "width": 560,
+      "height": 186,
+      "role": "accent",
+      "phase": 3
+    },
+    "MemoryPierce_body_04.png": {
+      "sha256": "aa538214304ef163d1a28e2f01bbc2738673d467de4696abe6d107244e046675",
+      "width": 560,
+      "height": 186,
+      "role": "body",
+      "phase": 4
+    },
+    "MemoryPierce_accent_04.png": {
+      "sha256": "6d60597ef07149dbf8ffea980b4b2c7267f3431611ed0ef00161d95fa418d6b9",
+      "width": 560,
+      "height": 186,
+      "role": "accent",
+      "phase": 4
+    },
+    "MemoryPierce_body_05.png": {
+      "sha256": "0918a7bd3ecb8e1891677fad93714e87756844aa7ec9725ec152ce1c9fd43062",
+      "width": 560,
+      "height": 186,
+      "role": "body",
+      "phase": 5
+    },
+    "MemoryPierce_accent_05.png": {
+      "sha256": "dba51fccf26af25fed6e1f6fb2602ff565d86098917618251bb815383f22610b",
+      "width": 560,
+      "height": 186,
+      "role": "accent",
+      "phase": 5
+    },
+    "MemoryPierce_body_06.png": {
+      "sha256": "f0e7fc0000145ff0d05335e068d2d78933114cb99d34bed8f12f3f846111d5e4",
+      "width": 560,
+      "height": 186,
+      "role": "body",
+      "phase": 6
+    },
+    "MemoryPierce_accent_06.png": {
+      "sha256": "913018c0af991052528453d0386a796094f2da5b648d6174a413c78e7d2a7e5c",
+      "width": 560,
+      "height": 186,
+      "role": "accent",
+      "phase": 6
+    },
+    "MemoryPierce_body_07.png": {
+      "sha256": "ec14b104b8b2573bbd5e1513bb77782aaddd3d40d436fcee16239602c3c6d300",
+      "width": 560,
+      "height": 186,
+      "role": "body",
+      "phase": 7
+    },
+    "MemoryPierce_accent_07.png": {
+      "sha256": "3c283d6ca4842dd6899d5dbe45ffe61f14f79edf9241cad6a24921e44c87ff44",
+      "width": 560,
+      "height": 186,
+      "role": "accent",
+      "phase": 7
+    },
+    "MemoryHit_body_00.png": {
+      "sha256": "0594ef45cf34ed6e2817c9ccd8724692197da33a906423bb4d69cb59ac0105eb",
+      "width": 384,
+      "height": 328,
+      "role": "body",
+      "phase": 0
+    },
+    "MemoryHit_accent_00.png": {
+      "sha256": "e631d237c70ca758c584faa3ee971577a2a670fe4b5e99a52b6e505217e85e4d",
+      "width": 384,
+      "height": 328,
+      "role": "accent",
+      "phase": 0
+    },
+    "MemoryHit_body_01.png": {
+      "sha256": "268f8625a1cacab82e6985aa9cea34365776f316054eea4795b0675c40a0a1d6",
+      "width": 384,
+      "height": 328,
+      "role": "body",
+      "phase": 1
+    },
+    "MemoryHit_accent_01.png": {
+      "sha256": "fa1bf902c84956986d4931cd690936475863f04382682461f716b3540c650d7c",
+      "width": 384,
+      "height": 328,
+      "role": "accent",
+      "phase": 1
+    },
+    "MemoryHit_body_02.png": {
+      "sha256": "692cbb7f052ea33f98716e3c0b16b6003b77a0171806ef18eb83a2fdf2de9438",
+      "width": 384,
+      "height": 328,
+      "role": "body",
+      "phase": 2
+    },
+    "MemoryHit_accent_02.png": {
+      "sha256": "87f6ba9675f35e193ceb944e3553b31d63935588d30fe14fcdd94d0b6efffebf",
+      "width": 384,
+      "height": 328,
+      "role": "accent",
+      "phase": 2
+    },
+    "MemoryHit_body_03.png": {
+      "sha256": "65548b63922eed697d98de9e67dd6ca8d3af4993ed5bbb24331dbe32cde768b3",
+      "width": 384,
+      "height": 328,
+      "role": "body",
+      "phase": 3
+    },
+    "MemoryHit_accent_03.png": {
+      "sha256": "c7a833071a7b45bc965658d62ab715549f3c2176abf93a95a5a487e7ebd0f1ca",
+      "width": 384,
+      "height": 328,
+      "role": "accent",
+      "phase": 3
+    },
+    "MemoryHit_body_04.png": {
+      "sha256": "32fe96538f0218e82551450368d26c5e95a99baa2909556e7a90b82bcbf814ca",
+      "width": 384,
+      "height": 328,
+      "role": "body",
+      "phase": 4
+    },
+    "MemoryHit_accent_04.png": {
+      "sha256": "b867b771981836a48ce7c1a953bed9a6d7ea6050d398837965055eecd7099407",
+      "width": 384,
+      "height": 328,
+      "role": "accent",
+      "phase": 4
+    },
+    "MemoryHit_body_05.png": {
+      "sha256": "3d646fd60247ee332d5aa7b24b72ff1e025c33358e90d192f9584d1d4a059495",
+      "width": 384,
+      "height": 328,
+      "role": "body",
+      "phase": 5
+    },
+    "MemoryHit_accent_05.png": {
+      "sha256": "9a470330a205929110ec542e3a5281d8fa4f9a50da3615d86544a741aeffb61d",
+      "width": 384,
+      "height": 328,
+      "role": "accent",
+      "phase": 5
+    },
+    "MemoryHit_body_06.png": {
+      "sha256": "fe52ca41626fc72da35b251e05cd31a0d4f99dc6b8c8b2b2ceda28370d33dc7d",
+      "width": 384,
+      "height": 328,
+      "role": "body",
+      "phase": 6
+    },
+    "MemoryHit_accent_06.png": {
+      "sha256": "6aa7a2979afcedadd012cb23893a8a03268fcdfb49223b347743bf97ed4a798e",
+      "width": 384,
+      "height": 328,
+      "role": "accent",
+      "phase": 6
+    },
+    "MemoryHit_body_07.png": {
+      "sha256": "df7b91da1f8c376a37e887411e0c8151f3697ed9cfabd6fbf4777e4f926a685b",
+      "width": 384,
+      "height": 328,
+      "role": "body",
+      "phase": 7
+    },
+    "MemoryHit_accent_07.png": {
+      "sha256": "158ce5bd8547bbddc656ffe47c9e1df50974258c6facfd5869978e8532be11cd",
+      "width": 384,
+      "height": 328,
+      "role": "accent",
+      "phase": 7
+    },
+    "MemoryGuard_body_00.png": {
+      "sha256": "9170e8bde26e0dca767133bdf986aea65823547da4f9a71ae29361ee6f22a7a8",
+      "width": 288,
+      "height": 408,
+      "role": "body",
+      "phase": 0
+    },
+    "MemoryGuard_accent_00.png": {
+      "sha256": "0078833f3a5bbe28016beab67702be60b4adb5c4f2a5b0af5eab08a8848c2b9f",
+      "width": 288,
+      "height": 408,
+      "role": "accent",
+      "phase": 0
+    },
+    "MemoryGuard_body_01.png": {
+      "sha256": "3523c377ac934be6d74deadebd8b5a79afe826b33859f49a3eb6acb917a5129b",
+      "width": 288,
+      "height": 408,
+      "role": "body",
+      "phase": 1
+    },
+    "MemoryGuard_accent_01.png": {
+      "sha256": "db549f1189dabda93b0c0998fd868f7b4d58319c2f4080985c1d6cc142e802f8",
+      "width": 288,
+      "height": 408,
+      "role": "accent",
+      "phase": 1
+    },
+    "MemoryGuard_body_02.png": {
+      "sha256": "a1af195867c519e5bb179404790d7c61d6d514ea86445076206f2b2d3f435f1d",
+      "width": 288,
+      "height": 408,
+      "role": "body",
+      "phase": 2
+    },
+    "MemoryGuard_accent_02.png": {
+      "sha256": "f08b672bd2d7b7b75eea9f8b8fe1f12ac2d1442a58f859858c1be8292cf9a158",
+      "width": 288,
+      "height": 408,
+      "role": "accent",
+      "phase": 2
+    },
+    "MemoryGuard_body_03.png": {
+      "sha256": "c430945c43107d343e93fc2dbf8d38519393a9c30d8b5074dc21655a99263e9c",
+      "width": 288,
+      "height": 408,
+      "role": "body",
+      "phase": 3
+    },
+    "MemoryGuard_accent_03.png": {
+      "sha256": "d332566aaedf74f5112dca9e8728bf5bc3fe6c321a17e85d21e1b0b49aa58820",
+      "width": 288,
+      "height": 408,
+      "role": "accent",
+      "phase": 3
+    },
+    "MemoryGuard_body_04.png": {
+      "sha256": "a64e7b8a083fd53139ae27c9fc12f8c4fda888f5cb4f29739c30cb8017e5a8ef",
+      "width": 288,
+      "height": 408,
+      "role": "body",
+      "phase": 4
+    },
+    "MemoryGuard_accent_04.png": {
+      "sha256": "406cadc8bf78207e9e273f45857f4e4b83bd3c504d86c143718e4f65409c5e84",
+      "width": 288,
+      "height": 408,
+      "role": "accent",
+      "phase": 4
+    },
+    "MemoryGuard_body_05.png": {
+      "sha256": "27a9cc3abab8bcb181b161eab2a956922317bca967d62cd6d9905b652ce835c9",
+      "width": 288,
+      "height": 408,
+      "role": "body",
+      "phase": 5
+    },
+    "MemoryGuard_accent_05.png": {
+      "sha256": "842009b9baaa1188df136a38f3e893f26581b1b07173924bb1230f4e586f1a87",
+      "width": 288,
+      "height": 408,
+      "role": "accent",
+      "phase": 5
+    },
+    "MemoryGuard_body_06.png": {
+      "sha256": "4697ab1acaa1db8c09135f463a666484ab5970440aeab9d9c9ef1c4800564828",
+      "width": 288,
+      "height": 408,
+      "role": "body",
+      "phase": 6
+    },
+    "MemoryGuard_accent_06.png": {
+      "sha256": "bec17224085c3812b353fa755b2b974218d7842d1b8112441c125e4dfb527120",
+      "width": 288,
+      "height": 408,
+      "role": "accent",
+      "phase": 6
+    },
+    "MemoryGuard_body_07.png": {
+      "sha256": "03bed9d68ccb2b63c2f6fa96fe97b0cd237bbdc37aad3437df240cd0ad8c4b73",
+      "width": 288,
+      "height": 408,
+      "role": "body",
+      "phase": 7
+    },
+    "MemoryGuard_accent_07.png": {
+      "sha256": "03bed9d68ccb2b63c2f6fa96fe97b0cd237bbdc37aad3437df240cd0ad8c4b73",
+      "width": 288,
+      "height": 408,
+      "role": "accent",
+      "phase": 7
+    }
+  },
+  "masters": {
+    "SeaPierce": {
+      "file": "imagegen_masters/sea/keyed/SeaPierce-crop-rgba-v1.png",
+      "sha256": "8c7fb26d8b7e5daa5c62be9e3308c921dd8829a32088e157c28d15722eea1189",
+      "alphaContentBbox": [
+        12,
+        12,
+        1986,
+        475
+      ],
+      "fitCanvas": [
+        560,
+        168
+      ],
+      "pixelsPerUnit": 78.76923076923077,
+      "worldSpan": 6.5,
+      "pivot": [
+        0.14,
+        0.46
+      ]
+    },
+    "SeaFarHit": {
+      "file": "imagegen_masters/sea/keyed/SeaFarHit-body-rgba-v2.png",
+      "sha256": "c28cd6a77fa0e7055140190758b0bd0be8b5376ad903750062c9bd59d901016c",
+      "alphaContentBbox": [
+        12,
+        12,
+        1304,
+        446
+      ],
+      "fitCanvas": [
+        560,
+        220
+      ],
+      "pixelsPerUnit": 113.77777777777777,
+      "worldSpan": 4.5,
+      "pivot": [
+        0.955,
+        0.4
+      ]
+    },
+    "MemorySlash": {
+      "file": "imagegen_masters/memory/keyed/MemorySlash_master.png",
+      "sha256": "7c5799ca191c370f23ee7959b3c4989861751bf03a2424ad94e44fca1b7d2af4",
+      "alphaContentBbox": [
+        133,
+        188,
+        2256,
+        751
+      ],
+      "fitCanvas": [
+        560,
+        184
+      ],
+      "pixelsPerUnit": 78.76923076923077,
+      "worldSpan": 6.5,
+      "pivot": [
+        0.13,
+        0.48
+      ]
+    },
+    "MemoryPierce": {
+      "file": "imagegen_masters/memory/keyed/MemoryPierce_master.png",
+      "sha256": "030ccbdd959c2f83881311818dde89b8c2d42b6fea8c3d459eac5809da3006ff",
+      "alphaContentBbox": [
+        166,
+        223,
+        2131,
+        754
+      ],
+      "fitCanvas": [
+        560,
+        186
+      ],
+      "pixelsPerUnit": 78.76923076923077,
+      "worldSpan": 6.5,
+      "pivot": [
+        0.15,
+        0.5
+      ]
+    },
+    "MemoryHit": {
+      "file": "imagegen_masters/memory/keyed/MemoryHit_master.png",
+      "sha256": "89b154db3e163ede51b884453aaf2e52b2a8b4b72c0d82f88e532490257f1515",
+      "alphaContentBbox": [
+        152,
+        240,
+        1247,
+        1153
+      ],
+      "fitCanvas": [
+        384,
+        328
+      ],
+      "pixelsPerUnit": 88.42105263157895,
+      "worldSpan": 3.8,
+      "pivot": [
+        0.72,
+        0.47
+      ]
+    },
+    "MemoryGuard": {
+      "file": "imagegen_masters/memory/keyed/MemoryGuard_master.png",
+      "sha256": "d4a6c9621cdd914be2e3b3901265a2046beceed34112bc5f103fa4871c32385f",
+      "alphaContentBbox": [
+        135,
+        150,
+        1060,
+        1538
+      ],
+      "fitCanvas": [
+        288,
+        408
+      ],
+      "pixelsPerUnit": 78.26086956521739,
+      "worldSpan": 4.6,
+      "pivot": [
+        0.85,
+        0.51
+      ]
+    }
+  },
+  "decodedRgbaBytes": 45151488,
+  "cachePolicy": "lazy per-profile shared GPU textures/sprites; no retained CPU pixels; one shared alpha material; no per-instance material allocation"
+}

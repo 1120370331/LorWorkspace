@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "asset": "SeaFarHit",
+  "revision": "v2",
+  "reason": "User rejected v1 body and splash as too rounded, smooth and weak: 这个打击特效太圆滑了，没力气",
+  "engine": "built-in image_gen__imagegen",
+  "revision_generation_calls": 1,
+  "prior_v1_retained": true,
+  "sea_pierce_unchanged": true,
+  "prompt": "prompts/SeaFarHit-v2.txt",
+  "raw": "source/SeaFarHit-master-green-v2.png",
+  "generator_original": "C:/Users/rog/.codex/generated_images/01a0840d-6e37-7803-99b1-c4c1fbf8dd80/exec-0aa3acad-b20c-4976-ac2b-abafe78a7def.png",
+  "references": [
+    {
+      "path": "C:/Users/rog/WorkSpace/projects/games/lor/output/anhier-texture-vfx/imagegen-sea/source/SeaFarHit-master-green-v1.png",
+      "role": "Existing edit target: preserve palette/two-element arrangement, replace rejected round silhouette"
+    },
+    {
+      "path": "C:/Users/rog/WorkSpace/projects/games/lor/SteriaBuild/SteriaModFolder/Resource/CombatPageArtwork/9001001.png",
+      "role": "Reference-only actual combat card water paintings"
+    },
+    {
+      "path": "C:/Users/rog/WorkSpace/projects/games/lor/SteriaBuild/SteriaModFolder/Resource/CombatPageArtwork/9001007.png",
+      "role": "Reference-only actual combat card water paintings"
+    },
+    {
+      "path": "C:/Users/rog/WorkSpace/projects/games/lor/SteriaBuild/VFXSource/NativeAttackReference/references/all/contact_sheets/theme_blue_001.png",
+      "role": "Reference-only native game gesture/contact sheet; do not copy art pixels"
+    },
+    {
+      "path": "C:/Users/rog/WorkSpace/projects/games/lor/SteriaBuild/VFXSource/NativeAttackReference/references/all/contact_sheets/thrust_001.png",
+      "role": "Reference-only native game gesture/contact sheet; do not copy art pixels"
+    }
+  ],
+  "integration_files": [
+    "keyed/SeaFarHit-body-rgba-v2.png",
+    "keyed/SeaFarHit-splash-rgba-v2.png"
+  ],
+  "qa": [
+    "qa/SeaFarHit-body-light-dark-v2.png",
+    "qa/SeaFarHit-splash-light-dark-v2.png",
+    "qa/SeaFarHit-v1-v2-small-scale.png"
+  ],
+  "stats": [
+    "qa/SeaFarHit-stats-v2.json",
+    "qa/SeaFarHit-elements-v2.json",
+    "qa/SeaFarHit-crop-checks-v2.json"
+  ],
+  "approx_contact_px": {
+    "body": [
+      1298,
+      276
+    ],
+    "splash": [
+      139,
+      366
+    ]
+  },
+  "changes": "Replaced nested rounded water curl/teardrops with compact pointed force head, hard painterly streaks, torn trailing sheets and unequal sharp directional splash sheets.",
+  "reproduce": [
+    "python output/anhier-texture-vfx/imagegen-sea/key_green.py SeaFarHit v2",
+    "python output/anhier-texture-vfx/imagegen-sea/split_farhit.py v2",
+    "python output/anhier-texture-vfx/imagegen-sea/compare_farhit_v2.py"
+  ],
+  "limitations": [
+    "Only art source, matte, crops and QA authored; no runtime/shipping changes.",
+    "Small-scale sheet is a still-material comparison, not gameplay timing evidence.",
+    "Main and independent visual review must judge force and sea-water readability; hard edge treatment can approach an ice-like visual impression if runtime scale is too small or material is overbright.",
+    "Combined source/master contains two independent drawings; integrate separate body and splash crops."
+  ]
+}

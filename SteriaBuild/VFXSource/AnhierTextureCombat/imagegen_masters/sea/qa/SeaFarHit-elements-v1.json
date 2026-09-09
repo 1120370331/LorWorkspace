@@ -1,0 +1,41 @@
+{
+  "composition": "SeaFarHit-master-rgba-v1.png",
+  "transparent_separation_source_y": [
+    535,
+    625
+  ],
+  "elements": [
+    {
+      "name": "SeaFarHit-body",
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\keyed\\SeaFarHit-body-rgba-v1.png",
+      "dimensions": [
+        1215,
+        429
+      ],
+      "crop_source_box": [
+        159,
+        104,
+        1374,
+        533
+      ],
+      "sha256": "74d691fb7d9c063ab0cd93311e99c24cb2fda259bccf7419def937499397842e",
+      "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\qa\\SeaFarHit-body-light-dark-v1.png"
+    },
+    {
+      "name": "SeaFarHit-splash",
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\keyed\\SeaFarHit-splash-rgba-v1.png",
+      "dimensions": [
+        575,
+        324
+      ],
+      "crop_source_box": [
+        511,
+        632,
+        1086,
+        956
+      ],
+      "sha256": "12f4b888d3881a86c6fa58e28e03e19f900708e5acb8faa17d850880ed4a8d36",
+      "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\qa\\SeaFarHit-splash-light-dark-v1.png"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "SeaPierce": {
+    "master": "sea/keyed/SeaPierce-crop-rgba-v1.png",
+    "worldSpan": 6.5,
+    "pivotX": 0.14,
+    "pivotY": 0.46
+  },
+  "SeaFarHit": {
+    "master": "sea/keyed/SeaFarHit-body-rgba-v2.png",
+    "splash": "sea/keyed/SeaFarHit-splash-rgba-v2.png",
+    "worldSpan": 4.5,
+    "pivotX": 0.955,
+    "pivotY": 0.4,
+    "splashPivotX": 0.26,
+    "splashPivotY": 0.11
+  },
+  "MemorySlash": {
+    "master": "memory/keyed/MemorySlash_master.png",
+    "worldSpan": 6.5,
+    "pivotX": 0.13,
+    "pivotY": 0.48
+  },
+  "MemoryPierce": {
+    "master": "memory/keyed/MemoryPierce_master.png",
+    "worldSpan": 6.5,
+    "pivotX": 0.15,
+    "pivotY": 0.5
+  },
+  "MemoryHit": {
+    "master": "memory/keyed/MemoryHit_master.png",
+    "worldSpan": 3.8,
+    "pivotX": 0.72,
+    "pivotY": 0.47
+  },
+  "MemoryGuard": {
+    "master": "memory/keyed/MemoryGuard_master.png",
+    "worldSpan": 4.6,
+    "pivotX": 0.85,
+    "pivotY": 0.51
+  }
+}

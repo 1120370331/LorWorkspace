@@ -1,0 +1,41 @@
+{
+  "asset": "SeaPierce",
+  "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\source\\SeaPierce-master-green-v1.png",
+  "source_sha256": "4f39e82d2b54ceb7d1ea10a5705ebafe8103734b0087272270128b1a9f7de0eb",
+  "keyed": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\keyed\\SeaPierce-master-rgba-v1.png",
+  "keyed_sha256": "abc5c9c0fbb8cbd8bcbc612ced214988733cb741376ff06ac9538f0d02dc9b57",
+  "dimensions": [
+    2048,
+    768
+  ],
+  "crop": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\keyed\\SeaPierce-crop-rgba-v1.png",
+  "crop_sha256": "8c7fb26d8b7e5daa5c62be9e3308c921dd8829a32088e157c28d15722eea1189",
+  "crop_box": [
+    23,
+    135,
+    2021,
+    622
+  ],
+  "crop_dimensions": [
+    1998,
+    487
+  ],
+  "alpha_bbox": [
+    35,
+    147,
+    2009,
+    610
+  ],
+  "alpha_zero": 1311231,
+  "alpha_partial": 36370,
+  "alpha_opaque": 225263,
+  "key_median_rgb": [
+    3,
+    249,
+    3
+  ],
+  "green_dominant_visible_pixels_after_despill": 0,
+  "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-texture-vfx\\imagegen-sea\\qa\\SeaPierce-light-dark-v1.png",
+  "method": "green color-difference key, soft edge unmix, residual-green despill; never brightness key",
+  "limitation": "Generated visual master and deterministic matte only; runtime timing/game acceptance belong to integration review."
+}

@@ -1,0 +1,51 @@
+{
+  "name": "SeaFarHit",
+  "duration": 0.4,
+  "pixelsPerUnit": 113.77777777777777,
+  "pivotX": 0.955,
+  "pivotY": 0.4,
+  "actorScale": 1,
+  "frameTimes": [
+    0.0,
+    0.016666666666666666,
+    0.03333333333333333,
+    0.05,
+    0.08333333333333333,
+    0.13333333333333333,
+    0.21666666666666667,
+    0.3333333333333333
+  ],
+  "body": [
+    "SeaFarHit_body_00.png",
+    "SeaFarHit_body_01.png",
+    "SeaFarHit_body_02.png",
+    "SeaFarHit_body_03.png",
+    "SeaFarHit_body_04.png",
+    "SeaFarHit_body_05.png",
+    "SeaFarHit_body_06.png",
+    "SeaFarHit_body_07.png"
+  ],
+  "accent": [
+    "SeaFarHit_accent_00.png",
+    "SeaFarHit_accent_01.png",
+    "SeaFarHit_accent_02.png",
+    "SeaFarHit_accent_03.png",
+    "SeaFarHit_accent_04.png",
+    "SeaFarHit_accent_05.png",
+    "SeaFarHit_accent_06.png",
+    "SeaFarHit_accent_07.png"
+  ],
+  "splash": [
+    "SeaFarHit_splash_00.png",
+    "SeaFarHit_splash_01.png",
+    "SeaFarHit_splash_02.png",
+    "SeaFarHit_splash_03.png",
+    "SeaFarHit_splash_04.png",
+    "SeaFarHit_splash_05.png",
+    "SeaFarHit_splash_06.png",
+    "SeaFarHit_splash_07.png"
+  ],
+  "splashPixelsPerUnit": 100.0,
+  "splashPivotX": 0.26,
+  "splashPivotY": 0.11
+}
