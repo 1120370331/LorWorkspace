@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ModInfo>
+  <ClothInfo>
+    <Name>Sivier_Layered_v1_Projection</Name>
+    <Default>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-0.7400" head_y="387.6200" rotation="0" head_enable="True" />
+    </Default>
+    <Guard>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-274" />
+      <Head head_x="-2.9420" head_y="369.8997" rotation="4" head_enable="True" />
+    </Guard>
+    <Evade>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-13.0649" head_y="335.1946" rotation="-6" head_enable="True" />
+    </Evade>
+    <Damaged>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="1.9762" head_y="341.0889" rotation="-9" head_enable="True" />
+    </Damaged>
+    <Slash>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-27.3988" head_y="310.7798" rotation="8" head_enable="True" />
+    </Slash>
+    <Penetrate>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-52.5988" head_y="293.6798" rotation="8" head_enable="True" />
+    </Penetrate>
+    <Hit>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-27.6620" head_y="305.0197" rotation="4" head_enable="True" />
+    </Hit>
+    <Move>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-94.4500" head_y="313.6758" rotation="10" head_enable="True" />
+    </Move>
+    <Special>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-19.4129" head_y="383.8186" rotation="3" head_enable="True" />
+    </Special>
+    <S1>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-19.4129" head_y="383.8186" rotation="3" head_enable="True" />
+    </S1>
+    <Fire>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-52.5988" head_y="293.6798" rotation="8" head_enable="True" />
+    </Fire>
+    <Aim>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-274" />
+      <Head head_x="-2.9420" head_y="369.8997" rotation="4" head_enable="True" />
+    </Aim>
+  </ClothInfo>
+</ModInfo>

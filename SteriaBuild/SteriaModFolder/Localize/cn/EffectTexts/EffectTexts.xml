@@ -3,7 +3,7 @@
   <effectTextList>
     <BattleEffectText ID="SteriaFlow">
       <Name>流</Name>
-      <Desc>使用书页时,每颗骰子最多消耗1层[流]并获得+1威力.</Desc>
+      <Desc>布置阶段点击手牌右侧的流按钮，再点击手牌强化1次。流数量须大于等于参与强化的骰子数（不含反击）；消耗等量流，使这些骰子威力+1。额外强化遵循书页与被动上限，未强化书页不自动耗流。一般产流在下幕开始到账；自我之流在本幕立即获得。</Desc>
     </BattleEffectText>
 
     <BattleEffectText ID="MyDLL.Anxier.OnlyPageKeyword">
@@ -187,6 +187,8 @@
       <Name>所有骰子威力提升</Name>
       <Desc>本幕所有骰子威力提高等同层数的值。</Desc>
     </BattleEffectText>
+    <BattleEffectText ID="SteriaPendingFlow"><Name>下幕流</Name><Desc>下幕开始时获得{0}层[流]。此处层数已计入神脉倍率，到账时不再翻倍。</Desc></BattleEffectText>
+    <BattleEffectText ID="CardBuf_SteriaManualFlow"><Name>流强化</Name><Desc>本书页已强化{0}次，跨幕保留，使用后清除。已分配的强化不会因出牌顺序改变。</Desc></BattleEffectText>
   </effectTextList>
 </BattleEffectTextRoot> 
 

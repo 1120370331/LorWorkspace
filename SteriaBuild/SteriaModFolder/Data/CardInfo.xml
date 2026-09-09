@@ -207,7 +207,7 @@
     <Option>EgoPersonal</Option>
     <MaxCooltimeForEgo>999</MaxCooltimeForEgo>
     <Script>AnhierSelfFlow</Script>
-    <ScriptDesc>[使用时] 扣除12点生命值，获得5层[流]；冷却时间：4幕</ScriptDesc>
+    <ScriptDesc>[使用时] 扣除12点生命值，立即获得5层[流]；冷却时间：4幕</ScriptDesc>
     <AbilityList>
       <Ability Script="AnhierSelfFlow" />
     </AbilityList>
@@ -267,7 +267,7 @@
     <Rarity>Uncommon</Rarity>
     <Spec Range="Far" Cost="2" />
     <Script>SlazeyaGainFlow5OnRoundStart</Script>
-    <ScriptDesc>[流转] 战斗开始时：获得5层[流]</ScriptDesc>
+    <ScriptDesc>[流转] 战斗开始时：下回合开始时获得3层[流]</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaGainFlow5OnRoundStart"/>
     </AbilityList>
@@ -310,7 +310,7 @@
     <Option>OnlyPage</Option>
     <Spec Range="FarArea" Cost="7" />
     <Script>SlazeyaMassAttackTeamLightGain</Script>
-    <ScriptDesc>使用时：消耗所有[流]（但不提供常规[流]威力加成）。本书页每消耗8层[流]，骰子威力+1，命中时施加1层[麻痹]</ScriptDesc>
+    <ScriptDesc>布置阶段通过流强化按钮投入全部[流]（不提供常规[流]威力加成）。本书页每消耗8层[流]，骰子威力+1，命中时施加1层[麻痹]</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaMassAttackTeamLightGain"/>
     </AbilityList>
@@ -350,7 +350,7 @@
     <Rarity>Unique</Rarity>
     <Spec Range="Near" Cost="4" />
     <Script>SlazeyaEndlessFlow</Script>
-    <ScriptDesc>战斗开始时：本幕友方所有书页享受[流]加成时不再消耗[流]数量；本书页骰子获得等同自身[流]数量/3威力加成（向上取整）</ScriptDesc>
+    <ScriptDesc>布置本书页后，本幕友方手牌流强化不消耗[流]；撤下时重新核算；本书页骰子获得等同自身[流]数量/3威力加成（向上取整）</ScriptDesc>
     <AbilityList>
       <Ability Script="SlazeyaEndlessFlow"/>
     </AbilityList>
@@ -446,15 +446,15 @@
     <TextId>-1</TextId>
     <Artwork>9003004.png</Artwork>
     <Rarity>Rare</Rarity>
-    <Spec Range="Far" Cost="3" />
+    <Spec Range="Near" Cost="3" />
     <Script>CultistFlowBonusX2</Script>
     <AbilityList>
       <Ability Script="CultistFlowBonusX2"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="5" Dice="10" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="CultistBleed2" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="CultistBleed1" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="9" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="CultistBleed2" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Standby" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="CultistBleed1" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -773,7 +773,7 @@
     <Rarity>Uncommon</Rarity>
     <Spec Range="Near" Cost="1" />
     <Script>AilierelBigCatch</Script>
-    <ScriptDesc>若此书页造成了不低于8点伤害则获得3层[流]</ScriptDesc>
+    <ScriptDesc>若此书页造成了不低于8点伤害则下回合开始时获得3层[流]</ScriptDesc>
     <AbilityList>
       <Ability Script="AilierelBigCatch" />
     </AbilityList>
@@ -813,7 +813,7 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="3" />
     <Script>AilierelWhereSwim</Script>
-    <ScriptDesc>使用时：获得6层[流]</ScriptDesc>
+    <ScriptDesc>使用时：下回合开始时获得6层[流]</ScriptDesc>
     <AbilityList>
       <Ability Script="AilierelWhereSwim" />
     </AbilityList>

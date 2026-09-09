@@ -127,7 +127,7 @@
     <Episode>1</Episode>
     <Rarity>Rare</Rarity>
     <RangeType>Hybrid</RangeType>
-    <CharacterSkin>Velia</CharacterSkin>
+    <CharacterSkin>Velia_Layered_v1_Projection</CharacterSkin>
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
@@ -188,7 +188,7 @@
     <Episode>1</Episode>
     <Rarity>Unique</Rarity>
     <RangeType>Melee</RangeType>
-    <CharacterSkin>Ailierel</CharacterSkin>
+    <CharacterSkin>Ailierel_Layered_v1_Projection</CharacterSkin>
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 
@@ -220,7 +220,7 @@
     <Episode>1</Episode>
     <Rarity>Unique</Rarity>
     <RangeType>Melee</RangeType>
-    <CharacterSkin>Sivier</CharacterSkin>
+    <CharacterSkin>Sivier_Layered_v1_Projection</CharacterSkin>
     <CharacterSkinType>Custom</CharacterSkinType>
   </Book>
 

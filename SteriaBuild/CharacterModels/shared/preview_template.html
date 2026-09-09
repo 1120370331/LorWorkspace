@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__TITLE__ · 分层模型 R2</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#e7e5df;color:#303c3e;font:15px/1.6 system-ui,"Microsoft YaHei",sans-serif}header{padding:25px 36px 15px;border-bottom:1px solid #c7cbc5}h1{font-size:25px;margin:0}header p{margin:5px 0;color:#5f6d6e}main{display:grid;grid-template-columns:minmax(400px,1fr) 320px;max-width:1150px;margin:25px auto;gap:24px;padding:0 25px}section,aside{background:#f6f5f1;border:1px solid #c7cbc5;border-radius:5px;padding:20px}.stage{display:flex;justify-content:center;background-color:#a2aaa6;background-image:linear-gradient(45deg,#bac1bd 25%,transparent 25%),linear-gradient(-45deg,#bac1bd 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#bac1bd 75%),linear-gradient(-45deg,transparent 75%,#bac1bd 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}.stage.dark{background:#252e33}.stage.light{background:#fff}canvas{width:100%;max-width:560px;aspect-ratio:1;object-fit:contain}h2{font-size:16px;margin:0 0 12px}label{display:block;margin:9px 0}select,button{font:inherit;border:1px solid #aeb9b3;border-radius:3px;padding:7px 10px;background:white;color:inherit;cursor:pointer}select{width:100%}button:hover{background:#dce5df}.bar{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0}.note{font-size:13px;color:#626c6c}fieldset{border:0;border-top:1px solid #d0d4ce;margin:17px 0 0;padding:12px 0 0}legend{font-weight:600;padding:0 10px 0 0}#parts label{margin:4px 0}input[type=checkbox]{accent-color:#526f68}input[type=color]{width:45px;height:25px;vertical-align:middle;border:0;padding:0}#status{font-size:12px;color:#5a6d66}footer{max-width:1100px;margin:0 auto;padding:0 25px 25px;color:#5c6667;font-size:13px}.key{font-family:monospace;color:#657775}@media(max-width:800px){main{grid-template-columns:1fr}header{padding:20px}aside{order:2}}
+</style>
+<header><h1>__TITLE__ <span style="font-weight:400;color:#72857f">/ 分层模型</span></h1><p>先做部件，再装动作。头部属于单位，衣装可以投影。</p></header>
+<main><section><div class="stage" id="stage"><canvas id="canvas" width="512" height="512" aria-label="分层角色预览"></canvas></div>
+<div class="bar"><button id="play">播放姿势</button><button id="flip">朝左 → 朝右</button><button id="bg">背景：棋盘</button><button id="download">导出当前组合 PNG</button></div>
+<p id="status">载入部件…</p><p class="note">这是制作端装配预览。衣装采用逐动作绘制；头部共用母版坐标。游戏内验收尚未进行。</p></section>
+<aside><h2>装配控制</h2><label>动作<select id="pose"></select></label><label>头部<select id="preset"></select></label>
+<label><input type="checkbox" id="head" checked> 显示 head</label><label><input type="checkbox" id="wearing" checked> 显示 wearing</label>
+<label><input type="checkbox" id="anchors"> 显示站位 / 头部锚点</label>
+
+<fieldset><legend>独立部件</legend><div id="parts"></div></fieldset>
+<p class="note">固定装饰随所属部件绘制，武器随衣装迁移。EGO 与战斗特效留在独立运行时系统，本预览不烘焙特效。</p></aside></main>
+<footer>__TITLE__的脸型、五官、前后发、衣装与武器按角色设定制作；原版部件用于换头对照。面部按动作切换正常、攻击、受击表情。关闭 head 后即为本版本可导出的衣装范围。<br>源文件与坐标：<span class="key">model.json · sources/ · build_model.py</span></footer>
+<script>
+const M=__MODEL_DATA__;
+const $=id=>document.getElementById(id), cv=$('canvas'), view=cv.getContext('2d'), work=document.createElement('canvas');work.width=work.height=1536;const ctx=work.getContext('2d');
+const names={hair_back:'后发',hair_front:'前发',facemodel:'脸型',eyes:'眼睛',brows:'眉毛',nose:'鼻子',mouth:'嘴',body:'衣装',body_front:'衣装前层 / 手臂',weapon:'武器'};
+for(const [id,p] of Object.entries(M.poses))$('pose').add(new Option(`${p.label} / ${id}`,id));
+for(const [id,p] of Object.entries(M.head_presets))$('preset').add(new Option(p.label,id));
+for(const p of M.parts){const l=document.createElement('label'),i=document.createElement('input');i.type='checkbox';i.checked=true;i.dataset.part=p.id;i.onchange=draw;l.append(i,` ${names[p.id]} `);$('parts').append(l)}
+const images={};let mirror=false,bg=0,timer=null,ready=false;
+const disabled=()=>new Set([...document.querySelectorAll('[data-part]')].filter(x=>!x.checked).map(x=>x.dataset.part));
+function draw(){if(!ready)return;ctx.clearRect(0,0,1536,1536);ctx.save();ctx.scale(3,3);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';if(mirror){ctx.translate(512,0);ctx.scale(-1,1)}const off=disabled();let count=0;for(const p of M.resolved[$('preset').value][$('pose').value]){if(off.has(p.id)||!$(p.domain).checked)continue;let im=images[p.path];ctx.save();ctx.translate(...p.at);ctx.rotate(p.angle*Math.PI/180);ctx.drawImage(im,-p.pivot[0]*p.size[0],-p.pivot[1]*p.size[1],...p.size);ctx.restore();count++}if($('anchors').checked){const pose=M.poses[$('pose').value];ctx.strokeStyle='#71988a';for(const side of ['l','r']){const pts=['shoulder','elbow','wrist'].map(k=>pose.joints[k+'_'+side]);ctx.beginPath();ctx.moveTo(...pts[0]);for(const p of pts.slice(1))ctx.lineTo(...p);ctx.stroke()}for(const [point,color] of [[M.canvas.root,'#ec665b'],[pose.neck_at,'#2485ac']]){const [px,py]=point;ctx.strokeStyle=color;ctx.beginPath();ctx.moveTo(px-7,py);ctx.lineTo(px+7,py);ctx.moveTo(px,py-7);ctx.lineTo(px,py+7);ctx.stroke()}}ctx.restore();view.clearRect(0,0,512,512);view.imageSmoothingQuality='high';view.drawImage(work,0,0,512,512);$('status').textContent=`${$('pose').value} · ${count} 个部件 · ${mirror?'朝右':'朝左'} · head ${$('head').checked?'开启':'关闭'} / wearing ${$('wearing').checked?'开启':'关闭'}`;}
+for(const id of ['pose','preset','head','wearing','anchors'])$(id).oninput=draw;
+$('flip').onclick=()=>{mirror=!mirror;$('flip').textContent=mirror?'朝右 → 朝左':'朝左 → 朝右';draw()};
+$('bg').onclick=()=>{bg=(bg+1)%3;$('stage').className='stage '+['','dark','light'][bg];$('bg').textContent='背景：'+['棋盘','深色','白色'][bg]};
+$('play').onclick=()=>{if(timer){clearInterval(timer);timer=null;$('play').textContent='播放姿势'}else{timer=setInterval(()=>{$('pose').selectedIndex=($('pose').selectedIndex+1)%$('pose').options.length;draw()},700);$('play').textContent='暂停'}};
+$('download').onclick=()=>{const prev=$('anchors').checked;$('anchors').checked=false;draw();const a=document.createElement('a');a.href=cv.toDataURL();a.download=`Velia_${$('pose').value}_${$('head').checked?'assembled':'wearing'}.png`;a.click();$('anchors').checked=prev;draw()};
+Promise.all(Object.entries(M.images).map(([path,url])=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{images[path]=im;resolve()};im.onerror=()=>reject(new Error(path));im.src=url}))).then(()=>{ready=true;draw()}).catch(e=>{$('status').textContent='部件载入失败：'+e.message;console.error(e)});
+</script></html>

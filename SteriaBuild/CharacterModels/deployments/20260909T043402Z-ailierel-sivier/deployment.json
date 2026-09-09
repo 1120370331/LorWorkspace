@@ -1,0 +1,1760 @@
+{
+  "timestamp_utc": "20260909T043437764752Z",
+  "status": "deployed_verified",
+  "apply": true,
+  "candidates": {
+    "Ailierel_Layered_v1": "e0665a67eab958cd7386549289166dec0303e92eb5076a5d237d545e1b59383b",
+    "Sivier_Layered_v1": "a705be328e60b450d554faa427e04fd7a5b05dce9f878c38b2481dbfe787ecb0"
+  },
+  "path_aliases": [
+    {
+      "label": "workspace",
+      "requested": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder",
+      "resolved": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder",
+      "sha256_verification": "PASS",
+      "files_verified": 105
+    },
+    {
+      "label": "game_1",
+      "requested": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+      "resolved": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+      "sha256_verification": "PASS",
+      "files_verified": 105
+    },
+    {
+      "label": "game_2",
+      "requested": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+      "resolved": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+      "sha256_verification": "PASS",
+      "files_verified": 105
+    }
+  ],
+  "book_bindings": {
+    "enemy_unchanged": {
+      "8": "Ailierel",
+      "9": "Sivier"
+    },
+    "librarian_projection": {
+      "99000007": "Ailierel_Layered_v1_Projection",
+      "99000008": "Sivier_Layered_v1_Projection"
+    }
+  },
+  "files_per_target": 105,
+  "targets": [
+    {
+      "label": "workspace",
+      "root": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder",
+      "unchanged_baseline": {
+        "Assemblies/LorIdExtensions.dll": "4aeb3e7a6599d8c1643ddc8141b4d553053a0e528cac5bee40c5231ed78b1919",
+        "Assemblies/MyJsonTool.dll": "326292df73679d3cbf52b6927a04a86481cdcb305cb16c1a5a2677864a7994df",
+        "Assemblies/NAudio.dll": "81b3f1dc3f1eac9762b8a292751a44b64b87d0d4c3982debfdd2621012186451",
+        "Assemblies/Steria.dll": "f9098a594bd4e8d1a1f95ea3391aefb17e558f3e3d95ae226ac79b6f3ec5909e",
+        "Assemblies/UnitRenderUtils.dll": "79cee2b53b60940ff5760c31de95081b832ec750a89be7fee6806b2b12b9c869",
+        "Data/CardInfo.xml": "791302a3cdc100e16b12ead4a1581797d334fc8b2ffa778f862e7cac0615529c",
+        "Data/EquipPage_Enemy.xml": "fd4f4bac3168fadee27a20d3ed638f6883012f56835698940ff00929ef0751e1",
+        "StageModInfo.xml": "d799a2d1643b59b9877a33d0b78f344b7607ad1d4f56065eb8d8e3776b8a7fc2"
+      },
+      "files": [
+        {
+          "path": "Data/EquipPage_Librarian.xml",
+          "source": "target-local librarian XML patch",
+          "before": "1af0cb406b1a5cff5bf7a0f69c1cc40963e31549182ca7aedc197e6c9d941b29",
+          "after": "69c4a27370a720e953288ea4f37bbdb920274bf09d4114d277caf398bc0de5af",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Data\\EquipPage_Librarian.xml",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Aim.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Aim.png",
+          "before": null,
+          "after": "ba61c72b285899095cfe4ac387d978a8903be22ecd9b64fca9c3a6bcec1e9eee",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Aim_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Aim_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Damaged.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Damaged.png",
+          "before": "11c5799db6ec62fc0aece4aea0ddca906dc184410349d61f3912a349b310901e",
+          "after": "a27164c459543720b0b399da1d214cd0f2260a323eebf679cd1234b20335f515",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Damaged.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Damaged_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Damaged_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Default.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Default.png",
+          "before": "791f2ca2837e18f77cdfcaab74f84f3814e5baeeec1227a42120fdf8327cac9d",
+          "after": "e260d2c651c4065d9c4965c4d71f2fe04eb757d51c8ee5f139eaec880ecbc0b5",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Default.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Default_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Default_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Evade.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Evade.png",
+          "before": "fb59cf15cac7dac8b7ee25309216d8fdc882e8a2663dbce9ccaee53a9d258237",
+          "after": "fc1c4fe00f78fcb225c1cf8b9c9d6b8942b33b865f27bb5273282bb187d65f77",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Evade.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Evade_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Evade_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Fire.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Fire.png",
+          "before": null,
+          "after": "317dfd50fadd7729b0716e3831894270ec902d9c9e819dde8edd494ebf63f2e1",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Fire_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Fire_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Guard.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Guard.png",
+          "before": "d46455be0303ad75d4c84504a58a4b75a4d9a4634ad9ed1badfce6364f89e849",
+          "after": "ba61c72b285899095cfe4ac387d978a8903be22ecd9b64fca9c3a6bcec1e9eee",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Guard.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Guard_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Guard_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Hit.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Hit.png",
+          "before": "175b4c96165a41b83b12e6668fa19a372c3d1a1f1f476ac51d471b17d8170aa9",
+          "after": "024afae538f5f3bc68e3579a902755f5cb0bcc4c2af552875cbba3f6e245a416",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Hit.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Hit_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Hit_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Move.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Move.png",
+          "before": "6968a1b9ff9704d8e7fe065969082ff9cd4b6e21a1132a129e9f648c43ad2196",
+          "after": "49abbaa50ffdad202df66110281cd460a8db5fa6c3fb68bc91f22ce011e9e3ca",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Move.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Move_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Move_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Penetrate.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Penetrate.png",
+          "before": "a1232a2b6d51ef56c2fd15ba8e647f4dcbac8d17f83fd0ee3221eda4790f0c34",
+          "after": "317dfd50fadd7729b0716e3831894270ec902d9c9e819dde8edd494ebf63f2e1",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Penetrate.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Penetrate_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Penetrate_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/S1.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\S1.png",
+          "before": "94c3cb0904a9f7a8552db0d7017cea8397455d7d0e291cc719834eb48e80d95c",
+          "after": "a650fe691d0cdf211d480c57a381114b90ee15b386d9f69c120165dc1bb83cc9",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\S1.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/S1_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\S1_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Slash.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Slash.png",
+          "before": "76a6e35c05751797d611e4c7b5ddd9e2b03694a0db4941dce9f1b3337478c837",
+          "after": "df2d0babbbada58679dfa753dd4d9cd0c7202fc9ac7c972ef1a336f6360b29fa",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Slash.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Slash_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Slash_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Special.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Special.png",
+          "before": null,
+          "after": "a650fe691d0cdf211d480c57a381114b90ee15b386d9f69c120165dc1bb83cc9",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Special_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Special_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ModInfo.Xml",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ModInfo.Xml",
+          "before": "fb034d40596e886c34c90100bb5479c54c7d5ee0ceef376de889e2a3a5977e41",
+          "after": "75993665f58fb4bbeb32f086a40e4ec75f6239c28f9b358ea47ed9ef48c02065",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Ailierel\\ModInfo.Xml",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/Thumb.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\Thumb.png",
+          "before": null,
+          "after": "e260d2c651c4065d9c4965c4d71f2fe04eb757d51c8ee5f139eaec880ecbc0b5",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Aim.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Aim.png",
+          "before": null,
+          "after": "b31967195ddf76bad27433b76f05b1078f02c30f8987bf9fffb3b489720931cd",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Aim_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Aim_front.png",
+          "before": null,
+          "after": "720752043ba4688559018f0babf7d570d3c2d7d595981ea326c0c19948b083f7",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Damaged.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Damaged.png",
+          "before": null,
+          "after": "6d40ac978ce3e940654546bfaba4ae17ed5fd1dd97fff26689747782c3c65dc4",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Damaged_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Damaged_front.png",
+          "before": null,
+          "after": "631d9e8fcadf566b3ccb07f96c12332387677b8da290b1f8aeb19d66bab99f28",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Default.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Default.png",
+          "before": null,
+          "after": "9533547ed3fc0e886d893b1d6ab7f952c223af58d46f9fbffcde62fc2afd5fc2",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Default_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Default_front.png",
+          "before": null,
+          "after": "fd016b11cfa7d53c03bb21a70e5213382a49c767e6acdbfa86eb501f91f6de11",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Evade.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Evade.png",
+          "before": null,
+          "after": "dd99fbbc03da60ed65121032cfa9c1d4ce844d4477d74d3ef0b19fbebe21549c",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Evade_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Evade_front.png",
+          "before": null,
+          "after": "b496a4f1d8a77d9650e7b2acaed8c12d21eb7db35806d7c96d980f6bb4d5b8e8",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Fire.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Fire.png",
+          "before": null,
+          "after": "f8b521d1580058e40782e5bf6883a7fc16e5d2520359940c369d68c412c854bf",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Fire_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Fire_front.png",
+          "before": null,
+          "after": "c6b8addab97063f1a80e1502c39c2810b2d0bba94aa4c13be45671748b05624a",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Guard.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Guard.png",
+          "before": null,
+          "after": "b31967195ddf76bad27433b76f05b1078f02c30f8987bf9fffb3b489720931cd",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Guard_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Guard_front.png",
+          "before": null,
+          "after": "720752043ba4688559018f0babf7d570d3c2d7d595981ea326c0c19948b083f7",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Hit.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Hit.png",
+          "before": null,
+          "after": "87f30c642a3e36754cfa4f530da5a152744934f7f6b7f4a3e004b2c1684c59bc",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Hit_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Hit_front.png",
+          "before": null,
+          "after": "badd7f405c541da02b694e5ce7892a29cf3c89a77eff8d06412d1c5166f2993e",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Move.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Move.png",
+          "before": null,
+          "after": "a8e640a86acfcc2807dd7962049dea19a3fd77e6732d3bdde917ced65125f8aa",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Move_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Move_front.png",
+          "before": null,
+          "after": "a719bd39fbc59652fc57d2e08b80c4f0153d0123c43597d7b209abfacd5d564f",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Penetrate.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Penetrate.png",
+          "before": null,
+          "after": "f8b521d1580058e40782e5bf6883a7fc16e5d2520359940c369d68c412c854bf",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Penetrate_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Penetrate_front.png",
+          "before": null,
+          "after": "c6b8addab97063f1a80e1502c39c2810b2d0bba94aa4c13be45671748b05624a",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/S1.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\S1.png",
+          "before": null,
+          "after": "31a7ca89fb59069b806fc32a71b2130b1f1dd1224ad25c94d7c739712b352044",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/S1_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\S1_front.png",
+          "before": null,
+          "after": "8631371f0bc2b4bf0e1ab65270cf8a789a89e3717dc8616ebadc7f14314023d7",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Slash.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Slash.png",
+          "before": null,
+          "after": "bc8a18d3bdd28651edd5883d05ba93fb6cccad7fd1fc3e8e0ee1c25a79528ab6",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Slash_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Slash_front.png",
+          "before": null,
+          "after": "18ff39bfb60848045c80cfd3ba480ae1160b8c03a88e069d88bef5960aa4e366",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Special.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Special.png",
+          "before": null,
+          "after": "31a7ca89fb59069b806fc32a71b2130b1f1dd1224ad25c94d7c739712b352044",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Special_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Special_front.png",
+          "before": null,
+          "after": "8631371f0bc2b4bf0e1ab65270cf8a789a89e3717dc8616ebadc7f14314023d7",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ModInfo.Xml",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ModInfo.Xml",
+          "before": null,
+          "after": "c2152223f778e8abd1de17698342e890b9fa58efdb50718075e8dcbaee619bce",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/Thumb.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\Thumb.png",
+          "before": null,
+          "after": "e260d2c651c4065d9c4965c4d71f2fe04eb757d51c8ee5f139eaec880ecbc0b5",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Aim.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Aim.png",
+          "before": null,
+          "after": "7562fcf0ee1679bf50d9e3f86647d6386083ddf5e9b3c44c11ea591529f3b738",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Aim_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Aim_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Damaged.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Damaged.png",
+          "before": "c23a40e357f2f0818dfe35e580ffa6211a5b53b60d6b5a610b8db6cef8a948f9",
+          "after": "7457ecf55f11dd5a975706c3c2ee0732b9e159ee60ddeb85e1bb5324b0018d89",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Damaged.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Damaged_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Damaged_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Default.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Default.png",
+          "before": "7a561f96411e511255da10555cf5527a141c53d42c2c25440589578edbbca52d",
+          "after": "41e88a39b42c27870532c26ab3f8a0b5f2a6ee9d8b2cd457bd6e49b88a0ab611",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Default.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Default_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Default_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Evade.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Evade.png",
+          "before": "a15af085e41a037c67fdb0c43934f95c894dada2613031b399b56b967feeef46",
+          "after": "e861627103975255f05d8b97056fc73e10ff96097febcf2553ed8fb7d5e8d603",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Evade.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Evade_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Evade_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Fire.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Fire.png",
+          "before": null,
+          "after": "a24510ed33e07040d542a85fc4fd12b018af92d1cc597d49df01f3810c8cb9f3",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Fire_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Fire_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Guard.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Guard.png",
+          "before": "247b7176210c0846af7199833fa63ef8b2d1286a96aecd34805a388b8c23583b",
+          "after": "7562fcf0ee1679bf50d9e3f86647d6386083ddf5e9b3c44c11ea591529f3b738",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Guard.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Guard_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Guard_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Hit.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Hit.png",
+          "before": "d23c1837c3240ac2f98a8fb4a5b1e63fd2b9bbf48f2a1c2baf41f2ad6f7fd0eb",
+          "after": "7c464a80b9f23294ae4520f1a336306484b70adbfdafa3c8a8fa588d95118536",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Hit.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Hit_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Hit_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Move.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Move.png",
+          "before": "e3b97070c964478db884fcad06e3907e1d57e90041b8f4fa5dba9230e8b585a3",
+          "after": "34d92d3423083ba04cc7937652947c33675862c60ad7d3a42cdd604797fc3fc8",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Move.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Move_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Move_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Penetrate.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Penetrate.png",
+          "before": "501bee31612e10e993eb362f3f517455d147123a25d6f7130b32902a4d031110",
+          "after": "a24510ed33e07040d542a85fc4fd12b018af92d1cc597d49df01f3810c8cb9f3",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Penetrate.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Penetrate_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Penetrate_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/S1.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\S1.png",
+          "before": "7089b39aec24bccd5d6daf8ba99ad1a0be1ce435e3c7bfe153dc9bb510e576b7",
+          "after": "e04973af254afb53310b997fb734fbc53d8e9d655f9f6a450557ccd20610ec0c",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\S1.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/S1_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\S1_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Slash.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Slash.png",
+          "before": "54781b31901f5cd342a32c2c38e69085fa868f84cd7bec2784de352edc3de814",
+          "after": "db38ff671f766e4e787702ebadfffcea1fd4306df73fce19f1cdacdfd01d4526",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Slash.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Slash_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Slash_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Special.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Special.png",
+          "before": null,
+          "after": "e04973af254afb53310b997fb734fbc53d8e9d655f9f6a450557ccd20610ec0c",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Special_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Special_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ModInfo.Xml",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ModInfo.Xml",
+          "before": "9c529ceeb963f0df212631c0948a28977eeda9b2689c8425ba4ba61925c83ba8",
+          "after": "bba18d51ef27560440a4c62c05a3d0a2b2d5f5f0c9344d63b0253e1217d467c3",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\workspace\\Resource\\CharacterSkin\\Sivier\\ModInfo.Xml",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/Thumb.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\Thumb.png",
+          "before": null,
+          "after": "41e88a39b42c27870532c26ab3f8a0b5f2a6ee9d8b2cd457bd6e49b88a0ab611",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Aim.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Aim.png",
+          "before": null,
+          "after": "b88b0cee3824657ad10dbe8763d87c0ebbb08db9d613d898a40c76e63c9bf5b6",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Aim_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Aim_front.png",
+          "before": null,
+          "after": "fda4207036fbf38c841a4385b4a243a9fb1399937ad5c467d81db57c5b307eac",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Damaged.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Damaged.png",
+          "before": null,
+          "after": "b70f10631baa3712174e5ae92b790f8c6182e8a1b3a3a004d33a4e604f065b28",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Damaged_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Damaged_front.png",
+          "before": null,
+          "after": "e2104475f7f918907230cd8c53241822e626436a8ec26e37ce6ad8e0846d9923",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Default.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Default.png",
+          "before": null,
+          "after": "3035656474ef224251061b428fd6d8f4dd76e39d3b99f981de6702ed3b6fdf77",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Default_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Default_front.png",
+          "before": null,
+          "after": "b36bcf5c7b386653c40bdfce56a3b490e9f50cfdce171fffaaab5103ae70e111",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Evade.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Evade.png",
+          "before": null,
+          "after": "f369278da64a1c59afe7a55f6bf9a626484b3dcf1111edc1b2e8564ce3f545d9",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Evade_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Evade_front.png",
+          "before": null,
+          "after": "63bcc5f151884bb428c0c768f7c3fe4b04bbe04794530335c770e427bf26177d",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Fire.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Fire.png",
+          "before": null,
+          "after": "75b6ab7ee4d203e8aff11eadb4586374641d521e6974c49a46ea6699dd525682",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Fire_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Fire_front.png",
+          "before": null,
+          "after": "b251e43e6c40f21ec75ba7d7e5583fc1a95255646e310a09cae3df6dfaffdeed",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Guard.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Guard.png",
+          "before": null,
+          "after": "b88b0cee3824657ad10dbe8763d87c0ebbb08db9d613d898a40c76e63c9bf5b6",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Guard_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Guard_front.png",
+          "before": null,
+          "after": "fda4207036fbf38c841a4385b4a243a9fb1399937ad5c467d81db57c5b307eac",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Hit.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Hit.png",
+          "before": null,
+          "after": "7bb24b90b8a7a5847bb3d2ddd355448b1ceae501fd8b1d4a2fdab3c2d013bfcb",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Hit_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Hit_front.png",
+          "before": null,
+          "after": "b6fd978104d096fb4e2ff94007fa62f81b1f3a50db915d5d54169ce8a26ba42a",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Move.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Move.png",
+          "before": null,
+          "after": "f25412f699307df5f90569f24de3f23d492a859b710da85c7c81725fce7a286e",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Move_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Move_front.png",
+          "before": null,
+          "after": "74ec131d177d49cde08282148fb78dae6d85dfedcd7d19c455a5552dae7762cd",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Penetrate.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Penetrate.png",
+          "before": null,
+          "after": "75b6ab7ee4d203e8aff11eadb4586374641d521e6974c49a46ea6699dd525682",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Penetrate_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Penetrate_front.png",
+          "before": null,
+          "after": "b251e43e6c40f21ec75ba7d7e5583fc1a95255646e310a09cae3df6dfaffdeed",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/S1.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\S1.png",
+          "before": null,
+          "after": "a5476df1b4065850c23617411808ef7e4c9adafabbc2ae97df373267c604b552",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/S1_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\S1_front.png",
+          "before": null,
+          "after": "c4710b2a44b63721ecfc4f898b22eced30a331b9978a4815944713ad3a4cc33c",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Slash.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Slash.png",
+          "before": null,
+          "after": "dd7a17804412e255add07cb3a9b6ec42624516e995473daf9bd1afb656adb48a",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Slash_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Slash_front.png",
+          "before": null,
+          "after": "e97288eaa5dfd23ab4810a7717349ffa0fd8b0dcb40f0aa419b36d3d78e24879",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Special.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Special.png",
+          "before": null,
+          "after": "a5476df1b4065850c23617411808ef7e4c9adafabbc2ae97df373267c604b552",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Special_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Special_front.png",
+          "before": null,
+          "after": "c4710b2a44b63721ecfc4f898b22eced30a331b9978a4815944713ad3a4cc33c",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ModInfo.Xml",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ModInfo.Xml",
+          "before": null,
+          "after": "3eafb04fbd335c52829ca051861854e4630819d9c339da5edef10def4fda2cc6",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/Thumb.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\Thumb.png",
+          "before": null,
+          "after": "41e88a39b42c27870532c26ab3f8a0b5f2a6ee9d8b2cd457bd6e49b88a0ab611",
+          "backup": null,
+          "action": "create"
+        }
+      ],
+      "sha256_verification": "PASS"
+    },
+    {
+      "label": "game_1",
+      "root": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+      "unchanged_baseline": {
+        "Assemblies/LorIdExtensions.dll": "4aeb3e7a6599d8c1643ddc8141b4d553053a0e528cac5bee40c5231ed78b1919",
+        "Assemblies/MyJsonTool.dll": "326292df73679d3cbf52b6927a04a86481cdcb305cb16c1a5a2677864a7994df",
+        "Assemblies/NAudio.dll": "81b3f1dc3f1eac9762b8a292751a44b64b87d0d4c3982debfdd2621012186451",
+        "Assemblies/Steria.dll": "f9098a594bd4e8d1a1f95ea3391aefb17e558f3e3d95ae226ac79b6f3ec5909e",
+        "Assemblies/UnitRenderUtils.dll": "79cee2b53b60940ff5760c31de95081b832ec750a89be7fee6806b2b12b9c869",
+        "Data/CardInfo.xml": "791302a3cdc100e16b12ead4a1581797d334fc8b2ffa778f862e7cac0615529c",
+        "Data/EquipPage_Enemy.xml": "872fda05a7b2b11fb70159afc03c0b20e9dbb5e94d7c0967751a2d9189aad3c0",
+        "StageModInfo.xml": "d799a2d1643b59b9877a33d0b78f344b7607ad1d4f56065eb8d8e3776b8a7fc2"
+      },
+      "files": [
+        {
+          "path": "Data/EquipPage_Librarian.xml",
+          "source": "target-local librarian XML patch",
+          "before": "1af0cb406b1a5cff5bf7a0f69c1cc40963e31549182ca7aedc197e6c9d941b29",
+          "after": "69c4a27370a720e953288ea4f37bbdb920274bf09d4114d277caf398bc0de5af",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Data\\EquipPage_Librarian.xml",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Aim.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Aim.png",
+          "before": null,
+          "after": "ba61c72b285899095cfe4ac387d978a8903be22ecd9b64fca9c3a6bcec1e9eee",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Aim_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Aim_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Damaged.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Damaged.png",
+          "before": "11c5799db6ec62fc0aece4aea0ddca906dc184410349d61f3912a349b310901e",
+          "after": "a27164c459543720b0b399da1d214cd0f2260a323eebf679cd1234b20335f515",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Damaged.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Damaged_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Damaged_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Default.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Default.png",
+          "before": "791f2ca2837e18f77cdfcaab74f84f3814e5baeeec1227a42120fdf8327cac9d",
+          "after": "e260d2c651c4065d9c4965c4d71f2fe04eb757d51c8ee5f139eaec880ecbc0b5",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Default.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Default_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Default_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Evade.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Evade.png",
+          "before": "fb59cf15cac7dac8b7ee25309216d8fdc882e8a2663dbce9ccaee53a9d258237",
+          "after": "fc1c4fe00f78fcb225c1cf8b9c9d6b8942b33b865f27bb5273282bb187d65f77",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Evade.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Evade_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Evade_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Fire.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Fire.png",
+          "before": null,
+          "after": "317dfd50fadd7729b0716e3831894270ec902d9c9e819dde8edd494ebf63f2e1",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Fire_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Fire_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Guard.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Guard.png",
+          "before": "d46455be0303ad75d4c84504a58a4b75a4d9a4634ad9ed1badfce6364f89e849",
+          "after": "ba61c72b285899095cfe4ac387d978a8903be22ecd9b64fca9c3a6bcec1e9eee",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Guard.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Guard_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Guard_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Hit.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Hit.png",
+          "before": "175b4c96165a41b83b12e6668fa19a372c3d1a1f1f476ac51d471b17d8170aa9",
+          "after": "024afae538f5f3bc68e3579a902755f5cb0bcc4c2af552875cbba3f6e245a416",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Hit.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Hit_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Hit_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Move.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Move.png",
+          "before": "6968a1b9ff9704d8e7fe065969082ff9cd4b6e21a1132a129e9f648c43ad2196",
+          "after": "49abbaa50ffdad202df66110281cd460a8db5fa6c3fb68bc91f22ce011e9e3ca",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Move.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Move_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Move_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Penetrate.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Penetrate.png",
+          "before": "a1232a2b6d51ef56c2fd15ba8e647f4dcbac8d17f83fd0ee3221eda4790f0c34",
+          "after": "317dfd50fadd7729b0716e3831894270ec902d9c9e819dde8edd494ebf63f2e1",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Penetrate.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Penetrate_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Penetrate_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/S1.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\S1.png",
+          "before": "94c3cb0904a9f7a8552db0d7017cea8397455d7d0e291cc719834eb48e80d95c",
+          "after": "a650fe691d0cdf211d480c57a381114b90ee15b386d9f69c120165dc1bb83cc9",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\S1.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/S1_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\S1_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Slash.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Slash.png",
+          "before": "76a6e35c05751797d611e4c7b5ddd9e2b03694a0db4941dce9f1b3337478c837",
+          "after": "df2d0babbbada58679dfa753dd4d9cd0c7202fc9ac7c972ef1a336f6360b29fa",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Slash.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Slash_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Slash_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Special.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Special.png",
+          "before": null,
+          "after": "a650fe691d0cdf211d480c57a381114b90ee15b386d9f69c120165dc1bb83cc9",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ClothCustom/Special_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ClothCustom\\Special_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/ModInfo.Xml",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\ModInfo.Xml",
+          "before": "fb034d40596e886c34c90100bb5479c54c7d5ee0ceef376de889e2a3a5977e41",
+          "after": "75993665f58fb4bbeb32f086a40e4ec75f6239c28f9b358ea47ed9ef48c02065",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\ModInfo.Xml",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel/Thumb.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel\\Thumb.png",
+          "before": "0e6d6b7b1305877536eca174d7219a62c224b1584f741253f6644e84f2c9b11a",
+          "after": "e260d2c651c4065d9c4965c4d71f2fe04eb757d51c8ee5f139eaec880ecbc0b5",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Ailierel\\Thumb.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Aim.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Aim.png",
+          "before": null,
+          "after": "b31967195ddf76bad27433b76f05b1078f02c30f8987bf9fffb3b489720931cd",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Aim_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Aim_front.png",
+          "before": null,
+          "after": "720752043ba4688559018f0babf7d570d3c2d7d595981ea326c0c19948b083f7",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Damaged.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Damaged.png",
+          "before": null,
+          "after": "6d40ac978ce3e940654546bfaba4ae17ed5fd1dd97fff26689747782c3c65dc4",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Damaged_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Damaged_front.png",
+          "before": null,
+          "after": "631d9e8fcadf566b3ccb07f96c12332387677b8da290b1f8aeb19d66bab99f28",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Default.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Default.png",
+          "before": null,
+          "after": "9533547ed3fc0e886d893b1d6ab7f952c223af58d46f9fbffcde62fc2afd5fc2",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Default_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Default_front.png",
+          "before": null,
+          "after": "fd016b11cfa7d53c03bb21a70e5213382a49c767e6acdbfa86eb501f91f6de11",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Evade.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Evade.png",
+          "before": null,
+          "after": "dd99fbbc03da60ed65121032cfa9c1d4ce844d4477d74d3ef0b19fbebe21549c",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Evade_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Evade_front.png",
+          "before": null,
+          "after": "b496a4f1d8a77d9650e7b2acaed8c12d21eb7db35806d7c96d980f6bb4d5b8e8",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Fire.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Fire.png",
+          "before": null,
+          "after": "f8b521d1580058e40782e5bf6883a7fc16e5d2520359940c369d68c412c854bf",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Fire_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Fire_front.png",
+          "before": null,
+          "after": "c6b8addab97063f1a80e1502c39c2810b2d0bba94aa4c13be45671748b05624a",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Guard.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Guard.png",
+          "before": null,
+          "after": "b31967195ddf76bad27433b76f05b1078f02c30f8987bf9fffb3b489720931cd",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Guard_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Guard_front.png",
+          "before": null,
+          "after": "720752043ba4688559018f0babf7d570d3c2d7d595981ea326c0c19948b083f7",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Hit.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Hit.png",
+          "before": null,
+          "after": "87f30c642a3e36754cfa4f530da5a152744934f7f6b7f4a3e004b2c1684c59bc",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Hit_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Hit_front.png",
+          "before": null,
+          "after": "badd7f405c541da02b694e5ce7892a29cf3c89a77eff8d06412d1c5166f2993e",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Move.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Move.png",
+          "before": null,
+          "after": "a8e640a86acfcc2807dd7962049dea19a3fd77e6732d3bdde917ced65125f8aa",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Move_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Move_front.png",
+          "before": null,
+          "after": "a719bd39fbc59652fc57d2e08b80c4f0153d0123c43597d7b209abfacd5d564f",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Penetrate.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Penetrate.png",
+          "before": null,
+          "after": "f8b521d1580058e40782e5bf6883a7fc16e5d2520359940c369d68c412c854bf",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Penetrate_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Penetrate_front.png",
+          "before": null,
+          "after": "c6b8addab97063f1a80e1502c39c2810b2d0bba94aa4c13be45671748b05624a",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/S1.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\S1.png",
+          "before": null,
+          "after": "31a7ca89fb59069b806fc32a71b2130b1f1dd1224ad25c94d7c739712b352044",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/S1_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\S1_front.png",
+          "before": null,
+          "after": "8631371f0bc2b4bf0e1ab65270cf8a789a89e3717dc8616ebadc7f14314023d7",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Slash.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Slash.png",
+          "before": null,
+          "after": "bc8a18d3bdd28651edd5883d05ba93fb6cccad7fd1fc3e8e0ee1c25a79528ab6",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Slash_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Slash_front.png",
+          "before": null,
+          "after": "18ff39bfb60848045c80cfd3ba480ae1160b8c03a88e069d88bef5960aa4e366",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Special.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Special.png",
+          "before": null,
+          "after": "31a7ca89fb59069b806fc32a71b2130b1f1dd1224ad25c94d7c739712b352044",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ClothCustom/Special_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ClothCustom\\Special_front.png",
+          "before": null,
+          "after": "8631371f0bc2b4bf0e1ab65270cf8a789a89e3717dc8616ebadc7f14314023d7",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/ModInfo.Xml",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\ModInfo.Xml",
+          "before": null,
+          "after": "c2152223f778e8abd1de17698342e890b9fa58efdb50718075e8dcbaee619bce",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Ailierel_Layered_v1_Projection/Thumb.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Ailierel_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Ailierel_Layered_v1_Projection\\Thumb.png",
+          "before": null,
+          "after": "e260d2c651c4065d9c4965c4d71f2fe04eb757d51c8ee5f139eaec880ecbc0b5",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Aim.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Aim.png",
+          "before": null,
+          "after": "7562fcf0ee1679bf50d9e3f86647d6386083ddf5e9b3c44c11ea591529f3b738",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Aim_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Aim_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Damaged.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Damaged.png",
+          "before": "c23a40e357f2f0818dfe35e580ffa6211a5b53b60d6b5a610b8db6cef8a948f9",
+          "after": "7457ecf55f11dd5a975706c3c2ee0732b9e159ee60ddeb85e1bb5324b0018d89",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Damaged.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Damaged_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Damaged_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Default.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Default.png",
+          "before": "7a561f96411e511255da10555cf5527a141c53d42c2c25440589578edbbca52d",
+          "after": "41e88a39b42c27870532c26ab3f8a0b5f2a6ee9d8b2cd457bd6e49b88a0ab611",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Default.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Default_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Default_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Evade.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Evade.png",
+          "before": "a15af085e41a037c67fdb0c43934f95c894dada2613031b399b56b967feeef46",
+          "after": "e861627103975255f05d8b97056fc73e10ff96097febcf2553ed8fb7d5e8d603",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Evade.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Evade_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Evade_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Fire.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Fire.png",
+          "before": null,
+          "after": "a24510ed33e07040d542a85fc4fd12b018af92d1cc597d49df01f3810c8cb9f3",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Fire_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Fire_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Guard.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Guard.png",
+          "before": "247b7176210c0846af7199833fa63ef8b2d1286a96aecd34805a388b8c23583b",
+          "after": "7562fcf0ee1679bf50d9e3f86647d6386083ddf5e9b3c44c11ea591529f3b738",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Guard.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Guard_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Guard_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Hit.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Hit.png",
+          "before": "d23c1837c3240ac2f98a8fb4a5b1e63fd2b9bbf48f2a1c2baf41f2ad6f7fd0eb",
+          "after": "7c464a80b9f23294ae4520f1a336306484b70adbfdafa3c8a8fa588d95118536",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Hit.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Hit_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Hit_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Move.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Move.png",
+          "before": "e3b97070c964478db884fcad06e3907e1d57e90041b8f4fa5dba9230e8b585a3",
+          "after": "34d92d3423083ba04cc7937652947c33675862c60ad7d3a42cdd604797fc3fc8",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Move.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Move_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Move_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Penetrate.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Penetrate.png",
+          "before": "501bee31612e10e993eb362f3f517455d147123a25d6f7130b32902a4d031110",
+          "after": "a24510ed33e07040d542a85fc4fd12b018af92d1cc597d49df01f3810c8cb9f3",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Penetrate.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Penetrate_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Penetrate_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/S1.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\S1.png",
+          "before": "7089b39aec24bccd5d6daf8ba99ad1a0be1ce435e3c7bfe153dc9bb510e576b7",
+          "after": "e04973af254afb53310b997fb734fbc53d8e9d655f9f6a450557ccd20610ec0c",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\S1.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/S1_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\S1_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Slash.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Slash.png",
+          "before": "54781b31901f5cd342a32c2c38e69085fa868f84cd7bec2784de352edc3de814",
+          "after": "db38ff671f766e4e787702ebadfffcea1fd4306df73fce19f1cdacdfd01d4526",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Slash.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Slash_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Slash_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Special.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Special.png",
+          "before": null,
+          "after": "e04973af254afb53310b997fb734fbc53d8e9d655f9f6a450557ccd20610ec0c",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ClothCustom/Special_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ClothCustom\\Special_front.png",
+          "before": null,
+          "after": "b262bd68d44f93637b9949caf7ff7ce0b6b6ed839c3a2468681952b215ec4d95",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/ModInfo.Xml",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\ModInfo.Xml",
+          "before": "9c529ceeb963f0df212631c0948a28977eeda9b2689c8425ba4ba61925c83ba8",
+          "after": "bba18d51ef27560440a4c62c05a3d0a2b2d5f5f0c9344d63b0253e1217d467c3",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\ModInfo.Xml",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier/Thumb.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier\\Thumb.png",
+          "before": "6adbc45eddb82d74413518fa332453324a34cb2d97aa82bc9157c64a38be6e1d",
+          "after": "41e88a39b42c27870532c26ab3f8a0b5f2a6ee9d8b2cd457bd6e49b88a0ab611",
+          "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\deployments\\20260909T043402Z-ailierel-sivier\\backup\\game_1\\Resource\\CharacterSkin\\Sivier\\Thumb.png",
+          "action": "update"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Aim.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Aim.png",
+          "before": null,
+          "after": "b88b0cee3824657ad10dbe8763d87c0ebbb08db9d613d898a40c76e63c9bf5b6",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Aim_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Aim_front.png",
+          "before": null,
+          "after": "fda4207036fbf38c841a4385b4a243a9fb1399937ad5c467d81db57c5b307eac",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Damaged.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Damaged.png",
+          "before": null,
+          "after": "b70f10631baa3712174e5ae92b790f8c6182e8a1b3a3a004d33a4e604f065b28",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Damaged_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Damaged_front.png",
+          "before": null,
+          "after": "e2104475f7f918907230cd8c53241822e626436a8ec26e37ce6ad8e0846d9923",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Default.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Default.png",
+          "before": null,
+          "after": "3035656474ef224251061b428fd6d8f4dd76e39d3b99f981de6702ed3b6fdf77",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Default_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Default_front.png",
+          "before": null,
+          "after": "b36bcf5c7b386653c40bdfce56a3b490e9f50cfdce171fffaaab5103ae70e111",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Evade.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Evade.png",
+          "before": null,
+          "after": "f369278da64a1c59afe7a55f6bf9a626484b3dcf1111edc1b2e8564ce3f545d9",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Evade_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Evade_front.png",
+          "before": null,
+          "after": "63bcc5f151884bb428c0c768f7c3fe4b04bbe04794530335c770e427bf26177d",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Fire.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Fire.png",
+          "before": null,
+          "after": "75b6ab7ee4d203e8aff11eadb4586374641d521e6974c49a46ea6699dd525682",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Fire_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Fire_front.png",
+          "before": null,
+          "after": "b251e43e6c40f21ec75ba7d7e5583fc1a95255646e310a09cae3df6dfaffdeed",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Guard.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Guard.png",
+          "before": null,
+          "after": "b88b0cee3824657ad10dbe8763d87c0ebbb08db9d613d898a40c76e63c9bf5b6",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Guard_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Guard_front.png",
+          "before": null,
+          "after": "fda4207036fbf38c841a4385b4a243a9fb1399937ad5c467d81db57c5b307eac",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Hit.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Hit.png",
+          "before": null,
+          "after": "7bb24b90b8a7a5847bb3d2ddd355448b1ceae501fd8b1d4a2fdab3c2d013bfcb",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Hit_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Hit_front.png",
+          "before": null,
+          "after": "b6fd978104d096fb4e2ff94007fa62f81b1f3a50db915d5d54169ce8a26ba42a",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Move.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Move.png",
+          "before": null,
+          "after": "f25412f699307df5f90569f24de3f23d492a859b710da85c7c81725fce7a286e",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Move_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Move_front.png",
+          "before": null,
+          "after": "74ec131d177d49cde08282148fb78dae6d85dfedcd7d19c455a5552dae7762cd",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Penetrate.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Penetrate.png",
+          "before": null,
+          "after": "75b6ab7ee4d203e8aff11eadb4586374641d521e6974c49a46ea6699dd525682",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Penetrate_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Penetrate_front.png",
+          "before": null,
+          "after": "b251e43e6c40f21ec75ba7d7e5583fc1a95255646e310a09cae3df6dfaffdeed",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/S1.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\S1.png",
+          "before": null,
+          "after": "a5476df1b4065850c23617411808ef7e4c9adafabbc2ae97df373267c604b552",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/S1_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\S1_front.png",
+          "before": null,
+          "after": "c4710b2a44b63721ecfc4f898b22eced30a331b9978a4815944713ad3a4cc33c",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Slash.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Slash.png",
+          "before": null,
+          "after": "dd7a17804412e255add07cb3a9b6ec42624516e995473daf9bd1afb656adb48a",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Slash_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Slash_front.png",
+          "before": null,
+          "after": "e97288eaa5dfd23ab4810a7717349ffa0fd8b0dcb40f0aa419b36d3d78e24879",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Special.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Special.png",
+          "before": null,
+          "after": "a5476df1b4065850c23617411808ef7e4c9adafabbc2ae97df373267c604b552",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ClothCustom/Special_front.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ClothCustom\\Special_front.png",
+          "before": null,
+          "after": "c4710b2a44b63721ecfc4f898b22eced30a331b9978a4815944713ad3a4cc33c",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/ModInfo.Xml",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\ModInfo.Xml",
+          "before": null,
+          "after": "3eafb04fbd335c52829ca051861854e4630819d9c339da5edef10def4fda2cc6",
+          "backup": null,
+          "action": "create"
+        },
+        {
+          "path": "Resource/CharacterSkin/Sivier_Layered_v1_Projection/Thumb.png",
+          "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\CharacterModels\\Sivier_Layered_v1\\build\\runtime\\Resource\\CharacterSkin\\Sivier_Layered_v1_Projection\\Thumb.png",
+          "before": null,
+          "after": "41e88a39b42c27870532c26ab3f8a0b5f2a6ee9d8b2cd457bd6e49b88a0ab611",
+          "backup": null,
+          "action": "create"
+        }
+      ],
+      "sha256_verification": "PASS"
+    }
+  ],
+  "runtime_battle_smoke": "not run"
+}

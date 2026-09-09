@@ -5,7 +5,7 @@
     <BattleCardAbility ID="AnhierCard001">
     </BattleCardAbility>
     <BattleCardAbility ID="AnhierFlow1">
-      <Desc>[命中时] 获得1层[流]</Desc>
+      <Desc>[命中时] 下回合开始时获得1层[流]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9001002: 回忆侧斩 -->
@@ -74,7 +74,7 @@
 
     <!-- Card 9001011: 自我之流 (EGO) -->
     <BattleCardAbility ID="AnhierSelfFlow">
-      <Desc>[使用时] 扣除12点生命值,获得5层[流]</Desc>
+      <Desc>[使用时] 扣除12点生命值,立即获得5层[流]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AnhierQingSiFengLiuDice1">
       <Desc>[命中时] 使目标下回合获得2层[虚弱]和2层[束缚]</Desc>
@@ -106,13 +106,13 @@
       <Desc>[命中时] 恢复1点光芒</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaClashWinGainFlow2NextTurn">
-      <Desc>[拼点胜利] 下回合获得2层[流]</Desc>
+      <Desc>[拼点胜利] 下回合获得1层[流]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaClashWinGainFlow3NextTurn">
-      <Desc>[拼点胜利] 下回合获得3层[流]</Desc>
+      <Desc>[拼点胜利] 下回合获得2层[流]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaHitGainFlow2NextTurn">
-      <Desc>[命中时] 下回合获得2层[流]</Desc>
+      <Desc>[命中时] 下回合获得1层[流]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9002002: 川流不息 -->
@@ -129,15 +129,15 @@
       <Desc>[命中时] 抽取2张书页</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaHitGainFlow3NextTurn">
-      <Desc>[命中时] 下回合获得3层[流]</Desc>
+      <Desc>[命中时] 下回合获得2层[流]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9002003: 万物之流 -->
     <BattleCardAbility ID="SlazeyaGainFlow5OnRoundStart">
-      <Desc>[流转] [战斗开始时] 获得5层[流]</Desc>
+      <Desc>[流转] [战斗开始时] 下回合开始时获得3层[流]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaGainFlow1OnHit">
-      <Desc>[命中时] 获得1层[流]</Desc>
+      <Desc>[命中时] 下回合开始时获得1层[流]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9002004: 风暴分流 -->
@@ -159,7 +159,7 @@
 
     <!-- Card 9002009: 倾覆万千之流 -->
     <BattleCardAbility ID="SlazeyaMassAttackTeamLightGain">
-      <Desc>[使用时] 消耗所有[流](但不提供常规[流]威力加成).本书页每消耗8层[流],骰子威力+1</Desc>
+      <Desc>布置阶段可通过流强化按钮投入全部[流](不提供常规[流]威力加成).本书页每消耗8层[流],骰子威力+1</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaMassAttackBonusDamage">
       <Desc>[命中时] 追加本书页消耗的[流]点伤害并施加1层[麻痹]</Desc>
@@ -173,12 +173,12 @@
       <Desc>本书页可额外受3次[流]强化</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="SlazeyaClashLoseGainFlow3">
-      <Desc>[拼点失败] 立刻获得5层[流],并将最小值/最大值等同本骰子消耗[流]层数的一颗防御骰追加到末位</Desc>
+      <Desc>[拼点失败] 下回合开始时获得3层[流],并将最小值/最大值等同本骰子消耗[流]层数的一颗防御骰追加到末位</Desc>
     </BattleCardAbility>
 
     <!-- Card 9002007: 随我流向无尽的尽头 -->
     <BattleCardAbility ID="SlazeyaEndlessFlow">
-      <Desc>[战斗开始时] 本幕友方所有书页享受[流]加成时不再消耗[流]数量;本书页骰子获得等同自身[流]数量/3威力加成(向上取整)</Desc>
+      <Desc>布置本书页后，本幕友方手牌流强化不消耗[流]；撤下时重新核算；本书页骰子获得等同自身[流]数量/3威力加成(向上取整)</Desc>
     </BattleCardAbility>
 
     <!-- ========== 司流者教徒卡牌能力 ========== -->
@@ -201,7 +201,7 @@
       <Desc>[下回合开始时] 获得存活友方单位数量层[流]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="CultistGainFlow3">
-      <Desc>[命中时] 获得2层[流]</Desc>
+      <Desc>[命中时] 下回合开始时获得2层[流]</Desc>
     </BattleCardAbility>
 
     <!-- Card 9003004: 逆转洋流 -->
@@ -389,7 +389,7 @@
       <Desc>[流转] [使用时] 恢复1点光芒</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AilierelGainFlow1">
-      <Desc>[命中时] 获得1层[流]</Desc>
+      <Desc>[命中时] 下回合开始时获得1层[流]</Desc>
     </BattleCardAbility>
 
     <BattleCardAbility ID="AilierelSideStep">
@@ -403,7 +403,7 @@
     </BattleCardAbility>
 
     <BattleCardAbility ID="AilierelBigCatch">
-      <Desc>若此书页造成了不低于8点伤害则获得3层[流]</Desc>
+      <Desc>若此书页造成了不低于8点伤害则下回合开始时获得3层[流]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AilierelBleed2">
       <Desc>[命中时] 施加2层[流血]</Desc>
@@ -420,7 +420,7 @@
     </BattleCardAbility>
 
     <BattleCardAbility ID="AilierelWhereSwim">
-      <Desc>[使用时] 获得6层[流]</Desc>
+      <Desc>[使用时] 下回合开始时获得6层[流]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AilierelRerollIfBleed">
       <Desc>[命中时] 若敌人[流血]层数>5,重新投掷本骰子(最多触发1次)</Desc>
@@ -430,7 +430,7 @@
       <Desc>渐强.每次使用后,本书页光芒消耗永久+1,所有骰子基础值最小值+1,最大值+2(至多触发3次)</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AilierelNightTraceBleedAndFlow">
-      <Desc>[命中时] 施加2层[流血]并获得"本书页光芒消耗"层[流]</Desc>
+      <Desc>[命中时] 施加2层[流血]并下回合开始时获得"本书页光芒消耗"层[流]</Desc>
     </BattleCardAbility>
 
     <!-- ========== 希维尔卡牌能力 ========== -->
@@ -640,7 +640,7 @@
 
     <!-- Card 9010009: 随流而来，伴流而去 -->
     <BattleCardAbility ID="ChristashaEgoFlowComeGo">
-      <Desc>[流转] [战斗开始时] 获得4层[流],本幕进攻型骰子造成的伤害+4</Desc>
+      <Desc>[流转] [战斗开始时] 下回合开始时获得4层[流],本幕进攻型骰子造成的伤害+4</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="ChristashaEgoDestroyDice">
       <Desc>[命中时] 摧毁本骰子</Desc>
@@ -733,7 +733,7 @@
       <Desc>[拼点时] 若本书页骰子基础最大值大于对方最大值,则在拼点失败时强制打平</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AntieGainFlowByVanillaOnHit">
-      <Desc>[命中时] 获得等同本骰子基础值层[流]</Desc>
+      <Desc>[命中时] 下回合开始时获得等同本骰子基础值层[流]</Desc>
     </BattleCardAbility>
     <BattleCardAbility ID="AntieBonusDamageByVanillaOnHit">
       <Desc>[命中时] 追加本骰子基础值点伤害</Desc>

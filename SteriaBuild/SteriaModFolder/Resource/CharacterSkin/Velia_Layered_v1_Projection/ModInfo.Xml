@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ModInfo>
+  <ClothInfo>
+    <Name>Velia_Layered_v1_Projection</Name>
+    <Default>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-274" />
+      <Head head_x="0.5400" head_y="393.7400" rotation="0" head_enable="True" />
+    </Default>
+    <Guard>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="19.3412" head_y="362.8598" rotation="8" head_enable="True" />
+    </Guard>
+    <Evade>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-63.4988" head_y="306.6798" rotation="8" head_enable="True" />
+    </Evade>
+    <Damaged>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-19.6972" head_y="358.4334" rotation="16" head_enable="True" />
+    </Damaged>
+    <Slash>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-274" />
+      <Head head_x="-8.3855" head_y="327.5829" rotation="12" head_enable="True" />
+    </Slash>
+    <Penetrate>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-42.4988" head_y="322.7798" rotation="8" head_enable="True" />
+    </Penetrate>
+    <Hit>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-16.9495" head_y="302.2184" rotation="5" head_enable="True" />
+    </Hit>
+    <Move>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-87.4855" head_y="330.9829" rotation="12" head_enable="True" />
+    </Move>
+    <Special>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-11.0362" head_y="284.1289" rotation="9" head_enable="True" />
+    </Special>
+    <Fire>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-42.4988" head_y="322.7798" rotation="8" head_enable="True" />
+    </Fire>
+    <Aim>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="19.3412" head_y="362.8598" rotation="8" head_enable="True" />
+    </Aim>
+    <S1>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-276" />
+      <Head head_x="-11.0362" head_y="284.1289" rotation="9" head_enable="True" />
+    </S1>
+  </ClothInfo>
+</ModInfo>

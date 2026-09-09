@@ -14,11 +14,12 @@ using Steria;
 /// - 本单位通过书页和其他被动获得的流翻倍（不包含流转返还）
 /// - 本单位所有书页可额外受一次流强化
 /// - 每造成15点伤害，下回合开始时获得1层流
-/// - 每消耗10层流，下回合获得1层强壮
+/// - 每消耗15层流，下回合获得1层强壮
 /// - 拼点失败时扣除自身1层流
 /// </summary>
 public class PassiveAbility_9002001 : PassiveAbilityBase
 {
+    private const int FlowRequiredPerStrength = 15;
     private int _damageAccumulator = 0;
     private int _flowToGainNextRound = 0;
     private int _flowConsumedAccumulator = 0;
@@ -144,10 +145,10 @@ public class PassiveAbility_9002001 : PassiveAbilityBase
         _flowConsumedAccumulator += amount;
         SteriaLogger.Log($"神脉：梦之汐: {owner.UnitData?.unitData?.name} consumed {amount} flow, accumulator: {_flowConsumedAccumulator}");
 
-        // 每消耗10层流，下回合获得1层强壮
-        while (_flowConsumedAccumulator >= 10)
+        // 每消耗15层流，下回合获得1层强壮
+        while (_flowConsumedAccumulator >= FlowRequiredPerStrength)
         {
-            _flowConsumedAccumulator -= 10;
+            _flowConsumedAccumulator -= FlowRequiredPerStrength;
             _strengthToGainNextRound++;
             SteriaLogger.Log($"神脉：梦之汐: Will gain 1 Strength next round (total pending: {_strengthToGainNextRound})");
         }
@@ -218,10 +219,12 @@ public class PassiveAbility_9002002 : PassiveAbilityBase
 /// <summary>
 /// 御风司流 (ID: 9002003)
 /// 累计消耗15层流后，永久获得1层"守护"
-/// 再消耗15层流后，永久获得1层"强壮"
+/// 再消耗30层流后，永久获得1层"强壮"
 /// </summary>
 public class PassiveAbility_9002003 : PassiveAbilityBase
 {
+    private const int ProtectionFlowThreshold = 15;
+    private const int StrengthFlowThreshold = 45;
     private int _totalFlowConsumed = 0;
     private bool _protectionGranted = false;
     private bool _strengthGranted = false;
@@ -246,7 +249,7 @@ public class PassiveAbility_9002003 : PassiveAbilityBase
         SteriaLogger.Log($"御风司流: {owner.UnitData?.unitData?.name} consumed {amount} flow, total: {_totalFlowConsumed}");
 
         // 检查是否达到15层阈值（守护）
-        if (!_protectionGranted && _totalFlowConsumed >= 15)
+        if (!_protectionGranted && _totalFlowConsumed >= ProtectionFlowThreshold)
         {
             _protectionGranted = true;
             // 永久守护：使用AddKeywordBufThisRoundByEtc并设置为不会消失
@@ -254,8 +257,8 @@ public class PassiveAbility_9002003 : PassiveAbilityBase
             SteriaLogger.Log($"御风司流: 永久赋予 {owner.UnitData?.unitData?.name} 1层守护");
         }
 
-        // 检查是否达到30层阈值（强壮）
-        if (!_strengthGranted && _totalFlowConsumed >= 30)
+        // 强壮的总流消耗阈值由30提高50%至45
+        if (!_strengthGranted && _totalFlowConsumed >= StrengthFlowThreshold)
         {
             _strengthGranted = true;
             owner.bufListDetail.AddKeywordBufThisRoundByEtc(KeywordBuf.Strength, 1, owner);
@@ -505,10 +508,11 @@ public class PassiveAbility_9002007 : PassiveAbilityBase
 /// <summary>
 /// 斯拉泽雅司流者 (ID: 9002005)
 /// - 每造成10点伤害：下回合获得1层流
-/// - 每消耗10层流：下回合获得1层强壮
+/// - 每消耗15层流：下回合获得1层强壮
 /// </summary>
 public class PassiveAbility_9002005 : PassiveAbilityBase
 {
+    private const int FlowRequiredPerStrength = 15;
     private int _damageAccumulator = 0;
     private int _flowConsumedAccumulator = 0;
     private int _flowToGainNextRound = 0;
@@ -587,10 +591,10 @@ public class PassiveAbility_9002005 : PassiveAbilityBase
         _flowConsumedAccumulator += amount;
         SteriaLogger.Log($"斯拉泽雅司流者: {owner.UnitData?.unitData?.name} consumed {amount} flow, accumulator: {_flowConsumedAccumulator}");
 
-        // 每消耗10层流，下回合获得1层强壮
-        while (_flowConsumedAccumulator >= 10)
+        // 每消耗15层流，下回合获得1层强壮
+        while (_flowConsumedAccumulator >= FlowRequiredPerStrength)
         {
-            _flowConsumedAccumulator -= 10;
+            _flowConsumedAccumulator -= FlowRequiredPerStrength;
             _strengthToGainNextRound++;
             SteriaLogger.Log($"斯拉泽雅司流者: Will gain 1 Strength next round (total pending: {_strengthToGainNextRound})");
         }

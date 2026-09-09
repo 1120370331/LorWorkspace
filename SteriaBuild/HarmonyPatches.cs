@@ -10,7 +10,7 @@ using System.Reflection;
 namespace Steria
 {
     // --- Moved Harmony Helper Methods and Storage Here ---
-    public static class HarmonyHelpers // Renamed from partial HarmonyPatches to avoid confusion
+    public static partial class HarmonyHelpers // Renamed from partial HarmonyPatches to avoid confusion
     {
         // Simple class to hold flow consumption data for a card instance during its action
         internal class FlowCardData
@@ -64,7 +64,8 @@ namespace Steria
             BattleDiceBehavior currentBehavior = ability?.behavior;
             if (currentBehavior != null) {
                  // Manual implementation of GetValueOrDefault
-                 _flowConsumedByDiceAction.TryGetValue(currentBehavior, out int consumed);
+                 if (!_flowConsumedByDiceAction.TryGetValue(currentBehavior, out int consumed))
+                     consumed = GetFlowEnhancementCountForDice(currentBehavior.card, currentBehavior.Index);
                  return consumed;
             } else {
                  // Reduced log spam: Only log warning if ability itself wasn't null
@@ -646,7 +647,7 @@ namespace Steria
             }
 
             BattleUnitBuf_FlowTransferRefundNextRound existing = owner.bufListDetail.GetActivatedBufList()
-                ?.FirstOrDefault(b => b is BattleUnitBuf_FlowTransferRefundNextRound) as BattleUnitBuf_FlowTransferRefundNextRound;
+                ?.FirstOrDefault(b => b is BattleUnitBuf_FlowTransferRefundNextRound && !b.IsDestroyed()) as BattleUnitBuf_FlowTransferRefundNextRound;
 
             if (existing != null)
             {
@@ -660,199 +661,11 @@ namespace Steria
             SteriaLogger.Log($"FlowTransfer: Card {cardId} will refund {amount} Flow next round");
         }
 
-        // Method called when a card is about to be used
-        // 新逻辑：所有书页都会消耗流，在使用时一次性分配威力加成
-        // 特殊：_flowTransferCardIds 中的卡牌会在下回合开始时返还实际消耗的流
-        // 注意：Standby 骰子被忽略，不参与流加成分配
+        // All ordinary enhancement is assigned to hand instances during planning.
+        // Execution only binds the locked record; it never redistributes or spends Flow.
         public static void RegisterCardUsage(BattlePlayingCardDataInUnitModel card)
         {
-            if (card == null || card.owner == null || card.card == null) return;
-
-            // 获取当前流的层数
-            BattleUnitBuf_Flow flowBuf = card.owner.bufListDetail.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-            int flowStacks = flowBuf?.stack ?? 0;
-
-            SteriaLogger.Log($"RegisterCardUsage: Card={card.card.GetID()}, Owner={card.owner.UnitData.unitData.name}, Flow={flowStacks}, CardHash={card.GetHashCode()}");
-
-            if (flowStacks <= 0)
-            {
-                SteriaLogger.Log("RegisterCardUsage: No flow to consume");
-                return;
-            }
-
-            // 获取书页的骰子列表，排除 Standby 骰子
-            var allDice = card.card.XmlData.DiceBehaviourList;
-            if (allDice == null || allDice.Count == 0)
-            {
-                SteriaLogger.Log("RegisterCardUsage: No dice in card XML data");
-                return;
-            }
-
-            // 筛选出非 Standby 骰子的索引
-            List<int> nonStandbyIndices = new List<int>();
-            for (int i = 0; i < allDice.Count; i++)
-            {
-                if (allDice[i].Type != BehaviourType.Standby)
-                {
-                    nonStandbyIndices.Add(i);
-                }
-            }
-
-            int diceCount = nonStandbyIndices.Count;
-            if (diceCount == 0)
-            {
-                SteriaLogger.Log("RegisterCardUsage: No non-Standby dice in card");
-                return;
-            }
-
-            int cardId = card.card.GetID().id;
-            bool hasStephanieProxy = global::DirectiveDreamHelper.HasStephanieProxy(card.owner);
-
-            // 检查是否是"流转"卡牌：正常消耗流获得加成，下回合开始时返还实际消耗的流
-            // 代行-斯蒂芬妮：流转效果失效，改为按普通消耗流书页处理
-            bool isFlowTransfer = IsFlowTransferCard(cardId) || HasFlowTransferKeyword(card);
-            if (isFlowTransfer && !hasStephanieProxy)
-            {
-                SteriaLogger.Log($"RegisterCardUsage: [流转] card detected (ID: {cardId}) - consumed Flow will be returned next round");
-            }
-            if (isFlowTransfer && hasStephanieProxy)
-            {
-                SteriaLogger.Log($"RegisterCardUsage: [流转] card (ID: {cardId}) overridden by StephanieProxy");
-            }
-
-            // 检查是否是"消耗所有流但不提供威力加成"的卡牌（如群攻）
-            bool isConsumeAllNoBonus = _consumeAllFlowNoBonus.Contains(cardId);
-            if (isConsumeAllNoBonus)
-            {
-                SteriaLogger.Log($"RegisterCardUsage: [消耗所有流] card detected (ID: {cardId}) - consuming all {flowStacks} flow without bonus");
-                // 记录消耗的流数量（用于额外伤害计算）
-                _massAttackFlowConsumed[card] = flowStacks;
-
-                // 代行-斯蒂芬妮：消耗视为成功触发，但层数不减少
-                int actualConsumed = hasStephanieProxy ? 0 : flowStacks;
-                if (!hasStephanieProxy)
-                {
-                    flowBuf.stack = 0;
-                    flowBuf.Destroy();
-                }
-
-                if (isFlowTransfer && !hasStephanieProxy && actualConsumed > 0)
-                {
-                    ScheduleFlowTransferRefund(card.owner, actualConsumed, cardId);
-                }
-
-                // 通知被动
-                NotifyPassivesOnFlowConsumed(card.owner, flowStacks);
-                return;
-            }
-
-            // 检查是否是"可受多次流强化"的卡牌
-            int maxFlowPerDice = 1; // 默认每颗骰子最多+1
-            if (_multiFlowBonusCards.TryGetValue(cardId, out int maxBonus))
-            {
-                maxFlowPerDice = maxBonus;
-                SteriaLogger.Log($"RegisterCardUsage: [多次流强化] card detected (ID: {cardId}) - max {maxFlowPerDice} per dice");
-            }
-
-            // 斯拉泽雅被动：本单位所有书页可额外受一次流强化
-            if (PassiveAbility_9002001.HasExtraFlowEnhancement(card.owner))
-            {
-                maxFlowPerDice += 1;
-                SteriaLogger.Log($"RegisterCardUsage: Owner has 神脉：梦之汐 - max Flow enhancement per dice +1 (now {maxFlowPerDice})");
-            }
-
-            // 计算流分配
-            int flowToUse;
-            Dictionary<int, int> powerBonusMap = new Dictionary<int, int>();
-            Dictionary<int, int> enhancementCountMap = new Dictionary<int, int>(); // 原始流强化次数（未乘以倍率）
-
-            if (maxFlowPerDice > 1)
-            {
-                // 多次流强化卡牌：每颗骰子可获得多次加成
-                flowToUse = Math.Min(flowStacks, diceCount * maxFlowPerDice);
-                int flowRemaining = flowToUse;
-                for (int i = 0; i < nonStandbyIndices.Count && flowRemaining > 0; i++)
-                {
-                    int targetIndex = nonStandbyIndices[i];
-                    int bonusForThisDice = Math.Min(flowRemaining, maxFlowPerDice);
-                    powerBonusMap[targetIndex] = bonusForThisDice;
-                    enhancementCountMap[targetIndex] = bonusForThisDice; // 存储原始次数
-                    flowRemaining -= bonusForThisDice;
-                }
-            }
-            else
-            {
-                // 普通卡牌：每颗骰子最多+1威力
-                flowToUse = Math.Min(flowStacks, diceCount);
-                for (int i = 0; i < flowToUse; i++)
-                {
-                    int targetIndex = nonStandbyIndices[i];
-                    powerBonusMap[targetIndex] = 1;
-                    enhancementCountMap[targetIndex] = 1; // 存储原始次数
-                }
-            }
-
-            SteriaLogger.Log($"RegisterCardUsage: Distributing {flowToUse} flow to {diceCount} non-Standby dice (max {maxFlowPerDice} per dice)");
-
-            // 代行-斯蒂芬妮：所有消耗流/梦/潮的书页骰子威力+1
-            if (hasStephanieProxy && flowToUse > 0)
-            {
-                foreach (int idx in nonStandbyIndices)
-                {
-                    if (powerBonusMap.ContainsKey(idx))
-                    {
-                        powerBonusMap[idx] += 1;
-                    }
-                    else
-                    {
-                        powerBonusMap[idx] = 1;
-                    }
-                }
-            }
-
-            // 存储威力加成映射
-            _flowPowerBonusPerCard[card] = powerBonusMap;
-            // 存储原始流强化次数映射
-            _flowEnhancementCountPerCard[card] = enhancementCountMap;
-            foreach (var kvp in powerBonusMap)
-            {
-                int rawCount = enhancementCountMap.ContainsKey(kvp.Key) ? enhancementCountMap[kvp.Key] : 0;
-                SteriaLogger.Log($"RegisterCardUsage: Dice index {kvp.Key} will get +{kvp.Value} power from flow (raw enhancement count: {rawCount})");
-            }
-
-            // 检查是否有"本幕不消耗流"效果
-            bool noConsumption = hasStephanieProxy || HarmonyPatches.NoFlowConsumptionActiveThisRound ||
-                card.owner.bufListDetail.GetActivatedBufList().Any(b => b is BattleUnitBuf_NoFlowConsumption);
-
-            // 计算"视为消耗"的流数量（用于触发被动和卡牌效果）
-            int totalConsumed = flowToUse;
-
-            if (noConsumption)
-            {
-                SteriaLogger.Log($"RegisterCardUsage: NoFlowConsumption active, not actually consuming flow but treating as {totalConsumed} consumed");
-                // 不实际消耗流，但仍然视为消耗（用于触发效果）
-            }
-            else
-            {
-                // 实际消耗流
-                flowBuf.stack -= totalConsumed;
-                if (flowBuf.stack <= 0)
-                {
-                    flowBuf.Destroy();
-                }
-                SteriaLogger.Log($"RegisterCardUsage: Consumed {totalConsumed} flow, remaining: {flowBuf?.stack ?? 0}");
-            }
-
-            if (isFlowTransfer && !hasStephanieProxy && !noConsumption && totalConsumed > 0)
-            {
-                ScheduleFlowTransferRefund(card.owner, totalConsumed, cardId);
-            }
-
-            // 记录流消耗（供卡牌能力查询）
-            RecordFlowConsumptionForCard(card, totalConsumed);
-
-            // 通知所有依赖流消耗的被动
-            NotifyPassivesOnFlowConsumed(card.owner, totalConsumed);
+            BindManualFlow(card);
         }
 
         // 获取骰子的流威力加成（通过卡牌和骰子索引）
@@ -1570,6 +1383,7 @@ namespace Steria
         {
             SteriaCustomEffects.Clear();
 
+            // Card-scoped, original RGBA phase animation; old effect callers retain their renderer.
             SteriaCustomEffects["Steria_AnhierTextureSeaPierce"] = typeof(DiceAttackEffect_Steria_AnhierTextureSeaPierce);
             SteriaCustomEffects["Steria_AnhierTextureSeaFarHit"] = typeof(DiceAttackEffect_Steria_AnhierTextureSeaFarHit);
             SteriaCustomEffects["Steria_AnhierTextureMemorySlash"] = typeof(DiceAttackEffect_Steria_AnhierTextureMemorySlash);
@@ -2533,58 +2347,40 @@ namespace Steria
     public static class BookModel_SetXmlInfo_OnlyCardFix_Patch
     {
         // Steria mod的workshopID
-        private const string STERIA_WORKSHOP_ID = "NormalInvitation";
-
-        // Steria mod的核心书页ID列表
-        private static readonly HashSet<int> _steriaBookIds = new HashSet<int>
-        {
-            10000001, // 安希尔
-            10000002, // 斯拉泽雅
-            10000003, // 司流者教徒
-            10000004, // 薇莉亚
-        };
+        private const string STERIA_WORKSHOP_ID = "SteriaBuilding";
 
         [HarmonyPostfix]
+        [HarmonyAfter("LOR.BaseMod")]
         public static void Postfix(BookModel __instance, BookXmlInfo classInfo)
         {
             try
             {
-                // 检查是否是Steria mod的核心书页
-                if (classInfo == null || !_steriaBookIds.Contains(classInfo.id.id))
+                // 按包标识限定范围，避免核心书页改号后专属书页失效。
+                if (__instance == null || classInfo?.EquipEffect == null ||
+                    classInfo.id.packageId != STERIA_WORKSHOP_ID)
                 {
                     return;
                 }
 
-                // 只处理mod书页（有workshopID的）
-                if (!classInfo.id.IsWorkshop())
-                {
-                    return;
-                }
-
-                // 获取_onlyCards字段
-                var onlyCardsField = AccessTools.Field(typeof(BookModel), "_onlyCards");
-                if (onlyCardsField == null) return;
-
-                var onlyCards = onlyCardsField.GetValue(__instance) as List<DiceCardXmlInfo>;
-                if (onlyCards == null)
-                {
-                    onlyCards = new List<DiceCardXmlInfo>();
-                    onlyCardsField.SetValue(__instance, onlyCards);
-                }
+                // 保留原版和BaseMod已加载的专属书页。
+                var onlyCards = __instance.GetOnlyCards();
+                if (onlyCards == null) return;
 
                 // 遍历OnlyCard列表，尝试使用mod的workshopID加载卡牌
                 foreach (int cardId in classInfo.EquipEffect.OnlyCard)
                 {
-                    // 检查是否已经加载了这张卡牌
-                    bool alreadyLoaded = onlyCards.Exists(x => x.id.IsBasic() ? x.id.id == cardId : x.id.id == cardId);
+                    LorId modCardId = new LorId(classInfo.id.packageId, cardId);
+                    // 必须比较完整LorId：原版查找产生的同号错误占位页不算已加载。
+                    bool alreadyLoaded = onlyCards.Exists(x => !x.isError && x.id == modCardId);
                     if (alreadyLoaded) continue;
 
                     // 尝试使用mod的workshopID加载卡牌
-                    LorId modCardId = new LorId(STERIA_WORKSHOP_ID, cardId);
                     DiceCardXmlInfo cardItem = ItemXmlDataList.instance.GetCardItem(modCardId, true);
 
-                    if (cardItem != null && cardItem.id.IsWorkshop())
+                    if (cardItem != null && !cardItem.isError && cardItem.id == modCardId)
                     {
+                        onlyCards.RemoveAll(x => x.isError && x.id.id == cardId &&
+                            (x.id.IsBasic() || x.id == modCardId));
                         onlyCards.Add(cardItem);
                         SteriaLogger.Log($"OnlyCardFix: Added mod card {modCardId} to book {classInfo.id}");
                     }

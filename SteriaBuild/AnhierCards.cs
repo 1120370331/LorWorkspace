@@ -398,7 +398,7 @@ public class DiceCardSelfAbility_AnhierColdLogistics : DiceCardSelfAbilityBase
 // 冷却时间：4幕（使用Steria自定义冷却系统）
 public class DiceCardSelfAbility_AnhierSelfFlow : DiceCardSelfAbilityBase
 {
-    public static string Desc = "[装备时] 扣除12点生命值，获得5层[流]；冷却时间：4幕";
+    public static string Desc = "[装备时] 扣除12点生命值，立即获得5层[流]；冷却时间：4幕";
     public override string[] Keywords => new string[] { "SteriaFlow" };
 
     // 卡牌ID
@@ -457,9 +457,9 @@ public class DiceCardSelfAbility_AnhierSelfFlow : DiceCardSelfAbilityBase
         unit.SetHp((int)(unit.hp - damage));
         SteriaLogger.Log($"自我之流: Lost {damage} HP, current HP: {unit.hp}");
 
-        // 获得5层流
-        CardAbilityHelper.AddFlowStacks(unit, 5);
-        SteriaLogger.Log($"自我之流: Added 5 Flow stacks");
+        // 自我之流是即时装备效果，保留本幕可用流；其他产流仍走下幕结算。
+        CardAbilityHelper.AddFlowStacksThisRound(unit, 5);
+        SteriaLogger.Log($"自我之流: Granted 5 base Flow immediately (source multiplier applies once)");
 
         // 设置自定义冷却
         Steria.SteriaEgoCooldownManager.StartCooldown(unit, CARD_ID);

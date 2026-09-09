@@ -84,18 +84,18 @@ public class DiceCardSelfAbility_SlazeyaOceanCommandV2 : DiceCardSelfAbilityBase
     }
 }
 
-// SlazeyaClashLoseGainFlow3 (Dice Ability) - 拼点失败立刻获得5层流并追加防御骰
+// SlazeyaClashLoseGainFlow3 (Dice Ability) - 拼点失败立刻获得3层流并追加防御骰
 public class DiceCardAbility_SlazeyaClashLoseGainFlow3 : DiceCardAbilityBase
 {
-    public static string Desc = "[Clash Lose] Immediately gain 5 Flow and append a Guard die equal to Flow consumed by this die";
+    public static string Desc = "[Clash Lose] Immediately gain 3 Flow and append a Guard die equal to Flow consumed by this die";
 
     public override void OnLoseParrying()
     {
         int flowConsumedByThisDice = HarmonyHelpers.GetFlowEnhancementCountForDice(this.card, this.behavior?.Index ?? -1);
 
-        // 立即获得5层流；斯拉泽雅的流获取翻倍会由 CardAbilityHelper 统一处理
-        Steria.CardAbilityHelper.AddFlowStacks(owner, 5);
-        Debug.Log($"[Steria] SlazeyaClashLoseGainFlow3: Gained 5 Flow on clash lose");
+        // 立即获得3层流；斯拉泽雅的流获取翻倍会由 CardAbilityHelper 统一处理
+        Steria.CardAbilityHelper.AddFlowStacks(owner, 3);
+        Debug.Log($"[Steria] SlazeyaClashLoseGainFlow3: Gained 3 Flow on clash lose");
 
         if (flowConsumedByThisDice <= 0 || this.card == null)
         {
@@ -211,12 +211,12 @@ public class BattleUnitBuf_EndlessFlowPowerBonus : BattleUnitBuf
 // SlazeyaGainFlow5OnRoundStart (Card Self Ability)
 public class DiceCardSelfAbility_SlazeyaGainFlow5OnRoundStart : DiceCardSelfAbilityBase
 {
-     public static string Desc = "[Round Start] Gain 5 Flow";
+     public static string Desc = "[Round Start] Gain 3 Flow";
 
-    // Per setting "战斗开始时：获得5层流", assuming this means when the card action starts.
+    // Per setting "战斗开始时：获得3层流", assuming this means when the card action starts.
     public override void OnStartBattle()
     {
-         Steria.CardAbilityHelper.AddFlowStacks(owner, 5);
+         Steria.CardAbilityHelper.AddFlowStacks(owner, 3);
     }
 }
 
@@ -296,20 +296,20 @@ public class DiceCardAbility_SlazeyaGainLight1 : DiceCardAbilityBase
 // SlazeyaClashWinGainFlow2NextTurn
 public class DiceCardAbility_SlazeyaClashWinGainFlow2NextTurn : DiceCardAbilityBase
 {
-    public static string Desc = "[Clash Win] Next turn gain 2 Flow";
+    public static string Desc = "[Clash Win] Next turn gain 1 Flow";
     public override void OnWinParrying()
     {
-         owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 2 });
+         owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 1 });
     }
 }
 
 // SlazeyaClashWinGainFlow3NextTurn
 public class DiceCardAbility_SlazeyaClashWinGainFlow3NextTurn : DiceCardAbilityBase
 {
-    public static string Desc = "[Clash Win] Next turn gain 3 Flow";
+    public static string Desc = "[Clash Win] Next turn gain 2 Flow";
     public override void OnWinParrying()
     {
-         owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 3 });
+         owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 2 });
     }
 }
 
@@ -340,20 +340,20 @@ public class DiceCardAbility_SlazeyaDraw2 : DiceCardAbilityBase
 // SlazeyaHitGainFlow2NextTurn
 public class DiceCardAbility_SlazeyaHitGainFlow2NextTurn : DiceCardAbilityBase
 {
-    public static string Desc = "[On Hit] Next turn gain 2 Flow";
+    public static string Desc = "[On Hit] Next turn gain 1 Flow";
     public override void OnSucceedAttack()
     {
-        owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 2 });
+        owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 1 });
     }
 }
 
 // SlazeyaHitGainFlow3NextTurn
 public class DiceCardAbility_SlazeyaHitGainFlow3NextTurn : DiceCardAbilityBase
 {
-    public static string Desc = "[On Hit] Next turn gain 3 Flow";
+    public static string Desc = "[On Hit] Next turn gain 2 Flow";
     public override void OnSucceedAttack()
     {
-        owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 3 });
+        owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 2 });
     }
 }
 
@@ -692,6 +692,7 @@ public class DiceCardSelfAbility_SlazeyaHundredRiversRepeat : DiceCardSelfAbilit
                 repeatCard.speedDiceResultValue = card.speedDiceResultValue;
                 repeatCard.cardAbility = null; // 不设置能力，避免再次触发重复
                 repeatCard.ResetCardQueue();
+                HarmonyHelpers.InheritManualFlow(card, repeatCard);
 
                 // 使用原版游戏的方式添加重复攻击（像陷阵之志一样）
                 Singleton<StageController>.Instance.AddAllCardListInBattle(repeatCard, _repeatTarget, targetSlot);
@@ -755,6 +756,7 @@ public class DiceCardAbility_SlazeyaApplyBleedAndDamageByFlowBonus : DiceCardAbi
 // Buff to gain Flow next turn
 public class BattleUnitBuf_SlazeyaFlowNextTurn : BattleUnitBuf
 {
+    public bool ApplySlazeyaMultiplier = true;
     protected override string keywordId => "MyMod_FlowNextTurn"; // Needs registration via Localize/EffectTexts
     protected override string keywordIconId => "FlowIcon"; // Needs an icon resource
     // Removed keywordTemplateId
@@ -762,7 +764,7 @@ public class BattleUnitBuf_SlazeyaFlowNextTurn : BattleUnitBuf
     public override void OnRoundStart()
     {
         if (_owner == null) { this.Destroy(); return; }
-        Steria.CardAbilityHelper.AddFlowStacks(_owner, this.stack);
+        Steria.CardAbilityHelper.AddFlowStacks(_owner, this.stack, ApplySlazeyaMultiplier);
         _owner.bufListDetail.RemoveBuf(this);
     }
 }
@@ -807,6 +809,19 @@ namespace Steria
                 return;
             }
 
+            FlowGainTiming.Gain(owner, ResolveFlowGain(owner, amount, applySlazeyaMultiplier));
+        }
+
+        // Explicit exception for Self Flow's instant equipment action. Other producers keep
+        // AddFlowStacks and the existing next-round timing; this never opens a settlement scope.
+        public static void AddFlowStacksThisRound(BattleUnitModel owner, int amount, bool applySlazeyaMultiplier = true)
+        {
+            if (owner == null || amount <= 0) return;
+            ApplyFlowStacksNow(owner, ResolveFlowGain(owner, amount, applySlazeyaMultiplier));
+        }
+
+        private static int ResolveFlowGain(BattleUnitModel owner, int amount, bool applySlazeyaMultiplier)
+        {
             if (applySlazeyaMultiplier && global::PassiveAbility_9002001.HasFlowGainMultiplier(owner))
             {
                 int originalAmount = amount;
@@ -814,7 +829,14 @@ namespace Steria
                 SteriaLogger.Log($"CardAbilityHelper.AddFlowStacks: 神脉：梦之汐 doubled Flow gain {originalAmount} -> {amount}");
             }
 
-            BattleUnitBuf_Flow existingFlow = owner.bufListDetail.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
+            return amount;
+        }
+
+        // Apply an already-resolved amount for settlement or an explicit immediate producer.
+        internal static void ApplyFlowStacksNow(BattleUnitModel owner, int amount)
+        {
+            if (owner?.bufListDetail == null || amount <= 0) return;
+            BattleUnitBuf_Flow existingFlow = owner.bufListDetail.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow && !b.IsDestroyed()) as BattleUnitBuf_Flow;
             SteriaLogger.Log($"CardAbilityHelper.AddFlowStacks: existingFlow = {(existingFlow != null ? "found" : "null")}");
 
             if (existingFlow != null)

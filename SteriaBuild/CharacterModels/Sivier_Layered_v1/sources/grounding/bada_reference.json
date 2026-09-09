@@ -1,0 +1,106 @@
+{
+  "reference_skin": "Bada",
+  "reference_motion": "Default",
+  "reference_sole_root_y": 0.06,
+  "alpha_threshold": 32,
+  "sources": [
+    {
+      "bundle": "StreamingAssets/AssetBundles/char/char_187.pres",
+      "sha256": "ee128a483a594ca87c3ea544118f018d5369238007c8902519f4ed7079febac6",
+      "measurement": {
+        "hierarchy": [
+          "body 1",
+          "Bada_Default",
+          "Bada_Default",
+          "[Prefab]DefaultMotion_Bada"
+        ],
+        "sprite_id": 397885016523209132,
+        "sprite": "body 1",
+        "image_size": [
+          179,
+          325
+        ],
+        "bbox_alpha32": [
+          0,
+          1,
+          179,
+          325
+        ],
+        "position": [
+          -0.2850000858306885,
+          1.684999942779541
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "rect": [
+          4.0,
+          4.0,
+          179.0,
+          325.0
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "ppu": 100.0,
+        "texture_offset": [
+          0.0,
+          0.0
+        ],
+        "visible_bottom_root_y": 0.059999942779541016
+      }
+    },
+    {
+      "bundle": "StreamingAssets/AssetBundles/char/char_418.pres",
+      "sha256": "8488d0e31551bca4dbf40b7452e08f852feb657bf901b2be165de572f415895f",
+      "measurement": {
+        "hierarchy": [
+          "body 1",
+          "Bada_Default",
+          "Bada_Default",
+          "[Prefab]Appearance_Bada"
+        ],
+        "sprite_id": 397885016523209132,
+        "sprite": "body 1",
+        "image_size": [
+          179,
+          325
+        ],
+        "bbox_alpha32": [
+          0,
+          1,
+          179,
+          325
+        ],
+        "position": [
+          -0.2850000858306885,
+          1.684999942779541
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "rect": [
+          4.0,
+          4.0,
+          179.0,
+          325.0
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "ppu": 100.0,
+        "texture_offset": [
+          0.0,
+          0.0
+        ],
+        "visible_bottom_root_y": 0.059999942779541016
+      }
+    }
+  ],
+  "ui_note": "UICharacterSlot.SetHighlighted uses dataPivot scale 1.05 while selected; compare identical selection/scale states.",
+  "formula": "sprite origin y + scale_y * (image_height - alpha_bbox_bottom + texture_offset_y - pivot_y * rect_height) / PPU"
+}

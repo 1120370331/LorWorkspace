@@ -174,7 +174,7 @@ public class BattleUnitBuf_DreamExecution : BattleUnitBuf
         SteriaLogger.Log($"DreamExecution: {_owner.UnitData?.unitData?.name} dealt damage, count: {_damageDealtCount}");
 
         // 下回合获得1层流
-        _owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 1 });
+        _owner.bufListDetail.AddBuf(new BattleUnitBuf_SlazeyaFlowNextTurn() { stack = 1, ApplySlazeyaMultiplier = false });
         SteriaLogger.Log($"DreamExecution: Queued 1 Flow for next turn");
     }
 

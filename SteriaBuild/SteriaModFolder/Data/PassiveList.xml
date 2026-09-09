@@ -72,7 +72,7 @@
     <InnerType>-1</InnerType>
     <Cost>8</Cost>
     <Name>神脉：梦之汐-司流-倾覆之大流</Name>
-    <Desc>（不可转移的被动）本单位通过书页和其他被动获得的[流]翻倍（不包含[流转]返还与他人赋予效果）。本单位所有书页可额外受1次[流]强化。每造成15点伤害，下回合开始时获得1层[流]。每消耗10层[流]，下回合获得1层[强壮]。拼点失败时扣除自身1层[流]。</Desc>
+    <Desc>（不可转移的被动）本单位通过书页和其他被动获得的[流]翻倍（不包含[流转]返还与他人赋予效果）。本单位所有书页可额外受1次[流]强化。每造成15点伤害，下回合开始时获得1层[流]。每消耗15层[流]，下回合获得1层[强壮]。拼点失败时扣除自身1层[流]。</Desc>
   </Passive>
   <Passive ID="9002002">
     <Negative>false</Negative>
@@ -101,7 +101,7 @@
     <InnerType>-1</InnerType>
     <Cost>6</Cost>
     <Name>御风司流</Name>
-    <Desc>累计消耗15层[流]后，永久获得1层[守护]。再消耗15层[流]后，永久获得1层[强壮]。</Desc>
+    <Desc>累计消耗15层[流]后，永久获得1层[守护]。再消耗30层[流]后，永久获得1层[强壮]。</Desc>
   </Passive>
   <Passive ID="9002004">
     <Negative>false</Negative>
@@ -125,7 +125,7 @@
     <InnerType>-1</InnerType>
     <Cost>8</Cost>
     <Name>斯拉泽雅司流者</Name>
-    <Desc>每造成10点伤害：下回合获得1层[流]。每消耗10层[流]：下回合获得1层[强壮]。</Desc>
+    <Desc>每造成10点伤害：下回合获得1层[流]。每消耗15层[流]：下回合获得1层[强壮]。</Desc>
   </Passive>
   <Passive ID="9002006">
     <Negative>false</Negative>
@@ -420,7 +420,7 @@
     <InnerType>-1</InnerType>
     <Cost>2</Cost>
     <Name>夜潮</Name>
-    <Desc>击败敌人后获得5层[流]。</Desc>
+    <Desc>击败敌人后下回合开始时获得5层[流]。</Desc>
   </Passive>
   <Passive ID="9007005">
     <Negative>false</Negative>
