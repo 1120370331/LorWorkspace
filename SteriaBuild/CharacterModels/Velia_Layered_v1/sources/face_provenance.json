@@ -1,0 +1,139 @@
+{
+  "mode": "built-in image_gen + deterministic magenta color key",
+  "background": "#FF00FF",
+  "source": "sources/face_kit_magenta.png",
+  "source_sha256": "aeb9c6b13a237822d120a8912eaf569b4f38c767683a8f79e6dc5e8868802455",
+  "processing": "prepare_face_sources.py:key_magenta",
+  "parts": {
+    "facemodel": {
+      "path": "sources/head/custom/facemodel.png",
+      "crop": [
+        118,
+        74,
+        564,
+        625
+      ],
+      "sha256": "989e71e8a72eb8bc2ac383d56d9542f4c34d87b21fcdb282223fd143a7b73087"
+    },
+    "eyes_normal": {
+      "path": "sources/head/custom/eyes_normal.png",
+      "crop": [
+        736,
+        370,
+        1140,
+        480
+      ],
+      "sha256": "cfde05645a01517b2f6326242b896796966ebf0a6b00c31e21baee71f49d7bcc"
+    },
+    "brows_normal": {
+      "path": "sources/head/custom/brows_normal.png",
+      "crop": [
+        750,
+        309,
+        1110,
+        355
+      ],
+      "sha256": "108d209c5d89370ac4d7398375135ce3e3bf2212c206bba821c546a7d5ff412b"
+    },
+    "nose_normal": {
+      "path": "sources/head/custom/nose_normal.png",
+      "crop": [
+        896,
+        482,
+        918,
+        505
+      ],
+      "sha256": "0f8d4eb95e2e8a7529d6ea5562a4dabf340ec41a99113b6e36e6efeb216dba33"
+    },
+    "mouth_normal": {
+      "path": "sources/head/custom/mouth_normal.png",
+      "crop": [
+        907,
+        532,
+        958,
+        548
+      ],
+      "sha256": "60c24a1f4abf89a32acafe5c4f48458fd6399d0109073d285a7233eedb211cd8"
+    },
+    "eyes_attack": {
+      "path": "sources/head/custom/eyes_attack.png",
+      "crop": [
+        131,
+        926,
+        537,
+        1023
+      ],
+      "sha256": "5ed04ffb85027868b403e1fa5d2cc0ea10acc3756799314f33fc5072269ae0da"
+    },
+    "brows_attack": {
+      "path": "sources/head/custom/brows_attack.png",
+      "crop": [
+        148,
+        877,
+        488,
+        932
+      ],
+      "sha256": "aef42a139b8e13c082ae63388a8488732380ee1e814585ce1b2665013f7df742"
+    },
+    "nose_attack": {
+      "path": "sources/head/custom/nose_attack.png",
+      "crop": [
+        291,
+        1028,
+        315,
+        1059
+      ],
+      "sha256": "b3a087fcc8a799043b149b1b42dafbafc170c1ea08a4452826f50b7a21c5c162"
+    },
+    "mouth_attack": {
+      "path": "sources/head/custom/mouth_attack.png",
+      "crop": [
+        308,
+        1075,
+        361,
+        1105
+      ],
+      "sha256": "51c30b9d7c4a5cb50febb7147d0ab88ea16c27b55373e74a6201c60283173115"
+    },
+    "eyes_damaged": {
+      "path": "sources/head/custom/eyes_damaged.png",
+      "crop": [
+        756,
+        947,
+        1134,
+        1023
+      ],
+      "sha256": "4eeed7167f55bdb6543ef82b412e80ce065565852bb56cf5388e025bc1b0b6b3"
+    },
+    "brows_damaged": {
+      "path": "sources/head/custom/brows_damaged.png",
+      "crop": [
+        777,
+        897,
+        1112,
+        940
+      ],
+      "sha256": "5556374806b21f30ab200fa8f9afa978598b7c4aa2b2974452efb5c61867a6de"
+    },
+    "nose_damaged": {
+      "path": "sources/head/custom/nose_damaged.png",
+      "crop": [
+        895,
+        1027,
+        919,
+        1059
+      ],
+      "sha256": "0147f3efbc76f9cfb1eabd595f7768c2037151becbbb0a3d71361e990590d1ca"
+    },
+    "mouth_damaged": {
+      "path": "sources/head/custom/mouth_damaged.png",
+      "crop": [
+        908,
+        1066,
+        984,
+        1107
+      ],
+      "sha256": "9774d2bec71b8243e1c647a3c8c006a3b8842e246846023f1d2f1e4530b84758"
+    }
+  }
+}

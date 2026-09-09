@@ -1,0 +1,24 @@
+using System;
+using System.IO;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
+public static class FlowFixture {
+ public static void Run(){
+  try{
+   if(Shader.Find("TextMeshPro/Distance Field")==null){
+    AssetDatabase.importPackageCompleted += name => { EditorApplication.delayCall += Run; };
+    AssetDatabase.importPackageFailed += (name,error) => {Debug.LogError(error);EditorApplication.Exit(1);};
+    AssetDatabase.ImportPackage(Path.Combine(Application.dataPath,"../Library/PackageCache/com.unity.textmeshpro@2.0.1/Package Resources/TMP Essential Resources.unitypackage"),false);
+    return;
+   }
+   string dir=Path.GetFullPath(Path.Combine(Application.dataPath,"../../checks/bin/Debug/net472"));
+   AppDomain.CurrentDomain.AssemblyResolve+=(s,a)=>{string path=Path.Combine(dir,new AssemblyName(a.Name).Name+".dll");return File.Exists(path)?Assembly.LoadFrom(path):null;};
+   var asm=Assembly.LoadFrom(Path.Combine(dir,"Checks.exe"));
+   asm.GetType("FlowUiChecks").GetField("FixtureFont").SetValue(null,AssetDatabase.LoadAssetAtPath<Font>("Assets/FixtureFonts/simhei.ttf"));
+   asm.GetType("FlowUiChecks").GetMethod("Run").Invoke(null,null);
+   Debug.Log("FLOW_UI_FIXTURE_PASS");EditorApplication.Exit(0);
+  }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}
+ }
+}
+

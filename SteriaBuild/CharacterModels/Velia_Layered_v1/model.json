@@ -1,0 +1,1109 @@
+{
+  "schema_version": 1,
+  "id": "Velia_Layered_v1",
+  "status": "visual_revision_in_review",
+  "canvas": {
+    "width": 512,
+    "height": 512,
+    "origin": "top_left",
+    "facing": "left",
+    "pixels_per_unit": 50,
+    "root": [
+      256,
+      390
+    ]
+  },
+  "head": {
+    "hair": [
+      "hair_back",
+      "hair_front"
+    ],
+    "face": {
+      "eyes": "eyes",
+      "brows": "brows",
+      "mouth": "mouth",
+      "nose": "nose"
+    },
+    "facemodel": "facemodel",
+    "color": {
+      "skin": "#ffffff",
+      "hair": "#ffffff",
+      "eyes": "#ffffff"
+    },
+    "expressions": {
+      "normal": {},
+      "attack": {
+        "eyes": {
+          "path": "sources/r2/head/eyes_attack.png"
+        },
+        "brows": {
+          "path": "sources/r2/head/brows_attack.png"
+        },
+        "nose": {
+          "path": "sources/r2/head/nose_attack.png"
+        },
+        "mouth": {
+          "path": "sources/r2/head/mouth_attack.png"
+        }
+      },
+      "damaged": {
+        "eyes": {
+          "path": "sources/r2/head/eyes_damaged.png"
+        },
+        "brows": {
+          "path": "sources/r2/head/brows_damaged.png"
+        },
+        "nose": {
+          "path": "sources/r2/head/nose_damaged.png"
+        },
+        "mouth": {
+          "path": "sources/r2/head/mouth_damaged.png"
+        }
+      },
+      "cast": {
+        "eyes": {
+          "path": "sources/r2/head/eyes_cast.png"
+        }
+      }
+    },
+    "expression_status": "normal / attack / damaged / prayer (closed eyes, neutral brows and mouth)",
+    "anchor": [
+      0,
+      0
+    ],
+    "projection_policy": "keep_target_head",
+    "runtime_origin_from_neck": [
+      0,
+      -37
+    ],
+    "registration": {
+      "canvas": [
+        512,
+        610
+      ],
+      "neck": [
+        248,
+        395
+      ],
+      "uniform_scale": 0.23,
+      "facing": "left",
+      "method": "registered_head_master",
+      "neck_skin_cut_y": 402
+    }
+  },
+  "wearing": {
+    "body": [
+      "body",
+      "body_front"
+    ],
+    "hat": [],
+    "accessories": [],
+    "weapon": {
+      "mode": "unarmed_caster",
+      "parts": []
+    },
+    "ego_specials": {
+      "mode": "external_runtime_reference",
+      "baked": false,
+      "enabled_in_prototype": false,
+      "references": [
+        "../../VFXSource/VeliaTideMist/README.md",
+        "../../VeliaThornEffect.cs"
+      ],
+      "note": "No new EGO artwork or particles in v1. Existing skill effects remain external."
+    },
+    "skin_policy": "fixed_pale_hands_and_feet_v1",
+    "pose_strategy": "drawn_pose_variants_with_anatomical_landmarks",
+    "ornament_policy": "cross pendant painted into each garment"
+  },
+  "parts": [
+    {
+      "id": "body",
+      "domain": "wearing",
+      "slot": "body",
+      "path": "sources/r2/body/Default.png",
+      "size": [
+        1,
+        1
+      ],
+      "pivot": [
+        0,
+        0
+      ],
+      "at": [
+        256,
+        390
+      ],
+      "z": 20
+    },
+    {
+      "id": "hair_back",
+      "domain": "head",
+      "slot": "hair",
+      "path": "sources/r2/head/hair_back.png",
+      "size": [
+        117.76,
+        140.3
+      ],
+      "pivot": [
+        0.484375,
+        0.6475409836065574
+      ],
+      "at": [
+        0,
+        0
+      ],
+      "z": 0
+    },
+    {
+      "id": "facemodel",
+      "domain": "head",
+      "slot": "facemodel",
+      "path": "sources/r2/head/facemodel.png",
+      "size": [
+        117.76,
+        140.3
+      ],
+      "pivot": [
+        0.484375,
+        0.6475409836065574
+      ],
+      "at": [
+        0,
+        0
+      ],
+      "z": 30
+    },
+    {
+      "id": "brows",
+      "domain": "head",
+      "slot": "face",
+      "path": "sources/r2/head/brows_normal.png",
+      "size": [
+        117.76,
+        140.3
+      ],
+      "pivot": [
+        0.484375,
+        0.6475409836065574
+      ],
+      "at": [
+        0,
+        0
+      ],
+      "z": 40
+    },
+    {
+      "id": "eyes",
+      "domain": "head",
+      "slot": "face",
+      "path": "sources/r2/head/eyes_normal.png",
+      "size": [
+        117.76,
+        140.3
+      ],
+      "pivot": [
+        0.484375,
+        0.6475409836065574
+      ],
+      "at": [
+        0,
+        0
+      ],
+      "z": 41
+    },
+    {
+      "id": "nose",
+      "domain": "head",
+      "slot": "face",
+      "path": "sources/r2/head/nose_normal.png",
+      "size": [
+        117.76,
+        140.3
+      ],
+      "pivot": [
+        0.484375,
+        0.6475409836065574
+      ],
+      "at": [
+        0,
+        0
+      ],
+      "z": 42
+    },
+    {
+      "id": "mouth",
+      "domain": "head",
+      "slot": "face",
+      "path": "sources/r2/head/mouth_normal.png",
+      "size": [
+        117.76,
+        140.3
+      ],
+      "pivot": [
+        0.484375,
+        0.6475409836065574
+      ],
+      "at": [
+        0,
+        0
+      ],
+      "z": 43
+    },
+    {
+      "id": "hair_front",
+      "domain": "head",
+      "slot": "hair",
+      "path": "sources/r2/head/hair_front.png",
+      "size": [
+        117.76,
+        140.3
+      ],
+      "pivot": [
+        0.484375,
+        0.6475409836065574
+      ],
+      "at": [
+        0,
+        0
+      ],
+      "z": 50
+    },
+    {
+      "id": "body_front",
+      "domain": "wearing",
+      "slot": "body",
+      "path": "sources/r2/body/Default_front.png",
+      "size": [
+        1,
+        1
+      ],
+      "pivot": [
+        0,
+        0
+      ],
+      "at": [
+        256,
+        390
+      ],
+      "z": 60,
+      "plane": "front"
+    }
+  ],
+  "head_presets": {
+    "velia": {
+      "label": "薇莉亚",
+      "overrides": {}
+    },
+    "librarian": {
+      "label": "原版短发司书 · 换头验证",
+      "hide": [
+        "hair_back",
+        "nose"
+      ],
+      "overrides": {
+        "facemodel": {
+          "path": "sources/head/facemodel/front.png",
+          "size": [
+            70,
+            78
+          ],
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "at": [
+            0,
+            -37
+          ]
+        },
+        "hair_front": {
+          "path": "sources/references/alternate_front_hair.png",
+          "size": [
+            83,
+            70
+          ],
+          "pivot": [
+            0.5,
+            0
+          ],
+          "at": [
+            0,
+            -86
+          ]
+        },
+        "eyes": {
+          "path": "sources/head/face/eyes_alternate.png",
+          "size": [
+            49,
+            13
+          ],
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "at": [
+            -7,
+            -20
+          ]
+        },
+        "brows": {
+          "path": "sources/head/face/brows_alternate.png",
+          "size": [
+            37,
+            5
+          ],
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "at": [
+            -8,
+            -29
+          ]
+        },
+        "mouth": {
+          "path": "sources/head/face/mouth_normal.png",
+          "size": [
+            8,
+            3
+          ],
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "at": [
+            -8,
+            -7
+          ]
+        }
+      }
+    }
+  },
+  "poses": {
+    "Default": {
+      "label": "待机",
+      "expression": "normal",
+      "body_angle": 0,
+      "overrides": {
+        "body": {
+          "path": "sources/r2/body/Default.png",
+          "size": [
+            93.69000000000001,
+            178.74
+          ],
+          "pivot": [
+            0.484149855907781,
+            0.9833836858006042
+          ],
+          "at": [
+            256,
+            390
+          ]
+        },
+        "body_front": {
+          "path": "sources/r2/body/Default_front.png",
+          "size": [
+            93.69000000000001,
+            178.74
+          ],
+          "pivot": [
+            0.484149855907781,
+            0.9833836858006042
+          ],
+          "at": [
+            256,
+            390
+          ]
+        }
+      },
+      "head_angle": 0,
+      "neck_at": [
+        256.27,
+        233.13
+      ],
+      "joints": {
+        "shoulder_l": [
+          245.47,
+          237.18
+        ],
+        "elbow_l": [
+          233.32,
+          270.93
+        ],
+        "wrist_l": [
+          228.19,
+          301.17
+        ],
+        "shoulder_r": [
+          271.39,
+          237.18
+        ],
+        "elbow_r": [
+          277.87,
+          270.66
+        ],
+        "wrist_r": [
+          277.6,
+          301.71
+        ]
+      },
+      "feet": [
+        [
+          234.13,
+          387.3
+        ],
+        [
+          260.05,
+          388.92
+        ]
+      ]
+    },
+    "Guard": {
+      "label": "防御",
+      "expression": "attack",
+      "body_angle": 0,
+      "overrides": {
+        "body": {
+          "path": "sources/r2/body/Guard.png",
+          "size": [
+            137.655,
+            169.005
+          ],
+          "pivot": [
+            0.4803312629399586,
+            0.9814502529510961
+          ],
+          "at": [
+            256,
+            390
+          ]
+        },
+        "body_front": {
+          "path": "sources/r2/body/Guard_front.png",
+          "size": [
+            137.655,
+            169.005
+          ],
+          "pivot": [
+            0.4803312629399586,
+            0.9814502529510961
+          ],
+          "at": [
+            256,
+            390
+          ]
+        }
+      },
+      "head_angle": -8,
+      "neck_at": [
+        270.82,
+        249.21
+      ],
+      "joints": {
+        "shoulder_l": [
+          249.445,
+          252.915
+        ],
+        "elbow_l": [
+          229.78,
+          263.745
+        ],
+        "wrist_l": [
+          208.69,
+          246.93
+        ],
+        "shoulder_r": [
+          287.065,
+          255.195
+        ],
+        "elbow_r": [
+          294.76,
+          277.995
+        ],
+        "wrist_r": [
+          275.38,
+          273.15
+        ]
+      },
+      "feet": [
+        [
+          205.84,
+          387.72
+        ],
+        [
+          314.71,
+          379.455
+        ]
+      ]
+    },
+    "Evade": {
+      "label": "闪避",
+      "expression": "attack",
+      "body_angle": 0,
+      "overrides": {
+        "body": {
+          "path": "sources/r2/body/Evade.png",
+          "size": [
+            165.2,
+            137.54999999999998
+          ],
+          "pivot": [
+            0.5063559322033898,
+            0.9796437659033079
+          ],
+          "at": [
+            256,
+            390
+          ]
+        },
+        "body_front": {
+          "path": "sources/r2/body/Evade_front.png",
+          "size": [
+            165.2,
+            137.54999999999998
+          ],
+          "pivot": [
+            0.5063559322033898,
+            0.9796437659033079
+          ],
+          "at": [
+            256,
+            390
+          ]
+        }
+      },
+      "head_angle": -8,
+      "neck_at": [
+        229.4,
+        277.3
+      ],
+      "joints": {
+        "shoulder_l": [
+          210.15,
+          281.5
+        ],
+        "elbow_l": [
+          199.65,
+          305.65
+        ],
+        "wrist_l": [
+          193.35,
+          326.65
+        ],
+        "shoulder_r": [
+          250.05,
+          279.75
+        ],
+        "elbow_r": [
+          263.35,
+          299.35
+        ],
+        "wrist_r": [
+          235.35,
+          293.75
+        ]
+      },
+      "feet": [
+        [
+          204.55,
+          387.9
+        ],
+        [
+          324.6,
+          381.95
+        ]
+      ]
+    },
+    "Damaged": {
+      "label": "受击",
+      "expression": "damaged",
+      "body_angle": 0,
+      "overrides": {
+        "body": {
+          "path": "sources/r2/body/Damaged.png",
+          "size": [
+            148.75,
+            163.1
+          ],
+          "pivot": [
+            0.5176470588235295,
+            0.9742489270386266
+          ],
+          "at": [
+            256,
+            390
+          ]
+        },
+        "body_front": {
+          "path": "sources/r2/body/Damaged_front.png",
+          "size": [
+            148.75,
+            163.1
+          ],
+          "pivot": [
+            0.5176470588235295,
+            0.9742489270386266
+          ],
+          "at": [
+            256,
+            390
+          ]
+        }
+      },
+      "head_angle": -16,
+      "neck_at": [
+        256.35,
+        250.35000000000002
+      ],
+      "joints": {
+        "shoulder_l": [
+          235.35,
+          258.4
+        ],
+        "elbow_l": [
+          217.85,
+          275.2
+        ],
+        "wrist_l": [
+          201.4,
+          271.0
+        ],
+        "shoulder_r": [
+          279.1,
+          254.2
+        ],
+        "elbow_r": [
+          296.25,
+          278.0
+        ],
+        "wrist_r": [
+          299.05,
+          264.35
+        ]
+      },
+      "feet": [
+        [
+          204.9,
+          386.85
+        ],
+        [
+          312.0,
+          380.2
+        ]
+      ]
+    },
+    "Slash": {
+      "label": "斩击",
+      "expression": "attack",
+      "body_angle": 0,
+      "overrides": {
+        "body": {
+          "path": "sources/r2/body/Slash.png",
+          "size": [
+            155.39999999999998,
+            156.79999999999998
+          ],
+          "pivot": [
+            0.48873873873873874,
+            0.9754464285714286
+          ],
+          "at": [
+            256,
+            390
+          ]
+        },
+        "body_front": {
+          "path": "sources/r2/body/Slash_front.png",
+          "size": [
+            155.39999999999998,
+            156.79999999999998
+          ],
+          "pivot": [
+            0.48873873873873874,
+            0.9754464285714286
+          ],
+          "at": [
+            256,
+            390
+          ]
+        }
+      },
+      "head_angle": -12,
+      "neck_at": [
+        259.5,
+        265.4
+      ],
+      "joints": {
+        "shoulder_l": [
+          240.25,
+          270.65
+        ],
+        "elbow_l": [
+          221.0,
+          293.05
+        ],
+        "wrist_l": [
+          203.5,
+          316.15
+        ],
+        "shoulder_r": [
+          281.9,
+          260.15
+        ],
+        "elbow_r": [
+          295.9,
+          271.0
+        ],
+        "wrist_r": [
+          274.55,
+          271.7
+        ]
+      },
+      "feet": [
+        [
+          201.4,
+          387.9
+        ],
+        [
+          323.2,
+          379.85
+        ]
+      ]
+    },
+    "Penetrate": {
+      "label": "突刺",
+      "expression": "attack",
+      "body_angle": 0,
+      "overrides": {
+        "body": {
+          "path": "sources/r2/body/Penetrate.png",
+          "size": [
+            192.5,
+            156.45
+          ],
+          "pivot": [
+            0.5563636363636364,
+            0.941834451901566
+          ],
+          "at": [
+            256,
+            390
+          ]
+        },
+        "body_front": {
+          "path": "sources/r2/body/Penetrate_front.png",
+          "size": [
+            192.5,
+            156.45
+          ],
+          "pivot": [
+            0.5563636363636364,
+            0.941834451901566
+          ],
+          "at": [
+            256,
+            390
+          ]
+        }
+      },
+      "head_angle": -8,
+      "neck_at": [
+        239.9,
+        269.25
+      ],
+      "joints": {
+        "shoulder_l": [
+          222.75,
+          271.0
+        ],
+        "elbow_l": [
+          197.9,
+          270.3
+        ],
+        "wrist_l": [
+          168.85,
+          265.05
+        ],
+        "shoulder_r": [
+          264.4,
+          270.65
+        ],
+        "elbow_r": [
+          277.0,
+          288.85
+        ],
+        "wrist_r": [
+          258.1,
+          289.2
+        ]
+      },
+      "feet": [
+        [
+          194.05,
+          388.95
+        ],
+        [
+          329.85,
+          386.15
+        ]
+      ]
+    },
+    "Hit": {
+      "label": "打击",
+      "expression": "attack",
+      "body_angle": 0,
+      "overrides": {
+        "body": {
+          "path": "sources/r2/body/Hit.png",
+          "size": [
+            153.29999999999998,
+            140.7
+          ],
+          "pivot": [
+            0.5114155251141552,
+            0.9800995024875622
+          ],
+          "at": [
+            256,
+            390
+          ]
+        },
+        "body_front": {
+          "path": "sources/r2/body/Hit_front.png",
+          "size": [
+            153.29999999999998,
+            140.7
+          ],
+          "pivot": [
+            0.5114155251141552,
+            0.9800995024875622
+          ],
+          "at": [
+            256,
+            390
+          ]
+        }
+      },
+      "head_angle": -5,
+      "neck_at": [
+        250.75,
+        279.75
+      ],
+      "joints": {
+        "shoulder_l": [
+          229.4,
+          282.55
+        ],
+        "elbow_l": [
+          211.2,
+          291.3
+        ],
+        "wrist_l": [
+          192.65,
+          277.65
+        ],
+        "shoulder_r": [
+          277.0,
+          281.5
+        ],
+        "elbow_r": [
+          287.85,
+          299.35
+        ],
+        "wrist_r": [
+          261.25,
+          307.4
+        ]
+      },
+      "feet": [
+        [
+          196.15,
+          386.85
+        ],
+        [
+          316.55,
+          382.3
+        ]
+      ]
+    },
+    "Move": {
+      "label": "移动",
+      "expression": "normal",
+      "body_angle": 0,
+      "overrides": {
+        "body": {
+          "path": "sources/r2/body/Move.png",
+          "size": [
+            166.25,
+            155.75
+          ],
+          "pivot": [
+            0.49894736842105264,
+            0.9640449438202248
+          ],
+          "at": [
+            256,
+            390
+          ]
+        },
+        "body_front": {
+          "path": "sources/r2/body/Move_front.png",
+          "size": [
+            166.25,
+            155.75
+          ],
+          "pivot": [
+            0.49894736842105264,
+            0.9640449438202248
+          ],
+          "at": [
+            256,
+            390
+          ]
+        }
+      },
+      "head_angle": -12,
+      "neck_at": [
+        219.95,
+        264.7
+      ],
+      "joints": {
+        "shoulder_l": [
+          209.8,
+          272.4
+        ],
+        "elbow_l": [
+          197.2,
+          294.45
+        ],
+        "wrist_l": [
+          188.8,
+          283.6
+        ],
+        "shoulder_r": [
+          241.3,
+          259.1
+        ],
+        "elbow_r": [
+          274.55,
+          260.85
+        ],
+        "wrist_r": [
+          295.2,
+          287.45
+        ]
+      },
+      "feet": [
+        [
+          194.75,
+          385.1
+        ],
+        [
+          321.8,
+          388.25
+        ]
+      ]
+    },
+    "Special": {
+      "label": "施法",
+      "expression": "cast",
+      "body_angle": 0,
+      "overrides": {
+        "body": {
+          "path": "sources/r2/body/Special.png",
+          "size": [
+            103.95,
+            123.39000000000001
+          ],
+          "pivot": [
+            0.5012987012987012,
+            0.9693654266958425
+          ],
+          "at": [
+            256,
+            390
+          ]
+        },
+        "body_front": {
+          "path": "sources/r2/body/Special_front.png",
+          "size": [
+            103.95,
+            123.39000000000001
+          ],
+          "pivot": [
+            0.5012987012987012,
+            0.9693654266958425
+          ],
+          "at": [
+            256,
+            390
+          ]
+        }
+      },
+      "head_angle": -9,
+      "neck_at": [
+        256.27,
+        288.48
+      ],
+      "joints": {
+        "shoulder_l": [
+          241.69,
+          293.07
+        ],
+        "elbow_l": [
+          231.7,
+          321.15
+        ],
+        "wrist_l": [
+          247.09,
+          308.19
+        ],
+        "shoulder_r": [
+          273.28,
+          296.04
+        ],
+        "elbow_r": [
+          281.38,
+          322.23
+        ],
+        "wrist_r": [
+          251.68,
+          310.62
+        ]
+      },
+      "feet": [
+        [
+          229.0,
+          387.57
+        ],
+        [
+          296.23,
+          382.71
+        ]
+      ]
+    }
+  },
+  "aliases": {
+    "Fire": "Penetrate",
+    "Aim": "Guard",
+    "S1": "Special"
+  },
+  "limitations": [
+    "Three-quarter Front artwork; no separate Side set.",
+    "Fixed pale body skin.",
+    "Projection XML is an export candidate; in-game head scale and guest registration require runtime acceptance."
+  ],
+  "revision": 2,
+  "grounding": {
+    "reference": "sources/grounding/bada_reference.json",
+    "target_sole_root_y": 0.06,
+    "alpha_threshold": 32,
+    "sole_band_y": [
+      354,
+      408
+    ],
+    "exceptions": {},
+    "policy": "same sole baseline as native Default unless an explicit designed offset is documented"
+  }
+}

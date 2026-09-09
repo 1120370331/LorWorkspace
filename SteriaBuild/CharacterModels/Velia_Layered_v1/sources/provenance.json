@@ -1,0 +1,233 @@
+{
+  "generated": {
+    "path": "sources\\generated_parts_rgba.png",
+    "sha256": "f82a67d38e8d53784146c5b51c8f165e40649036115f618649431ecec6519a2c",
+    "mode": "built-in image_gen",
+    "crops": {
+      "wearing/body/robe": {
+        "rect": [
+          75,
+          42,
+          475,
+          493
+        ],
+        "sha256": "9260ee49b34437f1e64dd80fb0161582509cff8b514a6534662f9733ed19e95c"
+      },
+      "wearing/body/sleeve_relaxed": {
+        "rect": [
+          668,
+          80,
+          845,
+          465
+        ],
+        "sha256": "fd873cba12aae554aae48218d7c91a5baaa88b082b439673251e90527b417ce9"
+      },
+      "wearing/body/sleeve_cast": {
+        "rect": [
+          1170,
+          77,
+          1445,
+          425
+        ],
+        "sha256": "588606b578f88853385d25bf0a97e6b7a86aad2f36741d15c7aee077d029ad71"
+      },
+      "head/hair/back": {
+        "rect": [
+          66,
+          540,
+          460,
+          1007
+        ],
+        "sha256": "03e2b701143e10e26e964d4ae92d64ea3671970c4c2a827d2bff5832fb33346a"
+      },
+      "head/hair/front": {
+        "rect": [
+          590,
+          555,
+          966,
+          995
+        ],
+        "sha256": "a9c5c1fb8079cb741451c1367a1e751f5f3dc86e21643d105921b58ce0a9a598"
+      },
+      "wearing/accessories/pendant": {
+        "rect": [
+          1190,
+          671,
+          1340,
+          890
+        ],
+        "sha256": "7175287da7c66eec5d44e044d364df7a0b3c2b95f4a98a216bbe108ad8fbf0b6"
+      }
+    }
+  },
+  "native": [
+    {
+      "path": "sources/head/face/brows_alternate.png",
+      "asset_file": "resources.assets",
+      "path_id": 20152,
+      "sprite_name": "Eyebrow_Front_Normal_1_4",
+      "texture_name": "Eyebrow_Front_Normal_1",
+      "sha256": "7fedef5752d704ee06c7f3f3b649a8511543bf8143ca02a0a4d4a226c04f41c6",
+      "ppu": 100.0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rect": [
+        0.0,
+        1024.0,
+        512.0,
+        512.0
+      ],
+      "texture_rect_offset": [
+        193.0761260986328,
+        238.0267333984375
+      ],
+      "usage": "local authoring/reference only; not included in projection exports"
+    },
+    {
+      "path": "sources/head/face/eyes.png",
+      "asset_file": "resources.assets",
+      "path_id": 20377,
+      "sprite_name": "Eye_Front_2_12",
+      "texture_name": "Eye_Front_2",
+      "sha256": "92ccd1754bad9a5912b3630499f0fe83e9f5b68d326470928fd0f2424949ffb6",
+      "ppu": 100.0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rect": [
+        0.0,
+        0.0,
+        512.0,
+        512.0
+      ],
+      "texture_rect_offset": [
+        179.0761260986328,
+        204.0541229248047
+      ],
+      "usage": "local authoring/reference only; not included in projection exports"
+    },
+    {
+      "path": "sources/head/face/brows_normal.png",
+      "asset_file": "resources.assets",
+      "path_id": 20439,
+      "sprite_name": "Eyebrow_Front_Normal_1_1",
+      "texture_name": "Eyebrow_Front_Normal_1",
+      "sha256": "1a58e1bedb782889c9eba9bd231c14e2007001a9483caa8e6a864977229d5ab0",
+      "ppu": 100.0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rect": [
+        512.0,
+        1536.0,
+        512.0,
+        512.0
+      ],
+      "texture_rect_offset": [
+        192.07611083984375,
+        238.0267333984375
+      ],
+      "usage": "local authoring/reference only; not included in projection exports"
+    },
+    {
+      "path": "sources/head/face/eyes_alternate.png",
+      "asset_file": "resources.assets",
+      "path_id": 20452,
+      "sprite_name": "Eye_Front_1_9",
+      "texture_name": "Eye_Front_1",
+      "sha256": "661276094caa7a6c17024801722ddbd8ac6310dd97b29789096b53d87235967e",
+      "ppu": 100.0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rect": [
+        512.0,
+        512.0,
+        512.0,
+        512.0
+      ],
+      "texture_rect_offset": [
+        188.012939453125,
+        209.0596923828125
+      ],
+      "usage": "local authoring/reference only; not included in projection exports"
+    },
+    {
+      "path": "sources/head/facemodel/front.png",
+      "asset_file": "resources.assets",
+      "path_id": 23412,
+      "sprite_name": "Head",
+      "texture_name": "Head",
+      "sha256": "f2522d99ff7ce6ad3d8f63b608bad57699a464a38bb330e37864289e2fa9fa7a",
+      "ppu": 100.0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rect": [
+        0.0,
+        0.0,
+        256.0,
+        256.0
+      ],
+      "texture_rect_offset": [
+        51.07612228393555,
+        43.07612228393555
+      ],
+      "usage": "local authoring/reference only; not included in projection exports"
+    },
+    {
+      "path": "sources/references/alternate_front_hair.png",
+      "asset_file": "resources.assets",
+      "path_id": 24388,
+      "sprite_name": "FrontHair_Front_3_8",
+      "texture_name": "FrontHair_Front_3",
+      "sha256": "c3a6f6edf4f118985f7fe4c97cc397cdf6854e77580adc48560244ab22f76e91",
+      "ppu": 100.0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rect": [
+        0.0,
+        512.0,
+        512.0,
+        512.0
+      ],
+      "texture_rect_offset": [
+        167.0761260986328,
+        168.0
+      ],
+      "usage": "local authoring/reference only; not included in projection exports"
+    },
+    {
+      "path": "sources/head/face/mouth_normal.png",
+      "asset_file": "resources.assets",
+      "path_id": 24579,
+      "sprite_name": "Mouth_Front_Normal_1_0",
+      "texture_name": "Mouth_Front_Normal_1",
+      "sha256": "fb0bf63d006a6d93bc06538c0c352a1f9c669467e5f511a6041dde37a6401a78",
+      "ppu": 100.0,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rect": [
+        0.0,
+        1536.0,
+        512.0,
+        512.0
+      ],
+      "texture_rect_offset": [
+        220.0761260986328,
+        187.076171875
+      ],
+      "usage": "local authoring/reference only; not included in projection exports"
+    }
+  ]
+}

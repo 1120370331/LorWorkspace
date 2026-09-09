@@ -1,0 +1,56 @@
+{
+  "Default": {
+    "left": [[226, 289], [229, 320], [248, 345]],
+    "right": [[268, 281], [264, 318], [248, 345]],
+    "width": 16, "height": 24, "lean": 0.01,
+    "note": "Relaxed, centered below the sloping neckline."
+  },
+  "Guard": {
+    "left": [[772, 367], [778, 393], [796, 409]],
+    "right": [[813, 356], [811, 384], [796, 409]],
+    "width": 15, "height": 23, "lean": -0.12,
+    "note": "Compact chest; the bent guarding hand can cover the pendant."
+  },
+  "Special": {
+    "left": [[1261, 490], [1257, 519], [1273, 540]],
+    "right": [[1302, 483], [1299, 518], [1273, 540]],
+    "width": 16, "height": 24, "lean": -0.07,
+    "note": "Prayer: naturally behind the joined hands, not moved outside them for visibility."
+  },
+  "Slash": {
+    "left": [[248, 382], [245, 406], [258, 433]],
+    "right": [[279, 380], [277, 408], [258, 433]],
+    "width": 12, "height": 20, "lean": -0.16,
+    "note": "Narrow, turned chest; slight leftward slant along the sweep."
+  },
+  "Penetrate": {
+    "left": [[749, 381], [754, 411], [776, 433]],
+    "right": [[778, 376], [786, 410], [776, 433]],
+    "width": 12, "height": 20, "lean": 0.14,
+    "note": "Forward lunge; chain follows the diagonal chest without touching the tucked fist."
+  },
+  "Hit": {
+    "left": [[1274, 426], [1277, 454], [1288, 475]],
+    "right": [[1308, 421], [1303, 454], [1288, 475]],
+    "width": 14, "height": 20, "lean": -0.05,
+    "note": "Short V-shaped chain, clear of the fist below."
+  },
+  "Evade": {
+    "left": [[159, 429], [165, 458], [190, 472]],
+    "right": [[191, 421], [199, 449], [190, 472]],
+    "width": 12, "height": 20, "lean": 0.17,
+    "note": "Folded torso: diagonal chest fit with the near palm in front."
+  },
+  "Damaged": {
+    "left": [[746, 350], [751, 380], [769, 400]],
+    "right": [[779, 348], [781, 379], [769, 400]],
+    "width": 12, "height": 20, "lean": -0.14,
+    "note": "Recoil: asymmetric chain curves and tilted small cross follow the raised chest."
+  },
+  "Move": {
+    "left": [[1156, 382], [1156, 404], [1181, 419]],
+    "right": [[1187, 371], [1194, 400], [1181, 419]],
+    "width": 12, "height": 20, "lean": 0.27,
+    "note": "Running left: small rightward trailing slant, kept inside the garment."
+  }
+}
