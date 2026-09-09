@@ -1,7 +1,7 @@
 {
-  "version": 2,
+  "version": 3,
   "provenance": {
-    "kind": "imagegen-reference-guided-phase-authored",
+    "kind": "native-grounded-imagegen-phase-authored",
     "method": "reference-guided independent imagegen masters; chroma-key and despill by source artists; spatially disjoint primary/detached-fleck layers; authored local-flow phase deformation and tail erosion",
     "inputManifest": "imagegen_masters/inputs.json",
     "phaseSource": "import_masters.py",
@@ -10,20 +10,19 @@
   "profiles": {
     "SeaPierce": {
       "name": "SeaPierce",
-      "duration": 0.5,
-      "pixelsPerUnit": 78.76923076923077,
-      "pivotX": 0.14,
-      "pivotY": 0.46,
-      "actorScale": 1,
+      "duration": 1.0,
+      "pixelsPerUnit": 121.9047619047619,
+      "pivotX": 0.5,
+      "pivotY": 0.5,
       "frameTimes": [
-        0.0,
+        0,
         0.016666666666666666,
-        0.03333333333333333,
-        0.06666666666666667,
-        0.11666666666666667,
-        0.18333333333333332,
-        0.2833333333333333,
-        0.4166666666666667
+        0.15,
+        0.25,
+        0.35,
+        0.45,
+        0.55,
+        0.64
       ],
       "body": [
         "SeaPierce_body_00.png",
@@ -49,20 +48,19 @@
     },
     "SeaFarHit": {
       "name": "SeaFarHit",
-      "duration": 0.4,
-      "pixelsPerUnit": 113.77777777777777,
-      "pivotX": 0.955,
-      "pivotY": 0.4,
-      "actorScale": 1,
+      "duration": 0.5,
+      "pixelsPerUnit": 150.58823529411765,
+      "pivotX": 0.72,
+      "pivotY": 0.5,
       "frameTimes": [
-        0.0,
-        0.016666666666666666,
+        0,
         0.03333333333333333,
-        0.05,
-        0.08333333333333333,
-        0.13333333333333333,
-        0.21666666666666667,
-        0.3333333333333333
+        0.3,
+        0.6666666666666666,
+        0.72,
+        0.8,
+        0.88,
+        0.96
       ],
       "body": [
         "SeaFarHit_body_00.png",
@@ -94,26 +92,25 @@
         "SeaFarHit_splash_06.png",
         "SeaFarHit_splash_07.png"
       ],
-      "splashPixelsPerUnit": 100.0,
-      "splashPivotX": 0.26,
-      "splashPivotY": 0.11
+      "splashPixelsPerUnit": 80.0,
+      "splashPivotX": 0.1,
+      "splashPivotY": 0.12
     },
     "MemorySlash": {
       "name": "MemorySlash",
-      "duration": 0.5,
-      "pixelsPerUnit": 78.76923076923077,
-      "pivotX": 0.13,
-      "pivotY": 0.48,
-      "actorScale": 1,
+      "duration": 1.0,
+      "pixelsPerUnit": 160.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5,
       "frameTimes": [
-        0.0,
+        0,
         0.016666666666666666,
-        0.03333333333333333,
-        0.06666666666666667,
-        0.11666666666666667,
-        0.18333333333333332,
-        0.2833333333333333,
-        0.4166666666666667
+        0.15,
+        0.25,
+        0.35,
+        0.45,
+        0.55,
+        0.64
       ],
       "body": [
         "MemorySlash_body_00.png",
@@ -139,20 +136,19 @@
     },
     "MemoryPierce": {
       "name": "MemoryPierce",
-      "duration": 0.5,
-      "pixelsPerUnit": 78.76923076923077,
-      "pivotX": 0.15,
+      "duration": 1.0,
+      "pixelsPerUnit": 121.9047619047619,
+      "pivotX": 0.5,
       "pivotY": 0.5,
-      "actorScale": 1,
       "frameTimes": [
-        0.0,
+        0,
         0.016666666666666666,
-        0.03333333333333333,
-        0.06666666666666667,
-        0.11666666666666667,
-        0.18333333333333332,
-        0.2833333333333333,
-        0.4166666666666667
+        0.15,
+        0.25,
+        0.35,
+        0.45,
+        0.55,
+        0.64
       ],
       "body": [
         "MemoryPierce_body_00.png",
@@ -178,20 +174,19 @@
     },
     "MemoryHit": {
       "name": "MemoryHit",
-      "duration": 0.45,
-      "pixelsPerUnit": 88.42105263157895,
-      "pivotX": 0.72,
-      "pivotY": 0.47,
-      "actorScale": 1,
+      "duration": 1.0,
+      "pixelsPerUnit": 116.36363636363636,
+      "pivotX": 0.5,
+      "pivotY": 0.5,
       "frameTimes": [
-        0.0,
+        0,
         0.016666666666666666,
-        0.03333333333333333,
-        0.06666666666666667,
-        0.11666666666666667,
-        0.18333333333333332,
-        0.2833333333333333,
-        0.4166666666666667
+        0.15,
+        0.25,
+        0.35,
+        0.45,
+        0.55,
+        0.64
       ],
       "body": [
         "MemoryHit_body_00.png",
@@ -217,20 +212,19 @@
     },
     "MemoryGuard": {
       "name": "MemoryGuard",
-      "duration": 0.5,
-      "pixelsPerUnit": 78.26086956521739,
-      "pivotX": 0.85,
-      "pivotY": 0.51,
-      "actorScale": 1,
+      "duration": 1.0,
+      "pixelsPerUnit": 102.27272727272727,
+      "pivotX": 0.5,
+      "pivotY": 0.5,
       "frameTimes": [
-        0.0,
+        0,
         0.016666666666666666,
-        0.03333333333333333,
-        0.06666666666666667,
-        0.11666666666666667,
-        0.18333333333333332,
-        0.2833333333333333,
-        0.4166666666666667
+        0.15,
+        0.25,
+        0.35,
+        0.45,
+        0.55,
+        0.64
       ],
       "body": [
         "MemoryGuard_body_00.png",
@@ -257,730 +251,730 @@
   },
   "assets": {
     "SeaPierce_body_00.png": {
-      "sha256": "fdf321ccebdb5649b0ee246787dca5aa9f5410d023f096a9e334e99c6618c9b9",
+      "sha256": "514ce71297bbab6c83576987d0040e673f993e6f6a16f56b5b5aa3cc113a6d55",
       "width": 560,
       "height": 168,
       "role": "body",
       "phase": 0
     },
     "SeaPierce_accent_00.png": {
-      "sha256": "7d84a9fd14dc4f3783a5d0344d2ad01bfc94dde32638a0030327c198f6f1c9da",
+      "sha256": "ce0b12aaa476bd0e2184acdd1fddc72340c68b79606002e81559ec4e26850188",
       "width": 560,
       "height": 168,
       "role": "accent",
       "phase": 0
     },
     "SeaPierce_body_01.png": {
-      "sha256": "d0ab25a68a8de76c689e334f524e57baac1e4adb9e095e8635e45d36cc0642e9",
+      "sha256": "55748f888f963eb0a4187365bb04bed7c38ecc80733576dbd7c65bf044f4d65f",
       "width": 560,
       "height": 168,
       "role": "body",
       "phase": 1
     },
     "SeaPierce_accent_01.png": {
-      "sha256": "ce978cb9b8d1c2d7c85856d1257898c0d7465d045b71d8ed1d0e573619501314",
+      "sha256": "661bc5e9bc24e50afb752a264737219849ff107e521e9c6aa04972609d384e75",
       "width": 560,
       "height": 168,
       "role": "accent",
       "phase": 1
     },
     "SeaPierce_body_02.png": {
-      "sha256": "a5c1730588e3cecedae539a52066f5a6b93d6ce59a0b7594cb38a4cfd7ce8ae8",
+      "sha256": "6c7b65455ce4f32de70b727728b80c3cc6f1383a7e78a359e1c829d067718f50",
       "width": 560,
       "height": 168,
       "role": "body",
       "phase": 2
     },
     "SeaPierce_accent_02.png": {
-      "sha256": "ed8dd3f7d82c337429cbc60adff75cf7f9b7154864a393747335410b3018d51f",
+      "sha256": "f0d68c470aaa229bc81e2aabdf5d787312c2aeaaacbf8ec623d98a9424365d02",
       "width": 560,
       "height": 168,
       "role": "accent",
       "phase": 2
     },
     "SeaPierce_body_03.png": {
-      "sha256": "b44e2b9dbfac9b4000be204be147010eb8d38bdc086401ae4e4545d6691222ae",
+      "sha256": "55748f888f963eb0a4187365bb04bed7c38ecc80733576dbd7c65bf044f4d65f",
       "width": 560,
       "height": 168,
       "role": "body",
       "phase": 3
     },
     "SeaPierce_accent_03.png": {
-      "sha256": "8f1eef1314362b0e6d54aa7ed63b6c8a79e24ea42ff437ff7b87cb24eb7edb07",
+      "sha256": "661bc5e9bc24e50afb752a264737219849ff107e521e9c6aa04972609d384e75",
       "width": 560,
       "height": 168,
       "role": "accent",
       "phase": 3
     },
     "SeaPierce_body_04.png": {
-      "sha256": "9a25cd59ffa85b6052309f94110475054145a0b2b1b63b82bddb9ab8d44b257c",
+      "sha256": "36c9863057ccc794008f4909870ed087dee9776554c8b4094a8dd03cb090a823",
       "width": 560,
       "height": 168,
       "role": "body",
       "phase": 4
     },
     "SeaPierce_accent_04.png": {
-      "sha256": "f896c86f92fb490d16036fdf34e9a172909ffe3e096c4041414aec5826dcddf5",
+      "sha256": "eaa5899eecdd0bff5414162277d88b0e6479c468f758c83e3c473b4138edbee7",
       "width": 560,
       "height": 168,
       "role": "accent",
       "phase": 4
     },
     "SeaPierce_body_05.png": {
-      "sha256": "6dcd113da4476f9f7df4c3aa5627bd1be57f46eb459b21aa829c97abb1545cea",
+      "sha256": "c692570de503b98f8f7793ffde0a40190a4e3ed28b6f32ee31891d2c99327308",
       "width": 560,
       "height": 168,
       "role": "body",
       "phase": 5
     },
     "SeaPierce_accent_05.png": {
-      "sha256": "44a253c172c98b1d53befe283e0c115fab5951472f9d96ac7155ce49d73ee498",
+      "sha256": "6560b289614c0c5f399a0e33feb2d31cc4a1204f8d0b4272bf2f31e19af8151a",
       "width": 560,
       "height": 168,
       "role": "accent",
       "phase": 5
     },
     "SeaPierce_body_06.png": {
-      "sha256": "9463e7f48d1291388f46df677ec70d9412384471df8f1c802c6e49254c3d02f8",
+      "sha256": "e61e7fd504d314b623e9cb7dfa98627c5a4f0331eaf4f71677cdf103a751a486",
       "width": 560,
       "height": 168,
       "role": "body",
       "phase": 6
     },
     "SeaPierce_accent_06.png": {
-      "sha256": "632aa01afcc3e25fa7638bcd6cb841a8667d22ee9c3839becd0498efd07b2b50",
+      "sha256": "ac97c4da24c861340c79bcdad82a8be3686784e7f1e699d4211d8c9f3f6345e4",
       "width": 560,
       "height": 168,
       "role": "accent",
       "phase": 6
     },
     "SeaPierce_body_07.png": {
-      "sha256": "ff4c94432228423c1b2c390fc57cdbdd47c1323fa73eafdcf08f6923c090211e",
+      "sha256": "0ffccd5567e18473623f2415905b475e8036277a56215ae4b7d6e075d995e079",
       "width": 560,
       "height": 168,
       "role": "body",
       "phase": 7
     },
     "SeaPierce_accent_07.png": {
-      "sha256": "ff4c94432228423c1b2c390fc57cdbdd47c1323fa73eafdcf08f6923c090211e",
+      "sha256": "f790803bc8a87e34772e82d4ebbd9bda2afa904a14b025534f9b414a1ba9fa2c",
       "width": 560,
       "height": 168,
       "role": "accent",
       "phase": 7
     },
     "SeaFarHit_body_00.png": {
-      "sha256": "80ae5bdabaa8fdb8f3baddedabd0d8f09404cb3e70e4c9af7dbb671c185c0129",
+      "sha256": "0139fd820c21281c5700725a8be9c21a04b0d2f80c1cb292939f2cfc1c2093d1",
       "width": 560,
       "height": 220,
       "role": "body",
       "phase": 0
     },
     "SeaFarHit_accent_00.png": {
-      "sha256": "72cb27b999bbaea16da07cae0675ec7edf7bbf3dda0f7c6128339757874970b3",
+      "sha256": "7988e25590a56e2c974c35a70a2cced4326d35cfda157be3e53df9822db4507c",
       "width": 560,
       "height": 220,
       "role": "accent",
       "phase": 0
     },
     "SeaFarHit_splash_00.png": {
-      "sha256": "462e0cf93768e6aa49464bc2f4841e2994964be933233bde49a2b9ee5e6c8bb1",
+      "sha256": "453ba4b9ffb83c543c2f6b419e9b7fedebb92100d50318b8959fbe2999ffcffc",
       "width": 328,
       "height": 229,
       "role": "splash",
       "phase": 0
     },
     "SeaFarHit_body_01.png": {
-      "sha256": "43a49b1c8bf3df8ac8247697c8e25d730bec8896b8412de701cb1087026bd023",
+      "sha256": "c906dd85a5d508b20ce6b67760841ab34253d819d85713b98f1c94967342db26",
       "width": 560,
       "height": 220,
       "role": "body",
       "phase": 1
     },
     "SeaFarHit_accent_01.png": {
-      "sha256": "97466a7045b9dd5b9891a2797dbe8cef5b51b901671b5647b4527f4f849bf4be",
+      "sha256": "7ed6251c007d698be9aad784c2203a82fb831758ba14f869b79e764116acf32c",
       "width": 560,
       "height": 220,
       "role": "accent",
       "phase": 1
     },
     "SeaFarHit_splash_01.png": {
-      "sha256": "f621532a6e648a444932141ce7845575223f4d752d9f705867557add34eea574",
+      "sha256": "c69c25fb341ccae681cfe5ac425508665820ae2809c701cdc683392fbb5f1d7b",
       "width": 328,
       "height": 229,
       "role": "splash",
       "phase": 1
     },
     "SeaFarHit_body_02.png": {
-      "sha256": "43dc0da1dd45094e1d37353fc406dad7b76cacdb252356d760082314b4f96ca8",
+      "sha256": "48e640491999c03150981bf586fc89f7ef5934c1872a6af3884ce3dd054c157a",
       "width": 560,
       "height": 220,
       "role": "body",
       "phase": 2
     },
     "SeaFarHit_accent_02.png": {
-      "sha256": "cd07671230d92aea2b9a997252c4009280a9bc32c2c17d618c7033c2c5041eab",
+      "sha256": "7ed6251c007d698be9aad784c2203a82fb831758ba14f869b79e764116acf32c",
       "width": 560,
       "height": 220,
       "role": "accent",
       "phase": 2
     },
     "SeaFarHit_splash_02.png": {
-      "sha256": "c69c25fb341ccae681cfe5ac425508665820ae2809c701cdc683392fbb5f1d7b",
+      "sha256": "8a6860aad30a074ae92ed2c88da32bc500f3a0ec621d36726d221d0191e08a0b",
       "width": 328,
       "height": 229,
       "role": "splash",
       "phase": 2
     },
     "SeaFarHit_body_03.png": {
-      "sha256": "3347ce176eb82d6f4f480e27ba55ab355727ce117e90e09e5700923a7da6c093",
+      "sha256": "c906dd85a5d508b20ce6b67760841ab34253d819d85713b98f1c94967342db26",
       "width": 560,
       "height": 220,
       "role": "body",
       "phase": 3
     },
     "SeaFarHit_accent_03.png": {
-      "sha256": "1fa0d25c9336588a1b1471c2df9b09b49480e3ff6714182a974e8b6206594381",
+      "sha256": "7ed6251c007d698be9aad784c2203a82fb831758ba14f869b79e764116acf32c",
       "width": 560,
       "height": 220,
       "role": "accent",
       "phase": 3
     },
     "SeaFarHit_splash_03.png": {
-      "sha256": "80cd0f8cfb76c3f25d1bd23bc3660f2377a99fcd01f4f9f9db9cd10c2c53db10",
+      "sha256": "c69c25fb341ccae681cfe5ac425508665820ae2809c701cdc683392fbb5f1d7b",
       "width": 328,
       "height": 229,
       "role": "splash",
       "phase": 3
     },
     "SeaFarHit_body_04.png": {
-      "sha256": "11cef1696b5f9f524ae5fb1c74236196924ff5e04961579668d5ca85c3a5f2c5",
+      "sha256": "012a7e178ca9de8236e1b25225d81ffcc586e52f99b7b6c20cc6ef24dc47ac42",
       "width": 560,
       "height": 220,
       "role": "body",
       "phase": 4
     },
     "SeaFarHit_accent_04.png": {
-      "sha256": "28c7079096acfb2829148eb1c7a427d52b290088029cd8cb00c98d54f0b965b6",
+      "sha256": "5c3765d9a8f4cebb6b0ab07b7e5e7260ad254cf7d8d15bd076bea4ee6cb8214d",
       "width": 560,
       "height": 220,
       "role": "accent",
       "phase": 4
     },
     "SeaFarHit_splash_04.png": {
-      "sha256": "95e3815d7ec4e6fcef877a56ae968cf25c7f92709704e396d14483f5829f82ec",
+      "sha256": "b8932efe998ec6fad80c3d9d8af2e0e8a69d4fe29c5e8fd3997cb47a6768e79f",
       "width": 328,
       "height": 229,
       "role": "splash",
       "phase": 4
     },
     "SeaFarHit_body_05.png": {
-      "sha256": "b9f9ff716e8271c18f8819a6c616a43815e80dd15eb3f6647d64307a5cfdc8d1",
+      "sha256": "16173537a0c92986d05e3463fb53b0afc3401c4ad60348b8015405e35b725e54",
       "width": 560,
       "height": 220,
       "role": "body",
       "phase": 5
     },
     "SeaFarHit_accent_05.png": {
-      "sha256": "911bbae2c04a190db5fb34ad76ed87d364075bab822c70c2b8aa203f7aa89e23",
+      "sha256": "c73088091a99237a40daec5442b6bbf75983c48084d5674ef0f35419aa0ae551",
       "width": 560,
       "height": 220,
       "role": "accent",
       "phase": 5
     },
     "SeaFarHit_splash_05.png": {
-      "sha256": "83df65fda7c5e80532b642d93c324e85300ae2b706f02fa9151e3fff3450db54",
+      "sha256": "b180e98eb6409cfe4f4ff1211aa860940f8b4fa045f9c4356d64a188e9e6821c",
       "width": 328,
       "height": 229,
       "role": "splash",
       "phase": 5
     },
     "SeaFarHit_body_06.png": {
-      "sha256": "53fcf1dff16ae597f16dfefab971fdace74326dde97f3178db6bff3e3f8e600d",
+      "sha256": "0192ef8a551e635f944e4848dc050df20e64e6e67440cd3f8d1e33f508288885",
       "width": 560,
       "height": 220,
       "role": "body",
       "phase": 6
     },
     "SeaFarHit_accent_06.png": {
-      "sha256": "d04bdd344d0939d483a90b25dec7da3cd266327a0e21a6165e4cfafd78639f3d",
+      "sha256": "0601672cb093317b4c73db9022c46658a1863b32f43df96f9c6f97b5eaca2bcf",
       "width": 560,
       "height": 220,
       "role": "accent",
       "phase": 6
     },
     "SeaFarHit_splash_06.png": {
-      "sha256": "a93c4fb5f156927772cb5b44127c45c7799311abd3fb1d6c28cea27be66caae5",
+      "sha256": "bef134e224c16812c2107906650f5890f0eab763077c932a76dd0c5719318740",
       "width": 328,
       "height": 229,
       "role": "splash",
       "phase": 6
     },
     "SeaFarHit_body_07.png": {
-      "sha256": "3f8e01c0b91ba316319cd11a09919d520762288bb4756ed30cd37c9a81b5add7",
+      "sha256": "362a6bfde94b9ed6128f7586408a6f02ac7cf0ca003f19edab649f93b2431365",
       "width": 560,
       "height": 220,
       "role": "body",
       "phase": 7
     },
     "SeaFarHit_accent_07.png": {
-      "sha256": "baaeee721c78f12d8d09c2e6e0d04385d6ef09a33310570584e860f4263363dd",
+      "sha256": "748b20d6a489946d3f3af79b897b044136c03f12e105f37b5c09466cd0b0e4f8",
       "width": 560,
       "height": 220,
       "role": "accent",
       "phase": 7
     },
     "SeaFarHit_splash_07.png": {
-      "sha256": "25a0b9579421c5765e79d37d4af4c0366311048904884ae26f815f96436782de",
+      "sha256": "1a0a86e4219bdde2d247d51ce5f2b0fa86a55e7dc7c8e521cf00998590950879",
       "width": 328,
       "height": 229,
       "role": "splash",
       "phase": 7
     },
     "MemorySlash_body_00.png": {
-      "sha256": "8c1207033349888b56197e4458b2304fbf82d3facf09dc663a70234351241c9c",
-      "width": 560,
-      "height": 184,
+      "sha256": "30da3218cebf2e429d184af9881d86f0d0b1aa8698303dd0586ca49fd529d139",
+      "width": 413,
+      "height": 608,
       "role": "body",
       "phase": 0
     },
     "MemorySlash_accent_00.png": {
-      "sha256": "a46fd52dce3dff455d33218685bc54a2a8f6dbd63c5d204c8890027fe2242ca8",
-      "width": 560,
-      "height": 184,
+      "sha256": "ede05051517c9683aeb7600a544360ca3cad4b064e566a822f3aca4d908052f3",
+      "width": 413,
+      "height": 608,
       "role": "accent",
       "phase": 0
     },
     "MemorySlash_body_01.png": {
-      "sha256": "2c8ae53d715a9f2842ee8fd998b93315bb9801773e9c7febb5e811b15d5df99b",
-      "width": 560,
-      "height": 184,
+      "sha256": "d59b3055514c75c74d8db5c96453beb0d6fa8a5a796334815d8d5b3417d563d8",
+      "width": 413,
+      "height": 608,
       "role": "body",
       "phase": 1
     },
     "MemorySlash_accent_01.png": {
-      "sha256": "044a062d2c35215fc6a29bc77ce6d8f549034b817e150572d188d859c3062719",
-      "width": 560,
-      "height": 184,
+      "sha256": "46e99aad4a2e819645f038288da9956a29b8b01bffce140cb92a581fd8f68f12",
+      "width": 413,
+      "height": 608,
       "role": "accent",
       "phase": 1
     },
     "MemorySlash_body_02.png": {
-      "sha256": "7fd9f839a0aa57af6ff1cb5c10b0c7c89a8f19746918e9d4c8ea427949f878c0",
-      "width": 560,
-      "height": 184,
+      "sha256": "8ae44ce4d025d41e78649f1b1214f027fb64ba36fb97f3243d672202131e760f",
+      "width": 413,
+      "height": 608,
       "role": "body",
       "phase": 2
     },
     "MemorySlash_accent_02.png": {
-      "sha256": "3719d73dd179b0fce6680ef2e7b84bb63a87761a350f6112f971bcff7c670591",
-      "width": 560,
-      "height": 184,
+      "sha256": "1a34374c4cd114550eabdd57bde016897b091941147edebe264e630198e0313d",
+      "width": 413,
+      "height": 608,
       "role": "accent",
       "phase": 2
     },
     "MemorySlash_body_03.png": {
-      "sha256": "fe5cc7101e71cea7ccf50bac38f70a3be3ff5da52216c70faa5b7c466d41cc5d",
-      "width": 560,
-      "height": 184,
+      "sha256": "d59b3055514c75c74d8db5c96453beb0d6fa8a5a796334815d8d5b3417d563d8",
+      "width": 413,
+      "height": 608,
       "role": "body",
       "phase": 3
     },
     "MemorySlash_accent_03.png": {
-      "sha256": "61570914affb69223ca671860d30bd6ca63b5fe5c74037038d17bee785927b16",
-      "width": 560,
-      "height": 184,
+      "sha256": "46e99aad4a2e819645f038288da9956a29b8b01bffce140cb92a581fd8f68f12",
+      "width": 413,
+      "height": 608,
       "role": "accent",
       "phase": 3
     },
     "MemorySlash_body_04.png": {
-      "sha256": "67bcacdb4ecb41c7daa0dc8d2db0c99e6c9565658d88b6684d5b3251234aa3c8",
-      "width": 560,
-      "height": 184,
+      "sha256": "14d1c265a45eab2f92f2f9718dfbb604dc4e702877a0c1e325b94af2ea4c2f6a",
+      "width": 413,
+      "height": 608,
       "role": "body",
       "phase": 4
     },
     "MemorySlash_accent_04.png": {
-      "sha256": "36f87eb52502c2383c3debfbe069c71877e2c1cd05be665518a5e4cdb4f1f0f3",
-      "width": 560,
-      "height": 184,
+      "sha256": "dc4550353c7cb334aec6797ab5ed984b86d29129bd0aa1ca0122b0001d909df7",
+      "width": 413,
+      "height": 608,
       "role": "accent",
       "phase": 4
     },
     "MemorySlash_body_05.png": {
-      "sha256": "c4b5a01f7cbe48c685cb309ca10c5a953222a83874d7a300c8457d604eb93c73",
-      "width": 560,
-      "height": 184,
+      "sha256": "30297a56fdc56300045b73fce5084f6720b0dabba342632f5dc726ebd41d7a89",
+      "width": 413,
+      "height": 608,
       "role": "body",
       "phase": 5
     },
     "MemorySlash_accent_05.png": {
-      "sha256": "2173b976153dc3ad012e48e2589d6c52c3bce9eb26f749cc41cb375147c7c76f",
-      "width": 560,
-      "height": 184,
+      "sha256": "5cd1cee0e08f3c28618161c0c07a5596cf2da5b48d2546b7d774ee38f0a827ac",
+      "width": 413,
+      "height": 608,
       "role": "accent",
       "phase": 5
     },
     "MemorySlash_body_06.png": {
-      "sha256": "994f04a1eb1d9a3885685334f93ce078c00c47b9e62cbd120c0cece696cc4f61",
-      "width": 560,
-      "height": 184,
+      "sha256": "4e2bf2145a16a1fa99e6978d9e07ce1b45aab3766d632697a733a56661f2a6ff",
+      "width": 413,
+      "height": 608,
       "role": "body",
       "phase": 6
     },
     "MemorySlash_accent_06.png": {
-      "sha256": "c1afc79afa13bb190251d9a6f573b64d3a4647325aa5f819b81e4916a5a6d194",
-      "width": 560,
-      "height": 184,
+      "sha256": "197e3fa69de9d66817c81033afd86750e63154a2b36620b503c47158a0e0aaa6",
+      "width": 413,
+      "height": 608,
       "role": "accent",
       "phase": 6
     },
     "MemorySlash_body_07.png": {
-      "sha256": "17af88adce82a5d46a13596d5cd0dc9780efe47c0a0ce0a21479c01eb4fa2bd7",
-      "width": 560,
-      "height": 184,
+      "sha256": "74aadeeb4ae8dbf6de633f939825c273eb488473c6075500b22ea4429af49adb",
+      "width": 413,
+      "height": 608,
       "role": "body",
       "phase": 7
     },
     "MemorySlash_accent_07.png": {
-      "sha256": "17af88adce82a5d46a13596d5cd0dc9780efe47c0a0ce0a21479c01eb4fa2bd7",
-      "width": 560,
-      "height": 184,
+      "sha256": "9886a798b7f73f32484d6b7b993075474f5b5499288cea18aab363107d0f411b",
+      "width": 413,
+      "height": 608,
       "role": "accent",
       "phase": 7
     },
     "MemoryPierce_body_00.png": {
-      "sha256": "eb6e4915936ed7ee501baa5b5ec8544487b0474d9e2cae30c2147f9390ab04b5",
+      "sha256": "172d4deae6ba737f68bfefc3ec7db2b7c1316ebe7b4875d6d4788036e7b36896",
       "width": 560,
       "height": 186,
       "role": "body",
       "phase": 0
     },
     "MemoryPierce_accent_00.png": {
-      "sha256": "a269ed9690f9ddd694d26d81c9ee3e780eb6614ad64d9320887cfc31ec3f1fb0",
+      "sha256": "f132acd99b9d32a5f57930cf5f1733d211ca411810d5f2d5b9867dcc451d436b",
       "width": 560,
       "height": 186,
       "role": "accent",
       "phase": 0
     },
     "MemoryPierce_body_01.png": {
-      "sha256": "f0617c83427f4c12f40bbf5fd494933b7f1d2207dea34af7fc88f1ae4accfe13",
+      "sha256": "f51c081d842e2ae4c4f33a2403983707d8b30321e419fb83384b34bec4d2e105",
       "width": 560,
       "height": 186,
       "role": "body",
       "phase": 1
     },
     "MemoryPierce_accent_01.png": {
-      "sha256": "ec34c368688cd2267dd08c4e477a79692faa77ee6231ed6227b07ed11aa278f5",
+      "sha256": "1430a109263045e91bd64142013b81612aaedd102b7c347e525c5b38695cd8ef",
       "width": 560,
       "height": 186,
       "role": "accent",
       "phase": 1
     },
     "MemoryPierce_body_02.png": {
-      "sha256": "cd8f34b17a66d9fe3d538d81fdda859d27bd4ce0d4e5aa0aaafe9854d40dafcc",
+      "sha256": "dd6a28c92ed45fc5bd9dd802635eb6e46904d473f8823c35216ec8b6429a769f",
       "width": 560,
       "height": 186,
       "role": "body",
       "phase": 2
     },
     "MemoryPierce_accent_02.png": {
-      "sha256": "6022d1b0a8f2758be8226a336d54281637e88adbcaa8a0102fc20a46aca067ad",
+      "sha256": "45dd5c7e3f667f7a9476df104e54365ef5e538ee0fd653d2d65469aaeab2ed87",
       "width": 560,
       "height": 186,
       "role": "accent",
       "phase": 2
     },
     "MemoryPierce_body_03.png": {
-      "sha256": "4e11ae5d95bc7b6a6fab65981eb8c87016ba701eb4f94f3b44a77b4be8623cd5",
+      "sha256": "f51c081d842e2ae4c4f33a2403983707d8b30321e419fb83384b34bec4d2e105",
       "width": 560,
       "height": 186,
       "role": "body",
       "phase": 3
     },
     "MemoryPierce_accent_03.png": {
-      "sha256": "6ee8b4aeef589d784ebb5cc957d7ddf01b3cbef5444fac14d6120bebdddd1aaa",
+      "sha256": "1430a109263045e91bd64142013b81612aaedd102b7c347e525c5b38695cd8ef",
       "width": 560,
       "height": 186,
       "role": "accent",
       "phase": 3
     },
     "MemoryPierce_body_04.png": {
-      "sha256": "aa538214304ef163d1a28e2f01bbc2738673d467de4696abe6d107244e046675",
+      "sha256": "f371c52d03be66612242c820815199624dd6405ee511da283de0c2ca1f89d052",
       "width": 560,
       "height": 186,
       "role": "body",
       "phase": 4
     },
     "MemoryPierce_accent_04.png": {
-      "sha256": "6d60597ef07149dbf8ffea980b4b2c7267f3431611ed0ef00161d95fa418d6b9",
+      "sha256": "8908ae9ca8977c01c2fcb109ef3313c31f6824040f103258e14f5214f580d14e",
       "width": 560,
       "height": 186,
       "role": "accent",
       "phase": 4
     },
     "MemoryPierce_body_05.png": {
-      "sha256": "0918a7bd3ecb8e1891677fad93714e87756844aa7ec9725ec152ce1c9fd43062",
+      "sha256": "c6f7c7a2118f5632eac1d54b9c7970c30546df61ea94c76c785854eb01312571",
       "width": 560,
       "height": 186,
       "role": "body",
       "phase": 5
     },
     "MemoryPierce_accent_05.png": {
-      "sha256": "dba51fccf26af25fed6e1f6fb2602ff565d86098917618251bb815383f22610b",
+      "sha256": "a1583e88a0cf140964f9c9e3ac8417b14578ec1a5a0ce8af5e1b3df347d20d2b",
       "width": 560,
       "height": 186,
       "role": "accent",
       "phase": 5
     },
     "MemoryPierce_body_06.png": {
-      "sha256": "f0e7fc0000145ff0d05335e068d2d78933114cb99d34bed8f12f3f846111d5e4",
+      "sha256": "7ba9cc6e1e15765e4d6c586f76c1a72a470510eb3a8351b50caeca089c3ba294",
       "width": 560,
       "height": 186,
       "role": "body",
       "phase": 6
     },
     "MemoryPierce_accent_06.png": {
-      "sha256": "913018c0af991052528453d0386a796094f2da5b648d6174a413c78e7d2a7e5c",
+      "sha256": "8a4c0da97469a97e23ef04b89d062820842a51be013fe7000a925c98a62ff386",
       "width": 560,
       "height": 186,
       "role": "accent",
       "phase": 6
     },
     "MemoryPierce_body_07.png": {
-      "sha256": "ec14b104b8b2573bbd5e1513bb77782aaddd3d40d436fcee16239602c3c6d300",
+      "sha256": "76ae9852c23c6000fceb49d001d37e2cce5d351039f33e3e5bc35c8aee0e8b07",
       "width": 560,
       "height": 186,
       "role": "body",
       "phase": 7
     },
     "MemoryPierce_accent_07.png": {
-      "sha256": "3c283d6ca4842dd6899d5dbe45ffe61f14f79edf9241cad6a24921e44c87ff44",
+      "sha256": "ed4414ea291e064bd9e91cb9d606e515012c2996e6478232cb401f5a74a4f8a5",
       "width": 560,
       "height": 186,
       "role": "accent",
       "phase": 7
     },
     "MemoryHit_body_00.png": {
-      "sha256": "0594ef45cf34ed6e2817c9ccd8724692197da33a906423bb4d69cb59ac0105eb",
-      "width": 384,
-      "height": 328,
+      "sha256": "e5056107ffe16197623223db18359f435b3fb6a9b5ef4f00ec3c70ddd9eb6393",
+      "width": 560,
+      "height": 184,
       "role": "body",
       "phase": 0
     },
     "MemoryHit_accent_00.png": {
-      "sha256": "e631d237c70ca758c584faa3ee971577a2a670fe4b5e99a52b6e505217e85e4d",
-      "width": 384,
-      "height": 328,
+      "sha256": "581b21eacfebbd8ca88e551e120010268e673027baa339acdd3f17c5e8f596d6",
+      "width": 560,
+      "height": 184,
       "role": "accent",
       "phase": 0
     },
     "MemoryHit_body_01.png": {
-      "sha256": "268f8625a1cacab82e6985aa9cea34365776f316054eea4795b0675c40a0a1d6",
-      "width": 384,
-      "height": 328,
+      "sha256": "30b5ccc0320406d812535f76125acf85cb7e41e9bb55c88d085f76ba119ffa0f",
+      "width": 560,
+      "height": 184,
       "role": "body",
       "phase": 1
     },
     "MemoryHit_accent_01.png": {
-      "sha256": "fa1bf902c84956986d4931cd690936475863f04382682461f716b3540c650d7c",
-      "width": 384,
-      "height": 328,
+      "sha256": "b42dc2e10ec47a0d29f5cc1d9fb74c3c25d2fca5b9fd78bedb8d5d776aad3061",
+      "width": 560,
+      "height": 184,
       "role": "accent",
       "phase": 1
     },
     "MemoryHit_body_02.png": {
-      "sha256": "692cbb7f052ea33f98716e3c0b16b6003b77a0171806ef18eb83a2fdf2de9438",
-      "width": 384,
-      "height": 328,
+      "sha256": "fbb48f18a0e3d93a3b3adeb7640c4e1c8e7cbc61de5642aa19faa9c2a62cdbe8",
+      "width": 560,
+      "height": 184,
       "role": "body",
       "phase": 2
     },
     "MemoryHit_accent_02.png": {
-      "sha256": "87f6ba9675f35e193ceb944e3553b31d63935588d30fe14fcdd94d0b6efffebf",
-      "width": 384,
-      "height": 328,
+      "sha256": "462ec4352ac7697e44c0adffb10bc7a121deb70589f8288258ea8d4bea389897",
+      "width": 560,
+      "height": 184,
       "role": "accent",
       "phase": 2
     },
     "MemoryHit_body_03.png": {
-      "sha256": "65548b63922eed697d98de9e67dd6ca8d3af4993ed5bbb24331dbe32cde768b3",
-      "width": 384,
-      "height": 328,
+      "sha256": "30b5ccc0320406d812535f76125acf85cb7e41e9bb55c88d085f76ba119ffa0f",
+      "width": 560,
+      "height": 184,
       "role": "body",
       "phase": 3
     },
     "MemoryHit_accent_03.png": {
-      "sha256": "c7a833071a7b45bc965658d62ab715549f3c2176abf93a95a5a487e7ebd0f1ca",
-      "width": 384,
-      "height": 328,
+      "sha256": "b42dc2e10ec47a0d29f5cc1d9fb74c3c25d2fca5b9fd78bedb8d5d776aad3061",
+      "width": 560,
+      "height": 184,
       "role": "accent",
       "phase": 3
     },
     "MemoryHit_body_04.png": {
-      "sha256": "32fe96538f0218e82551450368d26c5e95a99baa2909556e7a90b82bcbf814ca",
-      "width": 384,
-      "height": 328,
+      "sha256": "ddc49f9b4d1d745a23cfe2215034f772714d5c6f99928d0deb78acb65f9e2d13",
+      "width": 560,
+      "height": 184,
       "role": "body",
       "phase": 4
     },
     "MemoryHit_accent_04.png": {
-      "sha256": "b867b771981836a48ce7c1a953bed9a6d7ea6050d398837965055eecd7099407",
-      "width": 384,
-      "height": 328,
+      "sha256": "7e3fd8910b26137ad54c1fb7590963f7e7c30eb7e081cc3ecaaf9859ff4f4405",
+      "width": 560,
+      "height": 184,
       "role": "accent",
       "phase": 4
     },
     "MemoryHit_body_05.png": {
-      "sha256": "3d646fd60247ee332d5aa7b24b72ff1e025c33358e90d192f9584d1d4a059495",
-      "width": 384,
-      "height": 328,
+      "sha256": "8fd6b1ec435b812c3d9403cc5bd16a2d227173113d7c5151cb58b873111e68d6",
+      "width": 560,
+      "height": 184,
       "role": "body",
       "phase": 5
     },
     "MemoryHit_accent_05.png": {
-      "sha256": "9a470330a205929110ec542e3a5281d8fa4f9a50da3615d86544a741aeffb61d",
-      "width": 384,
-      "height": 328,
+      "sha256": "d364c7e7430645763f469233134c602b93f7675f8e168568cc9a5cae02617f59",
+      "width": 560,
+      "height": 184,
       "role": "accent",
       "phase": 5
     },
     "MemoryHit_body_06.png": {
-      "sha256": "fe52ca41626fc72da35b251e05cd31a0d4f99dc6b8c8b2b2ceda28370d33dc7d",
-      "width": 384,
-      "height": 328,
+      "sha256": "7f3c98e97650903e7711e448bb4bd271749078c13ce1b2fd18584402e3fbe801",
+      "width": 560,
+      "height": 184,
       "role": "body",
       "phase": 6
     },
     "MemoryHit_accent_06.png": {
-      "sha256": "6aa7a2979afcedadd012cb23893a8a03268fcdfb49223b347743bf97ed4a798e",
-      "width": 384,
-      "height": 328,
+      "sha256": "620f671719f8d74a72fa3e72efedf720d5b82d5e15981488ebb4b32b7ff190b6",
+      "width": 560,
+      "height": 184,
       "role": "accent",
       "phase": 6
     },
     "MemoryHit_body_07.png": {
-      "sha256": "df7b91da1f8c376a37e887411e0c8151f3697ed9cfabd6fbf4777e4f926a685b",
-      "width": 384,
-      "height": 328,
+      "sha256": "c3daa80f4664b78b7c55961a547d6ec395baec9201b87a3edbd568057b22441f",
+      "width": 560,
+      "height": 184,
       "role": "body",
       "phase": 7
     },
     "MemoryHit_accent_07.png": {
-      "sha256": "158ce5bd8547bbddc656ffe47c9e1df50974258c6facfd5869978e8532be11cd",
-      "width": 384,
-      "height": 328,
+      "sha256": "6d28cd8977ecf228f3d8b71b921d64e1f41c892dd7d002b13f3cb15cdb6ace18",
+      "width": 560,
+      "height": 184,
       "role": "accent",
       "phase": 7
     },
     "MemoryGuard_body_00.png": {
-      "sha256": "9170e8bde26e0dca767133bdf986aea65823547da4f9a71ae29361ee6f22a7a8",
-      "width": 288,
-      "height": 408,
+      "sha256": "1cd240bf0957cec04437d19c4d4f8f1d2b2a023ddf0e8e4d2a99de857faa1515",
+      "width": 348,
+      "height": 498,
       "role": "body",
       "phase": 0
     },
     "MemoryGuard_accent_00.png": {
-      "sha256": "0078833f3a5bbe28016beab67702be60b4adb5c4f2a5b0af5eab08a8848c2b9f",
-      "width": 288,
-      "height": 408,
+      "sha256": "940912df13891fd8bcdab46194c20ea492342413da7f10813af742a97fa6e51b",
+      "width": 348,
+      "height": 498,
       "role": "accent",
       "phase": 0
     },
     "MemoryGuard_body_01.png": {
-      "sha256": "3523c377ac934be6d74deadebd8b5a79afe826b33859f49a3eb6acb917a5129b",
-      "width": 288,
-      "height": 408,
+      "sha256": "a30157d8276211568736176791c503f482182c4bd1057b65ef25be0b45185270",
+      "width": 348,
+      "height": 498,
       "role": "body",
       "phase": 1
     },
     "MemoryGuard_accent_01.png": {
-      "sha256": "db549f1189dabda93b0c0998fd868f7b4d58319c2f4080985c1d6cc142e802f8",
-      "width": 288,
-      "height": 408,
+      "sha256": "e79eccdcb6374d4c53fc21ee86f03b01d1224c6e4b1a6c5d6c31b81ca7197d30",
+      "width": 348,
+      "height": 498,
       "role": "accent",
       "phase": 1
     },
     "MemoryGuard_body_02.png": {
-      "sha256": "a1af195867c519e5bb179404790d7c61d6d514ea86445076206f2b2d3f435f1d",
-      "width": 288,
-      "height": 408,
+      "sha256": "7a2d2dd4bf183bab81a0fe69e59afe63ece96e21ffad1be689a58be23299109f",
+      "width": 348,
+      "height": 498,
       "role": "body",
       "phase": 2
     },
     "MemoryGuard_accent_02.png": {
-      "sha256": "f08b672bd2d7b7b75eea9f8b8fe1f12ac2d1442a58f859858c1be8292cf9a158",
-      "width": 288,
-      "height": 408,
+      "sha256": "5151a4fd08e87f5136ac28002e7355f390a48d4bfd0ad2f879129603f807cf00",
+      "width": 348,
+      "height": 498,
       "role": "accent",
       "phase": 2
     },
     "MemoryGuard_body_03.png": {
-      "sha256": "c430945c43107d343e93fc2dbf8d38519393a9c30d8b5074dc21655a99263e9c",
-      "width": 288,
-      "height": 408,
+      "sha256": "a30157d8276211568736176791c503f482182c4bd1057b65ef25be0b45185270",
+      "width": 348,
+      "height": 498,
       "role": "body",
       "phase": 3
     },
     "MemoryGuard_accent_03.png": {
-      "sha256": "d332566aaedf74f5112dca9e8728bf5bc3fe6c321a17e85d21e1b0b49aa58820",
-      "width": 288,
-      "height": 408,
+      "sha256": "e79eccdcb6374d4c53fc21ee86f03b01d1224c6e4b1a6c5d6c31b81ca7197d30",
+      "width": 348,
+      "height": 498,
       "role": "accent",
       "phase": 3
     },
     "MemoryGuard_body_04.png": {
-      "sha256": "a64e7b8a083fd53139ae27c9fc12f8c4fda888f5cb4f29739c30cb8017e5a8ef",
-      "width": 288,
-      "height": 408,
+      "sha256": "02236e7f26778f525b00661d6911b93bcacbce9d462cd7161e1cb396a46f2010",
+      "width": 348,
+      "height": 498,
       "role": "body",
       "phase": 4
     },
     "MemoryGuard_accent_04.png": {
-      "sha256": "406cadc8bf78207e9e273f45857f4e4b83bd3c504d86c143718e4f65409c5e84",
-      "width": 288,
-      "height": 408,
+      "sha256": "c13814e07fc0ce9ac3b58ead50f3cdc82d96611f789324e250b1b7926949967e",
+      "width": 348,
+      "height": 498,
       "role": "accent",
       "phase": 4
     },
     "MemoryGuard_body_05.png": {
-      "sha256": "27a9cc3abab8bcb181b161eab2a956922317bca967d62cd6d9905b652ce835c9",
-      "width": 288,
-      "height": 408,
+      "sha256": "f1c8d28d0eca1c8cec1680ce6c3848b53144735fb075339456198cab2cfc9219",
+      "width": 348,
+      "height": 498,
       "role": "body",
       "phase": 5
     },
     "MemoryGuard_accent_05.png": {
-      "sha256": "842009b9baaa1188df136a38f3e893f26581b1b07173924bb1230f4e586f1a87",
-      "width": 288,
-      "height": 408,
+      "sha256": "1aaf8161f2acf38979a45aab6c5207b951f3a783ceb53ab0a6e1f106a742a94b",
+      "width": 348,
+      "height": 498,
       "role": "accent",
       "phase": 5
     },
     "MemoryGuard_body_06.png": {
-      "sha256": "4697ab1acaa1db8c09135f463a666484ab5970440aeab9d9c9ef1c4800564828",
-      "width": 288,
-      "height": 408,
+      "sha256": "aa041c166a087995091073f5f93923cd848b054b9ca09bf1fd37e06e2681ccbe",
+      "width": 348,
+      "height": 498,
       "role": "body",
       "phase": 6
     },
     "MemoryGuard_accent_06.png": {
-      "sha256": "bec17224085c3812b353fa755b2b974218d7842d1b8112441c125e4dfb527120",
-      "width": 288,
-      "height": 408,
+      "sha256": "884fc0eb7a76e708ebb59c7b3d8a0df95c83a5cb6668a01dde92f9423a13f0da",
+      "width": 348,
+      "height": 498,
       "role": "accent",
       "phase": 6
     },
     "MemoryGuard_body_07.png": {
-      "sha256": "03bed9d68ccb2b63c2f6fa96fe97b0cd237bbdc37aad3437df240cd0ad8c4b73",
-      "width": 288,
-      "height": 408,
+      "sha256": "d5394613fdbf2d270321f6f609dbd84244d04e3e7ae930cc429ffcf27eacf5e3",
+      "width": 348,
+      "height": 498,
       "role": "body",
       "phase": 7
     },
     "MemoryGuard_accent_07.png": {
-      "sha256": "03bed9d68ccb2b63c2f6fa96fe97b0cd237bbdc37aad3437df240cd0ad8c4b73",
-      "width": 288,
-      "height": 408,
+      "sha256": "702e4bb9903a001894d61b74ba27021c80b280c61f655350f444bbfbcec4076d",
+      "width": 348,
+      "height": 498,
       "role": "accent",
       "phase": 7
     }
@@ -999,11 +993,13 @@
         560,
         168
       ],
-      "pixelsPerUnit": 78.76923076923077,
-      "worldSpan": 6.5,
+      "pixelsPerUnit": 121.9047619047619,
+      "localSpan": 4.2,
+      "spanAxis": "width",
+      "intrinsicDirection": "LEFT",
       "pivot": [
-        0.14,
-        0.46
+        0.5,
+        0.5
       ]
     },
     "SeaFarHit": {
@@ -1019,31 +1015,35 @@
         560,
         220
       ],
-      "pixelsPerUnit": 113.77777777777777,
-      "worldSpan": 4.5,
+      "pixelsPerUnit": 150.58823529411765,
+      "localSpan": 3.4,
+      "spanAxis": "width",
+      "intrinsicDirection": "LEFT",
       "pivot": [
-        0.955,
-        0.4
+        0.72,
+        0.5
       ]
     },
     "MemorySlash": {
-      "file": "imagegen_masters/memory/keyed/MemorySlash_master.png",
-      "sha256": "7c5799ca191c370f23ee7959b3c4989861751bf03a2424ad94e44fca1b7d2af4",
+      "file": "imagegen_masters/native_vertical/MemorySlash_master.png",
+      "sha256": "88b53f410239f45e8339c0bb17cfc0c83ee59fbe6274c7b31cbe93c95699f185",
       "alphaContentBbox": [
-        133,
-        188,
-        2256,
-        751
+        95,
+        90,
+        1064,
+        1575
       ],
       "fitCanvas": [
-        560,
-        184
+        413,
+        608
       ],
-      "pixelsPerUnit": 78.76923076923077,
-      "worldSpan": 6.5,
+      "pixelsPerUnit": 160.0,
+      "localSpan": 3.5,
+      "spanAxis": "height",
+      "intrinsicDirection": "LEFT",
       "pivot": [
-        0.13,
-        0.48
+        0.5,
+        0.5
       ]
     },
     "MemoryPierce": {
@@ -1059,31 +1059,35 @@
         560,
         186
       ],
-      "pixelsPerUnit": 78.76923076923077,
-      "worldSpan": 6.5,
+      "pixelsPerUnit": 121.9047619047619,
+      "localSpan": 4.2,
+      "spanAxis": "width",
+      "intrinsicDirection": "LEFT",
       "pivot": [
-        0.15,
+        0.5,
         0.5
       ]
     },
     "MemoryHit": {
-      "file": "imagegen_masters/memory/keyed/MemoryHit_master.png",
-      "sha256": "89b154db3e163ede51b884453aaf2e52b2a8b4b72c0d82f88e532490257f1515",
+      "file": "imagegen_masters/memory/keyed/MemorySlash_master.png",
+      "sha256": "7c5799ca191c370f23ee7959b3c4989861751bf03a2424ad94e44fca1b7d2af4",
       "alphaContentBbox": [
-        152,
-        240,
-        1247,
-        1153
+        133,
+        188,
+        2256,
+        751
       ],
       "fitCanvas": [
-        384,
-        328
+        560,
+        184
       ],
-      "pixelsPerUnit": 88.42105263157895,
-      "worldSpan": 3.8,
+      "pixelsPerUnit": 116.36363636363636,
+      "localSpan": 4.4,
+      "spanAxis": "width",
+      "intrinsicDirection": "LEFT",
       "pivot": [
-        0.72,
-        0.47
+        0.5,
+        0.5
       ]
     },
     "MemoryGuard": {
@@ -1096,17 +1100,19 @@
         1538
       ],
       "fitCanvas": [
-        288,
-        408
+        348,
+        498
       ],
-      "pixelsPerUnit": 78.26086956521739,
-      "worldSpan": 4.6,
+      "pixelsPerUnit": 102.27272727272727,
+      "localSpan": 4.4,
+      "spanAxis": "height",
+      "intrinsicDirection": "LEFT",
       "pivot": [
-        0.85,
-        0.51
+        0.5,
+        0.5
       ]
     }
   },
-  "decodedRgbaBytes": 45151488,
+  "decodedRgbaBytes": 56732416,
   "cachePolicy": "lazy per-profile shared GPU textures/sprites; no retained CPU pixels; one shared alpha material; no per-instance material allocation"
 }

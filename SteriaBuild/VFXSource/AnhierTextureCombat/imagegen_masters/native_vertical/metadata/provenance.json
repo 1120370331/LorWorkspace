@@ -1,0 +1,105 @@
+{
+  "asset": "MemorySlashVertical",
+  "version": 1,
+  "status": "Static asset ready for integration; main and independent runtime/game acceptance remain required.",
+  "generator": "Built-in image_gen.imagegen; one reference-guided original generation; no image revision.",
+  "raw_tool_path": "C:/Users/rog/.codex/generated_images/01a084df-adc2-74e2-8b28-6a38376eaf0d/exec-9359fc74-ec7c-4d29-b2af-f62d2372dfa8.png",
+  "raw_copy": "raw/MemorySlashVertical_green.png",
+  "raw_sha256": "8f472cf5c9c66a3283da0ed2df42c86dfa4a758267090e8e27211001fd8b78f7",
+  "prompt": "prompts/MemorySlashVertical_v1.txt",
+  "prompt_sha256": "066fb864eda84fda2c6ea26fe651e40c32b1c2dcdb6cc8454757cf76b23df682",
+  "master": "keyed/MemorySlashVertical_master.png",
+  "master_sha256": "88b53f410239f45e8339c0bb17cfc0c83ee59fbe6274c7b31cbe93c95699f185",
+  "dimensions": [
+    1178,
+    1690
+  ],
+  "alpha_gt10_bbox": [
+    95,
+    90,
+    1064,
+    1575
+  ],
+  "alpha_content_dimensions": [
+    969,
+    1485
+  ],
+  "alpha_content_height_over_width": 1.5325077399380804,
+  "orientation": {
+    "native_intrinsic_cutting_edge": "LEFT",
+    "open_inner_side": "RIGHT",
+    "trailing_end": "upper right; light and torn",
+    "strike_head": "thick lower half; terminal tip lower right",
+    "runtime_mirror": "delegate to native characterRotationCenter once"
+  },
+  "suggested_native_local_alpha_span": {
+    "width": 2.5,
+    "height_if_uniform_width_scale": 3.831269349845201,
+    "design_target": [
+      2.5,
+      3.5
+    ],
+    "comment": "Actual H/W 1.533 satisfies design 1.3-1.6; uniform width scale yields height 3.831 within target +15%. Do not apply old 6.5-width normalization."
+  },
+  "dark_visible_pixels": 242773,
+  "visible_pixels": 474358,
+  "warm_fire_pixels": 102349,
+  "warm_fire_lower_half_fraction": 0.7924747677065727,
+  "green_dominant_visible_pixels_any_alpha": 0,
+  "matte": {
+    "script": "key_green.py",
+    "script_sha256": "383096d9158c1c62211c61d73fb7a25434c90c6c8f42a607430fce0d8fb1237c",
+    "basis": "Copied existing output/anhier-texture-vfx/imagegen-memory/key_green.py; final green-excess clamp added for Memory palette.",
+    "method": "Color-dominance matte, nearest foreground least-squares green unmix, despill; never brightness-key black-purple.",
+    "reproduce": "python -X utf8 output/anhier-native-impact/vertical-slash/key_green.py MemorySlashVertical <raw-source-png>"
+  },
+  "qa": {
+    "path": "qa/MemorySlashVertical_500px_dark_light.png",
+    "sha256": "e26807162ebd0f068230d5b8434b87469ad42d0637cb74f8d105e38271c46085",
+    "content_height_px": 500,
+    "backgrounds": [
+      [
+        36,
+        38,
+        44
+      ],
+      [
+        239,
+        238,
+        234
+      ]
+    ],
+    "visual_check": "Full C silhouette, violet middle tones and black body remain readable; clear heavier lower strike; no rectangle, green residue, clipped tips or repeated shell."
+  },
+  "references": [
+    {
+      "copy": "references/PhilipEGO_J_native_reference_only.png",
+      "source": "SteriaBuild/VFXSource/NativeAttackReference/references/all/images/Sprite/_4_____resources.assets_23358.png",
+      "sha256": "4967f93466af92d888004c7b25292d92ecfdc2c5bcf4a18d8825dc3529a80780",
+      "role": "Native resources.assets:23358; vertical silhouette and top-light/lower-heavy hierarchy only. Reference-only pixels, excluded from shipping.",
+      "reference_only": true
+    },
+    {
+      "copy": "references/9001002_card_palette_reference.png",
+      "source": "SteriaBuild/SteriaModFolder/Resource/CombatPageArtwork/9001002.png",
+      "sha256": "ebbac83616b38223c29622e00d7d07f8a9f087225c9d0c1eb70536f227983d43",
+      "role": "Actual card; black-purple violet palette and ink sweep material.",
+      "reference_only": true
+    },
+    {
+      "copy": "references/MemorySlash_old_material_reference_only.png",
+      "source": "SteriaBuild/VFXSource/AnhierTextureCombat/imagegen_masters/memory/keyed/MemorySlash_master.png",
+      "sha256": "7c5799ca191c370f23ee7959b3c4989861751bf03a2424ad94e44fca1b7d2af4",
+      "role": "Old horizontal generated master; pigment and burning edge material only; not rotated or used as output.",
+      "reference_only": true
+    },
+    {
+      "copy": "references/native-pose-comparison.png",
+      "source": "output/anhier-native-impact/research/native-pose-comparison.png",
+      "sha256": "f95e301e3f896569ff67e6e0f54e491d852551a7cc157c08b3a492e247dcdca0",
+      "role": "Native actual action pose scale; reference study only, not game screenshot.",
+      "reference_only": true
+    }
+  ],
+  "ownership": "Only output/anhier-native-impact/vertical-slash/ written. No production/runtime/source/old art files changed."
+}

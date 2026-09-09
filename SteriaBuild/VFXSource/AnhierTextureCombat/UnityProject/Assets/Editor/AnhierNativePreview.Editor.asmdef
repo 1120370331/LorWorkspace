@@ -1,0 +1,1 @@
+{"name": "AnhierNativePreview.Editor", "references": ["AnhierNativeRuntime"], "includePlatforms": ["Editor"]}

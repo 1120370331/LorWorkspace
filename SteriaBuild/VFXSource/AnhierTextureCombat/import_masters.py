@@ -13,7 +13,7 @@ from PIL import Image,ImageDraw,ImageFilter
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2]
 SHIP=ROOT/'SteriaBuild/SteriaModFolder/Resource/Effects/AnhierTextureCombat'
 SRC=HERE/'source_assets';MASTERS=HERE/'imagegen_masters'
-TIMES=[i/60 for i in [0,1,2,4,7,11,17,25]]
+TIMES=[0,1/60,.15,.25,.35,.45,.55,.64]
 
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -30,7 +30,7 @@ def fit_master(path,name,splash=False):
     im=master.crop(bbox)
     # Match native attack sprite scale while retaining antialiased brush filaments.
     # All six decoded profiles, including independent splash, remain below 48 MiB.
-    limit=(512,400) if name not in ['MemoryHit','MemoryGuard'] else (300,360) if name=='MemoryGuard' else (336,336)
+    limit=(400,560) if name=='MemorySlash' else (300,460) if name=='MemoryGuard' else (512,400)
     if splash:limit=(280,280)
     ratio=min(limit[0]/im.width,limit[1]/im.height)
     im=im.resize((round(im.width*ratio),round(im.height*ratio)),Image.Resampling.LANCZOS)
@@ -60,57 +60,49 @@ def split_detached(im):
 
 def phase(im,name,index,is_accent=False,splash=False):
     a=np.asarray(im).copy();h,w=a.shape[:2];y,x=np.indices((h,w));u=np.clip((x-24)/(w-48),0,1);v=np.clip((y-24)/(h-48),0,1)
-    n=noise((w,h),816);r=noise((w,h),1021)
-    if name=='MemoryGuard':progress=v
-    elif name=='MemoryHit':progress=np.clip(np.hypot((u-.74)*1.65,(v-.48)*1.55),0,1)
-    elif splash:progress=np.clip(np.hypot((u-.25)*1.65,(v-.8)*1.55),0,1)
-    else:progress=u
-    if index<2:
-        extent=[.42,.74][index]
-        if name=='MemoryGuard':visible=np.clip((extent-progress+(n-.5)*.08)*35,0,1)
-        elif name=='MemoryHit' or splash:visible=np.clip((extent-progress+(n-.5)*.10)*26,0,1)
-        else:visible=np.clip((progress-(1-extent)+(n-.5)*.1)*32,0,1)
-    elif index==2:visible=np.ones((h,w))
-    elif index==3:visible=np.clip((n-(.29 if name=='SeaFarHit' else .14))*12,0,1)
-    else:
-        retreat=[0,0,0,0,.17,.40,.66,.91][index]
-        if name=='MemoryGuard':
-            visible=np.clip((1-retreat-np.abs(progress-.46)*1.9+(n-.5)*.3)*16,0,1)
-        elif name=='MemoryHit' or splash:
-            visible=np.clip((progress-retreat*.9+(n-.5)*.27)*20,0,1)
-        else:visible=np.clip((progress-retreat+(n-.5)*.23)*23,0,1)
-        visible*=np.clip((r-[0,0,0,0,.13,.23,.35,.55][index])*11,0,1)
-    # Luminescent contact loses heat before the remaining ink; dark alpha is intact.
-    if name.startswith('Memory') and index>=4:
-        hot=(a[:,:,0].astype(float)>a[:,:,2]*1.4)&(a[:,:,0]>160)&(a[:,:,1]>65)
-        a[hot,:3]=(a[hot,:3].astype(float)*[1,1,1,1,.88,.58,.35,.18][index]).astype('uint8')
+    n=noise((w,h),816)
+    # Event contact arrives with the complete native-sized brush. The first frame
+    # retains 92% pigment; all shape through normalized .25 remains complete.
+    visible=np.ones((h,w)) * (.92 if index==0 else 1.)
+    if index>=4:
+        # Original art already points LEFT: retreat consumes the trailing RIGHT.
+        progress=v if name=='MemorySlash' else u
+        retreat=[0,0,0,0,.04,.13,.29,.48][index]
+        visible=np.clip((1-retreat-progress+(n-.5)*.12)*16,0,1)
+        if splash:visible=np.clip((n-[0,0,0,0,.03,.08,.14,.23][index])*10,0,1)
+        if name.startswith('Memory'):
+            hot=(a[:,:,0].astype(float)>a[:,:,2]*1.4)&(a[:,:,0]>160)&(a[:,:,1]>65)
+            a[hot,:3]=(a[hot,:3].astype(float)*[1,1,1,1,.96,.87,.72,.55][index]).astype('uint8')
+    # Native alpha lives in the renderer, not in the PNGs. Only late local erosion
+    # is authored here, preserving >=85% peak alpha mass through 250 ms.
     a[:,:,3]=(a[:,:,3]*visible).astype('uint8')
-    # Local flow/recoil deformation has zero displacement at the piercing contact
-    # point. It is not a root-scale animation or identical complete texture swap.
-    if index!=2:
-        amount=[4,2,0,1.5,3,5,8,11][index]
-        if name=='MemoryGuard':dx=amount*np.sin(v*10+index)*np.sin(v*math.pi);dy=amount*.25*np.sin(u*9)
-        elif name=='MemoryHit' or splash:dx=(u-.5)*amount*2;dy=(v-.5)*amount*2
-        else:dx=np.zeros_like(u);dy=amount*(1-u)*np.sin(u*11+index*.7)
-        sx=np.clip(np.rint(x-dx).astype(int),0,w-1);sy=np.clip(np.rint(y-dy).astype(int),0,h-1)
-        a=a[sy,sx]
-    if is_accent and index>=4:a[:,:,3]=(a[:,:,3]*[1,1,1,1,.95,.85,.6,.2][index]).astype('uint8')
+    if index in [2,4,5,6,7]:
+        amount=[0,0,.55,0,.7,1.2,1.9,2.5][index]
+        dx=amount*np.sin(v*9)*np.sin(v*math.pi) if name in ['MemorySlash','MemoryGuard'] or splash else np.zeros_like(u)
+        dy=amount*u*np.sin(u*11) if name not in ['MemorySlash','MemoryGuard'] else np.zeros_like(v)
+        sx=np.clip(np.rint(x-dx).astype(int),0,w-1);sy=np.clip(np.rint(y-dy).astype(int),0,h-1);a=a[sy,sx]
     a[a[:,:,3]==0]=0
     return Image.fromarray(a)
 
+
 def main():
     inputs=json.loads((MASTERS/'inputs.json').read_text(encoding='utf-8'))
-    manifest={'version':2,'provenance':{'kind':'imagegen-reference-guided-phase-authored','method':'reference-guided independent imagegen masters; chroma-key and despill by source artists; spatially disjoint primary/detached-fleck layers; authored local-flow phase deformation and tail erosion','inputManifest':'imagegen_masters/inputs.json','phaseSource':'import_masters.py','status':'candidate pending independent visual acceptance'},'profiles':{},'assets':{},'masters':{}}
+    manifest={'version':3,'provenance':{'kind':'native-grounded-imagegen-phase-authored','method':'reference-guided independent imagegen masters; chroma-key and despill by source artists; spatially disjoint primary/detached-fleck layers; authored local-flow phase deformation and tail erosion','inputManifest':'imagegen_masters/inputs.json','phaseSource':'import_masters.py','status':'candidate pending independent visual acceptance'},'profiles':{},'assets':{},'masters':{}}
     for name,entry in inputs.items():
-        path=MASTERS/entry['master'];im,bbox=fit_master(path,name);body,accent=split_detached(im)
+        path=MASTERS/entry['master']
+        if not path.exists(): raise FileNotFoundError('Approved vertical master must be supplied before final generation: '+str(path))
+        im,bbox=fit_master(path,name)
+        if entry.get('flipToNativeLeft'): im=im.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+        body,accent=split_detached(im)
         w,h=im.size
-        span=entry['worldSpan'];ppu=(h-48 if name=='MemoryGuard' else w-48)/span
+        span=entry['localSpan'];ppu=(h-48 if entry['spanAxis']=='height' else w-48)/span
         px=entry.get('pivotX',.15);py=entry.get('pivotY',.5)
-        times=[i/60 for i in [0,1,2,3,5,8,13,20]] if name=='SeaFarHit' else TIMES
-        cfg={'name':name,'duration':.40 if name=='SeaFarHit' else .45 if name=='MemoryHit' else .5,'pixelsPerUnit':ppu,'pivotX':px,'pivotY':py,'actorScale':1,'frameTimes':times,'body':[],'accent':[],'splash':[]}
+        times=[0,1/30,.3,2/3,.72,.80,.88,.96] if name=='SeaFarHit' else TIMES
+        cfg={'name':name,'duration':.5 if name=='SeaFarHit' else 1.,'pixelsPerUnit':ppu,'pivotX':px,'pivotY':py,'frameTimes':times,'body':[],'accent':[],'splash':[]}
         splashim=None
-        if entry.get('splash'):splashim,_=fit_master(MASTERS/entry['splash'],name,True)
-        manifest['masters'][name]={'file':'imagegen_masters/'+entry['master'],'sha256':digest(path),'alphaContentBbox':bbox,'fitCanvas':[w,h],'pixelsPerUnit':ppu,'worldSpan':span,'pivot':[px,py]}
+        if entry.get('splash'):
+            splashim,_=fit_master(MASTERS/entry['splash'],name,True)
+        manifest['masters'][name]={'file':'imagegen_masters/'+entry['master'],'sha256':digest(path),'alphaContentBbox':bbox,'fitCanvas':[w,h],'pixelsPerUnit':ppu,'localSpan':span,'spanAxis':entry['spanAxis'],'intrinsicDirection':'LEFT','pivot':[px,py]}
         for i in range(8):
             layers={'body':phase(body,name,i),'accent':phase(accent,name,i,True)}
             if splashim is not None:layers['splash']=phase(splashim,name,i,True,True)
@@ -118,7 +110,7 @@ def main():
                 file=f'{name}_{role}_{i:02}.png';frame.save(SRC/file,optimize=True);(SHIP/file).write_bytes((SRC/file).read_bytes());cfg[role].append(file)
                 manifest['assets'][file]={'sha256':digest(SRC/file),'width':frame.width,'height':frame.height,'role':role,'phase':i}
         if splashim is not None:
-            cfg['splashPixelsPerUnit']=(splashim.width-48)/2.8
+            cfg['splashPixelsPerUnit']=(splashim.width-48)/entry['splashLocalSpan']
             cfg['splashPivotX']=entry.get('splashPivotX',.42);cfg['splashPivotY']=entry.get('splashPivotY',.5)
         (SHIP/(name+'.json')).write_text(json.dumps(cfg,indent=2)+'\n',encoding='utf-8');manifest['profiles'][name]=cfg
     manifest['decodedRgbaBytes']=sum(x['width']*x['height']*4 for x in manifest['assets'].values())

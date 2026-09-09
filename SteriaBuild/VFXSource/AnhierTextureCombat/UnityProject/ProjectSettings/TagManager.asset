@@ -13,31 +13,58 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Effect
+  - Background_Front
+  - Foreground
+  - NoRender
+  - VolumetricLight
+  - Background_Back
+  - Test
+  - MapEnvironment
+  - Weapon
+  - Card
+  - Map
+  - Focus_UnitAction
+  - Character
+  - CharacterUI
+  - UI_WORLD
+  - CharacterAppearance_UI
+  - WORLD_MAP_BORDER
+  - PP_Gacha
+  - Story
   - 
   - 
   - 
   - 
   - 
   m_SortingLayers:
+  - name: Map_Background
+    uniqueID: 2907543181
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Character
+    uniqueID: 2047183421
+    locked: 0
+  - name: CharacterUI
+    uniqueID: 3437870139
+    locked: 0
+  - name: Particle
+    uniqueID: 2898253913
+    locked: 0
+  - name: Map_Foreground
+    uniqueID: 1148905549
+    locked: 0
+  - name: Map_Filter
+    uniqueID: 4167793417
+    locked: 0
+  - name: UI
+    uniqueID: 3432822277
+    locked: 0
+  - name: Card
+    uniqueID: 2175507391
+    locked: 0
+  - name: Character
+    uniqueID: 488486869
     locked: 0

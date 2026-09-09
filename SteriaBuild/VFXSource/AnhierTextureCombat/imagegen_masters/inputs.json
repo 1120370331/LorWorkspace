@@ -1,41 +1,54 @@
 {
   "SeaPierce": {
     "master": "sea/keyed/SeaPierce-crop-rgba-v1.png",
-    "worldSpan": 6.5,
-    "pivotX": 0.14,
-    "pivotY": 0.46
+    "pivotX": 0.5,
+    "pivotY": 0.5,
+    "flipToNativeLeft": true,
+    "localSpan": 4.2,
+    "spanAxis": "width"
   },
   "SeaFarHit": {
     "master": "sea/keyed/SeaFarHit-body-rgba-v2.png",
     "splash": "sea/keyed/SeaFarHit-splash-rgba-v2.png",
-    "worldSpan": 4.5,
-    "pivotX": 0.955,
-    "pivotY": 0.4,
-    "splashPivotX": 0.26,
-    "splashPivotY": 0.11
+    "pivotX": 0.72,
+    "pivotY": 0.5,
+    "splashPivotX": 0.1,
+    "splashPivotY": 0.12,
+    "flipToNativeLeft": true,
+    "localSpan": 3.4,
+    "spanAxis": "width",
+    "splashLocalSpan": 3.5
   },
   "MemorySlash": {
-    "master": "memory/keyed/MemorySlash_master.png",
-    "worldSpan": 6.5,
-    "pivotX": 0.13,
-    "pivotY": 0.48
+    "master": "native_vertical/MemorySlash_master.png",
+    "pivotX": 0.5,
+    "pivotY": 0.5,
+    "flipToNativeLeft": false,
+    "localSpan": 3.5,
+    "spanAxis": "height"
   },
   "MemoryPierce": {
     "master": "memory/keyed/MemoryPierce_master.png",
-    "worldSpan": 6.5,
-    "pivotX": 0.15,
-    "pivotY": 0.5
+    "pivotX": 0.5,
+    "pivotY": 0.5,
+    "flipToNativeLeft": true,
+    "localSpan": 4.2,
+    "spanAxis": "width"
   },
   "MemoryHit": {
-    "master": "memory/keyed/MemoryHit_master.png",
-    "worldSpan": 3.8,
-    "pivotX": 0.72,
-    "pivotY": 0.47
+    "master": "memory/keyed/MemorySlash_master.png",
+    "pivotX": 0.5,
+    "pivotY": 0.5,
+    "flipToNativeLeft": true,
+    "localSpan": 4.4,
+    "spanAxis": "width"
   },
   "MemoryGuard": {
     "master": "memory/keyed/MemoryGuard_master.png",
-    "worldSpan": 4.6,
-    "pivotX": 0.85,
-    "pivotY": 0.51
+    "pivotX": 0.5,
+    "pivotY": 0.5,
+    "flipToNativeLeft": true,
+    "localSpan": 4.4,
+    "spanAxis": "height"
   }
 }

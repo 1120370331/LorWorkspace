@@ -1,0 +1,33 @@
+{
+  "asset": "MemorySlashVertical",
+  "built_in_source": "C:\\Users\\rog\\.codex\\generated_images\\01a084df-adc2-74e2-8b28-6a38376eaf0d\\exec-9359fc74-ec7c-4d29-b2af-f62d2372dfa8.png",
+  "raw": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-native-impact\\vertical-slash\\raw\\MemorySlashVertical_green.png",
+  "raw_sha256": "8f472cf5c9c66a3283da0ed2df42c86dfa4a758267090e8e27211001fd8b78f7",
+  "keyed": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-native-impact\\vertical-slash\\keyed\\MemorySlashVertical_master.png",
+  "keyed_sha256": "88b53f410239f45e8339c0bb17cfc0c83ee59fbe6274c7b31cbe93c95699f185",
+  "source_dimensions": [
+    1024,
+    1536
+  ],
+  "keyed_dimensions": [
+    1178,
+    1690
+  ],
+  "alpha_range": [
+    0,
+    255
+  ],
+  "nonzero_alpha_bbox": [
+    95,
+    90,
+    1064,
+    1575
+  ],
+  "partially_transparent_pixels": 16739,
+  "opaque_dark_pixels_preserved": 220697,
+  "green_dominant_pixels_after_key_above_10pct_alpha": 0,
+  "green_dominant_pixels_after_key_any_visible_alpha": 0,
+  "qa": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\anhier-native-impact\\vertical-slash\\qa\\MemorySlashVertical_dark_light.jpg",
+  "matte_method": "green color dominance; nearest authentic foreground least-squares unmix; residual despill; no brightness key",
+  "transparent_padding_each_edge_px": 77
+}

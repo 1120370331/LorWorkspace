@@ -10,7 +10,7 @@ namespace Steria
     public sealed class AnhierTextureProfile
     {
         public string name;
-        public float duration, pixelsPerUnit, pivotX, pivotY, actorScale;
+        public float duration, pixelsPerUnit, pivotX, pivotY;
         public float splashPixelsPerUnit = 70f, splashPivotX = .48f, splashPivotY = .49f;
         public float[] frameTimes;
         public string[] body, accent, splash;
@@ -74,9 +74,9 @@ namespace Steria
         {
             if (p == null || p.name != name || p.frameTimes == null || p.body == null || p.accent == null ||
                 p.frameTimes.Length < 3 || p.body.Length != p.frameTimes.Length || p.accent.Length != p.body.Length ||
-                p.duration < .35f || p.duration > .6f || p.pixelsPerUnit <= 0 ||
-                p.pivotX < 0 || p.pivotX > 1 || p.pivotY < 0 || p.pivotY > 1 || p.actorScale <= 0 ||
-                p.frameTimes[0] != 0 || p.frameTimes[p.frameTimes.Length - 1] >= p.duration ||
+                p.duration <= 0 || p.duration > 1f || p.pixelsPerUnit <= 0 ||
+                p.pivotX < 0 || p.pivotX > 1 || p.pivotY < 0 || p.pivotY > 1 ||
+                p.frameTimes[0] != 0 || p.frameTimes[p.frameTimes.Length - 1] >= 1f ||
                 (p.splash != null && p.splash.Length != 0 && p.splash.Length != p.body.Length))
                 throw new InvalidDataException("AnhierTexture: invalid profile " + name);
             for (int i = 1; i < p.frameTimes.Length; i++)
@@ -114,75 +114,88 @@ namespace Steria
         }
     }
 
-    // Deliberately no Update: the game adapter and fixture both sample this same timeline.
+    // Samples native normalized event time. Every renderer stays in its action hierarchy.
     public sealed class AnhierTextureTimeline : MonoBehaviour
     {
         private AnhierTextureAssets _assets;
         private SpriteRenderer _body, _accent, _splash;
-        public float Duration { get { return _assets.Profile.duration; } }
+        private Transform _contactAnchor;
         public int CurrentFrame { get; private set; }
         public bool Complete { get; private set; }
         public bool AccentsEnabled { get; set; } = true;
+        public float Alpha { get; private set; }
 
-        public void Initialize(AnhierTextureAssets assets, int layer, int sortingOrder)
+        public void Initialize(AnhierTextureAssets assets, int layer, Transform targetPivot)
         {
             _assets = assets;
-            _body = CreateRenderer("Pigment", layer, sortingOrder);
-            _accent = CreateRenderer("FoamOrFire", layer, sortingOrder + 1);
-            if (assets.Splash.Length > 0) _splash = CreateRenderer("TargetWaterSplash", layer, sortingOrder + 2);
+            bool particleExists = false;
+            foreach (SortingLayer sorting in SortingLayer.layers)
+                if (sorting.name == "Particle") particleExists = true;
+            if (!particleExists) throw new InvalidOperationException("AnhierTexture: native Particle sorting layer unavailable");
+            _body = CreateRenderer("Pigment", layer, 0, transform);
+            _accent = CreateRenderer("FoamOrFire", layer, 1, transform);
+            if (assets.Splash.Length > 0)
+            {
+                if (targetPivot == null) throw new InvalidOperationException("AnhierTexture: water contact target missing");
+                _contactAnchor = targetPivot;
+                _splash = CreateRenderer("TargetWaterSplash", layer, 1, transform);
+                // A sibling of the muzzle in the neutral scene effect: pressure direction
+                // and native power scale are inherited once; only its world contact point
+                // follows the target (the native Gun Fire/Hit separation).
+            }
         }
 
-        private SpriteRenderer CreateRenderer(string name, int layer, int order)
+        private static SpriteRenderer CreateRenderer(string name, int layer, int order, Transform parent)
         {
             var child = new GameObject(name) { layer = layer };
-            child.transform.SetParent(transform, false);
+            child.transform.SetParent(parent, false);
             var renderer = child.AddComponent<SpriteRenderer>();
             renderer.sharedMaterial = AnhierTextureAssets.AlphaMaterial;
+            renderer.sortingLayerName = "Particle";
             renderer.sortingOrder = order;
             return renderer;
         }
 
-        public void Sample(float seconds, Vector3 origin, Vector3 target, bool faceLeft, float actorScale, float scaleFactor)
+        public void SetLayer(int layer)
         {
-            Complete = seconds >= Duration;
-            if (Complete) { _body.enabled = _accent.enabled = false; if (_splash != null) _splash.enabled = false; return; }
-            var p = _assets.Profile;
+            _body.gameObject.layer = _accent.gameObject.layer = layer;
+            if (_splash != null) _splash.gameObject.layer = layer;
+        }
+
+        public static float NativeAlpha(float normalizedTime, bool far)
+        {
+            // Anim_Default 7048: full through .25, smooth cubic to .666667.
+            // Anim_GunFarAtk 7095 at speed 2: full through 2/3 of .5s lifetime.
+            float hold = far ? 2f / 3f : .25f;
+            float end = far ? 1f : 2f / 3f;
+            float u = Mathf.Clamp01((normalizedTime - hold) / (end - hold));
+            return 1f - u * u * (3f - 2f * u);
+        }
+
+        public void Sample(float seconds, float lifetime)
+        {
+            float normalized = seconds / Mathf.Max(.001f, lifetime);
+            bool far = _assets.Profile.name == "SeaFarHit";
+            Alpha = NativeAlpha(normalized, far);
+            Complete = Alpha <= 0f;
             CurrentFrame = 0;
-            for (int i = 1; i < p.frameTimes.Length; i++) if (seconds >= p.frameTimes[i]) CurrentFrame = i;
-            float factor = p.actorScale * Mathf.Clamp(actorScale, .55f, 1.75f) * (1f + .12f * Mathf.Clamp(scaleFactor, 0f, 2f));
-            // Keep world facing independent of characterRotationCenter's inherited mirror.
-            Vector3 delta = target - origin;
-            float angle = Mathf.Atan2(delta.y, Mathf.Max(.001f, Mathf.Abs(delta.x))) * Mathf.Rad2Deg;
-            if (p.name == "MemoryGuard") angle = 0f;
-            Quaternion rotation = Quaternion.Euler(0f, 0f, faceLeft ? -angle : angle);
-            // MemoryHit is an impact drawing: its authored hot-point pivot lands
-            // at the same stable target root as native damaged effects.
-            Vector3 location = p.name == "MemoryHit" ? target : origin;
-            if (p.name == "SeaFarHit")
-            {
-                // A compact water head crosses the actual distance in two render frames.
-                // Its PNG width stays fixed; it is never stretched into a laser.
-                float travel = Mathf.Clamp01(seconds / (2f / 60f));
-                location = Vector3.Lerp(origin, target, 1f - (1f - travel) * (1f - travel));
-            }
-            SetPose(_body, _assets.Body[CurrentFrame], location, rotation, faceLeft, factor);
-            SetPose(_accent, _assets.Accent[CurrentFrame], location, rotation, faceLeft, factor);
-            _accent.enabled = AccentsEnabled;
+            for (int i = 1; i < _assets.Profile.frameTimes.Length; i++)
+                if (normalized >= _assets.Profile.frameTimes[i]) CurrentFrame = i;
+            SetFrame(_body, _assets.Body[CurrentFrame], Alpha);
+            SetFrame(_accent, _assets.Accent[CurrentFrame], AccentsEnabled ? Alpha : 0f);
             if (_splash != null)
             {
-                SetPose(_splash, _assets.Splash[CurrentFrame], target, rotation, faceLeft, factor);
-                _splash.enabled = seconds >= 1f / 60f && AccentsEnabled;
+                if (_contactAnchor != null) _splash.transform.position = _contactAnchor.position;
+                SetFrame(_splash, _assets.Splash[CurrentFrame], Alpha);
             }
         }
 
-        private static void SetPose(SpriteRenderer renderer, Sprite sprite, Vector3 position, Quaternion rotation, bool left, float scale)
+        private static void SetFrame(SpriteRenderer renderer, Sprite sprite, float alpha)
         {
-            renderer.enabled = true;
             renderer.sprite = sprite;
-            renderer.color = Color.white;
-            renderer.transform.position = position;
-            renderer.transform.rotation = rotation;
-            renderer.transform.localScale = new Vector3(left ? -scale : scale, scale, 1f);
+            renderer.color = new Color(1f, 1f, 1f, alpha);
+            renderer.enabled = alpha > 0f;
         }
+
     }
 }

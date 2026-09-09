@@ -1,8 +1,15 @@
-# Rebuilt production copy and game-owned fixture reference pixels are not source inputs.
+previews/
+experiments/
 /UnityProject/Assets/AnhierTextureTimeline.cs
 /UnityProject/Assets/AnhierTextureTimeline.cs.meta
-/UnityProject/Assets/Reference/
-/UnityProject/Assets/Reference.meta
-/experiments/
-/previews/
-/__pycache__/
+ManagedFixture/Generated/
+ManagedFixture/Runtime/
+ManagedFixture/bin/
+ManagedFixture/obj/
+UnityProject/Assets/Plugins/
+UnityProject/Assets/Plugins.meta
+UnityProject/Assets/Runtime/
+UnityProject/Assets/Runtime.meta
+UnityProject/Assets/Reference/
+UnityProject/Assets/Reference.meta
+**/__pycache__/

@@ -10,85 +10,87 @@ public abstract class DiceAttackEffect_Steria_AnhierTextureBase : DiceAttackEffe
     protected abstract string ProfileName { get; }
     protected abstract ActionDetail PivotAction { get; }
     private AnhierTextureTimeline _timeline;
-    private Transform _originPivot, _targetPivot;
-    private BattleUnitView _selfView, _otherView;
-    private float _powerScale, _actorScale = 1f;
-    private bool _faceLeft;
+    private float _animationDuration;
+    private bool IsFar { get { return PivotAction == ActionDetail.Fire; } }
 
     public override void Initialize(BattleUnitView self, BattleUnitView target, float destroyTime)
     {
-        // Do not invoke name-heuristic base positioning or its inherited mirror/2x scale.
-        _bHasDamagedEffect = false;
-        _self = self == null ? null : self.model;
-        _selfView = self; _otherView = target;
-        if (spr != null) spr.enabled = false;
-        if (animator != null) animator.enabled = false;
         try
         {
-            _originPivot = Pivot(self, PivotAction);
-            // Native damaged effects use the stable target root, not its attack pose pivot.
-            _targetPivot = target == null ? null : target.atkEffectRoot;
-            if (_targetPivot == null && target != null) _targetPivot = target.transform;
-            _selfTransform = _originPivot; _targetTransform = _targetPivot;
-            if (_originPivot == null) throw new InvalidOperationException("self action pivot missing");
-            // Guard is always rooted on self (the successful defender), never target.
-            transform.SetParent(null, true);
-            transform.position = Vector3.zero;
-            transform.rotation = Quaternion.identity;
-            transform.localScale = Vector3.one;
-            if (self != null && self.characterRotationCenter != null)
-                _actorScale = Mathf.Abs(self.characterRotationCenter.lossyScale.y);
+            if (self == null || self.model == null || self.charAppearance == null || target == null)
+                throw new InvalidOperationException("native self/target appearance missing");
+            // The native name heuristic examines only the last underscore component.
+            string suffix = PivotAction == ActionDetail.Slash ? "J" : PivotAction == ActionDetail.Hit ? "H" :
+                PivotAction == ActionDetail.Guard ? "G" : IsFar ? "F" : "Z";
+            gameObject.name = "SteriaAnhierTexture_" + suffix;
+            additionalScale = Vector3.one * (IsFar ? 1f : PivotAction == ActionDetail.Guard ? -.5f : 0f);
+            offset = Vector2.zero;
+            addedDestroyTime = 0f;
+            if (spr == null) spr = GetComponent<SpriteRenderer>();
+            if (animator == null) animator = GetComponent<Animator>();
+            base.Initialize(self, target, Mathf.Max(.001f, destroyTime) * (IsFar ? .5f : 1f));
+            if (IsFar)
+            {
+                // Base H/J/Z/G heuristic has no F branch; the native appearance API does.
+                _selfTransform = self.charAppearance.GetAtkEffectPivot(ActionDetail.Fire);
+                Transform sceneRoot = SingletonBehavior<BattleSceneRoot>.Instance.transform;
+                transform.SetParent(sceneRoot, false);
+                transform.position = _selfTransform.position;
+                transform.rotation = _selfTransform.rotation;
+                // Serialized RedHood Gun additionalScale=(1,1,1): local 2, then
+                // base.SetScale(roll). Scene ownership deliberately excludes actor map scale.
+                transform.localScale = Vector3.one * 2f;
+            }
+            // Native Animator.speed is set only by Initialize, not SetDestroyTime.
+            _animationDuration = _destroyTime;
+            _bHasDamagedEffect = false;
+            spr.enabled = false;
+            animator.enabled = false;
             string assemblyDir = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path));
             string modRoot = Directory.GetParent(assemblyDir).FullName;
             var assets = AnhierTextureAssets.Load(Path.Combine(modRoot, "Resource", "Effects", "AnhierTextureCombat"), ProfileName);
+            int layer = LayerMask.NameToLayer("Effect");
+            if (layer < 0) throw new InvalidOperationException("native Effect GameObject layer unavailable");
             _timeline = gameObject.AddComponent<AnhierTextureTimeline>();
-            _timeline.Initialize(assets, 8, 110);
-            _destroyTime = assets.Profile.duration;
-            _elapsed = 0;
+            _timeline.Initialize(assets, layer, IsFar ? target.atkEffectRoot : null);
             Render();
         }
         catch (Exception e)
         {
-            // Keep native damaged feedback available and safely remove partial children.
             SteriaLogger.LogError("AnhierTexture " + ProfileName + " failed: " + e);
             UnityEngine.Object.Destroy(gameObject);
         }
     }
 
-    private static Transform Pivot(BattleUnitView view, ActionDetail action)
-    {
-        if (view == null) return null;
-        try { return view.charAppearance == null ? view.atkEffectRoot : view.charAppearance.GetAtkEffectPivot(action) ?? view.atkEffectRoot; }
-        catch { return view.atkEffectRoot; }
-    }
-
     public override void SetScale(float scaleFactor)
     {
-        _powerScale = float.IsNaN(scaleFactor) || float.IsInfinity(scaleFactor) ? 0 : Mathf.Clamp(scaleFactor, 0, 2);
-        if (_timeline != null) Render();
+        base.SetScale(scaleFactor);
+        Render();
     }
 
-    // Authored event-time duration stays independent of base animation speed overrides.
-    public override void SetDestroyTime(float destroyTime) { }
+    public override void SetDestroyTime(float destroyTime)
+    {
+        base.SetDestroyTime(Mathf.Max(.001f, destroyTime));
+        Render();
+    }
+
+    public override void SetLayer(string layerName)
+    {
+        base.SetLayer(layerName);
+        if (_timeline != null) _timeline.SetLayer(LayerMask.NameToLayer(layerName));
+    }
 
     protected override void Update()
     {
-        if (_timeline == null || _originPivot == null) { UnityEngine.Object.Destroy(gameObject); return; }
-        _elapsed += Time.deltaTime;
+        // Visual fade ends before object lifetime for native melee. Base destruction
+        // remains authoritative, including caller SetDestroyTime changes.
+        base.Update();
         Render();
-        if (_timeline.Complete) UnityEngine.Object.Destroy(gameObject);
     }
 
     private void Render()
     {
-        if (_originPivot == null) return;
-        Vector3 origin = _originPivot.position;
-        Vector3 target = _targetPivot != null ? _targetPivot.position : origin + Vector3.right;
-        if (_selfView != null && _otherView != null)
-            _faceLeft = (_otherView.WorldPosition - _selfView.WorldPosition).x < 0;
-        else if (_self != null) _faceLeft = _self.direction == Direction.LEFT;
-        origin.z -= .04f; target.z -= .04f;
-        _timeline.Sample(_elapsed, origin, target, _faceLeft, _actorScale, _powerScale);
+        if (_timeline != null) _timeline.Sample(_elapsed, _animationDuration);
     }
 }
 

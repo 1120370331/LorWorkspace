@@ -1,19 +1,18 @@
 {
   "name": "SeaFarHit",
-  "duration": 0.4,
-  "pixelsPerUnit": 113.77777777777777,
-  "pivotX": 0.955,
-  "pivotY": 0.4,
-  "actorScale": 1,
+  "duration": 0.5,
+  "pixelsPerUnit": 150.58823529411765,
+  "pivotX": 0.72,
+  "pivotY": 0.5,
   "frameTimes": [
-    0.0,
-    0.016666666666666666,
+    0,
     0.03333333333333333,
-    0.05,
-    0.08333333333333333,
-    0.13333333333333333,
-    0.21666666666666667,
-    0.3333333333333333
+    0.3,
+    0.6666666666666666,
+    0.72,
+    0.8,
+    0.88,
+    0.96
   ],
   "body": [
     "SeaFarHit_body_00.png",
@@ -45,7 +44,7 @@
     "SeaFarHit_splash_06.png",
     "SeaFarHit_splash_07.png"
   ],
-  "splashPixelsPerUnit": 100.0,
-  "splashPivotX": 0.26,
-  "splashPivotY": 0.11
+  "splashPixelsPerUnit": 80.0,
+  "splashPivotX": 0.1,
+  "splashPivotY": 0.12
 }
