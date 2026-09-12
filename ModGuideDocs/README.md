@@ -17,6 +17,8 @@
 | [11_UnityAssetBundle特效制作实战](11_UnityAssetBundle特效制作实战.md) | Unity AB 特效制作、参考方法、工具链、构建部署与踩坑 |
 | [12_战斗单位分层建模与核心书页投影](12_战斗单位分层建模与核心书页投影.md) | head / wearing 规范、部件制作、纯色底处理、底盘与薇莉亚/希维尔/艾莉蕾尔实例 |
 | [13_贴图攻击特效制作流程](13_贴图攻击特效制作流程.md) | 多图阶段绘制、参考生图与透明清理、书页绑定、RGBA 时间线和可复现预览 |
+| [14_粒子特效制作指南](14_粒子特效制作指南.md) | 原版粒子调用链、七类效果配方、克丽丝塔夏 V2、统一时钟、群攻接入与构建部署 |
+| [15_书页动作与出刀节奏制作](15_书页动作与出刀节奏制作.md) | ActionScript、调整/出手/收势、双侧队列、PRE 时点、长—中—更长与回退验证 |
 
 ---
 
@@ -41,6 +43,7 @@
 | 被动能力 | `PassiveAbilityBase` | `PassiveAbility_{名称}` |
 | 书页效果 | `DiceCardSelfAbilityBase` | `DiceCardSelfAbility_{名称}` |
 | 骰子效果 | `DiceCardAbilityBase` | `DiceCardAbility_{名称}` |
+| 骰子动作节奏 | `BehaviourActionBase` | `BehaviourAction_{ActionScript}`，XML 省略类名前缀 |
 | Buff | `BattleUnitBuf` | `BattleUnitBuf_{名称}` |
 | 异想体 | `EmotionCardAbilityBase` | `EmotionCardAbility_{名称}` |
 | 关卡管理 | `EnemyTeamStageManager` | `EnemyTeamStageManager_{名称}` |

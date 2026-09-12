@@ -1193,7 +1193,7 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1212,8 +1212,8 @@
       <Ability Script="ChristashaHomecoming"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1232,8 +1232,8 @@
       <Ability Script="ChristashaEliye"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
-      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaStrengthNextTurn2" ActionScript="" Desc="命中时:接下来两回合每回合开始时获得1层[强壮]" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaStrengthNextTurn2" ActionScript="" Desc="命中时:接下来两回合每回合开始时获得1层[强壮]" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1252,9 +1252,9 @@
       <Ability Script="ChristashaLightPurge"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaDawnPierceNear" Script="ChristashaBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashV" Script="ChristashaBurn1Moon1" ActionScript="" Desc="命中时:施加1层[烧伤]与1层[月之引力]" />
-      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_ChristashaDawnHit" Script="ChristashaMoon2" ActionScript="" Desc="命中时:施加2层[月之引力]" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaBurn1Moon1" ActionScript="" Desc="命中时:施加1层[烧伤]与1层[月之引力]" />
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_ChristashaV2Hit" Script="ChristashaMoon2" ActionScript="" Desc="命中时:施加2层[月之引力]" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1268,8 +1268,8 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="3" />
     <BehaviourList>
-      <Behaviour Min="9" Dice="12" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashV" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-3并重复投掷本骰子;命中时:施加2层[烧伤],之后获得2层[潮]" />
-      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaDawnPierceNear" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子造成的伤害-5" />
+      <Behaviour Min="9" Dice="12" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-3并重复投掷本骰子;命中时:施加2层[烧伤],之后获得2层[潮]" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子造成的伤害-5" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1289,7 +1289,7 @@
       <Ability Script="ChristashaGlory"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="7" Dice="18" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_ChristashaDawnSlashV" Script="ChristashaGloryOnHit" ActionScript="" Desc="命中时:获得1层[潮]并施加1层[烧伤]" />
+      <Behaviour Min="7" Dice="18" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaGloryOnHit" ActionScript="Steria_ChristashaXiyinV2" Desc="命中时:获得1层[潮]并施加1层[烧伤]" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>200</Priority>
@@ -1311,9 +1311,9 @@
       <Ability Script="ChristashaTwinStar"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaTwinStarBurn" ActionScript="" Desc="命中时:将目标所有[月之引力]转化为[烧伤]" />
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_ChristashaDawnHit" Script="ChristashaTwinStarMoon" ActionScript="" Desc="命中时:施加3层[月之引力]" />
-      <Behaviour Min="2" Dice="7" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaTwinStarBurn" ActionScript="" Desc="命中时:将目标所有[月之引力]转化为[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_ChristashaV2Hit" Script="ChristashaTwinStarMoon" ActionScript="" Desc="命中时:施加3层[月之引力]" />
+      <Behaviour Min="2" Dice="7" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1332,7 +1332,7 @@
     <Script>ChristashaEgoDontFear</Script>
     <ScriptDesc>[回合开始时] 获得4层[梦]，本幕自身所有防御型骰子威力+4</ScriptDesc>
     <BehaviourList>
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaEgoDontFearDice1" ActionScript="" Desc="拼点失败:对自身施加5层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoDontFearDice1" ActionScript="" Desc="拼点失败:对自身施加5层[烧伤]" />
       <Behaviour Min="3" Dice="7" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaEgoCounterGainTide1" ActionScript="" Desc="拼点胜利:获得1层[潮]" />
       <Behaviour Min="3" Dice="7" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaEgoCounterGainTide1" ActionScript="" Desc="拼点胜利:获得1层[潮]" />
     </BehaviourList>
@@ -1348,10 +1348,10 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Far" Cost="3" />
     <BehaviourList>
-      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaDawnPierceFar" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaDawnPierceFar" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="5" Dice="6" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaDawnPierceFar" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaDawnPierceNear" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="6" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1370,8 +1370,8 @@
       <Ability Script="ChristashaEgoEliyeHoly"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
-      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaEgoConvertTide1OnHit" ActionScript="" Desc="命中时:将1层[潮]转化为[黄金之潮]" />
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoConvertTide1OnHit" ActionScript="" Desc="命中时:将1层[潮]转化为[黄金之潮]" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1390,8 +1390,8 @@
       <Ability Script="ChristashaEgoDawnApproach"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaDawnPierceNear" Script="ChristashaBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaEgoApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1410,9 +1410,9 @@
       <Ability Script="ChristashaEgoGoldenCrow"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="5" Dice="10" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaDawnPierceFar" Script="ChristashaEgoBurn4" ActionScript="" Desc="命中时:施加4层[烧伤]" />
+      <Behaviour Min="5" Dice="10" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="ChristashaEgoBurn4" ActionScript="" Desc="命中时:施加4层[烧伤]" />
       <Behaviour Min="2" Dice="2" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaEgoRemoveTargetBurn" ActionScript="" Desc="拼点失败:消除对方燃烧层数" />
-      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaEgoSelfBurn5OnLose" ActionScript="" Desc="拼点失败:获得5层[烧伤]" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoSelfBurn5OnLose" ActionScript="" Desc="拼点失败:获得5层[烧伤]" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1426,8 +1426,8 @@
     <Rarity>Rare</Rarity>
     <Spec Range="Near" Cost="3" />
     <BehaviourList>
-      <Behaviour Min="9" Dice="12" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashV" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-3并重复投掷本骰子;命中时:施加2层[烧伤],之后获得2层[潮]" />
-      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaDawnPierceNear" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子造成的伤害-5" />
+      <Behaviour Min="9" Dice="12" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-3并重复投掷本骰子;命中时:施加2层[烧伤],之后获得2层[潮]" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子造成的伤害-5" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1446,7 +1446,7 @@
       <Ability Script="ChristashaEgoBurst"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="20" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_ChristashaDawnSlashV" Script="" ActionScript="Xiao_610005" Desc="" />
+      <Behaviour Min="3" Dice="20" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_ChristashaV2SlashV" Script="" ActionScript="Xiao_610005" Desc="" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>9000</Priority>
@@ -1465,7 +1465,7 @@
       <Ability Script="ChristashaEgoDawnLight"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="3" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_ChristashaDawnSlashV" Script="ChristashaEgoDawnLightBurn3" ActionScript="Xiao_610001" Desc="命中时:施加3层[烧伤]" />
+      <Behaviour Min="3" Dice="3" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaEgoDawnLightBurn3" ActionScript="Xiao_610001" Desc="命中时:施加3层[烧伤]" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>200</Priority>
@@ -1486,9 +1486,9 @@
       <Ability Script="ChristashaEgoFlowComeGo"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaEgoApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
-      <Behaviour Min="6" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
-      <Behaviour Min="6" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
+      <Behaviour Min="6" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+      <Behaviour Min="6" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1508,9 +1508,9 @@
       <Ability Script="ChristashaEgoAbyssSunrise"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaDawnPierceNear" Script="ChristashaEgoApplyBlinding1" ActionScript="" Desc="命中时:使目标于下回合获得1层[致盲]" />
-      <Behaviour Min="8" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
-      <Behaviour Min="8" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaEgoApplyBlinding1" ActionScript="" Desc="命中时:使目标于下回合获得1层[致盲]" />
+      <Behaviour Min="8" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+      <Behaviour Min="8" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1529,7 +1529,7 @@
       <Ability Script="ChristashaEgoDawnArrival"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="10" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_ChristashaDawnSlashV" Script="" ActionScript="Xiao_610005" Desc="" />
+      <Behaviour Min="3" Dice="10" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_ChristashaV2SlashV" Script="" ActionScript="Xiao_610005" Desc="" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>9000</Priority>
@@ -1550,10 +1550,10 @@
       <Ability Script="ChristashaXiyuanFeixing"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaDawnPierceFar" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
-      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaDawnPierceFar" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
-      <Behaviour Min="5" Dice="6" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaDawnPierceFar" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
-      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaDawnPierceNear" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
+      <Behaviour Min="5" Dice="6" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1572,9 +1572,9 @@
       <Ability Script="ChristashaXiyuanDawnSun"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaDawnPierceNear" Script="ChristashaXiyuanBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaXiyuanApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
-      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaDawnSlashH" Script="ChristashaXiyuanBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaXiyuanBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaXiyuanApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaXiyuanBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>0</Priority>
@@ -1593,7 +1593,7 @@
       <Ability Script="ChristashaXiyuanGoldenCrow"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="7" Dice="13" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaDawnPierceFar" Script="ChristashaXiyuanGoldenCrowHit" ActionScript="" Desc="命中时:施加4层[烧伤]与1层[日光]" />
+      <Behaviour Min="7" Dice="13" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="ChristashaXiyuanGoldenCrowHit" ActionScript="" Desc="命中时:施加4层[烧伤]与1层[日光]" />
       <Behaviour Min="4" Dice="8" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaXiyuanRecoverBreak5OnLose" ActionScript="" Desc="拼点失败:恢复5点混乱抗性" />
     </BehaviourList>
     <Chapter>7</Chapter>
@@ -1615,7 +1615,7 @@
       <Ability Script="ChristashaXiyuanRisingSun"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="18" Dice="27" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_ChristashaDawnSlashV" Script="ChristashaXiyuanApplySunlight1" ActionScript="Xiao_610005" Desc="命中时:施加1层[日光]" />
+      <Behaviour Min="18" Dice="27" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaXiyuanApplySunlight1" ActionScript="Xiao_610005" Desc="命中时:施加1层[日光]" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>9000</Priority>
@@ -1636,7 +1636,7 @@
       <Ability Script="ChristashaXiyuanDawnLight"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_ChristashaDawnSlashV" Script="ChristashaXiyuanDawnLightBurnByCost" ActionScript="Xiao_610001" Desc="命中时:施加等同本书页消耗光芒层数的[烧伤]与1层[日光]" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaXiyuanDawnLightBurnByCost" ActionScript="Xiao_610001" Desc="命中时:施加等同本书页消耗光芒层数的[烧伤]与1层[日光]" />
     </BehaviourList>
     <Chapter>7</Chapter>
     <Priority>200</Priority>

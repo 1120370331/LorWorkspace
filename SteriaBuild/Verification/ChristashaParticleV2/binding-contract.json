@@ -1,0 +1,306 @@
+{
+  "description": "Exact Christasha V2 migration and digest of the remaining original card fields. Unrelated cards are deliberately outside the default gate.",
+  "bindings": [
+    {
+      "card": "9009001",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9009002",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9009002",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9009003",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9009003",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9009004",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnPierceNear",
+      "new": "Steria_ChristashaV2PierceNear"
+    },
+    {
+      "card": "9009004",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnSlashV",
+      "new": "Steria_ChristashaV2SlashV"
+    },
+    {
+      "card": "9009004",
+      "behavior": 2,
+      "old": "Steria_ChristashaDawnHit",
+      "new": "Steria_ChristashaV2Hit"
+    },
+    {
+      "card": "9009005",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashV",
+      "new": "Steria_ChristashaV2SlashV"
+    },
+    {
+      "card": "9009005",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnPierceNear",
+      "new": "Steria_ChristashaV2PierceNear"
+    },
+    {
+      "card": "9009006",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashV",
+      "new": "Steria_ChristashaV2SlashV"
+    },
+    {
+      "card": "9009007",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9009007",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnHit",
+      "new": "Steria_ChristashaV2Hit"
+    },
+    {
+      "card": "9009007",
+      "behavior": 2,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010001",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010002",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnPierceFar",
+      "new": "Steria_ChristashaV2PierceFar"
+    },
+    {
+      "card": "9010002",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnPierceFar",
+      "new": "Steria_ChristashaV2PierceFar"
+    },
+    {
+      "card": "9010002",
+      "behavior": 2,
+      "old": "Steria_ChristashaDawnPierceFar",
+      "new": "Steria_ChristashaV2PierceFar"
+    },
+    {
+      "card": "9010002",
+      "behavior": 3,
+      "old": "Steria_ChristashaDawnPierceNear",
+      "new": "Steria_ChristashaV2PierceNear"
+    },
+    {
+      "card": "9010003",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010003",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010004",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnPierceNear",
+      "new": "Steria_ChristashaV2PierceNear"
+    },
+    {
+      "card": "9010004",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010005",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnPierceFar",
+      "new": "Steria_ChristashaV2PierceFar"
+    },
+    {
+      "card": "9010005",
+      "behavior": 2,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010006",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashV",
+      "new": "Steria_ChristashaV2SlashV"
+    },
+    {
+      "card": "9010006",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnPierceNear",
+      "new": "Steria_ChristashaV2PierceNear"
+    },
+    {
+      "card": "9010007",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashV",
+      "new": "Steria_ChristashaV2SlashV"
+    },
+    {
+      "card": "9010008",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashV",
+      "new": "Steria_ChristashaV2SlashV"
+    },
+    {
+      "card": "9010009",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010009",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010009",
+      "behavior": 2,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010010",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnPierceNear",
+      "new": "Steria_ChristashaV2PierceNear"
+    },
+    {
+      "card": "9010010",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010010",
+      "behavior": 2,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010011",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashV",
+      "new": "Steria_ChristashaV2SlashV"
+    },
+    {
+      "card": "9010101",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnPierceFar",
+      "new": "Steria_ChristashaV2PierceFar"
+    },
+    {
+      "card": "9010101",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnPierceFar",
+      "new": "Steria_ChristashaV2PierceFar"
+    },
+    {
+      "card": "9010101",
+      "behavior": 2,
+      "old": "Steria_ChristashaDawnPierceFar",
+      "new": "Steria_ChristashaV2PierceFar"
+    },
+    {
+      "card": "9010101",
+      "behavior": 3,
+      "old": "Steria_ChristashaDawnPierceNear",
+      "new": "Steria_ChristashaV2PierceNear"
+    },
+    {
+      "card": "9010102",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnPierceNear",
+      "new": "Steria_ChristashaV2PierceNear"
+    },
+    {
+      "card": "9010102",
+      "behavior": 1,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010102",
+      "behavior": 2,
+      "old": "Steria_ChristashaDawnSlashH",
+      "new": "Steria_ChristashaV2SlashH"
+    },
+    {
+      "card": "9010103",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnPierceFar",
+      "new": "Steria_ChristashaV2PierceFar"
+    },
+    {
+      "card": "9010104",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashV",
+      "new": "Steria_ChristashaV2SlashV"
+    },
+    {
+      "card": "9010105",
+      "behavior": 0,
+      "old": "Steria_ChristashaDawnSlashV",
+      "new": "Steria_ChristashaV2SlashV"
+    }
+  ],
+  "protected_cards": {
+    "9009001": "ca21a638a300307545d384cdfada7adaa82d295a829881851063b96d962fe99d",
+    "9009002": "f1b00535d87d47b398d53954a7dec9e24231ae029074ff317cce4265921d413e",
+    "9009003": "b1f8eb306443b8c754bf168ded816835946d63164d4ad4c1e769aed709d39066",
+    "9009004": "8086af7789a9f8082d252fe96fa24a61b3cbabdf979792642aa61c7771e7aab6",
+    "9009005": "c2b203c6ba36c0318cff5e33d6ccdf70f8d615bbb548bb54c3d6cbc493240612",
+    "9009006": "e236281a0fb18da60e40c93d9603d2c25215aef3cf5d58661ecb25431e41418b",
+    "9009007": "92200bc2635d2ae362cb390a941af4b921401dd25da3ce1dc5bd332607b32e00",
+    "9010001": "9a7041cc53b0cf5311b203c5a7cd2acf502aa2019c8a7caff09f31aa4a28d62d",
+    "9010002": "191cd3c4c3275ec6ea5bcac838a681948f99500ef8459c41cecc9ea050dad907",
+    "9010003": "7f1c23e8b5aa86941808ad152fad54f29fa05e60201c0f00c2a2530f20437929",
+    "9010004": "da0bfeb026c2dbf4689bf6a2aff0512962fdd7dedca7c4189adbe4ef5ad3fb65",
+    "9010005": "d945decc8542c98d33120943a7908b204ed138aa3657acd6e4a7e3ab19d5edec",
+    "9010006": "1d72c4f3a1169dacc8d5917b5d7457fda1ee2204befdab425d1cb922446785fd",
+    "9010007": "6dab30e6e413d445c57d06072d8a2b251e64503ab69ffcb89164a393b49511f8",
+    "9010008": "422158a2cabe7dacc60504df1d26a5eab650ff0f8ec0edba56ad6f97feabeabf",
+    "9010009": "d886ad297ab6b911f944725ec932cba1eceacf430c2d1050e752a7daef23d1de",
+    "9010010": "93af45a7d52d091f0574880c881777abd19b66e04a2ee5782041c7b7642cc8a0",
+    "9010011": "ed0e4df120ebcc127928c4cb85c5c4731a8e23f7ea50072bb0a3cec3910cf733",
+    "9010101": "8c3bf842a2253f0c0bff7f197916510999d9928d979d3e5534bb0eda341fbbf2",
+    "9010102": "6fb885c8f15580fd206b2241dae6436d1c452c39b41d588cb1168e0985798363",
+    "9010103": "b22b17bd6f04d2ad027aeb5be97236295172d9f0fbc4d4c62ee028eb7a19d83b",
+    "9010104": "4afc4cd9418cfb5111388ec83008d75a3d89f85b550ee0304a006eb9ec82b181",
+    "9010105": "23022ab2af3c61db001d5ac4d45a31643dc7246ed68d5e6724f35ddd9ea15f61"
+  }
+}

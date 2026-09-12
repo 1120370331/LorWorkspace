@@ -1,0 +1,8 @@
+Slash: first frame / count at .1=16; position=(-0.002667, -0.004000, 0.000000); cancel / replay / duration clear / no child growth / speed2 / isolated tint / sorting PASS
+Hit: first frame / count at .1=15; position=(0.031667, 0.000000, 0.000000); cancel / replay / duration clear / no child growth / speed2 / isolated tint / sorting PASS
+Pierce: first frame / count at .1=15; position=(0.015000, 0.000000, 0.000000); cancel / replay / duration clear / no child growth / speed2 / isolated tint / sorting PASS
+Projectile: first frame / count at .1=15; position=(0.100000, 0.000000, 0.000000); cancel / replay / duration clear / no child growth / speed2 / isolated tint / sorting PASS
+Cast: first frame / count at .1=10; position=(0.000000, 0.000000, 0.000000); cancel / replay / duration clear / no child growth / speed2 / isolated tint / sorting PASS
+Area: first frame / count at .1=5; position=(2.979999, -0.006000, 0.000000); cancel / replay / duration clear / no child growth / speed2 / isolated tint / sorting PASS
+Point: first frame / count at .1=16; position=(-0.018000, 0.014000, 0.000000); cancel / replay / duration clear / no child growth / speed2 / isolated tint / sorting PASS
+Guard-example: first frame / count at .1=11; position=(0.000000, 0.000000, 0.000000); cancel / replay / duration clear / no child growth / speed2 / isolated tint / sorting PASS

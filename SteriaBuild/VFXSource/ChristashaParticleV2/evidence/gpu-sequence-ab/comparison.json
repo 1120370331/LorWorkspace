@@ -1,0 +1,173 @@
+[
+  {
+    "trial": 0,
+    "kind": "Slash",
+    "background": "dark",
+    "native_csv_identical": true,
+    "different_frames": [
+      {
+        "frame": "0002",
+        "difference_bbox": [
+          0,
+          253,
+          231,
+          524
+        ],
+        "changed_pixels": 43825
+      },
+      {
+        "frame": "0003",
+        "difference_bbox": [
+          0,
+          248,
+          976,
+          571
+        ],
+        "changed_pixels": 47096
+      },
+      {
+        "frame": "0004",
+        "difference_bbox": [
+          876,
+          248,
+          1056,
+          571
+        ],
+        "changed_pixels": 14170
+      },
+      {
+        "frame": "0005",
+        "difference_bbox": [
+          876,
+          371,
+          998,
+          439
+        ],
+        "changed_pixels": 5472
+      }
+    ]
+  },
+  {
+    "trial": 0,
+    "kind": "Slash",
+    "background": "mid",
+    "native_csv_identical": true,
+    "different_frames": [
+      {
+        "frame": "0003",
+        "difference_bbox": [
+          857,
+          326,
+          1026,
+          589
+        ],
+        "changed_pixels": 1445
+      }
+    ]
+  },
+  {
+    "trial": 0,
+    "kind": "Hit",
+    "background": "dark",
+    "native_csv_identical": true,
+    "different_frames": [
+      {
+        "frame": "0002",
+        "difference_bbox": [
+          387,
+          212,
+          489,
+          609
+        ],
+        "changed_pixels": 15793
+      },
+      {
+        "frame": "0003",
+        "difference_bbox": [
+          387,
+          212,
+          489,
+          609
+        ],
+        "changed_pixels": 15789
+      },
+      {
+        "frame": "0004",
+        "difference_bbox": [
+          181,
+          212,
+          1168,
+          611
+        ],
+        "changed_pixels": 65957
+      }
+    ]
+  },
+  {
+    "trial": 0,
+    "kind": "Hit",
+    "background": "mid",
+    "native_csv_identical": true,
+    "different_frames": [
+      {
+        "frame": "0003",
+        "difference_bbox": [
+          269,
+          144,
+          1249,
+          677
+        ],
+        "changed_pixels": 52289
+      }
+    ]
+  },
+  {
+    "trial": 1,
+    "kind": "Slash",
+    "background": "dark",
+    "native_csv_identical": true,
+    "different_frames": [
+      {
+        "frame": "0004",
+        "difference_bbox": [
+          524,
+          185,
+          647,
+          440
+        ],
+        "changed_pixels": 11306
+      },
+      {
+        "frame": "0005",
+        "difference_bbox": [
+          524,
+          185,
+          647,
+          440
+        ],
+        "changed_pixels": 11306
+      }
+    ]
+  },
+  {
+    "trial": 1,
+    "kind": "Slash",
+    "background": "mid",
+    "native_csv_identical": true,
+    "different_frames": []
+  },
+  {
+    "trial": 1,
+    "kind": "Hit",
+    "background": "dark",
+    "native_csv_identical": true,
+    "different_frames": []
+  },
+  {
+    "trial": 1,
+    "kind": "Hit",
+    "background": "mid",
+    "native_csv_identical": true,
+    "different_frames": []
+  }
+]

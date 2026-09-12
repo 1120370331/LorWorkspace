@@ -1,0 +1,23 @@
+{
+  "reason": "Independent review rejected the 70-degree SlashV caller. Integration now aliases it to the accepted base Slash. Repacked showcase contains only accepted active caller visuals.",
+  "unity_rebuild": false,
+  "source_snapshots_modified": false,
+  "historical_media": {
+    "path": "evidence\\candidate-r4\\history\\showcase-with-rejected-slashv-60fps.mp4",
+    "sha256": "2ca85fe0b8a478c3d55c20fab776b3bb1326a8f7f705f34cc9ce234a95b0a8e9"
+  },
+  "accepted_showcase": {
+    "path": "evidence\\candidate-r4\\showcase-60fps.mp4",
+    "sha256": "069e2f0736bd0cd6ce7f49316f744630af074549c82cc8f9c3f9eccab713f615",
+    "sequence": [
+      "Slash",
+      "Hit",
+      "Pierce",
+      "ProjectilePath-left",
+      "Mass"
+    ],
+    "repetitions": 2,
+    "fps": 60,
+    "playback": 1
+  }
+}

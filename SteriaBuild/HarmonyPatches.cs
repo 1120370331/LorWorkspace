@@ -1397,12 +1397,11 @@ namespace Steria
             SteriaCustomEffects["Steria_AnhierBlueWhitePierce"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhitePierce);
             SteriaCustomEffects["Steria_AnhierBlueWhiteHit"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhiteHit);
             SteriaCustomEffects["Steria_AnhierBlueWhiteFarHit"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhiteFarHit);
-            SteriaCustomEffects["Steria_ChristashaDawnSlashH"] = typeof(DiceAttackEffect_Steria_ChristashaDawnSlashH);
-            SteriaCustomEffects["Steria_ChristashaDawnSlashV"] = typeof(DiceAttackEffect_Steria_ChristashaDawnSlashV);
-            SteriaCustomEffects["Steria_ChristashaDawnPierceNear"] = typeof(DiceAttackEffect_Steria_ChristashaDawnPierceNear);
-            SteriaCustomEffects["Steria_ChristashaDawnPierceFar"] = typeof(DiceAttackEffect_Steria_ChristashaDawnPierceFar);
-            SteriaCustomEffects["Steria_ChristashaDawnPierce"] = typeof(DiceAttackEffect_Steria_ChristashaDawnPierceFar);
-            SteriaCustomEffects["Steria_ChristashaDawnHit"] = typeof(DiceAttackEffect_Steria_ChristashaDawnHit);
+            SteriaCustomEffects["Steria_ChristashaV2SlashH"] = typeof(DiceAttackEffect_Steria_ChristashaV2SlashH);
+            SteriaCustomEffects["Steria_ChristashaV2SlashV"] = typeof(DiceAttackEffect_Steria_ChristashaV2SlashV);
+            SteriaCustomEffects["Steria_ChristashaV2PierceNear"] = typeof(DiceAttackEffect_Steria_ChristashaV2PierceNear);
+            SteriaCustomEffects["Steria_ChristashaV2PierceFar"] = typeof(DiceAttackEffect_Steria_ChristashaV2PierceFar);
+            SteriaCustomEffects["Steria_ChristashaV2Hit"] = typeof(DiceAttackEffect_Steria_ChristashaV2Hit);
             SteriaCustomEffects["Steria_WaterSlash"] = typeof(DiceAttackEffect_Steria_WaterSlash);
             SteriaCustomEffects["Steria_WaterHit"] = typeof(DiceAttackEffect_Steria_WaterHit);
             SteriaCustomEffects["Steria_WaterPenetrate"] = typeof(DiceAttackEffect_Steria_WaterPenetrate);

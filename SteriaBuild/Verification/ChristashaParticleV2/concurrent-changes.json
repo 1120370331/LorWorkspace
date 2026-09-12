@@ -1,0 +1,8 @@
+{
+  "reason": "Independently owned edits observed during Christasha V2 implementation. Preserve, do not attribute or selectively stage as Christasha work.",
+  "changes": [
+    {"card": "9001004", "behavior": 0, "attribute": "ActionScript", "before": "", "after": "Steria_MemoryConcerto_Long"},
+    {"card": "9001004", "behavior": 1, "attribute": "ActionScript", "before": "", "after": "Steria_MemoryConcerto_Medium"},
+    {"card": "9001004", "behavior": 2, "attribute": "ActionScript", "before": "", "after": "Steria_MemoryConcerto_Final"}
+  ]
+}

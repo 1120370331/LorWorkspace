@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GeneratedRoot>$(MSBuildThisFileDirectory)../../../output/christasha-particle-v2/integration/managed/generated</GeneratedRoot>
+    <NoWarn>SYSLIB0012;CS0108;CS0649</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="FixtureUnity.cs"/><Compile Include="FixtureContracts.cs"/><Compile Include="RunContracts.cs"/>
+    <Compile Include="$(GeneratedRoot)/*.cs"/>
+    <Compile Include="../../DiceAttackEffect_Steria_ChristashaParticleV2.cs"/>
+    <Compile Include="../../BehaviourAction_Steria_ChristashaXiyinV2.cs"/>
+    <Compile Include="../../FarAreaEffect_Steria_ChristashaXiyinV2.cs"/>
+  </ItemGroup>
+</Project>

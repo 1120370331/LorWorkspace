@@ -1,0 +1,2918 @@
+{
+  "usage": "Read-only structural evidence; no original game image/mesh/shader is a shipping input.",
+  "manifest_sha256": "7edec547f766a519e97a8f6321cd6c81ed8b6997c5b3fa1530748acb135341a0",
+  "metadata_base": "SteriaBuild/VFXSource/NativeAttackReference/references/all",
+  "roots": [
+    {
+      "resource_path": "prefabs/battle/creatureeffect/new_illusioncardfx/4_n/fx_illusioncard_4_n_galaxycard_o",
+      "root_id": "resources.assets:34693",
+      "counts": {
+        "MonoBehaviour": 1,
+        "Texture2D": 5,
+        "Material": 4,
+        "AnimatorController": 1,
+        "GameObject": 5,
+        "Transform": 5,
+        "Animator": 1,
+        "ParticleSystem": 3,
+        "AnimationClip": 1,
+        "ParticleSystemRenderer": 3
+      },
+      "opaque_components": [
+        "resources.assets:105884"
+      ],
+      "particle_systems": [
+        {
+          "id": "resources.assets:65220",
+          "name": "Burn",
+          "source": "metadata/ParticleSystem/resources.assets_65220.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.800000011920929,
+            "minScalar": 0.4000000059604645
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 6.0,
+            "minScalar": 3.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 0,
+            "enabled": true,
+            "materials": [
+              "Default-Particle"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:67232",
+          "name": "Particle",
+          "source": "metadata/ParticleSystem/resources.assets_67232.json",
+          "duration": 0.30000001192092896,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.6000000238418579,
+            "minScalar": 0.30000001192092896
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 0.8999999761581421,
+            "minScalar": 0.30000001192092896
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 9.0,
+            "minScalar": 3.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 6.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "TrailModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 2,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Mon_Argalia2_Maker",
+              "FX_Mat_Mon_SnowQueen_Trail"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:69610",
+          "name": "Plasma",
+          "source": "metadata/ParticleSystem/resources.assets_69610.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.800000011920929,
+            "minScalar": 0.4000000059604645
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 4.0,
+            "minScalar": 3.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 2.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 1,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Plasma2"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "resource_path": "prefabs/battle/creatureeffect/new_illusioncardfx/4_n/fx_illusioncard_4_n_orchestra_start",
+      "root_id": "resources.assets:40270",
+      "counts": {
+        "Texture2D": 7,
+        "AnimatorController": 1,
+        "GameObject": 9,
+        "Material": 7,
+        "Mesh": 1,
+        "Transform": 9,
+        "Animator": 1,
+        "ParticleSystem": 7,
+        "AnimationClip": 1,
+        "ParticleSystemRenderer": 7,
+        "MonoBehaviour": 2
+      },
+      "opaque_components": [
+        "resources.assets:95634",
+        "resources.assets:99609"
+      ],
+      "particle_systems": [
+        {
+          "id": "resources.assets:65044",
+          "name": "Line4",
+          "source": "metadata/ParticleSystem/resources.assets_65044.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.5,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 80.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 0,
+            "scalar": 2.6179938316345215,
+            "minScalar": 0.7853981852531433
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 2,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_IllusionCard_4_N_Orchestra_Line4"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:65276",
+          "name": "Line1",
+          "source": "metadata/ParticleSystem/resources.assets_65276.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.5,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 18.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 0,
+            "scalar": -2.6179938316345215,
+            "minScalar": 0.7853981852531433
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 5,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_IllusionCard_4_N_Orchestra_Line1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:66252",
+          "name": "Burn",
+          "source": "metadata/ParticleSystem/resources.assets_66252.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.800000011920929,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 5000.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 0,
+            "enabled": true,
+            "materials": [
+              "Default-ParticleSystem"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:66498",
+          "name": "Distortion",
+          "source": "metadata/ParticleSystem/resources.assets_66498.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.8999999761581421,
+            "minScalar": 0.6000000238418579
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 250.0,
+            "minScalar": 150.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 6,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Vortex1_Distortion"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:68954",
+          "name": "particle_2",
+          "source": "metadata/ParticleSystem/resources.assets_68954.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 1.5,
+            "minScalar": 0.5
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 1.5,
+            "minScalar": 0.5
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 9.0,
+            "minScalar": 3.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 75.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule",
+            "NoiseModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 7,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Burn"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:69130",
+          "name": "Line2",
+          "source": "metadata/ParticleSystem/resources.assets_69130.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.5,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 40.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 0,
+            "scalar": 2.6179938316345215,
+            "minScalar": 0.7853981852531433
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 4,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_IllusionCard_4_N_Orchestra_Line2"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:70176",
+          "name": "Line3",
+          "source": "metadata/ParticleSystem/resources.assets_70176.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.5,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 45.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 0,
+            "scalar": -2.6179938316345215,
+            "minScalar": 0.7853981852531433
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_IllusionCard_4_N_Orchestra_Line3"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "resource_path": "prefabs/battle/diceattackeffects/new/fx/mon/xiao/fx_mon_xiao_areatrail1",
+      "root_id": "resources.assets:30442",
+      "counts": {
+        "Texture2D": 13,
+        "MonoBehaviour": 2,
+        "Material": 9,
+        "AnimatorController": 2,
+        "GameObject": 14,
+        "Mesh": 1,
+        "Transform": 14,
+        "Animator": 2,
+        "ParticleSystem": 11,
+        "AnimationClip": 2,
+        "ParticleSystemRenderer": 11
+      },
+      "opaque_components": [
+        "resources.assets:104877"
+      ],
+      "particle_systems": [
+        {
+          "id": "resources.assets:65507",
+          "name": "Burn",
+          "source": "metadata/ParticleSystem/resources.assets_65507.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 1.0,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 600.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 0,
+            "enabled": true,
+            "materials": [
+              "Default-ParticleSystem"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:65742",
+          "name": "Spark2",
+          "source": "metadata/ParticleSystem/resources.assets_65742.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.10000000149011612,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 1.5,
+            "minScalar": 0.5
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 0.20000000298023224,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 30.0,
+            "minScalar": 10.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 20.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule",
+            "VelocityModule"
+          ],
+          "rotation": {
+            "minMaxState": 3,
+            "scalar": 8.726646423339844,
+            "minScalar": -8.726646423339844
+          },
+          "renderer": {
+            "mode": 1,
+            "alignment": 0,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Burn"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:66344",
+          "name": "Trail2",
+          "source": "metadata/ParticleSystem/resources.assets_66344.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.5,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 6.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 1,
+            "scalar": 8.726646423339844,
+            "minScalar": 0.7853981852531433,
+            "curve": [
+              [
+                0.0,
+                1.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 1,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Mon_Oswarld_FireRingTrail"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:66664",
+          "name": "Spark1",
+          "source": "metadata/ParticleSystem/resources.assets_66664.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.10000000149011612,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 1.5,
+            "minScalar": 0.5
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 0.20000000298023224,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 30.0,
+            "minScalar": 10.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 20.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule",
+            "VelocityModule",
+            "NoiseModule"
+          ],
+          "rotation": {
+            "minMaxState": 3,
+            "scalar": 8.726646423339844,
+            "minScalar": -8.726646423339844
+          },
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Burn"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:66894",
+          "name": "Trail_Distortion",
+          "source": "metadata/ParticleSystem/resources.assets_66894.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.699999988079071,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 6.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 1,
+            "scalar": 10.471975326538086,
+            "minScalar": 0.7853981852531433,
+            "curve": [
+              [
+                0.0,
+                -1.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 5,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_SwordWave_Shadow_Distortion"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:68278",
+          "name": "Trail4",
+          "source": "metadata/ParticleSystem/resources.assets_68278.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.4000000059604645,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 6.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 1,
+            "scalar": 10.471975326538086,
+            "minScalar": 0.7853981852531433,
+            "curve": [
+              [
+                0.0,
+                -1.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 2,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Mon_Greta_BloodWave"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:68714",
+          "name": "Trail_Fire",
+          "source": "metadata/ParticleSystem/resources.assets_68714.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.800000011920929,
+            "minScalar": 0.4000000059604645
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 15.0,
+            "minScalar": 5.0
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 10.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 15.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule",
+            "VelocityModule"
+          ],
+          "rotation": {
+            "minMaxState": 3,
+            "scalar": -0.5235987901687622,
+            "minScalar": 0.5235987901687622
+          },
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 2,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Fire2"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:68867",
+          "name": "Trail",
+          "source": "metadata/ParticleSystem/resources.assets_68867.json",
+          "duration": 1.2000000476837158,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.800000011920929,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 6.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 1,
+            "scalar": 5.235987663269043,
+            "minScalar": 0.7853981852531433,
+            "curve": [
+              [
+                0.0,
+                -1.0
+              ],
+              [
+                0.3313443958759308,
+                -0.07142383605241776
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Mon_Xiao_AreaTrail"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:69113",
+          "name": "Trail3",
+          "source": "metadata/ParticleSystem/resources.assets_69113.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.699999988079071,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 5.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 1,
+            "scalar": 5.235987663269043,
+            "minScalar": 0.7853981852531433,
+            "curve": [
+              [
+                0.0,
+                1.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 2,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Mon_Oswarld_BallWave"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:69545",
+          "name": "Trail_Wave",
+          "source": "metadata/ParticleSystem/resources.assets_69545.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.5,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 8.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 1,
+            "scalar": 61.086524963378906,
+            "minScalar": 0.7853981852531433,
+            "curve": [
+              [
+                0.0,
+                1.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 1,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Mon_Oswarld_BallWave"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:69837",
+          "name": "Trail_Burn",
+          "source": "metadata/ParticleSystem/resources.assets_69837.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 1.0,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 6.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 1,
+            "scalar": 8.726646423339844,
+            "minScalar": 0.7853981852531433,
+            "curve": [
+              [
+                0.0,
+                1.0
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 0,
+            "enabled": true,
+            "materials": [
+              "Default-Particle"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "resource_path": "prefabs/battle/diceattackeffects/new/fx/pc/rolrang/fx_pc_rolrang_dagger",
+      "root_id": "resources.assets:46130",
+      "counts": {
+        "Material": 6,
+        "MonoBehaviour": 3,
+        "AnimatorController": 1,
+        "Texture2D": 3,
+        "GameObject": 10,
+        "Mesh": 2,
+        "Transform": 10,
+        "Animator": 2,
+        "ParticleSystem": 8,
+        "AnimationClip": 1,
+        "ParticleSystemRenderer": 8,
+        "SpriteRenderer": 1
+      },
+      "opaque_components": [
+        "resources.assets:105293",
+        "resources.assets:105686"
+      ],
+      "particle_systems": [
+        {
+          "id": "resources.assets:64884",
+          "name": "Burn",
+          "source": "metadata/ParticleSystem/resources.assets_64884.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.4000000059604645,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 20.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 0,
+            "enabled": true,
+            "materials": [
+              "Default-Particle"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:65726",
+          "name": "Rush_Particle",
+          "source": "metadata/ParticleSystem/resources.assets_65726.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.4000000059604645,
+            "minScalar": 0.20000000298023224
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.30000001192092896
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 60.0,
+            "minScalar": 30.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 5.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 1,
+            "alignment": 0,
+            "sorting": 2,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Burn"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:66415",
+          "name": "Particle2",
+          "source": "metadata/ParticleSystem/resources.assets_66415.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.8999999761581421,
+            "minScalar": 0.30000001192092896
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 0.6000000238418579,
+            "minScalar": 0.20000000298023224
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 20.0,
+            "minScalar": 10.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 8.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule",
+            "NoiseModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 2,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Burn"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:67165",
+          "name": "SlashSmoke",
+          "source": "metadata/ParticleSystem/resources.assets_67165.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.6000000238418579,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 10.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Smoke1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:68843",
+          "name": "Slash1",
+          "source": "metadata/ParticleSystem/resources.assets_68843.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.4000000059604645,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 15.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 4,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Flash1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:69502",
+          "name": "Smoke",
+          "source": "metadata/ParticleSystem/resources.assets_69502.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.6000000238418579,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 15.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 1,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Smoke1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:70039",
+          "name": "Distortion",
+          "source": "metadata/ParticleSystem/resources.assets_70039.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.10000000149011612,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.800000011920929,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 12.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": -10,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_HalfDistortion"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:71136",
+          "name": "Particle1",
+          "source": "metadata/ParticleSystem/resources.assets_71136.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.6000000238418579,
+            "minScalar": 0.20000000298023224
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.30000001192092896
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 100.0,
+            "minScalar": 50.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 8.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 1,
+            "alignment": 0,
+            "sorting": 2,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Burn"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "resource_path": "prefabs/battle/diceattackeffects/new/fx/pc/rolrang/fx_pc_rolrang_shadowslsah",
+      "root_id": "resources.assets:42336",
+      "counts": {
+        "Material": 11,
+        "Texture2D": 7,
+        "AnimatorController": 1,
+        "GameObject": 17,
+        "Mesh": 5,
+        "Transform": 17,
+        "Animator": 2,
+        "ParticleSystem": 15,
+        "AnimationClip": 1,
+        "ParticleSystemRenderer": 15,
+        "SpriteRenderer": 1,
+        "MonoBehaviour": 3
+      },
+      "opaque_components": [
+        "resources.assets:98769",
+        "resources.assets:99954"
+      ],
+      "particle_systems": [
+        {
+          "id": "resources.assets:64596",
+          "name": "Smoke",
+          "source": "metadata/ParticleSystem/resources.assets_64596.json",
+          "duration": 0.6000000238418579,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.5,
+            "minScalar": 0.3499999940395355
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 30.0,
+            "minScalar": 20.0
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 80.0,
+            "minScalar": 40.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 2.0,
+                "minScalar": 30.0
+              }
+            },
+            {
+              "time": 0.550000011920929,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 4.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 0,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Smoke1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:64786",
+          "name": "Slash_Main",
+          "source": "metadata/ParticleSystem/resources.assets_64786.json",
+          "duration": 0.44999998807907104,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.15000000596046448
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 6.0,
+            "minScalar": 8.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 2.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 3,
+            "scalar": 13.962634086608887,
+            "minScalar": 26.17993927001953
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Trail2_OutLine"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:64872",
+          "name": "Spark2",
+          "source": "metadata/ParticleSystem/resources.assets_64872.json",
+          "duration": 0.05000000074505806,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 1.0,
+            "minScalar": 0.5
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 0.5,
+            "minScalar": 0.15000000596046448
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 15.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 3,
+                "scalar": 6.0,
+                "minScalar": 3.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule",
+            "NoiseModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Burn"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:65923",
+          "name": "Shadow_Distoriton",
+          "source": "metadata/ParticleSystem/resources.assets_65923.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.75,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.6000000238418579,
+            "minScalar": 0.5
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 20.0,
+            "minScalar": 30.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 5.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "SubModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 10,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_HalfDistortion"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:66514",
+          "name": "Slash_Shadow",
+          "source": "metadata/ParticleSystem/resources.assets_66514.json",
+          "duration": 0.6000000238418579,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.4000000059604645,
+            "minScalar": 0.20000000298023224
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 15.0,
+            "minScalar": 20.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 2.0,
+                "minScalar": 30.0
+              }
+            },
+            {
+              "time": 0.550000011920929,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 5.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "SubModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Flash1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:66685",
+          "name": "Slash_Line",
+          "source": "metadata/ParticleSystem/resources.assets_66685.json",
+          "duration": 0.6000000238418579,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.25,
+            "minScalar": 0.20000000298023224
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 5.0,
+            "minScalar": 10.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 3,
+            "scalar": 34.906585693359375,
+            "minScalar": 17.453292846679688
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 1,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Line1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:66900",
+          "name": "Wave_Disotriton",
+          "source": "metadata/ParticleSystem/resources.assets_66900.json",
+          "duration": 0.6000000238418579,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.6000000238418579,
+            "minScalar": 0.4000000059604645
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 20.0,
+            "minScalar": 15.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 0,
+            "scalar": 0.7853981852531433,
+            "minScalar": 0.7853981852531433
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": -10,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Wave1_Distortion"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:67107",
+          "name": "EndFlare",
+          "source": "metadata/ParticleSystem/resources.assets_67107.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.699999988079071,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.699999988079071,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 30.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 0,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Light_Line1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:67647",
+          "name": "Wave",
+          "source": "metadata/ParticleSystem/resources.assets_67647.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.3499999940395355,
+            "minScalar": 0.25
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 15.0,
+            "minScalar": 10.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 0,
+            "scalar": 0.7853981852531433,
+            "minScalar": 0.7853981852531433
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Wave1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:68606",
+          "name": "Spark",
+          "source": "metadata/ParticleSystem/resources.assets_68606.json",
+          "duration": 0.05000000074505806,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.6000000238418579,
+            "minScalar": 0.20000000298023224
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 0.30000001192092896,
+            "minScalar": 0.10000000149011612
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 30.0,
+            "minScalar": 10.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 3,
+                "scalar": 2.0,
+                "minScalar": 1.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule",
+            "NoiseModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Burn"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:68750",
+          "name": "MainSmoke",
+          "source": "metadata/ParticleSystem/resources.assets_68750.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 1.0,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 30.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 2,
+            "sorting": 0,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Smoke1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:69039",
+          "name": "EndWave",
+          "source": "metadata/ParticleSystem/resources.assets_69039.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.800000011920929,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.30000001192092896,
+            "minScalar": 0.25
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 20.0,
+            "minScalar": 10.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 0,
+            "scalar": 0.7853981852531433,
+            "minScalar": 0.7853981852531433
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 0,
+            "sorting": 3,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Wave1"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:69746",
+          "name": "MainBurn",
+          "source": "metadata/ParticleSystem/resources.assets_69746.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.20000000298023224,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 1.0,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 50.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 2,
+            "sorting": 1,
+            "enabled": true,
+            "materials": [
+              "Default-ParticleSystem"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:70124",
+          "name": "EndParticle",
+          "source": "metadata/ParticleSystem/resources.assets_70124.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.75,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.30000001192092896,
+            "minScalar": 0.15000000596046448
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 0.15000000596046448,
+            "minScalar": 0.25
+          },
+          "speed": {
+            "minMaxState": 3,
+            "scalar": 75.0,
+            "minScalar": 25.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 10.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 1,
+            "alignment": 0,
+            "sorting": 10,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Burn"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:70296",
+          "name": "StartFlash1",
+          "source": "metadata/ParticleSystem/resources.assets_70296.json",
+          "duration": 0.5,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.05000000074505806,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.20000000298023224,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 20.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 1,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Flash1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "resource_path": "prefabs/battle/diceattackeffects/new/fx/pc/rolrang/fx_pc_rolrang_slash_down",
+      "root_id": "resources.assets:43475",
+      "counts": {
+        "Material": 4,
+        "MonoBehaviour": 3,
+        "AnimatorController": 1,
+        "Texture2D": 3,
+        "GameObject": 5,
+        "Mesh": 1,
+        "Transform": 5,
+        "Animator": 2,
+        "ParticleSystem": 3,
+        "AnimationClip": 1,
+        "ParticleSystemRenderer": 3,
+        "SpriteRenderer": 1
+      },
+      "opaque_components": [
+        "resources.assets:104692",
+        "resources.assets:95626"
+      ],
+      "particle_systems": [
+        {
+          "id": "resources.assets:70147",
+          "name": "Main_Trail2",
+          "source": "metadata/ParticleSystem/resources.assets_70147.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.6000000238418579,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 18.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 1,
+            "scalar": 26.17993927001953,
+            "minScalar": -6.981317043304443,
+            "curve": [
+              [
+                0.0,
+                1.0
+              ],
+              [
+                0.41143798828125,
+                0.165283203125
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 2,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Trail2_OutLine"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:70148",
+          "name": "Particle1",
+          "source": "metadata/ParticleSystem/resources.assets_70148.json",
+          "duration": 0.3499999940395355,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.10000000149011612,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 3,
+            "scalar": 0.800000011920929,
+            "minScalar": 0.4000000059604645
+          },
+          "startSize": {
+            "minMaxState": 3,
+            "scalar": 0.6000000238418579,
+            "minScalar": 0.20000000298023224
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 1,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 10.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "VelocityModule",
+            "NoiseModule"
+          ],
+          "rotation": null,
+          "renderer": {
+            "mode": 0,
+            "alignment": 0,
+            "sorting": 0,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_Burn"
+            ]
+          }
+        },
+        {
+          "id": "resources.assets:70149",
+          "name": "Main_Trail1",
+          "source": "metadata/ParticleSystem/resources.assets_70149.json",
+          "duration": 1.0,
+          "delay": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 0.0
+          },
+          "lifetime": {
+            "minMaxState": 0,
+            "scalar": 0.699999988079071,
+            "minScalar": 5.0
+          },
+          "startSize": {
+            "minMaxState": 0,
+            "scalar": 18.0,
+            "minScalar": 1.0
+          },
+          "speed": {
+            "minMaxState": 0,
+            "scalar": 0.0,
+            "minScalar": 5.0
+          },
+          "space": 0,
+          "looping": false,
+          "bursts": [
+            {
+              "time": 0.0,
+              "count": {
+                "minMaxState": 0,
+                "scalar": 1.0,
+                "minScalar": 30.0
+              }
+            }
+          ],
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule"
+          ],
+          "rotation": {
+            "minMaxState": 1,
+            "scalar": 61.086524963378906,
+            "minScalar": -6.981317043304443,
+            "curve": [
+              [
+                0.0,
+                1.0
+              ],
+              [
+                0.2309383749961853,
+                0.04958741366863251
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "renderer": {
+            "mode": 4,
+            "alignment": 2,
+            "sorting": 1,
+            "enabled": true,
+            "materials": [
+              "FX_Mat_PC_RolRang_MainTrail"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

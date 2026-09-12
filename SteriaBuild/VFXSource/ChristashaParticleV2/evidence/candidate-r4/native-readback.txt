@@ -1,0 +1,7 @@
+Final synchronized-driver preview. No assets/bundle rebuilt. Existing r3 seven-root bundle SHA=a0948f97682402b5e50ff3ca38d1f67e0d86a61c523c59b717830ffcf231f690
+Production driver SHA=2a0f1da75754a97b2f2ebc08a53f2e6c53ad6efaa37bb8de3003f74a4a9e4805
+Unity=2019.3.15f1
+GPU=NVIDIA GeForce RTX 4090 Laptop GPU
+API=Direct3D11
+All Advance calls have a corresponding camera render even when an image is not saved. Newborn particles receive zero-time simulation before rendering.
+Proxy battle, not a game capture. Guard editor example is not bundled.

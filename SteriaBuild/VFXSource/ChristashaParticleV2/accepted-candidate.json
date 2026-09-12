@@ -1,0 +1,19 @@
+{
+  "status": "accepted-and-deployed",
+  "visual_candidate": "candidate-r4",
+  "baseline_commit": "440d8ba3d24c005ced2de81bf9c4bdd5a3de6652",
+  "driver_sha256": "2a0f1da75754a97b2f2ebc08a53f2e6c53ad6efaa37bb8de3003f74a4a9e4805",
+  "adapter_sha256": "0457f38642ba86fe8f61a7fcebdd2411199e9dae0666fe76ff2eadad68eb6d2f",
+  "bundle_sha256": "a0948f97682402b5e50ff3ca38d1f67e0d86a61c523c59b717830ffcf231f690",
+  "dll_sha256": "37e271da0fb50cb96bffa34666c187059e457b2d2093d7affbf0f157239d30bd",
+  "deployed_xml_sha256": "4f4575bbe8f26072968414185dc5aa49f55d6f69b0021e87822cbcdda02c59dd",
+  "binding_count": 46,
+  "card_count": 23,
+  "mass_action_card": 9009006,
+  "unrelated_pending_xml_changes_not_deployed": 33,
+  "slash_v": "Uses the same accepted base pose as SlashH; 70-degree historical media is rejected.",
+  "guard": "Runnable editor recipe only, not a shipping bundle root or a new page binding.",
+  "review": "docs/superpowers/plans/2026-09-12-christasha-particle-v2-review.md",
+  "delivery": "docs/superpowers/plans/2026-09-12-christasha-particle-v2-delivery.md",
+  "boundary": "Real Unity GPU proxy previews and source-linked native contracts; no complete in-game battle claim."
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "trial": 0,
+    "kind": "Slash",
+    "background": "dark",
+    "csv_matches_old_clock": true,
+    "csv_sparse_equals_continuous": true,
+    "different_frames": []
+  },
+  {
+    "trial": 0,
+    "kind": "Slash",
+    "background": "mid",
+    "csv_matches_old_clock": true,
+    "csv_sparse_equals_continuous": true,
+    "different_frames": []
+  },
+  {
+    "trial": 0,
+    "kind": "Hit",
+    "background": "dark",
+    "csv_matches_old_clock": true,
+    "csv_sparse_equals_continuous": true,
+    "different_frames": []
+  },
+  {
+    "trial": 0,
+    "kind": "Hit",
+    "background": "mid",
+    "csv_matches_old_clock": true,
+    "csv_sparse_equals_continuous": true,
+    "different_frames": []
+  },
+  {
+    "trial": 1,
+    "kind": "Slash",
+    "background": "dark",
+    "csv_matches_old_clock": true,
+    "csv_sparse_equals_continuous": true,
+    "different_frames": []
+  },
+  {
+    "trial": 1,
+    "kind": "Slash",
+    "background": "mid",
+    "csv_matches_old_clock": true,
+    "csv_sparse_equals_continuous": true,
+    "different_frames": []
+  },
+  {
+    "trial": 1,
+    "kind": "Hit",
+    "background": "dark",
+    "csv_matches_old_clock": true,
+    "csv_sparse_equals_continuous": true,
+    "different_frames": []
+  },
+  {
+    "trial": 1,
+    "kind": "Hit",
+    "background": "mid",
+    "csv_matches_old_clock": true,
+    "csv_sparse_equals_continuous": true,
+    "different_frames": []
+  }
+]
