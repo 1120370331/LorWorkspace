@@ -1,0 +1,49 @@
+using System;
+using System.IO;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
+
+[InitializeOnLoad]
+public static class MemoryFlameFixture
+{
+    const string Key="Steria.MemoryFlame.Run";
+    static MemoryFlameFixture()
+    {
+        EditorApplication.playModeStateChanged += state => {
+            if (state == PlayModeStateChange.EnteredPlayMode && SessionState.GetBool(Key,false))
+            { SessionState.SetBool(Key,false); EditorApplication.delayCall += Execute; }
+        };
+    }
+    public static void Run()
+    {
+        SessionState.SetBool(Key,true);
+        EditorApplication.isPlaying=true;
+    }
+    static void Execute()
+    {
+        try
+        {
+            string output=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));
+            string root=File.ReadAllText(Path.Combine(output,"repository-root.txt")).Trim();
+            string assemblies=Path.Combine(output,"Runtime/Assemblies");
+            AppDomain.CurrentDomain.AssemblyResolve+=(sender,args)=>{
+                string name=new AssemblyName(args.Name).Name+".dll";
+                foreach(string dir in new[]{assemblies,Path.Combine(root,"SteriaBuild/Libs"),@"C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed"})
+                    if(File.Exists(Path.Combine(dir,name)))return Assembly.LoadFrom(Path.Combine(dir,name));
+                return null;
+            };
+            var asm=Assembly.LoadFrom(Path.Combine(assemblies,"Checks.exe"));
+            asm.GetType("Program").GetMethod("RunInUnity").Invoke(null,new object[]{root});
+            File.WriteAllText(Path.Combine(output,"unity-result.txt"),"MEMORY_FLAME_UNITY_PASS\n");
+            EditorApplication.Exit(0);
+        }
+        catch(Exception ex)
+        {
+            Debug.LogException(ex);
+            string output=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));
+            File.WriteAllText(Path.Combine(output,"unity-result.txt"),ex.ToString());
+            EditorApplication.Exit(1);
+        }
+    }
+}
