@@ -1,0 +1,3 @@
+PIERCE_NATIVE_REPLAY_PASS
+2019.3.15f1 / Direct3D11
+Dagger native visual replay; independent art review required.

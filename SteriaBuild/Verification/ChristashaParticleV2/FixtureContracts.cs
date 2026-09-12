@@ -29,6 +29,12 @@ public class BattleUnitView : MonoBehaviour
 public class CharacterAppearance : MonoBehaviour
 {
     public Transform atkEffectRoot, atkEffectPivot_G, atkEffectPivot_J, atkEffectPivot_Z, atkEffectPivot_H, atkEffectPivot_F;
+    public readonly Dictionary<ActionDetail, Transform> specialPivots = new Dictionary<ActionDetail, Transform>();
+    public Transform GetSpecialMotionPivot(ActionDetail action)
+    {
+        Transform pivot;
+        return specialPivots.TryGetValue(action, out pivot) ? pivot : atkEffectRoot;
+    }
     public Transform GetAtkEffectPivot(ActionDetail action)
     {
         Transform pivot = action == ActionDetail.Slash ? atkEffectPivot_J : action == ActionDetail.Hit ? atkEffectPivot_H :
@@ -90,20 +96,45 @@ namespace Steria
 }
 namespace Steria.Vfx
 {
+    public static class ChristashaNativeMassRecipes { public const float AreaDesignWidth = 32f; }
     // A recording visual boundary is intentional: the tests exercise production
     // game adapters. Real particles are independently compiled and GPU-previewed.
-    public sealed class ChristashaParticleVisual
+    public sealed class ChristashaNativeParticleLibrary : IDisposable
     {
-        public static readonly List<ChristashaParticleVisual> Started = new List<ChristashaParticleVisual>();
+        public static readonly HashSet<string> Unsupported = new HashSet<string>();
+        public static readonly List<ChristashaNativeParticleLibrary> Created = new List<ChristashaNativeParticleLibrary>();
+        public readonly Texture2D Brush;
+        private readonly Func<string, GameObject> resolver;
+        public bool Disposed;
+        public ChristashaNativeParticleLibrary(Func<string, GameObject> resolver, Texture2D originalBrush = null)
+        {
+            this.resolver = resolver; Brush = originalBrush; Created.Add(this);
+        }
+        public GameObject CreatePrototype(string recipe, Transform parent = null)
+        {
+            if (Unsupported.Contains(recipe)) throw new NotSupportedException("Native recipe unavailable: " + recipe);
+            if (resolver("prefabs/native-fixture/" + recipe) == null) throw new InvalidOperationException("Native source unavailable");
+            var result = new GameObject("ChristashaNative_" + recipe);
+            result.transform.SetParent(parent, false);
+            result.AddComponent<ParticleSystemRenderer>();
+            result.SetActive(false);
+            return result;
+        }
+        public void Dispose() { Disposed = true; }
+    }
+    public sealed class ChristashaNativeParticlePlayback
+    {
+        public static readonly List<ChristashaNativeParticlePlayback> Started = new List<ChristashaNativeParticlePlayback>();
         public GameObject Root;
         public uint Seed;
         public float Age;
         public bool Stopped;
         public int Advances;
         public float Duration { get { return Root.name.EndsWith("Area") ? 1.16f : .65f; } }
-        public static ChristashaParticleVisual Play(GameObject instance, uint seed, float playbackSpeed = 1f)
+        public static ChristashaNativeParticlePlayback Play(GameObject instance, uint seed, float playbackSpeed = 1f)
         {
-            var visual = new ChristashaParticleVisual { Root = instance, Seed = seed };
+            var visual = new ChristashaNativeParticlePlayback { Root = instance, Seed = seed };
+            instance.SetActive(true);
             Started.Add(visual);
             return visual;
         }

@@ -1,0 +1,3 @@
+UNITY_COMPILE_AND_REPLAY_PASS
+Unity 2019.3.15f1 / Direct3D11
+Original data Editor replay and native theme candidate. Not actual combat choreography. Art acceptance remains pending.

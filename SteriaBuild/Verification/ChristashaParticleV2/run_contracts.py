@@ -13,7 +13,7 @@ args = parser.parse_args()
 here = Path(__file__).resolve().parent
 repo = here.parents[2]
 build = repo / 'SteriaBuild'
-out = repo / ('output/christasha-particle-v2/integration/managed-melee' if args.melee_only else 'output/christasha-particle-v2/integration/managed')
+out = repo / ('output/christasha-native-redesign/integration/managed-melee' if args.melee_only else 'output/christasha-native-redesign/integration/managed')
 generated = out / 'generated'
 generated.mkdir(parents=True, exist_ok=True)
 inputs = [build / name for name in ('DiceAttackEffect_Steria_ChristashaParticleV2.cs', 'BehaviourAction_Steria_ChristashaXiyinV2.cs', 'FarAreaEffect_Steria_ChristashaXiyinV2.cs')]

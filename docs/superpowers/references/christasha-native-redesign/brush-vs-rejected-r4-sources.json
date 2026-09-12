@@ -1,0 +1,30 @@
+[
+  {
+    "native": "SteriaBuild/VFXSource/NativeAttackReference/references/all/images/Sprite/_____resources.assets_23432.png",
+    "native_sha256": "4ec1d52a251e89191c70ebee012f8c3e67e4301446ffda46e0d715806baee2ca",
+    "failed": "SteriaBuild/VFXSource/ChristashaParticleV2/evidence/candidate-r4/Slash-dark/0006.png",
+    "failed_sha256": "764e09b991008c8ad881670b07196fba9a56f947f9074ebae748e665a90d5dd2",
+    "scope": "reference-only original texture/brush versus rejected candidate GPU frame; not a native final render comparison"
+  },
+  {
+    "native": "SteriaBuild/VFXSource/NativeAttackReference/references/all/images/Sprite/_____resources.assets_23760.png",
+    "native_sha256": "8a7f66fb9da3b3354b736a3dff63b088e0a0d4d7e2bec856474edcbce0b20cda",
+    "failed": "SteriaBuild/VFXSource/ChristashaParticleV2/evidence/candidate-r4/Hit-dark/0006.png",
+    "failed_sha256": "394505afe7a1226d4662b3ed4e2e571ded9d7fd61d364bf5ac8a1b785dbbe3f7",
+    "scope": "reference-only original texture/brush versus rejected candidate GPU frame; not a native final render comparison"
+  },
+  {
+    "native": "SteriaBuild/VFXSource/NativeAttackReference/references/all/images/Sprite/_____resources.assets_23658.png",
+    "native_sha256": "7c6003798899cf16e43097e79b44a2db39d90d221a94dfc7ff3cae5213d1e041",
+    "failed": "SteriaBuild/VFXSource/ChristashaParticleV2/evidence/candidate-r4/Pierce-dark/0006.png",
+    "failed_sha256": "d42aa5a1dc99d49294e6bb56ef6fc28b20cd52eca0cf348f3404d53bab7e9aa2",
+    "scope": "reference-only original texture/brush versus rejected candidate GPU frame; not a native final render comparison"
+  },
+  {
+    "native": "SteriaBuild/VFXSource/NativeAttackReference/references/all/images/Texture2D/FX_Tex_Mon_Xiao_AreaTrail__resources.assets_3115.png",
+    "native_sha256": "e256e7b46651fadf59041a8f91eafd7ffee7febae1f67c82a9d0dd0fcf78cf35",
+    "failed": "SteriaBuild/VFXSource/ChristashaParticleV2/evidence/candidate-r4/Mass-dark/0030.png",
+    "failed_sha256": "961c20368eb5b27dd423c3804844d2d15060b20e7cbab85eef76de3345576e3a",
+    "scope": "reference-only original texture/brush versus rejected candidate GPU frame; not a native final render comparison"
+  }
+]

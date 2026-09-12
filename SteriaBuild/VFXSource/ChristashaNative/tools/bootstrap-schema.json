@@ -1,0 +1,23 @@
+{
+  "description": "Structure-only bootstrap derived from project-authored Unity 2019.3.15f1 bundle; no original game or old effect visual objects/pixels/programs.",
+  "sha256": "567da736ce12afb479874d24ec09d5d47d5ee5a2b322615efca9978c8e8cee3f",
+  "bytes": 40344,
+  "objectCount": 1,
+  "objects": [
+    "AssetBundle:1"
+  ],
+  "typeTreeClassIDs": [
+    1,
+    4,
+    43,
+    198,
+    199,
+    28,
+    48,
+    142,
+    21
+  ],
+  "unityVersion": "2019.3.15f1",
+  "serializedVersion": 21,
+  "targetPlatform": 19
+}

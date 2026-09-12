@@ -1,0 +1,26 @@
+{
+  "purpose": "Verified local data for later background character-context preview; not an in-game screenshot.",
+  "character": {
+    "skin": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha",
+    "canvas": [512, 512],
+    "pixelsPerUnit": 50,
+    "source": "SpriteUtil.LoadLargePivotSprite; ExtendedLoader.ExtendedClothCustomizeData ctor also defaults size512x512/resolution50, and SpriteUtilExtension.LoadCustomSizedPivotSprite passes that resolution to Sprite.Create.",
+    "legacyPivotRule": "((pivot_x+512)/1024, (pivot_y+512)/1024) from WorkshopAppearanceItemLoader",
+    "appearanceRoot": "Prefabs/Characters/[Prefab]Appearance_Custom",
+    "appearanceAndMotionScale": [1, 1, 1],
+    "attackRootLocalPosition": [-1.92, 2.52, 0],
+    "mapScale": {"S": 3, "M": 2.25, "L": 1.5},
+    "heightMultiplier": "customizeData.height / 170 when applicable"
+  },
+  "nativeEffect": {
+    "rootScript": "FX_Script_AttackBasic",
+    "initializeScale": [1, 1, 1],
+    "setScale": "overridden no-op, not the ordinary DiceAttackEffect 2*(1+roll) path",
+    "slashInitializeEuler": [0, 0, 0],
+    "daggerInitializeEuler": [0, 0, 0],
+    "greatswordInitializeEuler": [-10, 0, 0],
+    "proof": "Root Mono scripts identified from original assets. FX_Script_AttackBasic.cs read directly; 136-byte derived serialization field order matches Euler payload."
+  },
+  "evidence": "output/christasha-native-redesign/native-anchor-evidence.json",
+  "integrationRule": "Preserve full actor hierarchy and facing once. Native recipe art normalization must be explicit and checked against the real character PNG/pivot/PPU; never assume the old 3-unit mannequin is the real game character size."
+}

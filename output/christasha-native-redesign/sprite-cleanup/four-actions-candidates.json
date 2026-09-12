@@ -1,0 +1,715 @@
+{
+  "scope": "Candidate-only list for independent review, no production overwrite/deployment. Other three r1 files remain byte-identical to frozen list.",
+  "actions": [
+    {
+      "action": "Hit",
+      "status": "READY_FOR_INDEPENDENT_REVIEW",
+      "candidate": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Hit\\candidate-r1-512.png",
+      "sha256": "96b7d02c141feef0812f2d2ce7e5b83a5d9b0d02cb721dde936a29f7efe6bed1",
+      "sourceSha256": "668e962c9f7f9ad17e56e567b226ce983488cf5b5f1ced70a2b95e5433082d82",
+      "size": [
+        512,
+        512
+      ],
+      "transform": {
+        "canvasScale": 0.4082934609250399,
+        "sourceCanvas": [
+          1254,
+          1254
+        ],
+        "targetCanvas": [
+          512,
+          512
+        ],
+        "translate": [
+          0,
+          0
+        ],
+        "crop": false,
+        "bboxNormalization": false,
+        "originalComposite": false,
+        "interpolation": "whole-canvas Lanczos3"
+      },
+      "alpha": {
+        "mode": "RGBA",
+        "size": [
+          512,
+          512
+        ],
+        "alphaZeroPixels": 238816,
+        "opaquePixels": 18478,
+        "alphaOver32BBox": [
+          204,
+          133,
+          386,
+          369
+        ],
+        "visibleMagentaSpillPixels": 0
+      },
+      "pose": {
+        "head": {
+          "originalRegion": [
+            241,
+            134,
+            79,
+            88
+          ],
+          "originalAlphaOver128BBox": [
+            241,
+            135,
+            320,
+            222
+          ],
+          "candidateAlphaOver128BBox": [
+            241,
+            134,
+            320,
+            222
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9530692785081364,
+            "dx": 0,
+            "dy": -1
+          }
+        },
+        "face": {
+          "originalRegion": [
+            252,
+            168,
+            48,
+            42
+          ],
+          "originalAlphaOver128BBox": [
+            252,
+            168,
+            300,
+            210
+          ],
+          "candidateAlphaOver128BBox": [
+            252,
+            168,
+            300,
+            210
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9612988044183884,
+            "dx": 0,
+            "dy": -1
+          }
+        },
+        "grip": {
+          "originalRegion": [
+            260,
+            266,
+            31,
+            28
+          ],
+          "originalAlphaOver128BBox": [
+            260,
+            266,
+            291,
+            294
+          ],
+          "candidateAlphaOver128BBox": [
+            260,
+            266,
+            291,
+            294
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9258212913879587,
+            "dx": 0,
+            "dy": 0
+          }
+        },
+        "right_shoe": {
+          "originalRegion": [
+            350,
+            345,
+            25,
+            23
+          ],
+          "originalAlphaOver128BBox": [
+            350,
+            345,
+            375,
+            365
+          ],
+          "candidateAlphaOver128BBox": [
+            350,
+            345,
+            375,
+            365
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9323692069939502,
+            "dx": 1,
+            "dy": 0
+          }
+        }
+      },
+      "lightComparison": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Hit\\comparison-source-left-candidate-right-light.png",
+      "darkComparison": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Hit\\comparison-source-left-candidate-right-dark.png",
+      "notes": "Preserved downward sword-strike pose; front shoe was originally occluded and is generated completion."
+    },
+    {
+      "action": "Penetrate",
+      "status": "READY_FOR_INDEPENDENT_REVIEW",
+      "candidate": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Penetrate\\candidate-r1-512.png",
+      "sha256": "a675e8d23edc75a9d50681477939ba97607f4387c9672f817b5b340a93bb550b",
+      "sourceSha256": "4019c2af05a1c138a5ecf3f993d1a43248ee756d4066d5cb78830191e2a9004a",
+      "size": [
+        512,
+        512
+      ],
+      "transform": {
+        "canvasScale": 0.4082934609250399,
+        "sourceCanvas": [
+          1254,
+          1254
+        ],
+        "targetCanvas": [
+          512,
+          512
+        ],
+        "translate": [
+          0,
+          0
+        ],
+        "crop": false,
+        "bboxNormalization": false,
+        "originalComposite": false,
+        "interpolation": "whole-canvas Lanczos3"
+      },
+      "alpha": {
+        "mode": "RGBA",
+        "size": [
+          512,
+          512
+        ],
+        "alphaZeroPixels": 243535,
+        "opaquePixels": 14360,
+        "alphaOver32BBox": [
+          116,
+          166,
+          398,
+          347
+        ],
+        "visibleMagentaSpillPixels": 1
+      },
+      "pose": {
+        "head": {
+          "originalRegion": [
+            238,
+            168,
+            76,
+            62
+          ],
+          "originalAlphaOver128BBox": [
+            239,
+            168,
+            314,
+            230
+          ],
+          "candidateAlphaOver128BBox": [
+            238,
+            168,
+            314,
+            230
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9286139015669174,
+            "dx": 0,
+            "dy": -1
+          }
+        },
+        "face": {
+          "originalRegion": [
+            244,
+            201,
+            43,
+            29
+          ],
+          "originalAlphaOver128BBox": [
+            244,
+            201,
+            287,
+            230
+          ],
+          "candidateAlphaOver128BBox": [
+            244,
+            201,
+            287,
+            230
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9341965947012446,
+            "dx": 0,
+            "dy": -1
+          }
+        },
+        "grip": {
+          "originalRegion": [
+            220,
+            229,
+            24,
+            20
+          ],
+          "originalAlphaOver128BBox": [
+            220,
+            229,
+            244,
+            244
+          ],
+          "candidateAlphaOver128BBox": [
+            220,
+            229,
+            244,
+            249
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9122560494522254,
+            "dx": 0,
+            "dy": -1
+          }
+        },
+        "left_shoe": {
+          "originalRegion": [
+            295,
+            309,
+            21,
+            21
+          ],
+          "originalAlphaOver128BBox": [
+            295,
+            309,
+            316,
+            326
+          ],
+          "candidateAlphaOver128BBox": [
+            295,
+            309,
+            316,
+            326
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9326497170467122,
+            "dx": 0,
+            "dy": 0
+          }
+        },
+        "right_shoe": {
+          "originalRegion": [
+            369,
+            326,
+            22,
+            19
+          ],
+          "originalAlphaOver128BBox": [
+            369,
+            326,
+            391,
+            345
+          ],
+          "candidateAlphaOver128BBox": [
+            369,
+            326,
+            391,
+            345
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9687047205993706,
+            "dx": 0,
+            "dy": 0
+          }
+        }
+      },
+      "lightComparison": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Penetrate\\comparison-source-left-candidate-right-light.png",
+      "darkComparison": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Penetrate\\comparison-source-left-candidate-right-dark.png",
+      "notes": "One chroma-threshold edge pixel remains; no broad magenta contamination visible in small preview. Physical horizontal sword restored."
+    },
+    {
+      "action": "Slash2",
+      "status": "READY_FOR_INDEPENDENT_REVIEW",
+      "candidate": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Slash2\\candidate-r1-512.png",
+      "sha256": "a6ab76f107fd9ca107a7769630a4658f9a5b351ade808ff4495a70a29dcb3550",
+      "sourceSha256": "7c49adcbe29fd68dd64922b54beaa4c147e827cd310bda3555ec084c6d612215",
+      "size": [
+        512,
+        512
+      ],
+      "transform": {
+        "canvasScale": 0.4082934609250399,
+        "sourceCanvas": [
+          1254,
+          1254
+        ],
+        "targetCanvas": [
+          512,
+          512
+        ],
+        "translate": [
+          0,
+          0
+        ],
+        "crop": false,
+        "bboxNormalization": false,
+        "originalComposite": false,
+        "interpolation": "whole-canvas Lanczos3"
+      },
+      "alpha": {
+        "mode": "RGBA",
+        "size": [
+          512,
+          512
+        ],
+        "alphaZeroPixels": 204115,
+        "opaquePixels": 52172,
+        "alphaOver32BBox": [
+          128,
+          157,
+          458,
+          512
+        ],
+        "visibleMagentaSpillPixels": 0
+      },
+      "pose": {
+        "head": {
+          "originalRegion": [
+            212,
+            159,
+            142,
+            120
+          ],
+          "originalAlphaOver128BBox": [
+            213,
+            159,
+            354,
+            279
+          ],
+          "candidateAlphaOver128BBox": [
+            212,
+            159,
+            354,
+            279
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9662408188912343,
+            "dx": 0,
+            "dy": -1
+          }
+        },
+        "face": {
+          "originalRegion": [
+            240,
+            236,
+            67,
+            61
+          ],
+          "originalAlphaOver128BBox": [
+            240,
+            236,
+            307,
+            297
+          ],
+          "candidateAlphaOver128BBox": [
+            240,
+            236,
+            307,
+            297
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9632915318344452,
+            "dx": 0,
+            "dy": -1
+          }
+        },
+        "grip": {
+          "originalRegion": [
+            234,
+            365,
+            51,
+            43
+          ],
+          "originalAlphaOver128BBox": [
+            234,
+            365,
+            285,
+            408
+          ],
+          "candidateAlphaOver128BBox": [
+            234,
+            365,
+            285,
+            408
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9276999635771922,
+            "dx": 0,
+            "dy": -1
+          }
+        },
+        "left_shoe": {
+          "originalRegion": [
+            285,
+            477,
+            45,
+            28
+          ],
+          "originalAlphaOver128BBox": [
+            289,
+            477,
+            330,
+            503
+          ],
+          "candidateAlphaOver128BBox": [
+            288,
+            477,
+            330,
+            503
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.980497053158729,
+            "dx": 0,
+            "dy": 0
+          }
+        },
+        "right_shoe": {
+          "originalRegion": [
+            425,
+            478,
+            38,
+            28
+          ],
+          "originalAlphaOver128BBox": [
+            425,
+            478,
+            458,
+            504
+          ],
+          "candidateAlphaOver128BBox": [
+            425,
+            478,
+            458,
+            505
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9904006361624933,
+            "dx": 0,
+            "dy": 0
+          }
+        }
+      },
+      "lightComparison": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Slash2\\comparison-source-left-candidate-right-light.png",
+      "darkComparison": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Slash2\\comparison-source-left-candidate-right-dark.png",
+      "notes": "Preserved original large canvas occupancy; down-left blade remains clipped by original bottom edge. Its formerly glow-covered boundary requires visual judgment."
+    },
+    {
+      "action": "S1",
+      "revision": 2,
+      "status": "READY_FOR_INDEPENDENT_REVIEW",
+      "candidate": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\S1\\candidate-r2-512.png",
+      "sha256": "4bd92cde6425804748f405591a88db0e56b4a36ab75f4cf9494054396eeb5139",
+      "sourceSha256": "43c59a32a03d2d1f0b3c6e68dba5195930f6c26136ab0e374b23159954104d15",
+      "size": [
+        512,
+        512
+      ],
+      "alpha": {
+        "mode": "RGBA",
+        "size": [
+          512,
+          512
+        ],
+        "alphaZeroPixels": 242378,
+        "opaquePixels": 14894,
+        "alphaOver32BBox": [
+          120,
+          210,
+          372,
+          389
+        ],
+        "visibleMagentaSpillPixels": 0
+      },
+      "transform": {
+        "canvasScale": 0.4082934609250399,
+        "sourceCanvas": [
+          1254,
+          1254
+        ],
+        "targetCanvas": [
+          512,
+          512
+        ],
+        "translate": [
+          0,
+          0
+        ],
+        "crop": false,
+        "bboxNormalization": false,
+        "originalComposite": false,
+        "interpolation": "whole-canvas Lanczos3"
+      },
+      "pose": {
+        "head": {
+          "originalRegion": [
+            224,
+            215,
+            88,
+            65
+          ],
+          "originalAlphaOver128BBox": [
+            224,
+            215,
+            312,
+            280
+          ],
+          "candidateAlphaOver128BBox": [
+            224,
+            215,
+            312,
+            280
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.3431240597488683,
+            "dx": 0,
+            "dy": 0
+          }
+        },
+        "head_interior": {
+          "originalRegion": [
+            235,
+            223,
+            56,
+            47
+          ],
+          "originalAlphaOver128BBox": [
+            235,
+            223,
+            291,
+            270
+          ],
+          "candidateAlphaOver128BBox": [
+            235,
+            223,
+            291,
+            270
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9066371292517488,
+            "dx": 0,
+            "dy": 0
+          }
+        },
+        "face": {
+          "originalRegion": [
+            236,
+            244,
+            43,
+            32
+          ],
+          "originalAlphaOver128BBox": [
+            236,
+            244,
+            279,
+            276
+          ],
+          "candidateAlphaOver128BBox": [
+            236,
+            244,
+            279,
+            276
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.9360423584601525,
+            "dx": 0,
+            "dy": 0
+          }
+        },
+        "grip": {
+          "originalRegion": [
+            203,
+            276,
+            30,
+            17
+          ],
+          "originalAlphaOver128BBox": [
+            203,
+            276,
+            233,
+            293
+          ],
+          "candidateAlphaOver128BBox": [
+            203,
+            276,
+            233,
+            293
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.2393000403645715,
+            "dx": 2,
+            "dy": 5
+          }
+        },
+        "hand_interior": {
+          "originalRegion": [
+            214,
+            279,
+            14,
+            13
+          ],
+          "originalAlphaOver128BBox": [
+            214,
+            279,
+            228,
+            292
+          ],
+          "candidateAlphaOver128BBox": [
+            214,
+            279,
+            228,
+            292
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.6092919399373439,
+            "dx": 0,
+            "dy": 0
+          }
+        },
+        "right_shoe": {
+          "originalRegion": [
+            334,
+            371,
+            25,
+            19
+          ],
+          "originalAlphaOver128BBox": [
+            334,
+            371,
+            359,
+            389
+          ],
+          "candidateAlphaOver128BBox": [
+            335,
+            371,
+            355,
+            388
+          ],
+          "bestLocalMatchOffset": {
+            "ncc": 0.8788416948636678,
+            "dx": 1,
+            "dy": 0
+          }
+        }
+      },
+      "lightComparison": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\S1\\comparison-r2-source-left-candidate-right-light.png",
+      "darkComparison": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\S1\\comparison-r2-source-left-candidate-right-dark.png",
+      "notes": [
+        "R1 front leg was too straight and original neutral ground shadow missing; r2 uses built-in imagegen only to correct these.",
+        "Source front lower leg/shoe is heavily VFX-occluded. The r2 completion follows the visible bent knee/diagonal shin, but exact hidden original pixels cannot be proven.",
+        "Clean head interior/face/hand interior NCC peaks at (0,0); rear shoe peaks (+1,0). Larger head/grip ROIs overlap removed VFX and their low correlations are not treated as position proof.",
+        "Original picture, r1, full prompts, r2 raw output and import code remain preserved; no crop, translation, bbox fit or original-pixel compositing."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "state": "USER_ACCEPTED_ISOLATED_AND_CONTEXT_ART",
+  "candidate": "slash-candidate-11",
+  "artScale": 0.35,
+  "extraOffset": [
+    0,
+    0,
+    0
+  ],
+  "extraRotation": [
+    0,
+    0,
+    0
+  ],
+  "source_sha256": "24b1d0a29605c90a94c80bcaf0a6e864ad2609a2fca1c94ef4190fc451b10f5d",
+  "brush_sha256": "c805e4729653114577fa4edaf4d4e50688ff3b09ab0d771bf7d31f0b964f0255",
+  "methods": [
+    {
+      "key": "public GameObject CreateSlashPrototype(",
+      "sha256": "abb37dd9bf641030a0a0145ef80bc6e9525e56bc5c83e61927463ca3122597a2"
+    },
+    {
+      "key": "void BuildSlash(",
+      "sha256": "1e51cb3a80994ff0fa7d38400da5dd809179a980467560147ce873bc95e375c6"
+    },
+    {
+      "key": "Texture2D PrepareBrushMask(",
+      "sha256": "a14270f723ee4041b5fd175796561939b64a14b2bce1d4d3c02e0bf2ffbcc51a"
+    },
+    {
+      "key": "Material OwnMaterial(",
+      "sha256": "b06cab4ed740dd920568adcd6ba6ef0f7e995e44eade55f1054667815b25a3f5"
+    },
+    {
+      "key": "static void SetRgb(",
+      "sha256": "eaf9d70d7423a08b5e242318d53c25693086f1e64c68a63437af0d8215e8dc15"
+    },
+    {
+      "key": "Mesh FragmentMesh(",
+      "sha256": "02f7b1e24a197f442f878f127c117780b8090bb0aa491deb15fc1fb6b6d69de8"
+    },
+    {
+      "key": "static void MakeSupport(",
+      "sha256": "b0ef7bc00b0cd024a1ceae74552b9d24e6ba82cb9bd2f2ad22a47cd75f1c1ffc"
+    },
+    {
+      "key": "public static GameObject CloneVisualOnly(",
+      "sha256": "7ad73f2ccdc2cccc24af3df586dbbf0f788e71e0ea7af73237e8a054421120d5"
+    },
+    {
+      "key": "void EmitTide(",
+      "sha256": "88d44d2013844d600908f90893b29436780b79473dcb7509868e336478b2e11d"
+    },
+    {
+      "key": "static void Emit(",
+      "sha256": "77044e88b7ec6888122b0ed0791d59304b205bd4136233494c6509a3cf74b699"
+    },
+    {
+      "key": "public void StopAndClear(",
+      "sha256": "17b3bd2d316572ffca987d05190df98bdf4755943546c390f8e5716bb94bf9e2"
+    }
+  ],
+  "playback_color_surface": "User-accepted platinum code in Step: preserve Main1 0.22 coverage, mapped near-unit body, compensated etched Out, native Main2 HDR, frame0 startDelay=0; Hit-only additions cannot modify these statements."
+}

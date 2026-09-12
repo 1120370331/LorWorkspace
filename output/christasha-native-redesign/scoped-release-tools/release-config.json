@@ -1,0 +1,136 @@
+{
+  "schema": 1,
+  "frozen": true,
+  "baseline_commit": "312fcc18d83f7346239a71d6ed46ac4dcc875fbd",
+  "game_mod": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+  "candidate_directory": "output/christasha-native-redesign/scoped-release-candidate",
+  "expected_installed": {
+    "Assemblies/Steria.dll": "4ba01608ce09fc598e553f2b41a8d0d919b2c64b497620c4ec19706fc1ae7762",
+    "Data/CardInfo.xml": "ab091603d7aa8739e456dd731d01fcf3efa1b1af1c65f30231825b171fcfaeb5"
+  },
+  "baseline_source_supplements": [
+    {
+      "target": "SteriaBuild/HarmonyPatches.cs",
+      "snapshot": "baseline-installed/HarmonyPatches.cs",
+      "sha256": "fc7fb27a07cc74b97a0cb83ca955806863652521dfb168129f7982815f3510b7",
+      "provenance": "Exact checksum from PDB matched to currently installed DLL"
+    },
+    {
+      "target": "SteriaBuild/DiceAttackEffect_Steria_AnhierTextureCombat.cs",
+      "snapshot": "baseline-installed/DiceAttackEffect_Steria_AnhierTextureCombat.cs",
+      "sha256": "6cb5f4f85cd52feb0597539e3832ad11892e4c42fcb3fc7a1cb106104f13e325",
+      "provenance": "Exact checksum from PDB matched to currently installed DLL"
+    },
+    {
+      "target": "SteriaBuild/BehaviourAction_Steria_MemoryConcerto.cs",
+      "snapshot": "baseline-installed/BehaviourAction_Steria_MemoryConcerto.cs",
+      "sha256": "45e8c83afc9ff29fd181e4949a0102477826e1d35f2750ec5605e55673c33c06",
+      "provenance": "Exact checksum from PDB matched to currently installed DLL"
+    }
+  ],
+  "baseline_xml_snapshot": {
+    "snapshot": "baseline-installed/CardInfo.xml",
+    "sha256": "ab091603d7aa8739e456dd731d01fcf3efa1b1af1c65f30231825b171fcfaeb5"
+  },
+  "baseline_xml_preserved_edits": [
+    {
+      "card": "9001004",
+      "die": 0,
+      "attribute": "ActionScript",
+      "before": "",
+      "after": "Steria_MemoryConcerto_Long"
+    },
+    {
+      "card": "9001004",
+      "die": 1,
+      "attribute": "ActionScript",
+      "before": "",
+      "after": "Steria_MemoryConcerto_Medium"
+    },
+    {
+      "card": "9001004",
+      "die": 2,
+      "attribute": "ActionScript",
+      "before": "",
+      "after": "Steria_MemoryConcerto_Final"
+    }
+  ],
+  "overlays": [
+    {
+      "source": "SteriaBuild/ChristashaNativeParticleLibrary.cs",
+      "target": "SteriaBuild/ChristashaNativeParticleLibrary.cs",
+      "sha256": "4c74974a6473b7fd76cd888f69d6b864debbfbb6e709135846826602aed5139b"
+    },
+    {
+      "source": "SteriaBuild/DiceAttackEffect_Steria_ChristashaParticleV2.cs",
+      "target": "SteriaBuild/DiceAttackEffect_Steria_ChristashaParticleV2.cs",
+      "sha256": "eb7754b34a8492c9e9ba45578f9ab9b6750dee9ad1593720d72da6dc2dd279b6"
+    },
+    {
+      "source": "SteriaBuild/BehaviourAction_Steria_ChristashaXiyinV2.cs",
+      "target": "SteriaBuild/BehaviourAction_Steria_ChristashaXiyinV2.cs",
+      "sha256": "9fbe7095d20f2fc10b0b2761e42f8ee37726e022dd9ae4e6586710d0ad10a898"
+    },
+    {
+      "source": "SteriaBuild/FarAreaEffect_Steria_ChristashaXiyinV2.cs",
+      "target": "SteriaBuild/FarAreaEffect_Steria_ChristashaXiyinV2.cs",
+      "sha256": "bdf85c1778a621f6ddd4ce24046e12054e71a5babb15e08a7d8d954ce812acfa"
+    },
+    {
+      "source": "SteriaBuild/ChristashaNativeMassRecipes.cs",
+      "target": "SteriaBuild/ChristashaNativeMassRecipes.cs",
+      "sha256": "0c242d246cafe1fdf00b1c6ebcff0f9f876e857fcc94fe4eb8919fb1a6bee3e0"
+    },
+    {
+      "source": "SteriaBuild/ChristashaNativePierceRecipes.cs",
+      "target": "SteriaBuild/ChristashaNativePierceRecipes.cs",
+      "sha256": "8daf44af350bed76c01279e9deca894b98d0c860718bd67ee1edbe7792689b04"
+    }
+  ],
+  "remove_sources": [
+    "SteriaBuild/ChristashaParticleVisual.cs"
+  ],
+  "registry_edits": [],
+  "xml_edits": [],
+  "project_references": [],
+  "assets": [
+    {
+      "source": "SteriaBuild/VFXSource/ChristashaNative/Assets/tide-brush-imagegen-v1.png",
+      "destination": "Resource/Effects/ChristashaNative/tide-brush-imagegen-v1.png",
+      "sha256": "c805e4729653114577fa4edaf4d4e50688ff3b09ab0d771bf7d31f0b964f0255"
+    },
+    {
+      "source": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha/ClothCustom/Slash.png",
+      "destination": "Resource/CharacterSkin/Christasha/ClothCustom/Slash.png",
+      "sha256": "f15f4de24ebc621eeafaf055224208835825e3b620ed37042898182b6ffefff2"
+    },
+    {
+      "source": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha/ClothCustom/Hit.png",
+      "destination": "Resource/CharacterSkin/Christasha/ClothCustom/Hit.png",
+      "sha256": "96b7d02c141feef0812f2d2ce7e5b83a5d9b0d02cb721dde936a29f7efe6bed1"
+    },
+    {
+      "source": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha/ClothCustom/Penetrate.png",
+      "destination": "Resource/CharacterSkin/Christasha/ClothCustom/Penetrate.png",
+      "sha256": "a675e8d23edc75a9d50681477939ba97607f4387c9672f817b5b340a93bb550b"
+    },
+    {
+      "source": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha/ClothCustom/Slash2.png",
+      "destination": "Resource/CharacterSkin/Christasha/ClothCustom/Slash2.png",
+      "sha256": "a6ab76f107fd9ca107a7769630a4658f9a5b351ade808ff4495a70a29dcb3550"
+    },
+    {
+      "source": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha/ClothCustom/S1.png",
+      "destination": "Resource/CharacterSkin/Christasha/ClothCustom/S1.png",
+      "sha256": "4bd92cde6425804748f405591a88db0e56b4a36ab75f4cf9494054396eeb5139"
+    }
+  ],
+  "retire_files": [
+    "Assemblies/AB/steria_christasha_particle_v2",
+    "Assemblies/AB/steria_christasha_particle_v2.ab",
+    "Resource/AssetBundle/steria_christasha_particle_v2",
+    "Resource/AssetBundle/steria_christasha_particle_v2.ab"
+  ],
+  "pending_inputs": [],
+  "baseline_acceptance": "Main thread accepted commit 312fcc18 + three exact installed-PDB source snapshots + recorded installed XML preservation on this task."
+}

@@ -26,16 +26,23 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
         {
             if (self == null || self.model == null || self.charAppearance == null)
                 throw new InvalidOperationException("missing native self/target appearance");
-            // Native code tests Contains(H/J/Z/G) in the final name segment. The
-            // character name itself contains H; only an isolated suffix is safe.
-            string suffix = PivotAction == ActionDetail.Slash ? "J" : PivotAction == ActionDetail.Hit ? "H" : IsProjectile ? "F" : "Z";
-            gameObject.name = "ChristashaParticleV2_" + suffix;
+            // FX_Script_AttackBasic uses the special-motion pivot and native
+            // scale one. Ordinary DiceAttackEffect.Initialize would instead
+            // select H/J/Z by name and add an unwanted initial 2x multiplier.
+            _self = self.model;
             additionalScale = Vector3.zero;
             offset = Vector2.zero;
             addedDestroyTime = 0f;
-            // Native initialization dereferences target even though melee never
-            // uses it. The self fallback only supplies that required native field.
-            base.Initialize(self, target ?? self, Mathf.Max(.001f, destroyTime));
+            _selfTransform = self.charAppearance.GetSpecialMotionPivot(PivotAction) ?? self.atkEffectRoot;
+            if (_selfTransform == null) throw new InvalidOperationException("missing native special-motion/fallback pivot");
+            gameObject.name = "ChristashaNative_" + Recipe;
+            transform.SetParent(_selfTransform, false);
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+            transform.localScale = Vector3.one;
+            _initializedPos = transform.position;
+            _destroyTime = Mathf.Max(.001f, destroyTime);
+            _elapsed = 0f;
             _targetTransform = target == null ? null : target.atkEffectRoot;
             spr.enabled = false;
             animator.enabled = false;
@@ -44,18 +51,14 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
             _visualTime = 0f;
             if (IsProjectile)
             {
-                // F has no native name branch. The detached root deliberately
-                // excludes actor/map scaling and receives the native roll scale once.
-                _selfTransform = self.charAppearance.GetAtkEffectPivot(ActionDetail.Fire) ?? self.atkEffectRoot;
+                // A projectile uses live Fire world coordinates and a neutral
+                // root. Neither actor/map scaling nor roll power is duplicated.
                 transform.SetParent(null, false);
                 transform.position = _selfTransform.position;
                 transform.rotation = Quaternion.identity;
-                transform.localScale = Vector3.one * 2f;
+                transform.localScale = Vector3.one;
             }
             _visual = ChristashaParticleInstance.CreateLocal(Recipe, transform, Quaternion.identity);
-            // World-authored projectile retains the caller's roll multiplier,
-            // while compensating the native root's initial 2x exactly once.
-            if (IsProjectile && _visual != null) _visual.Root.transform.localScale = Vector3.one * .5f;
             SetLayer(_layerName);
             if (IsProjectile) PositionProjectile(0f);
         }
@@ -69,8 +72,8 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
 
     public override void SetScale(float scaleFactor)
     {
-        base.SetScale(scaleFactor);
-        if (IsProjectile && !_arrived) PositionProjectile(_visualTime);
+        // Matches FX_Script_AttackBasic.SetScale: native particles do not receive
+        // the ordinary sprite effect's (1 + roll) size multiplier.
     }
 
     public override void SetDestroyTime(float destroyTime)
@@ -152,15 +155,24 @@ public sealed class DiceAttackEffect_Steria_ChristashaV2PierceNear : DiceAttackE
 public sealed class DiceAttackEffect_Steria_ChristashaV2PierceFar : DiceAttackEffect_Steria_ChristashaParticleV2
 { protected override string Recipe { get { return "Projectile"; } } protected override ActionDetail PivotAction { get { return ActionDetail.Fire; } } }
 
-/// <summary>Instance ownership shared by dice and mass adapters; cached bundle assets stay shared.</summary>
+/// <summary>Native recipe instances shared by dice/mass adapters; templates and brush stay cached.</summary>
 internal sealed class ChristashaParticleInstance : IDisposable
 {
-    internal const string BundleName = "steria_christasha_particle_v2";
-    private static AssetBundle _bundle;
+    private static ChristashaNativeParticleLibrary _library;
+    private static Texture2D _originalBrush;
     private static bool _loadAttempted;
     private static uint _seed = 73013u;
-    private static readonly Dictionary<string, GameObject> Prefabs = new Dictionary<string, GameObject>();
-    private ChristashaParticleVisual _driver;
+    private static readonly HashSet<string> ReportedFailures = new HashSet<string>();
+    private ChristashaNativeParticlePlayback _driver;
+    private const float SlashArtScale = .35f;
+    // These recipes need independent art calibration; one is an explicit
+    // provisional normalization, not approval to deploy the unfinished recipes.
+    private const float HitArtScale = .35f;
+    private const float PierceArtScale = .35f;
+    private const float ProjectileArtScale = 1f;
+    private const float CastArtScale = 1f;
+    private const float AreaArtScale = 1f;
+    private const float PointArtScale = 1f;
     internal GameObject Root { get; private set; }
     internal float Age { get; private set; }
     internal bool Complete { get { return Root == null || _driver == null || Age >= _driver.Duration; } }
@@ -180,26 +192,39 @@ internal sealed class ChristashaParticleInstance : IDisposable
         ChristashaParticleInstance instance = null;
         try
         {
-            GameObject prefab = GetPrefab(recipe);
-            if (prefab == null) return null;
-            instance = new ChristashaParticleInstance { Root = UnityEngine.Object.Instantiate(prefab) };
-            instance.Root.name = "ChristashaV2_" + recipe;
-            instance.Root.transform.SetParent(parent, false);
+            ChristashaNativeParticleLibrary library = GetLibrary();
+            if (library == null) return null;
+            instance = new ChristashaParticleInstance { Root = library.CreatePrototype(recipe, parent) };
+            instance.Root.name = "ChristashaNative_" + recipe;
             instance.Root.transform.localPosition = position;
             instance.Root.transform.localRotation = rotation;
-            instance.Root.transform.localScale = scale;
-            // The visual driver owns any per-instance material state; the adapter
-            // owns the cloned GameObject and invokes StopAndClear before destruction.
-            instance._driver = ChristashaParticleVisual.Play(instance.Root, NextSeed());
+            instance.Root.transform.localScale = scale * ArtScale(recipe);
             instance.SetLayer("Effect");
-            instance.Root.SetActive(true);
+            // Playback activates the independently owned root after placement.
+            // Instance disposal never destroys the shared library or its templates.
+            instance._driver = ChristashaNativeParticlePlayback.Play(instance.Root, NextSeed());
             return instance;
         }
         catch (Exception error)
         {
             if (instance != null) instance.Dispose();
-            SteriaLogger.LogError("ChristashaParticleV2 instance " + recipe + ": " + error);
+            if (ReportedFailures.Add(recipe)) SteriaLogger.LogError("Christasha native instance " + recipe + ": " + error);
             return null;
+        }
+    }
+
+    private static float ArtScale(string recipe)
+    {
+        switch (recipe)
+        {
+            case "Slash": return SlashArtScale;
+            case "Hit": return HitArtScale;
+            case "Pierce": return PierceArtScale;
+            case "Projectile": return ProjectileArtScale;
+            case "Cast": return CastArtScale;
+            case "Area": return AreaArtScale;
+            case "Point": return PointArtScale;
+            default: throw new ArgumentException("Unknown native recipe: " + recipe, "recipe");
         }
     }
 
@@ -241,32 +266,33 @@ internal sealed class ChristashaParticleInstance : IDisposable
         Root = null;
     }
 
-    private static GameObject GetPrefab(string recipe)
+    private static ChristashaNativeParticleLibrary GetLibrary()
     {
-        GameObject prefab;
-        if (Prefabs.TryGetValue(recipe, out prefab)) return prefab;
-        if (!_loadAttempted)
+        if (_loadAttempted) return _library;
+        _loadAttempted = true;
+        Texture2D brush = null;
+        try
         {
-            _loadAttempted = true;
             string directory = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path));
             string modRoot = Directory.GetParent(directory).FullName;
-            foreach (string relative in new[] { "Resource/AssetBundle/", "Assemblies/AB/" })
+            string path = Path.Combine(modRoot, "Resource", "Effects", "ChristashaNative", "tide-brush-imagegen-v1.png");
+            if (!File.Exists(path)) throw new FileNotFoundException("Christasha native original brush is missing", path);
+            brush = new Texture2D(2, 2, TextureFormat.RGBA32, false, true)
             {
-                foreach (string extension in new[] { "", ".ab" })
-                {
-                    string path = Path.Combine(modRoot, relative + BundleName + extension);
-                    if (!File.Exists(path)) continue;
-                    try { _bundle = AssetBundle.LoadFromFile(path); }
-                    catch (Exception error) { SteriaLogger.LogError("ChristashaParticleV2 bundle: " + error.Message); }
-                    if (_bundle != null) break;
-                }
-                if (_bundle != null) break;
-            }
-            SteriaLogger.Log(_bundle != null ? "ChristashaParticleV2 bundle loaded" : "ChristashaParticleV2 bundle unavailable; combat proceeds without visuals");
+                name = "ChristashaNative_OriginalBrush",
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp
+            };
+            if (!ImageConversion.LoadImage(brush, File.ReadAllBytes(path), false)) throw new InvalidDataException("Cannot decode Christasha native original brush: " + path);
+            _library = new ChristashaNativeParticleLibrary(resource => Resources.Load<GameObject>(resource), brush);
+            _originalBrush = brush;
+            SteriaLogger.Log("Christasha native library initialized from installed game resources and original brush");
         }
-        if (_bundle != null) prefab = _bundle.LoadAsset<GameObject>("ChristashaV2_" + recipe);
-        Prefabs[recipe] = prefab;
-        if (prefab == null) SteriaLogger.LogError("ChristashaParticleV2 missing prefab: " + recipe);
-        return prefab;
+        catch (Exception error)
+        {
+            if (brush != null) UnityEngine.Object.Destroy(brush);
+            SteriaLogger.LogError("Christasha native library unavailable; combat continues without visual: " + error);
+        }
+        return _library;
     }
 }

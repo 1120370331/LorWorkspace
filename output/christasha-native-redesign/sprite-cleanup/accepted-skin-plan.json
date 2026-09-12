@@ -1,0 +1,62 @@
+{
+  "state": "APPLIED_TO_WORKSPACE_AND_DEPLOYED",
+  "actions": [
+    {
+      "action": "Slash",
+      "accepted_candidate": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Slash\\candidate-r3-512.png",
+      "candidate_sha256": "f15f4de24ebc621eeafaf055224208835825e3b620ed37042898182b6ffefff2",
+      "workspace_target": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Slash.png",
+      "workspace_before_sha256": "25da516631c84182e4a6c5e2b52c15863c8fcef44bbea75c27ed47969c572545",
+      "installed_relative": "Resource/CharacterSkin/Christasha/ClothCustom/Slash.png",
+      "installed_before_sha256": "25da516631c84182e4a6c5e2b52c15863c8fcef44bbea75c27ed47969c572545",
+      "decision": "main inspected; independent visual PASS; applied to workspace and deployment payload"
+    },
+    {
+      "action": "Hit",
+      "accepted_candidate": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Hit\\candidate-r1-512.png",
+      "candidate_sha256": "96b7d02c141feef0812f2d2ce7e5b83a5d9b0d02cb721dde936a29f7efe6bed1",
+      "workspace_target": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Hit.png",
+      "workspace_before_sha256": "668e962c9f7f9ad17e56e567b226ce983488cf5b5f1ced70a2b95e5433082d82",
+      "installed_relative": "Resource/CharacterSkin/Christasha/ClothCustom/Hit.png",
+      "installed_before_sha256": "668e962c9f7f9ad17e56e567b226ce983488cf5b5f1ced70a2b95e5433082d82",
+      "decision": "main inspected; independent visual PASS; applied to workspace and deployment payload"
+    },
+    {
+      "action": "Penetrate",
+      "accepted_candidate": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Penetrate\\candidate-r1-512.png",
+      "candidate_sha256": "a675e8d23edc75a9d50681477939ba97607f4387c9672f817b5b340a93bb550b",
+      "workspace_target": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Penetrate.png",
+      "workspace_before_sha256": "4019c2af05a1c138a5ecf3f993d1a43248ee756d4066d5cb78830191e2a9004a",
+      "installed_relative": "Resource/CharacterSkin/Christasha/ClothCustom/Penetrate.png",
+      "installed_before_sha256": "4019c2af05a1c138a5ecf3f993d1a43248ee756d4066d5cb78830191e2a9004a",
+      "decision": "main inspected; independent visual PASS; applied to workspace and deployment payload"
+    },
+    {
+      "action": "Slash2",
+      "accepted_candidate": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Slash2\\candidate-r1-512.png",
+      "candidate_sha256": "a6ab76f107fd9ca107a7769630a4658f9a5b351ade808ff4495a70a29dcb3550",
+      "workspace_target": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Slash2.png",
+      "workspace_before_sha256": "7c49adcbe29fd68dd64922b54beaa4c147e827cd310bda3555ec084c6d612215",
+      "installed_relative": "Resource/CharacterSkin/Christasha/ClothCustom/Slash2.png",
+      "installed_before_sha256": "7c49adcbe29fd68dd64922b54beaa4c147e827cd310bda3555ec084c6d612215",
+      "decision": "main inspected; independent visual PASS; applied to workspace and deployment payload"
+    },
+    {
+      "action": "S1",
+      "accepted_candidate": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\S1\\candidate-r2-512.png",
+      "candidate_sha256": "4bd92cde6425804748f405591a88db0e56b4a36ab75f4cf9494054396eeb5139",
+      "workspace_target": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\S1.png",
+      "workspace_before_sha256": "43c59a32a03d2d1f0b3c6e68dba5195930f6c26136ab0e374b23159954104d15",
+      "installed_relative": "Resource/CharacterSkin/Christasha/ClothCustom/S1.png",
+      "installed_before_sha256": "43c59a32a03d2d1f0b3c6e68dba5195930f6c26136ab0e374b23159954104d15",
+      "decision": "main inspected; independent visual PASS; applied to workspace and deployment payload"
+    }
+  ],
+  "preserve": [
+    "512x512 canvas",
+    "existing ModInfo.Xml and pivots",
+    "all other character assets"
+  ],
+  "changes_applied": false,
+  "deploymentReceipt": "output/christasha-native-redesign/scoped-release-candidate/deployments/20260912T180100-24e8f2ec/receipt.json"
+}

@@ -42,7 +42,7 @@ public sealed class FarAreaEffect_Steria_ChristashaXiyinV2 : FarAreaEffect
             Transform facing = self.view.characterRotationCenter ?? self.view.transform;
             Vector3 left = facing.TransformPoint(new Vector3(-1f, 0f, 0f)) - facing.position;
             // Flip about Y, never Z: the three rising strings stay above the floor.
-            _castRotation = Quaternion.Euler(0f, left.x > 0f ? 180f : 0f, 0f);
+            _castRotation = Quaternion.Euler(0f, left.x > 0f ? 0f : 180f, 0f);
             ChristashaParticleInstance cast = ChristashaParticleInstance.CreateWorld("Cast", _castPosition, _castRotation, Vector3.one);
             Add(cast);
             // Missing visual resources must not hold the manager's pre-damage gate.
@@ -127,7 +127,7 @@ public sealed class FarAreaEffect_Steria_ChristashaXiyinV2 : FarAreaEffect
         // This is an affected-area cue, not a success cue: the complete native
         // victim extent is used even when every defender wins their clash.
         Vector3 center = new Vector3((minX + maxX) * .5f, ground, _castPosition.z);
-        Vector3 scale = new Vector3(Mathf.Max(1f, (maxX - minX + 2f) / 13f), 1f, 1f);
+        Vector3 scale = new Vector3(Mathf.Max(1f, (maxX - minX + 2f) / Steria.Vfx.ChristashaNativeMassRecipes.AreaDesignWidth), 1f, 1f);
         Add(ChristashaParticleInstance.CreateWorld("Area", center, _castRotation, scale));
     }
 

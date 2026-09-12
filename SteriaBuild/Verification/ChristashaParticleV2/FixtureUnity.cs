@@ -84,4 +84,24 @@ namespace UnityEngine
  public static class Time{public static float deltaTime=1f/60;}
 }
 
-namespace UnityEngine { public class AssetBundle:Object { public static AssetBundle LoadFromFile(string path)=>new AssetBundle(); public T LoadAsset<T>(string name) where T:Object =>(T)(Object)new GameObject(name); } public static class Debug { public static void LogError(string text){} } }
+namespace UnityEngine
+{
+ public enum TextureFormat { RGBA32 }
+ public enum FilterMode { Bilinear }
+ public enum TextureWrapMode { Clamp }
+ public class Texture2D:Object
+ {
+  public readonly bool linear,mipChain;public bool readable=true;public FilterMode filterMode;public TextureWrapMode wrapMode;
+  public Texture2D(int w,int h,TextureFormat format,bool mipChain,bool linear){this.mipChain=mipChain;this.linear=linear;}
+ }
+ public static class ImageConversion
+ {
+  public static bool LoadImage(Texture2D texture,byte[] bytes,bool markNonReadable){texture.readable=!markNonReadable;return bytes.Length>0;}
+ }
+ public static class Resources
+ {
+  public static bool Missing;public static readonly List<string> Requests=new List<string>();
+  public static T Load<T>(string path) where T:Object {Requests.Add(path);return Missing?null:(T)(Object)new GameObject(path);}
+ }
+ public static class Debug { public static void LogError(string text){} }
+}

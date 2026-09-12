@@ -1,0 +1,71 @@
+{
+  "status": "DEPLOYED_VERIFIED",
+  "game_mod": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+  "backup_directory": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\scoped-release-candidate\\deployments\\20260912T180100-24e8f2ec",
+  "config_sha256": "e1e26723f3210fb3b18c61c60e76d50807c95a7e5a237695d54c78b3bb903b26",
+  "operations": [
+    {
+      "relative": "Resource/Effects/ChristashaNative/tide-brush-imagegen-v1.png",
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\scoped-release-candidate\\candidate\\package\\Resource\\Effects\\ChristashaNative\\tide-brush-imagegen-v1.png",
+      "before_sha256": null,
+      "after_sha256": "c805e4729653114577fa4edaf4d4e50688ff3b09ab0d771bf7d31f0b964f0255",
+      "attempted": true
+    },
+    {
+      "relative": "Resource/CharacterSkin/Christasha/ClothCustom/Slash.png",
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\scoped-release-candidate\\candidate\\package\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Slash.png",
+      "before_sha256": "25da516631c84182e4a6c5e2b52c15863c8fcef44bbea75c27ed47969c572545",
+      "after_sha256": "f15f4de24ebc621eeafaf055224208835825e3b620ed37042898182b6ffefff2",
+      "attempted": true
+    },
+    {
+      "relative": "Resource/CharacterSkin/Christasha/ClothCustom/Hit.png",
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\scoped-release-candidate\\candidate\\package\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Hit.png",
+      "before_sha256": "668e962c9f7f9ad17e56e567b226ce983488cf5b5f1ced70a2b95e5433082d82",
+      "after_sha256": "96b7d02c141feef0812f2d2ce7e5b83a5d9b0d02cb721dde936a29f7efe6bed1",
+      "attempted": true
+    },
+    {
+      "relative": "Resource/CharacterSkin/Christasha/ClothCustom/Penetrate.png",
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\scoped-release-candidate\\candidate\\package\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Penetrate.png",
+      "before_sha256": "4019c2af05a1c138a5ecf3f993d1a43248ee756d4066d5cb78830191e2a9004a",
+      "after_sha256": "a675e8d23edc75a9d50681477939ba97607f4387c9672f817b5b340a93bb550b",
+      "attempted": true
+    },
+    {
+      "relative": "Resource/CharacterSkin/Christasha/ClothCustom/Slash2.png",
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\scoped-release-candidate\\candidate\\package\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Slash2.png",
+      "before_sha256": "7c49adcbe29fd68dd64922b54beaa4c147e827cd310bda3555ec084c6d612215",
+      "after_sha256": "a6ab76f107fd9ca107a7769630a4658f9a5b351ade808ff4495a70a29dcb3550",
+      "attempted": true
+    },
+    {
+      "relative": "Resource/CharacterSkin/Christasha/ClothCustom/S1.png",
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\scoped-release-candidate\\candidate\\package\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\S1.png",
+      "before_sha256": "43c59a32a03d2d1f0b3c6e68dba5195930f6c26136ab0e374b23159954104d15",
+      "after_sha256": "4bd92cde6425804748f405591a88db0e56b4a36ab75f4cf9494054396eeb5139",
+      "attempted": true
+    },
+    {
+      "relative": "Data/CardInfo.xml",
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\scoped-release-candidate\\candidate\\package\\Data\\CardInfo.xml",
+      "before_sha256": "ab091603d7aa8739e456dd731d01fcf3efa1b1af1c65f30231825b171fcfaeb5",
+      "after_sha256": "ab091603d7aa8739e456dd731d01fcf3efa1b1af1c65f30231825b171fcfaeb5",
+      "attempted": true
+    },
+    {
+      "relative": "Assemblies/Steria.dll",
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\scoped-release-candidate\\candidate\\SteriaBuild\\bin\\Release\\net472\\Steria.dll",
+      "before_sha256": "4ba01608ce09fc598e553f2b41a8d0d919b2c64b497620c4ec19706fc1ae7762",
+      "after_sha256": "7208d473ce2ccca39e607fb0fee360da4b16d82a371cd9857e4f0725cda4d5f0",
+      "attempted": true
+    },
+    {
+      "relative": "Assemblies/AB/steria_christasha_particle_v2",
+      "source": null,
+      "before_sha256": "a0948f97682402b5e50ff3ca38d1f67e0d86a61c523c59b717830ffcf231f690",
+      "after_sha256": null,
+      "attempted": true
+    }
+  ]
+}

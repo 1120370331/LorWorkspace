@@ -30,11 +30,16 @@ internal static class RunContracts
 
     private static void Prefabs(bool missing = false)
     {
-        var prefabs = (Dictionary<string, GameObject>)typeof(ChristashaParticleInstance).GetField("Prefabs", Fields).GetValue(null);
-        prefabs.Clear();
-        foreach (string recipe in new[] { "Slash", "Hit", "Pierce", "Cast", "Area", "Point", "Projectile" })
-            prefabs[recipe] = missing ? null : new GameObject("ChristashaV2_" + recipe);
-        typeof(ChristashaParticleInstance).GetField("_loadAttempted", Fields).SetValue(null, true);
+        Resources.Missing = missing;
+        ChristashaNativeParticleLibrary.Unsupported.Clear();
+        typeof(ChristashaParticleInstance).GetField("_library", Fields).SetValue(null, null);
+        typeof(ChristashaParticleInstance).GetField("_loadAttempted", Fields).SetValue(null, false);
+        // Recording Texture2D/ImageConversion boundary checks loader flags without
+        // pretending these bytes are a decoded production brush or a GPU test.
+        string directory = Path.GetDirectoryName(typeof(RunContracts).Assembly.Location);
+        string brush = Path.Combine(Directory.GetParent(directory).FullName, "Resource", "Effects", "ChristashaNative", "tide-brush-imagegen-v1.png");
+        Directory.CreateDirectory(Path.GetDirectoryName(brush));
+        File.WriteAllBytes(brush, new byte[] { 1 });
     }
 
     private static BattleUnitView Actor(float x, float map = 3f, bool right = false)
@@ -79,15 +84,20 @@ internal static class RunContracts
     {
         foreach (bool right in new[] { false, true })
         foreach (float map in new[] { 3f, 2.25f })
-        foreach (var item in new[] { new { kind = "SlashH", action = ActionDetail.Slash }, new { kind = "SlashV", action = ActionDetail.Slash }, new { kind = "Hit", action = ActionDetail.Hit }, new { kind = "PierceNear", action = ActionDetail.Penetrate } })
+        foreach (var item in new[] { new { kind = "SlashH", action = ActionDetail.Slash }, new { kind = "SlashV", action = ActionDetail.Slash }, new { kind = "Hit", action = ActionDetail.Hit } })
         {
             var owner = Actor(right ? -5 : 5, map, right);
             var target = Actor(right ? 8 : -8, map, !right);
             DiceAttackEffect effect = Dice(item.kind, owner, target, 1f);
-            Transform pivot = owner.charAppearance.GetAtkEffectPivot(item.action);
-            Check(effect.transform.parent == pivot && Close(effect.transform.TransformPoint(Vector3.right), pivot.TransformPoint(Vector3.right * 4f)), item.kind + " full pivot matrix, one mirror map=" + map + " right=" + right);
+            Transform pivot = owner.charAppearance.GetSpecialMotionPivot(item.action);
+            Check(effect.transform.parent == pivot && Close(effect.transform.TransformPoint(Vector3.right), pivot.TransformPoint(Vector3.right)), item.kind + " native special/fallback pivot matrix at scale one, one mirror map=" + map + " right=" + right);
             Check(!effect.GetComponent<SpriteRenderer>().enabled && !effect.GetComponent<Animator>().enabled && !effect.HasDamagedEffect, item.kind + " native empty renderers disabled and result ownership preserved");
-            var visual = ChristashaParticleVisual.Started.Last();
+            var visual = ChristashaNativeParticlePlayback.Started.Last();
+            float artScale = (item.action == ActionDetail.Slash || item.action == ActionDetail.Hit || item.action == ActionDetail.Penetrate) ? .35f : 1f;
+            Check(Close(visual.Root.transform.TransformPoint(Vector3.right), pivot.TransformPoint(Vector3.right * artScale)),
+                item.kind + " independent art normalization=" + artScale);
+            effect.SetScale(4f);
+            Check(Close(effect.transform.TransformPoint(Vector3.right), pivot.TransformPoint(Vector3.right)), "native SetScale remains a no-op across repeated roll inputs");
             Check(visual.Root.layer == 8 && visual.Root.GetComponent<ParticleSystemRenderer>().sortingLayerName == "Particle", "Effect object layer and separate Particle sorting layer");
             Tick(effect, .2f);
             effect.SetDestroyTime(2f);
@@ -103,15 +113,33 @@ internal static class RunContracts
         {
             var owner = Actor(right ? -5f : 5f, 3f, right);
             var target = Actor(right ? 8f : -8f, 3f, !right);
+            // The default branch above deliberately uses fallback atkEffectRoot,
+            // not the different ordinary J pivot. Here prove explicit special pivots too.
+            owner.charAppearance.specialPivots[ActionDetail.Slash] = owner.charAppearance.atkEffectPivot_J;
             var horizontal = Dice("SlashH", owner, target, 1f);
-            var h = ChristashaParticleVisual.Started.Last().Root;
+            var h = ChristashaNativeParticlePlayback.Started.Last().Root;
             var vertical = Dice("SlashV", owner, target, 1f);
-            var v = ChristashaParticleVisual.Started.Last().Root;
+            var v = ChristashaNativeParticlePlayback.Started.Last().Root;
             Check(h.name == v.name && new[] { Vector3.zero, Vector3.right, new Vector3(0f, 1f, 0f) }.All(point => Close(h.transform.TransformPoint(point), v.transform.TransformPoint(point))),
                 "SlashH/V share accepted Slash posture with no extra rotation, right=" + right);
+            Check(horizontal.transform.parent == owner.charAppearance.atkEffectPivot_J &&
+                Close(h.transform.TransformPoint(Vector3.right), owner.charAppearance.atkEffectPivot_J.TransformPoint(Vector3.right * .35f)),
+                "explicit special-motion pivot keeps full rotated/scaled parent matrix, right=" + right);
             UnityEngine.Object.Destroy(horizontal.gameObject);
             UnityEngine.Object.Destroy(vertical.gameObject);
         }
+        var library = ChristashaNativeParticleLibrary.Created.Last();
+        Check(!library.Disposed && library.Brush != null && library.Brush.linear && !library.Brush.mipChain && library.Brush.readable && library.Brush.wrapMode == TextureWrapMode.Clamp,
+            "instance cleanup preserves cached library/brush; loader uses linear readable Clamp texture without mips");
+        Check(ChristashaNativeParticleLibrary.Created.Count == 1 && Resources.Requests.Count > 0,
+            "instances share one native library and resolve through game Resources");
+        int started = ChristashaNativeParticlePlayback.Started.Count;
+        ChristashaNativeParticleLibrary.Unsupported.Add("Pierce");
+        var unsupported = Dice("PierceNear", Actor(5), Actor(-5));
+        Check(ChristashaNativeParticlePlayback.Started.Count == started, "unsupported native recipe produces no substitute visual or old bundle fallback");
+        Tick(unsupported, 1f);
+        Check(unsupported.gameObject == null, "unsupported recipe retains caller-owned cleanup deadline");
+        ChristashaNativeParticleLibrary.Unsupported.Clear();
     }
 
     private static void Projectile()
@@ -120,22 +148,22 @@ internal static class RunContracts
         {
             var owner = Actor(right ? -12 : 12, 3, right);
             var target = Actor(right ? 10 : -10, 2.25f, !right);
-            int first = ChristashaParticleVisual.Started.Count;
+            int first = ChristashaNativeParticlePlayback.Started.Count;
             var effect = Dice("PierceFar", owner, target, 1f);
-            var visual = ChristashaParticleVisual.Started.Last();
-            Check(effect.transform.parent == null && Close(visual.Root.transform.position, owner.charAppearance.atkEffectPivot_F.position), "F pivot explicitly chosen; neutral projectile root");
-            Check(Math.Abs(Math.Abs(visual.Root.transform.lossyScale.x) - 2f) < .0001f, "world projectile excludes actor map scale and keeps roll once");
+            var visual = ChristashaNativeParticlePlayback.Started.Last();
+            Check(effect.transform.parent == null && Close(visual.Root.transform.position, owner.charAppearance.GetSpecialMotionPivot(ActionDetail.Fire).position), "F pivot explicitly chosen; neutral projectile root");
+            Check(Math.Abs(Math.Abs(visual.Root.transform.lossyScale.x) - 1f) < .0001f, "world projectile excludes actor map scale and ignores roll");
             owner.transform.position += new Vector3(2, 1, 0);
             target.transform.position += new Vector3(-3, 4, 0);
             Tick(effect, .13f);
-            Check(Close(visual.Root.transform.position, Vector3.Lerp(owner.charAppearance.atkEffectPivot_F.position, target.atkEffectRoot.position, .5f)), "projectile uses both live world endpoints including moved/sloped target");
+            Check(Close(visual.Root.transform.position, Vector3.Lerp(owner.charAppearance.GetSpecialMotionPivot(ActionDetail.Fire).position, target.atkEffectRoot.position, .5f)), "projectile uses both live world endpoints including moved/sloped target");
             Tick(effect, .13f);
-            Check(visual.Stopped && ChristashaParticleVisual.Started.Count == first + 1, "arrival cleans projectile without inventing confirmed-hit Point");
+            Check(visual.Stopped && ChristashaNativeParticlePlayback.Started.Count == first + 1, "arrival cleans projectile without inventing confirmed-hit Point");
             UnityEngine.Object.Destroy(effect.gameObject);
         }
         var removedTarget = Actor(-5);
         var interrupted = Dice("PierceFar", Actor(5), removedTarget);
-        var interruptedVisual = ChristashaParticleVisual.Started.Last();
+        var interruptedVisual = ChristashaNativeParticlePlayback.Started.Last();
         UnityEngine.Object.Destroy(removedTarget.gameObject);
         Tick(interrupted, .05f);
         Check(interruptedVisual.Stopped, "destroyed projectile target clears owned projectile");
@@ -161,7 +189,7 @@ internal static class RunContracts
     {
         foreach (bool right in new[] { false, true })
         {
-            int first = ChristashaParticleVisual.Started.Count;
+            int first = ChristashaNativeParticlePlayback.Started.Count;
             var owner = Actor(right ? -22 : 22, 3, right);
             var success = Actor(right ? 4 : -4, 2.25f, !right);
             var defense = Actor(right ? 20 : -20, 3, !right);
@@ -171,21 +199,21 @@ internal static class RunContracts
             var effect = StartMass(manager);
             Check(effect.isRunning && !effect.HasIndependentAction, "mass starts native gate, native manager owns combat");
             Tick(effect, .31f); manager.Tick(.31f);
-            var area = ChristashaParticleVisual.Started.Last();
-            Check(area.Root.name == "ChristashaV2_Area" && effect.isRunning, "one Area begins at .3 before .5 release");
-            Check(Close(area.Root.transform.position, new Vector3(right ? -1f : 1f, 0f, 0f)) && Math.Abs(area.Root.transform.localScale.x - 44f / 13f) < .0001f, "area world extent covers caster and every native victim including defenses");
+            var area = ChristashaNativeParticlePlayback.Started.Last();
+            Check(area.Root.name == "ChristashaNative_Area" && effect.isRunning, "one Area begins at .3 before .5 release");
+            Check(Close(area.Root.transform.position, new Vector3(right ? -1f : 1f, 0f, 0f)) && Math.Abs(area.Root.transform.localScale.x - 44f / ChristashaNativeMassRecipes.AreaDesignWidth) < .0001f, "area world extent covers caster and every native victim including defenses");
             Check(area.Root.transform.TransformPoint(new Vector3(0, 1, 0)).y > area.Root.transform.position.y, "area facing mirror preserves upward axis");
             success.transform.position += new Vector3(1f, 0f, 0f);
             Tick(effect, .20f); manager.Tick(.20f);
             Check(!effect.isRunning && success.model.damageCalls == 1 && manager._actionPreDelay == 0f, "own .5 release gate controls native callback without default one-second delay");
-            var points = ChristashaParticleVisual.Started.Skip(first).Where(x => x.Root.name == "ChristashaV2_Point").ToArray();
+            var points = ChristashaNativeParticlePlayback.Started.Skip(first).Where(x => x.Root.name == "ChristashaNative_Point").ToArray();
             Check(success.model.damageCalls == 1 && defense.model.damageCalls == 0 && points.Length == 1, "real native ActionPhase settles success once and suppresses defended Point");
             Check(Close(points[0].Root.transform.position, success.atkEffectRoot.position) && Close(points[0].Root.transform.localScale, Vector3.one), "Point uses successful target's callback-time world point without negative/map scale");
             effect.GiveDamageFromManager(new List<BattleUnitModel> { success.model, success.model });
-            Check(ChristashaParticleVisual.Started.Count == first + 3, "duplicate callback does not spawn or replay points");
+            Check(ChristashaNativeParticlePlayback.Started.Count == first + 3, "duplicate callback does not spawn or replay points");
             Tick(effect, .7f); manager.Tick(.7f);
             Check(effect.IsDoneEffect && manager._phase == BattleFarAreaPlayManager.Phase.RollDice && owner.model.currentDiceAction.currentBehavior.endCalls == 1, "native manager reaches RollDice after visual tail without timeout");
-            Check(ChristashaParticleVisual.Started.Skip(first).All(x => x.Stopped && x.Root == null), "mass releases all cast/area/point instance ownership");
+            Check(ChristashaNativeParticlePlayback.Started.Skip(first).All(x => x.Stopped && x.Root == null), "mass releases all cast/area/point instance ownership");
             manager.NextCardNativeResetFixture();
             Check(manager._actionPreDelay == 1f && manager._actionPostDelay == .5f, "native Start/End reset assignments restore next-card default timing");
         }
@@ -199,19 +227,19 @@ internal static class RunContracts
         for (int dice = 0; dice < 3; dice++)
         {
             owner.model.currentDiceAction.currentBehavior = new BattleDiceBehavior();
-            int first = ChristashaParticleVisual.Started.Count;
+            int first = ChristashaNativeParticlePlayback.Started.Count;
             var manager = Manager(owner, defense);
             var effect = StartMass(manager);
             for (int frame = 0; frame < 105; frame++) { Tick(effect, 1f / 60f); manager.Tick(1f / 60f); }
             Check(effect.IsDoneEffect && manager._phase == BattleFarAreaPlayManager.Phase.RollDice, "copied mass dice " + dice + " has independent releasable lifetime");
-            Check(ChristashaParticleVisual.Started.Skip(first).Count() == 2 && defense.model.damageCalls == 0, "all defended: cast and one area remain; zero success points; finishes");
+            Check(ChristashaNativeParticlePlayback.Started.Skip(first).Count() == 2 && defense.model.damageCalls == 0, "all defended: cast and one area remain; zero success points; finishes");
         }
         var units = Enumerable.Range(0, 20).Select(i => Actor(-i - 1).model).ToList();
         var many = StartMass(Manager(owner));
-        int start = ChristashaParticleVisual.Started.Count;
+        int start = ChristashaNativeParticlePlayback.Started.Count;
         units.Insert(0, units[0]);
         many.GiveDamageFromManager(units);
-        Check(ChristashaParticleVisual.Started.Skip(start).Count(x => x.Root.name.EndsWith("Point")) == 16, "unique successful targets capped at sixteen despite duplicated entries");
+        Check(ChristashaNativeParticlePlayback.Started.Skip(start).Count(x => x.Root.name.EndsWith("Point")) == 16, "unique successful targets capped at sixteen despite duplicated entries");
         Tick(many, 1.5f);
         var empty = StartMass(Manager(owner));
         empty.GiveDamageFromManager(null);
@@ -224,7 +252,7 @@ internal static class RunContracts
         foreach (string mode in new[] { "owner-dead", "owner-hidden", "card-changed", "dice-changed", "effect-disabled", "effect-destroyed", "no-callback" })
         {
             var owner = Actor(5);
-            int first = ChristashaParticleVisual.Started.Count;
+            int first = ChristashaNativeParticlePlayback.Started.Count;
             var effect = StartMass(Manager(owner));
             if (mode == "owner-dead") owner.model.dead = true;
             if (mode == "owner-hidden") owner.gameObject.SetActive(false);
@@ -233,7 +261,7 @@ internal static class RunContracts
             if (mode == "effect-disabled") effect.gameObject.SetActive(false);
             if (mode == "effect-destroyed") UnityEngine.Object.Destroy(effect.gameObject);
             Tick(effect, mode == "no-callback" ? 1.81f : .01f);
-            Check(effect.IsDoneEffect && !effect.isRunning && ChristashaParticleVisual.Started.Skip(first).All(x => x.Stopped), mode + " cannot block native manager and clears all owned instances");
+            Check(effect.IsDoneEffect && !effect.isRunning && ChristashaNativeParticlePlayback.Started.Skip(first).All(x => x.Stopped), mode + " cannot block native manager and clears all owned instances");
         }
         Prefabs(true);
         var missingOwner = Actor(5);

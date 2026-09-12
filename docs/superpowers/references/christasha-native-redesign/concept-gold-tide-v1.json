@@ -1,0 +1,14 @@
+{
+  "kind": "imagegen concept / artistic target only, not implementation or a runtime screenshot",
+  "image": "concept-gold-tide-v1.png",
+  "sha256": "84452c0a38287e5e6634b579b4ceff1ce789542fa1c7b3ad61120c0c44dc2120",
+  "prompt": "concept-gold-tide-v1-prompt.txt",
+  "tool": "built-in image_gen",
+  "original_output": "C:/Users/rog/.codex/generated_images/01a094f6-a0f9-7673-b5c8-ebc5d783e8d1/exec-61aeab1e-6484-44a3-b03b-daabf4faaf45.png",
+  "references": [
+    "SteriaBuild/VFXSource/NativeAttackReference/references/all/images/Sprite/_____resources.assets_23432.png",
+    "SteriaBuild/VFXSource/NativeAttackReference/references/all/images/Sprite/_____resources.assets_23760.png",
+    "SteriaBuild/SteriaModFolder/Resource/CombatPageArtwork/汐音：光耀万海.jpg"
+  ],
+  "purpose": "Calibrate sharp broken brushwork, negative space, explosive contrast and gold/ivory tidal identity while native assets and actual motion remain independently verified."
+}

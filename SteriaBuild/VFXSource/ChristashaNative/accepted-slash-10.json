@@ -1,0 +1,19 @@
+{
+  "state": "independent-isolated-art-PASS-main-accepted",
+  "candidate": "slash-candidate-10",
+  "api": "CreateSlashPrototype raw native units",
+  "files": [
+    {
+      "path": "SteriaBuild\\ChristashaNativeParticleLibrary.cs",
+      "sha256": "d56de95bf99c7d99208deb4a31be2670f203014b5b37a446f4c0e12bb30eb136"
+    },
+    {
+      "path": "SteriaBuild\\VFXSource\\ChristashaNative\\Assets\\tide-brush-imagegen-v1.png",
+      "sha256": "c805e4729653114577fa4edaf4d4e50688ff3b09ab0d771bf7d31f0b964f0255"
+    },
+    {
+      "path": "SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-10\\candidate-manifest.json",
+      "sha256": "0b0a0cae01dae2bd678cce809b98da62b57640c583b43b8b30c0f59ba208974e"
+    }
+  ]
+}

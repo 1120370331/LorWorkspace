@@ -1,0 +1,167 @@
+{
+  "scope": "Analytic unweighted cubic Hermite integration of the serialized ParticleSystem RotationModule only at simulationSpeed=1; not screen sweep angle and not Animator-composed runtime playback.",
+  "systems": [
+    {
+      "name": "Main_Trail1",
+      "particle_source": "metadata/ParticleSystem/resources.assets_70149.json",
+      "lifetime": 0.699999988079071,
+      "initial_radians_per_second": 61.086524963378906,
+      "curve_keys": [
+        {
+          "time": 0.0,
+          "value": 1.0,
+          "inSlope": -4.115437984466553,
+          "outSlope": -4.115437984466553,
+          "weightedMode": 0,
+          "inWeight": 0.0,
+          "outWeight": 0.3333333432674408
+        },
+        {
+          "time": 0.2309383749961853,
+          "value": 0.04958741366863251,
+          "inSlope": -0.07423404604196548,
+          "outSlope": -0.07423404604196548,
+          "weightedMode": 0,
+          "inWeight": 0.3333333432674408,
+          "outWeight": 1.0
+        },
+        {
+          "time": 1.0,
+          "value": 0.0,
+          "inSlope": 0.0,
+          "outSlope": 0.0,
+          "weightedMode": 0,
+          "inWeight": 0.3333333432674408,
+          "outWeight": 0.3333333432674408
+        }
+      ],
+      "samples": [
+        {
+          "seconds": 0,
+          "module_accumulated_z_degrees": 0.0
+        },
+        {
+          "seconds": 0.017,
+          "module_accumulated_z_degrees": 56.33804436083661
+        },
+        {
+          "seconds": 0.05,
+          "module_accumulated_z_degrees": 145.27858829246307
+        },
+        {
+          "seconds": 0.1,
+          "module_accumulated_z_degrees": 224.77965532230706
+        },
+        {
+          "seconds": 0.15,
+          "module_accumulated_z_degrees": 250.74744868259754
+        },
+        {
+          "seconds": 0.2,
+          "module_accumulated_z_degrees": 259.29870069537094
+        },
+        {
+          "seconds": 0.25,
+          "module_accumulated_z_degrees": 266.7266760776533
+        },
+        {
+          "seconds": 0.35,
+          "module_accumulated_z_degrees": 278.3959128488646
+        },
+        {
+          "seconds": 0.5,
+          "module_accumulated_z_degrees": 288.10173801112
+        },
+        {
+          "seconds": 0.6,
+          "module_accumulated_z_degrees": 290.3309282745964
+        },
+        {
+          "seconds": 0.7,
+          "module_accumulated_z_degrees": 290.6763577613321
+        }
+      ]
+    },
+    {
+      "name": "Main_Trail2",
+      "particle_source": "metadata/ParticleSystem/resources.assets_70147.json",
+      "lifetime": 0.6000000238418579,
+      "initial_radians_per_second": 26.17993927001953,
+      "curve_keys": [
+        {
+          "time": 0.0,
+          "value": 1.0,
+          "inSlope": -2.0287790298461914,
+          "outSlope": -2.0287790298461914,
+          "weightedMode": 0,
+          "inWeight": 0.0,
+          "outWeight": 0.3333333432674408
+        },
+        {
+          "time": 0.41143798828125,
+          "value": 0.165283203125,
+          "inSlope": -0.8277689218521118,
+          "outSlope": -0.8277689218521118,
+          "weightedMode": 0,
+          "inWeight": 0.3333333432674408,
+          "outWeight": 0.3392558693885803
+        },
+        {
+          "time": 1.0,
+          "value": 0.0,
+          "inSlope": 0.0,
+          "outSlope": 0.0,
+          "weightedMode": 0,
+          "inWeight": 0.3333333432674408,
+          "outWeight": 0.0
+        }
+      ],
+      "samples": [
+        {
+          "seconds": 0,
+          "module_accumulated_z_degrees": 0.0
+        },
+        {
+          "seconds": 0.017,
+          "module_accumulated_z_degrees": 24.748214322317814
+        },
+        {
+          "seconds": 0.05,
+          "module_accumulated_z_degrees": 68.23026972387022
+        },
+        {
+          "seconds": 0.1,
+          "module_accumulated_z_degrees": 121.81775156589357
+        },
+        {
+          "seconds": 0.15,
+          "module_accumulated_z_degrees": 160.49315467677405
+        },
+        {
+          "seconds": 0.2,
+          "module_accumulated_z_degrees": 185.83478278447743
+        },
+        {
+          "seconds": 0.25,
+          "module_accumulated_z_degrees": 201.26834175297333
+        },
+        {
+          "seconds": 0.35,
+          "module_accumulated_z_degrees": 217.01848362340513
+        },
+        {
+          "seconds": 0.5,
+          "module_accumulated_z_degrees": 222.60257341606518
+        },
+        {
+          "seconds": 0.6,
+          "module_accumulated_z_degrees": 222.7706530892401
+        },
+        {
+          "seconds": 0.7,
+          "module_accumulated_z_degrees": 222.77065308924008
+        }
+      ]
+    }
+  ]
+}

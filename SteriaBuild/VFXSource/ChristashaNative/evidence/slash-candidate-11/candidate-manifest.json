@@ -1,0 +1,210 @@
+{
+  "state": "candidate_pending_independent_visual_review",
+  "fps": 60,
+  "renderer": "Unity 2019.3.15f1 D3D11 original native compiled shaders",
+  "boundary": "Original data Editor replay, not game combat. No desktop interaction.",
+  "files": [
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\ChristashaNativeParticleLibrary.cs",
+      "sha256": "24b1d0a29605c90a94c80bcaf0a6e864ad2609a2fca1c94ef4190fc451b10f5d"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\Editor\\ChristashaNativePreview.cs",
+      "sha256": "498d7f22e071d49a12a53887f5218f3bacc04a76ecf0504ccd2594b647496d6b"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\Assets\\tide-brush-imagegen-v1.png",
+      "sha256": "c805e4729653114577fa4edaf4d4e50688ff3b09ab0d771bf7d31f0b964f0255"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\Assets\\tide-brush-imagegen-v1-prompt.txt",
+      "sha256": "32eba253e8d130b5525fe5039e51b4b608aecb2496d8f5ea51ebcefb4ec678ac"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\render-slash.ps1",
+      "sha256": "ac3ae6c2e04a684bb09a846cf7d7920cf3278072ec4cb52c76909fde19472ac2"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\package-slash-evidence.py",
+      "sha256": "649e00c0a0b47a2d3b65a1e784d146ae7890e7c7c088ec4acd1e4baf6a2d5397"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\original\\metadata.txt",
+      "sha256": "c568b661bc28a1f906ede46869f13f4d04ef970b3b644ae2bf05f14200f693a5"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\candidate\\metadata.txt",
+      "sha256": "414efd7ac15df285be6a1b75f9c71f8f18494fea1d7ceb6a24174fe8b9938dea"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\comparison-dark-grayscale.png",
+      "sha256": "4de084e05375588ac18371e10b4545589257a1a21b86e421cc90c243d6e04d55"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\comparison-dark.png",
+      "sha256": "d01839ec4a629da11c84e7bc2bd528511d24d5ac3d71fa9f7ebaa47489ce0031"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\comparison-mid-grayscale.png",
+      "sha256": "bd1ee1039eaf67ff7719db7d21defc136dd52684219ec64701dff06d4c4064a6"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\comparison-mid.png",
+      "sha256": "231a55e428801dd3a11c59c09150c0abb25a5e39d3094b9f6f647ba67f114397"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\comparison-normal-speed.mp4",
+      "sha256": "a0c1f988b1c6780a63b954ca3d8bedf55dcf38a86c22389c13999314c2753164"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\complete.txt",
+      "sha256": "d6b07b9f979103d769b7aaacd22db7a49faa4a67dc415d1d3f5a12bd91bc9256"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\focused-checks.txt",
+      "sha256": "39de1a34484dfaf0bcb10dc2db7e28756aba96db61920c6cac5543b0513d5a88"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\ChristashaNativeParticleLibrary.cs.txt",
+      "sha256": "24b1d0a29605c90a94c80bcaf0a6e864ad2609a2fca1c94ef4190fc451b10f5d"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-batch.log",
+      "sha256": "5f414da99f914ba432166e68a5f201f985766ac08aa54b5d727a6dd18abce481"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\inputs.json",
+      "sha256": "c1af4d4aa68a3a04e5117af464a03c8048bde0a6ad43bc1eb9012b8f83d39220"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\Editor\\ChristashaPlatinumContext.cs",
+      "sha256": "4d62ed6162fba8dc1fa33281a4c9634e62b58395248be321fc05c9975d4c4658"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\Editor\\ChristashaPlatinumCleanContext.cs",
+      "sha256": "3486e31b3b784649346e3bd4e65a427e379bd666ae108ceff003f3caa785c3b4"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\render-platinum-context.ps1",
+      "sha256": "8e59a462537a29a711b51f41c03ef5c7d2b9c20fb231e46674d73c75e0d048b9"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\sprite-cleanup\\Slash\\candidate-r3-512.png",
+      "sha256": "f15f4de24ebc621eeafaf055224208835825e3b620ed37042898182b6ffefff2"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-left\\0001.png",
+      "sha256": "65ec47585d370a083fb4205ced21034a4ab0f4c9b8a4f87fdd04f6224d0a4bc1"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-left\\0003.png",
+      "sha256": "6b256dfb4efd844d7e8f5d06642262c3d021e65d731d01b1102b47732b3f81cd"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-left\\0006.png",
+      "sha256": "5ff5c21c848bc37873b5ecaca3e481a0dd049230c4ee12a11b37f45f3b5d374d"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-left\\0010.png",
+      "sha256": "23ec53799eec8c1d620cbedb1879663b9c2b5ba4cfaf50f874c42a03b9e033c6"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-left\\0017.png",
+      "sha256": "c2b8fe4f09bfa3fa882af82d1b030d9c6e6dc230c81920eda93d0fe0c8156407"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-left\\0030.png",
+      "sha256": "e44b9e15d4c397e5f16fad225e1b1b1e5d0c100958aebbcf8932e6d42a6d2c16"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-left\\0045.png",
+      "sha256": "2729fc941f43775c1e857e28c4021af842128bacfab8cb29dc88e1bcbf4e80c7"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-right\\0001.png",
+      "sha256": "dbfd8593a3a6c376c424ae23cbcbff503da80497bc85b8043d9d70e4458a26f4"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-right\\0003.png",
+      "sha256": "f3dcd344e6d44786b968aa1bd66421bbd829680d04c8a48b9a150d5f4cd6f199"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-right\\0006.png",
+      "sha256": "c6ea37b1dbcc70172b9de0ea80e2a0623b3fa2fbef7646294cd581769ec3e600"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-right\\0010.png",
+      "sha256": "684a155fa37d04d909f9b8868d36a908ab3edc147d9fef6fa33d6503ed19ca2a"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-right\\0017.png",
+      "sha256": "55f6f3354eba2b1b5e325f0a91bf787ac7643f89510b2bbc7c07cef42911569d"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-right\\0030.png",
+      "sha256": "7d28fec7e51106c59e8367198371cd581cd7e25dd33a3f0aafad99c0e5bd6611"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context\\0.35-right\\0045.png",
+      "sha256": "eacd518e5a701fef7833a1b3496048c02c6a8203461be3023c8d308ac5fc7b57"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-left\\0001.png",
+      "sha256": "5a0127c61243c9cf154e0f14c6cbc6c597eb031186648a414417ec9ce48c3c7e"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-left\\0003.png",
+      "sha256": "0b46b7a46e78758ab06cba33faaf0cee1220fed63f8c7cba8add1065822e4b12"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-left\\0006.png",
+      "sha256": "17c444306efea8891c39aff048f62185b602e20481c234deb8fb0a8d011d5d86"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-left\\0010.png",
+      "sha256": "2aa08701610fe1f643e5b26545f78ccc0325af51a8436cac9a02521fbbe2306b"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-left\\0017.png",
+      "sha256": "6b72002689b601c8c091602b7188866c405caa8ff5682c68f82579719fe89a7c"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-left\\0030.png",
+      "sha256": "e473a2aeae955c28fbb50d220da4af39045e0579c1a6847372192f86da96526e"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-left\\0045.png",
+      "sha256": "193ef1f27f5c24ab5b0f65f6daf0902999e9d6fb6bf8affbca9248c8f0ec39be"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-right\\0001.png",
+      "sha256": "a67aa1f59208d244272115c30421ffc6b7c6e1af434564a607c21256d0162f65"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-right\\0003.png",
+      "sha256": "4b83ff273ed3a5e1658489175674bccd164e1d3046b99e3f0f855130b6739a11"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-right\\0006.png",
+      "sha256": "f42763532d3ff44de26b1d072c3b7786a2b4b1702353dff209f85422551c5886"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-right\\0010.png",
+      "sha256": "81c0b1f9030f352e2a53b220e5173182e0f9a88ec8b397154b769b99328f8737"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-right\\0017.png",
+      "sha256": "dc76435561d6c4ba2a40add9587ae54ea6c1076caad1de546475bd4b05abc21b"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-right\\0030.png",
+      "sha256": "b2aa877e38736b24022c1a6edf4cd6e0d7fe9b5d264ed17167c28ac2499853cf"
+    },
+    {
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\ChristashaNative\\evidence\\slash-candidate-11\\context-clean\\0.35-right\\0045.png",
+      "sha256": "bc49c2ff760a7ba7d5e5992fc8be820f07c1acfc8dbe7553a9463019ce63cadb"
+    }
+  ],
+  "user_revision": "Replace black glow with translucent platinum; preserve accepted texture/holes/geometry/motion. Wide coverage 0.22; low body RGB follows original edge envelope; etched Out compensates coverage.",
+  "scope_notes": "Hit03 paused and separately snapshotted. Final source also adds runtime-only DontDestroyOnLoad cache roots; no effect in Editor. Context batch compiled final source and rendered normal/clean .35 both facings."
+}

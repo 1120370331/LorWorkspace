@@ -1,0 +1,550 @@
+{
+  "status": "PREPARED",
+  "utc": "2026-09-12T18:00:07.440481+00:00",
+  "baseline_commit": "312fcc18d83f7346239a71d6ed46ac4dcc875fbd",
+  "config_sha256": "e1e26723f3210fb3b18c61c60e76d50807c95a7e5a237695d54c78b3bb903b26",
+  "game_mod": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+  "candidate_directory": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\christasha-native-redesign\\scoped-release-candidate",
+  "installed": {
+    "Assemblies/Steria.dll": {
+      "expected": "4ba01608ce09fc598e553f2b41a8d0d919b2c64b497620c4ec19706fc1ae7762",
+      "actual": "4ba01608ce09fc598e553f2b41a8d0d919b2c64b497620c4ec19706fc1ae7762",
+      "matches": true
+    },
+    "Data/CardInfo.xml": {
+      "expected": "ab091603d7aa8739e456dd731d01fcf3efa1b1af1c65f30231825b171fcfaeb5",
+      "actual": "ab091603d7aa8739e456dd731d01fcf3efa1b1af1c65f30231825b171fcfaeb5",
+      "matches": true
+    }
+  },
+  "committed_dll_sha256": "4ba01608ce09fc598e553f2b41a8d0d919b2c64b497620c4ec19706fc1ae7762",
+  "baseline_source_supplements": [
+    {
+      "target": "SteriaBuild/HarmonyPatches.cs",
+      "snapshot": "baseline-installed/HarmonyPatches.cs",
+      "sha256": "fc7fb27a07cc74b97a0cb83ca955806863652521dfb168129f7982815f3510b7",
+      "provenance": "Exact checksum from PDB matched to currently installed DLL"
+    },
+    {
+      "target": "SteriaBuild/DiceAttackEffect_Steria_AnhierTextureCombat.cs",
+      "snapshot": "baseline-installed/DiceAttackEffect_Steria_AnhierTextureCombat.cs",
+      "sha256": "6cb5f4f85cd52feb0597539e3832ad11892e4c42fcb3fc7a1cb106104f13e325",
+      "provenance": "Exact checksum from PDB matched to currently installed DLL"
+    },
+    {
+      "target": "SteriaBuild/BehaviourAction_Steria_MemoryConcerto.cs",
+      "snapshot": "baseline-installed/BehaviourAction_Steria_MemoryConcerto.cs",
+      "sha256": "45e8c83afc9ff29fd181e4949a0102477826e1d35f2750ec5605e55673c33c06",
+      "provenance": "Exact checksum from PDB matched to currently installed DLL"
+    }
+  ],
+  "baseline_xml_preserved_edits": [
+    {
+      "card": "9001004",
+      "die": 0,
+      "attribute": "ActionScript",
+      "before": "",
+      "after": "Steria_MemoryConcerto_Long"
+    },
+    {
+      "card": "9001004",
+      "die": 1,
+      "attribute": "ActionScript",
+      "before": "",
+      "after": "Steria_MemoryConcerto_Medium"
+    },
+    {
+      "card": "9001004",
+      "die": 2,
+      "attribute": "ActionScript",
+      "before": "",
+      "after": "Steria_MemoryConcerto_Final"
+    }
+  ],
+  "working_xml_changes_excluded": [
+    {
+      "path": "root/Card[@ID='9007001']/BehaviourList[8]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9007001']/BehaviourList[8]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9007002']/BehaviourList[8]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9007003']/BehaviourList[8]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterPierce",
+      "after": "Steria_TidePierce"
+    },
+    {
+      "path": "root/Card[@ID='9007003']/BehaviourList[8]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterPierce",
+      "after": "Steria_TidePierce"
+    },
+    {
+      "path": "root/Card[@ID='9007004']/BehaviourList[8]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterPierce",
+      "after": "Steria_TidePierce"
+    },
+    {
+      "path": "root/Card[@ID='9007005']/BehaviourList[8]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterPierce",
+      "after": "Steria_TidePierce"
+    },
+    {
+      "path": "root/Card[@ID='9007005']/BehaviourList[8]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterPierce",
+      "after": "Steria_TidePierce"
+    },
+    {
+      "path": "root/Card[@ID='9007006']/BehaviourList[9]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterPierce",
+      "after": "Steria_TidePierce"
+    },
+    {
+      "path": "root/Card[@ID='9007006']/BehaviourList[9]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9007006']/BehaviourList[9]/Behaviour[2]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterPierce",
+      "after": "Steria_TidePierce"
+    },
+    {
+      "path": "root/Card[@ID='9008001']/BehaviourList[7]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_SivierWishGuard",
+      "after": "Steria_TideGuard"
+    },
+    {
+      "path": "root/Card[@ID='9008001']/BehaviourList[7]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9008001']/BehaviourList[7]/Behaviour[2]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterHit",
+      "after": "Steria_TideHit"
+    },
+    {
+      "path": "root/Card[@ID='9008001']/BehaviourList[7]/Behaviour[3]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9008002']/BehaviourList[8]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_SivierWishGuard",
+      "after": "Steria_TideGuard"
+    },
+    {
+      "path": "root/Card[@ID='9008002']/BehaviourList[8]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9008003']/BehaviourList[8]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterPierce",
+      "after": "Steria_TidePierce"
+    },
+    {
+      "path": "root/Card[@ID='9008003']/BehaviourList[8]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_SivierWishGuard",
+      "after": "Steria_TideGuard"
+    },
+    {
+      "path": "root/Card[@ID='9008004']/BehaviourList[9]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_SivierWishGuard",
+      "after": "Steria_TideGuard"
+    },
+    {
+      "path": "root/Card[@ID='9008004']/BehaviourList[9]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_SivierWishGuard",
+      "after": "Steria_TideGuard"
+    },
+    {
+      "path": "root/Card[@ID='9008009']/BehaviourList[10]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_SivierWishGuard",
+      "after": "Steria_TideGuard"
+    },
+    {
+      "path": "root/Card[@ID='9008009']/BehaviourList[10]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_SivierWishGuard",
+      "after": "Steria_TideGuard"
+    },
+    {
+      "path": "root/Card[@ID='9008005']/BehaviourList[9]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9008005']/BehaviourList[9]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9008006']/BehaviourList[9]/Behaviour[0]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9008006']/BehaviourList[9]/Behaviour[1]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterSlash",
+      "after": "Steria_TideSlash"
+    },
+    {
+      "path": "root/Card[@ID='9008006']/BehaviourList[9]/Behaviour[2]",
+      "attribute": "EffectRes",
+      "before": "Steria_WaterPierce",
+      "after": "Steria_TidePierce"
+    },
+    {
+      "path": "root/Card[@ID='9008006']/BehaviourList[9]/Behaviour[3]",
+      "attribute": "EffectRes",
+      "before": "Steria_SivierWishGuard",
+      "after": "Steria_TideGuard"
+    },
+    {
+      "path": "root/Card[@ID='9008006']/BehaviourList[9]/Behaviour[4]",
+      "attribute": "EffectRes",
+      "before": "Steria_SivierWishGuard",
+      "after": "Steria_TideGuard"
+    }
+  ],
+  "task_xml_edits": [],
+  "working_harmony_policy": "Never copy current Harmony. Start from frozen installed/PDB-matching snapshot; apply only explicit Christasha registry edits.",
+  "source_paths": [
+    "SteriaBuild/AilierelAbilities.cs",
+    "SteriaBuild/AnhierAbilities.cs",
+    "SteriaBuild/AnhierCards.cs",
+    "SteriaBuild/AnhierTextureTimeline.cs",
+    "SteriaBuild/AntieAbilities.cs",
+    "SteriaBuild/AntieDeckUiPatches.cs",
+    "SteriaBuild/AntieDreamCards.cs",
+    "SteriaBuild/AntieFlowCards.cs",
+    "SteriaBuild/AntieNemesisPatches.cs",
+    "SteriaBuild/AntieTideCards.cs",
+    "SteriaBuild/BattleUnitBuf_Flow.cs",
+    "SteriaBuild/BattleUnitBuf_Forte.cs",
+    "SteriaBuild/BattleUnitBuf_PreciousMemoryStrength.cs",
+    "SteriaBuild/BehaviourAction_Steria_ChristashaXiyinV2.cs",
+    "SteriaBuild/BehaviourAction_Steria_Hurricane.cs",
+    "SteriaBuild/BehaviourAction_Steria_MemoryConcerto.cs",
+    "SteriaBuild/BehaviourAction_Steria_OceanWave.cs",
+    "SteriaBuild/BehaviourAction_Steria_VeliaTideMist.cs",
+    "SteriaBuild/BehaviourAction_VeliaThorn_Area.cs",
+    "SteriaBuild/CardAbilities.cs",
+    "SteriaBuild/ChristashaAbilities.cs",
+    "SteriaBuild/ChristashaCards.cs",
+    "SteriaBuild/ChristashaEgoBoss.cs",
+    "SteriaBuild/ChristashaEgoBossCards.cs",
+    "SteriaBuild/ChristashaNativeMassRecipes.cs",
+    "SteriaBuild/ChristashaNativeParticleLibrary.cs",
+    "SteriaBuild/ChristashaNativePierceRecipes.cs",
+    "SteriaBuild/ChristashaXiyuan.cs",
+    "SteriaBuild/Class1.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_AnhierBlueWhiteCombat.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_AnhierBlueWhiteSlash.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_AnhierTextureCombat.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_Base.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_ChristashaParticleV2.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_DarkPurpleSlash.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_SivierWishGuard.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_WaterFarHit.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_WaterHit.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_WaterPenetrate.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_WaterPierce.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_WaterSlash.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_WaterSurround.cs",
+    "SteriaBuild/DiceAttackEffect_Steria_WindSlash.cs",
+    "SteriaBuild/DiceAttackEffect_VeliaThorn_Damaged.cs",
+    "SteriaBuild/DiceAttackEffect_VeliaThorn_F.cs",
+    "SteriaBuild/DiceEffectManagerPatch.cs",
+    "SteriaBuild/DiceRangePreviewHelper.cs",
+    "SteriaBuild/DirectiveDreamSystem.cs",
+    "SteriaBuild/DreamBuffs.cs",
+    "SteriaBuild/FarAreaEffect_Steria_ChristashaXiyinV2.cs",
+    "SteriaBuild/FarAreaEffect_Steria_OceanWave.cs",
+    "SteriaBuild/FarAreaEffect_Steria_VeliaTideMist.cs",
+    "SteriaBuild/FarAreaEffect_VeliaThorn.cs",
+    "SteriaBuild/FlowHandUI.cs",
+    "SteriaBuild/FlowPlanning.cs",
+    "SteriaBuild/HarmonyPatches.cs",
+    "SteriaBuild/MemoryFlameAudio.cs",
+    "SteriaBuild/ModInitializer.cs",
+    "SteriaBuild/MusicDiceSystem.cs",
+    "SteriaBuild/OceanWaveEffectComponent.cs",
+    "SteriaBuild/PhantomDreamCardVisuals.cs",
+    "SteriaBuild/SivierAbilities.cs",
+    "SteriaBuild/SivierBuffs.cs",
+    "SteriaBuild/SivierCards.cs",
+    "SteriaBuild/SkillPcmWave.cs",
+    "SteriaBuild/SlazeyaAbilities.cs",
+    "SteriaBuild/SlazeyaStormAudioController.cs",
+    "SteriaBuild/SlazeyaStormVisualController.cs",
+    "SteriaBuild/SlazeyaStormWeatherController.cs",
+    "SteriaBuild/SlazeyaStormWeatherScreenFilter.cs",
+    "SteriaBuild/SteriaEffectConfig.cs",
+    "SteriaBuild/SteriaEffectHelper.cs",
+    "SteriaBuild/SteriaEffectSprites.cs",
+    "SteriaBuild/SteriaEgoCooldown.cs",
+    "SteriaBuild/SteriaLogger.cs",
+    "SteriaBuild/TibuAbilities.cs",
+    "SteriaBuild/TibuCards.cs",
+    "SteriaBuild/TideConsumptionTracker.cs",
+    "SteriaBuild/VeliaAbilities.cs",
+    "SteriaBuild/VeliaCards.cs",
+    "SteriaBuild/VeliaEgoBossAbilities.cs",
+    "SteriaBuild/VeliaThornEffect.cs",
+    "SteriaBuild/VeliaTideMistAudioController.cs",
+    "SteriaBuild/VeliaTideMistScreenFilter.cs",
+    "SteriaBuild/VeliaTideMistVisualController.cs",
+    "SteriaBuild/WaterEffectDiceAbilities.cs"
+  ],
+  "overlay_inputs": [
+    {
+      "source": "SteriaBuild/ChristashaNativeParticleLibrary.cs",
+      "target": "SteriaBuild/ChristashaNativeParticleLibrary.cs",
+      "sha256": "4c74974a6473b7fd76cd888f69d6b864debbfbb6e709135846826602aed5139b",
+      "actual_sha256": "4c74974a6473b7fd76cd888f69d6b864debbfbb6e709135846826602aed5139b"
+    },
+    {
+      "source": "SteriaBuild/DiceAttackEffect_Steria_ChristashaParticleV2.cs",
+      "target": "SteriaBuild/DiceAttackEffect_Steria_ChristashaParticleV2.cs",
+      "sha256": "eb7754b34a8492c9e9ba45578f9ab9b6750dee9ad1593720d72da6dc2dd279b6",
+      "actual_sha256": "eb7754b34a8492c9e9ba45578f9ab9b6750dee9ad1593720d72da6dc2dd279b6"
+    },
+    {
+      "source": "SteriaBuild/BehaviourAction_Steria_ChristashaXiyinV2.cs",
+      "target": "SteriaBuild/BehaviourAction_Steria_ChristashaXiyinV2.cs",
+      "sha256": "9fbe7095d20f2fc10b0b2761e42f8ee37726e022dd9ae4e6586710d0ad10a898",
+      "actual_sha256": "9fbe7095d20f2fc10b0b2761e42f8ee37726e022dd9ae4e6586710d0ad10a898"
+    },
+    {
+      "source": "SteriaBuild/FarAreaEffect_Steria_ChristashaXiyinV2.cs",
+      "target": "SteriaBuild/FarAreaEffect_Steria_ChristashaXiyinV2.cs",
+      "sha256": "bdf85c1778a621f6ddd4ce24046e12054e71a5babb15e08a7d8d954ce812acfa",
+      "actual_sha256": "bdf85c1778a621f6ddd4ce24046e12054e71a5babb15e08a7d8d954ce812acfa"
+    },
+    {
+      "source": "SteriaBuild/ChristashaNativeMassRecipes.cs",
+      "target": "SteriaBuild/ChristashaNativeMassRecipes.cs",
+      "sha256": "0c242d246cafe1fdf00b1c6ebcff0f9f876e857fcc94fe4eb8919fb1a6bee3e0",
+      "actual_sha256": "0c242d246cafe1fdf00b1c6ebcff0f9f876e857fcc94fe4eb8919fb1a6bee3e0"
+    },
+    {
+      "source": "SteriaBuild/ChristashaNativePierceRecipes.cs",
+      "target": "SteriaBuild/ChristashaNativePierceRecipes.cs",
+      "sha256": "8daf44af350bed76c01279e9deca894b98d0c860718bd67ee1edbe7792689b04",
+      "actual_sha256": "8daf44af350bed76c01279e9deca894b98d0c860718bd67ee1edbe7792689b04"
+    }
+  ],
+  "assets": [
+    {
+      "source": "SteriaBuild/VFXSource/ChristashaNative/Assets/tide-brush-imagegen-v1.png",
+      "destination": "Resource/Effects/ChristashaNative/tide-brush-imagegen-v1.png",
+      "sha256": "c805e4729653114577fa4edaf4d4e50688ff3b09ab0d771bf7d31f0b964f0255"
+    },
+    {
+      "source": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha/ClothCustom/Slash.png",
+      "destination": "Resource/CharacterSkin/Christasha/ClothCustom/Slash.png",
+      "sha256": "f15f4de24ebc621eeafaf055224208835825e3b620ed37042898182b6ffefff2"
+    },
+    {
+      "source": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha/ClothCustom/Hit.png",
+      "destination": "Resource/CharacterSkin/Christasha/ClothCustom/Hit.png",
+      "sha256": "96b7d02c141feef0812f2d2ce7e5b83a5d9b0d02cb721dde936a29f7efe6bed1"
+    },
+    {
+      "source": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha/ClothCustom/Penetrate.png",
+      "destination": "Resource/CharacterSkin/Christasha/ClothCustom/Penetrate.png",
+      "sha256": "a675e8d23edc75a9d50681477939ba97607f4387c9672f817b5b340a93bb550b"
+    },
+    {
+      "source": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha/ClothCustom/Slash2.png",
+      "destination": "Resource/CharacterSkin/Christasha/ClothCustom/Slash2.png",
+      "sha256": "a6ab76f107fd9ca107a7769630a4658f9a5b351ade808ff4495a70a29dcb3550"
+    },
+    {
+      "source": "SteriaBuild/SteriaModFolder/Resource/CharacterSkin/Christasha/ClothCustom/S1.png",
+      "destination": "Resource/CharacterSkin/Christasha/ClothCustom/S1.png",
+      "sha256": "4bd92cde6425804748f405591a88db0e56b4a36ab75f4cf9494054396eeb5139"
+    }
+  ],
+  "before_files": {
+    "Assemblies/Steria.dll": "4ba01608ce09fc598e553f2b41a8d0d919b2c64b497620c4ec19706fc1ae7762",
+    "Data/CardInfo.xml": "ab091603d7aa8739e456dd731d01fcf3efa1b1af1c65f30231825b171fcfaeb5",
+    "Resource/Effects/ChristashaNative/tide-brush-imagegen-v1.png": null,
+    "Resource/CharacterSkin/Christasha/ClothCustom/Slash.png": "25da516631c84182e4a6c5e2b52c15863c8fcef44bbea75c27ed47969c572545",
+    "Resource/CharacterSkin/Christasha/ClothCustom/Hit.png": "668e962c9f7f9ad17e56e567b226ce983488cf5b5f1ced70a2b95e5433082d82",
+    "Resource/CharacterSkin/Christasha/ClothCustom/Penetrate.png": "4019c2af05a1c138a5ecf3f993d1a43248ee756d4066d5cb78830191e2a9004a",
+    "Resource/CharacterSkin/Christasha/ClothCustom/Slash2.png": "7c49adcbe29fd68dd64922b54beaa4c147e827cd310bda3555ec084c6d612215",
+    "Resource/CharacterSkin/Christasha/ClothCustom/S1.png": "43c59a32a03d2d1f0b3c6e68dba5195930f6c26136ab0e374b23159954104d15",
+    "Assemblies/AB/steria_christasha_particle_v2": "a0948f97682402b5e50ff3ca38d1f67e0d86a61c523c59b717830ffcf231f690",
+    "Assemblies/AB/steria_christasha_particle_v2.ab": null,
+    "Resource/AssetBundle/steria_christasha_particle_v2": null,
+    "Resource/AssetBundle/steria_christasha_particle_v2.ab": null
+  },
+  "issues": [],
+  "staging_policy": "No git index/commit mutation. Never stage baseline supplements or shared worktree files recursively.",
+  "inputs": {
+    "package\\Data\\CardInfo.xml": "ab091603d7aa8739e456dd731d01fcf3efa1b1af1c65f30231825b171fcfaeb5",
+    "package\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Hit.png": "96b7d02c141feef0812f2d2ce7e5b83a5d9b0d02cb721dde936a29f7efe6bed1",
+    "package\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Penetrate.png": "a675e8d23edc75a9d50681477939ba97607f4387c9672f817b5b340a93bb550b",
+    "package\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\S1.png": "4bd92cde6425804748f405591a88db0e56b4a36ab75f4cf9494054396eeb5139",
+    "package\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Slash.png": "f15f4de24ebc621eeafaf055224208835825e3b620ed37042898182b6ffefff2",
+    "package\\Resource\\CharacterSkin\\Christasha\\ClothCustom\\Slash2.png": "a6ab76f107fd9ca107a7769630a4658f9a5b351ade808ff4495a70a29dcb3550",
+    "package\\Resource\\Effects\\ChristashaNative\\tide-brush-imagegen-v1.png": "c805e4729653114577fa4edaf4d4e50688ff3b09ab0d771bf7d31f0b964f0255",
+    "SteriaBuild\\AilierelAbilities.cs": "1524c41fb88b42024bacc2186d115bbe2ad2ed2e8992d5b6e13bb99ac7b27d20",
+    "SteriaBuild\\AnhierAbilities.cs": "a0fd134a5ffea58aa5cf1eb134e30f141516f9e7fc89ba199a363911c16ddb28",
+    "SteriaBuild\\AnhierCards.cs": "887740bea0b72e766198388a5dee6c77358fbcea539aed7a54dcc5b62ee0037e",
+    "SteriaBuild\\AnhierTextureTimeline.cs": "88455c3d7925901cf19f1a34243ab7a273220f01f3cd9501b156367f8d31acd5",
+    "SteriaBuild\\AntieAbilities.cs": "951a0260d4580991923329f65b0d8f2cbeade963e6ab09d922d7459ab05f8cd8",
+    "SteriaBuild\\AntieDeckUiPatches.cs": "23e603fe09ea2924a6c3aaafd532fae168204346cae7f3ea7668d6a7bac371a2",
+    "SteriaBuild\\AntieDreamCards.cs": "148f17a0613de671b686c0b7aa03ed3a4f969d8c9eb1fee9887715c11014c0c0",
+    "SteriaBuild\\AntieFlowCards.cs": "bbbcbde7315c7a629eaaa80cf0ebdc4264d082f5a15416e43882940aefffafb5",
+    "SteriaBuild\\AntieNemesisPatches.cs": "3fa80c5dc52331c894c19e90d94a171efaeb5e67634ad2e5d2ac42d383b5b4c4",
+    "SteriaBuild\\AntieTideCards.cs": "750589c433c3f2511c85e988be83af9b3e4dd9d38fe805d1c31fdbf189311fbe",
+    "SteriaBuild\\BattleUnitBuf_Flow.cs": "ebd9ed557c388db7db278bdd491e5b3c7070be3439b36edb3b87b2ff2a742b5b",
+    "SteriaBuild\\BattleUnitBuf_Forte.cs": "52f936c001dbf7aa0aef66c27f53204eaa4153e5c5162ba36f00b0c5436cec7e",
+    "SteriaBuild\\BattleUnitBuf_PreciousMemoryStrength.cs": "5e0627268a1081dca5f47125848d568def882c180201c327501b327c7b9fe97e",
+    "SteriaBuild\\BehaviourAction_Steria_ChristashaXiyinV2.cs": "9fbe7095d20f2fc10b0b2761e42f8ee37726e022dd9ae4e6586710d0ad10a898",
+    "SteriaBuild\\BehaviourAction_Steria_Hurricane.cs": "2079b97c901ca6993c0d6874498442dd113badee5db152d2242ad8758622e725",
+    "SteriaBuild\\BehaviourAction_Steria_MemoryConcerto.cs": "45e8c83afc9ff29fd181e4949a0102477826e1d35f2750ec5605e55673c33c06",
+    "SteriaBuild\\BehaviourAction_Steria_OceanWave.cs": "8d58b401c75efd92b9d27be8361dc2613f1309689a33e172ec69699f88648861",
+    "SteriaBuild\\BehaviourAction_Steria_VeliaTideMist.cs": "36d51d8f83cdf929c7debef2add6a6623f317d7079c07e250e398b608e1f8580",
+    "SteriaBuild\\BehaviourAction_VeliaThorn_Area.cs": "fa5d017613222453784659030ce17edc919bff64cdedc9768b93476277f38818",
+    "SteriaBuild\\CardAbilities.cs": "e932e8504a89dee9c175b53dd696f46c8641fde797a235f665d2bbcb88b92fff",
+    "SteriaBuild\\ChristashaAbilities.cs": "f074ea175646c38b98d8e540c1d9d90ba5081dd78c63a70113f99c0ceccd789f",
+    "SteriaBuild\\ChristashaCards.cs": "aceb0286491b947c7329141674f937f1f9a8d841fae934af499afc71b8d83837",
+    "SteriaBuild\\ChristashaEgoBoss.cs": "ae065a67a2cdbdc1486811d069e0f20c9b03f1220f0a007c5be8c9507518b33b",
+    "SteriaBuild\\ChristashaEgoBossCards.cs": "e1f84dd38ce176a913005163d9a3de4594fdbc0bcbd5e56c31b41fa6f40c1204",
+    "SteriaBuild\\ChristashaNativeMassRecipes.cs": "0c242d246cafe1fdf00b1c6ebcff0f9f876e857fcc94fe4eb8919fb1a6bee3e0",
+    "SteriaBuild\\ChristashaNativeParticleLibrary.cs": "4c74974a6473b7fd76cd888f69d6b864debbfbb6e709135846826602aed5139b",
+    "SteriaBuild\\ChristashaNativePierceRecipes.cs": "8daf44af350bed76c01279e9deca894b98d0c860718bd67ee1edbe7792689b04",
+    "SteriaBuild\\ChristashaXiyuan.cs": "9c82e5ce08a2795c7545c19557fdaff3ca2fb9dc75b40fe30cd0a5dc728e8de3",
+    "SteriaBuild\\Class1.cs": "cb42c1d978a239b1a38d6a975b617705a686e05b80a9cc6f4d544b6bc913659a",
+    "SteriaBuild\\DiceAttackEffect_Steria_AnhierBlueWhiteCombat.cs": "8b5dfe663e3cf404391411e7c2ff6fa8ea70490de0920504a1c49d098039b25b",
+    "SteriaBuild\\DiceAttackEffect_Steria_AnhierBlueWhiteSlash.cs": "4987333db38bda12d60c4bc2139240d647f3b252a12e150879b06e00ff97d50a",
+    "SteriaBuild\\DiceAttackEffect_Steria_AnhierTextureCombat.cs": "6cb5f4f85cd52feb0597539e3832ad11892e4c42fcb3fc7a1cb106104f13e325",
+    "SteriaBuild\\DiceAttackEffect_Steria_Base.cs": "3fd1d6dd68d1782b7817007aa47d64b760400a814259224eff164603b36bd1f4",
+    "SteriaBuild\\DiceAttackEffect_Steria_ChristashaParticleV2.cs": "eb7754b34a8492c9e9ba45578f9ab9b6750dee9ad1593720d72da6dc2dd279b6",
+    "SteriaBuild\\DiceAttackEffect_Steria_DarkPurpleSlash.cs": "f79f4c3450bd583ae113f94f6428fb853d0240e368a4936f3158643c8e634a17",
+    "SteriaBuild\\DiceAttackEffect_Steria_SivierWishGuard.cs": "a9d5afc0c34d3d40d6fbea020013e0d1a27515d6be289169d3ba02b05f51d8fe",
+    "SteriaBuild\\DiceAttackEffect_Steria_WaterFarHit.cs": "4fa30442da44dd9b203d575303bfc464f26ce072c86199fc5788b3fb8ba1c032",
+    "SteriaBuild\\DiceAttackEffect_Steria_WaterHit.cs": "00ed29a37fd530cca8d1810b16b993a5e35eeb991de774c3571f14b5e1eba280",
+    "SteriaBuild\\DiceAttackEffect_Steria_WaterPenetrate.cs": "2a3c16d5e8d4767a3f758a2ba1b48b6c6d7300f5fb5a667673f6182259190f30",
+    "SteriaBuild\\DiceAttackEffect_Steria_WaterPierce.cs": "b9ddaee3fa5e590c37f4812aa0f5bff71d50b59b2dbf6aa8b7b0eef040daede8",
+    "SteriaBuild\\DiceAttackEffect_Steria_WaterSlash.cs": "7ad7a479b02bd92c1db9f9fc3b861a1082b17df9bed26e55612e199bdc25c14f",
+    "SteriaBuild\\DiceAttackEffect_Steria_WaterSurround.cs": "cf698c5e3ec794b168b991197587d47eecda89a55f8a31a566e4fbaab6c5e818",
+    "SteriaBuild\\DiceAttackEffect_Steria_WindSlash.cs": "a52dafa1c002d03429d53df6b612a763aa4348fafd49879752f03fce0c75a646",
+    "SteriaBuild\\DiceAttackEffect_VeliaThorn_Damaged.cs": "dbe2c33cdfe3c30e8efef88d4058da79ac399caf084db62839024af0785fc995",
+    "SteriaBuild\\DiceAttackEffect_VeliaThorn_F.cs": "5bcb7b1f0abc44f154d521ff0dce80d2483b566313131b8c88a5f54c08d5f97f",
+    "SteriaBuild\\DiceEffectManagerPatch.cs": "5af6814135515dfcb4dc0a0a7dcc95d2a4a3916ce683b1dda0c33590adb5b000",
+    "SteriaBuild\\DiceRangePreviewHelper.cs": "9e3b9786f27bf2853a3b405ea303c46df2d545854686f577119e6471d931aaf0",
+    "SteriaBuild\\DirectiveDreamSystem.cs": "e8cf6388db7d8dd1794119c56ac053690c6b1f7f2fd90ca7a606d10462e41d6d",
+    "SteriaBuild\\DreamBuffs.cs": "1a20b1abe598603a383aa2b04081f638549a2d5006a127fbf1a66c2898b96ae5",
+    "SteriaBuild\\FarAreaEffect_Steria_ChristashaXiyinV2.cs": "bdf85c1778a621f6ddd4ce24046e12054e71a5babb15e08a7d8d954ce812acfa",
+    "SteriaBuild\\FarAreaEffect_Steria_OceanWave.cs": "89fee4ed75edcf28e1a9e57952a91e255791058139d36cb85e938e42a9a280ac",
+    "SteriaBuild\\FarAreaEffect_Steria_VeliaTideMist.cs": "f454cac6feaaf7c2076546bf593c3cacc39b24aff0e0657fcf72320f3fcbf369",
+    "SteriaBuild\\FarAreaEffect_VeliaThorn.cs": "46bc42ebe1b71bbef688a9434fad4d2e7aa74a737964081097d3d886da1a346d",
+    "SteriaBuild\\FlowHandUI.cs": "236ed68f3f760a1ee18aba9724f639979ec31c2142adaeefccdc1e2531c3fee4",
+    "SteriaBuild\\FlowPlanning.cs": "55bb0c694ca849564d5e3fa3a9d24b48a68ff010bc116402dc8ee852f73c757b",
+    "SteriaBuild\\HarmonyPatches.cs": "fc7fb27a07cc74b97a0cb83ca955806863652521dfb168129f7982815f3510b7",
+    "SteriaBuild\\Libs\\0Harmony.dll": "1a21cc03424fc82c3dd1346905d16494536b9595ae4162228d99fb7c285c1031",
+    "SteriaBuild\\Libs\\Assembly-CSharp.dll": "e450ef9dd29abf5828491a891d86515d4af35c21c81d8e076335b86f6231c901",
+    "SteriaBuild\\Libs\\BaseMod.dll": "af4e8b302ca2981bd4907c4990552752408628a116394583acd7b0f9a08072c0",
+    "SteriaBuild\\Libs\\Mono.Cecil.dll": "7ae470288fff4a402899c254d0a76cefef55877f5c54f96e83c797cc5bb6e2f6",
+    "SteriaBuild\\Libs\\Mono.Cecil.Mdb.dll": "5896d1898f616701fff18f3b2c71e6b844d2390ef9f41e1c5fccce8cb27c698e",
+    "SteriaBuild\\Libs\\Mono.Cecil.Pdb.dll": "174db44a067f58561510af746f3caeb032037762c57a31c8d9ee32db25174984",
+    "SteriaBuild\\Libs\\Mono.Cecil.Rocks.dll": "54ac539fb5ddc8b44c0e9acd0fcb7324f89d1a072edf8ebc1b06dd691e3d3927",
+    "SteriaBuild\\Libs\\MonoMod.Common.dll": "4dd5d81bcd56e5318c645e71964db7a4b207b83d3da08c7a28f0703c414475ef",
+    "SteriaBuild\\Libs\\MonoMod.RuntimeDetour.dll": "40e49bb314391cd7bddc2644f8553eeba92c194b940836b103df16955c464e0c",
+    "SteriaBuild\\Libs\\MonoMod.UnitTest.dll": "15b0c93e1cb33cc1c4e9529eca25346b73208e506c6cf1e9d9fcb82faa1e3b18",
+    "SteriaBuild\\Libs\\MonoMod.Utils.dll": "9d1495f147ac93c4f81f84538c1a326e8f8a6aefc78d6289d798f3ce1162c5e9",
+    "SteriaBuild\\Libs\\UnityEngine.ImageConversionModule.dll": "a968ae7aff38cd7b6fa4b7426d080fa7dc95d2897f43641df13d2ff21fc98c66",
+    "SteriaBuild\\MemoryFlameAudio.cs": "8188098094ad84f1c8d5b11e953dc30c55c95bd1329c1d47eccd1bd5188ecd9c",
+    "SteriaBuild\\ModInitializer.cs": "2ddf1118260aaadb1f6305daad22e12fc4612ddf5df09b22cd9e7c9b6a60886b",
+    "SteriaBuild\\MusicDiceSystem.cs": "eabf470d2fd5535be6e2aa5f630066b3bd6f4d6db3f30fa90bcc6bc31867b4c2",
+    "SteriaBuild\\OceanWaveEffectComponent.cs": "f9a01161ec2bf10c275d85d2c8dee05716bc628aa8268a6df64d13ad19f0caf2",
+    "SteriaBuild\\PhantomDreamCardVisuals.cs": "08fa78c32cd41504edbfcb8d9f73f90ccddf4ff9eae4de31e8f4059607c4de78",
+    "SteriaBuild\\SivierAbilities.cs": "1bda1854cec6457119475ab7961fd93a532c94237593bbf4661680fb6b97a524",
+    "SteriaBuild\\SivierBuffs.cs": "ed7831c7f87cf3b0369a61510c672a0dd4550a6143d6159c8a63444fb15ce0a8",
+    "SteriaBuild\\SivierCards.cs": "ee983b2eed1ee00a37a6091e37190e16f67b905436d95a9dd2c9df06eeb218af",
+    "SteriaBuild\\SkillPcmWave.cs": "3b73119813223c843624c0bb1921aaf5c590f9d9a80bf9934fe8d729c7df7950",
+    "SteriaBuild\\SlazeyaAbilities.cs": "bd216a5061238d1e109d4bf62379d928faffa1896b543b6078a32fcb40e8fa29",
+    "SteriaBuild\\SlazeyaStormAudioController.cs": "a097a2a44f137cac14c3773301f73aaf85fdb0d917e43a906bce8e1ba3693543",
+    "SteriaBuild\\SlazeyaStormVisualController.cs": "205d73fde64fc784bf5adfaeaf7adf0d05a10a9c6428fef424f7fcb78fd70f1c",
+    "SteriaBuild\\SlazeyaStormWeatherController.cs": "de67d7512de8ddb2f0e573f1e2889273d909b1a89c0600f03bac2fc9ab139467",
+    "SteriaBuild\\SlazeyaStormWeatherScreenFilter.cs": "aca4ec571e61bfad8326b4c4d2676887c2d8be0c4ef6b6b0397c40c0d6eab467",
+    "SteriaBuild\\Steria.csproj": "c23c688a32198f720b5ff6d243debf9c7bd8db2b5936bdab751c1a273e7b05bd",
+    "SteriaBuild\\SteriaEffectConfig.cs": "08964633304ede34a88190eabc9022b5798265fe88dfcf508313494fdcc43e7d",
+    "SteriaBuild\\SteriaEffectHelper.cs": "8b2aac8dd719762c2cb130d723c59dcaa71de77307c5ae58570d5df266f9ffd9",
+    "SteriaBuild\\SteriaEffectSprites.cs": "935b9370a5160a30a4629657370e92c9ad312b0d38eac55ad0626240769f0e12",
+    "SteriaBuild\\SteriaEgoCooldown.cs": "d70c49da18c1bc7b6e41002b19694cb841f3865fabe8f0722dc2a5923b0fe3e4",
+    "SteriaBuild\\SteriaLogger.cs": "16c5444768ccbe7882c4722270d85ad9c95f35e03e8671616bdce1c1d1f996c0",
+    "SteriaBuild\\TibuAbilities.cs": "89af65eea56736bdebb402fe33dab7191acc73e42f867d5248e16ad8e86f5319",
+    "SteriaBuild\\TibuCards.cs": "0d78cdd461f87c9424a863eef411a0dfbe6703a38aa07bb6e37f7e7835499d10",
+    "SteriaBuild\\TideConsumptionTracker.cs": "58505bd5d038ea369b5a5f093383345afaae3e7fde662ad7770a02e0edd08c52",
+    "SteriaBuild\\VeliaAbilities.cs": "1e73814725e9f23e5c1e84e2e17c9547e272d266aa443284a5113150aec529a7",
+    "SteriaBuild\\VeliaCards.cs": "579ae8e57c6d3eaf665dc0177971cd1e8ed497fe10cf3f7b764911a65110b9ab",
+    "SteriaBuild\\VeliaEgoBossAbilities.cs": "96336a3fcc2ea7dc81e305816ab0e35930aaaeb430a626f75d3ccfc5d65dbb09",
+    "SteriaBuild\\VeliaThornEffect.cs": "35cb01e6b062e70c7d62c59875d88b34136efbe1036738bf7aa68843761caeae",
+    "SteriaBuild\\VeliaTideMistAudioController.cs": "90f4d0c327984da5f333d26530e5a2559e52dc8f4f7a4ad74d880ecef8acb7e2",
+    "SteriaBuild\\VeliaTideMistScreenFilter.cs": "6eac2b551f52f604124ca3ba022e92a02ac7ba33f2632b413a001122786c7f7e",
+    "SteriaBuild\\VeliaTideMistVisualController.cs": "11607cdfc4c6f7913b621cece0edd8dd9d1fa1c22974b531cdedd6445cb03432",
+    "SteriaBuild\\VisualAssets\\MusicDice\\BlankFrame.png": "c8e966583d9f6d3dab0db48c3af7d6a417dc2c9b4c59b31876c1a55cdb347813",
+    "SteriaBuild\\VisualAssets\\MusicDice\\Card.png": "1843c2d6d283d1ab25097f21a46bfec5bfc61d2d0908d0afdb4092f8ccbec0a1",
+    "SteriaBuild\\VisualAssets\\MusicDice\\Glyph.png": "47e28c8779ed74d86208a9a0c4e9b3e03581d2c4c2f3ac6b9197947667d0522a",
+    "SteriaBuild\\WaterEffectDiceAbilities.cs": "449aa9d376af5724d7ca14e4ef2a469ebdd24a29aea4498e304d2f88ba94c493"
+  },
+  "external_reference_hashes": {
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.dll": "516fc36a10b6d4baeb782aa37f85884ecc8333232ad018d71d8749dbadef8bee",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.CoreModule.dll": "e4e4a7f744513bd720193c69747384d6b6a88914775d5f1657f89f33c72ec7db",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.UI.dll": "8e68ebd627e4ae6008662ca25f0f3e4d2e8601754fe79f28f58d3801db71f2fa",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.UIModule.dll": "4878da3b2e3615c65599c6b0d9353eeac6dce798c14e4dd9f73825c246a1aeaa",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.TextRenderingModule.dll": "a92759e1f33d8146a64764218b39b5511b0467b8da6a64da745cc1a856d5a0c8",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.TextCoreModule.dll": "61d078536778405b93efa52fb91695d6ddfa0f20634a15c7c83f02416e27990b",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.AudioModule.dll": "d42dae67434d16375e86d1410d5de19eb9652bb6a4967b1a4a7a46a52ddabad3",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\Unity.TextMeshPro.dll": "feeffbfb6e18dd63d9f0cf9cd51c5fbe54d49ec57afa293df48a7c5d28dc8738",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.InputLegacyModule.dll": "565c72e9a82dec16f45f43c97176dc6f8470d38adcec78fd146d696420483b49",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.ParticleSystemModule.dll": "7b91bf10085d2b7d20e3eef5ff2a995ef709bb82b0aba68fcfc6c01b629042b8",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.AssetBundleModule.dll": "117c73d2f2d5c1dc305042a4c6234eb6604ccaef638ba9b59b39cf577ccced55",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.PhysicsModule.dll": "cf946cd516449fe482cdc7eabf307ce75ede68338281922f6833ad5cf2efe68a",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.Physics2DModule.dll": "75c2668222878975f38f740e1b28aecc659ba1ee1fb617b13d71339d1864377c",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.AnimationModule.dll": "755210a00063bfac7d1aecc1386366899ddec520b7a59333a35d56e5e5b06937",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Managed\\UnityEngine.JSONSerializeModule.dll": "e22bd82a6ac4481dc9886edf3d0ccaa3f0d925abe4751cd74a6a46718a69b826"
+  }
+}

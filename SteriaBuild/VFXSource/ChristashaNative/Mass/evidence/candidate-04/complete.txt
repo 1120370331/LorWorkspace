@@ -1,0 +1,1 @@
+PASS: Unity 2019.3.15f1 / Direct3D11 compile and original-data Editor replay; no source mutation. Not game combat acceptance.
