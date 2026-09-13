@@ -128,12 +128,24 @@ namespace Steria.Vfx
         public GameObject Root;
         public uint Seed;
         public float Age;
+        public float Speed;
         public bool Stopped;
         public int Advances;
-        public float Duration { get { return Root.name.EndsWith("Area") ? 1.16f : .65f; } }
+        public float Duration
+        {
+            get
+            {
+                if (Root.name.EndsWith("Area")) return 1.16f / Speed;
+                if (Root.name.EndsWith("Slash")) return 1.30f / Speed;
+                if (Root.name.EndsWith("Hit")) return 1.08f / Speed;
+                if (Root.name.EndsWith("Pierce")) return .68f / Speed;
+                if (Root.name.EndsWith("Projectile")) return .32f / Speed;
+                return .65f / Speed;
+            }
+        }
         public static ChristashaNativeParticlePlayback Play(GameObject instance, uint seed, float playbackSpeed = 1f)
         {
-            var visual = new ChristashaNativeParticlePlayback { Root = instance, Seed = seed };
+            var visual = new ChristashaNativeParticlePlayback { Root = instance, Seed = seed, Speed = playbackSpeed };
             instance.SetActive(true);
             Started.Add(visual);
             return visual;

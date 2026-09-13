@@ -98,7 +98,7 @@ namespace Steria.Vfx
             CloneMaterials(native, false, true);
             foreach (var p in native.GetComponentsInChildren<ParticleSystem>(true))
             {
-                var main = p.main; main.loop = false; main.startLifetime = .48f;
+                var main = p.main; main.loop = false; main.startLifetime = .68f;
                 main.startDelay = p.name == "Line1" ? 0f : .055f;
                 main.scalingMode = ParticleSystemScalingMode.Hierarchy;
                 if (p.name == "Line2") main.startSizeMultiplier *= .66f;
@@ -278,7 +278,10 @@ namespace Steria.Vfx
             readonly ParticleSystem foam,spray; readonly LineRenderer[] strings;
             readonly List<Colors> colors=new List<Colors>(); readonly System.Random random;
             int emitted;
-            public float Duration {get{return recipe=="Area"?1.15f:recipe=="Cast"?.64f:.42f;}}
+            // Tail extension is visual-only: the manager still releases Area at its
+            // existing total=.5s gate. The caller's speed multiplier is applied by
+            // the shared driver, so these are raw wall seconds at speed=1.
+            public float Duration {get{return recipe=="Area"?1.40f:recipe=="Cast"?.84f:.58f;}}
             public Playback(GameObject root,string recipe,uint seed)
             {
                 this.recipe=recipe;random=new System.Random(unchecked((int)seed));
@@ -303,7 +306,7 @@ namespace Steria.Vfx
                 {
                     float start=recipe=="Area"?.09f+i*.03f:.025f+i*.045f;
                     float u=Mathf.Clamp01((age-start)/(recipe=="Area"?.24f:.23f));
-                    float fade=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(recipe=="Area"?.45f:.30f,recipe=="Area"?.89f:.57f,age));
+                    float fade=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(recipe=="Area"?.70f:.48f,recipe=="Area"?1.32f:.78f,age));
                     var line=strings[i];line.enabled=u>0&&fade>.001f;
                     line.startColor=new Color(1,.81f,.42f,.52f*fade);line.endColor=new Color(1,.96f,.75f,.72f*fade);
                     for(int n=0;n<48;n++)
@@ -326,19 +329,19 @@ namespace Steria.Vfx
                         float a=Mathf.Lerp(-1.1f,2.25f,emitted/19f);
                         var at=new Vector3(-.5f+14f*Mathf.Cos(a),9f+10f*Mathf.Sin(a),-.4f);
                         var tangent=new Vector3(-Mathf.Sin(a),Mathf.Cos(a),0);
-                        Emit(foam,at,tangent*Range(3,9)+Vector3.up*Range(1,3),Range(1.1f,2.15f),a*Mathf.Rad2Deg+90,Range(.23f,.48f));
-                        Emit(spray,at,tangent*Range(5,13),Range(1.25f,2.3f),a*Mathf.Rad2Deg+90,Range(.21f,.45f));
+                        Emit(foam,at,tangent*Range(3,9)+Vector3.up*Range(1,3),Range(1.1f,2.15f),a*Mathf.Rad2Deg+90,Range(.38f,.68f));
+                        Emit(spray,at,tangent*Range(5,13),Range(1.25f,2.3f),a*Mathf.Rad2Deg+90,Range(.34f,.62f));
                     }
                     else if(recipe=="Point")for(int i=0;i<7;i++)
                     {
                         float a=Range(0,Mathf.PI*2);var d=new Vector3(Mathf.Cos(a),Mathf.Sin(a),0);
-                        Emit(foam,d*.1f,d*Range(5,11),Range(.45f,1.05f),a*Mathf.Rad2Deg,Range(.14f,.27f));
-                        Emit(spray,d*.15f,d*Range(7,15),Range(.8f,1.4f),a*Mathf.Rad2Deg,Range(.15f,.31f));
+                        Emit(foam,d*.1f,d*Range(5,11),Range(.45f,1.05f),a*Mathf.Rad2Deg,Range(.25f,.48f));
+                        Emit(spray,d*.15f,d*Range(7,15),Range(.8f,1.4f),a*Mathf.Rad2Deg,Range(.25f,.48f));
                     }
                     else
                     {
                         float a=emitted*.67f;var at=new Vector3(Mathf.Cos(a)*2,Mathf.Sin(a)*1.5f,0);
-                        Emit(foam,at,-at*2,Range(.3f,.65f),a*Mathf.Rad2Deg+80,.3f);
+                        Emit(foam,at,-at*2,Range(.3f,.65f),a*Mathf.Rad2Deg+80,.42f);
                     }
                     emitted++;
                 }
@@ -367,6 +370,15 @@ namespace Steria.Vfx
                 foreach(var prop in properties)
                 {
                     Color value=native.isEmpty?material.GetColor(prop):native.GetColor(prop);
+                    // MaterialPropertyBlock has no reliable per-property presence
+                    // query on Unity 2019. Treat an all-zero read as a missing or
+                    // invalid field only when the owned material carries a finite,
+                    // non-zero value. Genuine animated zero fields (for example the
+                    // native MainTrail body) remain zero and are never whitened.
+                    Color fallback=material.GetColor(prop);
+                    bool invalid=float.IsNaN(value.r)||float.IsNaN(value.g)||float.IsNaN(value.b)||float.IsInfinity(value.r)||float.IsInfinity(value.g)||float.IsInfinity(value.b);
+                    float fallbackGate=recipe=="Area"?.70f:recipe=="Cast"?.55f:.28f;
+                    if(!native.isEmpty&&!invalid&&age<fallbackGate&&Mathf.Abs(value.r)+Mathf.Abs(value.g)+Mathf.Abs(value.b)<.05f&&Mathf.Abs(fallback.r)+Mathf.Abs(fallback.g)+Mathf.Abs(fallback.b)>.05f)value=fallback;
                     float energy=Mathf.Max(value.r,Mathf.Max(value.g,value.b));
                     Color tint;
                     if(recipe=="Area")

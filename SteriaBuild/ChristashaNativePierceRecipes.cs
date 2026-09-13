@@ -176,7 +176,11 @@ namespace Steria.Vfx
             public float Duration { get { return duration; } }
             public Playback(GameObject root, string recipe, uint seed)
             {
-                this.root = root; this.recipe = recipe; random = new System.Random(unchecked((int)seed)); duration = recipe == "Projectile" ? .29f : .62f;
+                this.root = root; this.recipe = recipe; random = new System.Random(unchecked((int)seed));
+                // Retain the original burst speed at 91% while extending only the
+                // retreat tail: .62/.91≈.68 and .29/.91≈.32. The first core burst
+                // remains at its native early timestamps for the .26s projectile gate.
+                duration = recipe == "Projectile" ? .32f : .68f;
                 core = ChristashaNativeParticleLibrary.FindSystem(root, "PierceGoldBundle"); back = ChristashaNativeParticleLibrary.FindSystem(root, "PierceBackscatter"); air = ChristashaNativeParticleLibrary.FindSystem(root, "PierceAirTail");
                 foreach (var p in root.GetComponentsInChildren<ParticleSystem>(true))
                     if (p.name != "PierceGoldBundle" && p.name != "PierceBackscatter" && p.name != "PierceAirTail") colors.Add(new RoleColor(p.GetComponent<Renderer>(), p.name));
@@ -210,10 +214,10 @@ namespace Steria.Vfx
             public void Restore() { if (sampled) renderer.SetPropertyBlock(source); }
             public void Map(float age, float duration)
             {
-                renderer.GetPropertyBlock(source); renderer.GetPropertyBlock(mapped); bool any=false; float fade=1f-Mathf.SmoothStep(.56f,1f,age/duration);
+                renderer.GetPropertyBlock(source); renderer.GetPropertyBlock(mapped); bool any=false; bool missingBlock=source.isEmpty; float fade=1f-Mathf.SmoothStep(.56f,1f,age/duration);
                 foreach (var prop in props) if (renderer.sharedMaterial != null && renderer.sharedMaterial.HasProperty(prop))
                 {
-                    Color c=source.GetColor(prop); Color tint;
+                    Color c=missingBlock ? material.GetColor(prop) : source.GetColor(prop); Color tint;
                     if (role == "Slash1") tint = new Color(1.12f,1.04f,.84f); else if (role.Contains("Smoke") || role == "Smoke") tint = new Color(1.00f,.72f,.30f); else if (role == "Distortion") tint = new Color(1.00f,.78f,.40f); else tint = new Color(1.05f,.86f,.48f);
                     mapped.SetColor(prop, new Color(c.r*tint.r*fade,c.g*tint.g*fade,c.b*tint.b*fade,c.a)); any=true;
                 }

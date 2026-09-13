@@ -78,6 +78,18 @@ visual.StopAndClear();
 
 集成所用静态 library 的缓存根在实际 Play 模式执行 DontDestroyOnLoad，以免跨场景时模板被销毁而其缓存材质残留；Editor 不进入此分支。此修复不修改画面，游戏内真实跨场景路径仍需集成阶段验证。
 
+## Runtime MPB 兼容修订
+
+部署环境出现过 Animator.Update 后 Renderer 的 MPB 为空，若直接读取 `_OutColor=0` 会把整条效果错误映成黑色。Playback 现在在首次 Play 前从克隆主题材质保存独立安全通道：MainTrail1 用低强度原始 OutColor safety sample，MainTrail2 用其主题材质 HDR 值；每帧先恢复上次原始 block，再更新 Animator，只有关键采样为空或近零时才使用对应安全值，正常非零 MPB 仍逐帧映射。不会把真实的暗体采样替换掉，也不改变 mask、alpha、mesh 或时间曲线。
+
+`evidence/slash-mpb-fallback-diagnostic-v2/` 同时保存正常 MPB 与在每次 Animator.Update 后主动清空 Renderer block 的重放。两组使用相同原生 Shader、固定相机、seed 与时钟；`mpb-diagnostic.txt` 和 `mpb-fallback-receipt.json` 记录二分条件、源码及代表帧 SHA。两组 0.100s 代表帧不同但都保留白金光，说明 fallback 分支真正被执行；`focused-checks.txt` 仍通过清理、同 seed 重播与层级稳定检查。
+
+## 时序候选（timing candidate-15）
+
+`evidence/candidate-15/` 是在上述 fallback 之后的当前时序候选。默认 `Play(instance, seed, 1f)` 对 Slash 使用目标 Duration 1.30s、峰前原速、峰后 0.92 视觉时钟；Hit 使用目标 1.08s、峰后 0.93。主锋和 Hit 的 0.15s 落点保持原时刻，只有后段退场延长。候选板按合同抽取 Slash 的 17/50/100/167/283/500/750/1300ms，正常速度视频为 60fps。
+
+`candidate-16` 的 `candidate/`、`no-mpb-diagnostic/` 和 `low-mpb-diagnostic/` 分别覆盖正常、空 block、低值 block；低值只在主段阈值内回退，进入退场后保留合法低亮采样，避免把尾迹永久托亮。Hit 的对应正常/空 block 诊断位于 `evidence/timing-hit-03/`，其时序源快照与当前共享库一致。当前源码最终 SHA256 由候选 manifest 记录。
+
 11 的源码完整快照为 `evidence/slash-candidate-11/ChristashaNativeParticleLibrary.cs.txt`。暂停时的 Hit03 则保留自己的源快照，避免后续白金光修订混淆其候选身份。
 
 ImageGen 使用内置工具生成，原提示词与 PNG 在 `Assets/`。源图未做外部软件绘制或抠图。生成图是原创局部纹理；本目录不发布游戏原像素、Mesh 或 Shader。依赖与候选 SHA256 由 `candidate-manifest.json` 记录。

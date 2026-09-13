@@ -1,6 +1,7 @@
 param(
     [string]$Project = 'C:\Users\rog\WorkSpace\projects\games\lor\output\christasha-native-redesign\reference-editor\UnityProject',
-    [string]$Output = 'C:\Users\rog\WorkSpace\projects\games\lor\SteriaBuild\VFXSource\ChristashaNative\evidence\slash-candidate-01'
+    [string]$Output = 'C:\Users\rog\WorkSpace\projects\games\lor\SteriaBuild\VFXSource\ChristashaNative\evidence\slash-candidate-01',
+    [switch]$ForceColorNoiseFallback
 )
 $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
@@ -16,6 +17,7 @@ $previousOpenSSL = $env:OPENSSL_ia32cap
 try {
     $env:OPENSSL_ia32cap = ':~0x20000000'
     $arguments = @('-batchmode', '-quit', '-force-d3d11', '-job-worker-count', '4', '-projectPath', ('"' + $Project + '"'), '-executeMethod', 'ChristashaNativePreview.RenderSlash', '-referenceBundle', ('"' + $bundle + '"'), '-candidateOutput', ('"' + $Output + '"'), '-logFile', ('"' + $log + '"'))
+    if ($ForceColorNoiseFallback) { $arguments += '-forceColorNoiseFallback' }
     $process = Start-Process -FilePath 'C:/Program Files/Unity/Editor/Unity.exe' -ArgumentList $arguments -WindowStyle Hidden -PassThru
     $process.PriorityClass = 'BelowNormal'
     Write-Output ('UnityPID=' + $process.Id + ' Log=' + $log)

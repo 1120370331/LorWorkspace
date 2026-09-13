@@ -28,6 +28,12 @@ namespace Steria.Vfx
         readonly Func<string, GameObject> resolver;
         readonly Texture2D originalBrush;
         readonly List<Object> owned = new List<Object>();
+        /// <summary>Editor-only diagnostic switch; production callers leave false.</summary>
+        public static bool DiagnosticForceColorNoiseFallback;
+        // Game Resources variants may ship a nearly black ColorNoise texture while
+        // the reference editor bundle has a bright one. Keep the fallback enabled
+        // in play mode; the editor diagnostic can still force it off for parity.
+        public static bool RuntimeColorNoiseFallback = true;
         GameObject cache;
         GameObject slash;
         GameObject hit;
@@ -254,10 +260,21 @@ namespace Steria.Vfx
                 throw new InvalidOperationException("Native Slash_Down hierarchy differs from the verified recipe.");
 
             Texture2D mask = originalBrush == null ? null : PrepareBrushMask(originalBrush);
-            Texture2D platinumBodyMask = originalBrush == null ? null : PrepareBrushMask(originalBrush, false, .22f);
+            // Keep the broad carrier readable at the game's darker compositing
+            // level; the broken brush still supplies transparent cuts, while the
+            // narrow OutColor remains responsible for the brightest edge.
+            Texture2D platinumBodyMask = originalBrush == null ? null : PrepareBrushMask(originalBrush, false, .50f);
+            // The native ColorNoise channel controls the broad body weight (W),
+            // rather than just the edge color.  Some player Resources variants
+            // contain an almost-black ColorNoise, which makes a platinum RGB value
+            // render as a black body.  Supply a restrained broken brush only for
+            // this theme body; MainTex/Noise still own coverage and the sharp edge.
+            Texture2D platinumBodyNoise = (DiagnosticForceColorNoiseFallback || (Application.isPlaying && RuntimeColorNoiseFallback)) && originalBrush != null
+                ? PrepareColorNoiseFallback(originalBrush) : null;
 
             Material blade = OwnMaterial(main.GetComponent<ParticleSystemRenderer>().sharedMaterial, "DawnPressureBody");
             if (platinumBodyMask != null) blade.SetTexture("_MainTex", platinumBodyMask);
+            if (platinumBodyNoise != null && blade.HasProperty("_ColorNoise")) blade.SetTexture("_ColorNoise", platinumBodyNoise);
             // These shaders intentionally use alpha=0 in their HDR color properties.
             // Alpha is not opacity here. Preserve it and preserve the black contour role.
             SetRgb(blade, "_MainColor", new Color(1.02f, .975f, .795f));
@@ -324,6 +341,14 @@ namespace Steria.Vfx
             return material;
         }
 
+        internal static Color SafeColor(Material material, string property, Color fallback)
+        {
+            if (material == null || !material.HasProperty(property)) return fallback;
+            Color value = material.GetColor(property);
+            float energy = value.maxColorComponent;
+            return float.IsNaN(energy) || float.IsInfinity(energy) || energy < .05f ? fallback : value;
+        }
+
         Texture2D PrepareBrushMask(Texture2D source, bool returning = false, float coverageStrength = 1f)
         {
             // The native shader's white edge expects a full-white mask plateau.
@@ -358,6 +383,24 @@ namespace Steria.Vfx
             };
             mask.SetPixels(pixels); mask.Apply(false, true);
             owned.Add(mask); return mask;
+        }
+
+        Texture2D PrepareColorNoiseFallback(Texture2D source)
+        {
+            Color[] original = source.GetPixels();
+            var pixels = new Color[original.Length];
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                float value = Mathf.Lerp(.45f, .60f, Mathf.Clamp01(original[i].r));
+                pixels[i] = new Color(value, value, value, 1f);
+            }
+            var noise = new Texture2D(source.width, source.height, TextureFormat.RGBA32, false, true)
+            {
+                name = "Christasha_TideBrush_ColorNoiseFallback",
+                wrapMode = TextureWrapMode.Clamp,
+                filterMode = FilterMode.Bilinear
+            };
+            noise.SetPixels(pixels); noise.Apply(false, true); owned.Add(noise); return noise;
         }
 
         static void SetRgb(Material material, string property, Color rgb)
@@ -487,6 +530,9 @@ namespace Steria.Vfx
     /// <summary>Pure manual clock; no MonoBehaviour, battle side effects, or automatic Update.</summary>
     public sealed class ChristashaNativeParticlePlayback
     {
+        /// <summary>Editor-only diagnostic switch; production callers leave false.</summary>
+        public static bool DiagnosticForceMissingMpb;
+        public static bool DiagnosticForceLowMpb;
         readonly GameObject root;
         readonly ParticleSystem[] systems;
         readonly Animator[] animators;
@@ -497,18 +543,23 @@ namespace Steria.Vfx
         readonly HitPlayback hitPlayback;
         readonly IChristashaNativePlaybackHooks recipeHooks;
         Color nativeMainColor, nativeEdgeColor, nativeContourColor;
+        readonly Color fallbackMainColor = new Color(1.02f, .975f, .795f, 0), fallbackEdgeColor = new Color(1f, 1f, 1f, 0), fallbackContourColor = new Color(3.15f, 2.79f, 2.16f, 0);
         bool colorsSampled;
         readonly ParticleSystem.Particle[] front = new ParticleSystem.Particle[4];
         readonly float speed;
+        readonly float recipeSpeed;
+        readonly float targetDuration;
+        readonly bool slashRecipe, hitRecipe;
         System.Random random;
         float elapsed;
+        float wallElapsed;
         int nextEmission;
         bool stopped;
         const float Length = 1.2f;
         const float StepSize = 1f / 120f;
-        public float Duration { get { return NativeDuration / speed; } }
+        public float Duration { get { return targetDuration / speed; } }
         float NativeDuration { get { return recipeHooks != null ? recipeHooks.Duration : hitPlayback == null ? Length : 1f; } }
-        public float Elapsed { get { return elapsed / speed; } }
+        public float Elapsed { get { return wallElapsed / speed; } }
 
         public static ChristashaNativeParticlePlayback Play(GameObject instance, uint seed, float playbackSpeed = 1f)
         {
@@ -522,17 +573,26 @@ namespace Steria.Vfx
             root = instance; speed = playbackSpeed; random = new System.Random(unchecked((int)seed));
             systems = root.GetComponentsInChildren<ParticleSystem>(true);
             animators = root.GetComponentsInChildren<Animator>(true);
-            bool slashRecipe = root.transform.Find("TideArtSpace/NativeSlash") != null && root.transform.Find("DetachedTide/TideSplinters") != null;
+            slashRecipe = root.transform.Find("TideArtSpace/NativeSlash") != null && root.transform.Find("DetachedTide/TideSplinters") != null;
+            hitRecipe = root.transform.Find("HitDetachedPressure/HitFoil") != null;
+            recipeSpeed = slashRecipe ? .92f : hitRecipe ? .93f : 1f;
             mainTrail = slashRecipe ? ChristashaNativeParticleLibrary.FindSystem(root, "Main_Trail1") : null;
             splinters = slashRecipe ? ChristashaNativeParticleLibrary.FindSystem(root, "TideSplinters") : null;
             filaments = slashRecipe ? ChristashaNativeParticleLibrary.FindSystem(root, "TideFilaments") : null;
             dust = slashRecipe ? ChristashaNativeParticleLibrary.FindSystem(root, "TideDust") : null;
-            if (root.transform.Find("HitDetachedPressure/HitFoil") != null) hitPlayback = new HitPlayback(root);
             recipeHooks = ChristashaNativeMassRecipes.TryCreatePlayback(root, seed) ?? ChristashaNativePierceRecipes.TryCreatePlayback(root, seed);
+            if (hitRecipe) hitPlayback = new HitPlayback(root);
+            targetDuration = recipeHooks != null ? recipeHooks.Duration : slashRecipe ? 1.30f : hitRecipe ? 1.08f : Length;
             if (splinters != null)
             {
                 bladeRenderer = mainTrail.GetComponent<ParticleSystemRenderer>();
                 contourRenderer = ChristashaNativeParticleLibrary.FindSystem(root, "Main_Trail2").GetComponent<ParticleSystemRenderer>();
+                // Runtime builds have been observed with an empty Animator MPB after
+                // Animator.Update. Keep independent safe samples from the owned theme
+                // materials; do not interpret that missing block as a black request.
+                fallbackMainColor = ChristashaNativeParticleLibrary.SafeColor(bladeRenderer.sharedMaterial, "_MainColor", fallbackMainColor);
+                fallbackEdgeColor = new Color(1f, 1f, 1f, 0); // source OutColor safety sample
+                fallbackContourColor = ChristashaNativeParticleLibrary.SafeColor(contourRenderer.sharedMaterial, "_MainColor", fallbackContourColor);
             }
             for (int index = 0; index < systems.Length; index++)
             {
@@ -565,14 +625,16 @@ namespace Steria.Vfx
         {
             if (stopped || root == null) return;
             if (deltaTime < 0 || float.IsNaN(deltaTime) || float.IsInfinity(deltaTime)) throw new ArgumentOutOfRangeException("deltaTime");
-            float length = NativeDuration;
-            float target = Mathf.Min(length, elapsed + deltaTime * speed);
-            while (target - elapsed > .000001f)
+            float target = Mathf.Min(targetDuration, wallElapsed + deltaTime * speed);
+            while (target - wallElapsed > .000001f)
             {
-                float dt = Mathf.Min(StepSize, target - elapsed);
+                float postPeakSpeed = (slashRecipe && wallElapsed >= .18f) || (hitRecipe && wallElapsed >= .25f) ? recipeSpeed : 1f;
+                float timelineStep = Mathf.Min(StepSize / Mathf.Max(postPeakSpeed, .001f), target - wallElapsed);
+                float dt = timelineStep * speed * postPeakSpeed;
+                wallElapsed += timelineStep * speed;
                 elapsed += dt; Step(dt);
             }
-            if (elapsed >= length - .000001f) StopAndClear();
+            if (wallElapsed >= targetDuration - .000001f) StopAndClear();
         }
 
         void Step(float dt)
@@ -594,6 +656,27 @@ namespace Steria.Vfx
             }
             foreach (var a in animators)
                 if (a.enabled && a.gameObject.activeInHierarchy) { a.speed = 1; a.Update(dt); a.speed = 0; }
+            if (DiagnosticForceMissingMpb)
+            {
+                // Simulate the player path where Animator.Update leaves no renderer
+                // block; the fallback branch below must restore platinum values.
+                if (bladeRenderer != null) { bladeRenderer.SetPropertyBlock(null); contourRenderer.SetPropertyBlock(null); }
+                if (hitPlayback != null) hitPlayback.ClearBlocks();
+            }
+            if (DiagnosticForceLowMpb)
+            {
+                if (bladeRenderer != null)
+                {
+                    bladeRenderer.GetPropertyBlock(colorBlock);
+                    colorBlock.SetColor("_MainColor", new Color(.01f, .01f, .01f, 0));
+                    colorBlock.SetColor("_OutColor", new Color(.02f, .02f, .02f, 0));
+                    bladeRenderer.SetPropertyBlock(colorBlock); colorBlock.Clear();
+                    contourRenderer.GetPropertyBlock(colorBlock);
+                    colorBlock.SetColor("_MainColor", new Color(.02f, .02f, .02f, 0));
+                    contourRenderer.SetPropertyBlock(colorBlock); colorBlock.Clear();
+                }
+                if (hitPlayback != null) hitPlayback.SetLowBlocks();
+            }
             if (recipeHooks != null) recipeHooks.AfterAnimator(dt, elapsed);
             if (hitPlayback != null) hitPlayback.AfterAnimator(elapsed);
             if (bladeRenderer != null)
@@ -605,14 +688,44 @@ namespace Steria.Vfx
                 // in MainTex.R, then filled with near-unit warm white. Its narrow Out
                 // term compensates only that alpha attenuation, preserving the sharp
                 // original etched edge without a high-HDR broad surface.
-                nativeMainColor = colorBlock.GetColor("_MainColor");
-                nativeEdgeColor = colorBlock.GetColor("_OutColor"); colorsSampled = true;
-                colorBlock.SetColor("_MainColor", new Color(nativeEdgeColor.r * .68f, nativeEdgeColor.g * .65f, nativeEdgeColor.b * .53f, nativeMainColor.a));
+                Color sampledMain = colorBlock.GetColor("_MainColor");
+                Color sampledEdge = colorBlock.GetColor("_OutColor");
+                // Empty/near-zero values are a runtime Animator initialization gap,
+                // while a real native dark body still has a non-zero OutColor.
+                bool missingMainBlock = colorBlock.isEmpty || (elapsed < .30f && sampledEdge.maxColorComponent < .05f);
+                nativeMainColor = missingMainBlock ? fallbackMainColor : sampledMain;
+                nativeEdgeColor = missingMainBlock ? fallbackEdgeColor : sampledEdge; colorsSampled = true;
+                // Keep Slash11's accepted non-zero MPB mapping unchanged. When the
+                // runtime block is absent/underflowed, use a controlled low platinum
+                // body instead of letting an empty sample render a black wide body.
+                Color bodyColor;
+                if (missingMainBlock)
+                {
+                    float safetyFade = elapsed < .30f ? 1f : Mathf.Lerp(1f, .60f, Mathf.InverseLerp(.30f, .80f, elapsed));
+                    bodyColor = new Color(1.15f * safetyFade, 1.05f * safetyFade, .82f * safetyFade, nativeMainColor.a);
+                }
+                else if (elapsed < .30f)
+                {
+                    // Runtime may expose a small but non-zero stale edge channel.
+                    // Clamp only the opening/peak body into the requested platinum
+                    // range; after contact, return to the sampled native falloff.
+                    bodyColor = new Color(Mathf.Clamp(nativeEdgeColor.r * .76f, .85f, 1.30f),
+                        Mathf.Clamp(nativeEdgeColor.g * .70f, .78f, 1.20f),
+                        Mathf.Clamp(nativeEdgeColor.b * .55f, .58f, .98f), nativeMainColor.a);
+                }
+                else
+                {
+                    bodyColor = new Color(Mathf.Clamp(nativeEdgeColor.r * .76f, 0f, 1.30f),
+                        Mathf.Clamp(nativeEdgeColor.g * .70f, 0f, 1.20f),
+                        Mathf.Clamp(nativeEdgeColor.b * .55f, 0f, .98f), nativeMainColor.a);
+                }
+                colorBlock.SetColor("_MainColor", bodyColor);
                 colorBlock.SetColor("_OutColor", new Color(nativeEdgeColor.r * 1.08f / .22f, nativeEdgeColor.g / .22f, nativeEdgeColor.b * .83f / .22f, nativeEdgeColor.a));
                 bladeRenderer.SetPropertyBlock(colorBlock);
                 colorBlock.Clear();
                 contourRenderer.GetPropertyBlock(colorBlock);
-                nativeContourColor = colorBlock.GetColor("_MainColor");
+                Color sampledContour = colorBlock.GetColor("_MainColor");
+                nativeContourColor = colorBlock.isEmpty || (elapsed < .30f && sampledContour.maxColorComponent < .05f) ? fallbackContourColor : sampledContour;
                 colorBlock.SetColor("_MainColor", new Color(nativeContourColor.r * 1.05f, nativeContourColor.g * .93f, nativeContourColor.b * .72f, nativeContourColor.a));
                 contourRenderer.SetPropertyBlock(colorBlock);
                 colorBlock.Clear();
@@ -707,6 +820,8 @@ namespace Steria.Vfx
 
             public void BeforeAnimator() { foreach (var color in colors) color.Restore(); }
             public void StopAndClear() { foreach (var color in colors) color.Restore(); }
+            public void ClearBlocks() { foreach (var color in colors) color.Clear(); }
+            public void SetLowBlocks() { foreach (var color in colors) color.SetLow(); }
 
             public void AfterAnimator(float age)
             {
@@ -725,6 +840,7 @@ namespace Steria.Vfx
             readonly MaterialPropertyBlock mapped = new MaterialPropertyBlock();
             readonly string property;
             readonly Color materialColor, materialOutColor, tint;
+            readonly float materialAlp;
             bool sampled;
             public HitColor(ParticleSystemRenderer renderer, Color tint)
             {
@@ -732,18 +848,31 @@ namespace Steria.Vfx
                 var material = renderer.sharedMaterial;
                 property = material.HasProperty("MainColor") ? "MainColor" : "_MainColor";
                 if (!material.HasProperty(property)) throw new InvalidOperationException("Hit source lacks declared role color " + renderer.name);
-                materialColor = material.GetColor(property);
-                materialOutColor = material.HasProperty("_OutColor") ? material.GetColor("_OutColor") : Color.clear;
+                materialColor = ChristashaNativeParticleLibrary.SafeColor(material, property, new Color(1f, .96f, .82f, 0));
+                materialOutColor = ChristashaNativeParticleLibrary.SafeColor(material, "_OutColor", new Color(1f, 1f, 1f, 0));
+                materialAlp = material.HasProperty("_Alp") && material.GetFloat("_Alp") > .05f ? material.GetFloat("_Alp") : 1f;
             }
             public void Restore() { if (sampled) renderer.SetPropertyBlock(native); }
+            public void Clear() { renderer.SetPropertyBlock(null); }
+            public void SetLow()
+            {
+                renderer.GetPropertyBlock(native);
+                native.SetColor(property, new Color(.02f, .02f, .02f, 0));
+                renderer.SetPropertyBlock(native);
+            }
             public void Map(float age)
             {
                 renderer.GetPropertyBlock(native);
                 renderer.GetPropertyBlock(mapped);
                 Color original = native.isEmpty ? materialColor : native.GetColor(property);
+                float sampledEnergy = original.maxColorComponent;
+                if (native.isEmpty || (age < .35f && (float.IsNaN(sampledEnergy) || float.IsInfinity(sampledEnergy) || sampledEnergy < .05f)))
+                    original = materialColor;
                 if (renderer.name == "Main_Trail1")
                 {
                     Color edge = native.isEmpty ? materialOutColor : native.GetColor("_OutColor");
+                    float edgeEnergy = edge.maxColorComponent;
+                    if (native.isEmpty || (age < .35f && (float.IsNaN(edgeEnergy) || float.IsInfinity(edgeEnergy) || edgeEnergy < .05f))) edge = materialOutColor;
                     mapped.SetColor(property, new Color(edge.r * .68f, edge.g * .65f, edge.b * .53f, original.a));
                     mapped.SetColor("_OutColor", new Color(edge.r * 1.08f / .22f, edge.g / .22f, edge.b * .83f / .22f, edge.a));
                 }
@@ -772,7 +901,12 @@ namespace Steria.Vfx
                     mapped.SetFloat("_MaskPower", Mathf.Max(7.2f, native.GetFloat("_MaskPower")));
                 }
                 else mapped.SetColor(property, new Color(original.r * tint.r, original.g * tint.g, original.b * tint.b, original.a));
-                if (renderer.name == "Smoke") mapped.SetFloat("_Alp", native.GetFloat("_Alp") * .35f);
+                if (renderer.name == "Smoke")
+                {
+                    float alp = native.GetFloat("_Alp");
+                    if (native.isEmpty || (age < .35f && (float.IsNaN(alp) || float.IsInfinity(alp) || alp < .05f))) alp = materialAlp;
+                    mapped.SetFloat("_Alp", alp * .35f);
+                }
                 renderer.SetPropertyBlock(mapped); sampled = true;
             }
         }
@@ -816,6 +950,14 @@ namespace Steria.Vfx
             stopped = true;
             if (recipeHooks != null) recipeHooks.StopAndClear();
             if (hitPlayback != null) hitPlayback.StopAndClear();
+            if (bladeRenderer != null)
+            {
+                // MPBs are transient playback state. Clear them on cancellation so a
+                // later Play on the same instance cannot treat mapped platinum values
+                // as fresh native samples or compound the tint.
+                bladeRenderer.SetPropertyBlock(null);
+                contourRenderer.SetPropertyBlock(null);
+            }
             foreach (var p in systems) if (p != null) p.Stop(false, ParticleSystemStopBehavior.StopEmittingAndClear);
             foreach (var a in animators) if (a != null) a.speed = 0;
         }

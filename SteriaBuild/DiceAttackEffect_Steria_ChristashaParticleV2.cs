@@ -16,6 +16,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
     private ChristashaParticleInstance _visual;
     private bool _arrived;
     private float _visualTime;
+    private float _visualLifetime;
     private string _layerName = "Effect";
     private const float ProjectileTravelTime = .26f;
 
@@ -49,6 +50,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
             _bHasDamagedEffect = false; // Native result processing owns damage sparks and all damage.
             _arrived = false;
             _visualTime = 0f;
+            _visualLifetime = 0f;
             if (IsProjectile)
             {
                 // A projectile uses live Fire world coordinates and a neutral
@@ -59,6 +61,11 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
                 transform.localScale = Vector3.one;
             }
             _visual = ChristashaParticleInstance.CreateLocal(Recipe, transform, Quaternion.identity);
+            if (_visual != null)
+            {
+                _visualLifetime = _visual.Duration + .02f;
+                _destroyTime = Mathf.Max(_destroyTime, _visualLifetime);
+            }
             SetLayer(_layerName);
             if (IsProjectile) PositionProjectile(0f);
         }
@@ -79,7 +86,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
     public override void SetDestroyTime(float destroyTime)
     {
         // Retiming the native destruction deadline must not replay or stretch the visual.
-        base.SetDestroyTime(Mathf.Max(.001f, destroyTime));
+        base.SetDestroyTime(Mathf.Max(Mathf.Max(.001f, destroyTime), _visualLifetime));
     }
 
     public override void SetLayer(string layerName)
@@ -97,6 +104,11 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
             _visualTime += Time.deltaTime;
             if (IsProjectile && !_arrived) PositionProjectile(_visualTime);
             if (_visual != null) _visual.Advance(Time.deltaTime);
+            if (_visual != null && _visual.Complete)
+            {
+                _visual.Dispose();
+                _visual = null;
+            }
         }
         catch (Exception error)
         {
@@ -128,8 +140,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
         }
         if (progress < 1f) return;
         _arrived = true;
-        if (_visual != null) _visual.Dispose();
-        _visual = null;
+        if (_visual != null) _visual.Root.transform.position = end;
         // Initialize supplies no success information. Do not manufacture a
         // confirmed-hit Point here; the native dice result owns that feedback.
     }
@@ -202,7 +213,7 @@ internal sealed class ChristashaParticleInstance : IDisposable
             instance.SetLayer("Effect");
             // Playback activates the independently owned root after placement.
             // Instance disposal never destroys the shared library or its templates.
-            instance._driver = ChristashaNativeParticlePlayback.Play(instance.Root, NextSeed());
+            instance._driver = ChristashaNativeParticlePlayback.Play(instance.Root, NextSeed(), PlaybackSpeed(recipe));
             return instance;
         }
         catch (Exception error)
@@ -212,6 +223,8 @@ internal sealed class ChristashaParticleInstance : IDisposable
             return null;
         }
     }
+
+    internal float Duration { get { return _driver == null ? 0f : _driver.Duration; } }
 
     private static float ArtScale(string recipe)
     {
@@ -225,6 +238,18 @@ internal sealed class ChristashaParticleInstance : IDisposable
             case "Area": return AreaArtScale;
             case "Point": return PointArtScale;
             default: throw new ArgumentException("Unknown native recipe: " + recipe, "recipe");
+        }
+    }
+
+    private static float PlaybackSpeed(string recipe)
+    {
+        switch (recipe)
+        {
+            case "Slash": return 1f; // Native library applies its internal .92 recipe timing.
+            case "Hit": return 1f; // Native library applies its internal .93 recipe timing.
+            case "Pierce": return 1f; // Pierce hook supplies its own .68s duration.
+            case "Projectile": return 1f; // Projectile hook supplies its own .32s duration.
+            default: return 1f; // Mass owner controls Cast/Area/Point timing through its own hooks.
         }
     }
 

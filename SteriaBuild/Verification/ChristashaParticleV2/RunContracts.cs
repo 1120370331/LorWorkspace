@@ -93,6 +93,10 @@ internal static class RunContracts
             Check(effect.transform.parent == pivot && Close(effect.transform.TransformPoint(Vector3.right), pivot.TransformPoint(Vector3.right)), item.kind + " native special/fallback pivot matrix at scale one, one mirror map=" + map + " right=" + right);
             Check(!effect.GetComponent<SpriteRenderer>().enabled && !effect.GetComponent<Animator>().enabled && !effect.HasDamagedEffect, item.kind + " native empty renderers disabled and result ownership preserved");
             var visual = ChristashaNativeParticlePlayback.Started.Last();
+            float expectedSpeed = 1f;
+            Check(Math.Abs(visual.Speed - expectedSpeed) < .0001f, item.kind + " fixed native playback speed=" + expectedSpeed);
+            float visualDeadline = (float)typeof(DiceAttackEffect).GetField("_destroyTime", Fields).GetValue(effect);
+            Check(visualDeadline + .0001f >= visual.Duration + .019f, item.kind + " host deadline protects full visual tail");
             float artScale = (item.action == ActionDetail.Slash || item.action == ActionDetail.Hit || item.action == ActionDetail.Penetrate) ? .35f : 1f;
             Check(Close(visual.Root.transform.TransformPoint(Vector3.right), pivot.TransformPoint(Vector3.right * artScale)),
                 item.kind + " independent art normalization=" + artScale);
@@ -158,7 +162,9 @@ internal static class RunContracts
             Tick(effect, .13f);
             Check(Close(visual.Root.transform.position, Vector3.Lerp(owner.charAppearance.GetSpecialMotionPivot(ActionDetail.Fire).position, target.atkEffectRoot.position, .5f)), "projectile uses both live world endpoints including moved/sloped target");
             Tick(effect, .13f);
-            Check(visual.Stopped && ChristashaNativeParticlePlayback.Started.Count == first + 1, "arrival cleans projectile without inventing confirmed-hit Point");
+            bool retainedTail = !visual.Stopped && Close(visual.Root.transform.position, target.atkEffectRoot.position);
+            Tick(effect, .06f);
+            Check(retainedTail && visual.Stopped && ChristashaNativeParticlePlayback.Started.Count == first + 1, "arrival keeps native projectile tail through .32s, then cleans without inventing confirmed-hit Point");
             UnityEngine.Object.Destroy(effect.gameObject);
         }
         var removedTarget = Actor(-5);

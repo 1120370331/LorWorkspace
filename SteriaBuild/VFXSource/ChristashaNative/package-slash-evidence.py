@@ -17,6 +17,7 @@ def main():
     parser.add_argument('candidate', type=Path)
     parser.add_argument('--startup', action='store_true', help='Include 0/17/33 ms as the first three comparison rows.')
     parser.add_argument('--recipe', choices=['Slash', 'Hit'], default='Slash')
+    parser.add_argument('--timing', action='store_true', help='Select the requested speed/duration milestone frames.')
     args = parser.parse_args()
     output = args.candidate.resolve()
     frames = [0, 1, 2, 6, 17, 26] if args.startup else [1, 3, 6, 10, 17, 26]
@@ -24,6 +25,8 @@ def main():
     if args.recipe == 'Hit':
         frames = [1, 4, 8, 10, 17, 30]
         headings = ['GREATSWORD SUBSET / EDITOR REPLAY', 'CHRISTASHA / VERTICAL SWORD SLAM']
+    if args.timing:
+        frames = [1, 3, 6, 10, 17, 24, 45, 65] if args.recipe == 'Hit' else [1, 3, 6, 10, 17, 30, 45, 78]
     for bg in ['dark', 'mid']:
         board = Image.new('RGB', (1920, 88 + 540 * len(frames)), '#141619')
         draw = ImageDraw.Draw(board)
