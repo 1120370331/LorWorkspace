@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "frozen": true,
-  "baseline_commit": "312fcc18d83f7346239a71d6ed46ac4dcc875fbd",
+  "baseline_commit": "5ef1f3d",
   "game_mod": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
-  "candidate_directory": "output/christasha-native-redesign/scoped-release-candidate",
+  "candidate_directory": "output/christasha-native-redesign/scoped-release-candidate-runtime-fix-02",
   "expected_installed": {
-    "Assemblies/Steria.dll": "4ba01608ce09fc598e553f2b41a8d0d919b2c64b497620c4ec19706fc1ae7762",
+    "Assemblies/Steria.dll": "7208d473ce2ccca39e607fb0fee360da4b16d82a371cd9857e4f0725cda4d5f0",
     "Data/CardInfo.xml": "ab091603d7aa8739e456dd731d01fcf3efa1b1af1c65f30231825b171fcfaeb5"
   },
   "baseline_source_supplements": [
@@ -59,12 +59,12 @@
     {
       "source": "SteriaBuild/ChristashaNativeParticleLibrary.cs",
       "target": "SteriaBuild/ChristashaNativeParticleLibrary.cs",
-      "sha256": "4c74974a6473b7fd76cd888f69d6b864debbfbb6e709135846826602aed5139b"
+      "sha256": "596485480d883b78ac927d409658a1dd3cb041f7106a7abde94c1c5c5c719089"
     },
     {
       "source": "SteriaBuild/DiceAttackEffect_Steria_ChristashaParticleV2.cs",
       "target": "SteriaBuild/DiceAttackEffect_Steria_ChristashaParticleV2.cs",
-      "sha256": "eb7754b34a8492c9e9ba45578f9ab9b6750dee9ad1593720d72da6dc2dd279b6"
+      "sha256": "8657f00f5b297cf33934b2150986d88ddedd8e2b28fe5123c4246f3bdb008ae2"
     },
     {
       "source": "SteriaBuild/BehaviourAction_Steria_ChristashaXiyinV2.cs",
@@ -79,12 +79,12 @@
     {
       "source": "SteriaBuild/ChristashaNativeMassRecipes.cs",
       "target": "SteriaBuild/ChristashaNativeMassRecipes.cs",
-      "sha256": "0c242d246cafe1fdf00b1c6ebcff0f9f876e857fcc94fe4eb8919fb1a6bee3e0"
+      "sha256": "7191bda0e2d7bbed51cea8b3df7f9b44d834217421d4073d8d5d1c7e78c379de"
     },
     {
       "source": "SteriaBuild/ChristashaNativePierceRecipes.cs",
       "target": "SteriaBuild/ChristashaNativePierceRecipes.cs",
-      "sha256": "8daf44af350bed76c01279e9deca894b98d0c860718bd67ee1edbe7792689b04"
+      "sha256": "b3d9430511422a6a053befa8927b030a00caa3cfb0177087cba3c65b947ffd69"
     }
   ],
   "remove_sources": [
