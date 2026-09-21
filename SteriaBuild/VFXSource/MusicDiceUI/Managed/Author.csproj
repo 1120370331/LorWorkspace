@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net472</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Drawing" />
+    <Compile Include="AuthorHost.cs" />
+    <Compile Include="../MusicDamageIconAuthor.cs" />
+    <Compile Include="../MusicDiceGlyphAuthor.cs" />
+  </ItemGroup>
+</Project>

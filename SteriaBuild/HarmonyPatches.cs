@@ -2520,7 +2520,7 @@ namespace Steria
         }
 
         [HarmonyPostfix]
-        public static void Postfix(BattleUnitModel unit, MusicDamageTextState __state)
+        public static void Postfix(BattleUnitModel unit, AtkResist atkResist, int colorIdx, MusicDamageTextState __state)
         {
             try
             {
@@ -2545,13 +2545,8 @@ namespace Steria
                     }
                 }
 
-                if (selected == null)
-                {
-                    selected = effects.LastOrDefault(effect => effect != null && !MusicDiceVisuals.IsMusicDamageText(effect))
-                        ?? effects.LastOrDefault(effect => effect != null);
-                }
-
-                MusicDiceVisuals.ApplyOnDamageText(selected);
+                // Vanilla instantiates a new effect per call. Never restyle a previous hit if creation was skipped.
+                MusicDiceVisuals.ApplyOnDamageText(selected, atkResist, colorIdx);
             }
             catch (Exception ex)
             {

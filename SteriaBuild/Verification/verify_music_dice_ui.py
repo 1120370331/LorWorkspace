@@ -20,9 +20,16 @@ assert 'GetGlyphSprite' in visual and 'GetBlankFrameSprite' in visual
 factory=visual[:visual.index('public static class MusicDiceVisuals')]
 for old_source in ['UISpriteDataManager', 'Graphics.Blit', 'ReadPixels', 'Resources.Load', 'ClearBakedAttackCenter', 'CompositeGlyph', 'GetPixels', 'source.texture']:
  assert old_source not in factory,old_source
-for target in ['diceUi.imgIcon','diceUi.imgDetailIcon_Center','effect.img_resistIcon','effect.img_resistIconBg','effect.img_resistIconFg']:
+for target in ['diceUi.imgIcon','diceUi.imgDetailIcon_Center']:
  assert target+', true)' in visual,target
-print('PASS: original code-drawn glyph; approved AfterIcon-style material; all action/damage centers share glyph; no font/resource center')
+for target in ['effect.img_resistIcon','effect.img_resistIconBg','effect.img_resistIconFg']:
+ assert 'StyleSprite(effect, '+target+', sprite)' in visual,target
+damage=visual[visual.index('public static void ApplyOnDamageText'):visual.index('public static void ApplyOnCardUI')]
+assert 'GetDamageSprite(resist, colorIdx)' in damage and 'StyleColor' not in damage
+assert 'ApplyOnDamageText(selected, atkResist, colorIdx)' in h
+patch=h[h.index('class AttackEffectManager_CreateDamagedTextEffect_MusicDicePatch'):h.index('internal static class MusicDiceClashRouter')]
+assert 'LastOrDefault' not in patch
+print('PASS: original action glyph; HP/stagger resistance shields; native layer/fade ownership; new-hit-only binding')
 
 assert 'GetManifestResourceStream' in factory and 'ImageConversion.LoadImage' in factory
 for costly in ['Rasterize(', 'GlyphDistance(', 'CurveDistance(', 'SmoothUnion(']:
@@ -42,9 +49,13 @@ for name,expected in contract['approved_rgba'].items():
  assert data[:8]==b'\x89PNG\r\n\x1a\n' and data[25]==6,name+' must be actual RGBA PNG'
 for name,expected in contract['inputs'].items():
  assert hashlib.sha256((owner/'Authoring/v1'/name).read_bytes()).hexdigest()==expected,name
-assert hashlib.sha256((root/'SteriaBuild/MusicDiceSystem.cs').read_bytes()).hexdigest()=='92036e71316bd7c19012999dc911c14bbae4155291f1ba13e2a9fff02a4e3176'
+for family in ['Hp','Bp']:
+ for state in ['Weak','Vulnerable','Normal','Endure','Resist']:
+  data=(root/'SteriaBuild/VisualAssets/MusicDice/Damage'/(family+state+'.png')).read_bytes()
+  assert data[:8]==b'\x89PNG\r\n\x1a\n' and data[25]==6
+  assert int.from_bytes(data[16:20],'big')==128 and int.from_bytes(data[20:24],'big')==128
 author=(owner/'MusicDiceMaterialAuthorV1.cs').read_text(encoding='utf-8-sig')
 assert 'Authoring/v1/blank-rgb.png' in author and 'ResolveEnclosedChecker' in author and 'reviewedC186' in author
 assert 'Dice_6' not in author and 'SetGlowReference' not in author
 assert (owner/'MusicDiceGlyphAuthor.cs').is_file()
-print('PASS: reviewed RGBA/input hashes, source-locked AfterIcon authoring, preserved original glyph author, frozen runtime')
+print('PASS: reviewed card RGBA/input hashes retained; ten 128px RGBA damage shields; original glyph author retained')

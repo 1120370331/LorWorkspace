@@ -252,6 +252,31 @@ namespace Steria
         private static Sprite _glyphSprite;
         private static Sprite _blankFrameSprite;
         private static bool _cardResolved, _glyphResolved, _blankFrameResolved;
+        private static readonly Sprite[] DamageSprites = new Sprite[10];
+        private static readonly bool[] DamageResolved = new bool[10];
+
+        public static Sprite GetDamageSprite(AtkResist resist, int colorIdx)
+        {
+            // Match vanilla's HP / stagger families and its five resistance artwork levels.
+            // None has no resistance badge; non-attack/recovery colors keep their native visuals.
+            if (resist == AtkResist.None || (colorIdx != 1 && colorIdx != 2)) return null;
+            int level;
+            switch (resist)
+            {
+                case AtkResist.Weak: level = 0; break;
+                case AtkResist.Vulnerable: level = 1; break;
+                case AtkResist.Normal: level = 2; break;
+                case AtkResist.Endure: level = 3; break;
+                case AtkResist.Resist:
+                case AtkResist.Immune: level = 4; break;
+                default: return null;
+            }
+            int index = (colorIdx - 1) * 5 + level;
+            string name = (colorIdx == 1 ? "Hp" : "Bp")
+                + (resist == AtkResist.Immune ? "Resist" : resist.ToString());
+            return GetCached(ref DamageSprites[index], ref DamageResolved[index],
+                "Steria.VisualAssets.MusicDice.Damage." + name + ".png", "SteriaMusicDamage" + name);
+        }
 
         public static Sprite GetCardSprite()
         {
@@ -358,12 +383,17 @@ namespace Steria
         private static void StyleIcon(Component owner, Image image, bool glyphOnly = false)
         {
             if (image == null || image.sprite == null) return;
+            StyleSprite(owner, image, glyphOnly ? MusicDiceSpriteFactory.GetGlyphSprite() : MusicDiceSpriteFactory.GetCardSprite());
+        }
+
+        private static void StyleSprite(Component owner, Image image, Sprite sprite)
+        {
+            if (image == null || image.sprite == null || sprite == null) return;
             GraphicState entry = Track(owner, image);
             // A refresh must not consume another mod's sprite or compound our conversion.
             if (entry.HasSprite) return;
             entry.OriginalSprite = image.sprite;
-            entry.AppliedSprite = glyphOnly ? MusicDiceSpriteFactory.GetGlyphSprite() : MusicDiceSpriteFactory.GetCardSprite();
-            if (entry.AppliedSprite == null) return;
+            entry.AppliedSprite = sprite;
             entry.HasSprite = true;
             image.sprite = entry.AppliedSprite;
         }
@@ -453,13 +483,16 @@ namespace Steria
             return effect != null && effect.GetComponent<MusicStyleState>()?.DamageIsMusic == true;
         }
 
-        public static void ApplyOnDamageText(DamageTextEffect effect)
+        public static void ApplyOnDamageText(DamageTextEffect effect, AtkResist resist, int colorIdx)
         {
             if (effect == null) return;
-            // Every existing layer uses the same original music glyph; vanilla retains layer and fade ownership.
-            StyleIcon(effect, effect.img_resistIcon, true);
-            StyleIcon(effect, effect.img_resistIconBg, true);
-            StyleIcon(effect, effect.img_resistIconFg, true);
+            Sprite sprite = MusicDiceSpriteFactory.GetDamageSprite(resist, colorIdx);
+            if (sprite == null) return;
+            // The complete shield (not a naked glyph) participates in vanilla's resistance layers.
+            // Keep baked HP/stagger colors: Update copies bg.color to all three while fading.
+            StyleSprite(effect, effect.img_resistIcon, sprite);
+            StyleSprite(effect, effect.img_resistIconBg, sprite);
+            StyleSprite(effect, effect.img_resistIconFg, sprite);
             State(effect).DamageIsMusic = true;
         }
 

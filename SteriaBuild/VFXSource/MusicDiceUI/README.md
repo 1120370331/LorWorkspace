@@ -1,6 +1,22 @@
-# 乐章小骰：获批 AfterIcon 材质作者流程 v1
+# 乐章小骰与击中跳字素材
 
-生产使用 `SteriaBuild/VisualAssets/MusicDice/{Card,BlankFrame,Glyph}.png`，由既有程序集 manifest loader 解码缓存。运行时源码保持 `92036e71316bd7c19012999dc911c14bbae4155291f1ba13e2a9fff02a4e3176`；没有实时 SDF、网络生成或外部图片加载。
+## 2026-09-21：原版盾形乐章跳字
+
+卡页三份获批素材保持原像素。击中跳字改为 `VisualAssets/MusicDice/Damage/` 下红色体力/金色混乱各五档盾形音符，沿用原版抗性文字、数字、位置、层显隐和动画。只对本次新建跳字应用；None、非伤害色和普通攻击保持原版。
+
+作者 `MusicDamageIconAuthor.cs` 复用 `MusicDiceGlyphAuthor` 的音符几何，离线生成 RGBA。托管宿主可在 Unity 许可证不可用时运行同一作者代码，输出仅为 CPU 图片，不代表 Unity GPU 验收：
+
+```powershell
+dotnet build SteriaBuild/VFXSource/MusicDiceUI/Managed/Author.csproj -c Release
+& SteriaBuild/VFXSource/MusicDiceUI/Managed/bin/Release/net472/Author.exe -musicDamageOutput output/music-damage-native/regenerated
+python SteriaBuild/Verification/verify_music_dice_ui.py
+```
+
+本次对照/淡出预览为 `output/music-damage-native/comparison.png`，绑定与恢复检查为该目录 `contract-checks.txt`，最终 DLL 嵌入核对为 `embedded-resources.json`。不生成新 AssetBundle。旧小骰预览脚本只覆盖历史方案；本次伤害图标的验收依据和局限见 `docs/superpowers/specs/2026-09-21-music-damage-native-style.md`。
+
+## 小骰：获批 AfterIcon 材质作者流程 v1（历史交付）
+
+生产使用 `SteriaBuild/VisualAssets/MusicDice/{Card,BlankFrame,Glyph}.png`，由既有程序集 manifest loader 解码缓存。下述运行时哈希属于 2026-09-08 历史候选；2026-09-21 只扩展跳字素材加载。没有实时 SDF、网络生成或外部图片加载。
 
 ## 唯一默认再生入口
 
