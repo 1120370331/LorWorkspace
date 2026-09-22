@@ -308,7 +308,7 @@ namespace Steria.Vfx
                     float u=Mathf.Clamp01((age-start)/(recipe=="Area"?.24f:.23f));
                     float fade=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(recipe=="Area"?.70f:.48f,recipe=="Area"?1.32f:.78f,age));
                     var line=strings[i];line.enabled=u>0&&fade>.001f;
-                    line.startColor=new Color(1,.81f,.42f,.52f*fade);line.endColor=new Color(1,.96f,.75f,.72f*fade);
+                    line.startColor=new Color(1,.89f,.62f,.60f*fade);line.endColor=new Color(1,.98f,.85f,.78f*fade);
                     for(int n=0;n<48;n++)
                     {
                         float t=(n/47f)*u;
@@ -375,19 +375,19 @@ namespace Steria.Vfx
                     // invalid field only when the owned material carries a finite,
                     // non-zero value. Genuine animated zero fields (for example the
                     // native MainTrail body) remain zero and are never whitened.
-                    Color fallback=material.GetColor(prop);
                     bool invalid=float.IsNaN(value.r)||float.IsNaN(value.g)||float.IsNaN(value.b)||float.IsInfinity(value.r)||float.IsInfinity(value.g)||float.IsInfinity(value.b);
                     float fallbackGate=recipe=="Area"?.70f:recipe=="Cast"?.55f:.28f;
-                    if(!native.isEmpty&&!invalid&&age<fallbackGate&&Mathf.Abs(value.r)+Mathf.Abs(value.g)+Mathf.Abs(value.b)<.05f&&Mathf.Abs(fallback.r)+Mathf.Abs(fallback.g)+Mathf.Abs(fallback.b)>.05f)value=fallback;
+                    if(invalid || (!native.isEmpty&&age<fallbackGate&&Mathf.Abs(value.r)+Mathf.Abs(value.g)+Mathf.Abs(value.b)<.05f))
+                        value=ChristashaNativeParticleLibrary.SafeColor(material,prop,Color.white);
                     float energy=Mathf.Max(value.r,Mathf.Max(value.g,value.b));
                     Color tint;
                     if(recipe=="Area")
                     {
-                        tint=renderer.name=="Trail"?new Color(.48f,.46f,.41f):renderer.name=="Trail2"?new Color(.70f,.56f,.32f):new Color(.40f,.375f,.29f);
+                        tint=renderer.name=="Trail"?new Color(.55f,.52f,.43f):renderer.name=="Trail2"?new Color(.78f,.68f,.46f):new Color(.49f,.46f,.36f);
                         if(renderer.name.StartsWith("Spark",StringComparison.Ordinal))tint=new Color(1.12f,1.03f,.76f);
-                        if(prop=="_DissolveColor")tint=new Color(.12f,.105f,.07f);
+                        if(prop=="_DissolveColor")tint=new Color(.24f,.21f,.14f);
                     }
-                    else tint=recipe=="Cast"?new Color(1.15f,1.03f,.70f):new Color(1.2f,1.13f,.91f);
+                    else tint=recipe=="Cast"?new Color(1.15f,1.08f,.86f):new Color(1.2f,1.15f,.98f);
                     mapped.SetColor(prop,new Color(energy*tint.r,energy*tint.g,energy*tint.b,value.a));
                 }
                 sampled=true;renderer.SetPropertyBlock(mapped);

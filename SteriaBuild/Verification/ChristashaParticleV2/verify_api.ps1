@@ -11,6 +11,11 @@ $argsList = @('/nologo', '/target:library', '/langversion:7.3', ('/out:' + (Join
 $argsList += @('mscorlib.dll', 'System.dll', 'System.Core.dll') | ForEach-Object { '/reference:' + $framework + '/' + $_ }
 $argsList += Get-ChildItem $game -Filter 'UnityEngine*.dll' | ForEach-Object { '/reference:' + $_.FullName }
 $argsList += '/reference:' + (Join-Path $game 'Assembly-CSharp.dll')
+$argsList += '/reference:' + (Join-Path $repo 'SteriaBuild/Libs/0Harmony.dll')
+$argsList += Join-Path $repo 'SteriaBuild/ChristashaStrikeImpact.cs'
+$argsList += Join-Path $repo 'SteriaBuild/ChristashaProjectileArc.cs'
+$argsList += Join-Path $repo 'SteriaBuild/ChristashaThrustEnvelope.cs'
+$argsList += Join-Path $repo 'SteriaBuild/SteriaEffectHelper.cs'
 $argsList += @('DiceAttackEffect_Steria_ChristashaParticleV2.cs', 'BehaviourAction_Steria_ChristashaXiyinV2.cs', 'FarAreaEffect_Steria_ChristashaXiyinV2.cs', 'ChristashaNativeParticleLibrary.cs', 'ChristashaNativeMassRecipes.cs', 'ChristashaNativePierceRecipes.cs', 'SteriaLogger.cs') | ForEach-Object { Join-Path $repo ('SteriaBuild/' + $_) }
 & $csc @argsList *> (Join-Path $output 'api-compile.log')
 if ($LASTEXITCODE -ne 0) { Get-Content (Join-Path $output 'api-compile.log'); throw 'Real game API compile failed' }

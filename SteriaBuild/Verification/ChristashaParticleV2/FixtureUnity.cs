@@ -73,6 +73,7 @@ namespace UnityEngine
   public Vector3 lossyScale{get{N.Matrix4x4.Decompose(matrix,out var s,out var q,out var p);return Vector3.From(s);}}
   public void SetParent(Transform p,bool worldPositionStays=true){var old=matrix;if(par!=null)par.children.Remove(this);par=p;if(par!=null)par.children.Add(this);if(worldPositionStays){var local=old;if(p!=null){N.Matrix4x4.Invert(p.matrix,out var inv);local*=inv;}N.Matrix4x4.Decompose(local,out var s,out var q,out var pos);localScale=Vector3.From(s);localRotation=Quaternion.From(q);localPosition=Vector3.From(pos);}}
   public Vector3 TransformPoint(Vector3 v)=>Vector3.From(N.Vector3.Transform(v.N,matrix));
+  public Vector3 InverseTransformPoint(Vector3 v){N.Matrix4x4.Invert(matrix,out var inv);return Vector3.From(N.Vector3.Transform(v.N,inv));}
   public Transform Find(string n)=>children.FirstOrDefault(c=>c.gameObject.name==n);
  }
  public class Animator:Component { public float speed;public bool enabled; }
@@ -81,12 +82,18 @@ namespace UnityEngine
  public class SpriteRenderer:Renderer {}
  public static class LayerMask{public static int NameToLayer(string n)=>n=="Effect"?8:n=="Character"?20:n=="Default"?0:-1;}
  public static class Mathf{public const float Rad2Deg=57.2957795f;public const float Epsilon=float.Epsilon;public static float Atan2(float a,float b)=>(float)Math.Atan2(a,b);public static float Min(float a,float b)=>Math.Min(a,b);public static float Max(float a,float b)=>Math.Max(a,b);public static float Abs(float a)=>Math.Abs(a);public static float Clamp01(float a)=>Math.Min(1,Math.Max(0,a));}
- public static class Time{public static float deltaTime=1f/60;}
+ public static class Time{public static float deltaTime=1f/60;public static int frameCount;}
 }
 
 namespace UnityEngine
 {
  public enum TextureFormat { RGBA32 }
+ public class Shader:Object { }
+ public class AssetBundle:Object
+ {
+  public static AssetBundle LoadFromFile(string path){return new AssetBundle();}
+  public T LoadAsset<T>(string path) where T:Object,new(){return new T();}
+ }
  public enum FilterMode { Bilinear }
  public enum TextureWrapMode { Clamp }
  public class Texture2D:Object

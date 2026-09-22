@@ -15,10 +15,11 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
     private bool IsProjectile { get { return PivotAction == ActionDetail.Fire; } }
     private ChristashaParticleInstance _visual;
     private bool _arrived;
+    private bool _impactShakePlayed;
+    private BattleUnitView _targetView;
     private float _visualTime;
     private float _visualLifetime;
     private string _layerName = "Effect";
-    private const float ProjectileTravelTime = .26f;
 
     public override void Initialize(BattleUnitView self, BattleUnitView target, float destroyTime)
     {
@@ -45,10 +46,12 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
             _destroyTime = Mathf.Max(.001f, destroyTime);
             _elapsed = 0f;
             _targetTransform = target == null ? null : target.atkEffectRoot;
+            _targetView = target;
             spr.enabled = false;
             animator.enabled = false;
             _bHasDamagedEffect = false; // Native result processing owns damage sparks and all damage.
             _arrived = false;
+            _impactShakePlayed = false;
             _visualTime = 0f;
             _visualLifetime = 0f;
             if (IsProjectile)
@@ -63,6 +66,8 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
             _visual = ChristashaParticleInstance.CreateLocal(Recipe, transform, Quaternion.identity);
             if (_visual != null)
             {
+                if (!IsProjectile && Recipe == "Pierce" && _targetTransform != null)
+                    AimPierce();
                 _visualLifetime = _visual.Duration + .02f;
                 _destroyTime = Mathf.Max(_destroyTime, _visualLifetime);
             }
@@ -103,7 +108,14 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
         {
             _visualTime += Time.deltaTime;
             if (IsProjectile && !_arrived) PositionProjectile(_visualTime);
+            if (!IsProjectile && Recipe == "Pierce" && _visual != null && _targetTransform != null)
+                AimPierce();
             if (_visual != null) _visual.Advance(Time.deltaTime);
+            if (IsProjectile && !_impactShakePlayed && _visual != null && _visual.HasConfirmedImpact)
+            {
+                _impactShakePlayed = true;
+                SteriaEffectHelper.AddScreenShake(.012f,.009f,70f,.14f);
+            }
             if (_visual != null && _visual.Complete)
             {
                 _visual.Dispose();
@@ -118,6 +130,14 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
         }
     }
 
+    private void AimPierce()
+    {
+        if (_visual == null || _targetView == null || _targetTransform == null) return;
+        float targetScale = _targetView.characterRotationCenter == null ? 1f : Mathf.Abs(_targetView.characterRotationCenter.lossyScale.x);
+        Vector3 exit = ChristashaThrustEnvelope.Exit(_visual.Root.transform.position, _targetTransform.position, _targetView.WorldPosition, targetScale);
+        _visual.AimAt(_targetTransform.position, exit);
+    }
+
     private void PositionProjectile(float time)
     {
         if (_selfTransform == null || _targetTransform == null)
@@ -129,26 +149,34 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
         }
         Vector3 start = _selfTransform.position;
         Vector3 end = _targetTransform.position;
-        Vector3 direction = end - start;
-        float progress = Mathf.Clamp01(time / ProjectileTravelTime);
+        float progress = Mathf.Clamp01(time / ChristashaProjectileArc.FlightTime);
         if (_visual != null)
         {
             // Both endpoints remain live. Neither prefab-local distances nor the
             // attacker's facing/scale can move this contact away from the target.
-            _visual.Root.transform.position = Vector3.Lerp(start, end, progress);
-            _visual.Root.transform.rotation = ChristashaParticleInstance.AimLeft(direction);
+            _visual.Root.transform.position = ChristashaProjectileArc.Position(start, end, progress);
+            _visual.Root.transform.rotation = ChristashaParticleInstance.AimLeft(ChristashaProjectileArc.Tangent(start, end, progress));
         }
         if (progress < 1f) return;
         _arrived = true;
         if (_visual != null) _visual.Root.transform.position = end;
-        // Initialize supplies no success information. Do not manufacture a
-        // confirmed-hit Point here; the native dice result owns that feedback.
+        // Arrival alone is not a hit. The native result presentation confirms
+        // impact through ChristashaStrikeImpactRouter before the contact gate.
+    }
+
+    internal bool TryConfirmImpact(BattleUnitView target)
+    {
+        if (_visual == null || target == null || target.atkEffectRoot != _targetTransform ||
+            (!IsProjectile && Recipe != "Pierce")) return false;
+        _visual.ConfirmImpact();
+        return true;
     }
 
     private void Cleanup()
     {
         if (_visual != null) _visual.Dispose();
         _visual = null;
+        _targetView = null;
     }
 
     protected virtual void OnDisable() { Cleanup(); UnityEngine.Object.Destroy(gameObject); }
@@ -171,6 +199,7 @@ internal sealed class ChristashaParticleInstance : IDisposable
 {
     private static ChristashaNativeParticleLibrary _library;
     private static Texture2D _originalBrush;
+    private static AssetBundle _strikeBundle;
     private static bool _loadAttempted;
     private static uint _seed = 73013u;
     private static readonly HashSet<string> ReportedFailures = new HashSet<string>();
@@ -283,6 +312,18 @@ internal sealed class ChristashaParticleInstance : IDisposable
         _driver.Advance(dt);
     }
 
+    internal void AimAt(Vector3 worldTarget,Vector3 worldExit)
+    {
+        if (Root != null && _driver != null) _driver.AimStrike(Root.transform.InverseTransformPoint(worldTarget),Root.transform.InverseTransformPoint(worldExit));
+    }
+
+    internal bool HasConfirmedImpact { get { return _driver != null && _driver.StrikeImpactOccurred; } }
+
+    internal void ConfirmImpact()
+    {
+        if (_driver != null) _driver.ConfirmStrikeImpact();
+    }
+
     public void Dispose()
     {
         if (_driver != null) _driver.StopAndClear();
@@ -309,7 +350,12 @@ internal sealed class ChristashaParticleInstance : IDisposable
                 wrapMode = TextureWrapMode.Clamp
             };
             if (!ImageConversion.LoadImage(brush, File.ReadAllBytes(path), false)) throw new InvalidDataException("Cannot decode Christasha native original brush: " + path);
-            _library = new ChristashaNativeParticleLibrary(resource => Resources.Load<GameObject>(resource), brush);
+            Shader strikeShader = null;
+            string shaderPath = Path.Combine(directory, "AB", "steria_christasha_light_strike");
+            if (_strikeBundle == null && File.Exists(shaderPath)) _strikeBundle = AssetBundle.LoadFromFile(shaderPath);
+            if (_strikeBundle != null) strikeShader = _strikeBundle.LoadAsset<Shader>("assets/nativeruntime/platinumstrike.shader");
+            if (strikeShader == null) SteriaLogger.LogError("Christasha strike shader unavailable: " + shaderPath);
+            _library = new ChristashaNativeParticleLibrary(resource => Resources.Load<GameObject>(resource), brush, strikeShader);
             _originalBrush = brush;
             SteriaLogger.Log("Christasha native library initialized from installed game resources and original brush");
         }

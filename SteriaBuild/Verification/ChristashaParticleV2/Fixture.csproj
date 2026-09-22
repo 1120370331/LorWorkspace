@@ -11,5 +11,9 @@
     <Compile Include="../../DiceAttackEffect_Steria_ChristashaParticleV2.cs"/>
     <Compile Include="../../BehaviourAction_Steria_ChristashaXiyinV2.cs"/>
     <Compile Include="../../FarAreaEffect_Steria_ChristashaXiyinV2.cs"/>
+    <Compile Include="../../ChristashaStrikeImpact.cs"/>
+    <Compile Include="../../ChristashaProjectileArc.cs"/>
+    <Compile Include="../../ChristashaThrustEnvelope.cs"/>
+    <Reference Include="0Harmony"><HintPath>../../Libs/0Harmony.dll</HintPath></Reference>
   </ItemGroup>
 </Project>

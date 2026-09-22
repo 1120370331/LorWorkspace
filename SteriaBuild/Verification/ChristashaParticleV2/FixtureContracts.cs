@@ -18,6 +18,11 @@ public class BattleUnitModel
     public bool IsDead() { return dead; }
 }
 public class BreakDetail { public int breakGauge = 50; }
+public class DiceEffectManager
+{
+    public Battle.DiceAttackEffect.DiceAttackEffect CreateBehaviourEffect() { return null; }
+    public void CreateDamagedEffectByBehaviour() { }
+}
 public class BattleUnitView : MonoBehaviour
 {
     public BattleUnitModel model;
@@ -87,6 +92,13 @@ public partial class BattleFarAreaPlayManager
 }
 namespace Steria
 {
+    public static class SteriaEffectHelper
+    {
+        public static int ShakeCalls;
+        public static float LastX,LastY,LastSpeed,LastDuration;
+        public static void AddScreenShake(float x,float y,float speed,float duration)
+        { ShakeCalls++;LastX=x;LastY=y;LastSpeed=speed;LastDuration=duration; }
+    }
     public static class SteriaLogger
     {
         public static readonly List<string> Messages = new List<string>();
@@ -106,7 +118,7 @@ namespace Steria.Vfx
         public readonly Texture2D Brush;
         private readonly Func<string, GameObject> resolver;
         public bool Disposed;
-        public ChristashaNativeParticleLibrary(Func<string, GameObject> resolver, Texture2D originalBrush = null)
+        public ChristashaNativeParticleLibrary(Func<string, GameObject> resolver, Texture2D originalBrush = null, Shader strikeShader = null)
         {
             this.resolver = resolver; Brush = originalBrush; Created.Add(this);
         }
@@ -131,6 +143,10 @@ namespace Steria.Vfx
         public float Speed;
         public bool Stopped;
         public int Advances;
+        public int ImpactConfirmations;
+        public Vector3 Aim;
+        public Vector3 Exit;
+        public bool StrikeImpactOccurred { get { return !Stopped && ImpactConfirmations>0 && Age>=ChristashaProjectileArc.FlightTime; } }
         public float Duration
         {
             get
@@ -138,8 +154,8 @@ namespace Steria.Vfx
                 if (Root.name.EndsWith("Area")) return 1.16f / Speed;
                 if (Root.name.EndsWith("Slash")) return 1.30f / Speed;
                 if (Root.name.EndsWith("Hit")) return 1.08f / Speed;
-                if (Root.name.EndsWith("Pierce")) return .68f / Speed;
-                if (Root.name.EndsWith("Projectile")) return .32f / Speed;
+                if (Root.name.EndsWith("Pierce")) return .72f / Speed;
+                if (Root.name.EndsWith("Projectile")) return ChristashaProjectileArc.VisualDuration / Speed;
                 return .65f / Speed;
             }
         }
@@ -152,5 +168,8 @@ namespace Steria.Vfx
         }
         public void Advance(float dt) { Age += dt; Advances++; }
         public void StopAndClear() { Stopped = true; }
+        public void AimStrike(Vector3 localTarget) { Aim = localTarget; }
+        public void AimStrike(Vector3 localTarget,Vector3 localExit) { Aim=localTarget;Exit=localExit; }
+        public void ConfirmStrikeImpact() { ImpactConfirmations++; }
     }
 }

@@ -20,6 +20,7 @@ internal static class RunContracts
         if (!meleeOnly)
         {
             Projectile();
+            ConfirmedStrikes();
             NativeMass();
             EmptyAndRepeatedMass();
             CancellationAndMissingAssets();
@@ -155,16 +156,28 @@ internal static class RunContracts
             int first = ChristashaNativeParticlePlayback.Started.Count;
             var effect = Dice("PierceFar", owner, target, 1f);
             var visual = ChristashaNativeParticlePlayback.Started.Last();
+            int shakesBefore=Steria.SteriaEffectHelper.ShakeCalls;
             Check(effect.transform.parent == null && Close(visual.Root.transform.position, owner.charAppearance.GetSpecialMotionPivot(ActionDetail.Fire).position), "F pivot explicitly chosen; neutral projectile root");
             Check(Math.Abs(Math.Abs(visual.Root.transform.lossyScale.x) - 1f) < .0001f, "world projectile excludes actor map scale and ignores roll");
             owner.transform.position += new Vector3(2, 1, 0);
             target.transform.position += new Vector3(-3, 4, 0);
-            Tick(effect, .13f);
-            Check(Close(visual.Root.transform.position, Vector3.Lerp(owner.charAppearance.GetSpecialMotionPivot(ActionDetail.Fire).position, target.atkEffectRoot.position, .5f)), "projectile uses both live world endpoints including moved/sloped target");
-            Tick(effect, .13f);
+            Tick(effect, ChristashaProjectileArc.FlightTime * .5f);
+            Vector3 start=owner.charAppearance.GetSpecialMotionPivot(ActionDetail.Fire).position;
+            Vector3 end=target.atkEffectRoot.position;
+            Vector3 actual=visual.Root.transform.position;
+            float along=(actual.x-start.x)/(end.x-start.x);
+            Vector3 chord=Vector3.Lerp(start,end,along);
+            Check(along>.18f && along<.32f && actual.y>chord.y+.1f,
+                "accelerating projectile uses its first half-time to rise through the first quarter of the live path");
+            Vector3 direction=visual.Root.transform.TransformPoint(new Vector3(-1,0,0))-actual;
+            Vector3 travel=ChristashaProjectileArc.Position(start,end,.51f)-ChristashaProjectileArc.Position(start,end,.49f);
+            Check(Math.Abs(direction.x*travel.y-direction.y*travel.x)<.002f && direction.x*travel.x+direction.y*travel.y>0,
+                "sword tip follows the path tangent, not the direct target chord");
+            Tick(effect, ChristashaProjectileArc.FlightTime * .5f);
             bool retainedTail = !visual.Stopped && Close(visual.Root.transform.position, target.atkEffectRoot.position);
-            Tick(effect, .06f);
-            Check(retainedTail && visual.Stopped && ChristashaNativeParticlePlayback.Started.Count == first + 1, "arrival keeps native projectile tail through .32s, then cleans without inventing confirmed-hit Point");
+            Tick(effect, .49f);
+            Check(retainedTail && visual.Stopped && visual.ImpactConfirmations == 0 && ChristashaNativeParticlePlayback.Started.Count == first + 1, "arrival preserves arc-flight impact/tail lifetime and never invents a confirmed impact");
+            Check(Steria.SteriaEffectHelper.ShakeCalls==shakesBefore,"unconfirmed flight has no camera shake");
             UnityEngine.Object.Destroy(effect.gameObject);
         }
         var removedTarget = Actor(-5);
@@ -174,6 +187,66 @@ internal static class RunContracts
         Tick(interrupted, .05f);
         Check(interruptedVisual.Stopped, "destroyed projectile target clears owned projectile");
         UnityEngine.Object.Destroy(interrupted.gameObject);
+        var coincident=new Vector3(3,7,-.2f);
+        Check(Close(ChristashaProjectileArc.Position(coincident,coincident,.5f),coincident),"coincident endpoints have no artificial arc/loop");
+        Vector3 previous=new Vector3(-10,0,0);
+        for(int i=1;i<=10;i++)
+        {
+            var p=ChristashaProjectileArc.Position(new Vector3(-10,0,0),new Vector3(10,0,0),i/10f);
+            Check(p.x>previous.x && p.y>=-.0001f && p.y<6,"arc progresses monotonically with bounded upward rise "+i);
+            previous=p;
+        }
+        Check(Close(previous,new Vector3(10,0,0)),"arc lands exactly at the target");
+        Vector3 from=new Vector3(-10,0,0),to=new Vector3(10,0,0);
+        float launchDistance=Vector3.Distance(from,ChristashaProjectileArc.Position(from,to,.25f));
+        float landingDistance=Vector3.Distance(ChristashaProjectileArc.Position(from,to,.75f),to);
+        Check(landingDistance>launchDistance*3f,"equal time windows visibly accelerate into contact");
+    }
+
+    private static void ConfirmedStrikes()
+    {
+        foreach (string kind in new[] { "PierceNear", "PierceFar" })
+        foreach (bool right in new[] { false, true })
+        {
+            var owner = Actor(right ? -8 : 8, 3, right);
+            var target = Actor(right ? 5 : -5, 2.25f, !right);
+            var effect = Dice(kind, owner, target);
+            var visual = ChristashaNativeParticlePlayback.Started.Last();
+            if (kind == "PierceNear")
+            {
+                Check(Close(visual.Root.transform.TransformPoint(visual.Aim),target.atkEffectRoot.position), "thrust tip aims at true target through mirrored parent matrix " + right);
+                Vector3 end=visual.Root.transform.TransformPoint(visual.Exit);
+                Check(right?end.x>target.WorldPosition.x+6:end.x<target.WorldPosition.x-6,"thrust exit lies behind the victim body, beyond its front contact pivot");
+            }
+            ChristashaStrikePresentationPatch.Postfix(effect,target);
+            Check(!ChristashaStrikeConfirmedImpactPatch.Prefix(target) && visual.ImpactConfirmations == 1, kind + " consumes native winning feedback once");
+            Check(ChristashaStrikeConfirmedImpactPatch.Prefix(target) && visual.ImpactConfirmations == 1, kind + " duplicate callback cannot retrigger contact");
+            int shakeCount=Steria.SteriaEffectHelper.ShakeCalls;
+            Tick(effect,ChristashaProjectileArc.FlightTime-.02f);
+            Check(Steria.SteriaEffectHelper.ShakeCalls==shakeCount,kind+" never shakes before the projectile contact gate");
+            Tick(effect,.03f);Tick(effect,.03f);
+            Check(Steria.SteriaEffectHelper.ShakeCalls==shakeCount+(kind=="PierceFar"?1:0),kind+" confirms one projectile-only impact shake");
+            if(kind=="PierceFar")Check(Steria.SteriaEffectHelper.LastX<=.015f && Steria.SteriaEffectHelper.LastY<=.012f && Steria.SteriaEffectHelper.LastDuration<=.16f,"impact shake remains small and short");
+            UnityEngine.Object.Destroy(effect.gameObject);
+
+            effect=Dice(kind,owner,target);visual=ChristashaNativeParticlePlayback.Started.Last();
+            ChristashaStrikePresentationPatch.Postfix(effect,target);
+            Time.frameCount++;
+            Check(ChristashaStrikeConfirmedImpactPatch.Prefix(target) && visual.ImpactConfirmations == 0, kind + " stale frame cannot claim another dice hit");
+            ChristashaStrikePresentationPatch.Postfix(effect,target);
+            Check(ChristashaStrikeConfirmedImpactPatch.Prefix(owner) && visual.ImpactConfirmations == 0, kind + " wrong target preserves native feedback");
+            ChristashaStrikePresentationPatch.Postfix(effect,target);
+            ChristashaStrikePresentationPatch.Postfix(null,target);
+            Check(ChristashaStrikeConfirmedImpactPatch.Prefix(target), kind + " intervening unrelated attack clears pending ownership");
+            ChristashaStrikePresentationPatch.Postfix(effect,target);
+            UnityEngine.Object.Destroy(effect.gameObject);
+            Check(ChristashaStrikeConfirmedImpactPatch.Prefix(target), kind + " cancelled attack cannot consume winning feedback");
+        }
+        var slashTarget=Actor(-5);
+        var slash=Dice("SlashH",Actor(5),slashTarget);
+        ChristashaStrikePresentationPatch.Postfix(slash,slashTarget);
+        Check(ChristashaStrikeConfirmedImpactPatch.Prefix(slashTarget),"ordinary slash retains native hit feedback");
+        UnityEngine.Object.Destroy(slash.gameObject);
     }
 
     private static BattleFarAreaPlayManager Manager(BattleUnitView owner, params BattleUnitView[] targets)

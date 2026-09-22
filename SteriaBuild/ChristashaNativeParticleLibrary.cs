@@ -27,12 +27,12 @@ namespace Steria.Vfx
         public const string HitCoreResource = "prefabs/battle/diceattackeffects/new/fx/pc/rolrang/fx_pc_rolrang_glovetrail_cross";
         readonly Func<string, GameObject> resolver;
         readonly Texture2D originalBrush;
+        readonly Shader strikeShader;
         readonly List<Object> owned = new List<Object>();
         /// <summary>Editor-only diagnostic switch; production callers leave false.</summary>
         public static bool DiagnosticForceColorNoiseFallback;
-        // Game Resources variants may ship a nearly black ColorNoise texture while
-        // the reference editor bundle has a bright one. Keep the fallback enabled
-        // in play mode; the editor diagnostic can still force it off for parity.
+        // A bounded brush-derived fill keeps the dark native body readable in the
+        // platinum theme. Use the same material in editor replay and the player.
         public static bool RuntimeColorNoiseFallback = true;
         GameObject cache;
         GameObject slash;
@@ -40,11 +40,12 @@ namespace Steria.Vfx
         ChristashaNativeMassRecipes massRecipes;
         ChristashaNativePierceRecipes pierceRecipes;
 
-        public ChristashaNativeParticleLibrary(Func<string, GameObject> resolver, Texture2D originalBrush = null)
+        public ChristashaNativeParticleLibrary(Func<string, GameObject> resolver, Texture2D originalBrush = null, Shader strikeShader = null)
         {
             if (resolver == null) throw new ArgumentNullException("resolver");
             this.resolver = resolver;
             this.originalBrush = originalBrush;
+            this.strikeShader = strikeShader;
         }
 
         /// <summary>Inactive, raw-native-units recipe dispatch; caller owns the instance.</summary>
@@ -58,7 +59,7 @@ namespace Steria.Vfx
                     if (massRecipes == null) massRecipes = new ChristashaNativeMassRecipes(resolver, originalBrush);
                     return massRecipes.CreatePrototype(recipe, parent);
                 case "Pierce": case "Projectile":
-                    if (pierceRecipes == null) pierceRecipes = new ChristashaNativePierceRecipes(resolver, originalBrush);
+                    if (pierceRecipes == null) pierceRecipes = new ChristashaNativePierceRecipes(resolver, originalBrush, strikeShader);
                     return pierceRecipes.CreatePrototype(recipe, parent);
                 default: throw new ArgumentException("Unknown Christasha native recipe: " + recipe, "recipe");
             }
@@ -128,6 +129,8 @@ namespace Steria.Vfx
             {
                 body.GetComponent<ParticleSystemRenderer>().sharedMaterial.SetTexture("_MainTex", PrepareBrushMask(originalBrush, false, .22f));
                 rim.GetComponent<ParticleSystemRenderer>().sharedMaterial.SetTexture("_MainTex", PrepareHitRimMask(originalBrush));
+                var bodyMaterial = body.GetComponent<ParticleSystemRenderer>().sharedMaterial;
+                if (bodyMaterial.HasProperty("_ColorNoise")) bodyMaterial.SetTexture("_ColorNoise", PrepareColorNoiseFallback(originalBrush));
             }
             Material spray = OwnMaterial(upper.GetComponent<ParticleSystemRenderer>().sharedMaterial, "HitGoldFragments");
             SetRgb(spray, "MainColor", new Color(1.3f, 1.2f, .9f));
@@ -264,12 +267,10 @@ namespace Steria.Vfx
             // level; the broken brush still supplies transparent cuts, while the
             // narrow OutColor remains responsible for the brightest edge.
             Texture2D platinumBodyMask = originalBrush == null ? null : PrepareBrushMask(originalBrush, false, .50f);
-            // The native ColorNoise channel controls the broad body weight (W),
-            // rather than just the edge color.  Some player Resources variants
-            // contain an almost-black ColorNoise, which makes a platinum RGB value
-            // render as a black body.  Supply a restrained broken brush only for
-            // this theme body; MainTex/Noise still own coverage and the sharp edge.
-            Texture2D platinumBodyNoise = (DiagnosticForceColorNoiseFallback || (Application.isPlaying && RuntimeColorNoiseFallback)) && originalBrush != null
+            // ColorNoise controls the broad body weight (W). Use a bounded light
+            // fill for this theme; MainTex/Noise still own the brush cuts and
+            // sharp edge. Editor and player must render the same material.
+            Texture2D platinumBodyNoise = (DiagnosticForceColorNoiseFallback || RuntimeColorNoiseFallback) && originalBrush != null
                 ? PrepareColorNoiseFallback(originalBrush) : null;
 
             Material blade = OwnMaterial(main.GetComponent<ParticleSystemRenderer>().sharedMaterial, "DawnPressureBody");
@@ -316,8 +317,8 @@ namespace Steria.Vfx
             var rotation = returning.rotationOverLifetime; rotation.zMultiplier *= .72f;
             Material returningMat = OwnMaterial(blade, "GoldReturn");
             if (originalBrush != null) returningMat.SetTexture("_MainTex", PrepareBrushMask(originalBrush, true));
-            SetRgb(returningMat, "_MainColor", new Color(1.45f, 1.00f, .40f));
-            SetRgb(returningMat, "_OutColor", new Color(1.65f, 1.12f, .46f));
+            SetRgb(returningMat, "_MainColor", new Color(1.55f, 1.30f, .82f));
+            SetRgb(returningMat, "_OutColor", new Color(1.80f, 1.55f, 1.02f));
             returningMat.SetFloat("_MaskPower", 4.5f);
             var returningRenderer = returnObject.GetComponent<ParticleSystemRenderer>();
             returningRenderer.sharedMaterials = new[] { returningMat };
@@ -391,7 +392,7 @@ namespace Steria.Vfx
             var pixels = new Color[original.Length];
             for (int i = 0; i < pixels.Length; i++)
             {
-                float value = Mathf.Lerp(.45f, .60f, Mathf.Clamp01(original[i].r));
+                float value = Mathf.Lerp(.60f, .70f, Mathf.Clamp01(original[i].r));
                 pixels[i] = new Color(value, value, value, 1f);
             }
             var noise = new Texture2D(source.width, source.height, TextureFormat.RGBA32, false, true)
@@ -465,7 +466,7 @@ namespace Steria.Vfx
             size.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, .75f), new Keyframe(.12f, 1f), new Keyframe(.65f, .65f), new Keyframe(1f, 0f)));
             var color = p.colorOverLifetime; color.enabled = true;
             var gradient = new Gradient();
-            gradient.SetKeys(new[] { new GradientColorKey(Color.white, 0), new GradientColorKey(new Color(.68f, .34f, .11f), .48f), new GradientColorKey(new Color(.14f, .055f, .016f), 1) },
+            gradient.SetKeys(new[] { new GradientColorKey(Color.white, 0), new GradientColorKey(new Color(.94f, .80f, .51f), .48f), new GradientColorKey(new Color(.76f, .65f, .43f), 1) },
                 new[] { new GradientAlphaKey(1, 0), new GradientAlphaKey(.85f, .45f), new GradientAlphaKey(0, 1) });
             color.color = new ParticleSystem.MinMaxGradient(gradient);
             var renderer = p.GetComponent<ParticleSystemRenderer>();
@@ -494,6 +495,11 @@ namespace Steria.Vfx
             {
                 animator.fireEvents = false; animator.speed = 0f;
                 animator.applyRootMotion = false; animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+                // speed=0 pauses time, not evaluation: Unity still writes native
+                // (black) material curves after MonoBehaviour.Update. These clones
+                // belong exclusively to the manual clock, including between ticks.
+                animator.keepAnimatorControllerStateOnDisable = true;
+                animator.enabled = false;
             }
             foreach (Animation animation in go.GetComponentsInChildren<Animation>(true))
             {
@@ -561,6 +567,26 @@ namespace Steria.Vfx
         float NativeDuration { get { return recipeHooks != null ? recipeHooks.Duration : hitPlayback == null ? Length : 1f; } }
         public float Elapsed { get { return wallElapsed / speed; } }
 
+        public void AimStrike(Vector3 localTarget)
+        {
+            Vector3 direction=localTarget.sqrMagnitude>.0001f?localTarget.normalized:new Vector3(-1,0,0);
+            AimStrike(localTarget,localTarget+direction*4.8f);
+        }
+
+        public void AimStrike(Vector3 localTarget,Vector3 localExit)
+        {
+            var strike = recipeHooks as IChristashaStrikePlayback;
+            if (!stopped && strike != null) strike.Aim(localTarget,localExit);
+        }
+
+        public bool StrikeImpactOccurred { get { var strike=recipeHooks as IChristashaStrikePlayback;return !stopped && strike!=null && strike.ImpactOccurred; } }
+
+        public void ConfirmStrikeImpact()
+        {
+            var strike = recipeHooks as IChristashaStrikePlayback;
+            if (!stopped && strike != null) strike.ConfirmImpact();
+        }
+
         public static ChristashaNativeParticlePlayback Play(GameObject instance, uint seed, float playbackSpeed = 1f)
         {
             return new ChristashaNativeParticlePlayback(instance, seed, playbackSpeed);
@@ -611,7 +637,13 @@ namespace Steria.Vfx
             {
                 a.fireEvents = false; a.applyRootMotion = false;
                 a.cullingMode = AnimatorCullingMode.AlwaysAnimate; a.speed = 0;
-                if (a.enabled && a.gameObject.activeInHierarchy) { a.Rebind(); a.Update(0); }
+                a.keepAnimatorControllerStateOnDisable = true;
+                if (a.gameObject.activeInHierarchy)
+                {
+                    a.enabled = true;
+                    try { a.Rebind(); a.Update(0); }
+                    finally { a.enabled = false; }
+                }
             }
             foreach (var p in systems)
             {
@@ -655,7 +687,12 @@ namespace Steria.Vfx
                 contourRenderer.SetPropertyBlock(colorBlock); colorBlock.Clear();
             }
             foreach (var a in animators)
-                if (a.enabled && a.gameObject.activeInHierarchy) { a.speed = 1; a.Update(dt); a.speed = 0; }
+                if (a.gameObject.activeInHierarchy)
+                {
+                    a.enabled = true;
+                    try { a.speed = 1; a.Update(dt); }
+                    finally { a.speed = 0; a.enabled = false; }
+                }
             if (DiagnosticForceMissingMpb)
             {
                 // Simulate the player path where Animator.Update leaves no renderer
@@ -959,7 +996,7 @@ namespace Steria.Vfx
                 contourRenderer.SetPropertyBlock(null);
             }
             foreach (var p in systems) if (p != null) p.Stop(false, ParticleSystemStopBehavior.StopEmittingAndClear);
-            foreach (var a in animators) if (a != null) a.speed = 0;
+            foreach (var a in animators) if (a != null) { a.speed = 0; a.enabled = false; }
         }
     }
 }
