@@ -164,52 +164,94 @@ internal static class RunContracts
             var target = Actor(right ? 10 : -10, 2.25f, !right);
             int first = ChristashaNativeParticlePlayback.Started.Count;
             var effect = Dice("PierceFar", owner, target, 1f);
+            var portal = ChristashaNativeParticlePlayback.Started[first];
             var visual = ChristashaNativeParticlePlayback.Started.Last();
             int shakesBefore=Steria.SteriaEffectHelper.ShakeCalls;
-            Check(effect.transform.parent == null && Close(visual.Root.transform.position, owner.charAppearance.GetSpecialMotionPivot(ActionDetail.Fire).position), "F pivot explicitly chosen; neutral projectile root");
+            Vector3 anchor=ChristashaProjectileArc.PortalAnchor(owner.WorldPosition,owner.characterRotationCenter);
+            Vector3 launch=ChristashaProjectileArc.PortalLaunchPoint(anchor,target.atkEffectRoot.position,2.4f);
+            Check(effect.transform.parent == null && portal.Root.name == "ChristashaNative_Portal" &&
+                Close(portal.Root.transform.position,anchor) && Close(visual.Root.transform.position,launch) &&
+                Vector3.Distance(anchor,launch)<1.2f,
+                "rear sword is centered in the portal's front quadrant, never at the Fire hand");
+            Check(right ? anchor.x<owner.WorldPosition.x : anchor.x>owner.WorldPosition.x,
+                "local +X portal anchor mirrors behind caster on both facings");
+            Check(Math.Abs(portal.Root.transform.localScale.x-2.4f)<.0001f &&
+                Math.Abs(anchor.z-owner.WorldPosition.z-.2f)<.0001f && anchor.y>owner.WorldPosition.y+15f,
+                "portal radius follows map scale; elevated center clears the alpha-tight Default head");
+            Check(Math.Abs(ChristashaProjectileArc.PortalRadius(2.25f)-1.9f)<.0001f &&
+                Math.Abs(ChristashaProjectileArc.PortalRadius(5f)-2.7f)<.0001f,
+                "portal radius clamps across small and large actor scales");
             Check(Math.Abs(Math.Abs(visual.Root.transform.lossyScale.x) - 1f) < .0001f, "world projectile excludes actor map scale and ignores roll");
             owner.transform.position += new Vector3(2, 1, 0);
+            Tick(effect,.05f);
+            anchor=ChristashaProjectileArc.PortalAnchor(owner.WorldPosition,owner.characterRotationCenter);
+            launch=ChristashaProjectileArc.PortalLaunchPoint(anchor,target.atkEffectRoot.position,2.4f);
+            Check(Close(portal.Root.transform.position,anchor) && Close(visual.Root.transform.position,launch),
+                "formation follows caster translation through .05s");
+            Tick(effect,.05f);
+            Vector3 start=launch;
+            Check(Close(portal.Root.transform.position,anchor) && Close(visual.Root.transform.position,start),
+                "sword emerges from the frozen aperture at .10s with no hand teleport");
+            owner.transform.position += new Vector3(2, 1, 0);
             target.transform.position += new Vector3(-3, 4, 0);
-            Tick(effect, ChristashaProjectileArc.FlightTime * .5f);
-            Vector3 start=owner.charAppearance.GetSpecialMotionPivot(ActionDetail.Fire).position;
+            Tick(effect,.07f);
             Vector3 end=target.atkEffectRoot.position;
             Vector3 actual=visual.Root.transform.position;
-            float along=(actual.x-start.x)/(end.x-start.x);
-            Vector3 chord=Vector3.Lerp(start,end,along);
-            Check(along>.18f && along<.32f && actual.y>chord.y+.1f,
-                "accelerating projectile uses its first half-time to rise through the first quarter of the live path");
+            Check(Close(portal.Root.transform.position,anchor) && actual.y>owner.WorldPosition.y+15f &&
+                Math.Abs(actual.y-start.y)<.001f,
+                "portal freezes at launch; horizontal sword clears the alpha-tight head by .17s");
             Vector3 direction=visual.Root.transform.TransformPoint(new Vector3(-1,0,0))-actual;
-            Vector3 travel=ChristashaProjectileArc.Position(start,end,.51f)-ChristashaProjectileArc.Position(start,end,.49f);
+            Vector3 travel=ChristashaProjectileArc.PortalPosition(start,end,.26f)-
+                ChristashaProjectileArc.PortalPosition(start,end,.24f);
             Check(Math.Abs(direction.x*travel.y-direction.y*travel.x)<.002f && direction.x*travel.x+direction.y*travel.y>0,
                 "sword tip follows the path tangent, not the direct target chord");
-            Tick(effect, ChristashaProjectileArc.FlightTime * .5f);
+            Check(Math.Abs(direction.y)<Math.Abs(direction.x)*.20f,
+                "opening sword axis is horizontal on both facings");
+            Vector3 beforeJoin=ChristashaProjectileArc.PortalTangent(start,end,ChristashaProjectileArc.HorizontalFraction-.00001f);
+            Vector3 afterJoin=ChristashaProjectileArc.PortalTangent(start,end,ChristashaProjectileArc.HorizontalFraction+.00001f);
+            Check(Math.Abs(beforeJoin.x-afterJoin.x)<.02f && Math.Abs(beforeJoin.y-afterJoin.y)<.02f,
+                "horizontal leg joins the descending path with a continuous tangent");
+            Tick(effect,.08f);
+            target.transform.position += new Vector3(right ? 2f : -2f,-1f,0f);
+            Tick(effect,.13f);
             bool retainedTail = !visual.Stopped && Close(visual.Root.transform.position, target.atkEffectRoot.position);
             Tick(effect, .49f);
-            Check(retainedTail && visual.Stopped && visual.ImpactConfirmations == 0 && ChristashaNativeParticlePlayback.Started.Count == first + 1, "arrival preserves arc-flight impact/tail lifetime and never invents a confirmed impact");
+            Check(retainedTail && visual.Stopped && portal.Stopped && visual.ImpactConfirmations == 0 &&
+                ChristashaNativeParticlePlayback.Started.Count == first + 2,
+                "arrival stays .38s, clears portal, and never invents a confirmed impact");
             Check(Steria.SteriaEffectHelper.ShakeCalls==shakesBefore,"unconfirmed flight has no camera shake");
             UnityEngine.Object.Destroy(effect.gameObject);
         }
         var removedTarget = Actor(-5);
+        int interruptedFirst=ChristashaNativeParticlePlayback.Started.Count;
         var interrupted = Dice("PierceFar", Actor(5), removedTarget);
+        var interruptedPortal=ChristashaNativeParticlePlayback.Started[interruptedFirst];
         var interruptedVisual = ChristashaNativeParticlePlayback.Started.Last();
         UnityEngine.Object.Destroy(removedTarget.gameObject);
         Tick(interrupted, .05f);
-        Check(interruptedVisual.Stopped, "destroyed projectile target clears owned projectile");
+        Check(interruptedVisual.Stopped && interruptedPortal.Stopped, "destroyed projectile target clears sword and portal");
         UnityEngine.Object.Destroy(interrupted.gameObject);
+        int cancelledFirst=ChristashaNativeParticlePlayback.Started.Count;
+        var cancelled=Dice("PierceFar",Actor(5),Actor(-5));
+        var cancelledPortal=ChristashaNativeParticlePlayback.Started[cancelledFirst];
+        var cancelledSword=ChristashaNativeParticlePlayback.Started.Last();
+        UnityEngine.Object.Destroy(cancelled.gameObject);
+        Check(cancelledPortal.Stopped && cancelledSword.Stopped,
+            "cancelled flying-sword dice clears both portal and sword");
         var coincident=new Vector3(3,7,-.2f);
-        Check(Close(ChristashaProjectileArc.Position(coincident,coincident,.5f),coincident),"coincident endpoints have no artificial arc/loop");
+        Check(Close(ChristashaProjectileArc.PortalPosition(coincident,coincident,.5f),coincident),"coincident endpoints have no artificial portal loop");
         Vector3 previous=new Vector3(-10,0,0);
         for(int i=1;i<=10;i++)
         {
-            var p=ChristashaProjectileArc.Position(new Vector3(-10,0,0),new Vector3(10,0,0),i/10f);
-            Check(p.x>previous.x && p.y>=-.0001f && p.y<6,"arc progresses monotonically with bounded upward rise "+i);
+            var p=ChristashaProjectileArc.PortalPosition(new Vector3(-10,0,0),new Vector3(10,0,0),i/10f);
+            Check(p.x>previous.x && Math.Abs(p.y)<.0001f,"portal path stays horizontal when target has equal height "+i);
             previous=p;
         }
         Check(Close(previous,new Vector3(10,0,0)),"arc lands exactly at the target");
         Vector3 from=new Vector3(-10,0,0),to=new Vector3(10,0,0);
-        float launchDistance=Vector3.Distance(from,ChristashaProjectileArc.Position(from,to,.25f));
-        float landingDistance=Vector3.Distance(ChristashaProjectileArc.Position(from,to,.75f),to);
-        Check(landingDistance>launchDistance*3f,"equal time windows visibly accelerate into contact");
+        float launchDistance=Vector3.Distance(from,ChristashaProjectileArc.PortalPosition(from,to,.25f));
+        float landingDistance=Vector3.Distance(ChristashaProjectileArc.PortalPosition(from,to,.75f),to);
+        Check(landingDistance>launchDistance,"rear launch accelerates without looping behind caster");
     }
 
     private static void ConfirmedStrikes()

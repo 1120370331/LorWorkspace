@@ -16,7 +16,7 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
     public string SkinPath;
     public bool RequireStable;
     public Action<bool> Finished;
-    readonly string[] recipes = { "Slash", "Hit", "Pierce", "Projectile", "Cast", "Area", "Point", "PierceMiss", "ProjectileMiss", "SlashContext", "SlashContextRight", "HitContext", "HitContextRight", "PierceContext", "PierceContextRight", "PierceContextMiss", "PierceContextRightMiss", "ProjectileContext", "XiyinTimeline" };
+    readonly string[] recipes = { "Slash", "Hit", "Pierce", "Projectile", "Portal", "Cast", "Area", "Point", "PierceMiss", "ProjectileMiss", "SlashContext", "SlashContextRight", "HitContext", "HitContextRight", "PierceContext", "PierceContextRight", "PierceContextMiss", "PierceContextRightMiss", "ProjectileContext", "ProjectileContextRight", "ProjectileContextMiss", "ProjectileContextRightMiss", "XiyinTimeline" };
     readonly string[] properties = { "_Color", "_MainColor", "MainColor", "_OutColor", "_DissolveColor" };
     readonly List<string> evidence = new List<string>();
     MaterialPropertyBlock block;
@@ -27,12 +27,14 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
     RenderTexture target;
     new Camera camera;
     ChristashaNativeParticleLibrary library;
-    ChristashaNativeParticlePlayback playback, areaPlayback, pointPlayback;
-    GameObject instance, areaInstance, pointInstance;
+    ChristashaNativeParticlePlayback playback, areaPlayback, pointPlayback, portalPlayback;
+    GameObject instance, areaInstance, pointInstance, portalInstance;
     GameObject actor, victim, secondVictim, thirdVictim;
     readonly List<GameObject> extraPointInstances=new List<GameObject>();
     readonly List<ChristashaNativeParticlePlayback> extraPointPlayback=new List<ChristashaNativeParticlePlayback>();
-    Vector3 flightStart, flightEnd;
+    Vector3 flightStart, flightEnd, portalCenter;
+    float portalRadius;
+    bool portalFrozen;
     int recipeIndex = -1, frame, driftCount;
     bool complete;
 
@@ -84,6 +86,13 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
                 foreach (var animator in instance.GetComponentsInChildren<Animator>(true))
                     if (animator.enabled) throw new Exception("Cancelled Animator is still scheduled");
             instance.SetActive(false); Destroy(instance);
+            if(portalPlayback!=null)
+            {
+                portalPlayback.StopAndClear();
+                foreach(var line in portalInstance.GetComponentsInChildren<LineRenderer>(true))
+                    if(line.enabled)throw new Exception("Cancelled portal retained a visible line");
+                portalInstance.SetActive(false);Destroy(portalInstance);portalPlayback=null;portalInstance=null;
+            }
             if(areaPlayback!=null){areaPlayback.StopAndClear();areaInstance.SetActive(false);Destroy(areaInstance);areaPlayback=null;areaInstance=null;}
             if(pointPlayback!=null){pointPlayback.StopAndClear();pointInstance.SetActive(false);Destroy(pointInstance);pointPlayback=null;pointInstance=null;}
             for(int i=0;i<extraPointPlayback.Count;i++){extraPointPlayback[i].StopAndClear();extraPointInstances[i].SetActive(false);Destroy(extraPointInstances[i]);}
@@ -105,18 +114,21 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
         string recipe = label == "XiyinTimeline" ? "Cast" : label.Replace("Miss", "").Replace("Context", "").Replace("Right", "");
         instance = library.CreatePrototype(recipe);
         foreach (Transform t in instance.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = 30;
-        camera.orthographicSize = label == "XiyinTimeline" || recipe == "Area" ? 20 : recipe == "Cast" ? 5.5f : recipe == "Point" ? 4 : recipe == "Pierce" ? 3.5f : recipe == "Projectile" ? 4.5f : 11.5f;
-        camera.transform.position = label == "XiyinTimeline" || recipe == "Area" ? new Vector3(0,6,-100) : recipe == "Pierce" ? new Vector3(-4.2f,0,-100) : new Vector3(0,0,-100);
+        camera.orthographicSize = label == "XiyinTimeline" || recipe == "Area" ? 20 : recipe == "Cast" ? 5.5f : recipe == "Point" ? 4 : recipe == "Pierce" ? 3.5f : recipe == "Projectile" ? 10f : recipe == "Portal" ? 4.5f : 11.5f;
+        camera.transform.position = label == "XiyinTimeline" || recipe == "Area" ? new Vector3(0,6,-100) : recipe == "Pierce" ? new Vector3(-4.2f,0,-100) : recipe == "Projectile" ? new Vector3(0,5,-100) : new Vector3(0,0,-100);
         flightStart=new Vector3(5,0,0);flightEnd=new Vector3(-5,0,0);
+        portalRadius=ChristashaProjectileArc.PortalRadius(3f);portalFrozen=false;
+        portalCenter=flightStart;
         if(label.Contains("Context"))
         {
-            bool right=recipe=="Projectile" || label.Contains("Right");
+            bool right=label.Contains("Right");
             float separation=recipe=="Projectile"?18:10;
-            actor=Actor(recipe=="Slash"?"Slash":recipe=="Hit"?"Hit":"Penetrate",new Vector3(right?-separation:separation,0,0),right);
+            actor=Actor(recipe=="Slash"?"Slash":recipe=="Hit"?"Hit":recipe=="Projectile"?"Default":"Penetrate",new Vector3(right?-separation:separation,0,0),right);
             victim=Actor("Damaged",new Vector3(right?separation:-separation,0,0),!right);
             var pivot=new GameObject("NativeAttackPivot").transform;pivot.SetParent(actor.transform,false);
             pivot.localPosition=new Vector3(-1.92f,2.52f,-.15f);
             flightStart=pivot.position;flightEnd=victim.transform.TransformPoint(new Vector3(-1.92f,2.52f,-.15f));
+            if(recipe=="Projectile")portalCenter=ChristashaProjectileArc.PortalAnchor(actor.transform.position,actor.transform);
             if(recipe=="Pierce" || recipe=="Slash" || recipe=="Hit")
             {
                 instance.transform.SetParent(pivot,false);
@@ -135,7 +147,18 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
             instance.transform.position=actor.transform.position;
             evidence.Add("XiyinTimeline: Cast t=0; Area t=.30; three Points t=.75 only as a simulated successful manager callback. Real callback contract is checked by the managed fixture.");
         }
-        if (recipe == "Projectile") instance.transform.position = flightStart;
+        if (recipe == "Projectile")
+        {
+            flightStart=ChristashaProjectileArc.PortalLaunchPoint(portalCenter,flightEnd,portalRadius);
+            instance.transform.position=flightStart;
+            Vector3 tangent=ChristashaProjectileArc.PortalTangent(flightStart,flightEnd,0f);
+            instance.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(tangent.y,tangent.x)*Mathf.Rad2Deg-180f);
+            portalInstance=library.CreatePrototype("Portal");
+            foreach(Transform t in portalInstance.GetComponentsInChildren<Transform>(true))t.gameObject.layer=30;
+            portalInstance.transform.position=portalCenter;
+            portalInstance.transform.localScale=Vector3.one*portalRadius;
+            evidence.Add(label+" rear portal anchor="+portalCenter+" launch="+flightStart+" radius="+portalRadius);
+        }
         foreach(var r in instance.GetComponentsInChildren<Renderer>(true))
             foreach(var material in r.sharedMaterials)
                 if(material!=null && (material.shader==null || !material.shader.isSupported)) throw new Exception("Unsupported shader: "+r.name);
@@ -149,8 +172,20 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
             if (before != after) throw new Exception(recipe + " same-seed replay changed");
             if (children != instance.GetComponentsInChildren<Transform>(true).Length) throw new Exception("Replay added children");
             evidence.Add(label + " replay/cancel/child-count PASS");
+            if(portalInstance!=null)
+            {
+                int portalChildren=portalInstance.GetComponentsInChildren<Transform>(true).Length;
+                var portalFirst=ChristashaNativeParticlePlayback.Play(portalInstance,19040u);
+                portalFirst.Advance(.1f);string portalBefore=Snapshot(portalInstance);portalFirst.StopAndClear();
+                var portalSecond=ChristashaNativeParticlePlayback.Play(portalInstance,19040u);
+                portalSecond.Advance(.1f);string portalAfter=Snapshot(portalInstance);portalSecond.StopAndClear();
+                if(portalBefore!=portalAfter || portalChildren!=portalInstance.GetComponentsInChildren<Transform>(true).Length)
+                    throw new Exception(label+" portal replay changed");
+                evidence.Add(label+" portal replay/cancel/child-count PASS");
+            }
         }
         playback = ChristashaNativeParticlePlayback.Play(instance, 19037u);
+        if(portalInstance!=null)portalPlayback=ChristashaNativeParticlePlayback.Play(portalInstance,19040u);
         if(recipe=="Pierce" && label.Contains("Context"))
         {
             Vector3 end=ChristashaThrustEnvelope.Exit(instance.transform.position,flightEnd,victim.transform.position,3f);
@@ -231,18 +266,30 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
             }
             if (recipes[recipeIndex].StartsWith("Projectile",StringComparison.Ordinal))
             {
-                float progress=Mathf.Clamp01((frame+1)/60f/ChristashaProjectileArc.FlightTime);
-                instance.transform.position=ChristashaProjectileArc.Position(flightStart,flightEnd,progress);
-                Vector3 tangent=ChristashaProjectileArc.Tangent(flightStart,flightEnd,progress);
+                float age=(frame+1)/60f;
+                if(victim!=null)flightEnd=victim.transform.TransformPoint(new Vector3(-1.92f,2.52f,-.15f));
+                if(actor!=null && !portalFrozen)
+                    portalCenter=ChristashaProjectileArc.PortalAnchor(actor.transform.position,actor.transform);
+                if(!portalFrozen)
+                {
+                    flightStart=ChristashaProjectileArc.PortalLaunchPoint(portalCenter,flightEnd,portalRadius);
+                    portalInstance.transform.position=portalCenter;
+                    if(age>=ChristashaProjectileArc.LaunchTime)portalFrozen=true;
+                }
+                float progress=Mathf.Clamp01((age-ChristashaProjectileArc.LaunchTime)/ChristashaProjectileArc.TravelTime);
+                instance.transform.position=age<ChristashaProjectileArc.LaunchTime?flightStart:
+                    ChristashaProjectileArc.PortalPosition(flightStart,flightEnd,progress);
+                Vector3 tangent=ChristashaProjectileArc.PortalTangent(flightStart,flightEnd,progress);
                 instance.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(tangent.y,tangent.x)*Mathf.Rad2Deg-180f);
             }
             playback.Advance(1f / 60f);
+            if(portalPlayback!=null)portalPlayback.Advance(1f/60f);
             if(areaPlayback!=null)areaPlayback.Advance(1f/60f);
             if(pointPlayback!=null)pointPlayback.Advance(1f/60f);
             foreach(var extra in extraPointPlayback)extra.Advance(1f/60f);
             frame++;
             expected.Clear();
-            var visibleRoots=new List<GameObject>{instance,areaInstance,pointInstance};
+            var visibleRoots=new List<GameObject>{instance,portalInstance,areaInstance,pointInstance};
             visibleRoots.AddRange(extraPointInstances);
             foreach (var root in visibleRoots)
             {
@@ -350,6 +397,19 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
                 RenderTexture.active=null;
                 actorSprite.enabled=actorVisible;victimSprite.enabled=victimVisible;
                 for(int i=0;i<renderers.Length;i++)renderers[i].enabled=states[i];
+            }
+            if(recipes[recipeIndex]=="Portal" && frame==6)
+            {
+                var tick=instance.transform.Find("PortalTick0").GetComponent<LineRenderer>();
+                evidence.Add("Portal frame=6 tick0="+tick.enabled+" width="+tick.widthMultiplier+
+                    " bounds="+tick.bounds+" p0="+tick.GetPosition(0)+" p1="+tick.GetPosition(1));
+                var arcs=new LineRenderer[3];var arcStates=new bool[3];
+                for(int i=0;i<3;i++){arcs[i]=instance.transform.Find("PortalArc"+i).GetComponent<LineRenderer>();arcStates[i]=arcs[i].enabled;arcs[i].enabled=false;}
+                camera.backgroundColor=new Color(.32f,.34f,.37f);camera.Render();RenderTexture.active=target;
+                pixels.ReadPixels(new Rect(0,0,960,540),0,0);pixels.Apply();
+                File.WriteAllBytes(Path.Combine(Output,"Portal","ticks-only-0006.png"),pixels.EncodeToPNG());
+                RenderTexture.active=null;
+                for(int i=0;i<3;i++)arcs[i].enabled=arcStates[i];
             }
         }
         catch (Exception e) { Fail(e); }

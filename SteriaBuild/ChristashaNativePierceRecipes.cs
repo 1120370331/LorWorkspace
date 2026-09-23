@@ -24,6 +24,7 @@ namespace Steria.Vfx
         readonly Dictionary<string, GameObject> templates = new Dictionary<string, GameObject>();
         GameObject cache;
         Material lightMaterial, brushMaterial, glowMaterial, swordMaterial, ringMaterial, nearRingMaterial;
+        Material portalMaterial, portalThreadMaterial;
 
         public ChristashaNativePierceRecipes(Func<string, GameObject> resolver, Texture2D originalBrush, Shader strikeShader = null)
         {
@@ -34,7 +35,7 @@ namespace Steria.Vfx
 
         public GameObject CreatePrototype(string recipe, Transform parent = null)
         {
-            if (recipe != "Pierce" && recipe != "Projectile") throw new ArgumentException("Unknown strike: " + recipe);
+            if (recipe != "Pierce" && recipe != "Projectile" && recipe != "Portal") throw new ArgumentException("Unknown strike: " + recipe);
             GameObject template;
             if (!templates.TryGetValue(recipe, out template))
             {
@@ -47,6 +48,13 @@ namespace Steria.Vfx
                 template = new GameObject("ChristashaNative_" + recipe + "Template");
                 template.SetActive(false); template.transform.SetParent(cache.transform, false);
                 new GameObject(Marker + recipe).transform.SetParent(template.transform, false);
+                if(recipe=="Portal")
+                {
+                    BuildPortal(template.transform);
+                    templates.Add(recipe,template);
+                }
+                else
+                {
                 var aim = new GameObject("StrikeTarget"); aim.transform.SetParent(template.transform, false);
                 aim.transform.localPosition = new Vector3(-4.2f, 0, 0);
                 var exit=new GameObject("StrikeExit");exit.transform.SetParent(template.transform,false);
@@ -71,6 +79,7 @@ namespace Steria.Vfx
                     template.transform.Find("ImpactSparks").GetComponent<ParticleSystemRenderer>().sortingOrder=8;
                 }
                 templates.Add(recipe, template);
+                }
             }
             var instance = Object.Instantiate(template, parent, false);
             instance.name = "ChristashaNative_" + recipe + "Prototype";
@@ -89,6 +98,11 @@ namespace Steria.Vfx
             // Role 3 applies a second narrow, noisy coverage band inside the
             // LineRenderer width. Lift alpha only for the near follow-through.
             nearRingMaterial.SetColor("_Color",new Color(1f,.97f,.86f,2.5f));owned.Add(nearRingMaterial);
+            portalMaterial=new Material(ringMaterial){name="Christasha_BackSummonArcs"};
+            portalMaterial.SetColor("_Color",new Color(1f,.97f,.84f,2.5f));owned.Add(portalMaterial);
+            portalThreadMaterial=new Material(shader){name="Christasha_BackSummonTicks"};
+            portalThreadMaterial.SetTexture("_MainTex",Texture2D.whiteTexture);
+            portalThreadMaterial.SetColor("_Color",new Color(1f,.96f,.82f,1f));owned.Add(portalThreadMaterial);
             var pixels = brush.GetPixels();
             for (int i = 0; i < pixels.Length; i++) pixels[i] = new Color(1, 1, 1, Mathf.Clamp01(pixels[i].r * 1.55f));
             var texture = new Texture2D(brush.width, brush.height, TextureFormat.RGBA32, false, true)
@@ -122,6 +136,27 @@ namespace Steria.Vfx
             line.loop = loop; line.enabled = false;
             line.sortingLayerName = "Particle"; line.sortingOrder = 4;
             return line;
+        }
+
+        void BuildPortal(Transform parent)
+        {
+            // Three unequal, open arcs keep the narrow sword visible in the
+            // middle. The contact ring remains a separate recipe and material.
+            for(int i=0;i<3;i++)
+            {
+                var arc=Line(parent,"PortalArc"+i,false);
+                arc.sharedMaterial=portalMaterial;arc.useWorldSpace=false;arc.positionCount=32;
+                arc.sortingOrder=3;arc.numCornerVertices=2;arc.numCapVertices=2;
+                arc.widthCurve=new AnimationCurve(new Keyframe(0f,0f),new Keyframe(.12f,.9f),
+                    new Keyframe(.56f,1f),new Keyframe(1f,0f));
+            }
+            for(int i=0;i<6;i++)
+            {
+                var tick=Line(parent,"PortalTick"+i,false);
+                tick.sharedMaterial=portalThreadMaterial;tick.useWorldSpace=false;
+                tick.positionCount=3;tick.sortingOrder=4;
+                tick.widthCurve=new AnimationCurve(new Keyframe(0f,0f),new Keyframe(.4f,1f),new Keyframe(1f,0f));
+            }
         }
 
         void ParticlePart(Transform parent, string name)
@@ -257,8 +292,76 @@ namespace Steria.Vfx
         public static IChristashaNativePlaybackHooks TryCreatePlayback(GameObject instance, uint seed)
         {
             foreach(var t in instance.GetComponentsInChildren<Transform>(true))
-                if(t.name.StartsWith(Marker,StringComparison.Ordinal))return new Playback(instance,t.name.Substring(Marker.Length),seed);
+                if(t.name.StartsWith(Marker,StringComparison.Ordinal))
+                {
+                    string recipe=t.name.Substring(Marker.Length);
+                    return recipe=="Portal" ? (IChristashaNativePlaybackHooks)new PortalPlayback(instance) : new Playback(instance,recipe,seed);
+                }
             return null;
+        }
+
+        sealed class PortalPlayback : IChristashaNativePlaybackHooks
+        {
+            readonly LineRenderer[] arcs=new LineRenderer[3],ticks=new LineRenderer[6];
+            readonly MaterialPropertyBlock block=new MaterialPropertyBlock();
+            static readonly float[] arcStart={-45f,93f,219f},arcEnd={58f,182f,300f};
+            static readonly float[] arcWidth={.36f,.25f,.19f},arcRadius={1f,.84f,1.07f};
+            static readonly float[] tickAngle={-66f,82f,191f,335f};
+            public float Duration { get { return ChristashaProjectileArc.PortalFadeEnd; } }
+            public PortalPlayback(GameObject root)
+            {
+                for(int i=0;i<arcs.Length;i++)
+                {arcs[i]=root.transform.Find("PortalArc"+i).GetComponent<LineRenderer>();arcs[i].enabled=false;}
+                for(int i=0;i<ticks.Length;i++)
+                {ticks[i]=root.transform.Find("PortalTick"+i).GetComponent<LineRenderer>();ticks[i].enabled=false;}
+            }
+            public void BeforeAnimator(float dt,float age) { }
+            public void AfterAnimator(float dt,float age)
+            {
+                float form=Mathf.SmoothStep(0f,1f,Mathf.Clamp01(age/.085f));
+                float fade=1f-Mathf.SmoothStep(0f,1f,Mathf.InverseLerp(.28f,Duration,age));
+                for(int i=0;i<arcs.Length;i++)
+                {
+                    var line=arcs[i];float sweep=Mathf.Clamp01((age-i*.012f)/.075f);
+                    line.enabled=sweep>.001f && fade>.001f;
+                    if(!line.enabled)continue;
+                    line.widthMultiplier=arcWidth[i]*Mathf.Max(.15f,form)*fade;
+                    line.startColor=new Color(1f,.98f,.88f,.9f);line.endColor=new Color(1f,.88f,.58f,.78f);
+                    for(int n=0;n<32;n++)
+                    {
+                        float a=Mathf.Lerp(arcStart[i],arcEnd[i],sweep*n/31f)*Mathf.Deg2Rad;
+                        line.SetPosition(n,new Vector3(Mathf.Cos(a)*arcRadius[i],Mathf.Sin(a)*arcRadius[i],-.06f));
+                    }
+                    SetBlock(line,form*fade,age);
+                }
+                for(int i=0;i<ticks.Length;i++)
+                {
+                    var line=ticks[i];line.enabled=age>.035f+i*.009f && fade>.001f;
+                    if(!line.enabled)continue;
+                    line.widthMultiplier=(i<4?.065f:.045f)*fade;
+                    Vector3 from,to;
+                    if(i<4)
+                    {
+                        float a=tickAngle[i]*Mathf.Deg2Rad;
+                        var direction=new Vector3(Mathf.Cos(a),Mathf.Sin(a),0f);
+                        from=direction*.69f+new Vector3(0,0,-.07f);
+                        to=direction*1.15f+new Vector3(0,0,-.07f);
+                    }
+                    else
+                    {
+                        from=i==4?new Vector3(-.86f,.27f,-.07f):new Vector3(.42f,-.86f,-.07f);
+                        to=i==4?new Vector3(-.54f,.68f,-.07f):new Vector3(.86f,-.52f,-.07f);
+                    }
+                    line.SetPosition(0,from);line.SetPosition(1,(from+to)*.5f);line.SetPosition(2,to);
+                    line.startColor=new Color(1f,.97f,.81f,.68f*form*fade);
+                    line.endColor=new Color(1f,.86f,.54f,.48f*form*fade);
+                }
+            }
+            void SetBlock(LineRenderer line,float opacity,float age)
+            {block.Clear();block.SetFloat("_Opacity",Mathf.Clamp01(opacity));block.SetFloat("_Phase",age);block.SetFloat("_Dissolve",Mathf.Clamp01((age-.28f)/.12f));line.SetPropertyBlock(block);}
+            public void AfterParticles(float dt,float age) { }
+            public void StopAndClear()
+            {foreach(var line in arcs)line.enabled=false;foreach(var line in ticks)line.enabled=false;}
         }
 
         sealed class Playback : IChristashaNativePlaybackHooks, IChristashaStrikePlayback
@@ -312,7 +415,9 @@ namespace Steria.Vfx
                 float artScale=projectile?1.65f:1.35f;
                 // Form the thrust forward from the hand before it becomes a
                 // travelling packet; its wide rear cannot extend behind the grip.
-                float axisScale=projectile?1.80f:thrustLength/3.6f;
+                float formingSword=projectile?Mathf.Lerp(.45f,1f,
+                    Mathf.SmoothStep(0f,1f,Mathf.InverseLerp(.045f,.14f,age))):1f;
+                float axisScale=projectile?1.80f*formingSword:thrustLength/3.6f;
                 blade.localScale=projectile?new Vector3(reveal*axisScale,Mathf.Lerp(.35f,1,reveal)*artScale,artScale):new Vector3(axisScale,thrustHalfWidth/.30f,Mathf.Max(.1f,thrustHalfWidth/.60f));
                 Vector3 tail=root.transform.TransformPoint(blade.localPosition + blade.localRotation * new Vector3((projectile?3.34f:3.52f)*axisScale,0,.03f));
                 if(age<ContactTime && (samples==0 || Vector3.Distance(tail,history[0])>.02f))
@@ -402,7 +507,7 @@ namespace Steria.Vfx
         {
             if(cache!=null)Object.DestroyImmediate(cache);
             foreach(var item in owned)if(item!=null)Object.DestroyImmediate(item);
-            owned.Clear();templates.Clear();cache=null;lightMaterial=null;brushMaterial=null;glowMaterial=null;swordMaterial=null;ringMaterial=null;nearRingMaterial=null;
+            owned.Clear();templates.Clear();cache=null;lightMaterial=null;brushMaterial=null;glowMaterial=null;swordMaterial=null;ringMaterial=null;nearRingMaterial=null;portalMaterial=null;portalThreadMaterial=null;
         }
     }
 }

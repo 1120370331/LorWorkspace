@@ -15,11 +15,17 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
     private bool IsProjectile { get { return PivotAction == ActionDetail.Fire; } }
     internal bool SuppressesNativeImpactFeedback { get { return IsProjectile; } }
     private ChristashaParticleInstance _visual;
+    private ChristashaParticleInstance _portal;
     private bool _arrived;
+    private bool _launched;
     private bool _impactShakePlayed;
     private BattleUnitView _targetView;
     private float _visualTime;
     private float _visualLifetime;
+    private float _portalRadius;
+    private Vector3 _portalCenter;
+    private Vector3 _portalStart;
+    private Transform _portalFacing;
     private string _layerName = "Effect";
 
     public override void Initialize(BattleUnitView self, BattleUnitView target, float destroyTime)
@@ -52,17 +58,26 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
             animator.enabled = false;
             _bHasDamagedEffect = false; // Native result processing owns damage sparks and all damage.
             _arrived = false;
+            _launched = false;
             _impactShakePlayed = false;
             _visualTime = 0f;
             _visualLifetime = 0f;
             if (IsProjectile)
             {
-                // A projectile uses live Fire world coordinates and a neutral
-                // root. Neither actor/map scaling nor roll power is duplicated.
+                // Portal and sword both use world roots. The original hand/Fire
+                // pivot still identifies the native action, never the launch.
                 transform.SetParent(null, false);
-                transform.position = _selfTransform.position;
+                _portalFacing = self.characterRotationCenter ?? self.transform;
+                float mapScale = Mathf.Abs(_portalFacing.lossyScale.x);
+                _portalCenter = ChristashaProjectileArc.PortalAnchor(self.WorldPosition, _portalFacing);
+                _portalRadius = ChristashaProjectileArc.PortalRadius(mapScale);
+                _portalStart = ChristashaProjectileArc.PortalLaunchPoint(_portalCenter,
+                    _targetTransform == null ? _portalCenter : _targetTransform.position,_portalRadius);
+                transform.position = _portalCenter;
                 transform.rotation = Quaternion.identity;
                 transform.localScale = Vector3.one;
+                _portal = ChristashaParticleInstance.CreateWorld("Portal", _portalCenter,
+                    Quaternion.identity, Vector3.one * _portalRadius);
             }
             // Greatsword's approved preview uses this outer native tilt. Keep it
             // on the visual instance so the adapter's contact pivot stays fixed.
@@ -103,6 +118,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
         _layerName = layerName;
         base.SetLayer(layerName);
         if (_visual != null) _visual.SetLayer(layerName);
+        if (_portal != null) _portal.SetLayer(layerName);
     }
 
     protected override void Update()
@@ -115,6 +131,11 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
             if (!IsProjectile && Recipe == "Pierce" && _visual != null && _targetTransform != null)
                 AimPierce();
             if (_visual != null) _visual.Advance(Time.deltaTime);
+            if (_portal != null)
+            {
+                _portal.Advance(Time.deltaTime);
+                if (_portal.Complete) { _portal.Dispose(); _portal = null; }
+            }
             if (IsProjectile && !_impactShakePlayed && _visual != null && _visual.HasConfirmedImpact)
             {
                 _impactShakePlayed = true;
@@ -144,22 +165,39 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
 
     private void PositionProjectile(float time)
     {
-        if (_selfTransform == null || _targetTransform == null)
+        if (_self == null || _self.view == null || _portalFacing == null || _targetTransform == null)
         {
             _arrived = true;
-            if (_visual != null) _visual.Dispose();
-            _visual = null;
+            Cleanup();
             return;
         }
-        Vector3 start = _selfTransform.position;
         Vector3 end = _targetTransform.position;
-        float progress = Mathf.Clamp01(time / ChristashaProjectileArc.FlightTime);
+        if (!_launched)
+        {
+            _portalCenter = ChristashaProjectileArc.PortalAnchor(_self.view.WorldPosition, _portalFacing);
+            _portalStart = ChristashaProjectileArc.PortalLaunchPoint(_portalCenter,end,_portalRadius);
+            if (_portal != null) _portal.Root.transform.position = _portalCenter;
+            if (time < ChristashaProjectileArc.LaunchTime)
+            {
+                if (_visual != null)
+                {
+                    _visual.Root.transform.position = _portalStart;
+                    _visual.Root.transform.rotation = ChristashaParticleInstance.AimLeft(
+                        ChristashaProjectileArc.PortalTangent(_portalStart,end,0f));
+                }
+                return;
+            }
+            _launched = true; // Freeze the aperture and sword origin once.
+        }
+        float progress = Mathf.Clamp01((time-ChristashaProjectileArc.LaunchTime) / ChristashaProjectileArc.TravelTime);
         if (_visual != null)
         {
-            // Both endpoints remain live. Neither prefab-local distances nor the
-            // attacker's facing/scale can move this contact away from the target.
-            _visual.Root.transform.position = ChristashaProjectileArc.Position(start, end, progress);
-            _visual.Root.transform.rotation = ChristashaParticleInstance.AimLeft(ChristashaProjectileArc.Tangent(start, end, progress));
+            // The launch point stays frozen; the target stays live. The sword
+            // leaves the elevated rear aperture horizontally, then curves
+            // down to the live target with its own tangent and recorded wake.
+            _visual.Root.transform.position = ChristashaProjectileArc.PortalPosition(_portalStart,end,progress);
+            _visual.Root.transform.rotation = ChristashaParticleInstance.AimLeft(
+                ChristashaProjectileArc.PortalTangent(_portalStart,end,progress));
         }
         if (progress < 1f) return;
         _arrived = true;
@@ -180,7 +218,10 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
     {
         if (_visual != null) _visual.Dispose();
         _visual = null;
+        if (_portal != null) _portal.Dispose();
+        _portal = null;
         _targetView = null;
+        _portalFacing = null;
     }
 
     protected virtual void OnDisable() { Cleanup(); UnityEngine.Object.Destroy(gameObject); }
@@ -214,6 +255,7 @@ internal sealed class ChristashaParticleInstance : IDisposable
     private const float HitArtScale = .55f;
     private const float PierceArtScale = .35f;
     private const float ProjectileArtScale = 1f;
+    private const float PortalArtScale = 1f;
     private const float CastArtScale = 1f;
     private const float AreaArtScale = 1f;
     private const float PointArtScale = 2.2f;
@@ -267,6 +309,7 @@ internal sealed class ChristashaParticleInstance : IDisposable
             case "Hit": return HitArtScale;
             case "Pierce": return PierceArtScale;
             case "Projectile": return ProjectileArtScale;
+            case "Portal": return PortalArtScale;
             case "Cast": return CastArtScale;
             case "Area": return AreaArtScale;
             case "Point": return PointArtScale;

@@ -58,7 +58,7 @@ namespace Steria.Vfx
                 case "Cast": case "Area": case "Point":
                     if (massRecipes == null) massRecipes = new ChristashaNativeMassRecipes(resolver, originalBrush);
                     return massRecipes.CreatePrototype(recipe, parent);
-                case "Pierce": case "Projectile":
+                case "Pierce": case "Projectile": case "Portal":
                     if (pierceRecipes == null) pierceRecipes = new ChristashaNativePierceRecipes(resolver, originalBrush, strikeShader);
                     return pierceRecipes.CreatePrototype(recipe, parent);
                 default: throw new ArgumentException("Unknown Christasha native recipe: " + recipe, "recipe");
