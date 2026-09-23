@@ -103,6 +103,13 @@ internal static class RunContracts
                 item.action == ActionDetail.Penetrate ? .35f : 1f;
             Check(Close(visual.Root.transform.TransformPoint(Vector3.right), pivot.TransformPoint(Vector3.right * artScale)),
                 item.kind + " independent art normalization=" + artScale);
+            if(item.kind=="Hit")
+            {
+                var tilt=visual.Root.transform.localRotation;
+                var expectedTilt=Quaternion.Euler(-10f,0f,0f);
+                Check(Math.Abs(tilt.x-expectedTilt.x)<.0001f && Math.Abs(tilt.w-expectedTilt.w)<.0001f,
+                    "Hit applies native Greatsword outer X tilt exactly once");
+            }
             effect.SetScale(4f);
             Check(Close(effect.transform.TransformPoint(Vector3.right), pivot.TransformPoint(Vector3.right)), "native SetScale remains a no-op across repeated roll inputs");
             Check(visual.Root.layer == 8 && visual.Root.GetComponent<ParticleSystemRenderer>().sortingLayerName == "Particle", "Effect object layer and separate Particle sorting layer");
@@ -221,7 +228,8 @@ internal static class RunContracts
                 Check(right?end.x>target.WorldPosition.x+6:end.x<target.WorldPosition.x-6,"thrust exit lies behind the victim body, beyond its front contact pivot");
             }
             ChristashaStrikePresentationPatch.Postfix(effect,target);
-            Check(!ChristashaStrikeConfirmedImpactPatch.Prefix(target) && visual.ImpactConfirmations == 1, kind + " consumes native winning feedback once");
+            Check(ChristashaStrikeConfirmedImpactPatch.Prefix(target) == (kind == "PierceNear") && visual.ImpactConfirmations == 1,
+                kind + " confirms custom contact once; only projectile suppresses early native spark");
             Check(ChristashaStrikeConfirmedImpactPatch.Prefix(target) && visual.ImpactConfirmations == 1, kind + " duplicate callback cannot retrigger contact");
             int shakeCount=Steria.SteriaEffectHelper.ShakeCalls;
             Tick(effect,ChristashaProjectileArc.FlightTime-.02f);

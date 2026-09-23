@@ -16,7 +16,7 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
     public string SkinPath;
     public bool RequireStable;
     public Action<bool> Finished;
-    readonly string[] recipes = { "Slash", "Hit", "Pierce", "Projectile", "Cast", "Area", "Point", "PierceMiss", "ProjectileMiss", "SlashContext", "SlashContextRight", "HitContext", "HitContextRight", "PierceContext", "PierceContextRight", "ProjectileContext", "XiyinTimeline" };
+    readonly string[] recipes = { "Slash", "Hit", "Pierce", "Projectile", "Cast", "Area", "Point", "PierceMiss", "ProjectileMiss", "SlashContext", "SlashContextRight", "HitContext", "HitContextRight", "PierceContext", "PierceContextRight", "PierceContextMiss", "PierceContextRightMiss", "ProjectileContext", "XiyinTimeline" };
     readonly string[] properties = { "_Color", "_MainColor", "MainColor", "_OutColor", "_DissolveColor" };
     readonly List<string> evidence = new List<string>();
     MaterialPropertyBlock block;
@@ -110,7 +110,7 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
         flightStart=new Vector3(5,0,0);flightEnd=new Vector3(-5,0,0);
         if(label.Contains("Context"))
         {
-            bool right=recipe=="Projectile" || label.EndsWith("Right",StringComparison.Ordinal);
+            bool right=recipe=="Projectile" || label.Contains("Right");
             float separation=recipe=="Projectile"?18:10;
             actor=Actor(recipe=="Slash"?"Slash":recipe=="Hit"?"Hit":"Penetrate",new Vector3(right?-separation:separation,0,0),right);
             victim=Actor("Damaged",new Vector3(right?separation:-separation,0,0),!right);
@@ -121,6 +121,7 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
             {
                 instance.transform.SetParent(pivot,false);
                 instance.transform.localScale=Vector3.one*(recipe=="Slash"?.45f:recipe=="Hit"?.55f:.35f);
+                if(recipe=="Hit")instance.transform.localRotation=Quaternion.Euler(-10f,0f,0f);
             }
             else instance.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2((flightEnd-flightStart).y,(flightEnd-flightStart).x)*Mathf.Rad2Deg-180);
             camera.orthographicSize=17;camera.transform.position=new Vector3(0,9,-100);
@@ -267,6 +268,21 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
             var impact = instance.transform.Find("ImpactRing");
             if (impact != null && recipes[recipeIndex].EndsWith("Miss",StringComparison.Ordinal) && impact.GetComponent<LineRenderer>().enabled)
                 throw new Exception("Miss emitted confirmed-hit ring");
+            if(recipes[recipeIndex].StartsWith("PierceContext",StringComparison.Ordinal) &&
+                !recipes[recipeIndex].EndsWith("Miss",StringComparison.Ordinal) && (frame==10 || frame==12 || frame==17))
+            {
+                var line=impact.GetComponent<LineRenderer>();
+                var flash=instance.transform.Find("ImpactFlash").GetComponent<MeshRenderer>();
+                var body=instance.transform.Find("StrikeBlade").GetComponent<MeshRenderer>();
+                line.GetPropertyBlock(block);float ringOpacity=block.GetFloat("_Opacity");
+                flash.GetPropertyBlock(block);float flashOpacity=block.GetFloat("_Opacity");
+                body.GetPropertyBlock(block);float bodyOpacity=block.GetFloat("_Opacity");
+                evidence.Add(recipes[recipeIndex]+" frame="+frame+" ring="+line.enabled+"/"+ringOpacity+
+                    " flash="+flash.enabled+"/"+flashOpacity+" body="+body.enabled+"/"+bodyOpacity+
+                    " ringOrder="+line.sortingOrder+" bodyOrder="+body.sortingOrder+
+                    " contact="+instance.transform.TransformPoint(instance.transform.Find("StrikeTarget").localPosition)+
+                    " ringBounds="+line.bounds+" p0="+line.GetPosition(0)+" p16="+line.GetPosition(16));
+            }
             if(frame==15 && recipes[recipeIndex].StartsWith("Pierce",StringComparison.Ordinal))
             {
                 var blade=instance.transform.Find("StrikeBlade");
@@ -309,6 +325,31 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
                     File.WriteAllBytes(Path.Combine(Output, recipes[recipeIndex], (bg == 0 ? "dark_" : "mid_") + frame.ToString("D4") + ".png"), pixels.EncodeToPNG());
                     RenderTexture.active = null;
                 }
+            }
+            if(recipes[recipeIndex]=="PierceContext" && (frame==12 || frame==17))
+            {
+                var blade=instance.transform.Find("StrikeBlade").GetComponent<MeshRenderer>();
+                bool wasEnabled=blade.enabled;blade.enabled=false;
+                camera.backgroundColor=new Color(.32f,.34f,.37f);camera.Render();RenderTexture.active=target;
+                pixels.ReadPixels(new Rect(0,0,960,540),0,0);pixels.Apply();
+                File.WriteAllBytes(Path.Combine(Output,"PierceContext","contact-without-blade-"+frame.ToString("D4")+".png"),pixels.EncodeToPNG());
+                RenderTexture.active=null;blade.enabled=wasEnabled;
+            }
+            if(recipes[recipeIndex]=="PierceContext" && frame==17)
+            {
+                var ring=impact.GetComponent<LineRenderer>();
+                var renderers=instance.GetComponentsInChildren<Renderer>(true);
+                var states=new bool[renderers.Length];
+                for(int i=0;i<renderers.Length;i++){states[i]=renderers[i].enabled;if(renderers[i]!=ring)renderers[i].enabled=false;}
+                var actorSprite=actor.GetComponent<SpriteRenderer>();var victimSprite=victim.GetComponent<SpriteRenderer>();
+                bool actorVisible=actorSprite.enabled,victimVisible=victimSprite.enabled;
+                actorSprite.enabled=false;victimSprite.enabled=false;
+                camera.backgroundColor=new Color(.32f,.34f,.37f);camera.Render();RenderTexture.active=target;
+                pixels.ReadPixels(new Rect(0,0,960,540),0,0);pixels.Apply();
+                File.WriteAllBytes(Path.Combine(Output,"PierceContext","ring-only-0017.png"),pixels.EncodeToPNG());
+                RenderTexture.active=null;
+                actorSprite.enabled=actorVisible;victimSprite.enabled=victimVisible;
+                for(int i=0;i<renderers.Length;i++)renderers[i].enabled=states[i];
             }
         }
         catch (Exception e) { Fail(e); }

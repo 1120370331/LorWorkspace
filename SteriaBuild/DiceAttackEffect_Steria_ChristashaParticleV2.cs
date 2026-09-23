@@ -13,6 +13,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
     protected abstract string Recipe { get; }
     protected abstract ActionDetail PivotAction { get; }
     private bool IsProjectile { get { return PivotAction == ActionDetail.Fire; } }
+    internal bool SuppressesNativeImpactFeedback { get { return IsProjectile; } }
     private ChristashaParticleInstance _visual;
     private bool _arrived;
     private bool _impactShakePlayed;
@@ -63,7 +64,10 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
                 transform.rotation = Quaternion.identity;
                 transform.localScale = Vector3.one;
             }
-            _visual = ChristashaParticleInstance.CreateLocal(Recipe, transform, Quaternion.identity);
+            // Greatsword's approved preview uses this outer native tilt. Keep it
+            // on the visual instance so the adapter's contact pivot stays fixed.
+            _visual = ChristashaParticleInstance.CreateLocal(Recipe, transform,
+                Recipe == "Hit" ? Quaternion.Euler(-10f, 0f, 0f) : Quaternion.identity);
             if (_visual != null)
             {
                 if (!IsProjectile && Recipe == "Pierce" && _targetTransform != null)

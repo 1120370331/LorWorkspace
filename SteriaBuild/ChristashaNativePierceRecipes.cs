@@ -23,7 +23,7 @@ namespace Steria.Vfx
         readonly List<Object> owned = new List<Object>();
         readonly Dictionary<string, GameObject> templates = new Dictionary<string, GameObject>();
         GameObject cache;
-        Material lightMaterial, brushMaterial, glowMaterial, swordMaterial, ringMaterial;
+        Material lightMaterial, brushMaterial, glowMaterial, swordMaterial, ringMaterial, nearRingMaterial;
 
         public ChristashaNativePierceRecipes(Func<string, GameObject> resolver, Texture2D originalBrush, Shader strikeShader = null)
         {
@@ -58,10 +58,18 @@ namespace Steria.Vfx
                 trail.useWorldSpace = true; trail.numCapVertices = 0; trail.numCornerVertices = 3;
                 trail.widthCurve = AnimationCurve.Linear(0, 1, 1, 0);
                 var ring = Line(template.transform, "ImpactRing", true);
-                ring.sharedMaterial=ringMaterial;
+                ring.sharedMaterial=recipe=="Pierce"?nearRingMaterial:ringMaterial;
                 ring.useWorldSpace = true; ring.positionCount = 65;
                 ParticlePart(template.transform, "StrikeMotes");
                 ParticlePart(template.transform, "ImpactSparks");
+                if(recipe=="Pierce")
+                {
+                    // The thrust's long carrier crosses the target. Its small
+                    // confirmed contact must render in front of that carrier.
+                    template.transform.Find("ImpactFlash").GetComponent<MeshRenderer>().sortingOrder=7;
+                    ring.sortingOrder=6;
+                    template.transform.Find("ImpactSparks").GetComponent<ParticleSystemRenderer>().sortingOrder=8;
+                }
                 templates.Add(recipe, template);
             }
             var instance = Object.Instantiate(template, parent, false);
@@ -77,6 +85,10 @@ namespace Steria.Vfx
             if(strikeShader==null || !strikeShader.isSupported)throw new InvalidOperationException("Platinum strike shader bundle is missing or unsupported");
             lightMaterial=Surface("ThrustEnergy",0);swordMaterial=Surface("LightSword",1);
             glowMaterial=Surface("BrokenWake",2);ringMaterial=Surface("ErodingShock",3);
+            nearRingMaterial=new Material(ringMaterial){name="Christasha_NearContactRing"};
+            // Role 3 applies a second narrow, noisy coverage band inside the
+            // LineRenderer width. Lift alpha only for the near follow-through.
+            nearRingMaterial.SetColor("_Color",new Color(1f,.97f,.86f,2.5f));owned.Add(nearRingMaterial);
             var pixels = brush.GetPixels();
             for (int i = 0; i < pixels.Length; i++) pixels[i] = new Color(1, 1, 1, Mathf.Clamp01(pixels[i].r * 1.55f));
             var texture = new Texture2D(brush.width, brush.height, TextureFormat.RGBA32, false, true)
@@ -263,7 +275,7 @@ namespace Steria.Vfx
             int samples, emitted;
             bool confirmed, impacted, impactEmitted;
             float impactAge;
-            Vector3 contact;
+            Vector3 contact, renderContact;
             Quaternion impactRotation;
             public float Duration { get { return projectile ? ChristashaProjectileArc.VisualDuration : .72f; } }
             float ContactTime { get { return projectile ? ChristashaProjectileArc.FlightTime : .16f; } }
@@ -302,8 +314,6 @@ namespace Steria.Vfx
                 // travelling packet; its wide rear cannot extend behind the grip.
                 float axisScale=projectile?1.80f:thrustLength/3.6f;
                 blade.localScale=projectile?new Vector3(reveal*axisScale,Mathf.Lerp(.35f,1,reveal)*artScale,artScale):new Vector3(axisScale,thrustHalfWidth/.30f,Mathf.Max(.1f,thrustHalfWidth/.60f));
-                SetSurface(body,fade*reveal,age,1-fade);
-                if(hilt!=null)SetSurface(hilt,fade*reveal,age,1-fade);
                 Vector3 tail=root.transform.TransformPoint(blade.localPosition + blade.localRotation * new Vector3((projectile?3.34f:3.52f)*axisScale,0,.03f));
                 if(age<ContactTime && (samples==0 || Vector3.Distance(tail,history[0])>.02f))
                 {
@@ -321,20 +331,32 @@ namespace Steria.Vfx
                 {
                     impacted=true;impactAge=age;contact=projectile?root.transform.position:root.transform.TransformPoint(aim.localPosition);
                     impactRotation=projectile?root.transform.rotation:blade.rotation;
-                    flash.transform.position=contact+new Vector3(0,0,-.15f);flash.transform.rotation=impactRotation;
+                    // Near contact pivots can sit behind the victim sprite (the
+                    // mirrored skin's Z becomes positive). Keep the same XY hit
+                    // point but draw the confirmed follow-through in front.
+                    renderContact=projectile?contact:new Vector3(contact.x,contact.y,Mathf.Min(contact.z,0f)-.65f);
+                    flash.transform.position=renderContact+new Vector3(0,0,projectile?-.15f:0f);
+                    flash.transform.rotation=impactRotation;
                 }
+                // Only a confirmed near contact yields a brief gap in the broad
+                // thrust body. The native spark, compact flash, ring and splinters
+                // can then read as one hit before the sword's follow-through.
+                float contactFocus=!projectile && impacted ?
+                    Mathf.Lerp(.35f,1f,Mathf.SmoothStep(0f,1f,Mathf.Clamp01((age-impactAge)/.28f))) : 1f;
+                SetSurface(body,fade*reveal*contactFocus,age,1-fade);
+                if(hilt!=null)SetSurface(hilt,fade*reveal,age,1-fade);
                 if(impacted)
                 {
                     float t=age-impactAge;
-                    float expansion=Mathf.SmoothStep(0,1,Mathf.Clamp01(t/(projectile?.16f:.22f)));
+                    float expansion=Mathf.SmoothStep(0,1,Mathf.Clamp01(t/(projectile?.16f:.12f)));
                     float opacity=1-Mathf.SmoothStep(0,1,Mathf.Clamp01(t/.40f));
                     ring.enabled=opacity>.001f;
-                    float radius=Mathf.Lerp(projectile?.48f:.30f,projectile?3.6f:3.0f,expansion);
-                    ring.widthMultiplier=Mathf.Lerp(projectile?.60f:.38f,.14f,expansion);
+                    float radius=Mathf.Lerp(projectile?.48f:.70f,projectile?3.6f:5.2f,expansion);
+                    ring.widthMultiplier=projectile?Mathf.Lerp(.60f,.14f,expansion):Mathf.Lerp(1.05f,.55f,expansion);
                     ring.startColor=ring.endColor=Color.white;
                     SurfaceBlock(ring,opacity,t,Mathf.Clamp01(t/.34f));
-                    for(int i=0;i<65;i++){float a=i/64f*Mathf.PI*2;ring.SetPosition(i,contact+impactRotation*new Vector3(Mathf.Cos(a)*radius*.62f,Mathf.Sin(a)*radius,0)+new Vector3(0,0,-.12f));}
-                    flash.transform.localScale=Vector3.one*Mathf.Lerp(projectile?4.4f:2.6f,.4f,Mathf.Clamp01(t/.16f));
+                    for(int i=0;i<65;i++){float a=i/64f*Mathf.PI*2;ring.SetPosition(i,renderContact+impactRotation*new Vector3(Mathf.Cos(a)*radius*(projectile?.62f:.88f),Mathf.Sin(a)*radius,0)+new Vector3(0,0,projectile?-.12f:0f));}
+                    flash.transform.localScale=Vector3.one*Mathf.Lerp(projectile?4.4f:3.3f,.4f,Mathf.Clamp01(t/.16f));
                     SetSurface(flash,projectile?1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(.025f,.14f,t)):1-Mathf.Clamp01(t/.12f),t,0);
                 }
             }
@@ -356,7 +378,7 @@ namespace Steria.Vfx
                         float velocity=i%4==0?Range(9f,14f):Range(3.2f,7f);
                         Vector3 radial=new Vector3(Mathf.Cos(a),Mathf.Sin(a),0)*velocity;
                         if(projectile)radial=impactRotation*(radial+new Vector3(-2f,0,0));
-                        Emit(sparks,contact,radial,projectile?Range(.28f,.62f):Range(.16f,.48f),Range(.16f,.34f));
+                        Emit(sparks,renderContact,radial,projectile?Range(.28f,.62f):Range(.16f,.48f),Range(.16f,.34f));
                     }
                 }
             }
@@ -380,7 +402,7 @@ namespace Steria.Vfx
         {
             if(cache!=null)Object.DestroyImmediate(cache);
             foreach(var item in owned)if(item!=null)Object.DestroyImmediate(item);
-            owned.Clear();templates.Clear();cache=null;lightMaterial=null;brushMaterial=null;glowMaterial=null;swordMaterial=null;ringMaterial=null;
+            owned.Clear();templates.Clear();cache=null;lightMaterial=null;brushMaterial=null;glowMaterial=null;swordMaterial=null;ringMaterial=null;nearRingMaterial=null;
         }
     }
 }

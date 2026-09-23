@@ -24,7 +24,7 @@ internal static class ChristashaStrikeImpactRouter
         var candidate = pending;
         bool matches = candidate != null && victim == target && frame == Time.frameCount;
         pending = null; victim = null;
-        return matches && candidate.TryConfirmImpact(target);
+        return matches && candidate.TryConfirmImpact(target) && candidate.SuppressesNativeImpactFeedback;
     }
 }
 
@@ -44,8 +44,8 @@ public static class ChristashaStrikeConfirmedImpactPatch
     [HarmonyPrefix]
     public static bool Prefix(BattleUnitView self)
     {
-        // Unrelated effects keep the original feedback. Only a live, matched
-        // custom strike replaces it with its delayed ring / gold impact burst.
+        // A matched near thrust confirms its follow-through and keeps the
+        // native result spark; only the still-flying projectile replaces it.
         return !ChristashaStrikeImpactRouter.Consume(self);
     }
 }

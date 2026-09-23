@@ -135,6 +135,16 @@ namespace Steria.Vfx
             Material spray = OwnMaterial(upper.GetComponent<ParticleSystemRenderer>().sharedMaterial, "HitGoldFragments");
             SetRgb(spray, "MainColor", new Color(1.3f, 1.2f, .9f));
             Material foil = HitBrushMaterial();
+            var leadObject = new GameObject("HitLeadingRim"); leadObject.transform.SetParent(hit.transform, false);
+            var lead = leadObject.AddComponent<LineRenderer>();
+            lead.sharedMaterial = HitGuideMaterial(); lead.useWorldSpace = false; lead.positionCount = 12;
+            lead.textureMode = LineTextureMode.Stretch; lead.sortingLayerName = "Particle"; lead.sortingOrder = 4;
+            lead.numCornerVertices = 2; lead.numCapVertices = 2;
+            lead.widthCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(.16f, 1f),
+                new Keyframe(.78f, .86f), new Keyframe(1f, 0f));
+            lead.startColor = new Color(1f, 1f, .94f, 1f);
+            lead.endColor = new Color(1f, .97f, .84f, .94f);
+            lead.enabled = false;
             var support = new GameObject("HitDetachedPressure"); support.transform.SetParent(hit.transform, false);
             MakeSupport(support.transform, "HitFoil", foil, HitBrushMesh(.24f), 32, 5);
             MakeSupport(support.transform, "HitThreads", foil, HitBrushMesh(.055f), 32, 4);
@@ -163,6 +173,29 @@ namespace Steria.Vfx
             owned.Add(material); return material;
         }
 
+        Material HitGuideMaterial()
+        {
+            // LineRenderer U runs along the moving stroke. Turn the same local
+            // brush so its long grain follows that path and its fine tip leads.
+            int width = originalBrush.height, height = originalBrush.width;
+            var source = originalBrush.GetPixels(); var pixels = new Color[source.Length];
+            for (int y = 0; y < height; y++) for (int x = 0; x < width; x++)
+            {
+                // Crop to the brush's central broken grain across the line's
+                // width; mapping the full black margins made the guide a hair.
+                int sourceX = Mathf.Clamp(Mathf.RoundToInt(originalBrush.width *
+                    (.34f + .32f * y / Mathf.Max(1, height - 1))), 0, originalBrush.width - 1);
+                float brush = source[(originalBrush.height - 1 - x) * originalBrush.width + sourceX].r;
+                pixels[y * width + x] = new Color(1f, 1f, 1f, Mathf.Pow(Mathf.Clamp01(brush * 1.55f), .65f));
+            }
+            var texture = new Texture2D(width, height, TextureFormat.RGBA32, false, true)
+            { name = "Christasha_HitLeadingBrush", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+            texture.SetPixels(pixels); texture.Apply(false, true); owned.Add(texture);
+            var material = new Material(Shader.Find("Sprites/Default")) { name = "Christasha_HitLeadingRim" };
+            material.SetTexture("_MainTex", texture); material.SetColor("_Color", new Color(1f, 1f, .90f, 1f));
+            owned.Add(material); return material;
+        }
+
         Texture2D PrepareHitRimMask(Texture2D source)
         {
             var original = source.GetPixels();
@@ -171,9 +204,9 @@ namespace Steria.Vfx
             {
                 float v = (i / source.width + .5f) / source.height;
                 float outerRim = Mathf.Clamp01((.14f - v) / .035f);
-                // U is native arc travel. Reposition the local knife aperture toward
-                // the descending left side so its lower end reaches the native
-                // (-6.87,-2.5) contact group; particle angles and clip stay untouched.
+                // The native narrow rim belongs at the lower contact. The short
+                // guide stroke separately makes the early attacker-to-target
+                // travel readable without rotating this contact carrier.
                 int x = i % source.width + Mathf.RoundToInt(source.width * .24f);
                 float brush = x < source.width ? original[(i / source.width) * source.width + x].r : 0f;
                 float coverage = Mathf.Clamp01(brush * 1.6f) * outerRim;
@@ -818,6 +851,7 @@ namespace Steria.Vfx
             readonly GameObject root;
             readonly ParticleSystem[] native;
             readonly ParticleSystem wave, upper, start;
+            readonly LineRenderer lead;
             readonly List<HitColor> colors = new List<HitColor>();
             public readonly ParticleSystem Foil, Threads, Dust;
             public Vector3 ContactPosition { get { return root.transform.InverseTransformPoint(wave.transform.position); } }
@@ -831,6 +865,8 @@ namespace Steria.Vfx
                 wave = ChristashaNativeParticleLibrary.FindSystem(root, "Ground_Wave1");
                 upper = ChristashaNativeParticleLibrary.FindSystem(root, "Upper_Particle");
                 start = ChristashaNativeParticleLibrary.FindSystem(root, "Upper_Particle_Start");
+                lead = root.transform.Find("HitLeadingRim").GetComponent<LineRenderer>();
+                lead.enabled = false;
                 native = new[] {
                     ChristashaNativeParticleLibrary.FindSystem(root, "Main_Trail1"),
                     ChristashaNativeParticleLibrary.FindSystem(root, "Main_Trail2"),
@@ -856,7 +892,7 @@ namespace Steria.Vfx
             }
 
             public void BeforeAnimator() { foreach (var color in colors) color.Restore(); }
-            public void StopAndClear() { foreach (var color in colors) color.Restore(); }
+            public void StopAndClear() { lead.enabled = false; foreach (var color in colors) color.Restore(); }
             public void ClearBlocks() { foreach (var color in colors) color.Clear(); }
             public void SetLowBlocks() { foreach (var color in colors) color.SetLow(); }
 
@@ -867,6 +903,25 @@ namespace Steria.Vfx
                 // child starter spray is brought to the native lower contact group.
                 start.transform.position = upper.transform.position;
                 start.transform.rotation = root.transform.rotation * Quaternion.LookRotation(new Vector3(-1f, .24f, 0), Vector3.forward);
+                // Only a short broken segment follows the native upper arc.
+                // It starts by the raised hand and reaches the untouched ground
+                // contact at .15s; the original Greatsword carriers keep moving.
+                float head = Mathf.Clamp01(age / .15f);
+                float fade = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.15f, .205f, age));
+                lead.enabled = head > 0f && fade > .001f;
+                if (!lead.enabled) return;
+                lead.widthMultiplier = .90f * fade;
+                Vector3 contact = ContactPosition;
+                Vector3 origin = new Vector3(6.3f, 5.2f, contact.z);
+                Vector3 control1 = new Vector3(3.2f, 9.7f, contact.z);
+                Vector3 control2 = new Vector3(-3.9f, 12.3f, contact.z);
+                float tail = Mathf.Max(0f, head - Mathf.Lerp(.20f, .10f, head));
+                for (int i = 0; i < 12; i++)
+                {
+                    float t = Mathf.Lerp(tail, head, i / 11f), u = 1f - t;
+                    lead.SetPosition(i, u * u * u * origin + 3f * u * u * t * control1 +
+                        3f * u * t * t * control2 + t * t * t * contact);
+                }
             }
         }
 
@@ -877,7 +932,7 @@ namespace Steria.Vfx
             readonly MaterialPropertyBlock mapped = new MaterialPropertyBlock();
             readonly string property;
             readonly Color materialColor, materialOutColor, tint;
-            readonly float materialAlp;
+            readonly float materialAlp, materialMaskPower;
             bool sampled;
             public HitColor(ParticleSystemRenderer renderer, Color tint)
             {
@@ -888,6 +943,7 @@ namespace Steria.Vfx
                 materialColor = ChristashaNativeParticleLibrary.SafeColor(material, property, new Color(1f, .96f, .82f, 0));
                 materialOutColor = ChristashaNativeParticleLibrary.SafeColor(material, "_OutColor", new Color(1f, 1f, 1f, 0));
                 materialAlp = material.HasProperty("_Alp") && material.GetFloat("_Alp") > .05f ? material.GetFloat("_Alp") : 1f;
+                materialMaskPower = material.HasProperty("_MaskPower") ? material.GetFloat("_MaskPower") : 3f;
             }
             public void Restore() { if (sampled) renderer.SetPropertyBlock(native); }
             public void Clear() { renderer.SetPropertyBlock(null); }
@@ -912,6 +968,13 @@ namespace Steria.Vfx
                     if (native.isEmpty || (age < .35f && (float.IsNaN(edgeEnergy) || float.IsInfinity(edgeEnergy) || edgeEnergy < .05f))) edge = materialOutColor;
                     mapped.SetColor(property, new Color(edge.r * .68f, edge.g * .65f, edge.b * .53f, original.a));
                     mapped.SetColor("_OutColor", new Color(edge.r * 1.08f / .22f, edge.g / .22f, edge.b * .83f / .22f, edge.a));
+                    // MainTrail's MaskPower subtracts from alpha coverage in its
+                    // native shader. Open the large body as the guide advances,
+                    // without replacing it with an opaque black RGB shell.
+                    float nativeMask = native.isEmpty || native.GetFloat("_MaskPower") < .05f ?
+                        materialMaskPower : native.GetFloat("_MaskPower");
+                    float bodyReveal = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.025f, .135f, age));
+                    mapped.SetFloat("_MaskPower", Mathf.Lerp(Mathf.Max(nativeMask, 8.5f), nativeMask, bodyReveal));
                 }
                 else if (renderer.name == "Main_Trail2")
                 {
@@ -924,8 +987,10 @@ namespace Steria.Vfx
                     // coverage. Tighten that native exponent after contact to leave
                     // a thin bright trace, rather than darkening opaque RGB.
                     float nativeMask = Mathf.Max(10f, native.GetFloat("_Mask"));
+                    float arrival = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.09f, .15f, age));
                     float retreat = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.19f, .47f, age));
-                    mapped.SetFloat("_Mask", Mathf.Lerp(nativeMask, Mathf.Max(nativeMask, 80f), retreat));
+                    float earlyMask = Mathf.Lerp(Mathf.Max(nativeMask, 260f), nativeMask, arrival);
+                    mapped.SetFloat("_Mask", Mathf.Lerp(earlyMask, Mathf.Max(nativeMask, 80f), retreat));
                 }
                 else if (renderer.name == "SwingTrail")
                 {
