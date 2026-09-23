@@ -84,14 +84,31 @@ namespace Steria.Vfx
                         new GradientColorKey(new Color(.55f,0f,0f),0f),
                         new GradientColorKey(new Color(.6125f,.15f,0f),.25f),
                         new GradientColorKey(new Color(.6125f,.15f,0f),.59f),
-                        new GradientColorKey(new Color(.8f,.6f,0f),1f)
-                    },new[]{new GradientAlphaKey(1f,0f),new GradientAlphaKey(1f,1f)});
+                        new GradientColorKey(new Color(1f,1f,0f),.70f),
+                        new GradientColorKey(new Color(1f,1f,0f),1f)
+                    },new[]{new GradientAlphaKey(1f,0f),new GradientAlphaKey(1f,.59f),
+                        new GradientAlphaKey(0f,.70f),new GradientAlphaKey(0f,1f)});
                     color.color=gradient;
                 }
                 if (p.name == "Trail2") { main.startDelay = .055f; main.startSizeMultiplier *= .78f; }
                 if (p.name == "Trail3") { main.startDelay = .095f; main.startSizeMultiplier *= .63f; }
                 if (p.name == "Trail4") { main.startDelay = .035f; main.startSizeMultiplier *= .45f; }
-                if (p.name == "Trail_Wave") { main.startDelay = .075f; main.startLifetime = .68f; main.startSizeMultiplier *= .78f; }
+                if (p.name == "Trail_Wave")
+                {
+                    main.startDelay = .075f; main.startLifetime = .68f; main.startSizeMultiplier *= .78f;
+                    // Its normalized .55 is Area age .45, the manager release.
+                    // Fade via particle color rather than shader RGB: zero RGB
+                    // leaves opaque black pieces in the native wave shaders.
+                    var color=p.colorOverLifetime;color.enabled=true;
+                    var gradient=new Gradient();
+                    gradient.SetKeys(new[]{new GradientColorKey(new Color(0f,.5f,0f),0f),
+                        new GradientColorKey(new Color(.55f,.5f,0f),.55f),
+                        new GradientColorKey(new Color(1f,.5f,0f),.70f),
+                        new GradientColorKey(new Color(1f,.5f,0f),1f)},
+                        new[]{new GradientAlphaKey(1f,0f),new GradientAlphaKey(1f,.55f),
+                        new GradientAlphaKey(0f,.70f),new GradientAlphaKey(0f,1f)});
+                    color.color=gradient;
+                }
                 if (p.name.StartsWith("Spark", StringComparison.Ordinal))
                 {
                     main.startLifetime = new ParticleSystem.MinMaxCurve(.28f, .56f);
@@ -278,7 +295,9 @@ namespace Steria.Vfx
             var col=p.colorOverLifetime; col.enabled=true;
             var gradient=new Gradient();
             if(name=="MassCrest")gradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(new Color(.94f,.89f,.74f),1)},
-                new[]{new GradientAlphaKey(.82f,0),new GradientAlphaKey(.96f,.2f),new GradientAlphaKey(.88f,.68f),new GradientAlphaKey(0,1)});
+                // Emitted at Area age .145 for .64s: normalized .48 is the .75s
+                // manager release. Let Point and native HP text lead after it.
+                new[]{new GradientAlphaKey(.82f,0),new GradientAlphaKey(.96f,.2f),new GradientAlphaKey(.90f,.48f),new GradientAlphaKey(0f,.65f),new GradientAlphaKey(0f,1f)});
             else gradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(new Color(.83f,.74f,.49f),1)},
                 new[]{new GradientAlphaKey(1,0),new GradientAlphaKey(.9f,.4f),new GradientAlphaKey(0,1)});
             col.color=gradient;
