@@ -22,6 +22,7 @@ internal static class RunContracts
             Projectile();
             ConfirmedStrikes();
             NativeMass();
+            MultipleSuccessfulMass();
             EmptyAndRepeatedMass();
             CancellationAndMissingAssets();
         }
@@ -98,7 +99,8 @@ internal static class RunContracts
             Check(Math.Abs(visual.Speed - expectedSpeed) < .0001f, item.kind + " fixed native playback speed=" + expectedSpeed);
             float visualDeadline = (float)typeof(DiceAttackEffect).GetField("_destroyTime", Fields).GetValue(effect);
             Check(visualDeadline + .0001f >= visual.Duration + .019f, item.kind + " host deadline protects full visual tail");
-            float artScale = (item.action == ActionDetail.Slash || item.action == ActionDetail.Hit || item.action == ActionDetail.Penetrate) ? .35f : 1f;
+            float artScale = item.action == ActionDetail.Slash ? .45f : item.action == ActionDetail.Hit ? .55f :
+                item.action == ActionDetail.Penetrate ? .35f : 1f;
             Check(Close(visual.Root.transform.TransformPoint(Vector3.right), pivot.TransformPoint(Vector3.right * artScale)),
                 item.kind + " independent art normalization=" + artScale);
             effect.SetScale(4f);
@@ -128,7 +130,7 @@ internal static class RunContracts
             Check(h.name == v.name && new[] { Vector3.zero, Vector3.right, new Vector3(0f, 1f, 0f) }.All(point => Close(h.transform.TransformPoint(point), v.transform.TransformPoint(point))),
                 "SlashH/V share accepted Slash posture with no extra rotation, right=" + right);
             Check(horizontal.transform.parent == owner.charAppearance.atkEffectPivot_J &&
-                Close(h.transform.TransformPoint(Vector3.right), owner.charAppearance.atkEffectPivot_J.TransformPoint(Vector3.right * .35f)),
+                Close(h.transform.TransformPoint(Vector3.right), owner.charAppearance.atkEffectPivot_J.TransformPoint(Vector3.right * .45f)),
                 "explicit special-motion pivot keeps full rotated/scaled parent matrix, right=" + right);
             UnityEngine.Object.Destroy(horizontal.gameObject);
             UnityEngine.Object.Destroy(vertical.gameObject);
@@ -284,10 +286,12 @@ internal static class RunContracts
             Check(area.Root.transform.TransformPoint(new Vector3(0, 1, 0)).y > area.Root.transform.position.y, "area facing mirror preserves upward axis");
             success.transform.position += new Vector3(1f, 0f, 0f);
             Tick(effect, .20f); manager.Tick(.20f);
-            Check(!effect.isRunning && success.model.damageCalls == 1 && manager._actionPreDelay == 0f, "own .5 release gate controls native callback without default one-second delay");
+            Check(effect.isRunning && success.model.damageCalls == 0, "crest remains on screen before the .75 release gate");
+            Tick(effect, .25f); manager.Tick(.25f);
+            Check(!effect.isRunning && success.model.damageCalls == 1 && manager._actionPreDelay == 0f, "own .75 release gate controls native callback without default one-second delay");
             var points = ChristashaNativeParticlePlayback.Started.Skip(first).Where(x => x.Root.name == "ChristashaNative_Point").ToArray();
             Check(success.model.damageCalls == 1 && defense.model.damageCalls == 0 && points.Length == 1, "real native ActionPhase settles success once and suppresses defended Point");
-            Check(Close(points[0].Root.transform.position, success.atkEffectRoot.position) && Close(points[0].Root.transform.localScale, Vector3.one), "Point uses successful target's callback-time world point without negative/map scale");
+            Check(Close(points[0].Root.transform.position, success.atkEffectRoot.position) && Close(points[0].Root.transform.localScale, Vector3.one * 2.2f), "Point uses successful target's callback-time world point with constant visible art scale, independent of negative/map scale");
             effect.GiveDamageFromManager(new List<BattleUnitModel> { success.model, success.model });
             Check(ChristashaNativeParticlePlayback.Started.Count == first + 3, "duplicate callback does not spawn or replay points");
             Tick(effect, .7f); manager.Tick(.7f);
@@ -324,6 +328,25 @@ internal static class RunContracts
         empty.GiveDamageFromManager(null);
         Tick(empty, 1.5f);
         Check(empty.IsDoneEffect, "null callback list also terminates");
+    }
+
+    private static void MultipleSuccessfulMass()
+    {
+        var owner=Actor(19f);
+        var targets=new[]{Actor(-17f),Actor(-7f),Actor(3f)};
+        foreach(var target in targets)target.model.currentDiceAction.currentBehavior.DiceResultValue=3;
+        var manager=Manager(owner,targets);
+        int first=ChristashaNativeParticlePlayback.Started.Count;
+        var effect=StartMass(manager);
+        Tick(effect,.75f);manager.Tick(.75f);
+        var points=ChristashaNativeParticlePlayback.Started.Skip(first).Where(x=>x.Root.name=="ChristashaNative_Point").ToArray();
+        Check(points.Length==3 && targets.All(x=>x.model.damageCalls==1),"three successful native victims each receive one Point after release");
+        foreach(var target in targets)
+            Check(points.Count(x=>Close(x.Root.transform.position,target.atkEffectRoot.position) &&
+                Close(x.Root.transform.localScale,Vector3.one*2.2f))==1,"each Point retains a distinct target position with fixed readable art scale");
+        Check(points.Select(x=>x.Root.transform.position.x).Distinct().Count()==3,"three scaled Points do not collapse onto one world point");
+        Tick(effect,1f);manager.Tick(1f);
+        Check(effect.IsDoneEffect && manager._phase==BattleFarAreaPlayManager.Phase.RollDice,"three-target visual tail releases the manager");
     }
 
     private static void CancellationAndMissingAssets()

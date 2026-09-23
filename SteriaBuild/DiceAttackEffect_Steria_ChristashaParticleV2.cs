@@ -204,15 +204,15 @@ internal sealed class ChristashaParticleInstance : IDisposable
     private static uint _seed = 73013u;
     private static readonly HashSet<string> ReportedFailures = new HashSet<string>();
     private ChristashaNativeParticlePlayback _driver;
-    private const float SlashArtScale = .35f;
+    private const float SlashArtScale = .45f;
     // These recipes need independent art calibration; one is an explicit
     // provisional normalization, not approval to deploy the unfinished recipes.
-    private const float HitArtScale = .35f;
+    private const float HitArtScale = .55f;
     private const float PierceArtScale = .35f;
     private const float ProjectileArtScale = 1f;
     private const float CastArtScale = 1f;
     private const float AreaArtScale = 1f;
-    private const float PointArtScale = 1f;
+    private const float PointArtScale = 2.2f;
     internal GameObject Root { get; private set; }
     internal float Age { get; private set; }
     internal bool Complete { get { return Root == null || _driver == null || Age >= _driver.Duration; } }

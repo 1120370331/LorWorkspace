@@ -16,7 +16,7 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
     public string SkinPath;
     public bool RequireStable;
     public Action<bool> Finished;
-    readonly string[] recipes = { "Slash", "Hit", "Pierce", "Projectile", "Cast", "Area", "Point", "PierceMiss", "ProjectileMiss", "PierceContext", "PierceContextRight", "ProjectileContext" };
+    readonly string[] recipes = { "Slash", "Hit", "Pierce", "Projectile", "Cast", "Area", "Point", "PierceMiss", "ProjectileMiss", "SlashContext", "SlashContextRight", "HitContext", "HitContextRight", "PierceContext", "PierceContextRight", "ProjectileContext", "XiyinTimeline" };
     readonly string[] properties = { "_Color", "_MainColor", "MainColor", "_OutColor", "_DissolveColor" };
     readonly List<string> evidence = new List<string>();
     MaterialPropertyBlock block;
@@ -27,9 +27,11 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
     RenderTexture target;
     new Camera camera;
     ChristashaNativeParticleLibrary library;
-    ChristashaNativeParticlePlayback playback;
-    GameObject instance;
-    GameObject actor, victim;
+    ChristashaNativeParticlePlayback playback, areaPlayback, pointPlayback;
+    GameObject instance, areaInstance, pointInstance;
+    GameObject actor, victim, secondVictim, thirdVictim;
+    readonly List<GameObject> extraPointInstances=new List<GameObject>();
+    readonly List<ChristashaNativeParticlePlayback> extraPointPlayback=new List<ChristashaNativeParticlePlayback>();
     Vector3 flightStart, flightEnd;
     int recipeIndex = -1, frame, driftCount;
     bool complete;
@@ -82,7 +84,12 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
                 foreach (var animator in instance.GetComponentsInChildren<Animator>(true))
                     if (animator.enabled) throw new Exception("Cancelled Animator is still scheduled");
             instance.SetActive(false); Destroy(instance);
-            DestroyActor(actor); DestroyActor(victim); actor=null; victim=null;
+            if(areaPlayback!=null){areaPlayback.StopAndClear();areaInstance.SetActive(false);Destroy(areaInstance);areaPlayback=null;areaInstance=null;}
+            if(pointPlayback!=null){pointPlayback.StopAndClear();pointInstance.SetActive(false);Destroy(pointInstance);pointPlayback=null;pointInstance=null;}
+            for(int i=0;i<extraPointPlayback.Count;i++){extraPointPlayback[i].StopAndClear();extraPointInstances[i].SetActive(false);Destroy(extraPointInstances[i]);}
+            extraPointPlayback.Clear();extraPointInstances.Clear();
+            DestroyActor(actor); DestroyActor(victim); DestroyActor(secondVictim);DestroyActor(thirdVictim);
+            actor=null; victim=null; secondVictim=null;thirdVictim=null;
         }
         if (++recipeIndex >= recipes.Length)
         {
@@ -95,24 +102,37 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
             return;
         }
         string label = recipes[recipeIndex];
-        string recipe = label.Replace("Miss", "").Replace("Context", "").Replace("Right", "");
+        string recipe = label == "XiyinTimeline" ? "Cast" : label.Replace("Miss", "").Replace("Context", "").Replace("Right", "");
         instance = library.CreatePrototype(recipe);
         foreach (Transform t in instance.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = 30;
-        camera.orthographicSize = recipe == "Area" ? 20 : recipe == "Cast" ? 5.5f : recipe == "Point" ? 4 : recipe == "Pierce" ? 3.5f : recipe == "Projectile" ? 4.5f : 11.5f;
-        camera.transform.position = recipe == "Area" ? new Vector3(0,6,-100) : recipe == "Pierce" ? new Vector3(-4.2f,0,-100) : new Vector3(0,0,-100);
+        camera.orthographicSize = label == "XiyinTimeline" || recipe == "Area" ? 20 : recipe == "Cast" ? 5.5f : recipe == "Point" ? 4 : recipe == "Pierce" ? 3.5f : recipe == "Projectile" ? 4.5f : 11.5f;
+        camera.transform.position = label == "XiyinTimeline" || recipe == "Area" ? new Vector3(0,6,-100) : recipe == "Pierce" ? new Vector3(-4.2f,0,-100) : new Vector3(0,0,-100);
         flightStart=new Vector3(5,0,0);flightEnd=new Vector3(-5,0,0);
         if(label.Contains("Context"))
         {
             bool right=recipe=="Projectile" || label.EndsWith("Right",StringComparison.Ordinal);
             float separation=recipe=="Projectile"?18:10;
-            actor=Actor("Penetrate",new Vector3(right?-separation:separation,0,0),right);
+            actor=Actor(recipe=="Slash"?"Slash":recipe=="Hit"?"Hit":"Penetrate",new Vector3(right?-separation:separation,0,0),right);
             victim=Actor("Damaged",new Vector3(right?separation:-separation,0,0),!right);
             var pivot=new GameObject("NativeAttackPivot").transform;pivot.SetParent(actor.transform,false);
             pivot.localPosition=new Vector3(-1.92f,2.52f,-.15f);
             flightStart=pivot.position;flightEnd=victim.transform.TransformPoint(new Vector3(-1.92f,2.52f,-.15f));
-            if(recipe=="Pierce") { instance.transform.SetParent(pivot,false);instance.transform.localScale=Vector3.one*.35f; }
+            if(recipe=="Pierce" || recipe=="Slash" || recipe=="Hit")
+            {
+                instance.transform.SetParent(pivot,false);
+                instance.transform.localScale=Vector3.one*(recipe=="Slash"?.45f:recipe=="Hit"?.55f:.35f);
+            }
             else instance.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2((flightEnd-flightStart).y,(flightEnd-flightStart).x)*Mathf.Rad2Deg-180);
             camera.orthographicSize=17;camera.transform.position=new Vector3(0,9,-100);
+        }
+        if(label=="XiyinTimeline")
+        {
+            actor=Actor("Slash",new Vector3(19,0,0),false);
+            victim=Actor("Damaged",new Vector3(-7,0,0),true);
+            secondVictim=Actor("Damaged",new Vector3(-17,0,0),true);
+            thirdVictim=Actor("Damaged",new Vector3(3,0,0),true);
+            instance.transform.position=actor.transform.position;
+            evidence.Add("XiyinTimeline: Cast t=0; Area t=.30; three Points t=.75 only as a simulated successful manager callback. Real callback contract is checked by the managed fixture.");
         }
         if (recipe == "Projectile") instance.transform.position = flightStart;
         foreach(var r in instance.GetComponentsInChildren<Renderer>(true))
@@ -178,8 +198,36 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
         if (complete || playback == null) return;
         try
         {
-            if (frame > Mathf.CeilToInt(playback.Duration * 60) + 1) Next();
+            if (frame > Mathf.CeilToInt((recipes[recipeIndex]=="XiyinTimeline"?1.75f:playback.Duration) * 60) + 1) Next();
             if (complete) return;
+            if(recipes[recipeIndex]=="XiyinTimeline")
+            {
+                if(frame==18)
+                {
+                    areaInstance=library.CreatePrototype("Area");
+                    foreach(Transform t in areaInstance.GetComponentsInChildren<Transform>(true))t.gameObject.layer=30;
+                    areaInstance.transform.position=new Vector3(1,0,0);
+                    areaInstance.transform.localScale=new Vector3(38f/ChristashaNativeMassRecipes.AreaDesignWidth,1,1);
+                    areaPlayback=ChristashaNativeParticlePlayback.Play(areaInstance,19038u);
+                }
+                if(frame==45)
+                {
+                    pointInstance=library.CreatePrototype("Point");
+                    foreach(Transform t in pointInstance.GetComponentsInChildren<Transform>(true))t.gameObject.layer=30;
+                    pointInstance.transform.position=victim.transform.TransformPoint(new Vector3(-1.92f,2.52f,-.15f));
+                    pointInstance.transform.localScale=Vector3.one*2.2f;
+                    pointPlayback=ChristashaNativeParticlePlayback.Play(pointInstance,19039u);
+                    foreach(var targetActor in new[]{secondVictim,thirdVictim})
+                    {
+                        var extra=library.CreatePrototype("Point");
+                        foreach(Transform t in extra.GetComponentsInChildren<Transform>(true))t.gameObject.layer=30;
+                        extra.transform.position=targetActor.transform.TransformPoint(new Vector3(-1.92f,2.52f,-.15f));
+                        extra.transform.localScale=Vector3.one*2.2f;
+                        extraPointInstances.Add(extra);
+                        extraPointPlayback.Add(ChristashaNativeParticlePlayback.Play(extra,19039u+(uint)extraPointPlayback.Count+1u));
+                    }
+                }
+            }
             if (recipes[recipeIndex].StartsWith("Projectile",StringComparison.Ordinal))
             {
                 float progress=Mathf.Clamp01((frame+1)/60f/ChristashaProjectileArc.FlightTime);
@@ -188,15 +236,24 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
                 instance.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(tangent.y,tangent.x)*Mathf.Rad2Deg-180f);
             }
             playback.Advance(1f / 60f);
+            if(areaPlayback!=null)areaPlayback.Advance(1f/60f);
+            if(pointPlayback!=null)pointPlayback.Advance(1f/60f);
+            foreach(var extra in extraPointPlayback)extra.Advance(1f/60f);
             frame++;
             expected.Clear();
-            foreach (var r in instance.GetComponentsInChildren<Renderer>(true))
+            var visibleRoots=new List<GameObject>{instance,areaInstance,pointInstance};
+            visibleRoots.AddRange(extraPointInstances);
+            foreach (var root in visibleRoots)
             {
-                if (!r.gameObject.activeInHierarchy || r.sharedMaterial == null) continue;
-                r.GetPropertyBlock(block);
-                var values = new Color[properties.Length];
-                for (int i = 0; i < properties.Length; i++) values[i] = block.GetColor(properties[i]);
-                expected.Add(r, values);
+                if(root==null)continue;
+                foreach (var r in root.GetComponentsInChildren<Renderer>(true))
+                {
+                    if (!r.gameObject.activeInHierarchy || r.sharedMaterial == null) continue;
+                    r.GetPropertyBlock(block);
+                    var values = new Color[properties.Length];
+                    for (int i = 0; i < properties.Length; i++) values[i] = block.GetColor(properties[i]);
+                    expected.Add(r, values);
+                }
             }
         }
         catch (Exception e) { Fail(e); }
@@ -221,6 +278,12 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
                 if(recipes[recipeIndex].Contains("Context") && height<5f)throw new Exception("Thrust too narrow at actor scale");
                 evidence.Add(recipes[recipeIndex]+" span PASS origin="+origin+" contact="+contactPoint+" tip="+blade.position+" tail="+tail+" height="+height);
             }
+            if((recipes[recipeIndex]=="Area" || recipes[recipeIndex]=="XiyinTimeline") && (frame==30 || frame==42 || frame==45 || frame==52))
+            {
+                var areaRoot=areaInstance!=null?areaInstance:instance;
+                var crest=ChristashaNativeMassRecipes.FindSystem(areaRoot,"MassCrest");
+                evidence.Add(recipes[recipeIndex]+" frame="+frame+" crestParticles="+(crest==null?-1:crest.particleCount));
+            }
             foreach (var pair in expected)
             {
                 pair.Key.GetPropertyBlock(block);
@@ -235,8 +298,8 @@ public sealed class ChristashaFrameLoopProbe : MonoBehaviour
                     }
                 }
             }
-            bool fullSequence=recipes[recipeIndex].StartsWith("Pierce",StringComparison.Ordinal)||recipes[recipeIndex].StartsWith("Projectile",StringComparison.Ordinal);
-            if (fullSequence || frame == 1 || frame == 3 || frame == 6 || frame == 9 || frame == 10 || frame == 15 || frame == 17 || frame == 21 || frame == 30 || frame == 45 || frame == 78)
+            bool fullSequence=recipes[recipeIndex].Contains("Context") || recipes[recipeIndex]=="XiyinTimeline" || recipes[recipeIndex].StartsWith("Pierce",StringComparison.Ordinal)||recipes[recipeIndex].StartsWith("Projectile",StringComparison.Ordinal);
+            if (fullSequence || frame == 1 || frame == 3 || frame == 6 || frame == 9 || frame == 10 || frame == 15 || frame == 17 || frame == 21 || frame == 24 || frame == 27 || frame == 30 || frame == 36 || frame == 45 || frame == 60 || frame == 78)
             {
                 for (int bg = 0; bg < 2; bg++)
                 {

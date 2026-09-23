@@ -19,7 +19,7 @@ namespace Steria.Vfx
         readonly Dictionary<string, GameObject> templates = new Dictionary<string, GameObject>();
         readonly Dictionary<Texture, Texture2D> tideTextures = new Dictionary<Texture, Texture2D>();
         GameObject cache;
-        Material brushMaterial, lineMaterial;
+        Material brushMaterial, crestMaterial, lineMaterial;
 
         public ChristashaNativeMassRecipes(Func<string, GameObject> resolver, Texture2D originalBrush)
         {
@@ -72,10 +72,26 @@ namespace Steria.Vfx
             foreach (var p in native.GetComponentsInChildren<ParticleSystem>(true))
             {
                 var main = p.main; main.loop = false; main.scalingMode = ParticleSystemScalingMode.Hierarchy;
+                if(p.name=="Trail")
+                {
+                    // Xiao's native shader uses particle COLOR.r/g as two mask
+                    // erosion thresholds. Freeze the open crest at its .20s
+                    // phase until the .75s battle release, then finish the
+                    // native dissolve rather than showing only strings.
+                    var color=p.colorOverLifetime;color.enabled=true;
+                    var gradient=new Gradient();
+                    gradient.SetKeys(new[]{
+                        new GradientColorKey(new Color(.55f,0f,0f),0f),
+                        new GradientColorKey(new Color(.6125f,.15f,0f),.25f),
+                        new GradientColorKey(new Color(.6125f,.15f,0f),.59f),
+                        new GradientColorKey(new Color(.8f,.6f,0f),1f)
+                    },new[]{new GradientAlphaKey(1f,0f),new GradientAlphaKey(1f,1f)});
+                    color.color=gradient;
+                }
                 if (p.name == "Trail2") { main.startDelay = .055f; main.startSizeMultiplier *= .78f; }
                 if (p.name == "Trail3") { main.startDelay = .095f; main.startSizeMultiplier *= .63f; }
                 if (p.name == "Trail4") { main.startDelay = .035f; main.startSizeMultiplier *= .45f; }
-                if (p.name == "Trail_Wave") { main.startDelay = .075f; main.startSizeMultiplier *= .72f; }
+                if (p.name == "Trail_Wave") { main.startDelay = .075f; main.startLifetime = .68f; main.startSizeMultiplier *= .78f; }
                 if (p.name.StartsWith("Spark", StringComparison.Ordinal))
                 {
                     main.startLifetime = new ParticleSystem.MinMaxCurve(.28f, .56f);
@@ -85,6 +101,9 @@ namespace Steria.Vfx
             }
             AddSupport(root.transform, "MassFoam", .21f, 96);
             AddSupport(root.transform, "MassSpray", .07f, 96);
+            // Short, separately broken brush strokes keep a broad wavefront visible
+            // between the native expansion and the manager's result callback.
+            AddSupport(root.transform, "MassCrest", .42f, 32);
             AddStrings(root.transform, 3);
         }
 
@@ -114,13 +133,14 @@ namespace Steria.Vfx
             CloneMaterials(native, false, false);
             var cross = FindSystem(root, "Trail1_cross");
             var main = cross.main; main.loop = false; main.duration = .4f;
-            main.startDelay = 0f; main.startLifetime = .065f; main.startSize = .68f;
+            main.startDelay = 0f; main.startLifetime = .12f; main.startSize = 1.08f;
             main.startSpeed = 0f; main.scalingMode = ParticleSystemScalingMode.Hierarchy;
             var shape = cross.shape; shape.enabled = false;
             var emission = cross.emission; emission.enabled = true; emission.rateOverTime = 0f;
             emission.SetBursts(new[] { new ParticleSystem.Burst(0f, 1) });
             AddSupport(root.transform, "MassFoam", .19f, 24);
             AddSupport(root.transform, "MassSpray", .055f, 32);
+            AddSupport(root.transform, "MassContact", .13f, 12);
         }
 
         static void Retain(GameObject root, HashSet<string> names)
@@ -232,6 +252,19 @@ namespace Steria.Vfx
             brushMaterial.SetTexture("_MainTex", texture); owned.Add(brushMaterial); return brushMaterial;
         }
 
+        Material CrestMaterial()
+        {
+            if(crestMaterial!=null)return crestMaterial;
+            if(brush==null)throw new InvalidOperationException("Mass crest needs the original readable local tide brush");
+            var texture=new Texture2D(brush.width,brush.height,TextureFormat.RGBA32,false,true);
+            var pixels=brush.GetPixels();
+            for(int i=0;i<pixels.Length;i++)pixels[i]=new Color(1,1,1,Mathf.Pow(Mathf.Clamp01(pixels[i].r),.55f));
+            texture.SetPixels(pixels);texture.Apply(false,true);texture.wrapMode=TextureWrapMode.Clamp;
+            texture.name="ChristashaMass_CrestBrushAlpha";owned.Add(texture);
+            crestMaterial=new Material(Shader.Find("Sprites/Default")){name="ChristashaMass_CrestBrush"};
+            crestMaterial.SetTexture("_MainTex",texture);owned.Add(crestMaterial);return crestMaterial;
+        }
+
         void AddSupport(Transform parent, string name, float width, int capacity)
         {
             var go = new GameObject(name); go.transform.SetParent(parent,false);
@@ -239,15 +272,58 @@ namespace Steria.Vfx
             var main = p.main; main.playOnAwake=false; main.loop=false; main.duration=1.5f;
             main.startSpeed=0; main.maxParticles=capacity; main.simulationSpace=ParticleSystemSimulationSpace.Local;
             main.scalingMode=ParticleSystemScalingMode.Hierarchy;
+            main.cullingMode=ParticleSystemCullingMode.AlwaysSimulate;
             var emission=p.emission; emission.enabled=false;
             var shape=p.shape; shape.enabled=false;
             var col=p.colorOverLifetime; col.enabled=true;
-            var gradient=new Gradient(); gradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(new Color(.83f,.74f,.49f),1)},new[]{new GradientAlphaKey(1,0),new GradientAlphaKey(.9f,.4f),new GradientAlphaKey(0,1)});col.color=gradient;
-            var size=p.sizeOverLifetime;size.enabled=true;size.size=new ParticleSystem.MinMaxCurve(1,AnimationCurve.Linear(0,1,1,.24f));
-            var mesh=new Mesh { name="ChristashaMass_BrushStrip" };
-            mesh.vertices=new[]{new Vector3(-.5f,-width,0),new Vector3(.5f,-width,0),new Vector3(-.5f,width,0),new Vector3(.5f,width,0)};
-            mesh.uv=new[]{new Vector2(0,0),new Vector2(0,1),new Vector2(1,0),new Vector2(1,1)};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();owned.Add(mesh);
-            var renderer=p.GetComponent<ParticleSystemRenderer>();renderer.renderMode=ParticleSystemRenderMode.Mesh;renderer.mesh=mesh;renderer.sharedMaterial=BrushMaterial();renderer.sortingOrder=5;
+            var gradient=new Gradient();
+            if(name=="MassCrest")gradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(new Color(.94f,.89f,.74f),1)},
+                new[]{new GradientAlphaKey(.82f,0),new GradientAlphaKey(.96f,.2f),new GradientAlphaKey(.88f,.68f),new GradientAlphaKey(0,1)});
+            else gradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(new Color(.83f,.74f,.49f),1)},
+                new[]{new GradientAlphaKey(1,0),new GradientAlphaKey(.9f,.4f),new GradientAlphaKey(0,1)});
+            col.color=gradient;
+            var size=p.sizeOverLifetime;size.enabled=true;
+            size.size=name=="MassCrest"?new ParticleSystem.MinMaxCurve(1,new AnimationCurve(new Keyframe(0,.91f),new Keyframe(.2f,1),new Keyframe(.72f,1),new Keyframe(1,.78f))):
+                new ParticleSystem.MinMaxCurve(1,AnimationCurve.Linear(0,1,1,.24f));
+            Mesh mesh;
+            if(name=="MassCrest")mesh=CrestArcMesh();
+            else
+            {
+                mesh=new Mesh { name="ChristashaMass_BrushStrip" };
+                mesh.vertices=new[]{new Vector3(-.5f,-width,0),new Vector3(.5f,-width,0),new Vector3(-.5f,width,0),new Vector3(.5f,width,0)};
+                float edge=name=="MassContact" ? .22f : 0f;
+                mesh.uv=new[]{new Vector2(edge,0),new Vector2(edge,1),new Vector2(1f-edge,0),new Vector2(1f-edge,1)};
+                mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();owned.Add(mesh);
+            }
+            var renderer=p.GetComponent<ParticleSystemRenderer>();renderer.renderMode=ParticleSystemRenderMode.Mesh;
+            renderer.alignment=ParticleSystemRenderSpace.Local;renderer.mesh=mesh;
+            renderer.sharedMaterial=name=="MassCrest"?CrestMaterial():BrushMaterial();renderer.sortingOrder=5;
+        }
+
+        Mesh CrestArcMesh()
+        {
+            // One curved brush stroke, not evenly repeated triangular stamps.
+            // Its original local brush supplies broken alpha and frayed edges.
+            const int segments=36;
+            var vertices=new Vector3[(segments+1)*2];var uv=new Vector2[vertices.Length];
+            var triangles=new int[segments*6];
+            for(int i=0;i<=segments;i++)
+            {
+                float t=i/(float)segments;
+                float a=Mathf.Lerp(.62f,3.80f,t);
+                var center=new Vector3(-.5f+14f*Mathf.Cos(a),9f+10f*Mathf.Sin(a),-.36f);
+                var tangent=new Vector3(-14f*Mathf.Sin(a),10f*Mathf.Cos(a),0).normalized;
+                var normal=new Vector3(tangent.y,-tangent.x,0);
+                float width=1.58f*Mathf.Pow(Mathf.Sin(Mathf.PI*t),.48f);
+                vertices[i*2]=center-normal*width;vertices[i*2+1]=center+normal*width;
+                uv[i*2]=new Vector2(.21f,t);uv[i*2+1]=new Vector2(.79f,t);
+                if(i==segments)continue;
+                int j=i*6,v=i*2;
+                triangles[j]=v;triangles[j+1]=v+2;triangles[j+2]=v+1;
+                triangles[j+3]=v+1;triangles[j+4]=v+2;triangles[j+5]=v+3;
+            }
+            var mesh=new Mesh{name="ChristashaMass_OpenBrushCrest"};
+            mesh.vertices=vertices;mesh.uv=uv;mesh.triangles=triangles;mesh.RecalculateBounds();owned.Add(mesh);return mesh;
         }
 
         void AddStrings(Transform parent, int count)
@@ -275,19 +351,19 @@ namespace Steria.Vfx
         sealed class Playback : IChristashaNativePlaybackHooks
         {
             readonly string recipe; readonly Transform art; readonly Vector3 scale,position;
-            readonly ParticleSystem foam,spray; readonly LineRenderer[] strings;
+            readonly ParticleSystem foam,spray,crest,contact; readonly LineRenderer[] strings;
             readonly List<Colors> colors=new List<Colors>(); readonly System.Random random;
-            int emitted;
-            // Tail extension is visual-only: the manager still releases Area at its
-            // existing total=.5s gate. The caller's speed multiplier is applied by
-            // the shared driver, so these are raw wall seconds at speed=1.
+            int emitted,crestEmitted; bool contactEmitted;
+            // The caller's speed multiplier is applied by the shared driver.
             public float Duration {get{return recipe=="Area"?1.40f:recipe=="Cast"?.84f:.58f;}}
             public Playback(GameObject root,string recipe,uint seed)
             {
                 this.recipe=recipe;random=new System.Random(unchecked((int)seed));
                 art=root.transform.Find(recipe=="Area"?"MassWaveArt":"MassCastArt");
                 if(art!=null){scale=art.localScale;position=art.localPosition;}
-                foam=FindSystem(root,"MassFoam");spray=FindSystem(root,"MassSpray");strings=root.GetComponentsInChildren<LineRenderer>(true);
+                foam=FindSystem(root,"MassFoam");spray=FindSystem(root,"MassSpray");
+                crest=FindSystem(root,"MassCrest");contact=FindSystem(root,"MassContact");
+                strings=root.GetComponentsInChildren<LineRenderer>(true);
                 foreach(var p in root.GetComponentsInChildren<ParticleSystem>(true))
                     if(!p.name.StartsWith("Mass",StringComparison.Ordinal))colors.Add(new Colors(p.GetComponent<Renderer>(),recipe));
                 foreach(var c in colors)c.Reset();
@@ -319,7 +395,7 @@ namespace Steria.Vfx
             }
             public void AfterParticles(float dt,float age)
             {
-                int total=recipe=="Area"?20:recipe=="Point"?2:9;
+                int total=recipe=="Area"?20:recipe=="Point"?1:9;
                 float begin=recipe=="Area"?.125f:recipe=="Point"?0:.04f;
                 float interval=recipe=="Area"?.018f:recipe=="Point"?.022f:.025f;
                 while(emitted<total&&age+.000001f>=begin+emitted*interval)
@@ -332,11 +408,11 @@ namespace Steria.Vfx
                         Emit(foam,at,tangent*Range(3,9)+Vector3.up*Range(1,3),Range(1.1f,2.15f),a*Mathf.Rad2Deg+90,Range(.38f,.68f));
                         Emit(spray,at,tangent*Range(5,13),Range(1.25f,2.3f),a*Mathf.Rad2Deg+90,Range(.34f,.62f));
                     }
-                    else if(recipe=="Point")for(int i=0;i<7;i++)
+                    else if(recipe=="Point")for(int i=0;i<9;i++)
                     {
                         float a=Range(0,Mathf.PI*2);var d=new Vector3(Mathf.Cos(a),Mathf.Sin(a),0);
-                        Emit(foam,d*.1f,d*Range(5,11),Range(.45f,1.05f),a*Mathf.Rad2Deg,Range(.25f,.48f));
-                        Emit(spray,d*.15f,d*Range(7,15),Range(.8f,1.4f),a*Mathf.Rad2Deg,Range(.25f,.48f));
+                        EmitTinted(foam,d*.1f,d*Range(5,10),Range(.8f,1.45f),a*Mathf.Rad2Deg,Range(.30f,.45f),new Color(1f,.96f,.84f,.95f));
+                        Emit(spray,d*.15f,d*Range(8,14),Range(1f,1.7f),a*Mathf.Rad2Deg,Range(.28f,.42f));
                     }
                     else
                     {
@@ -345,9 +421,28 @@ namespace Steria.Vfx
                     }
                     emitted++;
                 }
+                if(recipe=="Area" && crest!=null && crestEmitted==0 && age>=.145f)
+                {
+                    EmitTinted(crest,Vector3.zero,Vector3.left*.55f,1f,0f,.64f,new Color(1f,.98f,.86f,.95f));
+                    crestEmitted=1;
+                }
+                if(recipe=="Point" && contact!=null && !contactEmitted)
+                {
+                    for(int i=0;i<2;i++)
+                        EmitTinted(contact,Vector3.zero,Vector3.zero,2.05f,18f+i*72f,.16f,new Color(1f,.99f,.91f,.95f));
+                    for(int i=0;i<5;i++)
+                    {
+                        float a=(i+.17f)*Mathf.PI*2f/5f;
+                        var d=new Vector3(Mathf.Cos(a),Mathf.Sin(a),0);
+                        EmitTinted(contact,d*.12f,d*Range(1.8f,3.2f),Range(1.45f,2.15f),a*Mathf.Rad2Deg,Range(.10f,.15f),new Color(1f,.98f,.88f,.95f));
+                    }
+                    contactEmitted=true;
+                }
             }
             void Emit(ParticleSystem p,Vector3 at,Vector3 velocity,float size,float rotation,float life)
-            {if(p==null)return;var e=new ParticleSystem.EmitParams{position=at,velocity=velocity,startSize=size,rotation=rotation,startLifetime=life,startColor=new Color(1,Range(.88f,.98f),Range(.63f,.83f),1),applyShapeToPosition=false};p.Emit(e,1);}
+            {EmitTinted(p,at,velocity,size,rotation,life,new Color(1,Range(.88f,.98f),Range(.63f,.83f),1));}
+            void EmitTinted(ParticleSystem p,Vector3 at,Vector3 velocity,float size,float rotation,float life,Color tint)
+            {if(p==null)return;var e=new ParticleSystem.EmitParams{position=at,velocity=velocity,startSize=size,rotation=rotation,startLifetime=life,startColor=tint,applyShapeToPosition=false};p.Emit(e,1);}
             float Range(float a,float b){return a+(b-a)*(float)random.NextDouble();}
             public void StopAndClear(){foreach(var line in strings)line.enabled=false;foreach(var c in colors)c.Restore();if(art!=null){art.localScale=scale;art.localPosition=position;}}
         }
@@ -380,10 +475,20 @@ namespace Steria.Vfx
                     if(invalid || (!native.isEmpty&&age<fallbackGate&&Mathf.Abs(value.r)+Mathf.Abs(value.g)+Mathf.Abs(value.b)<.05f))
                         value=ChristashaNativeParticleLibrary.SafeColor(material,prop,Color.white);
                     float energy=Mathf.Max(value.r,Mathf.Max(value.g,value.b));
+                    if(recipe=="Area" && prop=="_Color" && (renderer.name=="Trail" || renderer.name=="Trail_Wave"))
+                    {
+                        // Native Xiao color animation removes the large carrier
+                        // before our .75s release. Retain its textured body under
+                        // the broken crest, then let both fall away after contact.
+                        float enter=Mathf.SmoothStep(0f,1f,Mathf.InverseLerp(.12f,.22f,age));
+                        float leave=1f-Mathf.SmoothStep(0f,1f,Mathf.InverseLerp(.48f,.68f,age));
+                        energy=Mathf.Max(energy,(renderer.name=="Trail"?1.35f:1.05f)*enter*leave);
+                    }
                     Color tint;
                     if(recipe=="Area")
                     {
-                        tint=renderer.name=="Trail"?new Color(.55f,.52f,.43f):renderer.name=="Trail2"?new Color(.78f,.68f,.46f):new Color(.49f,.46f,.36f);
+                        tint=renderer.name=="Trail"?new Color(.69f,.67f,.59f):renderer.name=="Trail2"?new Color(.78f,.69f,.51f):
+                            renderer.name=="Trail_Wave"?new Color(.86f,.81f,.69f):new Color(.49f,.46f,.36f);
                         if(renderer.name.StartsWith("Spark",StringComparison.Ordinal))tint=new Color(1.12f,1.03f,.76f);
                         if(prop=="_DissolveColor")tint=new Color(.24f,.21f,.14f);
                     }
@@ -401,7 +506,7 @@ namespace Steria.Vfx
         {
             if(cache!=null)Object.DestroyImmediate(cache);
             foreach(var item in owned)if(item!=null)Object.DestroyImmediate(item);
-            owned.Clear();templates.Clear();tideTextures.Clear();cache=null;brushMaterial=null;lineMaterial=null;
+            owned.Clear();templates.Clear();tideTextures.Clear();cache=null;brushMaterial=null;crestMaterial=null;lineMaterial=null;
         }
     }
 }

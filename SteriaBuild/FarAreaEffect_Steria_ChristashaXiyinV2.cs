@@ -7,7 +7,8 @@ using UnityEngine;
 public sealed class FarAreaEffect_Steria_ChristashaXiyinV2 : FarAreaEffect
 {
     private const float AreaStartTime = .3f;
-    private const float ReleaseTime = .5f;
+    // Area begins at .30; its native crest is held through .75 before combat resolves.
+    private const float ReleaseTime = .75f;
     private const float MissingCallbackDeadline = 1.8f;
     private const int MaxTargetPoints = 16;
     private readonly List<ChristashaParticleInstance> _instances = new List<ChristashaParticleInstance>();
