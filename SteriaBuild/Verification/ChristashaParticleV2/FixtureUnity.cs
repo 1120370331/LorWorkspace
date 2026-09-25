@@ -30,9 +30,10 @@ namespace UnityEngine
  public class MonoBehaviour:Component{}
  public class GameObject:Object
  {
+  public static readonly List<GameObject> Created=new List<GameObject>();
   public Transform transform; public int layer; public bool activeSelf=true; public bool activeInHierarchy=>activeSelf&&(transform.parent==null||transform.parent.gameObject.activeInHierarchy);
   public readonly List<Component> components=new List<Component>();
-  public GameObject(string n="GameObject"){name=n;transform=new Transform{gameObject=this};components.Add(transform);}
+  public GameObject(string n="GameObject"){name=n;transform=new Transform{gameObject=this};components.Add(transform);Created.Add(this);}
   public T AddComponent<T>() where T:Component => (T)AddComponent(typeof(T));
   public Component AddComponent(Type type)
   {
@@ -88,11 +89,26 @@ namespace UnityEngine
 namespace UnityEngine
 {
  public enum TextureFormat { RGBA32 }
- public class Shader:Object { }
+ public class Shader:Object { public bool isSupported=true; }
+ public struct Color {public float r,g,b,a;public Color(float r,float g,float b,float a=1f){this.r=r;this.g=g;this.b=b;this.a=a;}public static Color clear=>new Color(0,0,0,0);}
+ public enum CameraClearFlags { SolidColor }
+ public enum RenderTextureFormat { ARGB32 }
+ public class RenderTexture:Object
+ {
+  public static RenderTexture active;public bool released;public RenderTexture(int w,int h,int depth,RenderTextureFormat format){}
+  public void Create(){}public void Release(){released=true;}
+ }
+ public class Camera:Component
+ {
+  public static int Renders;public bool enabled,orthographic;public float orthographicSize,nearClipPlane,farClipPlane;
+  public int cullingMask;public Color backgroundColor;public CameraClearFlags clearFlags;public RenderTexture targetTexture;
+  public void Render(){Renders++;}
+ }
  public class AssetBundle:Object
  {
   public static AssetBundle LoadFromFile(string path){return new AssetBundle();}
   public T LoadAsset<T>(string path) where T:Object,new(){return new T();}
+  public void Unload(bool unloadAllLoadedObjects){}
  }
  public enum FilterMode { Bilinear }
  public enum TextureWrapMode { Clamp }

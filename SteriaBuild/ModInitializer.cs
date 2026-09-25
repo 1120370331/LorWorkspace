@@ -238,6 +238,14 @@ namespace Steria
                 }
                 // --- End Register custom effects ---
 
+                // Build the five combat visual recipes while startup can absorb
+                // native Resources, brush decode, shader and first draw costs.
+                try { ChristashaParticleInstance.PrepareCombatVisuals(); }
+                catch (Exception preparationError)
+                {
+                    SteriaLogger.LogError("Christasha combat preparation failed; mod initialization continues: " + preparationError);
+                }
+
                 // --- Register EGO Card Cooldowns ---
                 try
                 {

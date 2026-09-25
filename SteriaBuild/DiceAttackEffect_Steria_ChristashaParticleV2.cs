@@ -245,9 +245,14 @@ internal sealed class ChristashaParticleInstance : IDisposable
     private static ChristashaNativeParticleLibrary _library;
     private static Texture2D _originalBrush;
     private static AssetBundle _strikeBundle;
-    private static bool _loadAttempted;
     private static uint _seed = 73013u;
     private static readonly HashSet<string> ReportedFailures = new HashSet<string>();
+    private static readonly HashSet<string> PreparedCombatRecipes = new HashSet<string>();
+    private static bool _loadFailureReported;
+    private static bool _renderFailureReported;
+    private static readonly string[] CombatRecipes = { "Slash", "Hit", "Pierce", "Projectile", "Portal" };
+    private const uint PreparationSeed = 19037u;
+    private const int PreparationLayer = 30;
     private ChristashaNativeParticlePlayback _driver;
     private const float SlashArtScale = .45f;
     // These recipes need independent art calibration; one is an explicit
@@ -379,11 +384,118 @@ internal sealed class ChristashaParticleInstance : IDisposable
         Root = null;
     }
 
+    // Called from mod initialization on Unity's main thread. This uses only the
+    // visual library: no battle adapter, production seed, audio or camera shake.
+    internal static void PrepareCombatVisuals()
+    {
+        if (PreparedCombatRecipes.Count == CombatRecipes.Length) return;
+        var library = GetLibrary();
+        if (library == null) return;
+        var clock = System.Diagnostics.Stopwatch.StartNew();
+        Camera camera = null;
+        RenderTexture target = null;
+        GameObject cameraObject = null;
+        RenderTexture previousTarget = RenderTexture.active;
+        try
+        {
+            try
+            {
+                cameraObject = new GameObject("ChristashaPreparationCamera");
+                cameraObject.transform.position = new Vector3(5000f, 5000f, -100f);
+                camera = cameraObject.AddComponent<Camera>();
+                camera.enabled = false;
+                camera.orthographic = true;
+                camera.orthographicSize = 24f;
+                camera.clearFlags = CameraClearFlags.SolidColor;
+                camera.backgroundColor = Color.clear;
+                camera.cullingMask = 1 << PreparationLayer;
+                camera.nearClipPlane = .1f;
+                camera.farClipPlane = 300f;
+                target = new RenderTexture(64, 64, 0, RenderTextureFormat.ARGB32);
+                target.Create();
+                camera.targetTexture = target;
+            }
+            catch (Exception error)
+            {
+                if (!_renderFailureReported)
+                {
+                    _renderFailureReported = true;
+                    SteriaLogger.LogError("Christasha preparation GPU target unavailable; preparing CPU playback: " + error);
+                }
+                if (camera != null) camera.targetTexture = null;
+                camera = null;
+            }
+            foreach (string recipe in CombatRecipes)
+            {
+                if (PreparedCombatRecipes.Contains(recipe)) continue;
+                GameObject root = null;
+                ChristashaNativeParticlePlayback playback = null;
+                try
+                {
+                    root = library.CreatePrototype(recipe);
+                    root.name = "ChristashaPreparation_" + recipe;
+                    root.transform.position = new Vector3(5000f, 5000f, 0f);
+                    root.transform.localScale = Vector3.one * ArtScale(recipe);
+                    foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
+                        child.gameObject.layer = PreparationLayer;
+                    playback = ChristashaNativeParticlePlayback.Play(root, PreparationSeed, PlaybackSpeed(recipe));
+                    playback.Advance(.05f);
+                    if (camera != null) TryRenderPreparation(camera);
+                    if (recipe == "Pierce" || recipe == "Projectile")
+                    {
+                        playback.AimStrike(new Vector3(-4f, 0f, 0f), new Vector3(-9f, 0f, 0f));
+                        playback.ConfirmStrikeImpact();
+                    }
+                    // The far sword contacts at FlightTime (.38s); merely
+                    // confirming at .05s leaves its impact shader path cold.
+                    playback.Advance(recipe == "Projectile" ? ChristashaProjectileArc.FlightTime - .03f :
+                        recipe == "Portal" ? .10f : .15f);
+                    if (camera != null) TryRenderPreparation(camera);
+                    PreparedCombatRecipes.Add(recipe);
+                }
+                catch (Exception error)
+                {
+                    if (ReportedFailures.Add("prepare:" + recipe))
+                        SteriaLogger.LogError("Christasha preparation " + recipe + " failed; later use can retry: " + error);
+                }
+                finally
+                {
+                    if (root != null) root.SetActive(false);
+                    if (playback != null) playback.StopAndClear();
+                    if (root != null) UnityEngine.Object.Destroy(root);
+                }
+            }
+        }
+        finally
+        {
+            RenderTexture.active = previousTarget;
+            if (camera != null) camera.targetTexture = null;
+            if (target != null) { target.Release(); UnityEngine.Object.Destroy(target); }
+            if (cameraObject != null) UnityEngine.Object.Destroy(cameraObject);
+            clock.Stop();
+            SteriaLogger.Log("Christasha combat preparation: " + PreparedCombatRecipes.Count + "/" + CombatRecipes.Length + " recipes in " + clock.ElapsedMilliseconds + " ms");
+        }
+    }
+
+    private static void TryRenderPreparation(Camera camera)
+    {
+        try { camera.Render(); }
+        catch (Exception error)
+        {
+            if (!_renderFailureReported)
+            {
+                _renderFailureReported = true;
+                SteriaLogger.LogError("Christasha preparation GPU draw unavailable; CPU playback remains prepared: " + error);
+            }
+        }
+    }
+
     private static ChristashaNativeParticleLibrary GetLibrary()
     {
-        if (_loadAttempted) return _library;
-        _loadAttempted = true;
+        if (_library != null) return _library;
         Texture2D brush = null;
+        AssetBundle bundle = null;
+        ChristashaNativeParticleLibrary library = null;
         try
         {
             string directory = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path));
@@ -399,17 +511,30 @@ internal sealed class ChristashaParticleInstance : IDisposable
             if (!ImageConversion.LoadImage(brush, File.ReadAllBytes(path), false)) throw new InvalidDataException("Cannot decode Christasha native original brush: " + path);
             Shader strikeShader = null;
             string shaderPath = Path.Combine(directory, "AB", "steria_christasha_light_strike");
-            if (_strikeBundle == null && File.Exists(shaderPath)) _strikeBundle = AssetBundle.LoadFromFile(shaderPath);
-            if (_strikeBundle != null) strikeShader = _strikeBundle.LoadAsset<Shader>("assets/nativeruntime/platinumstrike.shader");
-            if (strikeShader == null) SteriaLogger.LogError("Christasha strike shader unavailable: " + shaderPath);
-            _library = new ChristashaNativeParticleLibrary(resource => Resources.Load<GameObject>(resource), brush, strikeShader);
+            if (_strikeBundle == null && File.Exists(shaderPath)) bundle = AssetBundle.LoadFromFile(shaderPath);
+            else bundle = _strikeBundle;
+            if (bundle != null) strikeShader = bundle.LoadAsset<Shader>("assets/nativeruntime/platinumstrike.shader");
+            if (strikeShader == null || !strikeShader.isSupported)
+                throw new InvalidDataException("Christasha strike shader unavailable or unsupported: " + shaderPath);
+            library = new ChristashaNativeParticleLibrary(resource => Resources.Load<GameObject>(resource), brush, strikeShader);
+            _library = library;
             _originalBrush = brush;
+            _strikeBundle = bundle;
+            _loadFailureReported = false;
             SteriaLogger.Log("Christasha native library initialized from installed game resources and original brush");
         }
         catch (Exception error)
         {
+            if (library != null) library.Dispose();
             if (brush != null) UnityEngine.Object.Destroy(brush);
-            SteriaLogger.LogError("Christasha native library unavailable; combat continues without visual: " + error);
+            if (bundle != null && bundle != _strikeBundle) bundle.Unload(false);
+            _library = null;
+            _originalBrush = null;
+            if (!_loadFailureReported)
+            {
+                _loadFailureReported = true;
+                SteriaLogger.LogError("Christasha native library unavailable; later use can retry: " + error);
+            }
         }
         return _library;
     }

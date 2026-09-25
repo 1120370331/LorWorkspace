@@ -15,6 +15,7 @@ internal static class RunContracts
     private static void Main(string[] args)
     {
         Prefabs();
+        StartupPreparation();
         Melee();
         bool meleeOnly = args.Length > 1 && args[1] == "melee";
         if (!meleeOnly)
@@ -35,13 +36,60 @@ internal static class RunContracts
         Resources.Missing = missing;
         ChristashaNativeParticleLibrary.Unsupported.Clear();
         typeof(ChristashaParticleInstance).GetField("_library", Fields).SetValue(null, null);
-        typeof(ChristashaParticleInstance).GetField("_loadAttempted", Fields).SetValue(null, false);
         // Recording Texture2D/ImageConversion boundary checks loader flags without
         // pretending these bytes are a decoded production brush or a GPU test.
         string directory = Path.GetDirectoryName(typeof(RunContracts).Assembly.Location);
         string brush = Path.Combine(Directory.GetParent(directory).FullName, "Resource", "Effects", "ChristashaNative", "tide-brush-imagegen-v1.png");
         Directory.CreateDirectory(Path.GetDirectoryName(brush));
         File.WriteAllBytes(brush, new byte[] { 1 });
+        string shader = Path.Combine(directory, "AB", "steria_christasha_light_strike");
+        Directory.CreateDirectory(Path.GetDirectoryName(shader));
+        File.WriteAllBytes(shader, new byte[] { 1 });
+    }
+
+    private static void StartupPreparation()
+    {
+        string directory = Path.GetDirectoryName(typeof(RunContracts).Assembly.Location);
+        string brush = Path.Combine(Directory.GetParent(directory).FullName, "Resource", "Effects", "ChristashaNative", "tide-brush-imagegen-v1.png");
+        File.Delete(brush);
+        int messages = Steria.SteriaLogger.Messages.Count;
+        ChristashaParticleInstance.PrepareCombatVisuals();
+        ChristashaParticleInstance.PrepareCombatVisuals();
+        Check(ChristashaNativeParticleLibrary.Created.Count == 0 &&
+            typeof(ChristashaParticleInstance).GetField("_library", Fields).GetValue(null) == null,
+            "missing startup brush does not poison library retry");
+        Check(Steria.SteriaLogger.Messages.Skip(messages).Count(x => x.Contains("library unavailable")) == 1,
+            "repeated startup load failure logs once");
+
+        File.WriteAllBytes(brush, new byte[] { 1 });
+        ChristashaNativeParticleLibrary.Unsupported.Add("Hit");
+        int before = ChristashaNativeParticlePlayback.Started.Count;
+        ChristashaParticleInstance.PrepareCombatVisuals();
+        var newStarts = ChristashaNativeParticlePlayback.Started.Skip(before).ToArray();
+        Check(newStarts.Length == 4 && newStarts.Select(x => x.Root.name).OrderBy(x => x).SequenceEqual(
+            new[] { "ChristashaPreparation_Pierce", "ChristashaPreparation_Portal", "ChristashaPreparation_Projectile", "ChristashaPreparation_Slash" }),
+            "startup preplays four independent recipes despite one recipe failure");
+        Check(newStarts.All(x => x.Seed == 19037u && x.Stopped && x.Root.destroyed && !x.Root.activeSelf && x.Advances >= 2),
+            "fixed-seed startup playback advances both phases and leaves no live visual");
+        var projectile = newStarts.Single(x => x.Root.name == "ChristashaPreparation_Projectile");
+        Check(projectile.Age > ChristashaProjectileArc.FlightTime && projectile.ImpactConfirmations == 1,
+            "projectile startup draw reaches confirmed contact after FlightTime");
+        Check(UnityEngine.Camera.Renders == 8 && Steria.SteriaEffectHelper.ShakeCalls == 0,
+            "startup exercises private GPU draw boundary without battle shake");
+        Check(UnityEngine.GameObject.Created.Where(x => x.name == "ChristashaPreparationCamera").All(x => x.destroyed),
+            "startup destroys private camera");
+
+        ChristashaNativeParticleLibrary.Unsupported.Clear();
+        ChristashaParticleInstance.PrepareCombatVisuals();
+        Check(ChristashaNativeParticlePlayback.Started.Count == before + 5 &&
+            ChristashaNativeParticlePlayback.Started.Last().Root.name == "ChristashaPreparation_Hit",
+            "retry prepares only previously failed Hit recipe");
+        int requests = Resources.Requests.Count;
+        int renders = UnityEngine.Camera.Renders;
+        ChristashaParticleInstance.PrepareCombatVisuals();
+        Check(Resources.Requests.Count == requests && UnityEngine.Camera.Renders == renders &&
+            ChristashaNativeParticlePlayback.Started.Count == before + 5,
+            "completed startup preparation is idempotent");
     }
 
     private static BattleUnitView Actor(float x, float map = 3f, bool right = false)
