@@ -19,7 +19,7 @@ namespace Steria.Vfx
         readonly Dictionary<string, GameObject> templates = new Dictionary<string, GameObject>();
         readonly Dictionary<Texture, Texture2D> tideTextures = new Dictionary<Texture, Texture2D>();
         GameObject cache;
-        Material brushMaterial, crestMaterial, lineMaterial;
+        Material brushMaterial, crestMaterial, lineMaterial, scoreMaterial;
 
         public ChristashaNativeMassRecipes(Func<string, GameObject> resolver, Texture2D originalBrush)
         {
@@ -141,6 +141,7 @@ namespace Steria.Vfx
             }
             AddSupport(root.transform, "MassFoam", .075f, 32);
             AddStrings(root.transform, 2);
+            AddScoreRing(root.transform, 5);
         }
 
         void BuildPoint(GameObject root)
@@ -319,6 +320,81 @@ namespace Steria.Vfx
             renderer.sharedMaterial=name=="MassCrest"?CrestMaterial():BrushMaterial();renderer.sortingOrder=5;
         }
 
+        void AddScoreRing(Transform parent, int capacity)
+        {
+            // A staff-line sheet that circles the caster during the Cast wind-up.
+            // This is a quad-mesh ParticleSystem, never a LineRenderer: the Cast
+            // playback overwrites every LineRenderer with its rising sweep, and
+            // any system not named "Mass*" would be captured by the native MPB remap.
+            var go = new GameObject("MassScore"); go.transform.SetParent(parent, false);
+            var p = go.AddComponent<ParticleSystem>(); p.Stop(false, ParticleSystemStopBehavior.StopEmittingAndClear);
+            var main = p.main; main.playOnAwake = false; main.loop = false; main.duration = 1.5f;
+            main.startSpeed = 0; main.maxParticles = capacity;
+            main.simulationSpace = ParticleSystemSimulationSpace.Local;
+            main.scalingMode = ParticleSystemScalingMode.Hierarchy;
+            main.cullingMode = ParticleSystemCullingMode.AlwaysSimulate;
+            var emission = p.emission; emission.enabled = false;
+            var shape = p.shape; shape.enabled = false;
+            var col = p.colorOverLifetime; col.enabled = true;
+            var gradient = new Gradient();
+            gradient.SetKeys(new[]{new GradientColorKey(Color.white,0), new GradientColorKey(new Color(1f,.94f,.78f),1)},
+                new[]{new GradientAlphaKey(0f,0), new GradientAlphaKey(.92f,.18f), new GradientAlphaKey(.78f,.62f), new GradientAlphaKey(0f,1f)});
+            col.color = gradient;
+            var renderer = p.GetComponent<ParticleSystemRenderer>();
+            renderer.renderMode = ParticleSystemRenderMode.Mesh;
+            renderer.alignment = ParticleSystemRenderSpace.Local;
+            renderer.mesh = ScoreSheetMesh();
+            renderer.sharedMaterial = ScoreMaterial();
+            renderer.sortingOrder = 5;
+        }
+
+        Mesh ScoreSheetMesh()
+        {
+            // One page of five staff lines. The alpha comes from the local brush row
+            // so the sheet frays the same way as the rest of the library; the lines
+            // are geometry, not a full-screen plate.
+            const int lines = 5, segments = 24;
+            var vertices = new List<Vector3>(); var uv = new List<Vector2>(); var triangles = new List<int>();
+            for (int line = 0; line < lines; line++)
+            {
+                float y = (line / (float)(lines - 1) - .5f) * .72f;
+                int start = vertices.Count;
+                for (int i = 0; i <= segments; i++)
+                {
+                    float t = i / (float)segments;
+                    float x = (t - .5f) * 1.9f;
+                    // Break each staff line at seeded-free fixed gaps so the page reads
+                    // as measures rather than one continuous rule.
+                    float bend = Mathf.Sin(t * 6.2831853f) * .022f;
+                    vertices.Add(new Vector3(x, y + bend, -.02f + line * .002f));
+                    vertices.Add(new Vector3(x, y + bend + .032f, -.02f + line * .002f));
+                    uv.Add(new Vector2(t, .5f)); uv.Add(new Vector2(t, .5f));
+                    if (i == segments) continue;
+                    int v = start + i * 2;
+                    triangles.Add(v); triangles.Add(v + 2); triangles.Add(v + 1);
+                    triangles.Add(v + 1); triangles.Add(v + 2); triangles.Add(v + 3);
+                }
+            }
+            var mesh = new Mesh { name = "ChristashaMass_ScoreSheet" };
+            mesh.SetVertices(vertices); mesh.SetUVs(0, uv); mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateBounds(); owned.Add(mesh); return mesh;
+        }
+
+        Material ScoreMaterial()
+        {
+            if (scoreMaterial != null) return scoreMaterial;
+            if (brush == null) throw new InvalidOperationException("Mass score needs the original readable local tide brush");
+            Shader shader = Shader.Find("Sprites/Default");
+            if (shader == null) throw new InvalidOperationException("Sprites/Default missing");
+            var texture = new Texture2D(brush.width, brush.height, TextureFormat.RGBA32, false, true);
+            var pixels = brush.GetPixels();
+            for (int i = 0; i < pixels.Length; i++) pixels[i] = new Color(1, 1, 1, Mathf.Clamp01(pixels[i].r * 1.15f));
+            texture.SetPixels(pixels); texture.Apply(false, true); texture.wrapMode = TextureWrapMode.Clamp;
+            texture.name = "ChristashaMass_ScoreAlpha"; owned.Add(texture);
+            scoreMaterial = new Material(shader) { name = "ChristashaMass_Score" };
+            scoreMaterial.SetTexture("_MainTex", texture); owned.Add(scoreMaterial); return scoreMaterial;
+        }
+
         Mesh CrestArcMesh()
         {
             // One curved brush stroke, not evenly repeated triangular stamps.
@@ -369,19 +445,27 @@ namespace Steria.Vfx
 
         sealed class Playback : IChristashaNativePlaybackHooks
         {
-            readonly string recipe; readonly Transform art; readonly Vector3 scale,position;
-            readonly ParticleSystem foam,spray,crest,contact; readonly LineRenderer[] strings;
+            readonly string recipe; readonly Transform art; readonly Vector3 scale,position; readonly Quaternion rotation;
+            readonly ParticleSystem foam,spray,crest,contact,score; readonly LineRenderer[] strings;
             readonly List<Colors> colors=new List<Colors>(); readonly System.Random random;
-            int emitted,crestEmitted; bool contactEmitted;
+            readonly WaveVariant variant;
+            ParticleSystem.Particle[] scoreParticles;
+            int emitted,crestEmitted,scoreEmitted; bool contactEmitted;
             // The caller's speed multiplier is applied by the shared driver.
             public float Duration {get{return recipe=="Area"?1.40f:recipe=="Cast"?.84f:.58f;}}
             public Playback(GameObject root,string recipe,uint seed)
             {
                 this.recipe=recipe;random=new System.Random(unchecked((int)seed));
                 art=root.transform.Find(recipe=="Area"?"MassWaveArt":"MassCastArt");
-                if(art!=null){scale=art.localScale;position=art.localPosition;}
+                if(art!=null){scale=art.localScale;position=art.localPosition;rotation=art.localRotation;}
                 foam=FindSystem(root,"MassFoam");spray=FindSystem(root,"MassSpray");
                 crest=FindSystem(root,"MassCrest");contact=FindSystem(root,"MassContact");
+                score=FindSystem(root,"MassScore");
+                if(score!=null)scoreParticles=new ParticleSystem.Particle[score.main.maxParticles];
+                // Per-dice variety. The instance seed already differs per dice, so this
+                // draws a different silhouette for each one without touching placement,
+                // the native carrier, or the manager's release timing.
+                variant=WaveVariants[random.Next(WaveVariants.Length)];
                 strings=root.GetComponentsInChildren<LineRenderer>(true);
                 foreach(var p in root.GetComponentsInChildren<ParticleSystem>(true))
                     if(!p.name.StartsWith("Mass",StringComparison.Ordinal))colors.Add(new Colors(p.GetComponent<Renderer>(),recipe));
@@ -393,10 +477,12 @@ namespace Steria.Vfx
                 foreach(var c in colors)c.Map(age);
                 if(art!=null&&recipe=="Area")
                 {
-                    float unfold=Mathf.SmoothStep(.15f,1f,Mathf.Clamp01(age/.2f));
-                    art.localScale=Vector3.Scale(scale,new Vector3(unfold,Mathf.Lerp(.34f,1,unfold),unfold));
-                    art.localPosition=position+new Vector3(Mathf.Lerp(-13,0,unfold),0,0);
+                    float unfold=Mathf.SmoothStep(.15f,1f,Mathf.Clamp01(age/Mathf.Max(.01f,variant.unfoldTime)));
+                    art.localScale=Vector3.Scale(scale,new Vector3(unfold*Mathf.Lerp(.34f,1,unfold)*variant.scaleBias,Mathf.Lerp(.34f,1,unfold),unfold*Mathf.Lerp(.34f,1,unfold)*variant.scaleBias));
+                    art.localRotation=rotation*Quaternion.Euler(0,0,variant.rotationBias);
+                    art.localPosition=position+new Vector3(Mathf.Lerp(-13,0,unfold),Undulation(age,unfold),0);
                 }
+                if(recipe=="Cast")AnimateScore(age);
                 for(int i=0;i<strings.Length;i++)
                 {
                     float start=recipe=="Area"?.09f+i*.03f:.025f+i*.045f;
@@ -407,7 +493,8 @@ namespace Steria.Vfx
                     for(int n=0;n<48;n++)
                     {
                         float t=(n/47f)*u;
-                        Vector3 p=recipe=="Area"?Cubic(new Vector3(-17,1+i*.30f,0),new Vector3(-5,2,0),new Vector3(7,17+i*.85f,0),new Vector3(15,5+i*.55f,0),t):Cubic(new Vector3(-2.4f,-.5f+i*.35f,0),new Vector3(-1,3,0),new Vector3(2.8f,2.2f,0),new Vector3(4.5f,.65f+i*.32f,0),t);
+                        float travel=Mathf.Clamp01(t+variant.stringPhase);
+                        Vector3 p=recipe=="Area"?Cubic(new Vector3(-17,1+i*.30f,0),new Vector3(-5,2,0),new Vector3(7,17+i*.85f+variant.riseHeight*.35f,0),new Vector3(15,5+i*.55f,0),travel):Cubic(new Vector3(-2.4f,-.5f+i*.35f,0),new Vector3(-1,3,0),new Vector3(2.8f,2.2f,0),new Vector3(4.5f,.65f+i*.32f,0),travel);
                         p.z=-.5f-i*.01f;line.SetPosition(n,p);
                     }
                 }
@@ -421,8 +508,9 @@ namespace Steria.Vfx
                 {
                     if(recipe=="Area")
                     {
-                        float a=Mathf.Lerp(-1.1f,2.25f,emitted/19f);
-                        var at=new Vector3(-.5f+14f*Mathf.Cos(a),9f+10f*Mathf.Sin(a),-.4f);
+                        float a=Mathf.Lerp(variant.crestStart,variant.crestEnd,emitted/19f);
+                        var at=new Vector3(-.5f+14f*Mathf.Cos(a),9f+10f*Mathf.Sin(a)*variant.riseHeight/10f,-.4f);
+                        at.y+=Undulation(age,Mathf.SmoothStep(.15f,1f,Mathf.Clamp01(age/Mathf.Max(.01f,variant.unfoldTime))));
                         var tangent=new Vector3(-Mathf.Sin(a),Mathf.Cos(a),0);
                         Emit(foam,at,tangent*Range(3,9)+Vector3.up*Range(1,3),Range(1.1f,2.15f),a*Mathf.Rad2Deg+90,Range(.38f,.68f));
                         Emit(spray,at,tangent*Range(5,13),Range(1.25f,2.3f),a*Mathf.Rad2Deg+90,Range(.34f,.62f));
@@ -439,6 +527,15 @@ namespace Steria.Vfx
                         Emit(foam,at,-at*2,Range(.3f,.65f),a*Mathf.Rad2Deg+80,.42f);
                     }
                     emitted++;
+                }
+                if(recipe=="Cast" && score!=null && scoreEmitted==0)
+                {
+                    // Five sheets live for the whole wind-up; the ring animates them
+                    // directly, so they are emitted once and never re-spawned.
+                    for(int i=0;i<5;i++)
+                        EmitTinted(score,Vector3.zero,Vector3.zero,Range(.52f,.70f),Range(-25f,25f),.86f,
+                            new Color(1f,Range(.93f,.99f),Range(.72f,.88f),.92f));
+                    scoreEmitted=1;
                 }
                 if(recipe=="Area" && crest!=null && crestEmitted==0 && age>=.145f)
                 {
@@ -458,13 +555,93 @@ namespace Steria.Vfx
                     contactEmitted=true;
                 }
             }
+            /// <summary>
+            /// Travelling vertical swell of the wavefront. Two detuned sines keep the
+            /// roll from reading as a single clean oscillation, and the envelope holds
+            /// the amplitude down during the unfold so the wave plants before it lifts.
+            /// </summary>
+            float Undulation(float age,float unfold)
+            {
+                float travel=age*variant.undulationFrequency*2.4f;
+                float primary=Mathf.Sin(travel);
+                float secondary=Mathf.Sin(travel*1.73f+1.1f);
+                float envelope=Mathf.SmoothStep(0f,1f,Mathf.Clamp01(unfold));
+                return (primary*.72f+secondary*.28f)*variant.undulationAmplitude*envelope;
+            }
+
+            /// <summary>
+            /// The sheet-music ring orbits the caster for the whole Cast wind-up.
+            /// Positions are written directly because the systems are Paused and only
+            /// stepped by the shared manual clock.
+            /// </summary>
+            void AnimateScore(float age)
+            {
+                if(score==null||scoreParticles==null)return;
+                int count=score.GetParticles(scoreParticles);
+                if(count<=0)return;
+                // The root sits at the caster's feet and a game unit is about three
+                // world units tall, so the ring is sized to circle the torso rather
+                // than the shins.
+                float radius=1.05f+Mathf.Sin(age*2.1f)*.10f;
+                float spin=age*2.35f;
+                for(int i=0;i<count;i++)
+                {
+                    // Each sheet holds its own orbital offset so the ring never
+                    // collapses into a single rotating card.
+                    float lane=(i+.5f)/Mathf.Max(1f,count)*Mathf.PI*2f;
+                    float angle=lane+spin;
+                    float lift=1.45f+Mathf.Sin(age*1.5f+lane*1.7f)*.35f;
+                    var position=new Vector3(Mathf.Cos(angle)*radius,lift+Mathf.Sin(angle*2f)*.08f,Mathf.Sin(angle)*radius*.55f);
+                    scoreParticles[i].position=position;
+                    scoreParticles[i].rotation3D=new Vector3(0,Mathf.Lerp(-58f,58f,Mathf.Sin(angle)),Mathf.Lerp(-7f,7f,Mathf.Cos(angle*1.3f)));
+                }
+                score.SetParticles(scoreParticles,count);
+            }
+
             void Emit(ParticleSystem p,Vector3 at,Vector3 velocity,float size,float rotation,float life)
             {EmitTinted(p,at,velocity,size,rotation,life,new Color(1,Range(.88f,.98f),Range(.63f,.83f),1));}
             void EmitTinted(ParticleSystem p,Vector3 at,Vector3 velocity,float size,float rotation,float life,Color tint)
             {if(p==null)return;var e=new ParticleSystem.EmitParams{position=at,velocity=velocity,startSize=size,rotation=rotation,startLifetime=life,startColor=tint,applyShapeToPosition=false};p.Emit(e,1);}
             float Range(float a,float b){return a+(b-a)*(float)random.NextDouble();}
-            public void StopAndClear(){foreach(var line in strings)line.enabled=false;foreach(var c in colors)c.Restore();if(art!=null){art.localScale=scale;art.localPosition=position;}}
+            public void StopAndClear(){foreach(var line in strings)line.enabled=false;foreach(var c in colors)c.Restore();if(art!=null){art.localScale=scale;art.localPosition=position;art.localRotation=rotation;}}
         }
+
+        /// <summary>
+        /// One authored golden-wave silhouette. The native torus is shared by every
+        /// mass instance, so per-dice variety comes from these runtime parameters
+        /// rather than from separate recipe names - the recipe name is asserted by
+        /// the managed contracts and stays "Area".
+        /// </summary>
+        struct WaveVariant
+        {
+            public float crestStart, crestEnd;   // emission arc, radians
+            public float riseHeight;             // vertical gain of the emission arc
+            public float unfoldTime;             // how fast the native carrier opens
+            public float undulationAmplitude;    // vertical travel of the wavefront
+            public float undulationFrequency;    // number of crests across the sweep
+            public float stringPhase;            // per-variant travel offset of the fly lines
+            public float scaleBias;              // uniform art-scale bias
+            public float rotationBias;           // authored Z tilt of the carrier
+        }
+
+        static readonly WaveVariant[] WaveVariants = new[]
+        {
+            // Broad, slow, single dominant crest.
+            new WaveVariant{crestStart=-1.1f,crestEnd=2.25f,riseHeight=10f,unfoldTime=.20f,
+                undulationAmplitude=.55f,undulationFrequency=1.6f,stringPhase=0f,scaleBias=1f,rotationBias=0f},
+            // Tall and narrow, quicker to open.
+            new WaveVariant{crestStart=-.55f,crestEnd=1.85f,riseHeight=13f,unfoldTime=.16f,
+                undulationAmplitude=.34f,undulationFrequency=2.4f,stringPhase=.35f,scaleBias=1.06f,rotationBias=-4f},
+            // Wide and flat, low travelling swell.
+            new WaveVariant{crestStart=-1.45f,crestEnd=2.55f,riseHeight=7.5f,unfoldTime=.24f,
+                undulationAmplitude=.78f,undulationFrequency=1.15f,stringPhase=-.28f,scaleBias=.96f,rotationBias=3f},
+            // Double-lobed, deeper roll.
+            new WaveVariant{crestStart=-1.25f,crestEnd=2.05f,riseHeight=9f,unfoldTime=.19f,
+                undulationAmplitude=.92f,undulationFrequency=2.9f,stringPhase=.18f,scaleBias=1.02f,rotationBias=-2f},
+            // Late-opening long swell.
+            new WaveVariant{crestStart=-.85f,crestEnd=2.4f,riseHeight=11.5f,unfoldTime=.28f,
+                undulationAmplitude=.44f,undulationFrequency=1.9f,stringPhase=-.45f,scaleBias=.98f,rotationBias=5f},
+        };
 
         sealed class Colors
         {
@@ -525,7 +702,7 @@ namespace Steria.Vfx
         {
             if(cache!=null)Object.DestroyImmediate(cache);
             foreach(var item in owned)if(item!=null)Object.DestroyImmediate(item);
-            owned.Clear();templates.Clear();tideTextures.Clear();cache=null;brushMaterial=null;crestMaterial=null;lineMaterial=null;
+            owned.Clear();templates.Clear();tideTextures.Clear();cache=null;brushMaterial=null;crestMaterial=null;lineMaterial=null;scoreMaterial=null;
         }
     }
 }
