@@ -1,0 +1,10 @@
+{
+  "src/TaffyVfx.cs": "32d7ba84311405893fd904bd433895e0d835e5aa9dce0509c5d3f4ea06009f5b",
+  "src/TaffyActions.cs": "7ab94a1477c33db88e50a64628bca08f4a63924e090c3c2b8e26f1b330686ca6",
+  "AceTaffyMod/Data/CardInfo.xml": "4f79de96d9fc70ec73802627951f2356a94e57a459946b5cb18e016cfc20fc92",
+  "AceTaffyMod/Resource/Effects/AceTaffy/SteamDetonation.png": "55063674c968f8a2a6ea289e9d0b60e713dea6837640d9b2e153211b92b7f80b",
+  "Verification/Vfx/unity-preview/AceTaffy_SteamDetonation_event.png": "0f0754aa7dbc4a97ac0216d34bc5dad1b63bcf8c8140402db5ebe13482550b9a",
+  "Verification/Vfx/unity-preview/AceTaffy_SteamDetonation_fade.png": "5f584785da792075f888efeaf2513974336267939267ffb9b50e9dfc4bc38206",
+  "Verification/Vfx/unity-preview/AceTaffy_SteamDetonation_right_event.png": "076f6290151db80af1475729ff52d7d1bf50775775a0c4e25bd621119907c550",
+  "Verification/Vfx/unity-preview/AceTaffy_SteamBlunt_event.png": "0a388de5025a5cfd101ea294e95cdba473ff221afc698a89259f9fb5c2c9bd67"
+}

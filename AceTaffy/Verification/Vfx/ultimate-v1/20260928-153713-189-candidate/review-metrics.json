@@ -1,0 +1,97 @@
+{
+  "evidence": "Unity native factory isolated simulation; prefab Hit pivot data reconstructed, actual current actor PNG/ModInfo; MoveRoutine not replayed",
+  "actor_visible_height_world": 4.88,
+  "main_width_actor_heights_at_100ms_roll_0_5": 1.5150614754098362,
+  "main_height_actor_heights_at_100ms_roll_0_5": 0.6320901639344263,
+  "arc_height_actor_heights_at_100ms_roll_0_5": 0.7309019406943105,
+  "face": {
+    "left_roll_0.0": {
+      "samples": 8,
+      "max_owner_face_alpha_0_6": 0.0,
+      "max_target_face_alpha_0_6": 0.0014245014172047377,
+      "target_coverage_ge_25_percent_longest_sampled_ms": 0
+    },
+    "left_roll_0.5": {
+      "samples": 13,
+      "max_owner_face_alpha_0_6": 0.0,
+      "max_target_face_alpha_0_6": 0.01566951535642147,
+      "target_coverage_ge_25_percent_longest_sampled_ms": 0
+    },
+    "left_roll_1.0": {
+      "samples": 8,
+      "max_owner_face_alpha_0_6": 0.0,
+      "max_target_face_alpha_0_6": 0.05840455740690231,
+      "target_coverage_ge_25_percent_longest_sampled_ms": 0
+    },
+    "right_roll_0.0": {
+      "samples": 8,
+      "max_owner_face_alpha_0_6": 0.0,
+      "max_target_face_alpha_0_6": 0.0014245014172047377,
+      "target_coverage_ge_25_percent_longest_sampled_ms": 0
+    },
+    "right_roll_0.5": {
+      "samples": 13,
+      "max_owner_face_alpha_0_6": 0.0,
+      "max_target_face_alpha_0_6": 0.013532763347029686,
+      "target_coverage_ge_25_percent_longest_sampled_ms": 0
+    },
+    "right_roll_1.0": {
+      "samples": 8,
+      "max_owner_face_alpha_0_6": 0.0,
+      "max_target_face_alpha_0_6": 0.05840455740690231,
+      "target_coverage_ge_25_percent_longest_sampled_ms": 0
+    }
+  },
+  "emitter_anchor": {
+    "left": {
+      "100ms_roll_spread_px": 0.0,
+      "rolls": {
+        "0.0": {
+          "event_x": 531.47998046875,
+          "100ms_x": 518.52001953125,
+          "max_0_to_220ms_screen_drift_px": 12.9599609375
+        },
+        "0.5": {
+          "event_x": 531.47998046875,
+          "100ms_x": 518.52001953125,
+          "max_0_to_220ms_screen_drift_px": 12.9599609375
+        },
+        "1.0": {
+          "event_x": 531.47998046875,
+          "100ms_x": 518.52001953125,
+          "max_0_to_220ms_screen_drift_px": 12.9599609375
+        }
+      }
+    },
+    "right": {
+      "100ms_roll_spread_px": 0.0,
+      "rolls": {
+        "0.0": {
+          "event_x": 428.5199890136719,
+          "100ms_x": 441.47998046875,
+          "max_0_to_220ms_screen_drift_px": 12.959991455078125
+        },
+        "0.5": {
+          "event_x": 428.5199890136719,
+          "100ms_x": 441.47998046875,
+          "max_0_to_220ms_screen_drift_px": 12.959991455078125
+        },
+        "1.0": {
+          "event_x": 428.5199890136719,
+          "100ms_x": 441.47998046875,
+          "max_0_to_220ms_screen_drift_px": 12.959991455078125
+        }
+      }
+    }
+  },
+  "video_duration_ms": 1116.6666666666667,
+  "gif_encoded_duration_ms": 1120,
+  "gif_duration_quantization": "GIF stores centiseconds; final sampled frame is 20ms after encoding",
+  "media_sha256": {
+    "ultimate-normal-60fps.mp4": "007aac486375dc5571f5aa338332eda7952f8b0ab58f725e9b20a3d3c20c046f",
+    "ultimate-normal-30fps.gif": "72d36f7bd7664d9710520573981a12f78deb76a4ea74233564da20f6486e5a3a",
+    "timeline-contact.png": "e5f9e1d0092dd0a8df5bf8adb415abf71314cf090edc984e84d81369fdcc0b38",
+    "same-camera-comparison.png": "f7c5d2fde2dd4d4fdba17af7131b70c496f6e66ce54a6877e7bb35c6eef70ec5",
+    "asset-alpha-review.png": "d82c0c648345c56cccec0bd50b1683ff38839276ad8a59f6bdd1f14ed0f88fde"
+  }
+}

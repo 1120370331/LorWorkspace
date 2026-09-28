@@ -1,0 +1,189 @@
+{
+  "source": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\resources.assets",
+  "source_sha256": "ee635cd419ce02027664abf9ebe8a83836a1c5ae6d0d41a73f30a0092dcdd794",
+  "prefab_path_id": 33898,
+  "prefab": "[Prefab]Appearance_Custom",
+  "root": {
+    "name": "[Prefab]Appearance_Custom",
+    "path_id": 56595,
+    "position": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "w": 1.0
+    },
+    "children": [
+      56365,
+      49709,
+      58113,
+      56979,
+      54655,
+      49947,
+      54000,
+      60822,
+      49626,
+      53145,
+      56333,
+      54298
+    ]
+  },
+  "attack_root": {
+    "name": "AtkEffectRoot",
+    "path_id": 56365,
+    "position": {
+      "x": -1.9199999570846558,
+      "y": 2.5199999809265137,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "rotation": {
+      "x": -0.0,
+      "y": -0.0,
+      "z": -0.0,
+      "w": 1.0
+    },
+    "children": []
+  },
+  "hit_motion": {
+    "name": "Custom_Hit",
+    "path_id": 49947,
+    "position": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "w": 1.0
+    },
+    "children": [
+      52172,
+      51936,
+      60448
+    ]
+  },
+  "hit_children": [
+    {
+      "name": "CustomizePivot",
+      "path_id": 52172,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "children": [
+        49777
+      ]
+    },
+    {
+      "name": "Customize_Renderer",
+      "path_id": 51936,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "children": []
+    },
+    {
+      "name": "Customize_Renderer_Front",
+      "path_id": 60448,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "children": []
+    }
+  ],
+  "appearance_monobehaviour_path_id": 99377,
+  "appearance_pointers": {
+    "atkEffectRoot": {
+      "file_id": 0,
+      "path_id": 56365
+    },
+    "H": {
+      "file_id": 0,
+      "path_id": 0
+    },
+    "J": {
+      "file_id": 0,
+      "path_id": 0
+    },
+    "Z": {
+      "file_id": 0,
+      "path_id": 0
+    },
+    "G": {
+      "file_id": 0,
+      "path_id": 0
+    },
+    "E": {
+      "file_id": 0,
+      "path_id": 0
+    },
+    "S": {
+      "file_id": 0,
+      "path_id": 0
+    },
+    "F": {
+      "file_id": 0,
+      "path_id": 0
+    }
+  },
+  "note": "Original custom prefab has null action-specific pivot fields; native GetAtkEffectPivot(H) falls back to AtkEffectRoot (-1.92, 2.52, 0)."
+}

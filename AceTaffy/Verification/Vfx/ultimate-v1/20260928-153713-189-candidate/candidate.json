@@ -1,0 +1,24 @@
+{
+  "candidate": "Unity 2019 exact-source VFX factory fixture",
+  "vfx_source": "b32dbe9c8f786c746396a27902fca88b64314578ab79ab610b0d884d6183a00a",
+  "game_assembly": "e450ef9dd29abf5828491a891d86515d4af35c21c81d8e076335b86f6231c901",
+  "base_mod": "af4e8b302ca2981bd4907c4990552752408628a116394583acd7b0f9a08072c0",
+  "production_copy_matches": true,
+  "actor_inputs": {
+    "Default": "e11dcfaabe7496d74370158cfbc05b8232d24d033788721e7316b507fb845081",
+    "Hit": "03405746ef8d9d113cdfa5f4a86d094d3ac6bdf8ca387832836a7c64df51bfb8",
+    "Penetrate": "54260a6fc7c55b5fbc3451e8e306e80cb7c3397869ef813502c9c39041152449",
+    "Guard": "ad11264b88d09b69916fd261a675e6fce606d0ac9c75cd9713d3a12c0d334321"
+  },
+  "modinfo": "f798d8267ba0bbd56325492f786da917d6ffd20f8096939e5ff8dc6662bbaea3",
+  "cardinfo": "4f79de96d9fc70ec73802627951f2356a94e57a459946b5cb18e016cfc20fc92",
+  "new_effect_inputs": {
+    "SteamDetonation": "e4cd0bf033f3ba7877d79d48ec3bb774afe8ad261a1d9834f30887a68255cbd0",
+    "SteamPressureArc": "3f6d0ff3fce0ad9c183e80c3e7d2f63ee38c18793c2f30eefcec17a4793a067a",
+    "SteamBlunt": "1d7d8cceb2027a241b2a2c1ef4d3147c1eee03de1a46ad0df0091a372cc18723",
+    "SteamPierce": "1a1f2e098e6f1e2d498f9bccf513ac3a0e6b11a8332eaceffd87a9106df7b754",
+    "SteamGuard": "292500907e8eeec105972017a8015435fc64608089423c6e0cc42a0ca9bb6980",
+    "SteamWisp": "fa640d690f0ef8aecca1919d37098555cfc2ed02accf1eb0299cfebe6531aed1"
+  },
+  "native_pivot_data": "aedf1be4aa70e20f63508aec52ad140fcfb4ad76db878d4151488db676bda773"
+}

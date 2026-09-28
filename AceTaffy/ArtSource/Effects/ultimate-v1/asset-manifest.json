@@ -1,0 +1,78 @@
+{
+  "generator": "built-in image_gen",
+  "processing": "Direct copies; original RGBA preserved without keying, painting, color edits or resizing",
+  "approval_notes": "Core measured content ratio 2.430 (prompt target 2.2); preserves physical target width/height via uniform sizing. Arc ratio 0.335, 75.78% bbox alpha below8. Visible content remains safely within canvas; arc edge max alpha1/255, no visible clipped paint. Runtime review determines final acceptance.",
+  "files": [
+    {
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a0e146-fa6f-7511-800e-b1ec3cc07bb0\\exec-2a452cc3-e665-4ce5-9636-7a5e58ad1604.png",
+      "master": "AceTaffy\\ArtSource\\Effects\\ultimate-v1\\SteamDetonation-draft.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bbox_8": [
+        86,
+        84,
+        1489,
+        944
+      ],
+      "content_width_height": 1.631,
+      "bbox_fraction_alpha_below_8": 0.577,
+      "edge_alpha_max": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sha256": "000bb1d2c7611759da13bc7c104e7151ba10ee2b6eb3979b9ae834f6d1efe17c"
+    },
+    {
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a0e146-fa6f-7511-800e-b1ec3cc07bb0\\exec-226f8e61-1759-4964-9868-3f6db7ea99ce.png",
+      "master": "AceTaffy\\ArtSource\\Effects\\ultimate-v1\\SteamDetonation-master.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bbox_8": [
+        83,
+        233,
+        1490,
+        812
+      ],
+      "content_width_height": 2.43,
+      "bbox_fraction_alpha_below_8": 0.5928,
+      "edge_alpha_max": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sha256": "e4cd0bf033f3ba7877d79d48ec3bb774afe8ad261a1d9834f30887a68255cbd0",
+      "production": "AceTaffy\\AceTaffyMod\\Resource\\Effects\\AceTaffy\\SteamDetonation.png"
+    },
+    {
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a0e146-fa6f-7511-800e-b1ec3cc07bb0\\exec-393da617-a85c-4509-a7b7-8d314c0d0783.png",
+      "master": "AceTaffy\\ArtSource\\Effects\\ultimate-v1\\SteamPressureArc-master.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "alpha_bbox_8": [
+        195,
+        79,
+        640,
+        1408
+      ],
+      "content_width_height": 0.335,
+      "bbox_fraction_alpha_below_8": 0.7578,
+      "edge_alpha_max": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "sha256": "3f6d0ff3fce0ad9c183e80c3e7d2f63ee38c18793c2f30eefcec17a4793a067a",
+      "production": "AceTaffy\\AceTaffyMod\\Resource\\Effects\\AceTaffy\\SteamPressureArc.png"
+    }
+  ]
+}
