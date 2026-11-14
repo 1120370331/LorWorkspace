@@ -1,0 +1,26 @@
+using System;
+using System.IO;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+
+[InitializeOnLoad]
+public static class SlazeyaWindFactorySmoke
+{
+    const string Key="SlazeyaWind.FactorySmoke.Output";
+    static SlazeyaWindFactorySmoke(){EditorApplication.playModeStateChanged+=State;}
+    public static void Run()
+    {
+        string[] args=Environment.GetCommandLineArgs();string output=args[Array.IndexOf(args,"-windSmokeOutput")+1];
+        Directory.CreateDirectory(output);SessionState.SetString(Key,output);
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);EditorApplication.isPlaying=true;
+    }
+    private static void State(PlayModeStateChange state)
+    {
+        if(state!=PlayModeStateChange.EnteredPlayMode)return;
+        string output=SessionState.GetString(Key,"");if(output=="")return;SessionState.EraseString(Key);
+        Application.logMessageReceived+=(message,stack,type)=>{if(type==LogType.Exception){File.WriteAllText(Path.Combine(output,"failure.txt"),message+"\n"+stack);EditorApplication.Exit(1);}};
+        var host=new GameObject("FactorySmoke").AddComponent<SlazeyaWindFactoryFrameSmoke>();
+        host.Begin((pass,message)=>{File.WriteAllText(Path.Combine(output,pass?"checks.txt":"failure.txt"),message);Debug.Log(message);EditorApplication.Exit(pass?0:1);});
+    }
+}

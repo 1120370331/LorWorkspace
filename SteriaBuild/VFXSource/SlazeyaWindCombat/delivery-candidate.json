@@ -1,0 +1,52 @@
+{
+  "candidate": "candidate-15-pierce",
+  "state": "DEPLOYED_VERIFIED; live battle and user art approval remain external",
+  "library_status": "candidate; no skill-library production promotion",
+  "files": {
+    "SteriaBuild/SlazeyaWindVisual.cs": "682b97afc2d4e2b26d476546e142fbbc4fd54c99157c024b49148b7e932888d3",
+    "SteriaBuild/DiceAttackEffect_Steria_SlazeyaWind.cs": "30215500ae9d4eff146eb82f53c4c6225202cdbd8e84f305da5828594af2fd2e",
+    "SteriaBuild/SlazeyaWindImpact.cs": "df3c9a186724b88dd1bdf2bbd4fcc74f9e18ef1579e360d78e70cb1423791994",
+    "SteriaBuild/SlazeyaWindParticleAssets.cs": "df7ae497ea8eba26d00ed6720bcf1ce38fad3ce53141dbbef769f9d905a6e656",
+    "SteriaBuild/VFXSource/SlazeyaWindCombat/UnityProject/Assets/Editor/SlazeyaWindSweptBuilder.cs": "a23380a8a163a47aca35d865fac999986ee22194820530cbe749de984460499c",
+    "SteriaBuild/VFXSource/SlazeyaWindCombat/source_assets/wind-wedge-v3.png": "b0426b3631e97d9611b0bc37ba86826e0c36a0efbb676e36f40179487c60417c",
+    "SteriaBuild/VFXSource/SlazeyaWindCombat/source_assets/wind-flow-cc0.png": "faeb3200d072fd44b2b61252b2d8f94abfd56609cef39dd89ffacbac01962f34",
+    "SteriaBuild/VFXSource/SlazeyaWindCombat/source_assets/wind-mote-cc0.png": "caedcc5df5bcac4470244d2520d6a64b45b20c1ccf4d918da516c55e3fa365a6",
+    "SteriaBuild/VFXSource/SlazeyaWindCombat/source_assets/wind-impact-ring-mit.png": "a7d0a60c4ffada75eb10a08d52ca972add2481a300e8911bddbf9db889d0f899"
+  },
+  "verification": {
+    "unity": "2019.3.15f1 Built-in Gamma D3D11",
+    "native_render": "20 visibility cases; lifecycle/replay/cancel; additional Pierce miss/expansion/world anchoring including sub-tick frames",
+    "factory": "SLAZEYA_WIND_FACTORY_UNITY_PASS 97 checks; actual native API/production adapter/driver/AB/player loop, synthetic Bada transforms; no full battle claim",
+    "factory_log": "output/slazeya-wind-combat/factory-pierce-15/acceptance.log",
+    "release_build": "0 errors, 8 pre-existing warnings",
+    "scoped_build": "output/slazeya-wind-combat/scoped-pierce-release/build.json",
+    "pdb_documents_equal": 101,
+    "resources_equal": 13,
+    "unchanged_non_pierce_frames": 592
+  },
+  "art_review": {
+    "verdict": "PASS",
+    "reviewer": "independent /root/pierce_visual_review, GPT-6 Astra",
+    "evidence": "evidence/candidate-15-pierce/visual-review.md",
+    "main_thread": "inspected white model, early/contact/expansion/fade, both facings and miss"
+  },
+  "deployment": {
+    "status": "DEPLOYED_VERIFIED",
+    "owner": "Terra; main thread independently rechecked all six game/repo files",
+    "receipt": "output/slazeya-wind-combat/deployments/20261114T080500Z-a5fea909/receipt.json",
+    "payload": {
+      "Assemblies/Steria.dll": "e3d7385aa0b475e6cc1e09d543003848837dd3602163ba0c6608971cedf1528a",
+      "Assemblies/AB/steria_slazeya_wind_combat": "cf8bf99f90f5595dfc0ee3a31b3429b7cec6f0ca1f8a4bde42f94ab685e1eaaf",
+      "Resource/ThirdPartyNotices/SlazeyaWindCombat.txt": "ecfa4620ba1e2afd349cc9fbcc80544d1b1de48eb807f4497008783073b3ac42"
+    },
+    "xml_unchanged": "c06089249ad0d57fc1b9de005bae848270a1314bcc956a3dd450c8c0535a1b4b",
+    "game_started": false
+  },
+  "preview": "evidence/candidate-15-pierce/Pierce-dark-left-60fps.mp4",
+  "limits": [
+    "Not a live game battle or full combat-camera/HUD verification",
+    "Bada Default is a Fire-pose approximation; built-in Effect9 layers omitted in visual previews",
+    "Final subjective art approval belongs to user"
+  ],
+  "identity": "cc2086f6da27c8b4"
+}

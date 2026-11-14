@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net472</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems><ImplicitUsings>disable</ImplicitUsings><AssemblyName>SlazeyaWindApiCompile</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../DiceAttackEffect_Steria_SlazeyaWind.cs"/><Compile Include="../../SlazeyaWindParticleAssets.cs"/><Compile Include="../../SlazeyaWindVisual.cs"/><Compile Include="FixtureLogger.cs.txt"/><Compile Include="Generated/ProductionFactory.cs"/><Compile Include="UnityFactorySmoke.cs.txt"/>
+    <Compile Include="../../SlazeyaWindImpact.cs"/>
+    <Reference Include="0Harmony"><HintPath>../../Libs/0Harmony.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Assembly-CSharp"><HintPath>../../Libs/Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="D:/Game Center/Steam/steamapps/common/Library Of Ruina/LibraryOfRuina_Data/Managed/UnityEngine*.dll"><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>

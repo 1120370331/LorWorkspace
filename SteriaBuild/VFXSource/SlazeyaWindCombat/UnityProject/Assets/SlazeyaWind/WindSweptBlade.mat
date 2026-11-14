@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WindSweptBlade
+  m_Shader: {fileID: 4800000, guid: c9e8d9fef1bf9ac418a986cfc806331b, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _HighlightTex:
+        m_Texture: {fileID: 2800000, guid: 7a8ea3ee69aac6945a7ae0cb6a565eb9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WedgeTex:
+        m_Texture: {fileID: 2800000, guid: b6f39ab69d9e91c4aabf8f2ddbac9ccf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Alpha: 0.814
+    - _Cull: 0
+    - _DstBlend: 1
+    - _Emission: 0.7
+    - _Phase: 0
+    - _SrcBlend: 1
+    - _Sweep: 1
+    - _WedgeSpan: 0.6
+    - _ZWrite: 0
+    m_Colors:
+    - _BaseColor: {r: 0.18, g: 0.58, b: 0.41, a: 1}
+    - _EmissionColor: {r: 0.7, g: 1, b: 0.88, a: 1}
+    - _HighlightSpeed: {r: 1, g: 0, b: 0, a: 0}
+    - _HighlightTiling: {r: 1, g: 1, b: 0, a: 0}

@@ -1,0 +1,145 @@
+{
+  "scope": "native GPU pixel visibility, not subjective art acceptance",
+  "cases": [
+    {
+      "case": "Guard-dark-left",
+      "peakChangedPixels": 7095,
+      "peakFrame": 3,
+      "minimum": 600,
+      "pass": true
+    },
+    {
+      "case": "Guard-dark-right",
+      "peakChangedPixels": 7095,
+      "peakFrame": 3,
+      "minimum": 600,
+      "pass": true
+    },
+    {
+      "case": "Guard-mid-left",
+      "peakChangedPixels": 7095,
+      "peakFrame": 3,
+      "minimum": 600,
+      "pass": true
+    },
+    {
+      "case": "Guard-mid-right",
+      "peakChangedPixels": 7095,
+      "peakFrame": 3,
+      "minimum": 600,
+      "pass": true
+    },
+    {
+      "case": "Hit-dark-left",
+      "peakChangedPixels": 7558,
+      "peakFrame": 8,
+      "minimum": 400,
+      "pass": true
+    },
+    {
+      "case": "Hit-dark-right",
+      "peakChangedPixels": 7558,
+      "peakFrame": 8,
+      "minimum": 400,
+      "pass": true
+    },
+    {
+      "case": "Hit-mid-left",
+      "peakChangedPixels": 7558,
+      "peakFrame": 8,
+      "minimum": 400,
+      "pass": true
+    },
+    {
+      "case": "Hit-mid-right",
+      "peakChangedPixels": 7558,
+      "peakFrame": 8,
+      "minimum": 400,
+      "pass": true
+    },
+    {
+      "case": "Pierce-dark-left",
+      "peakChangedPixels": 19714,
+      "peakFrame": 14,
+      "minimum": 450,
+      "pass": true
+    },
+    {
+      "case": "Pierce-dark-right",
+      "peakChangedPixels": 19714,
+      "peakFrame": 14,
+      "minimum": 450,
+      "pass": true
+    },
+    {
+      "case": "Pierce-mid-left",
+      "peakChangedPixels": 19714,
+      "peakFrame": 14,
+      "minimum": 450,
+      "pass": true
+    },
+    {
+      "case": "Pierce-mid-right",
+      "peakChangedPixels": 19714,
+      "peakFrame": 14,
+      "minimum": 450,
+      "pass": true
+    },
+    {
+      "case": "Projectile-dark-left",
+      "peakChangedPixels": 2352,
+      "peakFrame": 8,
+      "minimum": 700,
+      "pass": true
+    },
+    {
+      "case": "Projectile-dark-right",
+      "peakChangedPixels": 2354,
+      "peakFrame": 8,
+      "minimum": 700,
+      "pass": true
+    },
+    {
+      "case": "Projectile-mid-left",
+      "peakChangedPixels": 2352,
+      "peakFrame": 8,
+      "minimum": 700,
+      "pass": true
+    },
+    {
+      "case": "Projectile-mid-right",
+      "peakChangedPixels": 2354,
+      "peakFrame": 8,
+      "minimum": 700,
+      "pass": true
+    },
+    {
+      "case": "Slash-dark-left",
+      "peakChangedPixels": 8572,
+      "peakFrame": 6,
+      "minimum": 800,
+      "pass": true
+    },
+    {
+      "case": "Slash-dark-right",
+      "peakChangedPixels": 8572,
+      "peakFrame": 6,
+      "minimum": 800,
+      "pass": true
+    },
+    {
+      "case": "Slash-mid-left",
+      "peakChangedPixels": 8572,
+      "peakFrame": 6,
+      "minimum": 800,
+      "pass": true
+    },
+    {
+      "case": "Slash-mid-right",
+      "peakChangedPixels": 8572,
+      "peakFrame": 6,
+      "minimum": 800,
+      "pass": true
+    }
+  ]
+}

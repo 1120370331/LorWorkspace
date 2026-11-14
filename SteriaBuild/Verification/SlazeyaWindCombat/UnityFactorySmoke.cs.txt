@@ -1,0 +1,111 @@
+// Compile with the exact production adapter/cache/driver and extracted factory prefix.
+// Real Unity/game APIs and emitted PS, synthetic Bada-shaped transforms, no battle startup.
+using System;
+using System.Collections;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using Battle.DiceAttackEffect;
+using HarmonyLib;
+using LOR_DiceSystem;
+using Steria.Vfx;
+using UnityEngine;
+
+public sealed class SlazeyaWindFactoryFrameSmoke : MonoBehaviour
+{
+    private Action<bool,string> done;
+    private int checks;
+    public void Begin(Action<bool,string> callback) { done=callback;StartCoroutine(Run()); }
+    private IEnumerator Run()
+    {
+        ProductionFactory.Init();
+        var harmony=new Harmony("Steria.SlazeyaWind.NativeFixture");
+        harmony.Patch(AccessTools.Method(typeof(DiceEffectManager),nameof(DiceEffectManager.CreateBehaviourEffect)),
+            prefix:new HarmonyMethod(typeof(ProductionFactory),nameof(ProductionFactory.DiceEffectManager_CreateBehaviourEffect_Prefix)));
+        harmony.PatchAll(typeof(SlazeyaWindImpactPresentationPatch).Assembly);
+        var manager=new GameObject("ActualDiceEffectManager").AddComponent<DiceEffectManager>();
+        var neutral=new GameObject("NativeBattleSceneRoot");var scene=neutral.AddComponent<BattleSceneRoot>();scene.enabled=false;
+        typeof(SingletonBehavior<BattleSceneRoot>).GetField("_instance",BindingFlags.Static|BindingFlags.NonPublic).SetValue(null,scene);
+        foreach(bool left in new[]{true,false})foreach(string suffix in new[]{"Slash","Hit","Pierce","Guard","FarHit"})
+        {
+            var self=Actor(left,left?15:-15);var target=Actor(!left,left?-15:15);
+            DiceAttackEffect fx=manager.CreateBehaviourEffect("Steria_SlazeyaWind"+suffix,1,self,target,1);
+            if(!Check(fx!=null,"actual patched factory creation "+suffix))yield break;
+            var visual=(SlazeyaWindVisual)typeof(DiceAttackEffect_Steria_SlazeyaWindBase).GetField("_visual",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(fx);
+            if(!Check(visual!=null,"actual driver initialized "+suffix))yield break;
+            var systems=fx.GetComponentsInChildren<ParticleSystem>(true);
+            if(!Check(systems.Length>=1&&systems.All(p=>p.gameObject.layer==8),"inactive prefab descendants have actual Effect layer "+suffix))yield break;
+            if(!Check(fx.GetComponentsInChildren<ParticleSystemRenderer>(true).All(r=>r.sharedMaterial!=null&&r.sharedMaterial.shader.isSupported),"actual AB shaders supported"))yield break;
+            if(!Check(fx.GetComponentsInChildren<ParticleSystemRenderer>(true).All(r=>r.sortingLayerName=="Particle"),"actual native Particle sorting layer"))yield break;
+            if(!Check(systems.Any(p=>p.particleCount>0),"actual initial emitted particles survive activation"))yield break;
+            if(suffix=="Pierce")
+            {
+                manager.CreateDamagedEffectByBehaviour(BehaviourDetail.Penetrate,1,target);
+                manager.CreateDamagedEffectByBehaviour(BehaviourDetail.Penetrate,1,target);
+                if(!Check(!visual.PierceImpactOccurred,"confirmation waits for visible stab contact"))yield break;
+            }
+            float start=Time.realtimeSinceStartup;
+            while(fx!=null&&visual.Elapsed<.05f&&Time.realtimeSinceStartup-start<3)yield return null;
+            if(!Check(fx!=null&&visual.Elapsed>=.05f&&systems.Any(p=>p.particleCount>0),"actual player loop advances PS "+suffix))yield break;
+            if(suffix=="FarHit")
+            {
+                target.atkEffectRoot.position+=new Vector3(0,.2f,0);
+                while(fx!=null&&visual.Elapsed<.28f&&Time.realtimeSinceStartup-start<3)yield return null;
+                if(!Check(fx!=null&&Vector3.Distance(fx.transform.position,target.atkEffectRoot.position)<.0001f,"real Update arrives at tracked world point"))yield break;
+                if(!Check(systems.Where(p=>p.name=="Main"||p.name=="Wake"||p.name=="Silk"||p.name=="Fragments"||p.name=="Motes").All(p=>p.particleCount==0),"Arrive clears actual flight particles"))yield break;
+            }
+            if(suffix=="Pierce")
+            {
+                while(fx!=null&&visual.Elapsed<.23f&&Time.realtimeSinceStartup-start<3)yield return null;
+                var ring=systems.First(p=>p.name=="ImpactRing");
+                if(!Check(visual.PierceImpactOccurred&&ring.particleCount==1,"real confirmed hit creates one expanding ring"))yield break;
+                Vector3 fixedPoint=ring.transform.position;
+                if(!Check(Mathf.Abs(fixedPoint.x-target.WorldPosition.x)<=3*.36f,"ring contacts body rather than weapon pivot in empty air"))yield break;
+                self.transform.position+=new Vector3(1,.5f,0);yield return null;
+                if(!Check(Vector3.Distance(fixedPoint,ring.transform.position)<.001f,"ring remains world anchored after attacker moves"))yield break;
+            }
+            fx.gameObject.SetActive(false);
+            if(!Check(systems.All(p=>p==null||p.particleCount==0),"actual OnDisable clears all PS"))yield break;
+            UnityEngine.Object.Destroy(fx.gameObject);UnityEngine.Object.Destroy(self.gameObject);UnityEngine.Object.Destroy(target.gameObject);yield return null;
+        }
+        foreach(string scenario in new[]{"miss","wrong-target","stale","interleaved","cancel"})
+        {
+            var self=Actor(true,15);var target=Actor(false,-15);
+            var fx=manager.CreateBehaviourEffect("Steria_SlazeyaWindPierce",0,self,target,1);
+            var visual=(SlazeyaWindVisual)typeof(DiceAttackEffect_Steria_SlazeyaWindBase).GetField("_visual",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(fx);
+            if(scenario=="wrong-target")manager.CreateDamagedEffectByBehaviour(BehaviourDetail.Penetrate,0,self);
+            if(scenario=="stale"){yield return null;manager.CreateDamagedEffectByBehaviour(BehaviourDetail.Penetrate,0,target);}
+            if(scenario=="interleaved")
+            {
+                var other=manager.CreateBehaviourEffect("Steria_SlazeyaWindSlash",0,self,target,1);
+                manager.CreateDamagedEffectByBehaviour(BehaviourDetail.Penetrate,0,target);other.gameObject.SetActive(false);UnityEngine.Object.Destroy(other.gameObject);
+            }
+            if(scenario=="cancel")
+            {
+                fx.gameObject.SetActive(false);manager.CreateDamagedEffectByBehaviour(BehaviourDetail.Penetrate,0,target);
+                if(!Check(visual.LiveParticleCount==0&&!visual.PierceImpactOccurred,"cancelled pending hit stays clear"))yield break;
+            }
+            else
+            {
+                float start=Time.realtimeSinceStartup;
+                while(fx!=null&&visual.Elapsed<.23f&&Time.realtimeSinceStartup-start<3)yield return null;
+                if(!Check(!visual.PierceImpactOccurred&&fx.GetComponentsInChildren<ParticleSystem>(true).First(p=>p.name=="ImpactRing").particleCount==0,"no false hit ring: "+scenario))yield break;
+                fx.gameObject.SetActive(false);
+            }
+            UnityEngine.Object.Destroy(fx.gameObject);UnityEngine.Object.Destroy(self.gameObject);UnityEngine.Object.Destroy(target.gameObject);yield return null;
+        }
+        harmony.UnpatchSelf();
+        done(true,"SLAZEYA_WIND_FACTORY_UNITY_PASS "+checks+" checks; actual native API/production adapter/driver/AB/player loop, synthetic Bada transforms; no full battle claim");
+    }
+    private bool Check(bool value,string description)
+    {if(value){checks++;Debug.Log("FACTORY_SMOKE_PASS "+description);return true;}done(false,"FACTORY_SMOKE_FAIL "+description);return false;}
+    private BattleUnitView Actor(bool left,float x)
+    {
+        var root=new GameObject("SyntheticBadaContext");root.transform.position=new Vector3(x,0,0);
+        var view=root.AddComponent<BattleUnitView>();view.enabled=false;
+        var rotation=new GameObject("characterRotationCenter").transform;rotation.SetParent(root.transform,false);rotation.localScale=Vector3.one*3;rotation.localRotation=Quaternion.Euler(0,left?0:180,0);view.characterRotationCenter=rotation;
+        var appearance=new GameObject("NativeCharacterAppearance");appearance.transform.SetParent(rotation,false);view.charAppearance=appearance.AddComponent<CharacterAppearance>();view.charAppearance.enabled=false;
+        var pivot=new GameObject("atkEffectRoot").transform;pivot.SetParent(appearance.transform,false);pivot.localPosition=new Vector3(-2.2f,2.34f,0);view.charAppearance.atkEffectRoot=pivot;view.atkEffectRoot=pivot;
+        view.model=(BattleUnitModel)FormatterServices.GetUninitializedObject(typeof(BattleUnitModel));view.model.view=view;return view;
+    }
+}

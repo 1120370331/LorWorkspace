@@ -1,0 +1,8 @@
+namespace Steria
+{
+    public static class SteriaLogger
+    {
+        public static void Log(string value) { UnityEngine.Debug.Log(value); }
+        public static void LogError(string value) { UnityEngine.Debug.LogError(value); }
+    }
+}

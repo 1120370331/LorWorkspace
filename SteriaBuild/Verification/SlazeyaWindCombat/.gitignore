@@ -1,0 +1,4 @@
+Generated/
+bin/
+obj/
+candidate-hashes.json

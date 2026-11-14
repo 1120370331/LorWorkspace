@@ -1,0 +1,59 @@
+{
+  "status": "candidate-not-promoted-to-skill-library",
+  "art": "Original mesh silhouettes and native Shuriken. Slash uses SweptWedge; pressure, thrust, guard and projectile use FormedArc. Inspector-authored materials are preserved.",
+  "brush": {
+    "path": "source_assets\\wind-wedge-v3.png",
+    "sha256": "b0426b3631e97d9611b0bc37ba86826e0c36a0efbb676e36f40179487c60417c",
+    "origin": "Built-in ImageGen edit",
+    "prompt_record": "source_assets/wind-wedge-v3.json",
+    "role": "Local alpha wedge, not a complete slash image; original bytes preserved, linear/Clamp/512 import/mipmaps"
+  },
+  "shaders": [
+    {
+      "source": "C:\\Users\\rog\\.codex\\skills\\unity-sword-slash-vfx\\assets\\unity\\SwordSlashFlowBuiltInContractV1.shader",
+      "sha256": "e79c6c447c4d276d7b3b90961c10f6e8563bbf78ec8a4b764182f3e6c32e2446",
+      "license": "Local skill fixed infrastructure, unchanged"
+    },
+    {
+      "source": "C:\\Users\\rog\\.codex\\skills\\unity-sword-slash-vfx\\assets\\library\\unity2019\\Candidate\\Shaders\\SwordSlashSweptWedgeBuiltInV1.shader",
+      "sha256": "23282f3a912a19a9dfae03c8691e34f7fe0b6caa0e6b5fa35e58967c87caafca",
+      "license": "Local skill fixed infrastructure, unchanged"
+    }
+  ],
+  "licensed_textures": [
+    {
+      "path": "source_assets/wind-flow-cc0.png",
+      "sha256": "faeb3200d072fd44b2b61252b2d8f94abfd56609cef39dd89ffacbac01962f34",
+      "author": "Screaming Brain Studios",
+      "source": "https://opengameart.org/content/700-noise-textures",
+      "license": "CC0-1.0",
+      "proof": "source_assets/WindFlow-CC0-License.txt",
+      "role": "linear Repeat highlight; border delta max 3/255"
+    },
+    {
+      "path": "source_assets/wind-mote-cc0.png",
+      "sha256": "caedcc5df5bcac4470244d2520d6a64b45b20c1ccf4d918da516c55e3fa365a6",
+      "author": "Kenney",
+      "source": "https://kenney.nl/assets/particle-pack",
+      "license": "CC0-1.0",
+      "proof": "source_assets/Kenney-CC0-License.txt",
+      "role": "Unchanged transparent light_01 auxiliary mote"
+    },
+    {
+      "path": "source_assets/wind-impact-ring-mit.png",
+      "sha256": "a7d0a60c4ffada75eb10a08d52ca972add2481a300e8911bddbf9db889d0f899",
+      "author": "haw2fregel",
+      "source": "https://github.com/haw2fregel/VFXTextureMaker/tree/eced62d6f71520afc12cf23f239e04b85c4838cf",
+      "license": "MIT",
+      "proof": "source_assets/VFXTextureMaker-MIT-License.txt",
+      "catalog_id": "incoming.vfx-texture-maker.texture-candidate.circle-01.2bb8978990",
+      "role": "Unchanged circle_01.png; Clamp, sRGB, no mipmaps, uncompressed; expanding impact halo; sample PNG only, no Unity 2022 code imported",
+      "status": "candidate; local Unity 2019 import and visual gates required; no library promotion"
+    }
+  ],
+  "reference": {
+    "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\AnhierTextureCombat\\UnityProject\\Assets\\Reference\\native-skins.json",
+    "sha256": "bce95afcbeb58df2f64a04efe673c43680e19dc0b9f025f92729e31523fe12f4",
+    "usage": "Bada original matrices/PPU/pivot and local images: preview only, excluded from AssetBundle"
+  }
+}

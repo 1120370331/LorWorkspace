@@ -1393,6 +1393,11 @@ namespace Steria
 
             // 注册所有自定义特效
             SteriaCustomEffects["Steria_WindSlash"] = typeof(DiceAttackEffect_Steria_WindSlash);
+            SteriaCustomEffects["Steria_SlazeyaWindSlash"] = typeof(DiceAttackEffect_Steria_SlazeyaWindSlash);
+            SteriaCustomEffects["Steria_SlazeyaWindHit"] = typeof(DiceAttackEffect_Steria_SlazeyaWindHit);
+            SteriaCustomEffects["Steria_SlazeyaWindPierce"] = typeof(DiceAttackEffect_Steria_SlazeyaWindPierce);
+            SteriaCustomEffects["Steria_SlazeyaWindGuard"] = typeof(DiceAttackEffect_Steria_SlazeyaWindGuard);
+            SteriaCustomEffects["Steria_SlazeyaWindFarHit"] = typeof(DiceAttackEffect_Steria_SlazeyaWindFarHit);
             SteriaCustomEffects["Steria_AnhierBlueWhiteSlash"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhiteSlash);
             SteriaCustomEffects["Steria_AnhierBlueWhitePierce"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhitePierce);
             SteriaCustomEffects["Steria_AnhierBlueWhiteHit"] = typeof(DiceAttackEffect_Steria_AnhierBlueWhiteHit);

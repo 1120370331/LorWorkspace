@@ -109,7 +109,9 @@ public class DiceCardAbility_SlazeyaClashLoseGainFlow3 : DiceCardAbilityBase
                 Min = flowConsumedByThisDice,
                 Dice = flowConsumedByThisDice,
                 Type = BehaviourType.Def,
-                Detail = BehaviourDetail.Guard
+                Detail = BehaviourDetail.Guard,
+                MotionDetail = MotionDetail.G,
+                EffectRes = "Steria_SlazeyaWindGuard"
             }
         };
         guardDice.SetIndex(this.card.GetDiceBehaviorList()?.Count ?? 0);

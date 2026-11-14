@@ -1,0 +1,9 @@
+{
+  "generator": "built-in image_gen edit",
+  "status": "candidate",
+  "role": "Sharp-front local SweptWedge alpha mask",
+  "source": "wind-wedge-v2.png",
+  "prompt": "Edit this technical white-on-transparent Unity slash opacity mask. Preserve true transparency and pure white RGB. REVERSE ITS THICKNESS DIRECTION: the LEFT third is the broad sweeping trailing body, and it narrows all the way to a razor-sharp fine point at the RIGHT near the top edge. Remove the rounded bulb entirely. Shape is a long right-triangular brush stroke: pointed front at upper right, broad body toward lower left. The first left 12 percent should gently fade out into transparency, so the tail boundary is not a straight cut. Smooth the contour and remove all gritty flecks. Keep one cohesive smooth white opacity mass with a soft diagonal lower edge and only one subtle broad translucent streak inside it. No outline, no separate hairs, no scratches, no glow, no shadow, no curved full slash, no background. Wide 3:1 UV texture, a small transparent margin all round. Crisp tapered leading point, soft flowing trailing edge, clean antialiasing.",
+  "original": "C:/Users/rog/.codex/generated_images/01a1b0df-078a-70f0-a1bd-a5fa6cf21ecb/exec-26de43b4-404a-4172-9bbb-71a36c719883.png",
+  "preservedOriginalBytes": true
+}

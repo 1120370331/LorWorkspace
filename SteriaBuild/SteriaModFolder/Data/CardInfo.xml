@@ -232,8 +232,8 @@
       <Ability Script="SlazeyaRecoverLight1OnUse"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaHitGainFlow2NextTurn" ActionScript="" Desc=""/>
-      <Behaviour Min="2" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SlazeyaClashWinGainFlow3NextTurn" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_SlazeyaWindFarHit" Script="SlazeyaHitGainFlow2NextTurn" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SlazeyaWindGuard" Script="SlazeyaClashWinGainFlow3NextTurn" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -252,8 +252,8 @@
       <Ability Script="SlazeyaDraw2OnUse"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaClashLosePowerUpNextDice" ActionScript="" Desc=""/>
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaHitGainFlow3NextTurn" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_SlazeyaWindFarHit" Script="SlazeyaClashLosePowerUpNextDice" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_SlazeyaWindFarHit" Script="SlazeyaHitGainFlow3NextTurn" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -272,9 +272,9 @@
       <Ability Script="SlazeyaGainFlow5OnRoundStart"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="4" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaGainFlow1OnHit" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SlazeyaWindGuard" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SlazeyaWindGuard" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_SlazeyaWindSlash" Script="SlazeyaGainFlow1OnHit" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -293,9 +293,9 @@
       <Ability Script="SlazeyaFlowBonusX3"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="7" Dice="13" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaBleedByFlowBonusX2" ActionScript="" Desc=""/>
+      <Behaviour Min="7" Dice="13" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_SlazeyaWindFarHit" Script="SlazeyaBleedByFlowBonusX2" ActionScript="" Desc=""/>
       <Behaviour Min="1" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_SlazeyaWindSlash" Script="" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -334,9 +334,9 @@
       <Ability Script="SlazeyaOceanCommandV2"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
-      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
-      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_SlazeyaWindSlash" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_SlazeyaWindHit" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_SlazeyaWindPierce" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -356,7 +356,7 @@
     </AbilityList>
     <BehaviourList>
       <Behaviour Min="2" Dice="7" Type="Standby" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="1" Dice="6" Type="Standby" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="SlazeyaClashWinGainFlow2NextTurn" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="6" Type="Standby" Detail="Hit" Motion="H" EffectRes="Steria_SlazeyaWindHit" Script="SlazeyaClashWinGainFlow2NextTurn" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
@@ -374,9 +374,9 @@
       <Ability Script="SlazeyaHundredRiversRepeat"/>
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="SlazeyaApplyWeakByFlowBonus" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_SlazeyaWindPierce" Script="SlazeyaApplyWeakByFlowBonus" ActionScript="" Desc=""/>
       <Behaviour Min="2" Dice="5" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
-      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaApplyBleedAndDamageByFlowBonus" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_SlazeyaWindSlash" Script="SlazeyaApplyBleedAndDamageByFlowBonus" ActionScript="" Desc=""/>
     </BehaviourList>
     <Chapter>6</Chapter>
     <Priority>0</Priority>
