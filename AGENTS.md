@@ -7,6 +7,10 @@
 - Follow established repository patterns instead of designing from outside assumptions.
 - Keep progress reports concise and task-relevant. Do not send optional commentary.
 
+## Recorded Project Experience
+
+For water/thunder slash effects, fluid droplets, swept masks, dissolve/fade, or moving authored Unity VFX into Library of Ruina, first read [the Slazeya experience record](docs/superpowers/references/slazeya-water-thunder/2026-11-16-experience.md) and [its changelog](SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/CHANGELOG.md). They preserve the user's corrections, rejected approaches, engine/runtime pitfalls and deployment evidence. Private dialogue archives stay local under the repository's existing ignore rules.
+
 ## VFX Improvement Pipeline
 
 Whenever the user proposes a visual-effect improvement, the main agent must orchestrate the following pipeline.

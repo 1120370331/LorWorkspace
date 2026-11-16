@@ -1,0 +1,1019 @@
+{
+  "commit": "62946d59d6a7d6ff38d1fffc0e02c108e7d08b83",
+  "parent": "0830dcd75f37ca42b805330e36dff9eb565cd629",
+  "subject": "Deploy shared Slazeya water-thunder melee VFX and preserve ranged effects",
+  "file_count": 202,
+  "scope": "Final implementation/deployment commit only. Private chat export is deliberately excluded.",
+  "files": [
+    {
+      "status": "M",
+      "path": "SteriaBuild/HarmonyPatches.cs",
+      "git_blob": "1830e24734321cba22be540871aafd78f25fe263"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/SlazeyaWaterThunderCombat.cs",
+      "git_blob": "d2023a61380c3c15b6a72a1bb8ed7bce5ffb43f0"
+    },
+    {
+      "status": "M",
+      "path": "SteriaBuild/SlazeyaWindImpact.cs",
+      "git_blob": "87ea7b7e005b15e11b6070e367bf0a490db9ba6d"
+    },
+    {
+      "status": "M",
+      "path": "SteriaBuild/Steria.csproj",
+      "git_blob": "3fa4e5d4784fc6c20957830c97803fb5018421a7"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/SteriaModFolder/Assemblies/AB/steria_slazeya_water_thunder_assets",
+      "git_blob": "54111f8778ca6b1805f765217b51677f32067d85"
+    },
+    {
+      "status": "M",
+      "path": "SteriaBuild/SteriaModFolder/Assemblies/Steria.dll",
+      "git_blob": "9a90393912590d99c22ee62713a753e064f4fff4"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/SteriaModFolder/Resource/ThirdPartyNotices/SlazeyaWaterThunderSlash.txt",
+      "git_blob": "1a31fccd5eca3135fada85ca2d48fc4ee65c9cfe"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/README.md",
+      "git_blob": "a5902c1be3eac855641b8032b7cfdac384eae6f5"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder.meta",
+      "git_blob": "a9659bbebcc57b0311fe0d462b9c52952eedab43"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Editor.meta",
+      "git_blob": "65d81aab7090c1dc9fb9f3421fa51b848b8b0576"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Editor/WaterThunderAuthoringCommand.cs",
+      "git_blob": "8b4b31bc76e7a9945410a353bd61330d546d3fa2"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Editor/WaterThunderAuthoringCommand.cs.meta",
+      "git_blob": "fb21048e1c394270b07237a54611b5e343f4b9d9"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Editor/WaterThunderBuilder.cs",
+      "git_blob": "da37c425aa3d9fea5f210cf8dcc644371a2f16e1"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Editor/WaterThunderBuilder.cs.meta",
+      "git_blob": "17b0aa39d8b796b46152de6e5fef78d912323977"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Editor/WaterThunderEditorClock.cs",
+      "git_blob": "7137ad66dbb604c52cbe9ce72da4c158f6f1b45a"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Editor/WaterThunderEditorClock.cs.meta",
+      "git_blob": "6e4cb97e02d13eae43f7237c5c35b372a65ecb7b"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Editor/WaterThunderPreview.cs",
+      "git_blob": "cdb8ac2b124aa70bf800c2730a63fff5c3d6e47c"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Editor/WaterThunderPreview.cs.meta",
+      "git_blob": "352f3a846e963f4591b2db49e771b88965a28c9d"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials.meta",
+      "git_blob": "e22afb5c4fc70d035c356f9313ebb9539e440e51"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/EvaporationWaterScatter.mat",
+      "git_blob": "22bdcdf3e3d62a56c732ebff9df9f0ff91a03524"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/EvaporationWaterScatter.mat.meta",
+      "git_blob": "47e1f9a005b6c9defb208e3edee0c76ed738ef68"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/ImpactElectric.mat",
+      "git_blob": "654fb49e63c7ffa65ead80ee07ceb05f6fb536e7"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/ImpactElectric.mat.meta",
+      "git_blob": "77f440c9af61eb7962fa85c00fd978aa58dd3320"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/ImpactFlash.mat",
+      "git_blob": "0cd7fcd2cc8727384d78e226fe49d510e4f3c112"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/ImpactFlash.mat.meta",
+      "git_blob": "2df927c377659c3d2ad763b05e0b2abe3851e63e"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/ImpactWater.mat",
+      "git_blob": "001b414e62d6b949179721150c25bba1dab429f4"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/ImpactWater.mat.meta",
+      "git_blob": "8ccacb9038b987554207731a60da45cba78b382a"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/L1_WaterBlade.mat",
+      "git_blob": "2e86f82d05c9fdec74848436c924c2457311edc4"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/L1_WaterBlade.mat.meta",
+      "git_blob": "281116ce23ca9ffeea3eedf0f121c5e7aa649b02"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/L2_SplashWake.mat",
+      "git_blob": "78494955e8a64929153c8061b1c833c8d0fe5418"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/L2_SplashWake.mat.meta",
+      "git_blob": "2891211a6159d2a5e823ba1b6d6f5f6f6d565401"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/L3_Lightning.mat",
+      "git_blob": "22e67e31a3f925853b2fcd989b63755fa1835409"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/L3_Lightning.mat.meta",
+      "git_blob": "e86fbbeece8006b8afbf292be74ac4bf5fe672ff"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/L4_BladeCore.mat",
+      "git_blob": "70e50b10cc3f6cf550071b2ec8d5669a108ea735"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/L4_BladeCore.mat.meta",
+      "git_blob": "bef5d1f64d4ffbe43ed0fed06fb74241f71666c7"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/StageGround.mat",
+      "git_blob": "2b578158272f71d7354465b42202e7f9aff3b1c8"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/StageGround.mat.meta",
+      "git_blob": "18c69b28d73c314814d076ff4225e0c975607404"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/StageTarget.mat",
+      "git_blob": "527cc8b7dec3da808fe94f3b15173a800a268504"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Materials/StageTarget.mat.meta",
+      "git_blob": "62a270d7fcfb3216d8a39c94c3c5ee5bf278dd7d"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes.meta",
+      "git_blob": "8b8b11a28c52926cb83c85fcf5b7ae8e9d9c4d20"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/EvaporationScatter.asset",
+      "git_blob": "79d78c7a7333978dd5a2399a9730ae57d8d32fe5"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/EvaporationScatter.asset.meta",
+      "git_blob": "2d9c28ea77479abf81b70e2968d887095546676d"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/ImpactArcShard.asset",
+      "git_blob": "442ab468bfda660196460b7b70a837501cf37e35"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/ImpactArcShard.asset.meta",
+      "git_blob": "4a3aae579914d8a96849636eecdfaf538f596019"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/L1_WaterBlade.asset",
+      "git_blob": "2d9e6a79e32be54737976cfa273f755d84081cb3"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/L1_WaterBlade.asset.meta",
+      "git_blob": "4f613b9581801e24a957d1d1cebe4c82950dc0c3"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/L2_SplashWake.asset",
+      "git_blob": "deee3f20f682c99b8c0e759acc127d5f34cf27c4"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/L2_SplashWake.asset.meta",
+      "git_blob": "a722da8ac1f2fdcb938e8d111a8c7509fce42d7d"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/L3_Lightning.asset",
+      "git_blob": "0534e8221704d6fe58f679717a72bd2328c252ad"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/L3_Lightning.asset.meta",
+      "git_blob": "f9d3bb56c22e470dcc3e52acb121701d6e5f6a48"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/L4_BladeCore.asset",
+      "git_blob": "883244e40d50aded69750eea8c95ec86a1abd25f"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Meshes/L4_BladeCore.asset.meta",
+      "git_blob": "a1500dc8640abfdb612e8c6861d03fee5db2ef3e"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs.meta",
+      "git_blob": "a9c7a5ad7ea88531e84fa4416fb669f079148162"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/L1_WaterBlade.prefab",
+      "git_blob": "fcdc4c265cf3435d139c4e3df00a9c868bb97e0c"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/L1_WaterBlade.prefab.meta",
+      "git_blob": "ae3fe7453c450f866047a0d2e58bb5428edc385f"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/L2_SplashWake.prefab",
+      "git_blob": "a02513283628ce0a8456bd8cdce0d117652719a7"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/L2_SplashWake.prefab.meta",
+      "git_blob": "1a7d84c25547afbf09c106f24f9cda0aa5c7827a"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/L3_Lightning.prefab",
+      "git_blob": "3cbde7afaa81abf0a23005e94875e1f1e3c72ffb"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/L3_Lightning.prefab.meta",
+      "git_blob": "e731c8cd34e3efc874772fbea116d13354ee5de6"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/L4_BladeCore.prefab",
+      "git_blob": "0e6564a90c005b15c2cf159f16146debc371273c"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/L4_BladeCore.prefab.meta",
+      "git_blob": "161adc62546f157aef52ad929be9637b0181be2d"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/SlazeyaWaterThunderSlash.prefab",
+      "git_blob": "c61009a97b9b56f0e97bced8d47d1249124c5b88"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/SlazeyaWaterThunderSlash.prefab.meta",
+      "git_blob": "e43c5b3c1c7e5a4d2e3104eaf62bab9c3bf990d9"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/WaterEvaporationScatter.prefab",
+      "git_blob": "d1fc6efaa7bcab5985b911eee6734c5dc576985b"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/WaterEvaporationScatter.prefab.meta",
+      "git_blob": "8277eabf23bac146147ac3bd34c7714123b0248c"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/WaterThunderImpactParticles.prefab",
+      "git_blob": "0eb49ed9add76b8004ffbacfd124660457b513fb"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Prefabs/WaterThunderImpactParticles.prefab.meta",
+      "git_blob": "e46c2e5f5890b14d093fae0c8d63bdcc35cef625"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Runtime.meta",
+      "git_blob": "52a3a55e5423f564364cc0ea7f11b3b525300edc"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Runtime/WaterDropletMotion.cs",
+      "git_blob": "19dbe413819f9ee69163cc0711ac336a0543c985"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Runtime/WaterDropletMotion.cs.meta",
+      "git_blob": "91a632fc43cb63cc9ea614d8b9cc376397becfd9"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Runtime/WaterThunderImpact.cs",
+      "git_blob": "282ee6bd807c19bae166280b562f4b09eb4c1484"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Runtime/WaterThunderImpact.cs.meta",
+      "git_blob": "f428e9c670e88939768807fb2b1f476cb33b082d"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Runtime/WaterThunderMotion.cs",
+      "git_blob": "13cca175a3f1b08e1335e1897e4115c0deef46ea"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Runtime/WaterThunderMotion.cs.meta",
+      "git_blob": "fbc9d5d49baaca262d6bbc5185fd3419657d2555"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Runtime/WaterThunderSlash.cs",
+      "git_blob": "4e0a882ba4d5b2237168738f84087d8f0a33eb7f"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Runtime/WaterThunderSlash.cs.meta",
+      "git_blob": "74978ab7e11845b80e416d2c2a34821ef0b7257b"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Scenes.meta",
+      "git_blob": "ac6e36e32369a8f1f488de4194ca9b3598bdcf28"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Scenes/WaterThunderAuthoring.unity",
+      "git_blob": "76c466be49414ad21fa85b629178ee10fa7d2ce1"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Scenes/WaterThunderAuthoring.unity.meta",
+      "git_blob": "0b4717c20138818459dff145e19398f7c0f0b2a0"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Shaders.meta",
+      "git_blob": "97c6bc7d67840b81c343122ef558eb2f08f75083"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Shaders/WaterThunderFormedArc.shader",
+      "git_blob": "4dff2f659afefe23fee95dac8e93d81b9a88f719"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Shaders/WaterThunderFormedArc.shader.meta",
+      "git_blob": "ecaa548ceeb7c00a5fe594f586fb2f5d344c989a"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures.meta",
+      "git_blob": "3ec7b1a2df0a433b38d22e45166406e615606356"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Evap_WaterScatter.png",
+      "git_blob": "aa0b7701f2eadfe79b4ac9cfae3eeb176494bca7"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Evap_WaterScatter.png.meta",
+      "git_blob": "162b741d4f6f8ef0a2d9c1e0eb66b99f96fa4211"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Impact_Flash.png",
+      "git_blob": "d2e3d849ec2dc5cfeab901c1bb2b12a1b3e112b1"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Impact_Flash.png.meta",
+      "git_blob": "e46f73b4fc834fa57c03824b43046697b73918a4"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L1_TailFanMask.png",
+      "git_blob": "3f5ec31519e047daeff9eec67a197e58e8d0e8c5"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L1_TailFanMask.png.meta",
+      "git_blob": "5408437fd98bd6b5eb2af43cf23c34c4269f7433"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L1_WaterBody.png",
+      "git_blob": "e2a1ed5344d7c1d88f80c06fddadcc4e36a13b81"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L1_WaterBody.png.meta",
+      "git_blob": "aff706389175efb7ced1da2d71231dcf8a8c4a57"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L1_WaterMask.png",
+      "git_blob": "c63c03049d1664960e76c73b8373decf66a7826a"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L1_WaterMask.png.meta",
+      "git_blob": "fad5ad4137524e711a41416588ddfec0f814e098"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L1_WhiteFluidQuadMask.png",
+      "git_blob": "75a4ea7f1a4f762949550c0b78090b5260f72615"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L1_WhiteFluidQuadMask.png.meta",
+      "git_blob": "0591308b4f287bdc03e381c3d798f4f2fcf82a2e"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L2_Splash.png",
+      "git_blob": "886d0d89579cba3b855e8c268e0168d30c0c6954"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L2_Splash.png.meta",
+      "git_blob": "af033bb15b0335c4ab4b0913e0a85ec867381fd0"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L2_SplashMask.png",
+      "git_blob": "eff518e04263eaf879060c5d06ad23014e5ff6b4"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L2_SplashMask.png.meta",
+      "git_blob": "f66c679795d198d1802aecd510c8c74cbb8c4dc5"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L2_WaterNormal.png",
+      "git_blob": "011b585c0f66a90ed8eb1bc1454140105192d2e7"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L2_WaterNormal.png.meta",
+      "git_blob": "8059701d497acdf5e10d963ab4bbffd20a8d9803"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L3_Lightning.png",
+      "git_blob": "77e1bb9b1c2e93f69ebeaa5b32240cfb8724b9a1"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L3_Lightning.png.meta",
+      "git_blob": "28eea76340db46b36c1a3368f3f0ad7a189aae7e"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L3_LightningMask.png",
+      "git_blob": "31a9509f69c1b8e302cc275f68516d8dd524b572"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L3_LightningMask.png.meta",
+      "git_blob": "d5eb6dd20bddd5aaa6e4c7168df9db19bd471912"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L4_Core.png",
+      "git_blob": "098c26d03fb6271e03a061c758cd69033337fe69"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L4_Core.png.meta",
+      "git_blob": "973c21986dc2062300f2fc1ffd5fcd64f06da24f"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L4_CoreMask.png",
+      "git_blob": "96cc4e9cd6cfc09feef4772ba7205a197ae881a3"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/L4_CoreMask.png.meta",
+      "git_blob": "bbef90d97f66839867ddab7389aadab936330093"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Shared_CausticsRepeat.png",
+      "git_blob": "ce55a41e4a3ed117a2cbd61079ae0ed8334a271b"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Shared_CausticsRepeat.png.meta",
+      "git_blob": "245f511acdd441272272e17f9db9181cfcbd38cd"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Shared_ErosionRepeat.png",
+      "git_blob": "5a6086bd6fe53c0e29eea9f952ad37b4609ffec4"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Shared_ErosionRepeat.png.meta",
+      "git_blob": "4d795a164c926e8effc7bd2ba21c1b484939a5a1"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Shared_FlowRepeat.png",
+      "git_blob": "6e9620f66565c4662a7e2364bd592bc1d72ef65b"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Shared_FlowRepeat.png.meta",
+      "git_blob": "b1b30bc21a132f8391521f4bc72f70402790fc80"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Shared_SweepBrushMask.png",
+      "git_blob": "6658fa805c78fd48c3d369c70bc05930c36122fb"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Textures/Shared_SweepBrushMask.png.meta",
+      "git_blob": "d8d168c0bfcf48d05feeb8d3e79fc644bcf3ce50"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Packages/manifest.json",
+      "git_blob": "9e7c23ad3aaa562b7545c9a9cfa4c41cb8b75298"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/AudioManager.asset",
+      "git_blob": "27287fec5f4e4b712cbdd5b3a6383cbfd900b940"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/ClusterInputManager.asset",
+      "git_blob": "e7886b266a005f4d9d80f2fef8d1649dcfd3ed2b"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/DynamicsManager.asset",
+      "git_blob": "1596c4230ee36d910e3583d8d0ce465fa1824f1f"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/EditorBuildSettings.asset",
+      "git_blob": "0147887ef4b113c3a3b8da44ef30e3208f1e9120"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/EditorSettings.asset",
+      "git_blob": "c8da44ea15cf03caef87c3bc1e2841e72719d8bf"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/GraphicsSettings.asset",
+      "git_blob": "5f7a16e3a890fdc7c78c038b7e728068254d2344"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/InputManager.asset",
+      "git_blob": "17c8f538e2152c0a0310b4870979eeecece2153c"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/NavMeshAreas.asset",
+      "git_blob": "3b0b7c3d183abdd300112f56965916ef11667f54"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/Physics2DSettings.asset",
+      "git_blob": "6c5cf8a004ac48f27cb36f7cdea139eb4d3e812f"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/PresetManager.asset",
+      "git_blob": "67a94daefe2e6bce3ec73546ad7cda94f702ad22"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/ProjectSettings.asset",
+      "git_blob": "5ff87d55ebcd19a49bf90cdbff9c3d11cdfef620"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/ProjectVersion.txt",
+      "git_blob": "5a8320a9f0b0d72b64671c9e78bb174349c22950"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/QualitySettings.asset",
+      "git_blob": "d24eb10c1bf70910c2b561d668a701fc7641be8e"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/TagManager.asset",
+      "git_blob": "1c92a7840ec11895c76785f65d949a3d20d53355"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/TimeManager.asset",
+      "git_blob": "558a017e1f50b2db73414a1abad3c033922774f8"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/UnityConnectSettings.asset",
+      "git_blob": "fa0b146579fb787323d29e1d7b7768a0541031af"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/VFXManager.asset",
+      "git_blob": "3a95c98bec50cf72538061fd26eee95398f72128"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/ProjectSettings/XRSettings.asset",
+      "git_blob": "482590c196f7a82116679f58176b9d1aff21d7f9"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/accepted-candidate.json",
+      "git_blob": "d00771dc5cc4f8da2b50dacac584ac9d9bde72f8"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/build_preview.ps1",
+      "git_blob": "088422a92fac1368704c63a1ccd17a87249a7e0c"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/capture_snapshot.ps1",
+      "git_blob": "8f8e27814593cd2a5dfeaec289b62c4e4f7f6a5a"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/CONTRACT.md",
+      "git_blob": "b0661466f1c23f7a48fd77e69880eeac966b533a"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/DELIVERY.md",
+      "git_blob": "ba1762a24bdc7dbe0edaa9d7ea1c8006d2db9382"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/NativeEntry.cs.txt",
+      "git_blob": "6d9426005bcda05d06a9e9f81b834a98d990a3cc"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/NativeSmoke.cs.txt",
+      "git_blob": "f0e3492a87192ede0549b4a2c469e9cdb3dc4991"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/deploy_to_game.py",
+      "git_blob": "e7a44d83b02383ba3db21578f4cbccf4917dfc35"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/deployment-receipt.json",
+      "git_blob": "4e48937e45dd57bb9a50b3dfa94449fe13cc2220"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/native-verification/Hit-right-215.png",
+      "git_blob": "8bea39f2a23640022a6723f2b8aaf9c34182ed7c"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/native-verification/Pierce-left-600.png",
+      "git_blob": "cc681e6cb37a4d39cdbe32c7849009d609793e30"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/native-verification/Slash-left-330.png",
+      "git_blob": "22fbaf6797265e0936fed325c8a131e4f165d6db"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/native-verification/checks.txt",
+      "git_blob": "e987db5fd1fa79f5d03e3a5fcb56332cc579964f"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/prepare_native.py",
+      "git_blob": "2eb8d2ce9cf172f2fddd1e8f58808b49eb7ffe73"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/prepare_release.py",
+      "git_blob": "d3a585a0bc1e731339e43628a1700c49aa84a205"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/release-03-sources.zip",
+      "git_blob": "72b1b7174f5693eae904251cb648f4ebbd7bf087"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/run_native.ps1",
+      "git_blob": "f4b665718ba2b4f62ec6c0c6ffe7ab5b691ffcd9"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/deployment/verify_release.py",
+      "git_blob": "6ccbcef807dd7178efe6c3d7694af310526267ee"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/asset-inventory.csv",
+      "git_blob": "562fb788cae1980e779d939c9e05f0af8d67b8d4"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/asset-inventory.json",
+      "git_blob": "5a540ae9040ea4956c8c5b786301b84b74f19394"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/asset-inventory.md",
+      "git_blob": "aef02a73d2302b5d7921856aede63d243f7aa69b"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/bundle-hashes.json",
+      "git_blob": "674249df0bef6452a66a135d800359de2b34adc3"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/bundle-reloaded-evaporation.png",
+      "git_blob": "c6f2a251cabcefd6687cce6eba73511d6acca1b1"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/bundle-reloaded-hit.png",
+      "git_blob": "bbddeb8f8b3e9e1d93a4b93a1709000b3154b3ca"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/bundle-reloaded-peak.png",
+      "git_blob": "cfb0656539497a8dbc8f2cf2eb561ee2fe32194d"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/complete.json",
+      "git_blob": "01ea349c150e6a08db84740c2a58abdcf0f774e6"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/contact-frames-stages.png",
+      "git_blob": "c3c4fabe368a8968fc3243ab7aab354843c7f83c"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/dissolve-fade-60fps.mp4",
+      "git_blob": "5ff4ac3409bb134b5aa387c820fb59345b851814"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/dissolve-mask-only-stages.png",
+      "git_blob": "16143ad9e7474d52744d82aed9b51b4222bd993b"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/early-head-stages.png",
+      "git_blob": "b7c17def7792737630f43847bbe5d56bf9688dce"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/end-clear.png",
+      "git_blob": "92c08e5679263fafdb8ac03e469b431694c556a9"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/evaporation-only-stages.png",
+      "git_blob": "4b54404a04b8b1158f38098caecb4fe4e379fb26"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/four-layers.png",
+      "git_blob": "f9930f104bd2508e51d8167583b1d83365179c0d"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/impact-only-stages.png",
+      "git_blob": "5b476a47c0124634a8856e13dfac64d9ab62519f"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/impact-speed-curve.png",
+      "git_blob": "5cf999efbf9f0d30ee5578aeeb747d45dcb2858c"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/lightning-discharge-stages.png",
+      "git_blob": "307ee2018c8d44e4b5623066ce00428276d54e0f"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/mesh-report.csv",
+      "git_blob": "b67c4f7e0cfac1e6546c6a265c57321431a6b35b"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/motion-profile.csv",
+      "git_blob": "e9f3ae3a4fedaa366feaffbe045bec8af7e6ec83"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/orientation-vertical-ground.png",
+      "git_blob": "e62c464095a7ea6eb7e181a0082c1e4be2dabd0c"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/peak-dark-left.png",
+      "git_blob": "2d1334017f083c98a0ebf41ef41798a5b1533293"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/peak-dark-right.png",
+      "git_blob": "cfb0656539497a8dbc8f2cf2eb561ee2fe32194d"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/peak-gray-left.png",
+      "git_blob": "e17005b58937db1186defcaf5c0cc47b20071bfd"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/peak-gray-right.png",
+      "git_blob": "eab6a1526fb60b3f8dcb85508f633dc77c07083f"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/pixel-evidence.json",
+      "git_blob": "b4c76c4f9b93fa052972ba483ba76b6d2d98e5f5"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/review-60fps.mp4",
+      "git_blob": "f7888fb4eac671df42d2784aeacdeb20fb50ec76"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/run.json",
+      "git_blob": "b4e0c45f2a7a1d60a3a2d4610c80ee419eb2e761"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/six-stages.png",
+      "git_blob": "f0ec468a46cf4aa60f99ffe5aaddfc0e69cc4e93"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/slash-60fps.mp4",
+      "git_blob": "3bd07109c4104c5c8e425ed0cc53c619c43cd4c6"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/slash-loop.gif",
+      "git_blob": "36772f7a43fce96023a0320284a353a8242cddf2"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/source-hashes.json",
+      "git_blob": "c598f912ba4add2e0defd15edc87c76c309f51cb"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/texture-and-mask-atlas.png",
+      "git_blob": "043cac64ae8404980c8cdbe002c0c735cf1d5e32"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/visual-review.md",
+      "git_blob": "6261d834b0df88ab3335f473dfae1a8722faae64"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/water-dynamics-60fps.mp4",
+      "git_blob": "6eb1817b9b5e58e5bc26c8caa68ee916037ab790"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/water-dynamics-stages.png",
+      "git_blob": "7566f2f1c6774823f9cff8fc88ec5e644df2ca6b"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/white-fluid-spin-60fps.mp4",
+      "git_blob": "b6765665f901e31faf8b98e4a573683a51964de8"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/candidate-19-close-spin-voltage/white-model-vertical.png",
+      "git_blob": "abb07af7de7cd413be45289664779516bf3c8298"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/generate_inputs.py",
+      "git_blob": "61b6056228346b16dea4195dc00ab7b8a0c074fe"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/package_preview.py",
+      "git_blob": "d7db5455445a100548013f6d61f414548a6fbca1"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/provenance.json",
+      "git_blob": "275cf405f77fec31ca3924ac9e75bd57504745d1"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/source_assets/SwordSlashFlowBuiltInContractV1.shader.txt",
+      "git_blob": "2b9c8afb01efd77d474a15e902b45d7695cf5c53"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/source_assets/design-reference.png",
+      "git_blob": "534447f3bda727e623f4d9dd815edc7c2cc281a1"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/verify_inputs.py",
+      "git_blob": "ef631fa047d413e2318cad0b8b0535d435e3b87e"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/write_asset_inventory.py",
+      "git_blob": "23cc4cf003a0fbf2aaa297ad739ea5e201d9ac92"
+    },
+    {
+      "status": "M",
+      "path": "SteriaBuild/VFXSource/SlazeyaWindCombat/README.md",
+      "git_blob": "778329b6f677ce0b47931fb029b0ff83690d7644"
+    },
+    {
+      "status": "A",
+      "path": "SteriaBuild/VFXSource/SlazeyaWindCombat/SLASH_DEPRECATED.md",
+      "git_blob": "2d0a1bcae69479afad0235fb2cc1492041f7993f"
+    },
+    {
+      "status": "A",
+      "path": "docs/superpowers/specs/2026-11-16-slazeya-water-thunder-slash.md",
+      "git_blob": "2c8ae9b1cb1bb2d8fb0cf121c03dcffae22e810f"
+    }
+  ]
+}

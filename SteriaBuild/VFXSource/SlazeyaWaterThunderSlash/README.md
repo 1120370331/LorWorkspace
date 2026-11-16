@@ -1,5 +1,7 @@
 # 斯拉泽雅 · 水雷纵斩制作工程
 
+[修改记录](CHANGELOG.md) · [制作与部署经验复盘](../../../docs/superpowers/references/slazeya-water-thunder/2026-11-16-experience.md) · [本机对话原文](../../设定/对话记录_2026-11-16_斯拉泽雅水雷斩击重置与部署.md)
+
 **已部署游戏。** 斩、打、突统一水雷效果，远程保持原样；[部署记录与校验](deployment/DELIVERY.md)。本轮附加贴近刀痕的80水滴、白色四方流纹旋动、树状电枝及旧区段/低储能分支先衰减。
 
 当前制作候选：**candidate-19-close-spin-voltage**。本轮按用户要求单人完成。本次补足真正的蒙版溶解：主体先按细碎水纹蚀出缺口，水滴后段同样侵蚀，再用短alpha淡出收尾；尖头入场和水滴流体变化保留。旧风系 Slash 的废弃标记位于 `../SlazeyaWindCombat/SLASH_DEPRECATED.md`；上一版横向水雷工程的源文件备份为 `history/candidate-05-sources.zip`。
