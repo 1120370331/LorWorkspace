@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: L3_Lightning
+  m_Shader: {fileID: 4800000, guid: a2187dc62cb63b04382c7e8fe19bb333, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3020
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DissolveTex:
+        m_Texture: {fileID: 2800000, guid: 2ae493cccde4c5d47873e41070323103, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DistortTex:
+        m_Texture: {fileID: 2800000, guid: 064e10bf67199ad458eed869536377c2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EvapScatterTex:
+        m_Texture: {fileID: 2800000, guid: 5f8e973747b1aaf44b9068091ae69220, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FlowTex:
+        m_Texture: {fileID: 2800000, guid: 064e10bf67199ad458eed869536377c2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HighlightTex:
+        m_Texture: {fileID: 2800000, guid: 9a2a7f39800e5cd459dfadb434c1eadc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 2800000, guid: 09a4700b784ce2d4797cfdb159f00e0a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShapeTex:
+        m_Texture: {fileID: 2800000, guid: 703a8ab3873227c4b9b545df323170a0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SweepMaskTex:
+        m_Texture: {fileID: 2800000, guid: c3c978d075885a043a3e235ac2d8ec01, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TailMaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaterNormalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WhiteFluidTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Alpha: 1
+    - _BodyStrength: 1
+    - _Cull: 0
+    - _Dissolve: 0
+    - _DistortStrength: 0
+    - _DstBlend: 1
+    - _ElectricalTime: -1
+    - _Emission: 0
+    - _EvapDissolveSoftness: 0.055
+    - _EvapLift: 0
+    - _EvapProgress: 0
+    - _EvapSpread: 1
+    - _Evaporation: 0
+    - _FlowStrength: 0
+    - _HeadSpan: 0.33
+    - _HeadWeight: 0
+    - _HighlightBandCenter: 0.35
+    - _HighlightBandSoftness: 0.035
+    - _HighlightBandWidth: 0.75
+    - _HighlightStrength: 0
+    - _Liquid: 0
+    - _LiquidDissolve: 1
+    - _LiquidShine: 1.1
+    - _LiquidWobble: 0.85
+    - _Phase: 0
+    - _Retreat: 0
+    - _Reveal: 1
+    - _RevealSoftness: 0.035
+    - _SrcBlend: 5
+    - _SweepAcross: 0
+    - _SweepCore: 0
+    - _SweepEnabled: 1
+    - _SweepProgress: 0
+    - _SweepWake: 0.24
+    - _SweepWidth: 0.38
+    - _TailGrowth: 1
+    - _TailMaskStrength: 0
+    - _TailSpread: 1
+    - _UseShapeRGB: 1
+    - _Voltage: 1
+    - _VoltageDecay: 3.2
+    - _VoltageParticle: 0
+    - _WhiteFluid: 0
+    - _WhiteFluidSpin: 4.5
+    - _WhiteFluidStrength: 0.75
+    - _ZWrite: 0
+    m_Colors:
+    - _BaseColor: {r: 1.3, g: 0.9, b: 1.65, a: 1}
+    - _DistortSpeed: {r: 0.25, g: 0.17, b: 0, a: 0}
+    - _DistortTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _EmissionColor: {r: 0.12, g: 0.56, b: 0.85, a: 1}
+    - _EvapCircle0: {r: 0, g: 0, b: 0, a: 0}
+    - _EvapCircle1: {r: 0, g: 0, b: 0, a: 0}
+    - _EvapCircle2: {r: 0, g: 0, b: 0, a: 0}
+    - _EvapCircle3: {r: 0, g: 0, b: 0, a: 0}
+    - _EvapFrame: {r: 0.65, g: 1.95, b: 3.7, a: 3.85}
+    - _FlowSpeed: {r: 0.5, g: 0, b: 0, a: 0}
+    - _FlowTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _HighlightSpeed: {r: -0.8, g: 0.12, b: 0, a: 0}
+    - _HighlightTiling: {r: 2, g: 1, b: 0, a: 0}

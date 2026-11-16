@@ -1,0 +1,132 @@
+using System;
+using System.Collections;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using Battle.DiceAttackEffect;
+using HarmonyLib;
+using LOR_DiceSystem;
+using Steria.WaterThunder;
+using UnityEngine;
+
+public sealed class WaterThunderNativeSmoke : MonoBehaviour
+{
+    Action<bool,string> done;string output;int checks;
+    bool Check(bool value,string name)
+    {
+        if(!value){done(false,"WATER_THUNDER_NATIVE_FAIL "+name);return false;}checks++;Debug.Log("NATIVE_PASS "+name);return true;
+    }
+    public void Begin(string folder,Action<bool,string> callback){output=folder;done=callback;StartCoroutine(Run());}
+    IEnumerator Run()
+    {
+        if(!Check(Application.unityVersion=="2019.3.15f1","exact editor"))yield break;
+        Steria.HarmonyPatches.InitCustomEffects();var h=new Harmony("Steria.WaterThunder.NativeAcceptance");
+        h.Patch(AccessTools.Method(typeof(DiceEffectManager),nameof(DiceEffectManager.CreateBehaviourEffect)),prefix:new HarmonyMethod(typeof(Steria.HarmonyPatches),nameof(Steria.HarmonyPatches.DiceEffectManager_CreateBehaviourEffect_Prefix)));
+        h.CreateClassProcessor(typeof(Steria.DiceEffectManagerPatch)).Patch();
+        h.CreateClassProcessor(typeof(SlazeyaWindImpactPresentationPatch)).Patch();h.CreateClassProcessor(typeof(SlazeyaWindConfirmedImpactPatch)).Patch();
+        var patchInfo=Harmony.GetPatchInfo(AccessTools.Method(typeof(DiceEffectManager),nameof(DiceEffectManager.CreateBehaviourEffect)));
+        foreach(var patch in patchInfo.Prefixes)Debug.Log("REGISTERED_PREFIX "+patch.PatchMethod.DeclaringType.FullName+"."+patch.PatchMethod.Name+" priority="+patch.priority);
+        foreach(var patch in patchInfo.Postfixes)Debug.Log("REGISTERED_POSTFIX "+patch.PatchMethod.DeclaringType.FullName+"."+patch.PatchMethod.Name+" priority="+patch.priority);
+        var manager=new GameObject("ActualDiceEffectManager").AddComponent<DiceEffectManager>();
+        var scene=new GameObject("NativeBattleSceneRoot").AddComponent<BattleSceneRoot>();scene.enabled=false;
+        typeof(SingletonBehavior<BattleSceneRoot>).GetField("_instance",BindingFlags.NonPublic|BindingFlags.Static).SetValue(null,scene);
+        foreach(bool facingLeft in new[]{true,false})foreach(string suffix in new[]{"Slash","Hit","Pierce"})
+        {
+            var self=Actor(facingLeft,facingLeft?9:-9);var target=Actor(!facingLeft,facingLeft?-9:9);
+            var fx=Create(manager,"Steria_SlazeyaWind"+suffix,.25f,self,target,.9f);
+            if(!Check(fx is DiceAttackEffect_Steria_SlazeyaWaterThunderBase,"real factory routes "+suffix+" left="+facingLeft))yield break;
+            var visual=fx.GetComponentInChildren<WaterThunderSlash>(true);
+            if(!Check(visual!=null&&!visual.autoPlay,"DLL's shared deterministic driver"))yield break;
+            ActionDetail action=suffix=="Slash"?ActionDetail.Slash:suffix=="Hit"?ActionDetail.Hit:ActionDetail.Penetrate;
+            if(!Check(fx.transform.parent==self.charAppearance.GetAtkEffectPivot(action),"native "+action+" attachment"))yield break;
+            if(!Check(Mathf.Abs(fx.transform.localScale.x-2.5f)<.00001f,"native melee and roll applied once"))yield break;
+            if(!Check(fx.GetComponentsInChildren<Renderer>(true).All(r=>r.gameObject.layer==8&&(!r.enabled||r.sortingLayerName=="Particle")),"Effect layer and Particle sorting on visible renderers"))yield break;
+            if(!Check(fx.GetComponentsInChildren<Renderer>(true).Where(r=>!(r is SpriteRenderer)).All(r=>r.sharedMaterial!=null&&r.sharedMaterial.shader.isSupported),"actual bundle shader support"))yield break;
+            if(!Check(!visual.impactBurst,"no successful-hit burst before native confirmation"))yield break;
+            var type=suffix=="Slash"?BehaviourDetail.Slash:suffix=="Hit"?BehaviourDetail.Hit:BehaviourDetail.Penetrate;
+            manager.CreateDamagedEffectByBehaviour(type,.25f,target);manager.CreateDamagedEffectByBehaviour(type,.25f,target);
+            if(!Check(visual.impactBurst,"real native success enables one timed impact"))yield break;
+            float began=Time.realtimeSinceStartup;
+            while(fx!=null&&visual.sampleTime<.06f&&Time.realtimeSinceStartup-began<3)yield return null;
+            if(!Check(fx!=null&&visual.sampleTime>=.06f,"actual Update advances authored clock"))yield break;
+            float sample=visual.sampleTime;Vector3 anchor=visual.transform.TransformPoint(WaterThunderMotion.Contact);
+            float expectedX=target.WorldPosition.x-(facingLeft?-1:1)*.35f*3;
+            if(!Check(Mathf.Abs(anchor.x-expectedX)<.0001f&&Mathf.Abs(anchor.y-target.atkEffectRoot.position.y)<.0001f,"actual target chest contact"))yield break;
+            Vector3 forward=visual.transform.TransformVector(Vector3.right);
+            if(!Check(facingLeft?forward.x<0:forward.x>0,"asset basis and native facing are correct"))yield break;
+            self.transform.position+=new Vector3(1,.5f,0);yield return null;
+            if(!Check(Vector3.Distance(anchor,visual.transform.TransformPoint(WaterThunderMotion.Contact))<.001f,"contact stays fixed after attacker moves"))yield break;
+            var camera=CameraFor(visual);Placeholder(target.WorldPosition.x);
+            foreach(float t in new[]{.215f,.33f,.60f})
+            {
+                visual.ApplyAt(t);Save(camera,suffix+"-"+(facingLeft?"left":"right")+"-"+Mathf.RoundToInt(t*1000)+".png");
+            }
+            visual.ApplyAt(Mathf.Min(sample,.4f));
+            if(!Check(visual.impact.systems[0].GetComponent<ParticleSystemRenderer>().sharedMaterial.GetFloat("_Liquid")==1,"native water material mode"))yield break;
+            var systems=fx.GetComponentsInChildren<ParticleSystem>(true);fx.gameObject.SetActive(false);
+            if(!Check(systems.All(p=>p==null||p.particleCount==0),"cancel clears native particles"))yield break;
+            UnityEngine.Object.Destroy(fx.gameObject);UnityEngine.Object.Destroy(self.gameObject);UnityEngine.Object.Destroy(target.gameObject);UnityEngine.Object.Destroy(camera.gameObject);
+            foreach(var p in GameObject.FindGameObjectsWithTag("Finish"))UnityEngine.Object.Destroy(p);yield return null;
+        }
+        foreach(string scenario in new[]{"miss","wrong-target","stale","foreign","cancel"})
+        {
+            var self=Actor(true,9);var target=Actor(false,-9);
+            var fx=Create(manager,"Steria_SlazeyaWindSlash",0,self,target,1.2f);var visual=fx.GetComponentInChildren<WaterThunderSlash>(true);
+            if(scenario=="wrong-target")if(!Check(SlazeyaWindConfirmedImpactPatch.Prefix(BehaviourDetail.Slash,self),"wrong victim does not confirm"))yield break;
+            if(scenario=="stale"){yield return null;if(!Check(SlazeyaWindConfirmedImpactPatch.Prefix(BehaviourDetail.Slash,target),"stale frame does not confirm"))yield break;}
+            if(scenario=="foreign")SlazeyaWindImpactPresentationPatch.Postfix(null,target);
+            if(scenario=="cancel")fx.gameObject.SetActive(false);
+            else
+            {
+                visual.ApplyAt(.24f);if(!Check(!visual.impactBurst&&visual.impact.Alive==0,"no false impact: "+scenario))yield break;
+                fx.SetDestroyTime(0);
+            }
+            if(!Check(fx.GetComponentsInChildren<ParticleSystem>(true).All(p=>p.particleCount==0),"termination clears "+scenario))yield break;
+            UnityEngine.Object.Destroy(fx.gameObject);UnityEngine.Object.Destroy(self.gameObject);UnityEngine.Object.Destroy(target.gameObject);yield return null;
+        }
+        foreach(string suffix in new[]{"Guard","FarHit"})
+        {
+            var self=Actor(true,9);var target=Actor(false,-9);
+            var fx=Create(manager,"Steria_SlazeyaWind"+suffix,.25f,self,target,1.2f);
+            if(!Check(fx!=null&&fx is DiceAttackEffect_Steria_SlazeyaWindBase,"original factory and "+suffix+" preserved"))yield break;
+            var old=(Steria.Vfx.SlazeyaWindVisual)typeof(DiceAttackEffect_Steria_SlazeyaWindBase).GetField("_visual",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(fx);
+            float began=Time.realtimeSinceStartup;
+            while(fx!=null&&old.Elapsed<.28f&&Time.realtimeSinceStartup-began<3)yield return null;
+            if(!Check(fx!=null&&old.Elapsed>=.28f,"original "+suffix+" Update loop"))yield break;
+            if(suffix=="FarHit")if(!Check(Vector3.Distance(fx.transform.position,target.atkEffectRoot.position)<.001f,"original ranged arrival unchanged"))yield break;
+            fx.gameObject.SetActive(false);UnityEngine.Object.Destroy(fx.gameObject);UnityEngine.Object.Destroy(self.gameObject);UnityEngine.Object.Destroy(target.gameObject);yield return null;
+        }
+        if(!Check(Steria.HarmonyPatches.SteriaCustomEffects["Steria_WaterSlash"]==typeof(DiceAttackEffect_Steria_WaterSlash),"FarArea resource registration preserved"))yield break;
+        h.UnpatchSelf();done(true,"WATER_THUNDER_NATIVE_PASS "+checks+" checks; actual candidate DLL, native factory, Update, AB and GPU; synthetic actor transforms, not full battle");
+    }
+    static DiceAttackEffect Create(DiceEffectManager manager,string resource,float scale,BattleUnitView self,BattleUnitView target,float time)
+    {
+        return (DiceAttackEffect)AccessTools.Method(typeof(DiceEffectManager),nameof(DiceEffectManager.CreateBehaviourEffect)).Invoke(manager,new object[]{resource,scale,self,target,time});
+    }
+    BattleUnitView Actor(bool facingLeft,float x)
+    {
+        var go=new GameObject("SyntheticBadaNativeContext");go.transform.position=new Vector3(x,0,0);
+        var view=go.AddComponent<BattleUnitView>();view.enabled=false;
+        var rotation=new GameObject("characterRotationCenter").transform;rotation.SetParent(go.transform,false);rotation.localScale=Vector3.one*3;rotation.localRotation=Quaternion.Euler(0,facingLeft?0:180,0);view.characterRotationCenter=rotation;
+        var appearance=new GameObject("NativeCharacterAppearance");appearance.transform.SetParent(rotation,false);view.charAppearance=appearance.AddComponent<CharacterAppearance>();view.charAppearance.enabled=false;
+        var pivot=new GameObject("atkEffectRoot").transform;pivot.SetParent(appearance.transform,false);pivot.localPosition=new Vector3(-2.2f,2.34f,0);view.charAppearance.atkEffectRoot=pivot;view.atkEffectRoot=pivot;
+        view.model=(BattleUnitModel)FormatterServices.GetUninitializedObject(typeof(BattleUnitModel));view.model.view=view;return view;
+    }
+    Camera CameraFor(WaterThunderSlash visual)
+    {
+        var b=visual.layers[0].bounds;var c=new GameObject("NativeGPUCamera").AddComponent<Camera>();c.orthographic=true;c.orthographicSize=b.size.y*.62f;
+        c.transform.position=new Vector3(b.center.x,b.center.y,-60);c.clearFlags=CameraClearFlags.SolidColor;c.backgroundColor=new Color(.018f,.03f,.052f);c.allowHDR=false;return c;
+    }
+    void Placeholder(float x)
+    {
+        var p=GameObject.CreatePrimitive(PrimitiveType.Capsule);p.name="Textureless target, 3x native map";p.tag="Finish";p.transform.position=new Vector3(x,5.25f,.7f);p.transform.localScale=new Vector3(2,5.25f,2);
+        p.GetComponent<Renderer>().sharedMaterial=new Material(Shader.Find("Unlit/Color")){color=new Color(.11f,.15f,.19f)};
+    }
+    void Save(Camera c,string name)
+    {
+        var rt=RenderTexture.GetTemporary(960,540,24,RenderTextureFormat.ARGB32);var old=RenderTexture.active;c.targetTexture=rt;c.Render();RenderTexture.active=rt;
+        var t=new Texture2D(960,540,TextureFormat.RGB24,false);t.ReadPixels(new Rect(0,0,960,540),0,0);t.Apply();File.WriteAllBytes(Path.Combine(output,name),t.EncodeToPNG());
+        UnityEngine.Object.Destroy(t);c.targetTexture=null;RenderTexture.active=old;RenderTexture.ReleaseTemporary(rt);
+    }
+}

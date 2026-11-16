@@ -1,0 +1,514 @@
+{
+  "project": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\SlazeyaWaterThunderSlash\\UnityProject",
+  "counts": {
+    "C# source": 8,
+    "Material": 10,
+    "Mesh": 6,
+    "Prefab": 7,
+    "Scene": 1,
+    "Shader": 1,
+    "Texture / Mask": 17
+  },
+  "assets": [
+    {
+      "type": "C# source",
+      "path": "Assets/WaterThunder/Editor/WaterThunderAuthoringCommand.cs",
+      "size_bytes": 2790,
+      "sha256": "fd8c18201ad7ac567488534f09b00aa32088bf4d5539b61f45a37645da433c07",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/WaterThunder/Editor/WaterThunderBuilder.cs",
+      "size_bytes": 23063,
+      "sha256": "2b7e09cc702105e5c6f51315e6356fa8534c4b6cb8012337e13a152add416a9a",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/WaterThunder/Editor/WaterThunderEditorClock.cs",
+      "size_bytes": 1290,
+      "sha256": "b64c0c98a421f5d56f0247e97ec8c2061093272ca9bb02646b42b7d71d9d34b0",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/WaterThunder/Editor/WaterThunderPreview.cs",
+      "size_bytes": 20429,
+      "sha256": "d5e5d173fa5ebf5cdcb8ae20802a5e17afcfee6e7d320fd5afcc5ed0e3b0e0c8",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Material",
+      "path": "Assets/WaterThunder/Materials/EvaporationWaterScatter.mat",
+      "size_bytes": 3378,
+      "sha256": "3a411590fd12286ab23c1e00d8b95afc376d9d9d8992e2135e0e8612caad048f",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Material",
+      "path": "Assets/WaterThunder/Materials/ImpactElectric.mat",
+      "size_bytes": 3595,
+      "sha256": "18870bbb480cae7323416b2b754ca9779a5ca8d3a95dd736ae515d597ac7c444",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Material",
+      "path": "Assets/WaterThunder/Materials/ImpactFlash.mat",
+      "size_bytes": 3537,
+      "sha256": "50ad73fdb225be8ecf5b8f8beac206d8073b3255a6f499dafb4ed2681edb4a3c",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Material",
+      "path": "Assets/WaterThunder/Materials/ImpactWater.mat",
+      "size_bytes": 3703,
+      "sha256": "cb0c426f3248972978af3b9bb6e450252cc3cc23c4bf2b20a4411fc59d411ebd",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Material",
+      "path": "Assets/WaterThunder/Materials/L1_WaterBlade.mat",
+      "size_bytes": 4064,
+      "sha256": "fd6526745dfe1997d2420a8cae4e748b7d52bf02333359eefed55fcbc0ee1014",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Material",
+      "path": "Assets/WaterThunder/Materials/L2_SplashWake.mat",
+      "size_bytes": 3993,
+      "sha256": "57009c234fe06748b4ffa5fc9e7b93a413c793ee90ad17229ef3ccf6aeb37db2",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Material",
+      "path": "Assets/WaterThunder/Materials/L3_Lightning.mat",
+      "size_bytes": 3943,
+      "sha256": "1f05a10169fbeaeca91b3d91aabb1d74b33c7f0f260da43ca5359d2587eac49d",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Material",
+      "path": "Assets/WaterThunder/Materials/L4_BladeCore.mat",
+      "size_bytes": 3939,
+      "sha256": "2edde1030bbc9e72487d2cc4f3e3d4a02a673c05a6698fda5136b5cc43e913c6",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Material",
+      "path": "Assets/WaterThunder/Materials/StageGround.mat",
+      "size_bytes": 630,
+      "sha256": "a4e67d1cb3805ff1057ee759163eedf7dfbb0bcd082b96488659063dd09bd126",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Material",
+      "path": "Assets/WaterThunder/Materials/StageTarget.mat",
+      "size_bytes": 629,
+      "sha256": "c39541bf2eb1b251ff41349a002c9a18cdd5aa215e24481448e9da08236beb21",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/WaterThunder/Meshes/EvaporationScatter.asset",
+      "size_bytes": 3513,
+      "sha256": "70be9fb909fe51a79bd17c3e960ad71d8d6cc96168723f5add3c81a0f3133efa",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/WaterThunder/Meshes/ImpactArcShard.asset",
+      "size_bytes": 4916,
+      "sha256": "56f8d209753c155e285523a50bfb4b1ca741e3df2cc18309295dd480cc551d29",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/WaterThunder/Meshes/L1_WaterBlade.asset",
+      "size_bytes": 368779,
+      "sha256": "e5113206bfff45ddbfce7457035e631afc2a1d650bdb831a984917cf12e5ee18",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/WaterThunder/Meshes/L2_SplashWake.asset",
+      "size_bytes": 38340,
+      "sha256": "de4ba25c7c2f29b1a05157817951e9c03fac4af96303a9cfaffb53fef51059a3",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/WaterThunder/Meshes/L3_Lightning.asset",
+      "size_bytes": 23128,
+      "sha256": "d3ab456ceeb5398c384d269796d13a2f487e4864fb8abf1906cedde34d36de8f",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/WaterThunder/Meshes/L4_BladeCore.asset",
+      "size_bytes": 220656,
+      "sha256": "e79d96515d87290d5c6a6ef8d806988fb9b7355e2926ffdf00c925d191a757a3",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/WaterThunder/Prefabs/L1_WaterBlade.prefab",
+      "size_bytes": 2294,
+      "sha256": "5da5e8ad0b1ccd8a4aa8ed3c8bd42dac93a9cfa8ff776e01bedb02fa9e5e7098",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/WaterThunder/Prefabs/L2_SplashWake.prefab",
+      "size_bytes": 2292,
+      "sha256": "62bd5a0852c0ebf59a6a29d93c4e08af9a00b5db575b6baf1549fe773694ce1b",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/WaterThunder/Prefabs/L3_Lightning.prefab",
+      "size_bytes": 2293,
+      "sha256": "8282aff3d0d360d4712f493dd0001bd72945118c02f816cb739b01ec367744e0",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/WaterThunder/Prefabs/L4_BladeCore.prefab",
+      "size_bytes": 2293,
+      "sha256": "47b921687cc31bc43ab185cb54b3298f154ed989c7c890a7213a3d2a39b9f804",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/WaterThunder/Prefabs/SlazeyaWaterThunderSlash.prefab",
+      "size_bytes": 359945,
+      "sha256": "3a4e09322e84d671c020b7db15e66ea3b69aa64ec8e49933970c126d7d0fe8e3",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/WaterThunder/Prefabs/WaterEvaporationScatter.prefab",
+      "size_bytes": 2302,
+      "sha256": "2ff4547ad862f48fe3af004ede612db5c99f55c4c62c204479b5ddd571405afb",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/WaterThunder/Prefabs/WaterThunderImpactParticles.prefab",
+      "size_bytes": 346085,
+      "sha256": "524f8ba4932b130832ccb5dc0e2b37e9c637df5200d95f4614dae65e2ac8d266",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/WaterThunder/Runtime/WaterDropletMotion.cs",
+      "size_bytes": 1539,
+      "sha256": "5c5f345c425d9a1ffe0123a28a8fc9b53d36e116b42cbeb54623ec85c7f779fa",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/WaterThunder/Runtime/WaterThunderImpact.cs",
+      "size_bytes": 3895,
+      "sha256": "8376b5e7ee4dc45887b94262752ce3b0495a0f480b298345cf41662f9f21758b",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/WaterThunder/Runtime/WaterThunderMotion.cs",
+      "size_bytes": 2148,
+      "sha256": "d77918803b9c7f5dbe203995cddeb7e6115eb292bd9140a7e4ee19d10852a01a",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/WaterThunder/Runtime/WaterThunderSlash.cs",
+      "size_bytes": 7424,
+      "sha256": "88ccfb195384aa5d58479a0cf446130ba16070c4b253795c10621cc8dcc1eba5",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Scene",
+      "path": "Assets/WaterThunder/Scenes/WaterThunderAuthoring.unity",
+      "size_bytes": 13220,
+      "sha256": "0eea9861f715c29b5a14f8b261beaf79635cfe6903e05032eceffcb33592e64c",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Shader",
+      "path": "Assets/WaterThunder/Shaders/WaterThunderFormedArc.shader",
+      "size_bytes": 16147,
+      "sha256": "f1029e4cdb41ed3ff93098eb7ff1e3fe05210aef91383ae8f03e70490ee5c8e9",
+      "unity_meta": true,
+      "dimensions": "",
+      "data_space": "",
+      "wrap": ""
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/Evap_WaterScatter.png",
+      "size_bytes": 252515,
+      "sha256": "6eff8550ab2a80b17393d692cc2dbf26207d31f7450466871edbdb9f14baf1bc",
+      "unity_meta": true,
+      "dimensions": "512x512 RGBA",
+      "data_space": "Linear",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/Impact_Flash.png",
+      "size_bytes": 5411,
+      "sha256": "dcd26deea6f8a8ccb9c59414eda4ea292ef18dff7a17ee4cead420582686e8f6",
+      "unity_meta": true,
+      "dimensions": "128x128 RGBA",
+      "data_space": "sRGB",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L1_TailFanMask.png",
+      "size_bytes": 24151,
+      "sha256": "7148828bbcbabaf30c25295333e8da801b0750c8ab1f6459bccc2b4d7e9fdbf4",
+      "unity_meta": true,
+      "dimensions": "1024x256 RGB",
+      "data_space": "Linear",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L1_WaterBody.png",
+      "size_bytes": 186708,
+      "sha256": "0ca1737928aa8f13ef61fed57dd7938f343693e885abb75e22d3d08dd12e7ba4",
+      "unity_meta": true,
+      "dimensions": "1024x256 RGBA",
+      "data_space": "sRGB",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L1_WaterMask.png",
+      "size_bytes": 18748,
+      "sha256": "d543d57d9322644ef83faffd7fa0cc1bf2aaf09fd74f408c61124a89803bf3d5",
+      "unity_meta": true,
+      "dimensions": "1024x256 RGB",
+      "data_space": "Linear",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L1_WhiteFluidQuadMask.png",
+      "size_bytes": 8423,
+      "sha256": "32406e1a862a7d7297be7ce4bc5a76bd27381b7b368303385b6642d005ad66e2",
+      "unity_meta": true,
+      "dimensions": "256x256 RGB",
+      "data_space": "Linear",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L2_Splash.png",
+      "size_bytes": 11600,
+      "sha256": "bc9d71f4e15274ec7ef9e127cfd8c76d70fa6932984ab844d9a1e967201639b1",
+      "unity_meta": true,
+      "dimensions": "128x128 RGBA",
+      "data_space": "sRGB",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L2_SplashMask.png",
+      "size_bytes": 3295,
+      "sha256": "c9a99965e400daa91b0ddca882bea8ec1b48f2f745774095d7cdee4a09edf647",
+      "unity_meta": true,
+      "dimensions": "128x128 RGB",
+      "data_space": "Linear",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L2_WaterNormal.png",
+      "size_bytes": 5276,
+      "sha256": "1a4f6dbb6abe5457e4da8609b80294ae53c114505c0a9579d1ffdaf29268d8f0",
+      "unity_meta": true,
+      "dimensions": "128x128 RGB",
+      "data_space": "Linear",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L3_Lightning.png",
+      "size_bytes": 528,
+      "sha256": "fc0a5a272cfa23b95991787a918b807836835aaa7cf23eb640401f9b41f2852b",
+      "unity_meta": true,
+      "dimensions": "256x64 RGBA",
+      "data_space": "sRGB",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L3_LightningMask.png",
+      "size_bytes": 282,
+      "sha256": "9ef838a432796cbb8b58cb38ecdf72fd48905485e6fb67a1e4c937f7ddc13d81",
+      "unity_meta": true,
+      "dimensions": "256x64 RGB",
+      "data_space": "Linear",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L4_Core.png",
+      "size_bytes": 530,
+      "sha256": "bff2c7bc5699f9c95751cf28a8f5fe6465762bc58a1e7c761e5bbceb31c0a4cc",
+      "unity_meta": true,
+      "dimensions": "256x64 RGBA",
+      "data_space": "sRGB",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/L4_CoreMask.png",
+      "size_bytes": 268,
+      "sha256": "66799d67cbe995b21897e200e276f4f9a77f2ab2366122426cff3e6773ba8d2e",
+      "unity_meta": true,
+      "dimensions": "256x64 RGB",
+      "data_space": "Linear",
+      "wrap": "Clamp"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/Shared_CausticsRepeat.png",
+      "size_bytes": 36033,
+      "sha256": "46b6528d014873b78205edb744d49486d7c8feea682c57924a667915bd3fd5fc",
+      "unity_meta": true,
+      "dimensions": "256x256 RGB",
+      "data_space": "Linear",
+      "wrap": "Repeat"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/Shared_ErosionRepeat.png",
+      "size_bytes": 40236,
+      "sha256": "f9423e1ac821e90c5b73d7495fbd495cd3b64678de0607c8a8c358e1656daf73",
+      "unity_meta": true,
+      "dimensions": "256x256 RGB",
+      "data_space": "Linear",
+      "wrap": "Repeat"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/Shared_FlowRepeat.png",
+      "size_bytes": 84685,
+      "sha256": "5d8a76b3668f0a008b52a83759384a9dd9a3c1f450acb22813fe36e46b5ab93c",
+      "unity_meta": true,
+      "dimensions": "256x256 RGB",
+      "data_space": "Linear",
+      "wrap": "Repeat"
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/WaterThunder/Textures/Shared_SweepBrushMask.png",
+      "size_bytes": 23198,
+      "sha256": "07e6173c9b782a06bb47c756c55ba120695c436bc0c6ab517dfa40851cab5fed",
+      "unity_meta": true,
+      "dimensions": "512x256 RGB",
+      "data_space": "Linear",
+      "wrap": "Clamp"
+    }
+  ]
+}

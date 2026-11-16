@@ -1,0 +1,30 @@
+using System;
+using System.IO;
+using System.Reflection;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+
+[InitializeOnLoad]
+public static class WaterThunderNativeEntry
+{
+    static WaterThunderNativeEntry(){EditorApplication.playModeStateChanged+=State;}
+    public static void Run()
+    {
+        var args=Environment.GetCommandLineArgs();string output=args[Array.IndexOf(args,"-nativeOutput")+1];Directory.CreateDirectory(output);
+        string assembly=Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(typeof(DiceAttackEffect_Steria_SlazeyaWaterThunderBase).Assembly.CodeBase).Path));
+        string root=Directory.GetParent(assembly).FullName;
+        var cache=Path.Combine(root,"Assemblies","AB");Directory.CreateDirectory(cache);
+        foreach(var p in Directory.GetFiles(Path.Combine(output,"bundles")))File.Copy(p,Path.Combine(cache,Path.GetFileName(p)),true);
+        File.WriteAllText(Path.Combine(output,"assembly-location.txt"),assembly+"\n"+cache);
+        SessionState.SetString("WaterThunder.Native.Output",output);
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);EditorApplication.isPlaying=true;
+    }
+    static void State(PlayModeStateChange state)
+    {
+        if(state!=PlayModeStateChange.EnteredPlayMode)return;
+        string output=SessionState.GetString("WaterThunder.Native.Output","");if(output=="")return;SessionState.EraseString("WaterThunder.Native.Output");
+        Application.logMessageReceived+=(m,s,t)=>{if(t==LogType.Exception){File.WriteAllText(Path.Combine(output,"failure.txt"),m+"\n"+s);EditorApplication.Exit(1);}};
+        new GameObject("NativeWaterThunderAcceptance").AddComponent<WaterThunderNativeSmoke>().Begin(output,(ok,report)=>{File.WriteAllText(Path.Combine(output,ok?"checks.txt":"failure.txt"),report);Debug.Log(report);EditorApplication.Exit(ok?0:1);});
+    }
+}

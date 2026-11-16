@@ -8,26 +8,32 @@ using UnityEngine;
 internal static class SlazeyaWindImpactRouter
 {
     private static DiceAttackEffect_Steria_SlazeyaWindPierce pending;
+    private static DiceAttackEffect_Steria_SlazeyaWaterThunderBase waterPending;
     private static BattleUnitView victim;
     private static int frame;
 
     internal static void Register(DiceAttackEffect effect, BattleUnitView target)
     {
         pending=effect as DiceAttackEffect_Steria_SlazeyaWindPierce;
+        waterPending=effect as DiceAttackEffect_Steria_SlazeyaWaterThunderBase;
         victim=target;frame=Time.frameCount;
     }
 
     internal static bool Consume(BehaviourDetail type, BattleUnitView target)
     {
+        if(waterPending!=null&&victim==target&&frame==Time.frameCount)
+            return waterPending.Confirm(type,target);
         var candidate=pending;
         bool matches=candidate!=null && victim==target && frame==Time.frameCount && type==BehaviourDetail.Penetrate;
         pending=null;victim=null;
+        waterPending=null;
         return matches && candidate.TryConfirmPierceImpact(target);
     }
 
     internal static void Invalidate(DiceAttackEffect effect)
     {
         if(pending==effect){pending=null;victim=null;}
+        if(waterPending==effect){waterPending=null;victim=null;}
     }
 }
 

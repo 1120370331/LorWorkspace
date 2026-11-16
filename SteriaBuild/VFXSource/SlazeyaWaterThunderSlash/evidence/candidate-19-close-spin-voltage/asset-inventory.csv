@@ -1,0 +1,51 @@
+﻿type,path,size_bytes,sha256,unity_meta,dimensions,data_space,wrap
+C# source,Assets/WaterThunder/Editor/WaterThunderAuthoringCommand.cs,2790,fd8c18201ad7ac567488534f09b00aa32088bf4d5539b61f45a37645da433c07,True,,,
+C# source,Assets/WaterThunder/Editor/WaterThunderBuilder.cs,23063,2b7e09cc702105e5c6f51315e6356fa8534c4b6cb8012337e13a152add416a9a,True,,,
+C# source,Assets/WaterThunder/Editor/WaterThunderEditorClock.cs,1290,b64c0c98a421f5d56f0247e97ec8c2061093272ca9bb02646b42b7d71d9d34b0,True,,,
+C# source,Assets/WaterThunder/Editor/WaterThunderPreview.cs,20429,d5e5d173fa5ebf5cdcb8ae20802a5e17afcfee6e7d320fd5afcc5ed0e3b0e0c8,True,,,
+Material,Assets/WaterThunder/Materials/EvaporationWaterScatter.mat,3378,3a411590fd12286ab23c1e00d8b95afc376d9d9d8992e2135e0e8612caad048f,True,,,
+Material,Assets/WaterThunder/Materials/ImpactElectric.mat,3595,18870bbb480cae7323416b2b754ca9779a5ca8d3a95dd736ae515d597ac7c444,True,,,
+Material,Assets/WaterThunder/Materials/ImpactFlash.mat,3537,50ad73fdb225be8ecf5b8f8beac206d8073b3255a6f499dafb4ed2681edb4a3c,True,,,
+Material,Assets/WaterThunder/Materials/ImpactWater.mat,3703,cb0c426f3248972978af3b9bb6e450252cc3cc23c4bf2b20a4411fc59d411ebd,True,,,
+Material,Assets/WaterThunder/Materials/L1_WaterBlade.mat,4064,fd6526745dfe1997d2420a8cae4e748b7d52bf02333359eefed55fcbc0ee1014,True,,,
+Material,Assets/WaterThunder/Materials/L2_SplashWake.mat,3993,57009c234fe06748b4ffa5fc9e7b93a413c793ee90ad17229ef3ccf6aeb37db2,True,,,
+Material,Assets/WaterThunder/Materials/L3_Lightning.mat,3943,1f05a10169fbeaeca91b3d91aabb1d74b33c7f0f260da43ca5359d2587eac49d,True,,,
+Material,Assets/WaterThunder/Materials/L4_BladeCore.mat,3939,2edde1030bbc9e72487d2cc4f3e3d4a02a673c05a6698fda5136b5cc43e913c6,True,,,
+Material,Assets/WaterThunder/Materials/StageGround.mat,630,a4e67d1cb3805ff1057ee759163eedf7dfbb0bcd082b96488659063dd09bd126,True,,,
+Material,Assets/WaterThunder/Materials/StageTarget.mat,629,c39541bf2eb1b251ff41349a002c9a18cdd5aa215e24481448e9da08236beb21,True,,,
+Mesh,Assets/WaterThunder/Meshes/EvaporationScatter.asset,3513,70be9fb909fe51a79bd17c3e960ad71d8d6cc96168723f5add3c81a0f3133efa,True,,,
+Mesh,Assets/WaterThunder/Meshes/ImpactArcShard.asset,4916,56f8d209753c155e285523a50bfb4b1ca741e3df2cc18309295dd480cc551d29,True,,,
+Mesh,Assets/WaterThunder/Meshes/L1_WaterBlade.asset,368779,e5113206bfff45ddbfce7457035e631afc2a1d650bdb831a984917cf12e5ee18,True,,,
+Mesh,Assets/WaterThunder/Meshes/L2_SplashWake.asset,38340,de4ba25c7c2f29b1a05157817951e9c03fac4af96303a9cfaffb53fef51059a3,True,,,
+Mesh,Assets/WaterThunder/Meshes/L3_Lightning.asset,23128,d3ab456ceeb5398c384d269796d13a2f487e4864fb8abf1906cedde34d36de8f,True,,,
+Mesh,Assets/WaterThunder/Meshes/L4_BladeCore.asset,220656,e79d96515d87290d5c6a6ef8d806988fb9b7355e2926ffdf00c925d191a757a3,True,,,
+Prefab,Assets/WaterThunder/Prefabs/L1_WaterBlade.prefab,2294,5da5e8ad0b1ccd8a4aa8ed3c8bd42dac93a9cfa8ff776e01bedb02fa9e5e7098,True,,,
+Prefab,Assets/WaterThunder/Prefabs/L2_SplashWake.prefab,2292,62bd5a0852c0ebf59a6a29d93c4e08af9a00b5db575b6baf1549fe773694ce1b,True,,,
+Prefab,Assets/WaterThunder/Prefabs/L3_Lightning.prefab,2293,8282aff3d0d360d4712f493dd0001bd72945118c02f816cb739b01ec367744e0,True,,,
+Prefab,Assets/WaterThunder/Prefabs/L4_BladeCore.prefab,2293,47b921687cc31bc43ab185cb54b3298f154ed989c7c890a7213a3d2a39b9f804,True,,,
+Prefab,Assets/WaterThunder/Prefabs/SlazeyaWaterThunderSlash.prefab,359945,3a4e09322e84d671c020b7db15e66ea3b69aa64ec8e49933970c126d7d0fe8e3,True,,,
+Prefab,Assets/WaterThunder/Prefabs/WaterEvaporationScatter.prefab,2302,2ff4547ad862f48fe3af004ede612db5c99f55c4c62c204479b5ddd571405afb,True,,,
+Prefab,Assets/WaterThunder/Prefabs/WaterThunderImpactParticles.prefab,346085,524f8ba4932b130832ccb5dc0e2b37e9c637df5200d95f4614dae65e2ac8d266,True,,,
+C# source,Assets/WaterThunder/Runtime/WaterDropletMotion.cs,1539,5c5f345c425d9a1ffe0123a28a8fc9b53d36e116b42cbeb54623ec85c7f779fa,True,,,
+C# source,Assets/WaterThunder/Runtime/WaterThunderImpact.cs,3895,8376b5e7ee4dc45887b94262752ce3b0495a0f480b298345cf41662f9f21758b,True,,,
+C# source,Assets/WaterThunder/Runtime/WaterThunderMotion.cs,2148,d77918803b9c7f5dbe203995cddeb7e6115eb292bd9140a7e4ee19d10852a01a,True,,,
+C# source,Assets/WaterThunder/Runtime/WaterThunderSlash.cs,7424,88ccfb195384aa5d58479a0cf446130ba16070c4b253795c10621cc8dcc1eba5,True,,,
+Scene,Assets/WaterThunder/Scenes/WaterThunderAuthoring.unity,13220,0eea9861f715c29b5a14f8b261beaf79635cfe6903e05032eceffcb33592e64c,True,,,
+Shader,Assets/WaterThunder/Shaders/WaterThunderFormedArc.shader,16147,f1029e4cdb41ed3ff93098eb7ff1e3fe05210aef91383ae8f03e70490ee5c8e9,True,,,
+Texture / Mask,Assets/WaterThunder/Textures/Evap_WaterScatter.png,252515,6eff8550ab2a80b17393d692cc2dbf26207d31f7450466871edbdb9f14baf1bc,True,512x512 RGBA,Linear,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/Impact_Flash.png,5411,dcd26deea6f8a8ccb9c59414eda4ea292ef18dff7a17ee4cead420582686e8f6,True,128x128 RGBA,sRGB,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L1_TailFanMask.png,24151,7148828bbcbabaf30c25295333e8da801b0750c8ab1f6459bccc2b4d7e9fdbf4,True,1024x256 RGB,Linear,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L1_WaterBody.png,186708,0ca1737928aa8f13ef61fed57dd7938f343693e885abb75e22d3d08dd12e7ba4,True,1024x256 RGBA,sRGB,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L1_WaterMask.png,18748,d543d57d9322644ef83faffd7fa0cc1bf2aaf09fd74f408c61124a89803bf3d5,True,1024x256 RGB,Linear,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L1_WhiteFluidQuadMask.png,8423,32406e1a862a7d7297be7ce4bc5a76bd27381b7b368303385b6642d005ad66e2,True,256x256 RGB,Linear,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L2_Splash.png,11600,bc9d71f4e15274ec7ef9e127cfd8c76d70fa6932984ab844d9a1e967201639b1,True,128x128 RGBA,sRGB,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L2_SplashMask.png,3295,c9a99965e400daa91b0ddca882bea8ec1b48f2f745774095d7cdee4a09edf647,True,128x128 RGB,Linear,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L2_WaterNormal.png,5276,1a4f6dbb6abe5457e4da8609b80294ae53c114505c0a9579d1ffdaf29268d8f0,True,128x128 RGB,Linear,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L3_Lightning.png,528,fc0a5a272cfa23b95991787a918b807836835aaa7cf23eb640401f9b41f2852b,True,256x64 RGBA,sRGB,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L3_LightningMask.png,282,9ef838a432796cbb8b58cb38ecdf72fd48905485e6fb67a1e4c937f7ddc13d81,True,256x64 RGB,Linear,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L4_Core.png,530,bff2c7bc5699f9c95751cf28a8f5fe6465762bc58a1e7c761e5bbceb31c0a4cc,True,256x64 RGBA,sRGB,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/L4_CoreMask.png,268,66799d67cbe995b21897e200e276f4f9a77f2ab2366122426cff3e6773ba8d2e,True,256x64 RGB,Linear,Clamp
+Texture / Mask,Assets/WaterThunder/Textures/Shared_CausticsRepeat.png,36033,46b6528d014873b78205edb744d49486d7c8feea682c57924a667915bd3fd5fc,True,256x256 RGB,Linear,Repeat
+Texture / Mask,Assets/WaterThunder/Textures/Shared_ErosionRepeat.png,40236,f9423e1ac821e90c5b73d7495fbd495cd3b64678de0607c8a8c358e1656daf73,True,256x256 RGB,Linear,Repeat
+Texture / Mask,Assets/WaterThunder/Textures/Shared_FlowRepeat.png,84685,5d8a76b3668f0a008b52a83759384a9dd9a3c1f450acb22813fe36e46b5ab93c,True,256x256 RGB,Linear,Repeat
+Texture / Mask,Assets/WaterThunder/Textures/Shared_SweepBrushMask.png,23198,07e6173c9b782a06bb47c756c55ba120695c436bc0c6ab517dfa40851cab5fed,True,512x256 RGB,Linear,Clamp

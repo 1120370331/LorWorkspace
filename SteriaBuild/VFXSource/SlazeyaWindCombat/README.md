@@ -1,5 +1,7 @@
 # 斯拉泽雅风系粒子特效
 
+> **2026-11-16：旧 Slash / Hit / Pierce 已由水雷效果接替并部署。** 新工程为 `../SlazeyaWaterThunderSlash/UnityProject`；三个近战工厂键统一水雷表现，远程与守备仍使用本工程的旧风系资源。详见 [废弃标记](SLASH_DEPRECATED.md) 与 [水雷部署记录](../SlazeyaWaterThunderSlash/deployment/DELIVERY.md)。下文为历史交付记录。
+
 当前交付候选：`candidate-15-pierce`。五类为斩击、打击、突刺、防御、远程；配色为青玉与青白。主刀光采用连续的 SweptWedge 主刃与错时回风，其它动作采用 FormedArc。近突刺改为0.12秒刺到目标、短时贯穿、快速收回；确认命中后在胸前扩张青白光圈并渐隐。其它四类的592帧与已部署candidate-12-final逐字节相同。前九版被用户否决，第十版防御缺失，候选14光圈过软被独立复核退回，均不能当成当前视觉接受证据。
 
 - [新版突刺](evidence/candidate-15-pierce/Pierce-dark-left-60fps.mp4)

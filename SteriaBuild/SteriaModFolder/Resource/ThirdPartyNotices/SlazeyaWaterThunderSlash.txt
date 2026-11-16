@@ -1,0 +1,6 @@
+Slazeya Water / Thunder melee VFX
+Original project-authored meshes, textures, masks and water droplet motion.
+Shader: compatible derivative of the local unity-sword-slash-vfx Contract V1 infrastructure.
+Technique reference only: https://www.cyanilux.com/tutorials/sword-slash-shader-breakdown/
+No game-extracted or third-party image/mesh files are redistributed.
+Authoring provenance: SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/provenance.json
