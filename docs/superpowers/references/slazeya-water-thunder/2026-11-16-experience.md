@@ -135,6 +135,8 @@ release-04的145项原生检查已实际走PrintEffect、直接工厂和更新/�
 
 ## 下次从这里开始
 
+最终白光覆盖反馈采用candidate-24：只加宽SweepWidth会延长可见弧，但中段可能仍偏灰，需要同时保留扫光后段已经经过的窄亮芯。扩展权重只在末段增加，起手沿用紧凑尖头；用真实GPU的中段白光与旧起手像素分别验证。派生Shader由generate_inputs.py重建，必须修改生成器，直接编辑生成文件会在下一次构建被覆盖。GPU采样投影要显式使用RenderTexture宽高比，不能在清除targetTexture后沿用编辑器窗口比例，否则会误判高亮覆盖。纯资源变更可复用已安装DLL及其PDB，仍需验证新AB与实际DLL的组合。
+
 先读[README](../../../../SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/README.md)、[当前候选](../../../../SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/accepted-candidate.json)和[修改记录](../../../../SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/CHANGELOG.md)，再查看本次相关材质/驱动和真实预览。需要改哪一层就只重开对应验证；不要因为有空闲资源重新生成整套资源或从被否决的圆环、尾部先入场方案起步。
 
 本轮原始业务对话已从本机会话日志导出为可见正文，保存在SteriaBuild/设定/对话记录_2026-11-16_斯拉泽雅水雷斩击重置与部署.md；其JSON在output/conversation-archives。二者沿用现有隐私忽略规则，不进入Git。本文和CHANGELOG作为可版本管理的技术经验入口。

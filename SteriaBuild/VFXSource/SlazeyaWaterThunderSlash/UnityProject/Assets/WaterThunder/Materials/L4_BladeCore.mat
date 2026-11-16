@@ -98,7 +98,7 @@ Material:
     - _SweepEnabled: 1
     - _SweepProgress: 0
     - _SweepWake: 0
-    - _SweepWidth: 0.3
+    - _SweepWidth: 0.9
     - _TailGrowth: 1
     - _TailMaskStrength: 0
     - _TailSpread: 1

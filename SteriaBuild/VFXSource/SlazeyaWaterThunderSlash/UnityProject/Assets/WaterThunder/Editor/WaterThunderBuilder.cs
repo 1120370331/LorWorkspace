@@ -163,7 +163,7 @@ public static class WaterThunderBuilder
     {
         m.SetFloat("_HeadWeight",0);m.SetFloat("_SweepEnabled",layer==1?0:1);
         m.SetFloat("_SweepAcross",layer==2?0:1);m.SetFloat("_SweepCore",layer==3?1:0);
-        m.SetFloat("_SweepWidth",layer==0?.42f:layer==3?.30f:.38f);m.SetFloat("_SweepWake",layer==3?0:layer==0?.60f:.24f);
+        m.SetFloat("_SweepWidth",layer==0?.42f:layer==3?.90f:.38f);m.SetFloat("_SweepWake",layer==3?0:layer==0?.60f:.24f);
         m.SetTexture("_SweepMaskTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/Shared_SweepBrushMask.png"));
         m.SetTexture("_EvapScatterTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/Evap_WaterScatter.png"));
         m.SetTexture("_TailMaskTex",layer==0?AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/L1_TailFanMask.png"):Texture2D.whiteTexture);

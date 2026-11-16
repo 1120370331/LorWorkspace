@@ -2,17 +2,18 @@
 
 [修改记录](CHANGELOG.md) · [制作与部署经验复盘](../../../docs/superpowers/references/slazeya-water-thunder/2026-11-16-experience.md) · [本机对话原文](../../设定/对话记录_2026-11-16_斯拉泽雅水雷斩击重置与部署.md)
 
-**已按实测反馈重新部署游戏。** 前锋续向下45°、后缘从后往前退去45°；绑定攻击者固定前方，并成为斯拉泽雅核心书页的普通近战默认效果（含借用卡），远程保持原样；[部署记录与校验](deployment/DELIVERY.md)。本轮附加贴近刀痕的80水滴、白色四方流纹旋动、树状电枝及旧区段/低储能分支先衰减。
+**已按实测反馈重新部署游戏。** 最终白光从前锋连续覆盖到半圆中段，起手保持尖头扫光。 前锋续向下45°、后缘从后往前退去45°；绑定攻击者固定前方，并成为斯拉泽雅核心书页的普通近战默认效果（含借用卡），远程保持原样；[部署记录与校验](deployment/DELIVERY.md)。本轮附加贴近刀痕的80水滴、白色四方流纹旋动、树状电枝及旧区段/低储能分支先衰减。
 
-当前制作候选：**candidate-20-front45-core**，隔离发布release-04，原生集成145项检查通过。本轮按用户要求单人完成。本次补足真正的蒙版溶解：主体先按细碎水纹蚀出缺口，水滴后段同样侵蚀，再用短alpha淡出收尾；尖头入场和水滴流体变化保留。旧风系 Slash 的废弃标记位于 `../SlazeyaWindCombat/SLASH_DEPRECATED.md`；上一版横向水雷工程的源文件备份为 `history/candidate-05-sources.zip`。
+当前制作候选：**candidate-24-half-arc-white**，纯资源发布release-05，原生集成145项检查通过。本轮按用户要求单人完成。本次补足真正的蒙版溶解：主体先按细碎水纹蚀出缺口，水滴后段同样侵蚀，再用短alpha淡出收尾；尖头入场和水滴流体变化保留。旧风系 Slash 的废弃标记位于 `../SlazeyaWindCombat/SLASH_DEPRECATED.md`；上一版横向水雷工程的源文件备份为 `history/candidate-05-sources.zip`。
 
-- [溶解淡出专门视频](evidence/candidate-20-front45-core/dissolve-fade-60fps.mp4)、[固定Alpha=1的溶解分解](evidence/candidate-20-front45-core/dissolve-mask-only-stages.png)
-- [视频：单次攻击＋标注0.5x慢放](evidence/candidate-20-front45-core/review-60fps.mp4)
-- [水滴/水丝动态放大视频](evidence/candidate-20-front45-core/water-dynamics-60fps.mp4)、[尖头入场连续帧](evidence/candidate-20-front45-core/early-head-stages.png)、[水滴形变分解](evidence/candidate-20-front45-core/water-dynamics-stages.png)
-- [白色四方流纹旋动](evidence/candidate-20-front45-core/white-fluid-spin-60fps.mp4)、[分支电势衰减](evidence/candidate-20-front45-core/lightning-discharge-stages.png)
-- [全部资产清单](evidence/candidate-20-front45-core/asset-inventory.md) / [CSV](evidence/candidate-20-front45-core/asset-inventory.csv) / [JSON与hash](evidence/candidate-20-front45-core/asset-inventory.json)
-- [六阶段](evidence/candidate-20-front45-core/six-stages.png)、[四层拆解](evidence/candidate-20-front45-core/four-layers.png)、[命中前后连续帧](evidence/candidate-20-front45-core/contact-frames-stages.png)
-- [水纹散点扩散](evidence/candidate-20-front45-core/evaporation-only-stages.png)、[实际速度曲线](evidence/candidate-20-front45-core/impact-speed-curve.png)、[地面与朝向](evidence/candidate-20-front45-core/orientation-vertical-ground.png)
+- [白光修改前后对比](evidence/candidate-24-half-arc-white/white-highlight-before-after.png) · [亮芯单独预览](evidence/candidate-24-half-arc-white/final-white-core.png)
+- [溶解淡出专门视频](evidence/candidate-24-half-arc-white/dissolve-fade-60fps.mp4)、[固定Alpha=1的溶解分解](evidence/candidate-24-half-arc-white/dissolve-mask-only-stages.png)
+- [视频：单次攻击＋标注0.5x慢放](evidence/candidate-24-half-arc-white/review-60fps.mp4)
+- [水滴/水丝动态放大视频](evidence/candidate-24-half-arc-white/water-dynamics-60fps.mp4)、[尖头入场连续帧](evidence/candidate-24-half-arc-white/early-head-stages.png)、[水滴形变分解](evidence/candidate-24-half-arc-white/water-dynamics-stages.png)
+- [白色四方流纹旋动](evidence/candidate-24-half-arc-white/white-fluid-spin-60fps.mp4)、[分支电势衰减](evidence/candidate-24-half-arc-white/lightning-discharge-stages.png)
+- [全部资产清单](evidence/candidate-24-half-arc-white/asset-inventory.md) / [CSV](evidence/candidate-24-half-arc-white/asset-inventory.csv) / [JSON与hash](evidence/candidate-24-half-arc-white/asset-inventory.json)
+- [六阶段](evidence/candidate-24-half-arc-white/six-stages.png)、[四层拆解](evidence/candidate-24-half-arc-white/four-layers.png)、[命中前后连续帧](evidence/candidate-24-half-arc-white/contact-frames-stages.png)
+- [水纹散点扩散](evidence/candidate-24-half-arc-white/evaporation-only-stages.png)、[实际速度曲线](evidence/candidate-24-half-arc-white/impact-speed-curve.png)、[地面与朝向](evidence/candidate-24-half-arc-white/orientation-vertical-ground.png)
 
 ## 打开与调整
 

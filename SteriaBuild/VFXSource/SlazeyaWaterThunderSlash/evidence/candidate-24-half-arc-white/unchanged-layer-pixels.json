@@ -1,0 +1,28 @@
+{
+  "baseline": "candidate-20-front45-core",
+  "byte_identical_frames": [
+    "L1_WaterBlade\\01.png",
+    "L1_WaterBlade\\02.png",
+    "L1_WaterBlade\\03.png",
+    "L1_WaterBlade\\04.png",
+    "L1_WaterBlade\\05.png",
+    "L1_WaterBlade\\06.png",
+    "L2_SplashWake\\01.png",
+    "L2_SplashWake\\02.png",
+    "L2_SplashWake\\03.png",
+    "L2_SplashWake\\04.png",
+    "L2_SplashWake\\05.png",
+    "L2_SplashWake\\06.png",
+    "L3_Lightning\\01.png",
+    "L3_Lightning\\02.png",
+    "L3_Lightning\\03.png",
+    "L3_Lightning\\04.png",
+    "L3_Lightning\\05.png",
+    "L3_Lightning\\06.png",
+    "composite\\01.png",
+    "composite\\02.png",
+    "L4_BladeCore\\01.png",
+    "L4_BladeCore\\02.png"
+  ],
+  "final_core_reach": "final-white-reach.csv"
+}

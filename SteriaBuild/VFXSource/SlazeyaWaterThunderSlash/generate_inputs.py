@@ -236,14 +236,18 @@ shader=shader.replace('                o.localPosition = v.vertex.xy;','        
 shader=shader.replace('float coverage = saturate(shape * mask * lifetime * fracture);', '''float front = pow(saturate(1 - max(0, _Reveal-i.uv.x) / max(_HeadSpan, 0.03)), 0.7);
                 float across=lerp(i.uv.y,abs(i.uv.y-0.5)*2,_SweepCore);
                 across=lerp(0.025,across,_SweepAcross);
-                float2 sweepUV=float2((i.uv.x-_SweepProgress)/max(_SweepWidth,0.08)+0.92,across);
+                // Keep entry compact; the final white stroke reaches back through the mid-arc.
+                float coreFinish=_SweepCore*smoothstep(0.62,1,_SweepProgress);
+                float sweepWidth=lerp(_SweepWidth,min(_SweepWidth,0.30),_SweepCore-coreFinish);
+                float2 sweepUV=float2((i.uv.x-_SweepProgress)/max(sweepWidth,0.08)+0.92,across);
                 float sweep=tex2D(_SweepMaskTex,sweepUV).r * step(0,sweepUV.x)*step(sweepUV.x,1);
                 float passed=max(0,_SweepProgress-i.uv.x);
                 float spread=smoothstep(0.015,0.18,passed);
                 float wakeWidth=1-smoothstep(0.04+spread*0.96,0.08+spread*0.96,across);
                 float wake=(1-smoothstep(_SweepProgress-0.035,_SweepProgress+0.015,i.uv.x))*_SweepWake*smoothstep(0.012,0.10,passed)*wakeWidth;
                 float sweepStrength=0.65+0.80*_SweepProgress;
-                float movingMask=max(wake,sweep*sweepStrength);
+                float coreHold=coreFinish*smoothstep(0.38,0.46,i.uv.x)*(1-smoothstep(_SweepProgress-0.02,_SweepProgress+0.01,i.uv.x));
+                float movingMask=max(max(wake,sweep*sweepStrength),coreHold*0.95);
                 mask*=lerp(1,tex2D(_TailMaskTex,i.uv).r,_TailMaskStrength);
                 float2 dissolveUV=(i.localPosition-_EvapFrame.xy)/_EvapFrame.zw+0.5;
                 float dissolveHeight=tex2D(_EvapScatterTex,dissolveUV).r;

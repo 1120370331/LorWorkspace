@@ -54,13 +54,34 @@ public static class WaterThunderPreview
             Capture(camera,Path.Combine(output,"end-clear.png"));
             string frames=Path.Combine(output,"motion");Directory.CreateDirectory(frames);
             for(int frame=0;frame<79;frame++){player.ApplyAt(frame/60f);Capture(camera,Path.Combine(frames,frame.ToString("D3")+".png"));}
-            ExportSupport(player,camera);ExportFlowAndVoltage(player,camera);ExportDissolve(player,camera);ExportWaterDynamics(player,camera);All(player,true);player.ApplyAt(.33f);Orientation(player,camera);BuildAndReload();
+            VerifyFinalWhiteReach(player,camera);ExportSupport(player,camera);ExportFlowAndVoltage(player,camera);ExportDissolve(player,camera);ExportWaterDynamics(player,camera);All(player,true);player.ApplyAt(.33f);Orientation(player,camera);BuildAndReload();
             var stage=WaterThunderBuilder.CreateStage(true);stage.autoPlay=true;stage.sampleTime=.215f;
             EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(),WaterThunderBuilder.Root+"/Scenes/WaterThunderAuthoring.unity");AssetDatabase.SaveAssets();
             File.WriteAllText(Path.Combine(output,"complete.json"),"{\"status\":\"technical-pass\",\"unity\":\"2019.3.15f1\",\"renderer\":\"D3D11\",\"duration\":1.04,\"hitTime\":0.19,\"layerCount\":4,\"supportGroups\":2,\"deployment\":false,\"gameFactoryVerified\":false}");
             Debug.Log("SLAZEYA_WATER_THUNDER_PASS");EditorApplication.Exit(0);
         }
         catch(Exception ex){Debug.LogException(ex);EditorApplication.Exit(1);}
+    }
+    static void VerifyFinalWhiteReach(WaterThunderSlash player,Camera camera)
+    {
+        All(player,false);player.core=true;player.ApplyAt(.33f);
+        var pixels=new Texture2D(960,540,TextureFormat.RGB24,false);
+        pixels.LoadImage(Capture(camera,Path.Combine(output,"final-white-core.png")));
+        camera.aspect=960f/540;
+        var report=new List<string>{"pathT,peakWhiteByte"};
+        foreach(float path in new[]{.45f,.50f,.60f,.70f,.80f,.90f})
+        {
+            var p=WaterThunderMotion.Curve(path)+WaterThunderMotion.Normal(path)*(.015f*WaterThunderMotion.Width(path));
+            var uv=camera.WorldToViewportPoint(player.transform.TransformPoint(p));int x=Mathf.RoundToInt(uv.x*960),y=Mathf.RoundToInt(uv.y*540);float white=0;
+            for(int dy=-2;dy<=2;dy++)for(int dx=-2;dx<=2;dx++)
+            {
+                var c=pixels.GetPixel(Mathf.Clamp(x+dx,0,959),Mathf.Clamp(y+dy,0,539));
+                white=Mathf.Max(white,Mathf.Min(c.r,Mathf.Min(c.g,c.b))*255);
+            }
+            report.Add(path.ToString(CultureInfo.InvariantCulture)+","+white.ToString(CultureInfo.InvariantCulture));
+            Check(white>=175,"Final white core covers arc midpoint through front: "+path);
+        }
+        camera.ResetAspect();Object.DestroyImmediate(pixels);File.WriteAllLines(Path.Combine(output,"final-white-reach.csv"),report);All(player,true);
     }
     static void ExportSupport(WaterThunderSlash player,Camera camera)
     {
