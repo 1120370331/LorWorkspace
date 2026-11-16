@@ -39,7 +39,7 @@
   "inputs": [
     {
       "path": "UnityProject/Assets/WaterThunder/Textures/Evap_WaterScatter.png",
-      "sha256": "6eff8550ab2a80b17393d692cc2dbf26207d31f7450466871edbdb9f14baf1bc"
+      "sha256": "e819bff264e12d5af79adb883f9105b9748823702c466f5b8c5df9b6a2f3c8fb"
     },
     {
       "path": "UnityProject/Assets/WaterThunder/Textures/Impact_Flash.png",
@@ -107,7 +107,7 @@
     },
     {
       "path": "UnityProject/Assets/WaterThunder/Shaders/WaterThunderFormedArc.shader",
-      "sha256": "f1029e4cdb41ed3ff93098eb7ff1e3fe05210aef91383ae8f03e70490ee5c8e9"
+      "sha256": "0e0d86359e28f3ae75f881e097f61e6b3141c02f02a004910bfb07c571eb9f37"
     }
   ]
 }

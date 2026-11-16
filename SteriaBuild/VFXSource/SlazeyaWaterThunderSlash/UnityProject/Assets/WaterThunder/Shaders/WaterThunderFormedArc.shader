@@ -36,7 +36,7 @@ Shader "Steria/WaterThunder/FormedArc"
         _EvapProgress ("Scatter Evaporation Progress", Range(0,1)) = 0
         _EvapSpread ("Scatter Spread", Float) = 1
         _EvapLift ("Scatter Rise", Float) = 0
-        _EvapFrame ("Scatter Local XY Frame", Vector) = (0.65,1.95,3.7,3.85)
+        _EvapFrame ("Scatter Local XY Frame", Vector) = (0.65,1.70,3.7,4.8)
         _HeadWeight ("Legacy Front Emphasis", Range(0,1)) = 0
         _HeadSpan ("Front Length", Range(0.03,1)) = 0.32
         _Evaporation ("Water Scatter Evaporation", Range(0,1)) = 0

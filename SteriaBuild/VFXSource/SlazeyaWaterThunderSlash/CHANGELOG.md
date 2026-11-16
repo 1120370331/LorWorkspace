@@ -23,9 +23,17 @@
 | 10 | 部署，斩打突都用这一款，远程保持 | 现有三个近战工厂键改用同一水雷资源，8个攻击/反击入口生效；XML、远程等保留 |
 | 11 | 水滴贴近痕迹、稍密；白色流体四方纹自旋；闪电分支与旧区段先衰减 | 水滴80颗、收紧散射；水体内四角白纹旋流；连接电树按着电时间和局部储能放电 |
 
+## 实测反馈修订 · candidate-20 / release-04
+
+- 前锋在原曲线末端连续追加向下转45°的弧；后缘于215–480ms沿弧线由后向前退去45°，继续保留细碎水纹溶解。重映射命中时刻，单点爆发仍为190ms。
+- 删除目标胸口世界锚点和逐帧世界位置纠偏，改挂攻击者characterRotationCenter固定局部前方。归一化尺度0.50，继承角色朝向/移动，原生近战2倍及骰子倍率各一次。
+- 在RencounterManager.PrintEffect按播放快照接入核心书页默认近战；精确匹配SteriaBuilding:99000002和SteriaBuilding:2，普通/借用卡的斩打突均覆盖。直接CreateAttackEffect也接入同一判断。Fire/F、远程、FarArea、FarAreaEach、守备和None保持原行为。
+- 原生实际DLL/AB检查145项通过，含真实PrintEffect的普通/借用卡、核心ID、数据不变、排除条件、直接工厂、人物跟随、目标移动不干扰、双朝向、成功/空挥/取消。未运行完整接待实战。
+- 仅4份既有源码变化，100份其他源码与13份内嵌资源保持。部署收据output/slazeya-water-thunder/deployments/20261116T153255Z/receipt.json；源码快照deployment/release-04-sources.zip。新预览视频和50项资产清单见README。
+
 ## 制作候选经过
 
-候选目录是实现版本号，不代表每版都获得用户认可。早期候选和日志部分只保留在本机；当前可交付证据位于candidate-19。
+候选目录是实现版本号，不代表每版都获得用户认可。早期候选和日志部分只保留在本机；当前可交付证据位于candidate-20；candidate-19是上次发布历史。
 
 | 候选 | 主要改动或发现 | 处理结果 |
 | --- | --- | --- |
@@ -57,7 +65,7 @@
 
 “priority=800而真实工厂仍返回旧类型”是本机测试观察。本记录不据此断言Harmony本身存在某个通用缺陷。
 
-## 最终修改面
+## release-03 修改面（历史）
 
 | 文件/目录 | 职责 |
 | --- | --- |
@@ -73,7 +81,7 @@
 | `SteriaModFolder/Assemblies/Steria.dll` | 已部署新DLL，SHA256见DELIVERY.md |
 | `SteriaModFolder/Assemblies/AB/steria_slazeya_water_thunder_assets` | 新水雷资源包；旧风系AB不改 |
 
-## 可复现证据与剩余边界
+## release-03 证据与剩余边界（历史）
 
 - 制作工程：`UnityProject`，Unity **2019.3.15f1 / Built-in / Gamma / D3D11**。
 - 当前艺术与清单：[candidate-19](evidence/candidate-19-close-spin-voltage/visual-review.md)、[资产清单](evidence/candidate-19-close-spin-voltage/asset-inventory.md)。

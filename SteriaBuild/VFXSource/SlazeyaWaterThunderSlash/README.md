@@ -2,17 +2,17 @@
 
 [修改记录](CHANGELOG.md) · [制作与部署经验复盘](../../../docs/superpowers/references/slazeya-water-thunder/2026-11-16-experience.md) · [本机对话原文](../../设定/对话记录_2026-11-16_斯拉泽雅水雷斩击重置与部署.md)
 
-**已部署游戏。** 斩、打、突统一水雷效果，远程保持原样；[部署记录与校验](deployment/DELIVERY.md)。本轮附加贴近刀痕的80水滴、白色四方流纹旋动、树状电枝及旧区段/低储能分支先衰减。
+**已按实测反馈重新部署游戏。** 前锋续向下45°、后缘从后往前退去45°；绑定攻击者固定前方，并成为斯拉泽雅核心书页的普通近战默认效果（含借用卡），远程保持原样；[部署记录与校验](deployment/DELIVERY.md)。本轮附加贴近刀痕的80水滴、白色四方流纹旋动、树状电枝及旧区段/低储能分支先衰减。
 
-当前制作候选：**candidate-19-close-spin-voltage**。本轮按用户要求单人完成。本次补足真正的蒙版溶解：主体先按细碎水纹蚀出缺口，水滴后段同样侵蚀，再用短alpha淡出收尾；尖头入场和水滴流体变化保留。旧风系 Slash 的废弃标记位于 `../SlazeyaWindCombat/SLASH_DEPRECATED.md`；上一版横向水雷工程的源文件备份为 `history/candidate-05-sources.zip`。
+当前制作候选：**candidate-20-front45-core**，隔离发布release-04，原生集成145项检查通过。本轮按用户要求单人完成。本次补足真正的蒙版溶解：主体先按细碎水纹蚀出缺口，水滴后段同样侵蚀，再用短alpha淡出收尾；尖头入场和水滴流体变化保留。旧风系 Slash 的废弃标记位于 `../SlazeyaWindCombat/SLASH_DEPRECATED.md`；上一版横向水雷工程的源文件备份为 `history/candidate-05-sources.zip`。
 
-- [溶解淡出专门视频](evidence/candidate-19-close-spin-voltage/dissolve-fade-60fps.mp4)、[固定Alpha=1的溶解分解](evidence/candidate-19-close-spin-voltage/dissolve-mask-only-stages.png)
-- [视频：单次攻击＋标注0.5x慢放](evidence/candidate-19-close-spin-voltage/review-60fps.mp4)
-- [水滴/水丝动态放大视频](evidence/candidate-19-close-spin-voltage/water-dynamics-60fps.mp4)、[尖头入场连续帧](evidence/candidate-19-close-spin-voltage/early-head-stages.png)、[水滴形变分解](evidence/candidate-19-close-spin-voltage/water-dynamics-stages.png)
-- [白色四方流纹旋动](evidence/candidate-19-close-spin-voltage/white-fluid-spin-60fps.mp4)、[分支电势衰减](evidence/candidate-19-close-spin-voltage/lightning-discharge-stages.png)
-- [全部资产清单](evidence/candidate-19-close-spin-voltage/asset-inventory.md) / [CSV](evidence/candidate-19-close-spin-voltage/asset-inventory.csv) / [JSON与hash](evidence/candidate-19-close-spin-voltage/asset-inventory.json)
-- [六阶段](evidence/candidate-19-close-spin-voltage/six-stages.png)、[四层拆解](evidence/candidate-19-close-spin-voltage/four-layers.png)、[命中前后连续帧](evidence/candidate-19-close-spin-voltage/contact-frames-stages.png)
-- [水纹散点扩散](evidence/candidate-19-close-spin-voltage/evaporation-only-stages.png)、[实际速度曲线](evidence/candidate-19-close-spin-voltage/impact-speed-curve.png)、[地面与朝向](evidence/candidate-19-close-spin-voltage/orientation-vertical-ground.png)
+- [溶解淡出专门视频](evidence/candidate-20-front45-core/dissolve-fade-60fps.mp4)、[固定Alpha=1的溶解分解](evidence/candidate-20-front45-core/dissolve-mask-only-stages.png)
+- [视频：单次攻击＋标注0.5x慢放](evidence/candidate-20-front45-core/review-60fps.mp4)
+- [水滴/水丝动态放大视频](evidence/candidate-20-front45-core/water-dynamics-60fps.mp4)、[尖头入场连续帧](evidence/candidate-20-front45-core/early-head-stages.png)、[水滴形变分解](evidence/candidate-20-front45-core/water-dynamics-stages.png)
+- [白色四方流纹旋动](evidence/candidate-20-front45-core/white-fluid-spin-60fps.mp4)、[分支电势衰减](evidence/candidate-20-front45-core/lightning-discharge-stages.png)
+- [全部资产清单](evidence/candidate-20-front45-core/asset-inventory.md) / [CSV](evidence/candidate-20-front45-core/asset-inventory.csv) / [JSON与hash](evidence/candidate-20-front45-core/asset-inventory.json)
+- [六阶段](evidence/candidate-20-front45-core/six-stages.png)、[四层拆解](evidence/candidate-20-front45-core/four-layers.png)、[命中前后连续帧](evidence/candidate-20-front45-core/contact-frames-stages.png)
+- [水纹散点扩散](evidence/candidate-20-front45-core/evaporation-only-stages.png)、[实际速度曲线](evidence/candidate-20-front45-core/impact-speed-curve.png)、[地面与朝向](evidence/candidate-20-front45-core/orientation-vertical-ground.png)
 
 ## 打开与调整
 
@@ -39,13 +39,13 @@
 
 ## 冲击时序与蒸发
 
-六个代表时刻为 **45 / 155 / 215 / 330 / 535 / 790ms**。0–190ms加速，190ms到达路径72%的命中点；190–250ms短暂减速，250–320ms再次加速扫落。速度来自同一条C1 Hermite进度曲线，只改变刀锋视觉速度，不修改全局timeScale。
+六个代表时刻为 **45 / 155 / 215 / 330 / 535 / 790ms**。0–190ms加速，190ms到达原主体曲线72%的命中点（扩展路径参数为61.92%）；190–250ms短暂减速，250–320ms再次加速扫落。速度来自同一条C1 Hermite进度曲线，只改变刀锋视觉速度，不修改全局timeScale。
 
 完整主层网格的Reveal固定为1；前端尖、后方宽的刷形Mask先产生运动尖头，只有经过前锋的位置才逐渐横向展开成水流；尾部TailGrowth晚于前锋增长，起手不再先出现扇开的尾丝。使用 `Shared_SweepBrushMask.png` 这张Clamp刷形楔形蒙版沿pathT扫过，使局部亮部移动并逐渐增强，扫后留下水体余光。主层使用SweptWedge模式，辅助粒子沿用兼容的FormedArc属性。材质的SweepWidth控制亮部范围，SweepWake控制余留水体强度。
 
 L1尾端不再捏成尖点。尾部网格预留扇开空间，`L1_TailFanMask.png` 将其分成长度、宽度不同的断续水丝。材质TailSpread控制尾部扩散，TailMaskStrength控制分叉蒙版强度；这两个参数可以独立调整，不增加同形透明外壳。
 
-360ms起，主体按水纹蒙版的高度阈值逐步蚀出细碎缺口，先侵蚀、后淡出；水滴和水丝也在各自寿命后段执行蒙版溶解，最后12%寿命才做alpha收尾。同一张Linear RGBA的R=主体溶解高度、G=较柔和的水滴溶解高度、A=可见散点覆盖；散点残影继续扩大约38%、上浮、变淡，材质用BaseColor染青蓝色。无大圆圈。整体1040ms清除，循环额外保留250ms空档。
+215–480ms先按弧线从后往前退掉45°的尾段；360ms起，主体按水纹蒙版的高度阈值逐步蚀出细碎缺口，先侵蚀、后淡出；水滴和水丝也在各自寿命后段执行蒙版溶解，最后12%寿命才做alpha收尾。同一张Linear RGBA的R=主体溶解高度、G=较柔和的水滴溶解高度、A=可见散点覆盖；散点残影继续扩大约38%、上浮、变淡，材质用BaseColor染青蓝色。无大圆圈。整体1040ms清除，循环额外保留250ms空档。
 
 飞沫和命中粒子均按绝对时间确定性采样。水滴使用重力与线性阻力的闭式运动，顺当前速度拉伸并逐渐回圆，宽厚按近似体积守恒缩放。每颗水滴有独立相位的衰减表面张力波动，少量水丝先拉长、收颈、分成小水滴。线性法线和局部移动高光替代整圈等亮描边。源Mesh只读，每实例只克隆自身飞沫网格，场景保存时恢复源引用。OnValidate只标记刷新，实例化在正常Editor update完成，避免Unity反序列化期间创建对象。
 

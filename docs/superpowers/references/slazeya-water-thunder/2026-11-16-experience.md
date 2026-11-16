@@ -99,6 +99,16 @@ float taper = Mathf.Pow(Mathf.Max(0, Mathf.Sin(q * Mathf.PI)), exponent);
 
 ## 制作工程接入游戏时重新验证调用链
 
+**实测反馈修订（release-04）覆盖下文release-03的坐标约定。** 目标胸前冻结世界锚点在实战中产生错位，现已删除。三类近战统一挂攻击者characterRotationCenter，固定局部前方，继承角色移动和朝向，归一化尺度改为0.50；目标只用于成功命中配对，不再控制摆放。原生近战2倍和骰子倍率仍各一次。
+
+只改卡牌EffectRes无法成为核心书页的基本攻击外观。播放阶段应取RencounterManager的BattleCardBehaviourResult快照，不能依赖可能已推进的currentBehavior；只重写当次customResource，不改原卡牌数据。精确匹配包ID和核心ID（SteriaBuilding:99000002 / :2），避免原版同号核心或可转移被动误触发。普通/借用卡近战斩打突适用；远程、群体、守备、Fire/F和显式None保留。直接CreateAttackEffect入口复用同一判断，避免第二个竞争的CreateBehaviourEffect前缀。
+
+45°延长和45°退尾分别验证：前锋延长看连续切线的转角；后缘消失沿弧线极角求pathT，再动画化Retreat。不要整张旋转代替延长，也不要alpha整体淡出代替退尾。曲线变长后必须同步重映射命中参数、飞沫出生点、蒸发数据图范围、最低地面间距和重载预览相机。
+
+release-04的145项原生检查已实际走PrintEffect、直接工厂和更新/渲染路径，验证跟随攻击者、目标移动不干扰、普通/借用卡与核心身份限制；另有100份其他源码和13份内嵌资源保持证明。游戏部署收据为output/slazeya-water-thunder/deployments/20261116T153255Z/receipt.json。完整接待实战仍需游戏内复核。
+
+以下保留release-03经验与当时约定作为历史，不能再据此恢复目标世界锚点。
+
 静态AB能加载和播放脚本能运行，仍不足以证明卡牌会调用它。最终包只含原生Transform/MeshFilter/MeshRenderer/ParticleSystem等组件，自定义驱动由Steria.dll提供。
 
 这轮新增竞争工厂前缀时，注册表里可见priority=800，直接调用新工厂能初始化，但真正DiceEffectManager仍返回旧类型。没有凭这些局部成功放行；改成既有注册表三行类型替换，并复用已存在的成功命中路由后，真实工厂才返回新类型。记录这个观察，不推断成某个通用Harmony缺陷。

@@ -25,6 +25,8 @@ public sealed class WaterThunderNativeSmoke : MonoBehaviour
         h.Patch(AccessTools.Method(typeof(DiceEffectManager),nameof(DiceEffectManager.CreateBehaviourEffect)),prefix:new HarmonyMethod(typeof(Steria.HarmonyPatches),nameof(Steria.HarmonyPatches.DiceEffectManager_CreateBehaviourEffect_Prefix)));
         h.CreateClassProcessor(typeof(Steria.DiceEffectManagerPatch)).Patch();
         h.CreateClassProcessor(typeof(SlazeyaWindImpactPresentationPatch)).Patch();h.CreateClassProcessor(typeof(SlazeyaWindConfirmedImpactPatch)).Patch();
+        h.CreateClassProcessor(typeof(Steria.Vfx.SlazeyaCoreMeleePresentationPatch)).Patch();
+        h.CreateClassProcessor(typeof(Steria.DiceEffectManager_CreateAttackEffect_Patch)).Patch();
         var patchInfo=Harmony.GetPatchInfo(AccessTools.Method(typeof(DiceEffectManager),nameof(DiceEffectManager.CreateBehaviourEffect)));
         foreach(var patch in patchInfo.Prefixes)Debug.Log("REGISTERED_PREFIX "+patch.PatchMethod.DeclaringType.FullName+"."+patch.PatchMethod.Name+" priority="+patch.priority);
         foreach(var patch in patchInfo.Postfixes)Debug.Log("REGISTERED_POSTFIX "+patch.PatchMethod.DeclaringType.FullName+"."+patch.PatchMethod.Name+" priority="+patch.priority);
@@ -39,7 +41,7 @@ public sealed class WaterThunderNativeSmoke : MonoBehaviour
             var visual=fx.GetComponentInChildren<WaterThunderSlash>(true);
             if(!Check(visual!=null&&!visual.autoPlay,"DLL's shared deterministic driver"))yield break;
             ActionDetail action=suffix=="Slash"?ActionDetail.Slash:suffix=="Hit"?ActionDetail.Hit:ActionDetail.Penetrate;
-            if(!Check(fx.transform.parent==self.charAppearance.GetAtkEffectPivot(action),"native "+action+" attachment"))yield break;
+            if(!Check(fx.transform.parent==self.characterRotationCenter&&fx.transform.localPosition==new Vector3(-1.3f,0,0),"fixed actor-front "+action+" attachment"))yield break;
             if(!Check(Mathf.Abs(fx.transform.localScale.x-2.5f)<.00001f,"native melee and roll applied once"))yield break;
             if(!Check(fx.GetComponentsInChildren<Renderer>(true).All(r=>r.gameObject.layer==8&&(!r.enabled||r.sortingLayerName=="Particle")),"Effect layer and Particle sorting on visible renderers"))yield break;
             if(!Check(fx.GetComponentsInChildren<Renderer>(true).Where(r=>!(r is SpriteRenderer)).All(r=>r.sharedMaterial!=null&&r.sharedMaterial.shader.isSupported),"actual bundle shader support"))yield break;
@@ -51,13 +53,14 @@ public sealed class WaterThunderNativeSmoke : MonoBehaviour
             while(fx!=null&&visual.sampleTime<.06f&&Time.realtimeSinceStartup-began<3)yield return null;
             if(!Check(fx!=null&&visual.sampleTime>=.06f,"actual Update advances authored clock"))yield break;
             float sample=visual.sampleTime;Vector3 anchor=visual.transform.TransformPoint(WaterThunderMotion.Contact);
-            float expectedX=target.WorldPosition.x-(facingLeft?-1:1)*.35f*3;
-            if(!Check(Mathf.Abs(anchor.x-expectedX)<.0001f&&Mathf.Abs(anchor.y-target.atkEffectRoot.position.y)<.0001f,"actual target chest contact"))yield break;
+            if(!Check(facingLeft?anchor.x<self.WorldPosition.x:anchor.x>self.WorldPosition.x,"effect stays in actor front"))yield break;
             Vector3 forward=visual.transform.TransformVector(Vector3.right);
             if(!Check(facingLeft?forward.x<0:forward.x>0,"asset basis and native facing are correct"))yield break;
-            self.transform.position+=new Vector3(1,.5f,0);yield return null;
-            if(!Check(Vector3.Distance(anchor,visual.transform.TransformPoint(WaterThunderMotion.Contact))<.001f,"contact stays fixed after attacker moves"))yield break;
-            var camera=CameraFor(visual);Placeholder(target.WorldPosition.x);
+            Vector3 shift=new Vector3(1,.5f,0);self.transform.position+=shift;yield return null;
+            if(!Check(Vector3.Distance(anchor+shift,visual.transform.TransformPoint(WaterThunderMotion.Contact))<.001f,"effect follows attacker movement exactly"))yield break;
+            anchor=visual.transform.TransformPoint(WaterThunderMotion.Contact);target.transform.position+=new Vector3(7,2,0);yield return null;
+            if(!Check(Vector3.Distance(anchor,visual.transform.TransformPoint(WaterThunderMotion.Contact))<.001f,"target movement cannot displace effect"))yield break;
+            var camera=CameraFor(visual);Placeholder(self.WorldPosition.x);
             foreach(float t in new[]{.215f,.33f,.60f})
             {
                 visual.ApplyAt(t);Save(camera,suffix+"-"+(facingLeft?"left":"right")+"-"+Mathf.RoundToInt(t*1000)+".png");
@@ -98,7 +101,65 @@ public sealed class WaterThunderNativeSmoke : MonoBehaviour
             fx.gameObject.SetActive(false);UnityEngine.Object.Destroy(fx.gameObject);UnityEngine.Object.Destroy(self.gameObject);UnityEngine.Object.Destroy(target.gameObject);yield return null;
         }
         if(!Check(Steria.HarmonyPatches.SteriaCustomEffects["Steria_WaterSlash"]==typeof(DiceAttackEffect_Steria_WaterSlash),"FarArea resource registration preserved"))yield break;
+        if(!CoreDefaults(manager))yield break;
         h.UnpatchSelf();done(true,"WATER_THUNDER_NATIVE_PASS "+checks+" checks; actual candidate DLL, native factory, Update, AB and GPU; synthetic actor transforms, not full battle");
+    }
+    bool CoreDefaults(DiceEffectManager manager)
+    {
+        var self=Actor(true,9);var target=Actor(false,-9);
+        foreach(int core in new[]{99000002,2})foreach(BehaviourDetail detail in new[]{BehaviourDetail.Slash,BehaviourDetail.Hit,BehaviourDetail.Penetrate})foreach(string raw in new[]{"","Borrowed_Generic_J"})
+        {
+            Book(self,core,"SteriaBuilding");var result=Snapshot(detail,CardRange.Near,raw);
+            // Deliberately stale live action: playback must select the snapshot instead.
+            self.model.currentDiceAction=new BattlePlayingCardDataInUnitModel();
+            var encounter=(RencounterManager)FormatterServices.GetUninitializedObject(typeof(RencounterManager));
+            AccessTools.Field(typeof(RencounterManager),"_librarian").SetValue(encounter,self);
+            AccessTools.Field(typeof(RencounterManager),"_enemy").SetValue(encounter,target);
+            AccessTools.Field(typeof(RencounterManager),"_currentLibrarianBehaviourResult").SetValue(encounter,result);
+            AccessTools.Field(typeof(RencounterManager),"_currentEnemyBehaviourResult").SetValue(encounter,new BattleCardBehaviourResult{behaviourRawData=new DiceBehaviour{Type=BehaviourType.Def},diceBehaviourResult=new DiceBehaviourResultData{result=Result.Lose,actionType=ActionType.Def}});
+            AccessTools.Method(typeof(RencounterManager),"PrintEffect").Invoke(encounter,new object[]{true,false,ActionDetail.Slash,ActionDetail.Default,"","",false,false,false,false});
+            var visual=self.GetComponentInChildren<WaterThunderSlash>();
+            if(!Check(visual!=null&&visual.impactBurst,"real PrintEffect core="+core+" borrowed="+raw+" detail="+detail))return false;
+            var owner=visual.GetComponentInParent<DiceAttackEffect_Steria_SlazeyaWaterThunderBase>();
+            if(!Check(result.behaviourRawData.EffectRes==raw,"playback does not mutate borrowed card"))return false;
+            UnityEngine.Object.DestroyImmediate(owner.gameObject);
+        }
+        Book(self,99000002,"SteriaBuilding");
+        foreach(string mode in new[]{"other-core","vanilla-id2","Far","FarArea","FarAreaEach","guard","Fire","motion-F","None","raw-None","empty"})
+        {
+            Book(self,mode=="other-core"?99000001:mode=="vanilla-id2"?2:99000002,mode=="vanilla-id2"?"":"SteriaBuilding");
+            CardRange range=mode=="Far"?CardRange.Far:mode=="FarArea"?CardRange.FarArea:mode=="FarAreaEach"?CardRange.FarAreaEach:CardRange.Near;
+            var result=Snapshot(BehaviourDetail.Slash,range,mode=="raw-None"?"None":"Original_J");
+            if(mode=="guard")result.behaviourRawData.Type=BehaviourType.Def;
+            if(mode=="motion-F")result.behaviourRawData.MotionDetail=MotionDetail.F;
+            if(mode=="empty")result.hasBehaviour=false;
+            string custom=mode=="None"?"None":"Original_Custom";
+            string resolved=Steria.Vfx.SlazeyaWaterThunderDefaults.Resolve(self,result,mode=="Fire"?ActionDetail.Fire:ActionDetail.Slash,custom);
+            if(!Check(resolved==custom,"core default excludes "+mode))return false;
+        }
+        Book(self,99000002,"SteriaBuilding");var snapshot=Snapshot(BehaviourDetail.Penetrate,CardRange.Near,"");
+        var playing=new BattlePlayingCardDataInUnitModel{owner=self.model,target=target.model,card=snapshot.cardModel};
+        playing.currentBehavior=new BattleDiceBehavior{card=playing,behaviourInCard=snapshot.behaviourRawData};
+        AccessTools.Field(typeof(BattleDiceBehavior),"_diceFinalResultValue").SetValue(playing.currentBehavior,2);self.model.currentDiceAction=playing;
+        var direct=manager.CreateAttackEffect(self.model,1.2f);
+        if(!Check(direct is DiceAttackEffect_Steria_SlazeyaWaterThunderPierce,"real direct CreateAttackEffect uses core default"))return false;
+        if(!Check(Mathf.Abs(direct.transform.localScale.x-3)<.0001f,"direct path applies native roll once"))return false;
+        UnityEngine.Object.DestroyImmediate(direct.gameObject);
+        UnityEngine.Object.DestroyImmediate(self.gameObject);UnityEngine.Object.DestroyImmediate(target.gameObject);return true;
+    }
+    static void Book(BattleUnitView view,int id,string package)
+    {
+        var book=(BookModel)FormatterServices.GetUninitializedObject(typeof(BookModel));
+        AccessTools.Field(typeof(BookModel),"_classInfo").SetValue(book,new BookXmlInfo{_id=id,workshopID=package});
+        view.model.equipment=new BattleUnitModelEquip(view.model){book=book};
+    }
+    static BattleCardBehaviourResult Snapshot(BehaviourDetail detail,CardRange range,string raw)
+    {
+        var card=(BattleDiceCardModel)FormatterServices.GetUninitializedObject(typeof(BattleDiceCardModel));
+        AccessTools.Field(typeof(BattleDiceCardModel),"_xmlData").SetValue(card,new DiceCardXmlInfo{Spec=new DiceCardSpec{Ranged=range}});
+        return new BattleCardBehaviourResult{hasBehaviour=true,cardModel=card,resultDiceValue=2,vanillaDiceFace=4,
+            behaviourRawData=new DiceBehaviour{Type=BehaviourType.Atk,Detail=detail,MotionDetail=MotionDetail.J,Dice=4,EffectRes=raw},
+            diceBehaviourResult=new DiceBehaviourResultData{result=Result.Win,actionType=ActionType.Atk,range=range}};
     }
     static DiceAttackEffect Create(DiceEffectManager manager,string resource,float scale,BattleUnitView self,BattleUnitView target,float time)
     {

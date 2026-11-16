@@ -29,8 +29,7 @@ try:
   for rel,value in proof['preserved'].items():assert sha(contained(root,rel))==value,(label,rel)
   for rel in order:
    p=contained(root,rel);before=sha(p)
-   if rel.endswith('Steria.dll'):assert before==proof['baseline_dll'],(label,rel,before)
-   else:assert before is None,'New water/thunder target already exists: '+str(p)
+   assert before==proof['before_payload'][rel],(label,rel,before,'unexpected baseline')
    backup=run/'backup'/label/rel
    if before is not None:backup.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,backup);assert sha(backup)==before
    receipt['items'].append({'root':label,'relative':rel,'path':str(p),'before':before,'after':proof['payload'][rel],'backup':str(backup) if before else None})

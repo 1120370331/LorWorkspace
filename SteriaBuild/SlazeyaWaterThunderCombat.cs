@@ -2,12 +2,60 @@ using System;
 using System.IO;
 using System.Reflection;
 using Battle.DiceAttackEffect;
+using HarmonyLib;
 using LOR_DiceSystem;
 using Steria.WaterThunder;
 using UnityEngine;
 
 namespace Steria.Vfx
 {
+    /// <summary>Core identity owns ordinary melee appearance; card data remains unchanged.</summary>
+    public static class SlazeyaWaterThunderDefaults
+    {
+        public static string Resolve(BattleUnitView view, BattleCardBehaviourResult result, ActionDetail action, string customResource)
+        {
+            if(result==null||!result.hasBehaviour)return customResource;
+            var range=result.cardModel==null?result.diceBehaviourResult.range:result.cardModel.GetSpec().Ranged;
+            return Resource(view==null?null:view.model,result.behaviourRawData,range,action,customResource)??customResource;
+        }
+        static string Resource(BattleUnitModel unit,DiceBehaviour dice,CardRange range,ActionDetail action,string customResource)
+        {
+            var id=unit==null||unit.equipment==null||unit.Book==null?null:unit.Book.BookId;
+            if(id==null||id.packageId!="SteriaBuilding"||(id.id!=99000002&&id.id!=2)||dice==null||dice.Type!=BehaviourType.Atk||range!=CardRange.Near||
+                dice.MotionDetail==MotionDetail.F||action==ActionDetail.Fire||customResource=="None"||dice.EffectRes=="None")return null;
+            switch(dice.Detail)
+            {
+                case BehaviourDetail.Slash:return "Steria_SlazeyaWindSlash";
+                case BehaviourDetail.Hit:return "Steria_SlazeyaWindHit";
+                case BehaviourDetail.Penetrate:return "Steria_SlazeyaWindPierce";
+                default:return null;
+            }
+        }
+        public static bool TryCreateDirect(BattleUnitModel unit,float destroyTime,out DiceAttackEffect effect)
+        {
+            effect=null;var playing=unit==null?null:unit.currentDiceAction;
+            if(playing==null||playing.card==null||playing.currentBehavior==null||unit.view==null||playing.target==null||playing.target.view==null)return false;
+            var dice=playing.currentBehavior.behaviourInCard;
+            var resource=Resource(unit,dice,playing.card.GetSpec().Ranged,ActionDetail.Default,null);
+            if(resource==null)return false;
+            float ratio=Mathf.Clamp01((float)playing.currentBehavior.DiceResultValue/Mathf.Max(1,dice.Dice));
+            effect=SingletonBehavior<DiceEffectManager>.Instance.CreateBehaviourEffect(resource,ratio,unit.view,playing.target.view,destroyTime);
+            return effect!=null;
+        }
+    }
+
+    [HarmonyPatch(typeof(RencounterManager),"PrintEffect")]
+    public static class SlazeyaCoreMeleePresentationPatch
+    {
+        static readonly FieldInfo Librarian=AccessTools.Field(typeof(RencounterManager),"_librarian"),Enemy=AccessTools.Field(typeof(RencounterManager),"_enemy"),
+            LibrarianResult=AccessTools.Field(typeof(RencounterManager),"_currentLibrarianBehaviourResult"),EnemyResult=AccessTools.Field(typeof(RencounterManager),"_currentEnemyBehaviourResult");
+        public static void Prefix(RencounterManager __instance,ActionDetail librarianActionDetail,ActionDetail enemyActionDetail,ref string liCustomRes,ref string enCustomRes)
+        {
+            liCustomRes=SlazeyaWaterThunderDefaults.Resolve((BattleUnitView)Librarian.GetValue(__instance),(BattleCardBehaviourResult)LibrarianResult.GetValue(__instance),librarianActionDetail,liCustomRes);
+            enCustomRes=SlazeyaWaterThunderDefaults.Resolve((BattleUnitView)Enemy.GetValue(__instance),(BattleCardBehaviourResult)EnemyResult.GetValue(__instance),enemyActionDetail,enCustomRes);
+        }
+    }
+
     internal static class SlazeyaWaterThunderAssets
     {
         internal const string BundleName="steria_slazeya_water_thunder_assets";
@@ -53,13 +101,11 @@ namespace Steria.Vfx
 public abstract class DiceAttackEffect_Steria_SlazeyaWaterThunderBase : DiceAttackEffect
 {
     // Authoring units to native 2x melee/map units; native roll scaling remains untouched.
-    private const float ArtScale=.55f;
+    private const float ArtScale=.50f;
     protected abstract ActionDetail PivotAction {get;}
     internal abstract BehaviourDetail AttackDetail {get;}
     private WaterThunderSlash visual;
     private BattleUnitView victim;
-    private Vector3 contactWorld;
-    private Quaternion visualRotation;
     private bool confirmed,cleared;
     public override void Initialize(BattleUnitView self,BattleUnitView target,float destroyTime)
     {
@@ -69,25 +115,21 @@ public abstract class DiceAttackEffect_Steria_SlazeyaWaterThunderBase : DiceAtta
         gameObject.name="SlazeyaWaterThunder_"+suffix;additionalScale=Vector3.zero;offset=Vector2.zero;addedDestroyTime=0;
         if(spr==null)spr=GetComponent<SpriteRenderer>();if(animator==null)animator=GetComponent<Animator>();
         base.Initialize(self,target,Mathf.Max(.001f,destroyTime));
-        _selfTransform=self.charAppearance.GetAtkEffectPivot(PivotAction);
-        if(_selfTransform==null)throw new InvalidOperationException("Water/thunder native action pivot missing");
-        transform.SetParent(_selfTransform,false);transform.localPosition=Vector3.zero;transform.localRotation=Quaternion.identity;
+        _selfTransform=self.characterRotationCenter;
+        if(_selfTransform==null)throw new InvalidOperationException("Water/thunder character facing root missing");
+        transform.SetParent(_selfTransform,false);transform.localPosition=new Vector3(-1.3f,0,0);transform.localRotation=Quaternion.identity;
         _bHasDamagedEffect=false;spr.enabled=false;animator.enabled=false;victim=target;
-        float direction=target.WorldPosition.x>=self.WorldPosition.x?1:-1;
-        float scale=target.characterRotationCenter==null?1:Mathf.Max(.1f,Mathf.Abs(target.characterRotationCenter.lossyScale.x));
-        // Match the visible body side, not Bada's far-ahead weapon pivot.
-        contactWorld=new Vector3(target.WorldPosition.x-direction*.35f*scale,target.atkEffectRoot.position.y,target.atkEffectRoot.position.z);
         visual=Steria.Vfx.SlazeyaWaterThunderAssets.Create(transform);
-        visual.transform.localScale=Vector3.one*ArtScale;visualRotation=visual.transform.rotation;
-        visual.ApplyAt(0);Align();
+        Align();visual.ApplyAt(0);
         _destroyTime=Mathf.Max(_destroyTime,WaterThunderSlash.Duration);
         SetLayer("Effect");visual.gameObject.SetActive(true);
     }
     private void Align()
     {
         if(visual==null)return;
-        visual.transform.rotation=visualRotation;
-        visual.transform.position=contactWorld-visual.transform.TransformVector(WaterThunderMotion.Contact);
+        visual.transform.localPosition=WaterThunderMotion.GameArtOffset(ArtScale);
+        visual.transform.localRotation=Quaternion.identity;
+        visual.transform.localScale=new Vector3(-ArtScale,ArtScale,ArtScale);
     }
     public override void SetScale(float scaleFactor){base.SetScale(scaleFactor);Align();}
     public override void SetLayer(string layerName)

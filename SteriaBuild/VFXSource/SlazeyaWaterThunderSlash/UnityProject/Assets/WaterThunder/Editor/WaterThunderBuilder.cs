@@ -292,10 +292,10 @@ public static class WaterThunderBuilder
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
         var camera=new GameObject("Main Camera").AddComponent<Camera>();camera.tag="MainCamera";camera.orthographic=true;
-        camera.orthographicSize=2.60f;camera.transform.position=new Vector3(.65f,2.05f,-15);camera.clearFlags=CameraClearFlags.SolidColor;
+        camera.orthographicSize=2.60f;camera.transform.position=new Vector3(.65f,2.30f,-15);camera.clearFlags=CameraClearFlags.SolidColor;
         camera.backgroundColor=new Color(.018f,.03f,.052f);camera.allowHDR=false;camera.allowMSAA=true;
         var obj=(GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(Prefab));
-        obj.transform.position=new Vector3(0,.10f,0);var player=obj.GetComponent<WaterThunderSlash>();player.autoPlay=false;
+        obj.transform.position=WaterThunderMotion.AuthoringOffset;var player=obj.GetComponent<WaterThunderSlash>();player.autoPlay=false;
         if(context)AddContext();
         if(context){camera.transform.position=new Vector3(.65f,3.2f,-15);camera.transform.LookAt(new Vector3(.65f,2.05f,0));}
         return player;

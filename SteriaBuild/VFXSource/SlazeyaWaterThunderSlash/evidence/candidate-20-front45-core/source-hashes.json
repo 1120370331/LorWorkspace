@@ -1,0 +1,542 @@
+[
+  {
+    "path": "UnityProject/Assets/WaterThunder/Editor/WaterThunderAuthoringCommand.cs",
+    "sha256": "fd8c18201ad7ac567488534f09b00aa32088bf4d5539b61f45a37645da433c07"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Editor/WaterThunderAuthoringCommand.cs.meta",
+    "sha256": "75d2fdcc9c2ca9ddaa6864e4a9363500f9f30e44c7d6d6d6b0a740933b073d74"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Editor/WaterThunderBuilder.cs",
+    "sha256": "6dd56eece36a72024ffe460cdca1f3cd09a0170838b08c544dd071ce4bbae2a5"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Editor/WaterThunderBuilder.cs.meta",
+    "sha256": "f2bcc366ef74ea8df7b16d42244bac39d66e2f188e684f08195f916a6adb2ed6"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Editor/WaterThunderEditorClock.cs",
+    "sha256": "b64c0c98a421f5d56f0247e97ec8c2061093272ca9bb02646b42b7d71d9d34b0"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Editor/WaterThunderEditorClock.cs.meta",
+    "sha256": "d7bcfe499310524af84ea9148c3e7858c84d89e01210ab1ad5308134c0dc65c8"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Editor/WaterThunderPreview.cs",
+    "sha256": "8153ffd3c3de8091df4d5498de6ccf7dce4ad2b2ac4709bb8d13186ddc4e6590"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Editor/WaterThunderPreview.cs.meta",
+    "sha256": "440888c3bc74d0956d0881800fd4be0bf752f523d18ad344860cf8ce108c8af5"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Editor.meta",
+    "sha256": "1aab40fc7d2fcf5c3e48f0159c85b032973f31a8d589fbfb012ba40502f40754"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/EvaporationWaterScatter.mat",
+    "sha256": "3a411590fd12286ab23c1e00d8b95afc376d9d9d8992e2135e0e8612caad048f"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/EvaporationWaterScatter.mat.meta",
+    "sha256": "19dfd9c6b5bcbb7292d90659e1ed69959cd41eee2a80680556eef4852b67bf18"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/ImpactElectric.mat",
+    "sha256": "18870bbb480cae7323416b2b754ca9779a5ca8d3a95dd736ae515d597ac7c444"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/ImpactElectric.mat.meta",
+    "sha256": "b48e6a22997faaa0db61bdc2196008b09a8198b124313a6c05b25443da7fe093"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/ImpactFlash.mat",
+    "sha256": "50ad73fdb225be8ecf5b8f8beac206d8073b3255a6f499dafb4ed2681edb4a3c"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/ImpactFlash.mat.meta",
+    "sha256": "67aa7beaecd4b7ecd5a0aba42b0ae23ec30ea6d51931ffeba6b64041a76e8d56"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/ImpactWater.mat",
+    "sha256": "cb0c426f3248972978af3b9bb6e450252cc3cc23c4bf2b20a4411fc59d411ebd"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/ImpactWater.mat.meta",
+    "sha256": "7b184e64666faeac9a54bc5e47ab10e4494fdac58249bceb3f3402a3180ea6da"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/L1_WaterBlade.mat",
+    "sha256": "fd6526745dfe1997d2420a8cae4e748b7d52bf02333359eefed55fcbc0ee1014"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/L1_WaterBlade.mat.meta",
+    "sha256": "b14d7d4844265b3f7fb8a7e307243b4bcb3c187ac0622a96df3593a12b9f43be"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/L2_SplashWake.mat",
+    "sha256": "57009c234fe06748b4ffa5fc9e7b93a413c793ee90ad17229ef3ccf6aeb37db2"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/L2_SplashWake.mat.meta",
+    "sha256": "b6c45878dc875911f12ade6e626142027a39cf458a0ba443a19cd26e78244088"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/L3_Lightning.mat",
+    "sha256": "1f05a10169fbeaeca91b3d91aabb1d74b33c7f0f260da43ca5359d2587eac49d"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/L3_Lightning.mat.meta",
+    "sha256": "b3cf1c0a9cab2c2cbd5de9e88af3d2e6a72ab973a6fa47345d7cb368391e3512"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/L4_BladeCore.mat",
+    "sha256": "2edde1030bbc9e72487d2cc4f3e3d4a02a673c05a6698fda5136b5cc43e913c6"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/L4_BladeCore.mat.meta",
+    "sha256": "ada8350f8eb9e2872fe5f2b7d80cd23dd1e606f1911d091fc2c89c8c8eb59ae3"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/StageGround.mat",
+    "sha256": "a4e67d1cb3805ff1057ee759163eedf7dfbb0bcd082b96488659063dd09bd126"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/StageGround.mat.meta",
+    "sha256": "c4c73f3ae7c28d1d59d989db072b5bd4f3f3b859b845da21f107970a5156c13a"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/StageTarget.mat",
+    "sha256": "c39541bf2eb1b251ff41349a002c9a18cdd5aa215e24481448e9da08236beb21"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials/StageTarget.mat.meta",
+    "sha256": "ca3534307a2b4c12f929c5b2c2f0c8666038fff909eed15052798149a119d386"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Materials.meta",
+    "sha256": "2155518610158c6b26e354ab27b0030669368ca0403bca7db3a3b4de83c156f8"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/EvaporationScatter.asset",
+    "sha256": "70be9fb909fe51a79bd17c3e960ad71d8d6cc96168723f5add3c81a0f3133efa"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/EvaporationScatter.asset.meta",
+    "sha256": "19adf754586dd57cf871cc8b87677356dfaf2c77fda89b6bcf5e412b881cec2a"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/ImpactArcShard.asset",
+    "sha256": "56f8d209753c155e285523a50bfb4b1ca741e3df2cc18309295dd480cc551d29"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/ImpactArcShard.asset.meta",
+    "sha256": "27eef279d74abac6db6eb1c9e0136024386faa3261a03b6a7be9357e52445eca"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/L1_WaterBlade.asset",
+    "sha256": "3ae1adcc9d3823ec1958ad90198576b1a3364a6c1031c204a3b8e7476a20c6a6"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/L1_WaterBlade.asset.meta",
+    "sha256": "992633e6d2737ac9a24d61e0e70ef3477e590eb4cf05aeb0973934a5940bf80f"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/L2_SplashWake.asset",
+    "sha256": "967f8cdeaa524ca77b0f53e791cc9de074474f9149905b16f2a880b52b32c366"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/L2_SplashWake.asset.meta",
+    "sha256": "e9f11b625f74f826c92cf635982d38b5d72bce4066c20b1cdca8e8da356e2268"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/L3_Lightning.asset",
+    "sha256": "a4d42b953ebd72378344f1ab0a9bbbde12e5a8b9850d4aa4599271a7d766f59d"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/L3_Lightning.asset.meta",
+    "sha256": "16a2837a2656eed1360712e2c083238b110a4f9ce40f5393ece20855d34dcb0a"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/L4_BladeCore.asset",
+    "sha256": "b130d9bf3e5ee51ab70c7deba1a322004f22874a9039154d8fb7a8f86020c250"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes/L4_BladeCore.asset.meta",
+    "sha256": "a1d73f4483a1c313410de4c4f46e56a2a3300a7b9eed058935d979ad38a78764"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Meshes.meta",
+    "sha256": "0f7669a8bb167ccdaf3cce6acc2b18c64caf6c1806e33ccfaab53f7193abf73b"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/L1_WaterBlade.prefab",
+    "sha256": "5da5e8ad0b1ccd8a4aa8ed3c8bd42dac93a9cfa8ff776e01bedb02fa9e5e7098"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/L1_WaterBlade.prefab.meta",
+    "sha256": "2867e31bdc4d4b7912315e71d6c8307c67dd106a17a009029b466a8e0d9cfb98"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/L2_SplashWake.prefab",
+    "sha256": "62bd5a0852c0ebf59a6a29d93c4e08af9a00b5db575b6baf1549fe773694ce1b"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/L2_SplashWake.prefab.meta",
+    "sha256": "607c5c386cd470a7cd473586aa802a1f36ba174f0e0a95f97361719df5700c7d"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/L3_Lightning.prefab",
+    "sha256": "8282aff3d0d360d4712f493dd0001bd72945118c02f816cb739b01ec367744e0"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/L3_Lightning.prefab.meta",
+    "sha256": "890c9cc1dbbca64860edca572a066c5a7310bd36b238ed2c478261993a594604"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/L4_BladeCore.prefab",
+    "sha256": "47b921687cc31bc43ab185cb54b3298f154ed989c7c890a7213a3d2a39b9f804"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/L4_BladeCore.prefab.meta",
+    "sha256": "1d69c4a2c9bdf3020d97f70ea9ecb00f8e628f4275c54561c5be877fbf020e83"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/SlazeyaWaterThunderSlash.prefab",
+    "sha256": "3a4e09322e84d671c020b7db15e66ea3b69aa64ec8e49933970c126d7d0fe8e3"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/SlazeyaWaterThunderSlash.prefab.meta",
+    "sha256": "bf2700c57d7907304e761cf68005acaba296e8952902e2f19932bb896ed2a4c4"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/WaterEvaporationScatter.prefab",
+    "sha256": "2ff4547ad862f48fe3af004ede612db5c99f55c4c62c204479b5ddd571405afb"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/WaterEvaporationScatter.prefab.meta",
+    "sha256": "4110b05e2972e74c84c30cccd8e890f3f046c8c683bea338bc914d50625c54b4"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/WaterThunderImpactParticles.prefab",
+    "sha256": "524f8ba4932b130832ccb5dc0e2b37e9c637df5200d95f4614dae65e2ac8d266"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs/WaterThunderImpactParticles.prefab.meta",
+    "sha256": "0b803f565c4bba07e42d01a02d393d12c9763aacb34cda348572830eccb45954"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Prefabs.meta",
+    "sha256": "de3f6c0f519abb8242110fc932e321b69fb2c0c07e84bf968132e2a683b8a53b"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Runtime/WaterDropletMotion.cs",
+    "sha256": "5c5f345c425d9a1ffe0123a28a8fc9b53d36e116b42cbeb54623ec85c7f779fa"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Runtime/WaterDropletMotion.cs.meta",
+    "sha256": "404ce7eab692952db578e59765033b8bb01864d835b4112336408e5082894eff"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Runtime/WaterThunderImpact.cs",
+    "sha256": "8376b5e7ee4dc45887b94262752ce3b0495a0f480b298345cf41662f9f21758b"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Runtime/WaterThunderImpact.cs.meta",
+    "sha256": "434756a750b039bee0cc8119ca57a06b9faa4b89aa147395e9b52548062d12a6"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Runtime/WaterThunderMotion.cs",
+    "sha256": "167b93f24a4f99ffacd612215fce406a4f232f953b248cdef291e27a9e41a207"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Runtime/WaterThunderMotion.cs.meta",
+    "sha256": "40ef0071b4fbd46c857a0e59faff7b2a4ec6af28534cf67bf14ef8c9bb1e2115"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Runtime/WaterThunderSlash.cs",
+    "sha256": "0e70bd4241a56a482e34fa3e19727d384f2282fe781207314ae2141333301c63"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Runtime/WaterThunderSlash.cs.meta",
+    "sha256": "8d172b3ac74bb5151f891a61fed2e4cfe67177b5e9f24655ee6acd13efa0e2d7"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Runtime.meta",
+    "sha256": "fb1dd0dfaf244e19592acb91adb2d4313bfb643c739baad6c4e301dd244b1c8c"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Scenes/WaterThunderAuthoring.unity",
+    "sha256": "143ab9f059f1036f678ce101a4b1fba2d3a229f81b0876ec2c9c53129af887bf"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Scenes/WaterThunderAuthoring.unity.meta",
+    "sha256": "a562c67a95c193c090aafc31ca75edb0a3d122b3e061263ca1005364e0af304a"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Scenes.meta",
+    "sha256": "9b207d736e5c6920a717831c09fd43009161e2d2b6bacb3e2fa1972b42cb4bc8"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Shaders/WaterThunderFormedArc.shader",
+    "sha256": "0e0d86359e28f3ae75f881e097f61e6b3141c02f02a004910bfb07c571eb9f37"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Shaders/WaterThunderFormedArc.shader.meta",
+    "sha256": "f451a23d12c11a14a3b052f57046d0b4bd5145e5d5f6ba5024ee2490967e958a"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Shaders.meta",
+    "sha256": "1ba3ba7a8dbf2ad19edc2d643c0581a5652fff8fc69bbcf5e8ae554cd6409554"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Evap_WaterScatter.png",
+    "sha256": "e819bff264e12d5af79adb883f9105b9748823702c466f5b8c5df9b6a2f3c8fb"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Evap_WaterScatter.png.meta",
+    "sha256": "3c6c5e91e5bd0f0a6192221a238a9bea94bac6bf3a4fdc6367b1d9841741cd8e"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Impact_Flash.png",
+    "sha256": "dcd26deea6f8a8ccb9c59414eda4ea292ef18dff7a17ee4cead420582686e8f6"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Impact_Flash.png.meta",
+    "sha256": "4070d12d3b86e478218500fe2fa494679c2e75ec78cc6bb60fc0d1aee1612646"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L1_TailFanMask.png",
+    "sha256": "7148828bbcbabaf30c25295333e8da801b0750c8ab1f6459bccc2b4d7e9fdbf4"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L1_TailFanMask.png.meta",
+    "sha256": "0598534a4a009bfb3991be94cdc5f4d150a6b5e34fefffaefb8b0dd0ea9e2ad4"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L1_WaterBody.png",
+    "sha256": "0ca1737928aa8f13ef61fed57dd7938f343693e885abb75e22d3d08dd12e7ba4"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L1_WaterBody.png.meta",
+    "sha256": "0ed888cbe553de58146486198f0d29c35a4dcd11bb3dc48158b556563bee218d"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L1_WaterMask.png",
+    "sha256": "d543d57d9322644ef83faffd7fa0cc1bf2aaf09fd74f408c61124a89803bf3d5"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L1_WaterMask.png.meta",
+    "sha256": "cf7a42965cbff3eba24f8046ba09eaa84ca0bd0abacef407ce0b3416d42bd20d"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L1_WhiteFluidQuadMask.png",
+    "sha256": "32406e1a862a7d7297be7ce4bc5a76bd27381b7b368303385b6642d005ad66e2"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L1_WhiteFluidQuadMask.png.meta",
+    "sha256": "008dbfa5082875ed0c6fdf42a08078498b45f9bcdda6e49d25f2d66558a90986"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L2_Splash.png",
+    "sha256": "bc9d71f4e15274ec7ef9e127cfd8c76d70fa6932984ab844d9a1e967201639b1"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L2_Splash.png.meta",
+    "sha256": "82b4d3df7ff20029aacfca59fd3cf41a57c81b09abe8b1ec1e036860328134bb"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L2_SplashMask.png",
+    "sha256": "c9a99965e400daa91b0ddca882bea8ec1b48f2f745774095d7cdee4a09edf647"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L2_SplashMask.png.meta",
+    "sha256": "20d005111c7afc681427eab4a287210f82b5c48475e94f5123c574eb2b8e8a44"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L2_WaterNormal.png",
+    "sha256": "1a4f6dbb6abe5457e4da8609b80294ae53c114505c0a9579d1ffdaf29268d8f0"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L2_WaterNormal.png.meta",
+    "sha256": "867409acb6cb7d705196c5189159a1122fade4cc6b1f2c3e4a9606d2b1377889"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L3_Lightning.png",
+    "sha256": "fc0a5a272cfa23b95991787a918b807836835aaa7cf23eb640401f9b41f2852b"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L3_Lightning.png.meta",
+    "sha256": "2cecd299e352f95d8972b277c1e5c50b303422bb908d87dde91fd4ddb41460a1"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L3_LightningMask.png",
+    "sha256": "9ef838a432796cbb8b58cb38ecdf72fd48905485e6fb67a1e4c937f7ddc13d81"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L3_LightningMask.png.meta",
+    "sha256": "26a32f9588a7da2696796ffceb975cee763a00cf202049a6bfc178e049db44b7"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L4_Core.png",
+    "sha256": "bff2c7bc5699f9c95751cf28a8f5fe6465762bc58a1e7c761e5bbceb31c0a4cc"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L4_Core.png.meta",
+    "sha256": "37c43d52f5e407814276857d799d4b41c518d0ba18d68f9730f2d94f4b4d0a99"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L4_CoreMask.png",
+    "sha256": "66799d67cbe995b21897e200e276f4f9a77f2ab2366122426cff3e6773ba8d2e"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/L4_CoreMask.png.meta",
+    "sha256": "7b4152e058d97a1a15fc60fcd3e585e038a09802530e31c35194d0f3c83bde6e"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Shared_CausticsRepeat.png",
+    "sha256": "46b6528d014873b78205edb744d49486d7c8feea682c57924a667915bd3fd5fc"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Shared_CausticsRepeat.png.meta",
+    "sha256": "301173e71430eb2a93850c47788e94037ae2046b42054086ddd1e2dd2b5f5545"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Shared_ErosionRepeat.png",
+    "sha256": "f9423e1ac821e90c5b73d7495fbd495cd3b64678de0607c8a8c358e1656daf73"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Shared_ErosionRepeat.png.meta",
+    "sha256": "c79b1de12046b1c76c90c8d57e1649ae071808de13a6904e04ef8c0d995f4986"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Shared_FlowRepeat.png",
+    "sha256": "5d8a76b3668f0a008b52a83759384a9dd9a3c1f450acb22813fe36e46b5ab93c"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Shared_FlowRepeat.png.meta",
+    "sha256": "bd8ca564c6fae9cda947ebdf4dce8939117828e94656c3ed8769045fc2c7383a"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Shared_SweepBrushMask.png",
+    "sha256": "07e6173c9b782a06bb47c756c55ba120695c436bc0c6ab517dfa40851cab5fed"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures/Shared_SweepBrushMask.png.meta",
+    "sha256": "5febe32998a7a76a8c5ca7cb48fc4d6d9db8990e41de46f86d62f41fc7356699"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder/Textures.meta",
+    "sha256": "9f0372d3f7bc1af1e3e3ab2b6732e2f42b1fd103ff211180a9a5543302c9b8aa"
+  },
+  {
+    "path": "UnityProject/Assets/WaterThunder.meta",
+    "sha256": "aa5c1fe5b9ee262a7a67f824d995689f4e94edca553652f195da6825459cc2f7"
+  },
+  {
+    "path": "UnityProject/Packages/manifest.json",
+    "sha256": "3f2509ad45969d85397a4ed1db4565d3d33b21312b1dc8be15451520fffa75bd"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/AudioManager.asset",
+    "sha256": "aeedeb3243f07b61dbbe854aa08b5ef6f0b5274dd9852ad9f6129dde3e105a31"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/ClusterInputManager.asset",
+    "sha256": "40e65dd214bf254955d2c8829ca8ce2130fd3510485560ce012e9a1ddd93e623"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/DynamicsManager.asset",
+    "sha256": "4ac4c1fbcfd242aef00c7fe80948376762a41de9d185540d13e25a8a28812452"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/EditorBuildSettings.asset",
+    "sha256": "1942c088ddfeeef348fdf12390e2a2d6da51056e197458d67969d44e7b2cbbd3"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/EditorSettings.asset",
+    "sha256": "2f29d5142f8e94397fecb22a5c70514cc4022d2fbe7ffec743167d25701fc1ff"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/GraphicsSettings.asset",
+    "sha256": "d84f024f18f044080f995ebe6f35fb5de4c7a40af32f4a8d54a8786233698c41"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/InputManager.asset",
+    "sha256": "1fb1c30f8a1615cf9a4220be6d18a33eccd3a09cc4cd0a3c7cd0a38a7c083134"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/NavMeshAreas.asset",
+    "sha256": "80106cfa7e6181a1928b142c075f3e510d527441e3d79bc83590e4ac91e7cd66"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/Physics2DSettings.asset",
+    "sha256": "e3cbdbf0be15244b7b67d2f07bdb8e8981911c11a8c7fe8035f5261272fec658"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/PresetManager.asset",
+    "sha256": "29c125923fe6e29f90190d4fce1c82d660e7051546e2c9d02908d18c9cf2436c"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/ProjectSettings.asset",
+    "sha256": "cbe94419d85f8c37f616b966d467b02d3b7a1729d5e2e370c48b87648661922e"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/ProjectVersion.txt",
+    "sha256": "440b683ec87aa5d4c1f3c12f9230182731678793a3993ac860f4b08437122d20"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/QualitySettings.asset",
+    "sha256": "e1dd24cdab9f4b2c717e0e131bd893760dec61993c0c8bcffd2d4cdc6f2e1b49"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/TagManager.asset",
+    "sha256": "8e18b1c820e9c09e16bbd1f1b7842e9fb3b0158a0921b0964e0b8fa12c6e2c01"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/TimeManager.asset",
+    "sha256": "1a83e54adbbda7c9f4851103a0c6ab7f6448a3343d4ea5b7620452fa08416ecd"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/UnityConnectSettings.asset",
+    "sha256": "1e06370b3d2256d4dbc8892f59a8467d9f9785f034a4836a6790380252eb4916"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/VFXManager.asset",
+    "sha256": "f066c6483919961332415ee64204f74fe52f38c02e82892eb02b7a5b2e381f0e"
+  },
+  {
+    "path": "UnityProject/ProjectSettings/XRSettings.asset",
+    "sha256": "edd2beb4a2e388312b4b7da241aa51070434005d82c59363f1237dd2e567585f"
+  },
+  {
+    "path": "build_preview.ps1",
+    "sha256": "c39890db5d88c5487a8908cdf70eafb820f4ea0925248d7efc2b35881c7e788d"
+  },
+  {
+    "path": "capture_snapshot.ps1",
+    "sha256": "b1be68f7295aae13f68c82ccd3d30b5657fea79cb77e5b3a8cbd6e8d2f007efd"
+  },
+  {
+    "path": "generate_inputs.py",
+    "sha256": "27fc8f76ecb0194a0bbb0d814f56bd1af9dc60bd6a13b455652f66f905f90e41"
+  },
+  {
+    "path": "package_preview.py",
+    "sha256": "eb29eca917eee87dc4bfd449459a266a396349cdc30ec85c3aa088f7eb4c79f4"
+  },
+  {
+    "path": "provenance.json",
+    "sha256": "30558668430eaa6a5f3cb900714c02d1ce651ac06794555ff47e38c55c8c8de9"
+  },
+  {
+    "path": "verify_inputs.py",
+    "sha256": "a6ebba7e53316edfb76cf354bd3fcbffafcb733110768656c5f478e1b1607892"
+  },
+  {
+    "path": "write_asset_inventory.py",
+    "sha256": "f111e3b478096a636e93f27bf6a022e24746552dc102ecfa49a2768e68e955f1"
+  }
+]

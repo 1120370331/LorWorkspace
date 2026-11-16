@@ -133,10 +133,13 @@ for layer, sigma, rgb in [('L3_Lightning',.15,(.42,.18,1)),('L4_Core',.12,(.16,.
 scale=2;size=512;canvas=Image.new('L',(size*scale,size*scale),0);draw=ImageDraw.Draw(canvas)
 rng=np.random.default_rng(3910)
 for k in range(205):
-    t=rng.uniform(.035,.99);s=1-t
-    c=s**3*np.array([-.85,3.65])+3*s*s*t*np.array([2.65,3.65])+3*s*t*t*np.array([3.0,.9])+t**3*np.array([.8,.18])
+    t=rng.uniform(.035,.99)/.86;s=1-min(t,1)
+    c=s**3*np.array([-.85,3.65])+3*s*s*min(t,1)*np.array([2.65,3.65])+3*s*min(t,1)**2*np.array([3.0,.9])+min(t,1)**3*np.array([.8,.18])
+    if t>1:
+        a=(t-1)/(1/.86-1)*np.pi/4;theta=np.arctan2(-.72,-2.2)
+        c+=1.25*np.array([np.sin(theta+a)-np.sin(theta),-(np.cos(theta+a)-np.cos(theta))])
     c+=rng.normal(0,[.14,.16])
-    px=((c[0]-.65)/3.7+.5)*size;py=(.5-(c[1]-1.95)/3.85)*size
+    px=((c[0]-.65)/3.7+.5)*size;py=(.5-(c[1]-1.70)/4.8)*size
     radius=rng.uniform(1.7,6.0);angle=rng.uniform(0,tau);sweep=rng.uniform(.5,2.0)
     points=[]
     for q in np.linspace(0,1,16):
@@ -206,7 +209,7 @@ shader=shader.replace('        _UseShapeRGB (', '''        _Liquid ("Liquid Drop
         _EvapProgress ("Scatter Evaporation Progress", Range(0,1)) = 0
         _EvapSpread ("Scatter Spread", Float) = 1
         _EvapLift ("Scatter Rise", Float) = 0
-        _EvapFrame ("Scatter Local XY Frame", Vector) = (0.65,1.95,3.7,3.85)
+        _EvapFrame ("Scatter Local XY Frame", Vector) = (0.65,1.70,3.7,4.8)
         _HeadWeight ("Legacy Front Emphasis", Range(0,1)) = 0
         _HeadSpan ("Front Length", Range(0.03,1)) = 0.32
         _Evaporation ("Water Scatter Evaporation", Range(0,1)) = 0

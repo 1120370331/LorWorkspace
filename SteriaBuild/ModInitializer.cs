@@ -310,6 +310,12 @@ namespace Steria
         {
             try
             {
+                Battle.DiceAttackEffect.DiceAttackEffect coreEffect;
+                if (Steria.Vfx.SlazeyaWaterThunderDefaults.TryCreateDirect(unit, destroyTime, out coreEffect))
+                {
+                    __result = coreEffect;
+                    return false;
+                }
                 if (unit?.currentDiceAction?.currentBehavior?.behaviourInCard == null)
                 {
                     return true; // Let original method handle

@@ -118,7 +118,7 @@ public static class WaterThunderPreview
         for(int i=0;i<times.Length;i++)
         {
             player.ApplyAt(times[i]);player.evaporationMist.enabled=false;
-            player.layers[0].GetPropertyBlock(block);block.SetFloat("_Alpha",1);block.SetFloat("_SweepEnabled",0);player.layers[0].SetPropertyBlock(block);
+            player.layers[0].GetPropertyBlock(block);block.SetFloat("_Alpha",1);block.SetFloat("_SweepEnabled",0);block.SetFloat("_Retreat",0);player.layers[0].SetPropertyBlock(block);
             Check(block.GetFloat("_Alpha")==1,"Mask-only dissolve proof holds Alpha at one");
             Capture(camera,Path.Combine(proof,i.ToString("D2")+".png"));
         }
@@ -127,6 +127,13 @@ public static class WaterThunderPreview
     static float Speed(float t){return (WaterThunderMotion.Progress(t+.001f)-WaterThunderMotion.Progress(t-.001f))/.002f;}
     static void VerifyMotion()
     {
+        var before=WaterThunderMotion.Normal(WaterThunderMotion.MainPathFraction-.001f);
+        var after=WaterThunderMotion.Normal(1);
+        Check(Mathf.Abs(Vector3.Angle(before,after)-45)<.5f,"Leading tangent extends downward 45 degrees");
+        var tail=(Vector2)WaterThunderMotion.Curve(0)-WaterThunderMotion.ArcCenter;
+        var end=(Vector2)WaterThunderMotion.Curve(WaterThunderMotion.TailRetreatLimit)-WaterThunderMotion.ArcCenter;
+        Check(Mathf.Abs(Vector2.Angle(tail,end)-45)<.01f,"Rear removal spans 45 degrees along arc");
+        Check(WaterThunderMotion.TailRetreat(.215f)==0&&Mathf.Abs(WaterThunderMotion.TailRetreat(.48f)-WaterThunderMotion.TailRetreatLimit)<.000001f,"Back-to-front retreat reaches exact authored limit");
         Check(Speed(.16f)>Speed(.235f)*3,"Arrival faster than contact slowdown");Check(Speed(.30f)>Speed(.235f)*3,"Blade reaccelerates after contact");
         Check(Mathf.Abs(WaterThunderMotion.Progress(WaterThunderMotion.HitTime)-WaterThunderMotion.ContactPath)<.00001f,"Exact hit time and path agree");
         Vector3 travel,velocity;WaterDropletMotion.Flight(new Vector3(4,2,0),.15f,.43f,out travel,out velocity);
@@ -153,7 +160,7 @@ public static class WaterThunderPreview
             var name=WaterThunderBuilder.Names[k];var m=AssetDatabase.LoadAssetAtPath<Mesh>(WaterThunderBuilder.Root+"/Meshes/"+name+".asset");
             Check(m!=null&&m.vertexCount>0,"Persisted mesh "+name);var uv=m.uv;var v=m.vertices;var b=m.bounds;Check(uv.Length==v.Length,"UV coverage "+name);
             for(int i=0;i<v.Length;i++)if(float.IsNaN(v[i].x)||float.IsInfinity(v[i].y)||uv[i].x<-.001f||uv[i].x>1.001f)throw new Exception("Bad mesh "+name);
-            Check(b.size.z<.15f,"Vertical XY geometry "+name);Check(b.min.y>0,"Geometry above ground "+name);
+            Check(b.size.z<.15f,"Vertical XY geometry "+name);Check(b.min.y+WaterThunderMotion.AuthoringOffset.y>0,"Geometry above ground after authored placement "+name);
             if(k==0)Check(b.size.y>b.size.x,"Crescent long axis vertical");
             if(k==0)Check(Vector3.Distance(v[0],v[14])>.5f,"Tail has space for separated divergent water filaments");
             if(k==1)Check(m.vertexCount==320,"80 water drops are packed close to the wake");
@@ -202,7 +209,7 @@ public static class WaterThunderPreview
         Check(manifest!=null,"Four layers and support AssetBundle build");Check(manifest.GetAllDependencies(bundleName).Length==0,"AssetBundle self-contained");
         var bundle=AssetBundle.LoadFromFile(Path.Combine(dir,bundleName));Check(bundle!=null,"Reload actual AssetBundle");
         foreach(var go in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())Object.DestroyImmediate(go);
-        var root=new GameObject("Reloaded resource bundle");var p=root.AddComponent<WaterThunderSlash>();p.autoPlay=false;root.transform.position=new Vector3(0,.10f,0);
+        var root=new GameObject("Reloaded resource bundle");var p=root.AddComponent<WaterThunderSlash>();p.autoPlay=false;root.transform.position=WaterThunderMotion.AuthoringOffset;
         for(int i=0;i<paths.Count;i++)
         {
             var prefab=bundle.LoadAsset<GameObject>(Path.GetFileNameWithoutExtension(paths[i]));Check(prefab!=null,"Bundle prefab "+paths[i]);
@@ -211,7 +218,7 @@ public static class WaterThunderPreview
             if(i==4)p.evaporationMist=obj.GetComponent<MeshRenderer>();
             if(i==5){p.impact=obj.AddComponent<WaterThunderImpact>();p.impact.systems=obj.GetComponentsInChildren<ParticleSystem>();}
         }
-        var camera=new GameObject("ReloadCamera").AddComponent<Camera>();camera.orthographic=true;camera.orthographicSize=2.6f;camera.transform.position=new Vector3(.65f,2.05f,-15);
+        var camera=new GameObject("ReloadCamera").AddComponent<Camera>();camera.orthographic=true;camera.orthographicSize=2.6f;camera.transform.position=new Vector3(.65f,2.30f,-15);
         camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.018f,.03f,.052f);camera.allowHDR=false;
         p.ApplyAt(.215f);Check(Equal(File.ReadAllBytes(Path.Combine(output,"composite/03.png")),Capture(camera,Path.Combine(output,"bundle-reloaded-hit.png"))),"Cold bundle impact pixels byte-identical");
         p.ApplyAt(.33f);Check(Equal(File.ReadAllBytes(Path.Combine(output,"composite/04.png")),Capture(camera,Path.Combine(output,"bundle-reloaded-peak.png"))),"Bundle full crescent pixels byte-identical");

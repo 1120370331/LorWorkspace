@@ -71,6 +71,7 @@ namespace Steria.WaterThunder
                 if(i==1) a=1;
                 if(i==2) { a=1-Span(.52f,.72f,time); }
                 if(i==3) { a=1-Span(.32f,.435f,time); }
+                if(i!=1)retreat=WaterThunderMotion.TailRetreat(time);
                 if(time<0 || time>=Duration) a=0;
                 layers[i].enabled=toggles[i] && a>.002f && (i!=1 || time>.035f && time<Duration);
                 block.Clear();block.SetFloat(Reveal,1);block.SetFloat("_SweepProgress",reveal);block.SetFloat(Retreat,retreat);
