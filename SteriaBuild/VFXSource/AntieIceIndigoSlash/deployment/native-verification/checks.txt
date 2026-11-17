@@ -1,0 +1,3 @@
+ANTIE_NATIVE_PASS 111 checks; exact built DLL, actual factory, core snapshots, native player loop and AssetBundle; synthetic actors; no full battle/deployment claim
+WATER_THUNDER_NATIVE_PASS 189 checks; actual candidate DLL, native factory, Update, AB and GPU; synthetic actor transforms, not full battle
+ANTIE_RELEASE_NATIVE_PASS

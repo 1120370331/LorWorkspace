@@ -1,0 +1,42 @@
+using System;
+using System.IO;
+using System.Reflection;
+using HarmonyLib;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+
+[InitializeOnLoad]
+public static class AntieNativeEntry
+{
+    static AntieNativeEntry(){EditorApplication.playModeStateChanged+=State;}
+    public static void Run()
+    {
+        var args=Environment.GetCommandLineArgs();string output=args[Array.IndexOf(args,"-nativeOutput")+1];Directory.CreateDirectory(output);
+        string assembly=Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(typeof(DiceAttackEffect_Steria_AntieIceIndigoBase).Assembly.CodeBase).Path));
+        string cache=Path.Combine(Directory.GetParent(assembly).FullName,"Assemblies","AB");Directory.CreateDirectory(cache);
+        foreach(var p in Directory.GetFiles(Path.Combine(output,"bundles")))File.Copy(p,Path.Combine(cache,Path.GetFileName(p)),true);
+        File.WriteAllText(Path.Combine(output,"assembly-location.txt"),assembly+"\n"+cache);
+        SessionState.SetString("Antie.Release.Output",output);EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);EditorApplication.isPlaying=true;
+    }
+    static void State(PlayModeStateChange state)
+    {
+        if(state!=PlayModeStateChange.EnteredPlayMode)return;
+        string output=SessionState.GetString("Antie.Release.Output","");if(output=="")return;SessionState.EraseString("Antie.Release.Output");
+        Application.logMessageReceived+=(m,s,t)=>{if(t==LogType.Exception){File.WriteAllText(Path.Combine(output,"failure.txt"),m+"\n"+s);EditorApplication.Exit(1);}};
+        var coexist=new Harmony("Steria.Antie.Release.Coexistence");
+        coexist.CreateClassProcessor(typeof(Steria.DiceEffectManagerPatch)).Patch();
+        coexist.CreateClassProcessor(typeof(Steria.Vfx.SlazeyaCoreMeleePresentationPatch)).Patch();
+        new GameObject("AntieReleaseAcceptance").AddComponent<AntieNativeSmoke>().Begin(output,(ok,report)=>{
+            File.WriteAllText(Path.Combine(output,ok?"antie-checks.txt":"failure.txt"),report);Debug.Log(report);
+            coexist.UnpatchSelf();if(!ok){EditorApplication.Exit(1);return;}
+            var companion=new Harmony("Steria.Antie.Release.RegressionCoexistence");
+            companion.CreateClassProcessor(typeof(Steria.Vfx.AntieCoreAttackPresentationPatch)).Patch();
+            new GameObject("InstalledBaselineRegression").AddComponent<WaterThunderNativeSmoke>().Begin(output,(good,regression)=>{
+                File.WriteAllText(Path.Combine(output,good?"slazeya-checks.txt":"failure.txt"),regression);Debug.Log(regression);companion.UnpatchSelf();
+                if(good)File.WriteAllText(Path.Combine(output,"checks.txt"),report+"\n"+regression+"\nANTIE_RELEASE_NATIVE_PASS");
+                EditorApplication.Exit(good?0:1);
+            });
+        });
+    }
+}

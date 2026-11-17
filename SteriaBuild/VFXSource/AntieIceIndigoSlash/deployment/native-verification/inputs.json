@@ -1,0 +1,12 @@
+{
+  "project": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\antie-ice-indigo\\release-native-01\\UnityProject",
+  "dll": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\antie-ice-indigo\\release-02\\SteriaBuild\\bin\\Release\\net472\\Steria.dll",
+  "dll_sha256": "fc3ddab689c2147d791e6dd101e944aaec96354228b849c16febd88798ef326c",
+  "bundle_sha256": "aae7f5eafda06c851e6d5a1ccc33cb97d72284930c2e67f5ab1811d167b4aaaf",
+  "scoped_release": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\antie-ice-indigo\\release-02",
+  "fixtures": {
+    "Assets/Editor/AntieNativeEntry.cs": "7bdd45d6ae61541d4c691852e1dec6d809c550d269321862b97ae2ac6e01acc3",
+    "Assets/Runtime/AntieNativeSmoke.cs": "f2bb6a50e12934f0cee1404db6f5d6d781dfe62cc6aeb4c8f8ed8c3e3e04961e",
+    "Assets/Runtime/WaterThunderNativeSmoke.cs": "282b318688b8628fa7b739a000209efc702e744e7f14a422006bfda6ffcdb8cf"
+  }
+}

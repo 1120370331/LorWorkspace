@@ -1,0 +1,245 @@
+{
+  "assets": [
+    {
+      "type": "AnimationClip",
+      "path": "Assets/AntieIceIndigo/Animations/HitVertical.anim",
+      "sha256": "cfbe5d3975debf9235f136cca27da9e0663cfaa960f9db58949c51130cf2c314",
+      "size_bytes": 2149
+    },
+    {
+      "type": "AnimatorController",
+      "path": "Assets/AntieIceIndigo/Animations/HitVertical.controller",
+      "sha256": "87cb672f3e14671277b11823b0e914c26ef0e803055e8092f0b9c7e2d89089a0",
+      "size_bytes": 2027
+    },
+    {
+      "type": "AnimationClip",
+      "path": "Assets/AntieIceIndigo/Animations/PierceDual.anim",
+      "sha256": "e3c0f0b1acb0b98b268eab04de2a8c15e5e2b640d99ea1028b1610d546453d95",
+      "size_bytes": 2148
+    },
+    {
+      "type": "AnimatorController",
+      "path": "Assets/AntieIceIndigo/Animations/PierceDual.controller",
+      "sha256": "358288d1b25100e4951ace700aab7696988e8e0b607103850c55b7a14d5dbd28",
+      "size_bytes": 2025
+    },
+    {
+      "type": "AnimationClip",
+      "path": "Assets/AntieIceIndigo/Animations/SlashHorizontal.anim",
+      "sha256": "2dd4af3a151dd6f75b53a30e0242133f0d0698bd199604cefb959cb53c7a067c",
+      "size_bytes": 2153
+    },
+    {
+      "type": "AnimatorController",
+      "path": "Assets/AntieIceIndigo/Animations/SlashHorizontal.controller",
+      "sha256": "b642d5c62562ed664e826e8f5b72f1ae86715a7e904cb9df63459f106b6c36cd",
+      "size_bytes": 2037
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/AntieIceIndigo/Editor/AntieBuilder.cs",
+      "sha256": "116dde066d2916c387e8026c61185e84c1601fbd34f101c9348a188ee3596231",
+      "size_bytes": 9867
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/AntieIceIndigo/Editor/AntieEditorLoop.cs",
+      "sha256": "ccc6bf533de3ad61bc86ae022fdbcb150ac910a595ab060a2be629a92216e3fc",
+      "size_bytes": 500
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/AntieIceIndigo/Editor/AntiePreview.cs",
+      "sha256": "a5c40d9b933c28b0a5c145b1e4dd2578b1f1905941806ee63c77ef516f26ae32",
+      "size_bytes": 11992
+    },
+    {
+      "type": "Material",
+      "path": "Assets/AntieIceIndigo/Materials/AntieIceIndigo.mat",
+      "sha256": "941da64bb491b232d4c58628e4d3dda71e87d9a5a62ff7661192391233b36042",
+      "size_bytes": 1422
+    },
+    {
+      "type": "Material",
+      "path": "Assets/AntieIceIndigo/Materials/AntieSoftGlow.mat",
+      "sha256": "90dc3a7836f9aad8a6701892bf95c1729a3b64f8e50db14027fa78454d40c029",
+      "size_bytes": 803
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/AntieIceIndigo/Meshes/GlowQuad.asset",
+      "sha256": "ea9d4b1a0ebf82780b7b76b4a88631822ad8d2b4dfa3d958e0f8c61203b41d94",
+      "size_bytes": 3493
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/AntieIceIndigo/Meshes/HitVertical_0.asset",
+      "sha256": "ab12b729654ff7a519d929a12fcc9df4ff0fef88979bdb26a967e17042161a5a",
+      "size_bytes": 218983
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/AntieIceIndigo/Meshes/PierceDual_0.asset",
+      "sha256": "7f149331db8b80665baa8c3c6d2e12bf31a7adc1bbb5f528b84ea57831e78019",
+      "size_bytes": 219042
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/AntieIceIndigo/Meshes/PierceDual_1.asset",
+      "sha256": "568e4d2bb9de71dad73ccfb48c94ce5ac23652327f7e47c6b86188d3fe77501a",
+      "size_bytes": 219040
+    },
+    {
+      "type": "Mesh",
+      "path": "Assets/AntieIceIndigo/Meshes/SlashHorizontal_0.asset",
+      "sha256": "4a8d6ecbcd842858342925affceb73d39a8c27e51100e90034fb00078b01bfc7",
+      "size_bytes": 219047
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/AntieIceIndigo/Native/HitVertical.prefab",
+      "sha256": "3f0656a8ede1f726efd85e4c903a836e940d9211cdc85dcffae60a4d96b59a72",
+      "size_bytes": 5461
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/AntieIceIndigo/Native/PierceDual.prefab",
+      "sha256": "1ad09a0fcc818a00b82acf2e843206b8d9e51e88511af098d8df6238b44c9ff5",
+      "size_bytes": 10045
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/AntieIceIndigo/Native/SlashHorizontal.prefab",
+      "sha256": "dae09698a567241f7f78b417ebc7b861b145433e99599d097cccc20361533f43",
+      "size_bytes": 5467
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/AntieIceIndigo/Prefabs/AntieHitVertical.prefab",
+      "sha256": "2d46c37949481e5da9cf022f94fbf0a8e62265561165ae3902d7c5d722f33bdf",
+      "size_bytes": 6753
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/AntieIceIndigo/Prefabs/AntiePierceDual.prefab",
+      "sha256": "cfb29dd7480f0f00f06c8a50bf66f17c10f27d8f7a2027e54f8a7c99971b4178",
+      "size_bytes": 11386
+    },
+    {
+      "type": "Prefab",
+      "path": "Assets/AntieIceIndigo/Prefabs/AntieSlashHorizontal.prefab",
+      "sha256": "ffb786dc660c3e585a532f410e73c626a5436b1e0a6499ad6330b3ec50db2991",
+      "size_bytes": 6753
+    },
+    {
+      "type": "C# source",
+      "path": "Assets/AntieIceIndigo/Runtime/AntieSlash.cs",
+      "sha256": "d069a9451e28c9d97d6f9416d4d450f5c29447b675669e7ee1f8e2d49d6bae85",
+      "size_bytes": 6790
+    },
+    {
+      "type": "Scene",
+      "path": "Assets/AntieIceIndigo/Scenes/AntieAuthoring.unity",
+      "sha256": "7f12659672784f3a173b6d359ea2fc30ebaec56b8583e90294af201c7745ce59",
+      "size_bytes": 14013
+    },
+    {
+      "type": "Scene",
+      "path": "Assets/AntieIceIndigo/Scenes/AntieHitVertical.unity",
+      "sha256": "7d0171ca8e5075425ea98e72d910d88ca2cbbe9079d5085537ff09ff5f0a668e",
+      "size_bytes": 15358
+    },
+    {
+      "type": "Scene",
+      "path": "Assets/AntieIceIndigo/Scenes/AntiePierceDual.unity",
+      "sha256": "48ec49c0ff78e535a14598cec455011f2d87e931e37ac83a72be87692ffe5421",
+      "size_bytes": 17329
+    },
+    {
+      "type": "Scene",
+      "path": "Assets/AntieIceIndigo/Scenes/AntieSlashHorizontal.unity",
+      "sha256": "62244ae10f686c6f57193c97563931d7b6e49abdae70670a5713402e4a6f514f",
+      "size_bytes": 15779
+    },
+    {
+      "type": "Shader",
+      "path": "Assets/AntieIceIndigo/Shaders/AntieRadialGlow.shader",
+      "sha256": "99c06059d7fac6eee5e9677cdc64ca66844928dd8df7f70e281900d10fe70fb9",
+      "size_bytes": 923
+    },
+    {
+      "type": "Shader",
+      "path": "Assets/AntieIceIndigo/Shaders/AntieSweptSlash.shader",
+      "sha256": "2851b349b8652132d99e848abd390a7c4ec34dcc6a19f97c8647d65c3106a709",
+      "size_bytes": 3811
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/AntieIceIndigo/Textures/User_Flow.png",
+      "sha256": "9a83010294b71752a3fae46d874cf9b253dd83ee8c561e58b0a5517ad6ada4c1",
+      "size_bytes": 1640017
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/AntieIceIndigo/Textures/User_RadialMask.png",
+      "sha256": "5ad44eca19c8cb22bb3b1a264ce1db7f85a222239f695a1a0232b8d5f972dc5e",
+      "size_bytes": 995193
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/AntieIceIndigo/Textures/User_SlashColor.png",
+      "sha256": "38c2c9856b8ec598f218211d692a5783279c0bb5278841dd28fe8da9e84f3ead",
+      "size_bytes": 812932
+    },
+    {
+      "type": "Texture / Mask",
+      "path": "Assets/AntieIceIndigo/Textures/User_SlashMask.png",
+      "sha256": "572404128c6d3d923574383094e5b2212fb57a01a3b1cefc86f622cd88a6f1a9",
+      "size_bytes": 793515
+    }
+  ],
+  "counts": {
+    "AnimationClip": 3,
+    "AnimatorController": 3,
+    "C# source": 4,
+    "Material": 2,
+    "Mesh": 5,
+    "Prefab": 6,
+    "Scene": 4,
+    "Shader": 2,
+    "Texture / Mask": 4
+  },
+  "integration": [
+    {
+      "type": "Integration source",
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\AntieIceIndigoCombat.cs",
+      "sha256": "c93b1bbd278e63ca18e9d1252dd44c8166ab9748ea8c1c0199a4175897d9f53b",
+      "size_bytes": 10677
+    },
+    {
+      "type": "Integration source",
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\HarmonyPatches.cs",
+      "sha256": "dc60f85b2b60d4f6cbe28de2c468241013b99d3de77b2f2eac254fea669d15a3",
+      "size_bytes": 148501
+    },
+    {
+      "type": "Integration source",
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\ModInitializer.cs",
+      "sha256": "25087ce80c8b4cb36503dc4de87b0a73cd5fdef5db0e9e1a70602408d5164ae8",
+      "size_bytes": 20194
+    },
+    {
+      "type": "Integration source",
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\Steria.csproj",
+      "sha256": "99015870974d282576136cb33be4201cfda696ef0ff96b4f9395fcf8c3e035f4",
+      "size_bytes": 7785
+    },
+    {
+      "type": "Native AssetBundle",
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\VFXSource\\AntieIceIndigoSlash\\evidence\\candidate-05-convex-to-camera\\bundle\\steria_antie_ice_indigo_combat",
+      "sha256": "aae7f5eafda06c851e6d5a1ccc33cb97d72284930c2e67f5ab1811d167b4aaaf",
+      "size_bytes": 5583059
+    }
+  ]
+}

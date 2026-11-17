@@ -1,0 +1,36 @@
+--- installed/HarmonyPatches.cs
++++ antie-release/HarmonyPatches.cs
+@@ -1412,6 +1412,9 @@
+             SteriaCustomEffects["Steria_MemoryGuard"] = typeof(DiceAttackEffect_Steria_AnhierTextureMemoryGuard);
+ 
+             // 注册所有自定义特效
++            SteriaCustomEffects["Steria_AntieIceIndigoHit"] = typeof(DiceAttackEffect_Steria_AntieIceIndigoHit);
++            SteriaCustomEffects["Steria_AntieIceIndigoSlash"] = typeof(DiceAttackEffect_Steria_AntieIceIndigoSlash);
++            SteriaCustomEffects["Steria_AntieIceIndigoPierce"] = typeof(DiceAttackEffect_Steria_AntieIceIndigoPierce);
+             SteriaCustomEffects["Steria_WindSlash"] = typeof(DiceAttackEffect_Steria_WindSlash);
+             SteriaCustomEffects["Steria_SlazeyaWindSlash"] = typeof(DiceAttackEffect_Steria_SlazeyaWaterThunderSlash);
+             SteriaCustomEffects["Steria_SlazeyaWindHit"] = typeof(DiceAttackEffect_Steria_SlazeyaWaterThunderHit);
+--- installed/ModInitializer.cs
++++ antie-release/ModInitializer.cs
+@@ -311,6 +311,11 @@
+             try
+             {
+                 Battle.DiceAttackEffect.DiceAttackEffect coreEffect;
++                if (Steria.Vfx.AntieIceIndigoDefaults.TryCreateDirect(unit, destroyTime, out coreEffect))
++                {
++                    __result = coreEffect;
++                    return false;
++                }
+                 if (Steria.Vfx.SlazeyaWaterThunderDefaults.TryCreateDirect(unit, destroyTime, out coreEffect))
+                 {
+                     __result = coreEffect;
+--- installed/Steria.csproj
++++ antie-release/Steria.csproj
+@@ -149,4 +149,7 @@
+     <Compile Include="VFXSource\SlazeyaWaterThunderSlash\UnityProject\Assets\WaterThunder\Runtime\WaterThunderImpact.cs" />
+     <Compile Include="VFXSource\SlazeyaWaterThunderSlash\UnityProject\Assets\WaterThunder\Runtime\WaterDropletMotion.cs" />
+   </ItemGroup>
++  <ItemGroup>
++    <Compile Include="VFXSource\AntieIceIndigoSlash\UnityProject\Assets\AntieIceIndigo\Runtime\AntieSlash.cs" />
++  </ItemGroup>
+ </Project>

@@ -1,0 +1,82 @@
+{
+  "created_utc": "2026-11-17T10:21:48.346531+00:00",
+  "status": "deployed-verified; not promoted to shared production library",
+  "visual_candidate": "candidate-05-convex-to-camera",
+  "native_candidate": "native-09",
+  "dll_candidate": "build-candidate-07",
+  "unity": "2019.3.15f1",
+  "renderer": "D3D11 / Built-in / Gamma",
+  "unit_cores": [
+    "SteriaBuilding:99000011",
+    "SteriaBuilding:13"
+  ],
+  "mapping": {
+    "Hit": "HitVertical",
+    "Slash": "SlashHorizontal",
+    "Penetrate": "PierceDual"
+  },
+  "native_checks": 111,
+  "native_pixels": {
+    "native-Hit-left.png": 32265,
+    "native-Hit-right.png": 32272,
+    "native-Pierce-left.png": 14756,
+    "native-Pierce-right.png": 14739,
+    "native-Slash-left.png": 4657,
+    "native-Slash-right.png": 5020
+  },
+  "vertical_slash_unchanged_frames": 77,
+  "dual_slash_unchanged_frames": 77,
+  "horizontal_screen_mirror": false,
+  "horizontal_orientation": "convex cutting edge toward screen (-Z); concave inner edge rises upward (+Y) and away (+Z); preserved in both native actor facings",
+  "plane_euler_degrees": {
+    "HitVertical": [
+      0,
+      0,
+      0
+    ],
+    "SlashHorizontal": [
+      -106,
+      0,
+      0
+    ],
+    "PierceDual": [
+      [
+        0,
+        246,
+        0
+      ],
+      [
+        0,
+        250,
+        0
+      ]
+    ]
+  },
+  "bundle_sha256": "aae7f5eafda06c851e6d5a1ccc33cb97d72284930c2e67f5ab1811d167b4aaaf",
+  "dll_sha256": "59e8459533e609c36ebe733136efc0db19acc12727b0fe17ed450f28014c194b",
+  "preview_video": "evidence/candidate-05-convex-to-camera/review-60fps.mp4",
+  "inventory": "evidence/candidate-05-convex-to-camera/asset-inventory.json",
+  "source_integration_verified": true,
+  "full_live_battle_verified": false,
+  "deployed": true,
+  "visual_review": "Single-agent separate review pass, as explicitly requested; no independent-agent review claimed.",
+  "limitations": [
+    "Native fixture uses synthetic actor transforms and placeholder bodies, not Antie skin or a full reception.",
+    "Visual palette and texture licensing provenance remain user-supplied; no third-party artwork added."
+  ],
+  "integration_source_hashes": {
+    "SteriaBuild/AntieIceIndigoCombat.cs": "c93b1bbd278e63ca18e9d1252dd44c8166ab9748ea8c1c0199a4175897d9f53b",
+    "SteriaBuild/HarmonyPatches.cs": "dc60f85b2b60d4f6cbe28de2c468241013b99d3de77b2f2eac254fea669d15a3",
+    "SteriaBuild/ModInitializer.cs": "25087ce80c8b4cb36503dc4de87b0a73cd5fdef5db0e9e1a70602408d5164ae8",
+    "SteriaBuild/Steria.csproj": "99015870974d282576136cb33be4201cfda696ef0ff96b4f9395fcf8c3e035f4"
+  },
+  "release": "release-02",
+  "release_native_candidate": "release-native-01",
+  "deployed_dll_sha256": "fc3ddab689c2147d791e6dd101e944aaec96354228b849c16febd88798ef326c",
+  "deployment_receipt": "deployment/deployment-receipt.json",
+  "deployment_native_checks": {
+    "Antie": 111,
+    "Slazeya_regression": 189
+  },
+  "scoped_baseline_sources_preserved": 102
+}

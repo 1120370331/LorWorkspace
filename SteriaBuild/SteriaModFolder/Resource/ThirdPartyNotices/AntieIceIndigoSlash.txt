@@ -1,0 +1,10 @@
+Antie Ice / Indigo three-profile melee slash VFX
+Project-authored meshes, shaders, timing, integration and animation clips.
+Four user-provided textures/masks are included unchanged for this mod; no public open-source license is claimed.
+No game-extracted artwork, Slazeya art assets or third-party source pixels/code are included.
+Provenance: SteriaBuild/VFXSource/AntieIceIndigoSlash/provenance.json
+
+柔和圆形径向遮罩.png | SHA256 5ad44eca19c8cb22bb3b1a264ce1db7f85a222239f695a1a0232b8d5f972dc5e
+灰度剑光斜切收束纹理.png | SHA256 572404128c6d3d923574383094e5b2212fb57a01a3b1cefc86f622cd88a6f1a9
+层叠横向流线纹理.png | SHA256 9a83010294b71752a3fae46d874cf9b253dd83ee8c561e58b0a5517ad6ada4c1
+冰蓝靛紫斩痕纹理-1.png | SHA256 38c2c9856b8ec598f218211d692a5783279c0bb5278841dd28fe8da9e84f3ead

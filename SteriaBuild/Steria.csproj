@@ -142,7 +142,10 @@
     <EmbeddedResource Include="VisualAssets\MusicDice\BlankFrame.png" LogicalName="Steria.VisualAssets.MusicDice.BlankFrame.png" />
     <EmbeddedResource Include="VisualAssets\MusicDice\Damage\*.png" LogicalName="Steria.VisualAssets.MusicDice.Damage.%(Filename)%(Extension)" />
   </ItemGroup>
-  <!-- Shared, GPU-reviewed water/thunder playback: the bundle contains native assets only. -->
+  <!-- Shared, GPU-reviewed slash playback: bundles contain native assets only. -->
+  <ItemGroup>
+    <Compile Include="VFXSource\AntieIceIndigoSlash\UnityProject\Assets\AntieIceIndigo\Runtime\AntieSlash.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="VFXSource\SlazeyaWaterThunderSlash\UnityProject\Assets\WaterThunder\Runtime\WaterThunderSlash.cs" />
     <Compile Include="VFXSource\SlazeyaWaterThunderSlash\UnityProject\Assets\WaterThunder\Runtime\WaterThunderMotion.cs" />

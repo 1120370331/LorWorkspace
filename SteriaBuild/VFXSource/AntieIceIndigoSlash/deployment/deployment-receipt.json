@@ -1,0 +1,80 @@
+{
+  "status": "DEPLOYED_VERIFIED",
+  "release": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\antie-ice-indigo\\release-02",
+  "art_candidate": "candidate-05-convex-to-camera",
+  "game_root": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+  "alias_root": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+  "items": [
+    {
+      "root": "game",
+      "relative": "Assemblies/AB/steria_antie_ice_indigo_combat",
+      "path": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder\\Assemblies\\AB\\steria_antie_ice_indigo_combat",
+      "before": null,
+      "after": "aae7f5eafda06c851e6d5a1ccc33cb97d72284930c2e67f5ab1811d167b4aaaf",
+      "backup": null
+    },
+    {
+      "root": "game",
+      "relative": "Resource/ThirdPartyNotices/AntieIceIndigoSlash.txt",
+      "path": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder\\Resource\\ThirdPartyNotices\\AntieIceIndigoSlash.txt",
+      "before": null,
+      "after": "d87903e346e78d1dfa6c5f95e77df4f4f9eef65cf0d1fd2fbbd62df43a3d5444",
+      "backup": null
+    },
+    {
+      "root": "game",
+      "relative": "Assemblies/Steria.dll",
+      "path": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder\\Assemblies\\Steria.dll",
+      "before": "d7feaef2372f3b2f9514ef3e5612eea2df39c2b90d42f59a1c7cf9b4f567a62e",
+      "after": "fc3ddab689c2147d791e6dd101e944aaec96354228b849c16febd88798ef326c",
+      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\antie-ice-indigo\\deployments\\20261117T111038Z\\backup\\game\\Assemblies\\Steria.dll"
+    },
+    {
+      "root": "repo",
+      "relative": "Assemblies/AB/steria_antie_ice_indigo_combat",
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Assemblies\\AB\\steria_antie_ice_indigo_combat",
+      "before": null,
+      "after": "aae7f5eafda06c851e6d5a1ccc33cb97d72284930c2e67f5ab1811d167b4aaaf",
+      "backup": null
+    },
+    {
+      "root": "repo",
+      "relative": "Resource/ThirdPartyNotices/AntieIceIndigoSlash.txt",
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Resource\\ThirdPartyNotices\\AntieIceIndigoSlash.txt",
+      "before": null,
+      "after": "d87903e346e78d1dfa6c5f95e77df4f4f9eef65cf0d1fd2fbbd62df43a3d5444",
+      "backup": null
+    },
+    {
+      "root": "repo",
+      "relative": "Assemblies/Steria.dll",
+      "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Assemblies\\Steria.dll",
+      "before": "d7feaef2372f3b2f9514ef3e5612eea2df39c2b90d42f59a1c7cf9b4f567a62e",
+      "after": "fc3ddab689c2147d791e6dd101e944aaec96354228b849c16febd88798ef326c",
+      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\antie-ice-indigo\\deployments\\20261117T111038Z\\backup\\repo\\Assemblies\\Steria.dll"
+    }
+  ],
+  "preserved": {
+    "game": {
+      "Data/CardInfo.xml": "c06089249ad0d57fc1b9de005bae848270a1314bcc956a3dd450c8c0535a1b4b",
+      "Data/EquipPage_Librarian.xml": "69c4a27370a720e953288ea4f37bbdb920274bf09d4114d277caf398bc0de5af",
+      "Data/EquipPage_Enemy.xml": "fd4f4bac3168fadee27a20d3ed638f6883012f56835698940ff00929ef0751e1",
+      "Assemblies/AB/steria_slazeya_water_thunder_assets": "4c4d33ddab0b5bc57adfb16222754b95ab270897257ef67eb25eac061d9ac49f",
+      "Assemblies/AB/steria_slazeya_wind_combat": "cf8bf99f90f5595dfc0ee3a31b3429b7cec6f0ca1f8a4bde42f94ab685e1eaaf",
+      "Resource/ThirdPartyNotices/SlazeyaWaterThunderSlash.txt": "c7e331f5433ae263e628a786bed08bb333c836a351d5979540133dba9dce99c9",
+      "Resource/ThirdPartyNotices/SlazeyaWindCombat.txt": "ecfa4620ba1e2afd349cc9fbcc80544d1b1de48eb807f4497008783073b3ac42"
+    },
+    "repo": {
+      "Data/CardInfo.xml": "c06089249ad0d57fc1b9de005bae848270a1314bcc956a3dd450c8c0535a1b4b",
+      "Data/EquipPage_Librarian.xml": "69c4a27370a720e953288ea4f37bbdb920274bf09d4114d277caf398bc0de5af",
+      "Data/EquipPage_Enemy.xml": "fd4f4bac3168fadee27a20d3ed638f6883012f56835698940ff00929ef0751e1",
+      "Assemblies/AB/steria_slazeya_water_thunder_assets": "4c4d33ddab0b5bc57adfb16222754b95ab270897257ef67eb25eac061d9ac49f",
+      "Assemblies/AB/steria_slazeya_wind_combat": "cf8bf99f90f5595dfc0ee3a31b3429b7cec6f0ca1f8a4bde42f94ab685e1eaaf",
+      "Resource/ThirdPartyNotices/SlazeyaWaterThunderSlash.txt": "c7e331f5433ae263e628a786bed08bb333c836a351d5979540133dba9dce99c9",
+      "Resource/ThirdPartyNotices/SlazeyaWindCombat.txt": "ecfa4620ba1e2afd349cc9fbcc80544d1b1de48eb807f4497008783073b3ac42"
+    }
+  },
+  "native_result": "ANTIE_NATIVE_PASS 111 checks; exact built DLL, actual factory, core snapshots, native player loop and AssetBundle; synthetic actors; no full battle/deployment claim\nWATER_THUNDER_NATIVE_PASS 189 checks; actual candidate DLL, native factory, Update, AB and GPU; synthetic actor transforms, not full battle\nANTIE_RELEASE_NATIVE_PASS",
+  "unchanged_payload": [],
+  "finished_utc": "2026-11-17T11:10:40.090041+00:00"
+}

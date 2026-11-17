@@ -1,0 +1,167 @@
+using System;
+using System.Collections;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using Battle.DiceAttackEffect;
+using HarmonyLib;
+using LOR_DiceSystem;
+using Steria.AntieVfx;
+using Steria.Vfx;
+using UnityEngine;
+
+public sealed class AntieNativeSmoke : MonoBehaviour
+{
+    string output; int checks; Action<bool,string> done;
+    void Check(bool value,string message) { if(!value)throw new Exception(message); checks++;Debug.Log("ANTIE_NATIVE_CHECK "+message); }
+    public void Begin(string path,Action<bool,string> callback) { output=path;done=callback;StartCoroutine(Run()); }
+    IEnumerator Run()
+    {
+        var harmony=new Harmony("Steria.Antie.NativeAcceptance");
+        Check(Application.unityVersion=="2019.3.15f1"&&SystemInfo.graphicsDeviceType==UnityEngine.Rendering.GraphicsDeviceType.Direct3D11,"exact Unity and real D3D11");
+        var assembly=typeof(DiceAttackEffect_Steria_AntieIceIndigoBase).Assembly;
+        var factory=typeof(Steria.HarmonyPatches);
+        factory.GetMethod("InitCustomEffects").Invoke(null,null);
+        harmony.Patch(AccessTools.Method(typeof(DiceEffectManager),"CreateBehaviourEffect"),prefix:new HarmonyMethod(factory,"DiceEffectManager_CreateBehaviourEffect_Prefix"));
+        harmony.Patch(AccessTools.Method(typeof(DiceEffectManager),"CreateAttackEffect"),prefix:new HarmonyMethod(assembly.GetType("Steria.DiceEffectManager_CreateAttackEffect_Patch",true),"Prefix"));
+        harmony.Patch(AccessTools.Method(typeof(RencounterManager),"PrintEffect"),prefix:new HarmonyMethod(typeof(AntieCoreAttackPresentationPatch),"Prefix"));
+        var manager=new GameObject("ActualDiceEffectManager").AddComponent<DiceEffectManager>();
+        var scene=new GameObject("NativeBattleSceneRoot").AddComponent<BattleSceneRoot>();scene.enabled=false;
+        typeof(SingletonBehavior<BattleSceneRoot>).GetField("_instance",BindingFlags.NonPublic|BindingFlags.Static).SetValue(null,scene);
+        foreach(bool left in new[]{true,false})foreach(string suffix in new[]{"Hit","Slash","Pierce"})
+        {
+            var self=Actor(left, left?9:-9);var target=Actor(!left, left?-9:9);
+            var fx=manager.CreateBehaviourEffect("Steria_AntieIceIndigo"+suffix,.25f,self,target,1.2f);
+            Check(fx is DiceAttackEffect_Steria_AntieIceIndigoBase,"actual production factory "+suffix+" left="+left);
+            var visual=fx.GetComponentInChildren<AntieSlash>(true);
+            Check(visual!=null&&!visual.autoPlay&&!visual.animationDriven,"shared driver advances only from native clock");
+            Check((int)visual.kind==(suffix=="Hit"?0:suffix=="Slash"?1:2),"dice profile mapping");
+            Check(fx.transform.parent==self.characterRotationCenter&&fx.transform.localPosition==new Vector3(-1.3f,-.18f,0),"fixed actor-front attachment");
+            Check(Mathf.Abs(fx.transform.localScale.x-2.5f)<.0001f,"native 2x and roll applied once");
+            var renderers=visual.GetComponentsInChildren<MeshRenderer>(true);
+            Check(renderers.All(r=>r.gameObject.layer==8&&r.sortingLayerName=="Particle"&&r.sharedMaterial.shader.isSupported),"real bundle shader, sorting and layer");
+            if(visual.kind!=AntieAttackKind.HitVertical)
+            {
+                foreach(var blade in visual.blades)if(blade!=null)
+                {
+                    var mesh=blade.GetComponent<MeshFilter>().sharedMesh;
+                    var normal=blade.transform.localToWorldMatrix.inverse.transpose.MultiplyVector(mesh.normals[mesh.vertexCount/2]).normalized;
+                    var forward=self.characterRotationCenter.TransformVector(Vector3.left).normalized;
+                    if(visual.kind==AntieAttackKind.SlashHorizontal)
+                    {
+                        Check(Mathf.Abs(normal.y)>.95f&&Mathf.Abs(normal.z)>.25f&&Mathf.Abs(normal.z)<.31f,"actual horizontal plane lies near ground with slight camera tilt");
+                        var points=mesh.vertices;
+                        var mid=blade.transform.TransformPoint(points[96*13]);
+                        var chord=Vector3.Lerp(blade.transform.TransformPoint(points[0]),blade.transform.TransformPoint(points[192*13]),.5f);
+                        var inward=blade.transform.TransformVector(points[96*13+12]-points[96*13]);
+                        Check((mid-chord).z<-.1f&&(mid-chord).y<-.03f,"actual horizontal convex edge faces screen in both actor facings");
+                        Check(inward.y>.03f&&inward.z>.1f,"actual horizontal concave side is lifted upward and away from screen");
+                    }
+                    else
+                        Check(Mathf.Abs(Vector3.Dot(normal,forward))>.90f&&Mathf.Abs(normal.z)>.30f&&Mathf.Abs(normal.z)<.43f,"actual native dual plane retains slight camera cant "+blade.name);
+                }
+                if(visual.kind==AntieAttackKind.PierceDual)
+                {
+                    var blade=visual.blades[1];var mesh=blade.GetComponent<MeshFilter>().sharedMesh;var points=mesh.vertices;
+                    var mid=blade.transform.TransformPoint(points[96*13]);
+                    var chord=Vector3.Lerp(blade.transform.TransformPoint(points[0]),blade.transform.TransformPoint(points[192*13]),.5f);
+                    var forward=self.characterRotationCenter.TransformVector(Vector3.left).normalized;
+                    Check(Vector3.Dot(mid-chord,forward)>.01f,"actual reversed dual mesh has a convex arc facing opponent");
+                }
+            }
+            float start=Time.realtimeSinceStartup;
+            while(fx!=null&&visual.sampleTime<.08f&&Time.realtimeSinceStartup-start<3)yield return null;
+            Check(fx!=null&&visual.sampleTime>=.08f,"real player loop advances authored animation");
+            Bounds bounds=renderers[0].bounds;foreach(var r in renderers)bounds.Encapsulate(r.bounds);
+            Check(left?bounds.max.x<self.WorldPosition.x:bounds.min.x>self.WorldPosition.x,"whole ribbon stays in actor front");
+            Vector3 before=visual.transform.position,shift=new Vector3(1,.3f,0);self.transform.position+=shift;yield return null;
+            Check(Vector3.Distance(visual.transform.position,before+shift)<.0001f,"moves with attacker");
+            before=visual.transform.position;target.transform.position+=new Vector3(2,3,0);yield return null;
+            Check(Vector3.Distance(visual.transform.position,before)<.0001f,"target cannot displace or rotate slash");
+            var camera=new GameObject("NativeGPUCamera").AddComponent<Camera>();camera.orthographic=true;camera.orthographicSize=8;
+            camera.transform.position=new Vector3(0,6,-60);camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.018f,.03f,.052f);
+            Placeholder(self);Placeholder(target);
+            string imageName="native-"+suffix+"-"+(left?"left":"right");
+            visual.ApplyAt(.23f);Save(camera,imageName+".png");
+            visual.gameObject.SetActive(false);Save(camera,imageName+"-clear.png");visual.gameObject.SetActive(true);
+            float clock=visual.sampleTime;fx.SetDestroyTime(2);Check(visual.sampleTime==clock,"lifetime extension cannot retime visual");
+            fx.gameObject.SetActive(false);Check(renderers.All(r=>!r.enabled),"disable clears visible ribbons and glows");
+            UnityEngine.Object.Destroy(fx.gameObject);UnityEngine.Object.Destroy(self.gameObject);UnityEngine.Object.Destroy(target.gameObject);UnityEngine.Object.Destroy(camera.gameObject);yield return null;
+        }
+        var actor=Actor(true,9);var victim=Actor(false,-9);
+        foreach(int core in new[]{99000011,13})foreach(BehaviourDetail detail in new[]{BehaviourDetail.Hit,BehaviourDetail.Slash,BehaviourDetail.Penetrate})
+        {
+            Book(actor,core,"SteriaBuilding");var result=Snapshot(detail,CardRange.Near,"Borrowed_Generic_J");
+            actor.model.currentDiceAction=new BattlePlayingCardDataInUnitModel();
+            var encounter=(RencounterManager)FormatterServices.GetUninitializedObject(typeof(RencounterManager));
+            AccessTools.Field(typeof(RencounterManager),"_librarian").SetValue(encounter,actor);
+            AccessTools.Field(typeof(RencounterManager),"_enemy").SetValue(encounter,victim);
+            AccessTools.Field(typeof(RencounterManager),"_currentLibrarianBehaviourResult").SetValue(encounter,result);
+            AccessTools.Field(typeof(RencounterManager),"_currentEnemyBehaviourResult").SetValue(encounter,new BattleCardBehaviourResult{behaviourRawData=new DiceBehaviour{Type=BehaviourType.Def},diceBehaviourResult=new DiceBehaviourResultData{result=Result.Lose,actionType=ActionType.Def}});
+            AccessTools.Method(typeof(RencounterManager),"PrintEffect").Invoke(encounter,new object[]{true,false,ActionDetail.Slash,ActionDetail.Default,"","",false,false,false,false});
+            var visual=actor.GetComponentInChildren<AntieSlash>();Check(visual!=null,"real PrintEffect core "+core+" dice "+detail);
+            Check(result.behaviourRawData.EffectRes=="Borrowed_Generic_J","borrowed card XML remains intact");
+            UnityEngine.Object.DestroyImmediate(visual.GetComponentInParent<DiceAttackEffect_Steria_AntieIceIndigoBase>().gameObject);
+        }
+        foreach(string mode in new[]{"other-core","vanilla-id13","area","area-each","guard","Fire","motion-F","None","raw-None","empty"})
+        {
+            Book(actor,mode=="other-core"?99000002:mode=="vanilla-id13"?13:99000011,mode=="vanilla-id13"?"":"SteriaBuilding");
+            var range=mode=="area"?CardRange.FarArea:mode=="area-each"?CardRange.FarAreaEach:CardRange.Near;
+            var result=Snapshot(BehaviourDetail.Slash,range,mode=="raw-None"?"None":"Original_J");
+            if(mode=="guard")result.behaviourRawData.Type=BehaviourType.Def;
+            if(mode=="motion-F")result.behaviourRawData.MotionDetail=MotionDetail.F;
+            if(mode=="empty")result.hasBehaviour=false;
+            string custom=mode=="None"?"None":"Original_Custom";
+            Check(AntieIceIndigoDefaults.Resolve(actor,result,mode=="Fire"?ActionDetail.Fire:ActionDetail.Slash,custom)==custom,"route preserves "+mode);
+        }
+        Book(actor,99000011,"SteriaBuilding");
+        var far=Snapshot(BehaviourDetail.Penetrate,CardRange.Far,"Steria_WaterPierce");far.behaviourRawData.MotionDetail=MotionDetail.Z;
+        Check(AntieIceIndigoDefaults.Resolve(actor,far,ActionDetail.Penetrate,"")=="Steria_AntieIceIndigoPierce","Far card Z still uses dual slash");
+        far.behaviourRawData.Type=BehaviourType.Standby;
+        Check(AntieIceIndigoDefaults.Resolve(actor,far,ActionDetail.Penetrate,"")=="Steria_AntieIceIndigoPierce","counterattack inherits core presentation");
+        var playing=new BattlePlayingCardDataInUnitModel{owner=actor.model,target=victim.model,card=far.cardModel};
+        playing.currentBehavior=new BattleDiceBehavior{card=playing,behaviourInCard=far.behaviourRawData};
+        AccessTools.Field(typeof(BattleDiceBehavior),"_diceFinalResultValue").SetValue(playing.currentBehavior,2);actor.model.currentDiceAction=playing;
+        var direct=manager.CreateAttackEffect(actor.model,1.2f);
+        Check(direct is DiceAttackEffect_Steria_AntieIceIndigoPierce,"actual direct CreateAttackEffect routes to dual profile");
+        Check(Mathf.Abs(direct.transform.localScale.x-3)<.0001f,"direct roll applies exactly once");
+        UnityEngine.Object.Destroy(direct.gameObject);harmony.UnpatchSelf();
+        done(true,"ANTIE_NATIVE_PASS "+checks+" checks; exact built DLL, actual factory, core snapshots, native player loop and AssetBundle; synthetic actors; no full battle/deployment claim");
+    }
+    static BattleUnitView Actor(bool left,float x)
+    {
+        var root=new GameObject("SyntheticAntieNativeContext");root.transform.position=new Vector3(x,0,0);
+        var view=root.AddComponent<BattleUnitView>();view.enabled=false;
+        var rotation=new GameObject("characterRotationCenter").transform;rotation.SetParent(root.transform,false);rotation.localScale=Vector3.one*3;rotation.localRotation=Quaternion.Euler(0,left?0:180,0);view.characterRotationCenter=rotation;
+        var appearance=new GameObject("NativeCharacterAppearance");appearance.transform.SetParent(rotation,false);view.charAppearance=appearance.AddComponent<CharacterAppearance>();view.charAppearance.enabled=false;
+        var pivot=new GameObject("atkEffectRoot").transform;pivot.SetParent(appearance.transform,false);pivot.localPosition=new Vector3(-2.2f,2.34f,0);view.charAppearance.atkEffectRoot=pivot;view.atkEffectRoot=pivot;
+        view.model=(BattleUnitModel)FormatterServices.GetUninitializedObject(typeof(BattleUnitModel));view.model.view=view;return view;
+    }
+    static void Placeholder(BattleUnitView view)
+    {
+        var go=GameObject.CreatePrimitive(PrimitiveType.Capsule);go.name="Textureless actor placeholder";
+        go.transform.SetParent(view.transform,false);go.transform.localPosition=new Vector3(0,5.25f,.7f);go.transform.localScale=new Vector3(2,5.25f,2);
+        go.GetComponent<Renderer>().sharedMaterial=new Material(Shader.Find("Unlit/Color")){color=new Color(.11f,.15f,.19f)};
+    }
+    static void Book(BattleUnitView view,int id,string package)
+    {
+        var book=(BookModel)FormatterServices.GetUninitializedObject(typeof(BookModel));
+        AccessTools.Field(typeof(BookModel),"_classInfo").SetValue(book,new BookXmlInfo{_id=id,workshopID=package});
+        view.model.equipment=new BattleUnitModelEquip(view.model){book=book};
+    }
+    static BattleCardBehaviourResult Snapshot(BehaviourDetail detail,CardRange range,string raw)
+    {
+        var card=(BattleDiceCardModel)FormatterServices.GetUninitializedObject(typeof(BattleDiceCardModel));
+        AccessTools.Field(typeof(BattleDiceCardModel),"_xmlData").SetValue(card,new DiceCardXmlInfo{Spec=new DiceCardSpec{Ranged=range}});
+        return new BattleCardBehaviourResult{hasBehaviour=true,cardModel=card,resultDiceValue=2,vanillaDiceFace=4,
+            behaviourRawData=new DiceBehaviour{Type=BehaviourType.Atk,Detail=detail,MotionDetail=MotionDetail.J,Dice=4,EffectRes=raw},
+            diceBehaviourResult=new DiceBehaviourResultData{result=Result.Win,actionType=ActionType.Atk,range=range}};
+    }
+    void Save(Camera camera,string name)
+    {
+        var rt=RenderTexture.GetTemporary(960,540,24,RenderTextureFormat.ARGB32);var old=RenderTexture.active;camera.targetTexture=rt;camera.Render();RenderTexture.active=rt;
+        var texture=new Texture2D(960,540,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,960,540),0,0);texture.Apply();File.WriteAllBytes(Path.Combine(output,name),texture.EncodeToPNG());
+        UnityEngine.Object.Destroy(texture);camera.targetTexture=null;RenderTexture.active=old;RenderTexture.ReleaseTemporary(rt);
+    }
+}

@@ -1392,6 +1392,9 @@ namespace Steria
             SteriaCustomEffects["Steria_AnhierTextureMemoryGuard"] = typeof(DiceAttackEffect_Steria_AnhierTextureMemoryGuard);
 
             // 注册所有自定义特效
+            SteriaCustomEffects["Steria_AntieIceIndigoHit"] = typeof(DiceAttackEffect_Steria_AntieIceIndigoHit);
+            SteriaCustomEffects["Steria_AntieIceIndigoSlash"] = typeof(DiceAttackEffect_Steria_AntieIceIndigoSlash);
+            SteriaCustomEffects["Steria_AntieIceIndigoPierce"] = typeof(DiceAttackEffect_Steria_AntieIceIndigoPierce);
             SteriaCustomEffects["Steria_WindSlash"] = typeof(DiceAttackEffect_Steria_WindSlash);
             SteriaCustomEffects["Steria_SlazeyaWindSlash"] = typeof(DiceAttackEffect_Steria_SlazeyaWaterThunderSlash);
             SteriaCustomEffects["Steria_SlazeyaWindHit"] = typeof(DiceAttackEffect_Steria_SlazeyaWaterThunderHit);

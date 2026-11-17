@@ -311,6 +311,11 @@ namespace Steria
             try
             {
                 Battle.DiceAttackEffect.DiceAttackEffect coreEffect;
+                if (Steria.Vfx.AntieIceIndigoDefaults.TryCreateDirect(unit, destroyTime, out coreEffect))
+                {
+                    __result = coreEffect;
+                    return false;
+                }
                 if (Steria.Vfx.SlazeyaWaterThunderDefaults.TryCreateDirect(unit, destroyTime, out coreEffect))
                 {
                     __result = coreEffect;
