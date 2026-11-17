@@ -184,3 +184,8 @@ release-04的145项原生检查已实际走PrintEffect、直接工厂和更新/�
 用户在candidate-40预览后明确要求部署，先前的“只预览”边界由该指令解除。接入第七个WaterEdgeFoam原生Prefab，重编3份Runtime和加载适配器；从已安装基线对应的DLL/PDB源码隔离重建，100份其他源码与13份嵌入资源保持。真实DLL/游戏程序集/AB原生181项检查通过后，查看双朝向GPU帧再部署。
 
 当前release-06、candidate-40已部署。收据output/slazeya-water-thunder/deployments/20261117T041549Z/receipt.json，包含旧DLL/AB/说明备份。源码快照deployment/release-06-sources.zip。D盘游戏、C盘别名和仓库包哈希一致；完整接待实战未跑。后续从本次release-06匹配PDB/源码作为新基线，不要复用旧release-05的源码增量假设。
+
+
+## 游戏挂点高度修订
+
+release-07只改人物前方根的局部Y，0→-0.18，三倍单位下降0.54游戏单位。该偏移放在人物根下，独立于骰子缩放；不要为了降高度重画网格、移动各子层或重新引用目标世界坐标。固定相机的原生前后帧能看到实际高度变化，自动跟随特效中心的相机可能掩盖差别。用户退出游戏后仅换DLL，同hash的AB/说明跳过，189项原生检查通过。

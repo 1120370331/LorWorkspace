@@ -104,6 +104,8 @@ public abstract class DiceAttackEffect_Steria_SlazeyaWaterThunderBase : DiceAtta
 {
     // Authoring units to native 2x melee/map units; native roll scaling remains untouched.
     private const float ArtScale=.50f;
+    // Character-local correction, independent of dice/visual scaling.
+    private const float FrontHeight=-.18f;
     protected abstract ActionDetail PivotAction {get;}
     internal abstract BehaviourDetail AttackDetail {get;}
     private WaterThunderSlash visual;
@@ -119,7 +121,7 @@ public abstract class DiceAttackEffect_Steria_SlazeyaWaterThunderBase : DiceAtta
         base.Initialize(self,target,Mathf.Max(.001f,destroyTime));
         _selfTransform=self.characterRotationCenter;
         if(_selfTransform==null)throw new InvalidOperationException("Water/thunder character facing root missing");
-        transform.SetParent(_selfTransform,false);transform.localPosition=new Vector3(-1.3f,0,0);transform.localRotation=Quaternion.identity;
+        transform.SetParent(_selfTransform,false);transform.localPosition=new Vector3(-1.3f,FrontHeight,0);transform.localRotation=Quaternion.identity;
         _bHasDamagedEffect=false;spr.enabled=false;animator.enabled=false;victim=target;
         visual=Steria.Vfx.SlazeyaWaterThunderAssets.Create(transform);
         Align();visual.ApplyAt(0);

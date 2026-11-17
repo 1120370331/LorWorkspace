@@ -19,7 +19,7 @@ def idle():
  result=subprocess.run(['powershell','-NoProfile','-Command',"Get-Process | Where-Object {$_.ProcessName -match 'LibraryOfRuina|Library Of Ruina'} | Select-Object -ExpandProperty ProcessName"],capture_output=True,text=True,check=True)
  assert not result.stdout.strip(),'Game is running; no files written'
 stamp=datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ');run=ROOT/'output/slazeya-water-thunder/deployments'/stamp;run.mkdir(parents=True)
-receipt={'status':'PREPARING','release':str(release),'game_root':str(game),'alias_root':str(alias),'items':[],'preserved':proof['preserved']};written=[]
+receipt={'status':'PREPARING','release':str(release),'game_root':str(game),'alias_root':str(alias),'items':[],'preserved':proof['preserved'],'unchanged_payload':[]};written=[]
 def save():atomic(run/'receipt.json',(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n').encode())
 try:
  idle()
@@ -30,6 +30,8 @@ try:
   for rel in order:
    p=contained(root,rel);before=sha(p)
    assert before==proof['before_payload'][rel],(label,rel,before,'unexpected baseline')
+   if before==proof['payload'][rel]:
+    receipt['unchanged_payload'].append({'root':label,'relative':rel,'sha256':before});continue
    backup=run/'backup'/label/rel
    if before is not None:backup.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,backup);assert sha(backup)==before
    receipt['items'].append({'root':label,'relative':rel,'path':str(p),'before':before,'after':proof['payload'][rel],'backup':str(backup) if before else None})
@@ -40,7 +42,8 @@ try:
  for root in [game,repo]:
   for rel,value in proof['preserved'].items():assert sha(contained(root,rel))==value,(root,rel)
  for item in receipt['items']:assert sha(Path(item['path']))==item['after']
- for rel,value in proof['payload'].items():assert sha(alias/rel)==value
+ for root in [game,repo,alias]:
+  for rel,value in proof['payload'].items():assert sha(contained(root,rel))==value
  receipt['status']='DEPLOYED_VERIFIED';receipt['finished_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat();save()
 except BaseException as exc:
  receipt['status']='FAILED';receipt['error']=str(exc)

@@ -2,8 +2,9 @@
 
 [修改记录](CHANGELOG.md) · [制作与部署经验复盘](../../../docs/superpowers/references/slazeya-water-thunder/2026-11-16-experience.md) · [本机对话原文](../../设定/对话记录_2026-11-16_斯拉泽雅水雷斩击重置与部署.md)
 
-**当前已部署：candidate-40-volume-flow-uv / release-06。** 新DLL与资源包已完成游戏目录、Steam别名和仓库包校验；原生181项检查通过。核心书页斩/打/突使用最新版，远程保持原样。[发布记录](deployment/DELIVERY.md)。
+**当前已部署：candidate-40-volume-flow-uv / release-07。** 新DLL与资源包已完成游戏目录、Steam别名和仓库包校验；原生189项检查通过。核心书页斩/打/突使用最新版，远程保持原样。[发布记录](deployment/DELIVERY.md)。
 
+- [游戏挂点下调前后](deployment/native-verification/anchor-height-before-after.png)：人物局部Y从0降至-0.18；三倍单位约下降0.54游戏单位。资源包与材质保持。
 - [空间感水流纹理](UnityProject/Assets/WaterThunder/Textures/L1_WaterVolume.png) · [增强流光UV通道图](evidence/candidate-40-volume-flow-uv/streaming-uv-map.png)
 - [水流体积感前后对比](evidence/candidate-40-volume-flow-uv/water-volume-before-after.png) · [光针流纹前后对比](evidence/candidate-40-volume-flow-uv/light-uv-before-after.png)
 - [浪沫对齐近景](evidence/candidate-40-volume-flow-uv/edge-foam-motion-60fps.mp4)

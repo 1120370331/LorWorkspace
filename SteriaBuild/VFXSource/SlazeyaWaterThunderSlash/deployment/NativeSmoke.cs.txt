@@ -43,7 +43,8 @@ public sealed class WaterThunderNativeSmoke : MonoBehaviour
             if(!Check(visual.edgeFoam!=null&&visual.edgeFoam.GetComponent<ParticleSystemRenderer>().sharedMaterial.name=="WaterEdgeFoam","actual seventh prefab is bound as edge foam"))yield break;
             if(!Check(visual.layers[0].sharedMaterial.GetTexture("_ShapeTex").name=="L1_WaterVolume"&&visual.layers[0].sharedMaterial.GetTexture("_WaterDepthTex")!=null,"actual bundle contains volume and depth/flow texture bindings"))yield break;
             ActionDetail action=suffix=="Slash"?ActionDetail.Slash:suffix=="Hit"?ActionDetail.Hit:ActionDetail.Penetrate;
-            if(!Check(fx.transform.parent==self.characterRotationCenter&&fx.transform.localPosition==new Vector3(-1.3f,0,0),"fixed actor-front "+action+" attachment"))yield break;
+            if(!Check(fx.transform.parent==self.characterRotationCenter&&fx.transform.localPosition==new Vector3(-1.3f,-.18f,0),"fixed actor-front "+action+" attachment"))yield break;
+            if(!Check(Mathf.Abs(fx.transform.position.y-self.characterRotationCenter.position.y+.18f*self.characterRotationCenter.lossyScale.y)<.0001f,"anchor lowered in character units for both facings"))yield break;
             if(!Check(Mathf.Abs(fx.transform.localScale.x-2.5f)<.00001f,"native melee and roll applied once"))yield break;
             if(!Check(fx.GetComponentsInChildren<Renderer>(true).All(r=>r.gameObject.layer==8&&(!r.enabled||r.sortingLayerName=="Particle")),"Effect layer and Particle sorting on visible renderers"))yield break;
             if(!Check(fx.GetComponentsInChildren<Renderer>(true).Where(r=>!(r is SpriteRenderer)).All(r=>r.sharedMaterial!=null&&r.sharedMaterial.shader.isSupported),"actual bundle shader support"))yield break;
@@ -63,6 +64,16 @@ public sealed class WaterThunderNativeSmoke : MonoBehaviour
             anchor=visual.transform.TransformPoint(WaterThunderMotion.Contact);target.transform.position+=new Vector3(7,2,0);yield return null;
             if(!Check(Vector3.Distance(anchor,visual.transform.TransformPoint(WaterThunderMotion.Contact))<.001f,"target movement cannot displace effect"))yield break;
             var camera=CameraFor(visual);Placeholder(self.WorldPosition.x);
+            if(suffix=="Slash")
+            {
+                var pose=fx.transform.localPosition;var viewPosition=camera.transform.position;camera.transform.position=new Vector3(viewPosition.x,7,-60);
+                fx.transform.localPosition=new Vector3(pose.x,0,pose.z);visual.ApplyAt(.33f);float oldY=visual.transform.TransformPoint(WaterThunderMotion.Contact).y;
+                Save(camera,"anchor-"+(facingLeft?"left":"right")+"-before.png");
+                fx.transform.localPosition=pose;visual.ApplyAt(.33f);float newY=visual.transform.TransformPoint(WaterThunderMotion.Contact).y;
+                Save(camera,"anchor-"+(facingLeft?"left":"right")+"-after.png");
+                if(!Check(Mathf.Abs(oldY-newY-.54f)<.0001f,"same scale/art lowered by 0.54 map units on the 3x actor"))yield break;
+                camera.transform.position=viewPosition;
+            }
             foreach(float t in new[]{.215f,.33f,.60f})
             {
                 visual.ApplyAt(t);Save(camera,suffix+"-"+(facingLeft?"left":"right")+"-"+Mathf.RoundToInt(t*1000)+".png");
