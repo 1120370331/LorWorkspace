@@ -1,6 +1,6 @@
 {
   "status": "DEPLOYED_VERIFIED",
-  "release": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\release-05",
+  "release": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\release-06",
   "game_root": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
   "alias_root": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
   "items": [
@@ -8,49 +8,49 @@
       "root": "game",
       "relative": "Assemblies/AB/steria_slazeya_water_thunder_assets",
       "path": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder\\Assemblies\\AB\\steria_slazeya_water_thunder_assets",
-      "before": "28a4263ef3c73b38830680aada95f42d28bcf7da511318b729c3051a47613dfa",
-      "after": "3a9df71f5e716f9620142d18794cdc2ce980618b5fa9ff7b9194ccd38a4baff2",
-      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261116T155756Z\\backup\\game\\Assemblies\\AB\\steria_slazeya_water_thunder_assets"
+      "before": "3a9df71f5e716f9620142d18794cdc2ce980618b5fa9ff7b9194ccd38a4baff2",
+      "after": "4c4d33ddab0b5bc57adfb16222754b95ab270897257ef67eb25eac061d9ac49f",
+      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261117T041549Z\\backup\\game\\Assemblies\\AB\\steria_slazeya_water_thunder_assets"
     },
     {
       "root": "game",
       "relative": "Resource/ThirdPartyNotices/SlazeyaWaterThunderSlash.txt",
       "path": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder\\Resource\\ThirdPartyNotices\\SlazeyaWaterThunderSlash.txt",
       "before": "2013b7b0eb8411b6995eefc06dc4d520e06b1859bca6781d7d72c6f7a86d6634",
-      "after": "2013b7b0eb8411b6995eefc06dc4d520e06b1859bca6781d7d72c6f7a86d6634",
-      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261116T155756Z\\backup\\game\\Resource\\ThirdPartyNotices\\SlazeyaWaterThunderSlash.txt"
+      "after": "c7e331f5433ae263e628a786bed08bb333c836a351d5979540133dba9dce99c9",
+      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261117T041549Z\\backup\\game\\Resource\\ThirdPartyNotices\\SlazeyaWaterThunderSlash.txt"
     },
     {
       "root": "game",
       "relative": "Assemblies/Steria.dll",
       "path": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder\\Assemblies\\Steria.dll",
       "before": "c8a6615376dd11279c3981cab886574072b45c3c2b97608b7f9d7db7ea0d574f",
-      "after": "c8a6615376dd11279c3981cab886574072b45c3c2b97608b7f9d7db7ea0d574f",
-      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261116T155756Z\\backup\\game\\Assemblies\\Steria.dll"
+      "after": "8aad588342ba7372278c048bb3b27b37a3fcf0a806e617428da83326ab2e9b7c",
+      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261117T041549Z\\backup\\game\\Assemblies\\Steria.dll"
     },
     {
       "root": "repo",
       "relative": "Assemblies/AB/steria_slazeya_water_thunder_assets",
       "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Assemblies\\AB\\steria_slazeya_water_thunder_assets",
-      "before": "28a4263ef3c73b38830680aada95f42d28bcf7da511318b729c3051a47613dfa",
-      "after": "3a9df71f5e716f9620142d18794cdc2ce980618b5fa9ff7b9194ccd38a4baff2",
-      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261116T155756Z\\backup\\repo\\Assemblies\\AB\\steria_slazeya_water_thunder_assets"
+      "before": "3a9df71f5e716f9620142d18794cdc2ce980618b5fa9ff7b9194ccd38a4baff2",
+      "after": "4c4d33ddab0b5bc57adfb16222754b95ab270897257ef67eb25eac061d9ac49f",
+      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261117T041549Z\\backup\\repo\\Assemblies\\AB\\steria_slazeya_water_thunder_assets"
     },
     {
       "root": "repo",
       "relative": "Resource/ThirdPartyNotices/SlazeyaWaterThunderSlash.txt",
       "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Resource\\ThirdPartyNotices\\SlazeyaWaterThunderSlash.txt",
       "before": "2013b7b0eb8411b6995eefc06dc4d520e06b1859bca6781d7d72c6f7a86d6634",
-      "after": "2013b7b0eb8411b6995eefc06dc4d520e06b1859bca6781d7d72c6f7a86d6634",
-      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261116T155756Z\\backup\\repo\\Resource\\ThirdPartyNotices\\SlazeyaWaterThunderSlash.txt"
+      "after": "c7e331f5433ae263e628a786bed08bb333c836a351d5979540133dba9dce99c9",
+      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261117T041549Z\\backup\\repo\\Resource\\ThirdPartyNotices\\SlazeyaWaterThunderSlash.txt"
     },
     {
       "root": "repo",
       "relative": "Assemblies/Steria.dll",
       "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Assemblies\\Steria.dll",
       "before": "c8a6615376dd11279c3981cab886574072b45c3c2b97608b7f9d7db7ea0d574f",
-      "after": "c8a6615376dd11279c3981cab886574072b45c3c2b97608b7f9d7db7ea0d574f",
-      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261116T155756Z\\backup\\repo\\Assemblies\\Steria.dll"
+      "after": "8aad588342ba7372278c048bb3b27b37a3fcf0a806e617428da83326ab2e9b7c",
+      "backup": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\output\\slazeya-water-thunder\\deployments\\20261117T041549Z\\backup\\repo\\Assemblies\\Steria.dll"
     }
   ],
   "preserved": {
@@ -60,5 +60,5 @@
     "Data/EquipPage_Librarian.xml": "69c4a27370a720e953288ea4f37bbdb920274bf09d4114d277caf398bc0de5af",
     "Data/EquipPage_Enemy.xml": "fd4f4bac3168fadee27a20d3ed638f6883012f56835698940ff00929ef0751e1"
   },
-  "finished_utc": "2026-11-16T15:57:57.853339+00:00"
+  "finished_utc": "2026-11-17T04:15:50.365600+00:00"
 }

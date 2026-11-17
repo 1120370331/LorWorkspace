@@ -60,8 +60,8 @@ namespace Steria.Vfx
     {
         internal const string BundleName="steria_slazeya_water_thunder_assets";
         private static AssetBundle bundle;
-        private static readonly string[] Names={"L1_WaterBlade","L2_SplashWake","L3_Lightning","L4_BladeCore","WaterEvaporationScatter","WaterThunderImpactParticles"};
-        private static readonly GameObject[] Prefabs=new GameObject[6];
+        private static readonly string[] Names={"L1_WaterBlade","L2_SplashWake","L3_Lightning","L4_BladeCore","WaterEvaporationScatter","WaterThunderImpactParticles","WaterEdgeFoam"};
+        private static readonly GameObject[] Prefabs=new GameObject[Names.Length];
         internal static WaterThunderSlash Create(Transform parent)
         {
             if(bundle==null)
@@ -83,8 +83,10 @@ namespace Steria.Vfx
                     var child=UnityEngine.Object.Instantiate(Prefabs[i],rootObject.transform,false);
                     if(i<4)visual.layers[i]=child.GetComponent<MeshRenderer>();
                     else if(i==4)visual.evaporationMist=child.GetComponent<MeshRenderer>();
-                    else{visual.impact=child.AddComponent<WaterThunderImpact>();visual.impact.systems=child.GetComponentsInChildren<ParticleSystem>(true);}
+                    else if(i==5){visual.impact=child.AddComponent<WaterThunderImpact>();visual.impact.systems=child.GetComponentsInChildren<ParticleSystem>(true);}
+                    else visual.edgeFoam=child.GetComponent<ParticleSystem>();
                 }
+                if(visual.edgeFoam==null)throw new InvalidOperationException("Water/thunder edge foam binding missing");
                 visual.splashSource=visual.layers[1].GetComponent<MeshFilter>().sharedMesh;
                 foreach(var renderer in rootObject.GetComponentsInChildren<Renderer>(true))
                 {

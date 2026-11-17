@@ -1,0 +1,16 @@
+{
+  "status": "PREVIEW_ONLY_NOT_DEPLOYED",
+  "before": {
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder\\Assemblies\\Steria.dll": "c8a6615376dd11279c3981cab886574072b45c3c2b97608b7f9d7db7ea0d574f",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder\\Assemblies\\AB\\steria_slazeya_water_thunder_assets": "3a9df71f5e716f9620142d18794cdc2ce980618b5fa9ff7b9194ccd38a4baff2",
+    "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Assemblies\\Steria.dll": "c8a6615376dd11279c3981cab886574072b45c3c2b97608b7f9d7db7ea0d574f",
+    "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Assemblies\\AB\\steria_slazeya_water_thunder_assets": "3a9df71f5e716f9620142d18794cdc2ce980618b5fa9ff7b9194ccd38a4baff2"
+  },
+  "after": {
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder\\Assemblies\\Steria.dll": "c8a6615376dd11279c3981cab886574072b45c3c2b97608b7f9d7db7ea0d574f",
+    "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder\\Assemblies\\AB\\steria_slazeya_water_thunder_assets": "3a9df71f5e716f9620142d18794cdc2ce980618b5fa9ff7b9194ccd38a4baff2",
+    "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Assemblies\\Steria.dll": "c8a6615376dd11279c3981cab886574072b45c3c2b97608b7f9d7db7ea0d574f",
+    "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\SteriaBuild\\SteriaModFolder\\Assemblies\\AB\\steria_slazeya_water_thunder_assets": "3a9df71f5e716f9620142d18794cdc2ce980618b5fa9ff7b9194ccd38a4baff2"
+  },
+  "installed_candidate": "candidate-24-half-arc-white"
+}

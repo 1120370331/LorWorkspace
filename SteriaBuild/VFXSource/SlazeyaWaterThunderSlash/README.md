@@ -2,9 +2,30 @@
 
 [修改记录](CHANGELOG.md) · [制作与部署经验复盘](../../../docs/superpowers/references/slazeya-water-thunder/2026-11-16-experience.md) · [本机对话原文](../../设定/对话记录_2026-11-16_斯拉泽雅水雷斩击重置与部署.md)
 
-**已按实测反馈重新部署游戏。** 最终白光从前锋连续覆盖到半圆中段，起手保持尖头扫光。 前锋续向下45°、后缘从后往前退去45°；绑定攻击者固定前方，并成为斯拉泽雅核心书页的普通近战默认效果（含借用卡），远程保持原样；[部署记录与校验](deployment/DELIVERY.md)。本轮附加贴近刀痕的80水滴、白色四方流纹旋动、树状电枝及旧区段/低储能分支先衰减。
+**当前已部署：candidate-40-volume-flow-uv / release-06。** 新DLL与资源包已完成游戏目录、Steam别名和仓库包校验；原生181项检查通过。核心书页斩/打/突使用最新版，远程保持原样。[发布记录](deployment/DELIVERY.md)。
 
-当前制作候选：**candidate-24-half-arc-white**，纯资源发布release-05，原生集成145项检查通过。本轮按用户要求单人完成。本次补足真正的蒙版溶解：主体先按细碎水纹蚀出缺口，水滴后段同样侵蚀，再用短alpha淡出收尾；尖头入场和水滴流体变化保留。旧风系 Slash 的废弃标记位于 `../SlazeyaWindCombat/SLASH_DEPRECATED.md`；上一版横向水雷工程的源文件备份为 `history/candidate-05-sources.zip`。
+- [空间感水流纹理](UnityProject/Assets/WaterThunder/Textures/L1_WaterVolume.png) · [增强流光UV通道图](evidence/candidate-40-volume-flow-uv/streaming-uv-map.png)
+- [水流体积感前后对比](evidence/candidate-40-volume-flow-uv/water-volume-before-after.png) · [光针流纹前后对比](evidence/candidate-40-volume-flow-uv/light-uv-before-after.png)
+- [浪沫对齐近景](evidence/candidate-40-volume-flow-uv/edge-foam-motion-60fps.mp4)
+- [最新整体视频（正常＋慢放）](evidence/candidate-40-volume-flow-uv/review-60fps.mp4)
+- [光针内部流纹（固定位置观察）](evidence/candidate-40-volume-flow-uv/impact-flow-60fps.mp4) · [水层/亮层边界采样](evidence/candidate-40-volume-flow-uv/water-light-boundary.csv)
+- [命中近景：短粗蓝白光束](evidence/candidate-40-volume-flow-uv/impact-needle-motion-60fps.mp4)
+- [亮层同步溶解](evidence/candidate-40-volume-flow-uv/core-dissolve-60fps.mp4) · [亮层尾端裁短检查](evidence/candidate-40-volume-flow-uv/core-tail-trim-60fps.mp4)
+- [强化溶解慢放](evidence/candidate-40-volume-flow-uv/dissolve-fade-60fps.mp4)
+- [水纹材质动态](evidence/candidate-40-volume-flow-uv/water-surface-waves-60fps.mp4) · [随机宽飘带](evidence/candidate-40-volume-flow-uv/tail-ribbons-60fps.mp4)
+- [本轮资产清单](evidence/candidate-40-volume-flow-uv/asset-inventory.md)
+
+新增高度/厚度绘制的空间水流色面与独立高度-流向数据；颜色UV沿流向双相推进，高度引导侧向偏移，U/V限制为±0.10/±0.035。遮罩覆盖率继续采原始UV，因此偏移不移动水层边界或浪沫定位。流光UV强化了移动亮带与蓝暗部，光针仍为定宽直线片。
+
+水层使用旋转/拉伸/平移的噪点图，并限制外缘不得超出亮层。光针使用固定宽度的直线片，前后只靠UV亮度衰减呈现收尖，白光加UV蓝阴影，不使用锥体或棱锥几何。浪沫对齐水层当前展开后的实际内缘和切线，贴边短暂跟随后重力下落消散。
+
+刀光的水体色面、连续轮廓Mask、飘带路线、尖头刷形与非对称亮芯已重新绘制；水体原样使用用户提供的水波法线。光针主轴拉直，内部流纹从根部流向尖端，先加速再受空气阻力减速。
+
+本轮主弧统一圆心，下口保持厚度、末端短收尖，刃体加宽约15%；退尾回调到45°，保持175–340ms。主体水体连续覆盖，减少细线，以宽柔明暗和水纹波动表现自然流动。五条宽飘带只作用尾迹。亮层移除反向补亮与动态拉长，尾端只向前裁短；亮层不再提前整体淡出，跟随水体蒙版溶解，最后才短淡出。溶解采用域扭曲的大/中/细尺度侵蚀。单点命中为16–22个更短、更粗、带暗部与局部白色反光的蓝白发光体，范围约72%主弧半径，周围稀疏泡沫作点缀。
+
+**以下保留此前candidate-24发布说明作为历史：** 最终白光从前锋连续覆盖到半圆中段，起手保持尖头扫光。 前锋续向下45°、后缘从后往前退去45°；绑定攻击者固定前方，并成为斯拉泽雅核心书页的普通近战默认效果（含借用卡），远程保持原样；[部署记录与校验](deployment/DELIVERY.md)。本轮附加贴近刀痕的80水滴、白色四方流纹旋动、树状电枝及旧区段/低储能分支先衰减。
+
+此前制作候选：**candidate-24-half-arc-white**，纯资源发布release-05，原生集成145项检查通过。本轮按用户要求单人完成。本次补足真正的蒙版溶解：主体先按细碎水纹蚀出缺口，水滴后段同样侵蚀，再用短alpha淡出收尾；尖头入场和水滴流体变化保留。旧风系 Slash 的废弃标记位于 `../SlazeyaWindCombat/SLASH_DEPRECATED.md`；上一版横向水雷工程的源文件备份为 `history/candidate-05-sources.zip`。
 
 - [白光修改前后对比](evidence/candidate-24-half-arc-white/white-highlight-before-after.png) · [亮芯单独预览](evidence/candidate-24-half-arc-white/final-white-core.png)
 - [溶解淡出专门视频](evidence/candidate-24-half-arc-white/dissolve-fade-60fps.mp4)、[固定Alpha=1的溶解分解](evidence/candidate-24-half-arc-white/dissolve-mask-only-stages.png)

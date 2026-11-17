@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WaterEdgeFoam
+  m_Shader: {fileID: 4800000, guid: a2187dc62cb63b04382c7e8fe19bb333, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3005
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DissolveTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DistortTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EvapScatterTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FlowTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HighlightTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LightFlowTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RippleTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShapeTex:
+        m_Texture: {fileID: 2800000, guid: b06a14d721aabad4f962ee2e1ede3b24, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SweepMaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TailMaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaterDepthTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaterNoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaterNormalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WhiteFluidTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Alpha: 1
+    - _BodyStrength: 1
+    - _CoreFlowStrength: 0
+    - _Cull: 0
+    - _DepthOffset: 0
+    - _Dissolve: 0
+    - _DistortStrength: 0
+    - _DstBlend: 10
+    - _ElectricalTime: -1
+    - _Emission: 0
+    - _EvapDissolveSoftness: 0.055
+    - _EvapLift: 0
+    - _EvapProgress: 0
+    - _EvapSpread: 1
+    - _Evaporation: 0
+    - _FlowStrength: 0
+    - _HeadSpan: 0.32
+    - _HeadWeight: 0
+    - _HighlightBandCenter: 0.5
+    - _HighlightBandSoftness: 0.035
+    - _HighlightBandWidth: 0.2
+    - _HighlightStrength: 0
+    - _Liquid: 0
+    - _LiquidDissolve: 1
+    - _LiquidShine: 1.1
+    - _LiquidWobble: 0.85
+    - _NoiseSpin: 0.6
+    - _Phase: 0
+    - _Retreat: 0
+    - _Reveal: 1
+    - _RevealSoftness: 0.035
+    - _RippleShine: 0
+    - _RippleStrength: 0
+    - _SrcBlend: 5
+    - _SweepAcross: 1
+    - _SweepCore: 0
+    - _SweepEnabled: 0
+    - _SweepProgress: 0
+    - _SweepWake: 0.6
+    - _SweepWidth: 0.38
+    - _TailGrowth: 1
+    - _TailMaskStrength: 0
+    - _TailSpread: 1
+    - _UVFlowDistance: 0
+    - _UseShapeRGB: 1
+    - _Voltage: 0
+    - _VoltageDecay: 3.2
+    - _VoltageParticle: 0
+    - _WaterNoiseStrength: 0
+    - _WhiteFluid: 0
+    - _WhiteFluidSpin: 4.5
+    - _WhiteFluidStrength: 0.55
+    - _ZWrite: 0
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BladeBoundary: {r: 0.65, g: 1.95, b: 1.95, a: 0.028}
+    - _DistortSpeed: {r: 0.25, g: 0.17, b: 0, a: 0}
+    - _DistortTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _EmissionColor: {r: 0.7, g: 0.95, b: 1, a: 1}
+    - _EvapFrame: {r: 0.65, g: 1.95, b: 4.6, a: 4.8}
+    - _FlowSpeed: {r: 0.5, g: 0, b: 0, a: 0}
+    - _FlowTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _HighlightSpeed: {r: 1, g: 0, b: 0, a: 0}
+    - _HighlightTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _NoiseStretch: {r: 1.7, g: 0.62, b: 0, a: 0}

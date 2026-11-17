@@ -160,6 +160,17 @@ if (out/'white-fluid-spin').exists():
         proc.stdin.close();assert proc.wait()==0,'White fluid spin video encode failed'
     except BaseException:
         proc.kill();raise
+# Focused motion proofs for this preview-only iteration.
+for group,title in [('water-surface-waves','水流材质 · 水纹法线与移动高光'),('tail-ribbons','尾迹 · 随机飘带与独立摆动'),('impact-needle-motion','命中近景 · 单点蓝白针束与泡沫点缀'),('core-dissolve','亮层退场 · 同步蒙版溶解'),('core-tail-trim','亮层尾端 · 只向前裁短'),('impact-flow','直光针 · UV噪点流动阴影'),('edge-foam-motion','浪沫 · 下段内缘尾缀与重力消散')]:
+    folder=out/group
+    if not folder.exists():continue
+    frames=sorted(folder.glob('*.png'))
+    cmd=[ffmpeg,'-y','-v','error','-framerate','60','-i',str(folder/'%03d.png'),'-an','-c:v','libx264','-crf','17','-pix_fmt','yuv420p','-movflags','+faststart',str(out/(group+'-60fps.mp4'))]
+    subprocess.run(cmd,check=True)
+    sheet=Image.new('RGB',(1440,875),'#080f1b');d=ImageDraw.Draw(sheet);d.text((20,10),title,font=font(24),fill='#bdeaff')
+    for n,index in enumerate(np.linspace(0,len(frames)-1,6).astype(int)):
+        x=(n%3)*480;y=60+(n//3)*400;pic=Image.open(frames[index]).resize((480,270),Image.Resampling.LANCZOS);sheet.paste(pic,(x,y));d.text((x+16,y+285),f'{index/60:.3f}s',font=font(20),fill='#91c7dd')
+    sheet.save(out/(group+'-stages.png'))
 paths=[p for p in (project/'Assets').rglob('*') if p.is_file()]
 paths += list((project/'ProjectSettings').glob('*'))+list((project/'Packages').glob('*.json'))
 manifest=[{'path':'UnityProject/'+p.relative_to(project).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(paths)]

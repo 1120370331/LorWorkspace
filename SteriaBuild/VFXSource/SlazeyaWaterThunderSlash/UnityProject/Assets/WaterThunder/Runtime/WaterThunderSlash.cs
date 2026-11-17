@@ -17,6 +17,9 @@ namespace Steria.WaterThunder
         public bool evaporate=true, impactBurst=true;
         public MeshRenderer evaporationMist;
         public WaterThunderImpact impact;
+        public ParticleSystem edgeFoam;
+        public bool foam=true;
+        ParticleSystem.Particle[] foamParticles;
         Mesh splashMesh;
         Vector3[] rest, positions;
         Vector2[] births, velocities;
@@ -70,14 +73,14 @@ namespace Steria.WaterThunder
                 if(i==0) { a=1-Span(.72f,.94f,time); }
                 if(i==1) a=1;
                 if(i==2) { a=1-Span(.52f,.72f,time); }
-                if(i==3) { a=1-Span(.32f,.435f,time); }
+                if(i==3) { a=1-Span(.88f,.96f,time); }
                 if(i!=1)retreat=WaterThunderMotion.TailRetreat(time);
                 if(time<0 || time>=Duration) a=0;
                 layers[i].enabled=toggles[i] && a>.002f && (i!=1 || time>.035f && time<Duration);
                 block.Clear();block.SetFloat(Reveal,1);block.SetFloat("_SweepProgress",reveal);block.SetFloat(Retreat,retreat);
                 block.SetFloat(Phase,time);block.SetFloat(Alpha,a);block.SetFloat(Dissolve,fracture);
                 block.SetFloat("_TailGrowth",i==0?Mathf.SmoothStep(0,1,Span(.12f,.37f,reveal)):1);
-                block.SetFloat("_Evaporation",i==0&&evaporate?1:0);
+                block.SetFloat("_Evaporation",(i==0||i==3)&&evaporate?1:0);
                 block.SetVector("_EvapFrame",WaterThunderMotion.EvaporationFrame);
                 block.SetFloat("_EvapProgress",WaterThunderMotion.EvaporationProgress(time));
                 block.SetFloat("_EvapSpread",WaterThunderMotion.EvaporationSpread(time));
@@ -95,6 +98,7 @@ namespace Steria.WaterThunder
                 block.SetFloat(Alpha,Mathf.Sin(q*Mathf.PI)*Mathf.Pow(1-q,.65f)*.90f);block.SetFloat(Dissolve,0);block.SetFloat("_Evaporation",0);
                 evaporationMist.SetPropertyBlock(block);
             }
+            ApplyEdgeFoam(time);
             if(impact!=null)impact.ApplyAt(time,impactBurst);
             if(splashMesh==null) return;
             for(int start=0;start<rest.Length;start+=4)
@@ -119,6 +123,35 @@ namespace Steria.WaterThunder
             }
             splashMesh.vertices=positions;splashMesh.colors32=colors;splashMesh.RecalculateBounds();
         }
+        void ApplyEdgeFoam(float time)
+        {
+            if(edgeFoam==null)return;
+            if(foamParticles==null)foamParticles=new ParticleSystem.Particle[28];int count=0;
+            if(foam&&time>=0&&time<Duration)
+            for(int i=0;i<28;i++)
+            {
+                float seed=WaterDropletMotion.Seed(i+333),q=(i+.5f)/28;
+                float path=Mathf.Clamp01(.62f+.36f*Mathf.Sqrt(q)+(seed-.5f)*.012f);
+                float born=WaterThunderMotion.TimeAtPath(Mathf.Min(1,path+.06f))+.006f*seed;
+                float age=time-born,life=.26f+.18f*seed;if(age<0||age>=life)continue;
+                float attachTime=born+Mathf.Min(age,.065f);
+                float v=WaterThunderMotion.WaterVisibleInnerV(path,attachTime);
+                var center=WaterThunderMotion.WaterSurfacePoint(path,v,attachTime);
+                float pathA=Mathf.Max(0,path-.002f),pathB=Mathf.Min(1,path+.002f);
+                var pointA=WaterThunderMotion.WaterSurfacePoint(pathA,WaterThunderMotion.WaterVisibleInnerV(pathA,attachTime),attachTime);
+                var pointB=WaterThunderMotion.WaterSurfacePoint(pathB,WaterThunderMotion.WaterVisibleInnerV(pathB,attachTime),attachTime);
+                var tangent=(pointB-pointA).normalized;float freeAge=Mathf.Max(0,age-.065f);
+                var position=center+tangent*((.015f+.025f*seed)*freeAge)+new Vector3(0,-.325f*freeAge*freeAge,-.018f);
+                var radial=(Vector2)position-WaterThunderMotion.ArcCenter;float limit=WaterThunderMotion.ArcRadius-.035f;
+                if(radial.magnitude>limit){var safe=WaterThunderMotion.ArcCenter+radial.normalized*limit;position.x=safe.x;position.y=safe.y;}
+                float normalizedAge=age/life,alpha=WaterThunderMotion.Span(0,.018f,age)*(1-Mathf.SmoothStep(0,1,WaterThunderMotion.Span(.50f,1,normalizedAge)));
+                var p=new ParticleSystem.Particle();p.randomSeed=(uint)(1001+i);p.startLifetime=life;p.remainingLifetime=life-age;p.position=position;
+                p.startSize3D=new Vector3(.07f+.08f*seed,Mathf.Min(.045f+.055f*seed,Mathf.Max(.018f,WaterThunderMotion.Width(path)*v*.50f)),.05f);p.rotation=-Mathf.Atan2(tangent.y,tangent.x)*Mathf.Rad2Deg+(seed-.5f)*20;
+                p.startColor=new Color(1,1,1,alpha*.60f);foamParticles[count++]=p;
+            }
+            edgeFoam.Simulate(0,false,false,false);edgeFoam.SetParticles(foamParticles,count);edgeFoam.Pause(false);
+        }
+        void OnDisable(){if(edgeFoam!=null)edgeFoam.Stop(false,ParticleSystemStopBehavior.StopEmittingAndClear);}
         public void RestoreSourceForSave()
         {
             previewDirty=true;

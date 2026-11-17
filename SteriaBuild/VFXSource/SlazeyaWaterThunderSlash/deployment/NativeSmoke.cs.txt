@@ -40,6 +40,8 @@ public sealed class WaterThunderNativeSmoke : MonoBehaviour
             if(!Check(fx is DiceAttackEffect_Steria_SlazeyaWaterThunderBase,"real factory routes "+suffix+" left="+facingLeft))yield break;
             var visual=fx.GetComponentInChildren<WaterThunderSlash>(true);
             if(!Check(visual!=null&&!visual.autoPlay,"DLL's shared deterministic driver"))yield break;
+            if(!Check(visual.edgeFoam!=null&&visual.edgeFoam.GetComponent<ParticleSystemRenderer>().sharedMaterial.name=="WaterEdgeFoam","actual seventh prefab is bound as edge foam"))yield break;
+            if(!Check(visual.layers[0].sharedMaterial.GetTexture("_ShapeTex").name=="L1_WaterVolume"&&visual.layers[0].sharedMaterial.GetTexture("_WaterDepthTex")!=null,"actual bundle contains volume and depth/flow texture bindings"))yield break;
             ActionDetail action=suffix=="Slash"?ActionDetail.Slash:suffix=="Hit"?ActionDetail.Hit:ActionDetail.Penetrate;
             if(!Check(fx.transform.parent==self.characterRotationCenter&&fx.transform.localPosition==new Vector3(-1.3f,0,0),"fixed actor-front "+action+" attachment"))yield break;
             if(!Check(Mathf.Abs(fx.transform.localScale.x-2.5f)<.00001f,"native melee and roll applied once"))yield break;
@@ -66,7 +68,13 @@ public sealed class WaterThunderNativeSmoke : MonoBehaviour
                 visual.ApplyAt(t);Save(camera,suffix+"-"+(facingLeft?"left":"right")+"-"+Mathf.RoundToInt(t*1000)+".png");
             }
             visual.ApplyAt(Mathf.Min(sample,.4f));
-            if(!Check(visual.impact.systems[0].GetComponent<ParticleSystemRenderer>().sharedMaterial.GetFloat("_Liquid")==1,"native water material mode"))yield break;
+            if(!Check(visual.layers[1].sharedMaterial.GetFloat("_Liquid")==1,"native wake water material mode"))yield break;
+            visual.ApplyAt(.25f);int needles=visual.impact.systems[1].particleCount;var light=visual.impact.systems[1].GetComponent<ParticleSystemRenderer>();
+            if(!Check(needles>=16&&needles<=22&&light.renderMode==ParticleSystemRenderMode.Billboard&&light.mesh==null,"actual hit is 16-22 fixed-width light lines with no cone mesh"))yield break;
+            if(!Check(light.sharedMaterial.shader.name=="Steria/WaterThunder/LightNeedle"&&light.sharedMaterial.GetTexture("_LightFlowTex")!=null,"actual light-line UV streaming shader and map"))yield break;
+            visual.ApplyAt(.42f);if(!Check(visual.edgeFoam.particleCount>0,"aligned gravity foam emits in the real DLL"))yield break;
+            visual.ApplyAt(.535f);var block=new MaterialPropertyBlock();visual.layers[3].GetPropertyBlock(block);
+            if(!Check(visual.layers[3].enabled&&block.GetFloat("_Alpha")==1&&block.GetFloat("_Evaporation")==1,"actual bright layer dissolves instead of fading out early"))yield break;
             var systems=fx.GetComponentsInChildren<ParticleSystem>(true);fx.gameObject.SetActive(false);
             if(!Check(systems.All(p=>p==null||p.particleCount==0),"cancel clears native particles"))yield break;
             UnityEngine.Object.Destroy(fx.gameObject);UnityEngine.Object.Destroy(self.gameObject);UnityEngine.Object.Destroy(target.gameObject);UnityEngine.Object.Destroy(camera.gameObject);

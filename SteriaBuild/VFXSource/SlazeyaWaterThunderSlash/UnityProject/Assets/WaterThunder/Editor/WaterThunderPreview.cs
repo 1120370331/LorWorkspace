@@ -13,7 +13,7 @@ public static class WaterThunderPreview
     static readonly float[] Times={.045f,.155f,.215f,.330f,.535f,.790f};
     static string output;
     static void Check(bool value,string reason){if(!value)throw new Exception(reason);Debug.Log("CHECK "+reason);}
-    static void All(WaterThunderSlash p,bool on){p.water=p.splash=p.lightning=p.core=p.evaporate=p.impactBurst=on;}
+    static void All(WaterThunderSlash p,bool on){p.water=p.splash=p.lightning=p.core=p.evaporate=p.impactBurst=p.foam=on;}
     public static void BuildAndPreview()
     {
         if(!Application.isBatchMode){Debug.LogError("Use the authoring menu in a live Editor; exporter requires an isolated batch snapshot.");return;}
@@ -29,7 +29,7 @@ public static class WaterThunderPreview
             {
                 string folder=layer<0?"composite":WaterThunderBuilder.Names[layer];Directory.CreateDirectory(Path.Combine(output,folder));
                 player.water=layer<0||layer==0;player.splash=layer<0||layer==1;player.lightning=layer<0||layer==2;player.core=layer<0||layer==3;
-                player.evaporate=layer<0||layer==0;player.impactBurst=layer<0;
+                player.evaporate=layer<0||layer==0||layer==3;player.impactBurst=layer<0;player.foam=layer<0;
                 for(int i=0;i<Times.Length;i++){player.ApplyAt(Times[i]);if(layer>=0)player.evaporationMist.enabled=false;Capture(camera,Path.Combine(output,folder,(i+1).ToString("D2")+".png"));}
             }
             All(player,true);player.ApplyAt(WaterThunderMotion.HitTime-.001f);Check(player.impact.Alive==0,"No impact particles before contact");
@@ -38,8 +38,8 @@ public static class WaterThunderPreview
             Check(Mathf.Abs(sweepBlock.GetFloat("_SweepProgress")-WaterThunderMotion.Progress(.155f))<.000001f,"Brush mask sweeps at motion progress");
             player.ApplyAt(.033f);player.layers[0].GetPropertyBlock(sweepBlock);Check(sweepBlock.GetFloat("_TailGrowth")==0,"Pointed head precedes any spread tail");
             player.ApplyAt(.155f);player.layers[0].GetPropertyBlock(sweepBlock);Check(sweepBlock.GetFloat("_TailGrowth")>.9f,"Water tail expands only after head passes");
-            player.ApplyAt(.215f);Check(player.impact.Alive>=40,"Original native water/lightning burst preserved");
-            Check(player.impact.systems[0].GetComponent<ParticleSystemRenderer>().sharedMaterial.GetFloat("_Liquid")==1,"Native impact spray uses water surface rather than data colors");
+            player.ApplyAt(.215f);Check(player.impact.systems[1].particleCount>=16&&player.impact.systems[1].particleCount<=22,"Single origin needle burst has 16 to 22 particles");
+            Check(player.impact.systems[0].particleCount<player.impact.systems[1].particleCount,"Foam remains a sparse secondary accent");
             Vector3 contact=player.impact.transform.position;player.ApplyAt(.33f);Check((contact-player.impact.transform.position).sqrMagnitude<.000001f,"Impact stays fixed while blade continues downward");
             foreach(bool mid in new[]{false,true})foreach(bool mirror in new[]{false,true})
             {
@@ -54,13 +54,165 @@ public static class WaterThunderPreview
             Capture(camera,Path.Combine(output,"end-clear.png"));
             string frames=Path.Combine(output,"motion");Directory.CreateDirectory(frames);
             for(int frame=0;frame<79;frame++){player.ApplyAt(frame/60f);Capture(camera,Path.Combine(frames,frame.ToString("D3")+".png"));}
-            VerifyFinalWhiteReach(player,camera);ExportSupport(player,camera);ExportFlowAndVoltage(player,camera);ExportDissolve(player,camera);ExportWaterDynamics(player,camera);All(player,true);player.ApplyAt(.33f);Orientation(player,camera);BuildAndReload();
+            VerifyWaterBoundary(player,camera);VerifyFinalWhiteReach(player,camera);VerifyCoreTail(player,camera);ExportCoreDissolve(player,camera);ExportEdgeFoam(player,camera);ExportNewDynamics(player,camera);ExportSupport(player,camera);ExportFlowAndVoltage(player,camera);ExportDissolve(player,camera);ExportWaterDynamics(player,camera);All(player,true);player.ApplyAt(.33f);Orientation(player,camera);BuildAndReload();
             var stage=WaterThunderBuilder.CreateStage(true);stage.autoPlay=true;stage.sampleTime=.215f;
             EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(),WaterThunderBuilder.Root+"/Scenes/WaterThunderAuthoring.unity");AssetDatabase.SaveAssets();
-            File.WriteAllText(Path.Combine(output,"complete.json"),"{\"status\":\"technical-pass\",\"unity\":\"2019.3.15f1\",\"renderer\":\"D3D11\",\"duration\":1.04,\"hitTime\":0.19,\"layerCount\":4,\"supportGroups\":2,\"deployment\":false,\"gameFactoryVerified\":false}");
+            File.WriteAllText(Path.Combine(output,"complete.json"),"{\"status\":\"technical-pass\",\"unity\":\"2019.3.15f1\",\"renderer\":\"D3D11\",\"duration\":1.04,\"hitTime\":0.19,\"layerCount\":4,\"supportGroups\":3,\"deployment\":false,\"gameFactoryVerified\":false}");
             Debug.Log("SLAZEYA_WATER_THUNDER_PASS");EditorApplication.Exit(0);
         }
         catch(Exception ex){Debug.LogException(ex);EditorApplication.Exit(1);}
+    }
+    static void VerifyWaterBoundary(WaterThunderSlash player,Camera camera)
+    {
+        var block=new MaterialPropertyBlock();var white=new Texture2D(960,540,TextureFormat.RGB24,false);var light=new Texture2D(960,540,TextureFormat.RGB24,false);
+        var report=new List<string>{"time,path,waterOuterRadius,lightOuterRadius"};
+        foreach(float time in new[]{.215f,.33f,.60f})
+        {
+            All(player,false);player.water=true;player.ApplyAt(time);
+            player.layers[0].GetPropertyBlock(block);block.SetFloat("_SweepEnabled",0);block.SetFloat("_Evaporation",0);block.SetFloat("_Alpha",1);
+            block.SetFloat("_UseShapeRGB",0);block.SetFloat("_RippleShine",0);block.SetFloat("_WhiteFluidStrength",0);block.SetFloat("_WaterNoiseStrength",0);block.SetColor("_BaseColor",Color.white);player.layers[0].SetPropertyBlock(block);
+            white.LoadImage(Capture(camera,Path.Combine(output,"water-boundary-"+Mathf.RoundToInt(time*1000)+".png")));
+            All(player,false);player.core=true;player.ApplyAt(time);player.layers[3].GetPropertyBlock(block);block.SetFloat("_SweepEnabled",0);block.SetFloat("_Evaporation",0);block.SetFloat("_Alpha",1);player.layers[3].SetPropertyBlock(block);
+            light.LoadImage(Capture(camera,null));camera.aspect=960f/540;
+            for(int k=45;k<=95;k+=5)
+            {
+                float path=k/100f,angle=(90-180*path)*Mathf.Deg2Rad;float wr=0,lr=0;
+                for(float r=WaterThunderMotion.ArcRadius-.16f;r<=WaterThunderMotion.ArcRadius+.16f;r+=.002f)
+                {
+                    var pos=new Vector3(WaterThunderMotion.ArcCenter.x+Mathf.Cos(angle)*r,WaterThunderMotion.ArcCenter.y+Mathf.Sin(angle)*r,0);
+                    var uv=camera.WorldToViewportPoint(player.transform.TransformPoint(pos));int x=Mathf.Clamp(Mathf.RoundToInt(uv.x*960),0,959),y=Mathf.Clamp(Mathf.RoundToInt(uv.y*540),0,539);
+                    if(white.GetPixel(x,y).r>.08f)wr=r;if(light.GetPixel(x,y).r>.08f)lr=r;
+                }
+                if(wr>lr+.012f)throw new Exception("Water escaped bright outer boundary at "+path+" / "+time+" : "+wr+" > "+lr);
+                report.Add(time.ToString(CultureInfo.InvariantCulture)+","+path.ToString(CultureInfo.InvariantCulture)+","+wr.ToString(CultureInfo.InvariantCulture)+","+lr.ToString(CultureInfo.InvariantCulture));
+            }
+            camera.ResetAspect();
+        }
+        Object.DestroyImmediate(white);Object.DestroyImmediate(light);File.WriteAllLines(Path.Combine(output,"water-light-boundary.csv"),report);
+        Check(true,"Water outer boundary stays inside the bright layer during tail motion");All(player,true);
+    }
+    static void VerifyCoreTail(WaterThunderSlash player,Camera camera)
+    {
+        All(player,false);player.core=true;camera.aspect=960f/540;
+        var lines=new List<string>{"time,firstVisiblePath"};float previous=0;
+        string folder=Path.Combine(output,"core-tail-trim");Directory.CreateDirectory(folder);
+        var pixels=new Texture2D(960,540,TextureFormat.RGB24,false);
+        for(int frame=0;frame<22;frame++)
+        {
+            float time=.15f+frame/120f;player.ApplyAt(time);
+            pixels.LoadImage(Capture(camera,Path.Combine(folder,frame.ToString("D3")+".png")));
+            float first=1;
+            for(int k=1;k<99;k++)
+            {
+                float path=k/100f;var pos=WaterThunderMotion.Curve(path)+WaterThunderMotion.Normal(path)*(.015f*WaterThunderMotion.Width(path));
+                var uv=camera.WorldToViewportPoint(player.transform.TransformPoint(pos));int x=Mathf.RoundToInt(uv.x*960),y=Mathf.RoundToInt(uv.y*540);float value=0;
+                for(int dx=-1;dx<=1;dx++)for(int dy=-1;dy<=1;dy++)value=Mathf.Max(value,pixels.GetPixel(Mathf.Clamp(x+dx,0,959),Mathf.Clamp(y+dy,0,539)).r);
+                if(value>.15f){first=path;break;}
+            }
+            if(frame>0&&first<previous-.025f)throw new Exception("Bright tail extended backwards at "+time);
+            lines.Add(time.ToString(CultureInfo.InvariantCulture)+","+first.ToString(CultureInfo.InvariantCulture));previous=first;
+        }
+        camera.ResetAspect();Object.DestroyImmediate(pixels);File.WriteAllLines(Path.Combine(output,"core-tail-trim.csv"),lines);
+        Check(true,"Rendered bright tail only trims forward, never extends backwards");All(player,true);
+    }
+    static void ExportCoreDissolve(WaterThunderSlash player,Camera camera)
+    {
+        All(player,false);player.core=player.evaporate=true;player.ApplyAt(.535f);
+        var block=new MaterialPropertyBlock();player.layers[3].GetPropertyBlock(block);
+        Check(player.layers[3].enabled&&block.GetFloat("_Alpha")==1,"Bright layer holds full alpha through 535ms instead of vanishing early");
+        Check(block.GetFloat("_Evaporation")==1&&block.GetFloat("_EvapProgress")>.25f,"Bright layer uses the same spatial dissolve as water");
+        string folder=Path.Combine(output,"core-dissolve");Directory.CreateDirectory(folder);
+        for(int i=0;i<40;i++){player.ApplyAt(.32f+i/60f);player.evaporationMist.enabled=false;Capture(camera,Path.Combine(folder,i.ToString("D3")+".png"));}
+        All(player,true);
+    }
+    static void ExportEdgeFoam(WaterThunderSlash player,Camera camera)
+    {
+        Check(player.edgeFoam!=null,"Inner/lower edge foam layer exists");
+        All(player,false);player.foam=true;player.ApplyAt(.35f);var data=new ParticleSystem.Particle[40];int n=player.edgeFoam.GetParticles(data);
+        float before=0;bool found=false;for(int i=0;i<n;i++)if(data[i].randomSeed==1001){before=data[i].position.y;found=true;}
+        Check(found,"Foam is emitted after the blade passes");player.ApplyAt(.42f);n=player.edgeFoam.GetParticles(data);
+        bool descended=false;for(int i=0;i<n;i++)if(data[i].randomSeed==1001)descended=data[i].position.y<before;
+        Check(descended,"Edge foam falls gently under gravity before fading");
+        // Check the visible water underneath actual foam centers, rather than comparing guessed circles.
+        All(player,false);player.water=true;player.ApplyAt(.33f);var underlay=new Texture2D(960,540,TextureFormat.RGB24,false);
+        var coverageBlock=new MaterialPropertyBlock();player.layers[0].GetPropertyBlock(coverageBlock);
+        coverageBlock.SetFloat("_UseShapeRGB",0);coverageBlock.SetFloat("_RippleShine",0);coverageBlock.SetFloat("_WhiteFluidStrength",0);coverageBlock.SetFloat("_WaterNoiseStrength",0);coverageBlock.SetFloat("_Emission",0);coverageBlock.SetFloat("_HighlightStrength",0);player.layers[0].SetPropertyBlock(coverageBlock);
+        underlay.LoadImage(Capture(camera,Path.Combine(output,"foam-water-coverage.png")));
+        player.foam=true;player.ApplyAt(.33f);n=player.edgeFoam.GetParticles(data);camera.aspect=960f/540;
+        var alignment=new List<string>{"particle,waterCoverageAtFoamCenter"};int attached=0,matched=0;
+        for(int i=0;i<n;i++)
+        {
+            if(data[i].startColor.a<16)continue;attached++;
+            var uv=camera.WorldToViewportPoint(player.transform.TransformPoint(data[i].position));int x=Mathf.RoundToInt(uv.x*960),y=Mathf.RoundToInt(uv.y*540);float blue=0;
+            for(int dx=-1;dx<=1;dx++)for(int dy=-1;dy<=1;dy++)blue=Mathf.Max(blue,underlay.GetPixel(Mathf.Clamp(x+dx,0,959),Mathf.Clamp(y+dy,0,539)).b);
+            if(blue>.10f)matched++;alignment.Add(data[i].randomSeed+","+blue.ToString(CultureInfo.InvariantCulture));
+        }
+        Check(attached>0&&matched>=attached*.90f,"Foam centers align with the rendered water's expanded inner edge");
+        File.WriteAllLines(Path.Combine(output,"foam-water-alignment.csv"),alignment);camera.ResetAspect();Object.DestroyImmediate(underlay);
+        var position=camera.transform.position;float size=camera.orthographicSize;
+        camera.transform.position=player.transform.TransformPoint(WaterThunderMotion.Curve(.72f))+new Vector3(0,0,-15);camera.orthographicSize=1.6f;
+        string folder=Path.Combine(output,"edge-foam-motion");Directory.CreateDirectory(folder);All(player,false);player.water=player.foam=true;
+        for(int i=0;i<40;i++){player.ApplyAt(.14f+i/60f);Capture(camera,Path.Combine(folder,i.ToString("D3")+".png"));}
+        camera.transform.position=position;camera.orthographicSize=size;All(player,true);
+    }
+    static void ExportNewDynamics(WaterThunderSlash player,Camera camera)
+    {
+        var block=new MaterialPropertyBlock();
+        foreach(string mode in new[]{"water-surface-waves","tail-ribbons"})
+        {
+            string folder=Path.Combine(output,mode);Directory.CreateDirectory(folder);All(player,false);player.water=true;
+            byte[] first=null,last=null;
+            for(int i=0;i<36;i++)
+            {
+                player.ApplyAt(mode=="tail-ribbons"?.215f:.33f);player.layers[0].GetPropertyBlock(block);
+                block.SetFloat("_Phase",i/60f);block.SetFloat("_WhiteFluidStrength",0);block.SetFloat("_Evaporation",0);block.SetFloat("_Alpha",1);
+                if(mode=="water-surface-waves")block.SetFloat("_TailMaskStrength",0);
+                else {block.SetFloat("_RippleStrength",0);block.SetFloat("_RippleShine",0);}
+                player.layers[0].SetPropertyBlock(block);last=Capture(camera,Path.Combine(folder,i.ToString("D3")+".png"));if(i==0)first=last;
+            }
+            Check(!Equal(first,last),"Frozen blade has independently animated "+mode);
+        }
+        var travelReport=new List<string>{"time,travel,speed"};float peak=0,early=0,late=0;
+        for(int i=1;i<=59;i++)
+        {
+            float t=i/200f,p=WaterThunderImpact.NeedleTravel(t,.30f,7,28);
+            float speed=(WaterThunderImpact.NeedleTravel(t+.001f,.30f,7,28)-WaterThunderImpact.NeedleTravel(t-.001f,.30f,7,28))/.002f;
+            if(i==1)early=speed;if(i==50)late=speed;peak=Mathf.Max(peak,speed);
+            travelReport.Add(t.ToString(CultureInfo.InvariantCulture)+","+p.ToString(CultureInfo.InvariantCulture)+","+speed.ToString(CultureInfo.InvariantCulture));
+        }
+        Check(peak>early*3&&late<peak*.45f,"Light shafts accelerate from rest then slow under air drag");
+        File.WriteAllLines(Path.Combine(output,"needle-speed-profile.csv"),travelReport);
+        var priorPosition=camera.transform.position;float priorSize=camera.orthographicSize;
+        camera.transform.position=player.transform.TransformPoint(WaterThunderMotion.Contact)+new Vector3(0,0,-15);camera.orthographicSize=1.5f;
+        All(player,false);player.impactBurst=true;string seeds=Path.Combine(output,"impact-seed-variants");Directory.CreateDirectory(seeds);
+        var report=new List<string>{"seed,needleCount,maxReach"};
+        foreach(int seed in new[]{1291,19037,31415})
+        {
+            player.impact.burstSeed=seed;player.ApplyAt(.25f);int count=player.impact.NeedleCount;
+            Check(count>=16&&count<=22,"Random needle count constrained "+seed);Capture(camera,Path.Combine(seeds,seed+".png"));
+            report.Add(seed+","+count+","+WaterThunderImpact.BurstRadius.ToString(CultureInfo.InvariantCulture));
+        }
+        player.impact.burstSeed=19037;
+        string hitFrames=Path.Combine(output,"impact-needle-motion");Directory.CreateDirectory(hitFrames);
+        for(int i=0;i<36;i++)
+        {
+            player.ApplyAt(.18f+i/60f);Capture(camera,Path.Combine(hitFrames,i.ToString("D3")+".png"));
+            var data=new ParticleSystem.Particle[48];int n=player.impact.systems[1].GetParticles(data);
+            for(int k=0;k<n;k++)if(((Vector2)data[k].position).magnitude+data[k].startSize3D.x*.5f>WaterThunderImpact.BurstRadius+.001f)throw new Exception("Needle exceeds 72 percent arc radius");
+        }
+        Check(true,"All visible needles remain within 72 percent arc radius");
+        var coneRenderer=player.impact.systems[1].GetComponent<ParticleSystemRenderer>();
+        Check(coneRenderer.renderMode==ParticleSystemRenderMode.Billboard&&coneRenderer.mesh==null,"Light needles use fixed-width billboard lines with no pointed geometry");
+        Check(coneRenderer.sharedMaterial.shader.name=="Steria/WaterThunder/LightNeedle","Light line narrows optically through UV brightness, not cone geometry");
+        string flowFolder=Path.Combine(output,"impact-flow");Directory.CreateDirectory(flowFolder);byte[] flowFirst=null,flowLast=null;
+        for(int i=0;i<36;i++)
+        {
+            player.ApplyAt(.25f);block.Clear();block.SetFloat("_NeedleTime",i/60f);
+            player.impact.systems[1].GetComponent<ParticleSystemRenderer>().SetPropertyBlock(block);
+            flowLast=Capture(camera,Path.Combine(flowFolder,i.ToString("D3")+".png"));if(i==0)flowFirst=flowLast;
+        }
+        Check(!Equal(flowFirst,flowLast),"Fixed light lines contain stronger moving UV light and shadow bands");
+        File.WriteAllLines(Path.Combine(output,"impact-burst-profile.csv"),report);camera.transform.position=priorPosition;camera.orthographicSize=priorSize;All(player,true);
     }
     static void VerifyFinalWhiteReach(WaterThunderSlash player,Camera camera)
     {
@@ -148,13 +300,12 @@ public static class WaterThunderPreview
     static float Speed(float t){return (WaterThunderMotion.Progress(t+.001f)-WaterThunderMotion.Progress(t-.001f))/.002f;}
     static void VerifyMotion()
     {
-        var before=WaterThunderMotion.Normal(WaterThunderMotion.MainPathFraction-.001f);
-        var after=WaterThunderMotion.Normal(1);
-        Check(Mathf.Abs(Vector3.Angle(before,after)-45)<.5f,"Leading tangent extends downward 45 degrees");
+        for(int i=0;i<=100;i++)Check(Mathf.Abs(((Vector2)WaterThunderMotion.Curve(i/100f)-WaterThunderMotion.ArcCenter).magnitude-WaterThunderMotion.ArcRadius)<.00001f,"Entire blade uses one center "+i);
+        Check(WaterThunderMotion.Width(.94f)>=WaterThunderMotion.Width(.70f)*.99f,"Lower blade retains width until the short terminal point");
         var tail=(Vector2)WaterThunderMotion.Curve(0)-WaterThunderMotion.ArcCenter;
         var end=(Vector2)WaterThunderMotion.Curve(WaterThunderMotion.TailRetreatLimit)-WaterThunderMotion.ArcCenter;
         Check(Mathf.Abs(Vector2.Angle(tail,end)-45)<.01f,"Rear removal spans 45 degrees along arc");
-        Check(WaterThunderMotion.TailRetreat(.215f)==0&&Mathf.Abs(WaterThunderMotion.TailRetreat(.48f)-WaterThunderMotion.TailRetreatLimit)<.000001f,"Back-to-front retreat reaches exact authored limit");
+        Check(WaterThunderMotion.TailRetreat(.175f)==0&&Mathf.Abs(WaterThunderMotion.TailRetreat(.34f)-WaterThunderMotion.TailRetreatLimit)<.000001f,"Earlier and faster retreat completes at 340ms");
         Check(Speed(.16f)>Speed(.235f)*3,"Arrival faster than contact slowdown");Check(Speed(.30f)>Speed(.235f)*3,"Blade reaccelerates after contact");
         Check(Mathf.Abs(WaterThunderMotion.Progress(WaterThunderMotion.HitTime)-WaterThunderMotion.ContactPath)<.00001f,"Exact hit time and path agree");
         Vector3 travel,velocity;WaterDropletMotion.Flight(new Vector3(4,2,0),.15f,.43f,out travel,out velocity);
@@ -191,6 +342,8 @@ public static class WaterThunderPreview
             foreach(string property in new[]{"_ShapeTex","_MaskTex","_FlowTex","_HighlightTex","_DissolveTex"})Check(mat.GetTexture(property)!=null,name+" "+property);
             if(k!=1)Check(mat.GetFloat("_SweepEnabled")==1&&mat.GetTexture("_SweepMaskTex")!=null,"Swept brush material "+name);
             if(k==0)Check(mat.GetTexture("_TailMaskTex")!=null&&mat.GetTexture("_EvapScatterTex")!=null,"Fan-tail and evaporation scatter textures bound");
+            if(k==0)Check(mat.GetTexture("_WaterDepthTex")!=null&&mat.GetFloat("_UVFlowDistance")>0,"Water volume uses flow/height guided UV offset");
+            if(k==0)Check(mat.GetTexture("_RippleTex")!=null&&mat.GetFloat("_RippleStrength")>0,"Independent water ripple material field bound");
             if(k==0)Check(mat.GetFloat("_WhiteFluid")==1&&mat.GetTexture("_WhiteFluidTex")!=null,"White fluid four-sided pattern enabled inside body");
             if(k==2)
             {
@@ -203,7 +356,7 @@ public static class WaterThunderPreview
         foreach(string guid in AssetDatabase.FindAssets("t:Texture2D",new[]{WaterThunderBuilder.Root+"/Textures"}))
         {
             string path=AssetDatabase.GUIDToAssetPath(guid);var importer=(TextureImporter)AssetImporter.GetAtPath(path);bool repeat=path.Contains("Repeat");
-            Check(importer.wrapMode==(repeat?TextureWrapMode.Repeat:TextureWrapMode.Clamp),"Address mode "+Path.GetFileName(path));if(repeat||path.Contains("Mask")||path.Contains("Normal")||path.Contains("Evap_WaterScatter"))Check(!importer.sRGBTexture,"Linear data "+Path.GetFileName(path));
+            Check(importer.wrapMode==(repeat?TextureWrapMode.Repeat:TextureWrapMode.Clamp),"Address mode "+Path.GetFileName(path));if(repeat||path.Contains("Mask")||path.Contains("Normal")||path.Contains("Depth")||path.Contains("Evap_WaterScatter"))Check(!importer.sRGBTexture,"Linear data "+Path.GetFileName(path));
         }
         File.WriteAllLines(Path.Combine(output,"mesh-report.csv"),report);
     }
@@ -224,7 +377,7 @@ public static class WaterThunderPreview
     {
         string dir=Path.Combine(output,"bundle");Directory.CreateDirectory(dir);var paths=new List<string>();
         for(int i=0;i<4;i++)paths.Add(WaterThunderBuilder.Root+"/Prefabs/"+WaterThunderBuilder.Names[i]+".prefab");
-        paths.Add(WaterThunderBuilder.Root+"/Prefabs/WaterEvaporationScatter.prefab");paths.Add(WaterThunderBuilder.Root+"/Prefabs/WaterThunderImpactParticles.prefab");
+        paths.Add(WaterThunderBuilder.Root+"/Prefabs/WaterEvaporationScatter.prefab");paths.Add(WaterThunderBuilder.Root+"/Prefabs/WaterThunderImpactParticles.prefab");paths.Add(WaterThunderBuilder.Root+"/Prefabs/WaterEdgeFoam.prefab");
         const string bundleName="steria_slazeya_water_thunder_assets";
         var manifest=BuildPipeline.BuildAssetBundles(dir,new[]{new AssetBundleBuild{assetBundleName=bundleName,assetNames=paths.ToArray()}},BuildAssetBundleOptions.ChunkBasedCompression,BuildTarget.StandaloneWindows64);
         Check(manifest!=null,"Four layers and support AssetBundle build");Check(manifest.GetAllDependencies(bundleName).Length==0,"AssetBundle self-contained");
@@ -237,7 +390,8 @@ public static class WaterThunderPreview
             foreach(var c in prefab.GetComponentsInChildren<Component>(true))Check(c is Transform||c is MeshFilter||c is MeshRenderer||c is ParticleSystem||c is ParticleSystemRenderer,"Native bundle component "+c.GetType().Name);
             var obj=Object.Instantiate(prefab,root.transform);if(i<4)p.layers[i]=obj.GetComponent<MeshRenderer>();
             if(i==4)p.evaporationMist=obj.GetComponent<MeshRenderer>();
-            if(i==5){p.impact=obj.AddComponent<WaterThunderImpact>();p.impact.systems=obj.GetComponentsInChildren<ParticleSystem>();}
+            if(i==5){p.impact=obj.AddComponent<WaterThunderImpact>();p.impact.systems=obj.GetComponentsInChildren<ParticleSystem>();p.impact.burstSeed=19037;}
+            if(i==6)p.edgeFoam=obj.GetComponent<ParticleSystem>();
         }
         var camera=new GameObject("ReloadCamera").AddComponent<Camera>();camera.orthographic=true;camera.orthographicSize=2.6f;camera.transform.position=new Vector3(.65f,2.30f,-15);
         camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.018f,.03f,.052f);camera.allowHDR=false;

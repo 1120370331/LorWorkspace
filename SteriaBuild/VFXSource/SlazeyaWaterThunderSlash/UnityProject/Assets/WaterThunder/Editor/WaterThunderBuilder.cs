@@ -12,7 +12,7 @@ public static class WaterThunderBuilder
     public const string Root="Assets/WaterThunder";
     public const string Prefab=Root+"/Prefabs/SlazeyaWaterThunderSlash.prefab";
     public static readonly string[] Names={"L1_WaterBlade","L2_SplashWake","L3_Lightning","L4_BladeCore"};
-    static readonly string[] TextureNames={"L1_WaterBody","L2_Splash","L3_Lightning","L4_Core"};
+    static readonly string[] TextureNames={"L1_WaterVolume","L2_Splash","L3_Lightning","L4_Core"};
     static Vector3 Curve(float t)
     {
         return WaterThunderMotion.Curve(t);
@@ -31,9 +31,9 @@ public static class WaterThunderBuilder
         public List<int> triangles=new List<int>();public List<Color32> color=new List<Color32>();
         public void Vertex(Vector3 pos,Vector2 tex,Color32 c,Vector2 born,Vector2 speed) { p.Add(pos);uv.Add(tex);color.Add(c);birth.Add(born);velocity.Add(speed); }
         public void Quad(int a,int b,int c,int d) {triangles.AddRange(new[]{a,c,b,c,d,b});}
-        public Mesh Mesh(string name)
+        public Mesh Mesh(string name,bool forceXY=true)
         {
-            for(int i=0;i<triangles.Count;i+=3)if(Vector3.Cross(p[triangles[i+1]]-p[triangles[i]],p[triangles[i+2]]-p[triangles[i]]).z>0){int v=triangles[i+1];triangles[i+1]=triangles[i+2];triangles[i+2]=v;}
+            if(forceXY)for(int i=0;i<triangles.Count;i+=3)if(Vector3.Cross(p[triangles[i+1]]-p[triangles[i]],p[triangles[i+2]]-p[triangles[i]]).z>0){int v=triangles[i+1];triangles[i+1]=triangles[i+2];triangles[i+2]=v;}
             var m=new Mesh{name=name};m.SetVertices(p);m.SetUVs(0,uv);m.SetUVs(1,birth);m.SetUVs(2,velocity);m.SetColors(color);m.SetTriangles(triangles,0);m.RecalculateNormals();m.RecalculateBounds();return m;
         }
     }
@@ -46,17 +46,13 @@ public static class WaterThunderBuilder
             for(int j=0;j<=rows;j++)
             {
                 float v=(float)j/rows;float w=Width(t);
-                float offset;
-                if(core) offset=.015f*w+(v-.5f)*(.080f+.46f*Mathf.Pow(t,2.3f))*Mathf.Pow(Mathf.Max(0,Mathf.Sin(t*Mathf.PI)),.18f);
-                else offset=(v-.09f)*w*(1+.055f*Mathf.Sin(t*57+v*9));
-                var tailOffset=Vector3.zero;
-                if(!core)
+                Vector3 pos,tailOffset;
+                if(core)
                 {
-                    float tail=Mathf.Pow(1-WaterThunderMotion.Span(0,.37f,t),1.4f);
-                    var tangent=new Vector3(-normal.y,normal.x,0);
-                    tailOffset=normal*((v-.5f)*.78f*tail)-tangent*(tail*(.15f+.35f*v));
+                    float offset=.015f*w+(v-.5f)*(.11f+.44f*Mathf.SmoothStep(0,1,WaterThunderMotion.Span(.25f,.72f,t)))*(1-Mathf.SmoothStep(0,1,WaterThunderMotion.Span(.97f,1,t)));
+                    pos=center+normal*offset;pos.z=-.018f;tailOffset=Vector3.zero;
                 }
-                var pos=center+normal*offset+tailOffset;pos.z=core?-.018f:.012f*Mathf.Sin(t*10)*Mathf.Sin(v*Mathf.PI);
+                else WaterThunderMotion.WaterVertex(t,v,out pos,out tailOffset);
                 float strength=core?Mathf.Pow(Mathf.Max(0,Mathf.Sin(Mathf.PI*t)),.08f)*(.75f+.25f*WaterThunderMotion.Span(0,.2f,t)):(.75f+.25f*WaterThunderMotion.Span(0,.2f,t))*(1-WaterThunderMotion.Span(.985f,1,t));
                 byte a=(byte)Mathf.RoundToInt(255*strength);
                 g.Vertex(pos,new Vector2(t,v),new Color32(255,255,255,a),Vector2.zero,new Vector2(tailOffset.x,tailOffset.y));
@@ -161,16 +157,31 @@ public static class WaterThunderBuilder
     }
     static void ConfigureSurface(Material m,int layer)
     {
+        m.SetFloat("_UVFlowDistance",layer==0?.16f:0);m.SetFloat("_DepthOffset",layer==0?.024f:0);
+        m.SetFloat("_CoreFlowStrength",layer==3?.45f:0);
+        if(layer==0)
+        {
+            m.SetTexture("_ShapeTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/L1_WaterVolume.png"));
+            m.SetTexture("_WaterDepthTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/L1_WaterDepthFlow.png"));
+        }
+        if(layer==3)m.SetTexture("_LightFlowTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/Shared_LightFlowRepeat.png"));
         m.SetFloat("_HeadWeight",0);m.SetFloat("_SweepEnabled",layer==1?0:1);
         m.SetFloat("_SweepAcross",layer==2?0:1);m.SetFloat("_SweepCore",layer==3?1:0);
-        m.SetFloat("_SweepWidth",layer==0?.42f:layer==3?.90f:.38f);m.SetFloat("_SweepWake",layer==3?0:layer==0?.60f:.24f);
+        m.SetFloat("_SweepWidth",layer==0?WaterThunderMotion.WaterSweepWidth:layer==3?.90f:.38f);m.SetFloat("_SweepWake",layer==3?0:layer==0?.60f:.24f);
         m.SetTexture("_SweepMaskTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/Shared_SweepBrushMask.png"));
         m.SetTexture("_EvapScatterTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/Evap_WaterScatter.png"));
         m.SetTexture("_TailMaskTex",layer==0?AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/L1_TailFanMask.png"):Texture2D.whiteTexture);
         m.SetFloat("_TailMaskStrength",layer==0?1:0);
-        m.SetFloat("_WhiteFluid",layer==0?1:0);m.SetFloat("_WhiteFluidStrength",.75f);m.SetFloat("_WhiteFluidSpin",4.5f);
+        m.SetFloat("_WhiteFluid",layer==0?1:0);m.SetFloat("_WhiteFluidStrength",.12f);m.SetFloat("_WhiteFluidSpin",4.5f);
         if(layer==0)m.SetTexture("_WhiteFluidTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/L1_WhiteFluidQuadMask.png"));
         m.SetFloat("_Voltage",layer==2?1:0);m.SetFloat("_VoltageParticle",0);m.SetFloat("_ElectricalTime",-1);m.SetFloat("_VoltageDecay",3.2f);
+        m.SetFloat("_EvapDissolveSoftness",layer==0||layer==3?.028f:.055f);
+        m.SetVector("_BladeBoundary",new Vector4(WaterThunderMotion.ArcCenter.x,WaterThunderMotion.ArcCenter.y,WaterThunderMotion.ArcRadius,.028f));
+        m.SetFloat("_WaterNoiseStrength",layer==0?.60f:0);m.SetFloat("_NoiseSpin",.60f);m.SetVector("_NoiseStretch",new Vector4(1.7f,.62f,0,0));
+        if(layer==0)m.SetTexture("_WaterNoiseTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/Shared_WaterNoiseRepeat.png"));
+        m.SetFloat("_RippleStrength",layer==0?.018f:0);m.SetFloat("_RippleShine",layer==0?.28f:0);
+        if(layer==0){m.SetFloat("_HighlightStrength",.10f);m.SetFloat("_Emission",.35f);}
+        if(layer==0)m.SetTexture("_RippleTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/L1_UserWaterNormal.png"));
         ConfigureLiquid(m,layer==1);
     }
     static void ConfigureLiquid(Material m,bool liquid)
@@ -185,6 +196,7 @@ public static class WaterThunderBuilder
     }
     static void ConfigureScatter(Material m,string name)
     {
+        m.SetFloat("_TailMaskStrength",0);m.SetFloat("_RippleStrength",0);m.SetFloat("_RippleShine",0);
         m.SetFloat("_Voltage",name=="ImpactElectric"?1:0);m.SetFloat("_VoltageParticle",name=="ImpactElectric"?1:0);m.SetFloat("_VoltageDecay",3.2f);
         if(name!="EvaporationWaterScatter")return;
         m.SetFloat("_UseShapeRGB",0);m.SetColor("_BaseColor",new Color(.16f,.71f,.97f,1));EditorUtility.SetDirty(m);
@@ -194,6 +206,17 @@ public static class WaterThunderBuilder
         var g=new Geometry();
         for(int j=0;j<4;j++){float u=j%2,v=j/2;g.Vertex(new Vector3(u-.5f,v-.5f,0),new Vector2(u,v),new Color32(255,255,255,255),Vector2.zero,Vector2.zero);}
         g.Quad(0,1,2,3);return g.Mesh("EvaporationScatter");
+    }
+    static Material LightNeedleMaterial()
+    {
+        string path=Root+"/Materials/ImpactLightCone.mat";var m=AssetDatabase.LoadAssetAtPath<Material>(path);
+        var shader=Shader.Find("Steria/WaterThunder/LightNeedle");if(shader==null||!shader.isSupported)throw new Exception("Light cone shader unsupported");
+        if(m==null){m=new Material(shader){name="ImpactLightNeedle"};AssetDatabase.CreateAsset(m,path);}else m.shader=shader;
+        m.SetTexture("_NoiseTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/Shared_WaterNoiseRepeat.png"));
+        m.SetTexture("_ShadowTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/Impact_ConeShadowMask.png"));
+        m.SetTexture("_LightFlowTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/Shared_LightFlowRepeat.png"));m.SetFloat("_UVFlowStrength",1.0f);
+        m.SetColor("_WhiteColor",Color.white);m.SetColor("_ShadowColor",new Color(.025f,.15f,.55f,1));m.SetFloat("_Emission",1.8f);m.SetFloat("_NeedleTime",0);
+        EditorUtility.SetDirty(m);return m;
     }
     static Mesh Spark()
     {
@@ -212,6 +235,19 @@ public static class WaterThunderBuilder
         m.SetFloat("_FlowStrength",0);m.SetFloat("_DistortStrength",0);m.SetFloat("_SrcBlend",5);m.SetFloat("_DstBlend",additive?1:10);m.SetFloat("_Cull",0);
         m.SetColor("_BaseColor",Color.white);ConfigureLiquid(m,name=="ImpactWater");ConfigureScatter(m,name);m.renderQueue=3000+order*10;AssetDatabase.CreateAsset(m,path);return m;
     }
+    static void EdgeFoamSupport(GameObject root,WaterThunderSlash player)
+    {
+        var go=new GameObject("Water Edge Foam - inner and lower wake");go.transform.SetParent(root.transform,false);
+        var ps=go.AddComponent<ParticleSystem>();ps.Stop(false,ParticleSystemStopBehavior.StopEmittingAndClear);
+        var main=ps.main;main.loop=false;main.duration=1;main.playOnAwake=false;main.startSpeed=0;main.startLifetime=1;main.startSize3D=true;main.maxParticles=40;main.simulationSpace=ParticleSystemSimulationSpace.Local;
+        var emission=ps.emission;emission.enabled=false;var shape=ps.shape;shape.enabled=false;ps.useAutoRandomSeed=false;ps.randomSeed=71321;
+        var renderer=go.GetComponent<ParticleSystemRenderer>();renderer.renderMode=ParticleSystemRenderMode.Billboard;
+        renderer.sharedMaterial=SupportMaterial("WaterEdgeFoam","EdgeFoam_WaveNoise",null,false,1);renderer.sharedMaterial.renderQueue=3005;renderer.sortingOrder=1;
+        renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;renderer.receiveShadows=false;
+        renderer.SetActiveVertexStreams(new List<ParticleSystemVertexStream>{ParticleSystemVertexStream.Position,ParticleSystemVertexStream.Color,ParticleSystemVertexStream.UV});
+        EditorUtility.SetDirty(renderer.sharedMaterial);player.edgeFoam=ps;
+        PrefabUtility.SaveAsPrefabAsset(go,Root+"/Prefabs/WaterEdgeFoam.prefab");
+    }
     static void Support(GameObject root,WaterThunderSlash player)
     {
         var evap=new GameObject("Evaporation - dispersing water ripple flecks");evap.transform.SetParent(root.transform,false);
@@ -223,19 +259,19 @@ public static class WaterThunderBuilder
         var systems=new ParticleSystem[3];
         for(int i=0;i<3;i++)
         {
-            var go=new GameObject(i==0?"Hit_WaterSpray":i==1?"Hit_LightningSparks":"Hit_ContactFlash");go.transform.SetParent(hit.transform,false);
+            var go=new GameObject(i==0?"Hit_FoamAccents":i==1?"Hit_RadialNeedles":"Hit_ContactFlash");go.transform.SetParent(hit.transform,false);
             var ps=go.AddComponent<ParticleSystem>();ps.Stop(false,ParticleSystemStopBehavior.StopEmittingAndClear);
             var main=ps.main;main.loop=false;main.duration=1;main.playOnAwake=false;main.startSpeed=0;main.startLifetime=1;main.startSize=1;main.startSize3D=true;main.maxParticles=48;main.simulationSpace=ParticleSystemSimulationSpace.Local;
             var emission=ps.emission;emission.enabled=false;var shape=ps.shape;shape.enabled=false;ps.useAutoRandomSeed=false;ps.randomSeed=19037u;
-            var renderer=go.GetComponent<ParticleSystemRenderer>();renderer.renderMode=i==1?ParticleSystemRenderMode.Mesh:ParticleSystemRenderMode.Billboard;
-            if(i==1){renderer.mesh=AssetDatabase.LoadAssetAtPath<Mesh>(Root+"/Meshes/ImpactArcShard.asset");renderer.alignment=ParticleSystemRenderSpace.Local;}
-            renderer.sharedMaterial=i==0?SupportMaterial("ImpactWater","L2_Splash","L2_SplashMask",false,5):i==1?SupportMaterial("ImpactElectric","L3_Lightning","L3_LightningMask",true,6):SupportMaterial("ImpactFlash","Impact_Flash",null,true,7);
-            ConfigureLiquid(renderer.sharedMaterial,i==0);
+            var renderer=go.GetComponent<ParticleSystemRenderer>();renderer.renderMode=ParticleSystemRenderMode.Billboard;renderer.mesh=null;main.startRotation3D=false;
+            renderer.alignment=ParticleSystemRenderSpace.Local;
+            renderer.sharedMaterial=i==0?SupportMaterial("ImpactFoam","Impact_Foam",null,false,5):i==1?LightNeedleMaterial():SupportMaterial("ImpactFlash","Impact_Flash",null,true,7);
+            if(i!=1)ConfigureLiquid(renderer.sharedMaterial,false);
             renderer.sortingOrder=5+i;renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;renderer.receiveShadows=false;
             renderer.SetActiveVertexStreams(new List<ParticleSystemVertexStream>{ParticleSystemVertexStream.Position,ParticleSystemVertexStream.Color,ParticleSystemVertexStream.UV});systems[i]=ps;
         }
         PrefabUtility.SaveAsPrefabAsset(hit,Root+"/Prefabs/WaterThunderImpactParticles.prefab");
-        var impact=hit.AddComponent<WaterThunderImpact>();impact.systems=systems;player.impact=impact;
+        var impact=hit.AddComponent<WaterThunderImpact>();impact.systems=systems;impact.burstSeed=19037;player.impact=impact;
     }
     public static void Build()
     {
@@ -252,7 +288,7 @@ public static class WaterThunderBuilder
         foreach(string guid in AssetDatabase.FindAssets("t:Texture2D",new[]{Root+"/Textures"}))
         {
             string path=AssetDatabase.GUIDToAssetPath(guid);var importer=(TextureImporter)AssetImporter.GetAtPath(path);
-            bool repeat=path.Contains("Repeat");bool data=repeat||path.Contains("Mask")||path.Contains("Normal")||path.Contains("Evap_WaterScatter");
+            bool repeat=path.Contains("Repeat");bool data=repeat||path.Contains("Mask")||path.Contains("Normal")||path.Contains("Depth")||path.Contains("Evap_WaterScatter");
             bool dirty=importer.sRGBTexture==data||importer.mipmapEnabled||importer.textureCompression!=TextureImporterCompression.Uncompressed||importer.wrapMode!=(repeat?TextureWrapMode.Repeat:TextureWrapMode.Clamp);
             importer.textureType=TextureImporterType.Default;importer.sRGBTexture=!data;importer.mipmapEnabled=false;
             importer.alphaSource=TextureImporterAlphaSource.FromInput;importer.alphaIsTransparency=!data;importer.filterMode=FilterMode.Bilinear;
@@ -272,7 +308,7 @@ public static class WaterThunderBuilder
             renderer.sortingOrder=i;player.layers[i]=renderer;
             PrefabUtility.SaveAsPrefabAsset(child,Root+"/Prefabs/"+Names[i]+".prefab");
         }
-        Support(root,player);
+        Support(root,player);EdgeFoamSupport(root,player);
         // Save before sampling: prefab retains the original asset Mesh, never an instance simulation.
         player.splashSource=AssetDatabase.LoadAssetAtPath<Mesh>(Root+"/Meshes/"+Names[1]+".asset");
         player.sampleTime=.24f;player.autoPlay=true;PrefabUtility.SaveAsPrefabAsset(root,Prefab);Object.DestroyImmediate(root);

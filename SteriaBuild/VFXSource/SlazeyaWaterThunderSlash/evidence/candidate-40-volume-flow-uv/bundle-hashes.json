@@ -1,0 +1,18 @@
+[
+  {
+    "file": "bundle",
+    "sha256": "805336816334c8a7b586c63a7a3d6f2a886754c03470ea5458c41e8ad9e67786"
+  },
+  {
+    "file": "bundle.manifest",
+    "sha256": "63a9e28e4c601755aa1aacce79970659d21092c47c6b434d8a8ce3f87421135e"
+  },
+  {
+    "file": "steria_slazeya_water_thunder_assets",
+    "sha256": "4c4d33ddab0b5bc57adfb16222754b95ab270897257ef67eb25eac061d9ac49f"
+  },
+  {
+    "file": "steria_slazeya_water_thunder_assets.manifest",
+    "sha256": "f3908a045f2967da890871fb3357f9653be7bb48e2863410ffb123dcc8214bf8"
+  }
+]

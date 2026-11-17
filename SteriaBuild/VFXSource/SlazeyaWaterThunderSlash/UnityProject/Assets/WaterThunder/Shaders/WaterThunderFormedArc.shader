@@ -7,6 +7,19 @@ Shader "Steria/WaterThunder/FormedArc"
         _ShapeTex ("Shape (Clamp, Linear)", 2D) = "white" {}
         _MaskTex ("Mask (Clamp, Linear)", 2D) = "white" {}
 
+        _BladeBoundary ("Shared Blade Center Radius Inset", Vector) = (0.65,1.95,1.95,0.028)
+        _WaterDepthTex ("Height B / Flow RG / Thickness A (Linear)", 2D) = "gray" {}
+        _UVFlowDistance ("UV Flow Distance", Range(0,0.3)) = 0
+        _DepthOffset ("Height Guided Offset", Range(0,0.06)) = 0
+        _LightFlowTex ("Streaming Light RG (Repeat, Linear)", 2D) = "gray" {}
+        _CoreFlowStrength ("Highlight Internal Flow", Range(0,1)) = 0
+        _WaterNoiseTex ("Water Noise (Repeat, Linear)", 2D) = "gray" {}
+        _WaterNoiseStrength ("Noise Flow Strength", Range(0,1)) = 0
+        _NoiseStretch ("Noise UV Stretch", Vector) = (1.7,0.62,0,0)
+        _NoiseSpin ("Noise UV Rotation Speed", Float) = 0.6
+        _RippleTex ("User Water Surface Normal (Clamp, Linear)", 2D) = "gray" {}
+        _RippleStrength ("Internal Water Ripples", Range(0,0.1)) = 0
+        _RippleShine ("Ripple Moving Highlights", Range(0,1)) = 0
         _Liquid ("Liquid Droplet Surface", Range(0,1)) = 0
         _WaterNormalTex ("Water Normal RG (Clamp, Linear)", 2D) = "gray" {}
         _LiquidWobble ("Capillary Wobble", Range(0,1)) = 0.8
@@ -36,7 +49,7 @@ Shader "Steria/WaterThunder/FormedArc"
         _EvapProgress ("Scatter Evaporation Progress", Range(0,1)) = 0
         _EvapSpread ("Scatter Spread", Float) = 1
         _EvapLift ("Scatter Rise", Float) = 0
-        _EvapFrame ("Scatter Local XY Frame", Vector) = (0.65,1.70,3.7,4.8)
+        _EvapFrame ("Scatter Local XY Frame", Vector) = (0.65,1.95,4.6,4.8)
         _HeadWeight ("Legacy Front Emphasis", Range(0,1)) = 0
         _HeadSpan ("Front Length", Range(0.03,1)) = 0.32
         _Evaporation ("Water Scatter Evaporation", Range(0,1)) = 0
@@ -101,6 +114,13 @@ Shader "Steria/WaterThunder/FormedArc"
             sampler2D _FlowTex;
             sampler2D _DistortTex;
 
+            sampler2D _WaterDepthTex, _LightFlowTex;
+            float _UVFlowDistance, _DepthOffset, _CoreFlowStrength;
+            sampler2D _WaterNoiseTex;
+            float _WaterNoiseStrength, _NoiseSpin;
+            float4 _NoiseStretch, _BladeBoundary;
+            sampler2D _RippleTex;
+            float _RippleStrength, _RippleShine;
             sampler2D _WaterNormalTex;
             float _Liquid, _LiquidWobble, _LiquidShine, _LiquidDissolve, _EvapDissolveSoftness, _TailGrowth, _SweepAcross, _SweepCore;
             sampler2D _WhiteFluidTex;
@@ -160,6 +180,15 @@ Shader "Steria/WaterThunder/FormedArc"
             {
                 v2f o;
                 v.vertex.xy += v.tailOffset * (_TailSpread*_TailGrowth-1);
+                float flutter=(sin(v.uv.x*23+v.uv.y*17-_Phase*9)+0.45*sin(v.uv.x*41-v.uv.y*9-_Phase*6))*0.16;
+                float trailing=1-smoothstep(_Retreat+0.06,_Retreat+0.30,v.uv.x);
+                v.vertex.xy += v.tailOffset*flutter*trailing*_TailMaskStrength*_TailGrowth;
+                if(_TailMaskStrength>0.5)
+                {
+                    float2 radial=v.vertex.xy-_BladeBoundary.xy;
+                    float limit=max(0.01,_BladeBoundary.z-_BladeBoundary.w);
+                    v.vertex.xy=_BladeBoundary.xy+radial*min(1,limit/max(length(radial),0.0001));
+                }
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 o.color = v.color;
@@ -218,7 +247,32 @@ Shader "Steria/WaterThunder/FormedArc"
                 float2 distort = (tex2D(_DistortTex, distortUv).rg * 2.0 - 1.0) * _DistortStrength;
 
                 // Keep one-shot shape/lifetime edges in undistorted UV0. Distort periodic detail only.
-                float4 shapeSample = tex2D(_ShapeTex, i.uv);
+                // Rotate then stretch a single noise map; never use it to punch holes in the body.
+                float noiseAngle=0.28+_Phase*_NoiseSpin;
+                float2 stretched=(i.uv-0.5)*_NoiseStretch.xy;
+                float2 noiseUV=float2(stretched.x*cos(noiseAngle)-stretched.y*sin(noiseAngle),stretched.x*sin(noiseAngle)+stretched.y*cos(noiseAngle))+float2(-_Phase*.34,_Phase*.08);
+                float flowNoise=tex2D(_WaterNoiseTex,noiseUV).r;
+                float flowNoiseY=tex2D(_WaterNoiseTex,noiseUV+float2(.31,.43)).r;
+                float2 noiseWarp=(float2(flowNoise,flowNoiseY)-.5)*.025*_WaterNoiseStrength;
+                // Flow follows the blade tangent; height only adds a bounded lateral UV displacement.
+                float phase0=frac(_Phase*0.85),phase1=frac(_Phase*0.85+0.5);
+                float weight=1-abs(phase0*2-1);
+                float4 depth=tex2D(_WaterDepthTex,i.uv);
+                float2 direction=depth.rg*2-1;
+                float2 lateral=float2(-direction.y,direction.x)*(depth.b-.5)*_DepthOffset;
+                float2 offset0=-direction*(phase0-.5)*_UVFlowDistance+lateral+noiseWarp;
+                float2 offset1=-direction*(phase1-.5)*_UVFlowDistance+lateral+noiseWarp;
+                offset0=clamp(offset0,float2(-.10,-.035),float2(.10,.035));
+                offset1=clamp(offset1,float2(-.10,-.035),float2(.10,.035));
+                float2 normalUV=i.uv*float2(.76,.74)+float2(.12,.10);
+                float3 normalA=tex2D(_RippleTex,normalUV+offset0*.45).rgb*2-1;
+                float3 normalB=tex2D(_RippleTex,normalUV+offset1*.45).rgb*2-1;
+                float3 rippleN=normalize(lerp(normalB,normalA,weight)+float3(0,0,.001));
+                float4 shapeA=tex2D(_ShapeTex,saturate(i.uv+offset0));
+                float4 shapeB=tex2D(_ShapeTex,saturate(i.uv+offset1));
+                float4 shapeSample=lerp(shapeB,shapeA,weight);
+                shapeSample.a=tex2D(_ShapeTex,i.uv).a; // Coverage never moves with the colour UVs.
+
                 float shape = shapeSample.a;
                 float mask = tex2D(_MaskTex, i.uv).r;
 
@@ -238,9 +292,8 @@ Shader "Steria/WaterThunder/FormedArc"
                 float front = pow(saturate(1 - max(0, _Reveal-i.uv.x) / max(_HeadSpan, 0.03)), 0.7);
                 float across=lerp(i.uv.y,abs(i.uv.y-0.5)*2,_SweepCore);
                 across=lerp(0.025,across,_SweepAcross);
-                // Keep entry compact; the final white stroke reaches back through the mid-arc.
-                float coreFinish=_SweepCore*smoothstep(0.62,1,_SweepProgress);
-                float sweepWidth=lerp(_SweepWidth,min(_SweepWidth,0.30),_SweepCore-coreFinish);
+                // The bright layer has a fixed span. Its rear cutoff can only advance.
+                float sweepWidth=_SweepWidth;
                 float2 sweepUV=float2((i.uv.x-_SweepProgress)/max(sweepWidth,0.08)+0.92,across);
                 float sweep=tex2D(_SweepMaskTex,sweepUV).r * step(0,sweepUV.x)*step(sweepUV.x,1);
                 float passed=max(0,_SweepProgress-i.uv.x);
@@ -248,18 +301,35 @@ Shader "Steria/WaterThunder/FormedArc"
                 float wakeWidth=1-smoothstep(0.04+spread*0.96,0.08+spread*0.96,across);
                 float wake=(1-smoothstep(_SweepProgress-0.035,_SweepProgress+0.015,i.uv.x))*_SweepWake*smoothstep(0.012,0.10,passed)*wakeWidth;
                 float sweepStrength=0.65+0.80*_SweepProgress;
-                float coreHold=coreFinish*smoothstep(0.38,0.46,i.uv.x)*(1-smoothstep(_SweepProgress-0.02,_SweepProgress+0.01,i.uv.x));
-                float movingMask=max(max(wake,sweep*sweepStrength),coreHold*0.95);
-                mask*=lerp(1,tex2D(_TailMaskTex,i.uv).r,_TailMaskStrength);
+                float coreTail=max(_Retreat,max(0,_SweepProgress-_SweepWidth*0.70));
+                float coreRear=smoothstep(coreTail,coreTail+0.035,i.uv.x);
+                float corePassed=1-smoothstep(_SweepProgress-0.018,_SweepProgress+0.005,i.uv.x);
+                float coreCoverage=coreRear*corePassed*wakeWidth;
+                float movingMask=lerp(max(wake,sweep*sweepStrength),coreCoverage,_SweepCore);
+                float tailRelative=(i.uv.x-_Retreat)/0.30;
+                float ribbonWeight=1-smoothstep(0.10,1,tailRelative);
+                float2 ribbonUV=float2(tailRelative*0.48,i.uv.y+0.055*sin(i.uv.x*23-_Phase*9)+0.025*sin(i.uv.x*41+_Phase*6));
+                mask*=lerp(1,tex2D(_TailMaskTex,saturate(ribbonUV)).r,_TailMaskStrength*ribbonWeight);
                 float2 dissolveUV=(i.localPosition-_EvapFrame.xy)/_EvapFrame.zw+0.5;
-                float dissolveHeight=tex2D(_EvapScatterTex,dissolveUV).r;
+                float4 dissolveData=tex2D(_EvapScatterTex,dissolveUV);
+                float dissolveHeight=dissolveData.r*0.78+dissolveData.b*0.22;
                 float cutoff=lerp(-0.10,1.10,_EvapProgress),soft=max(0.01,_EvapDissolveSoftness);
                 float evaporated=1-smoothstep(dissolveHeight-soft,dissolveHeight+soft,cutoff);
+                float wetEdge=(1-smoothstep(soft*0.5,soft*2.5,abs(dissolveHeight-cutoff)))*step(0.01,_EvapProgress);
                 float coverage = saturate(shape * mask * lifetime * fracture) * lerp(1, front, _HeadWeight) * lerp(1,movingMask,_SweepEnabled) * lerp(1,evaporated,_Evaporation);
                 float alpha = coverage * saturate(_BodyStrength + highlight) * _Alpha * _BaseColor.a * i.color.a;
                 float3 color = _BaseColor.rgb * lerp(float3(1,1,1), shapeSample.rgb, _UseShapeRGB) * max(_BodyStrength, 0.0001);
                 color += _EmissionColor.rgb * highlight * _Emission;
-                color *= lerp(1,0.80+sweep*sweepStrength*1.55,_SweepEnabled);
+                color *= lerp(1,0.80+sweep*sweepStrength*1.55,_SweepEnabled*(1-_SweepCore));
+                color+=float3(0.06,0.25,0.38)*wetEdge*_Evaporation;
+                float rippleSpec=pow(saturate(dot(rippleN,normalize(float3(-0.35,0.55,1)))),22);
+                color*=1+_RippleShine*(rippleN.z-0.70)*0.22;
+                color+=float3(0.55,0.88,1)*rippleSpec*_RippleShine;
+                color*=1+(flowNoise-.5)*.65*_WaterNoiseStrength;
+                color+=float3(.04,.16,.24)*smoothstep(.56,.88,flowNoise)*_WaterNoiseStrength;
+                float2 highlightFlow=tex2D(_LightFlowTex,float2(i.uv.x*1.4-_Phase*3.6,i.uv.y)).rg;
+                color=lerp(color,color*float3(.45,.72,1),highlightFlow.g*_CoreFlowStrength);
+                color+=float3(.10,.25,.36)*highlightFlow.r*_CoreFlowStrength;
                 float2 pattern=i.uv*float2(3.25,1.1)+float2(-_Phase*0.8,_Phase*0.18);
                 float cell=floor(pattern.x),spin=_Phase*_WhiteFluidSpin+cell*0.73;
                 float2 local=frac(pattern)-0.5;
