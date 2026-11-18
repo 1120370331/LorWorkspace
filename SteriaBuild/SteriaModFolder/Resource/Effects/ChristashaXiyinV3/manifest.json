@@ -1,0 +1,49 @@
+{
+  "reference": "Xiyin Golden Tide V3",
+  "fps": 30,
+  "world_box": [
+    40,
+    112,
+    1320,
+    848
+  ],
+  "world_frame": [
+    500,
+    288
+  ],
+  "world_count": 51,
+  "impact_box": [
+    288,
+    240,
+    126,
+    178,
+    120,
+    150
+  ],
+  "impact_frame": [
+    192,
+    160
+  ],
+  "impact_count": 20,
+  "alpha_pixels": {
+    "Behind": 1761018,
+    "Breaker": 267782,
+    "Score": 145125,
+    "HitBack0": 17455,
+    "HitFront0": 21539,
+    "HitBack1": 16840,
+    "HitFront1": 21510
+  },
+  "atlases": {
+    "Behind-0.png": "141a6622b93f6eef699bd067d41e779e0fbe16760394326b73d261da82c41459",
+    "Behind-1.png": "96009b38c6733f9b6e6a482dce56e1e45e94c6c90e4ccebbadec3a8a312062e4",
+    "Breaker-0.png": "3794ce81a6c44e83793eeb488b2167e65d125ff1f37fde01126accac357c7866",
+    "Breaker-1.png": "d31118e0ae61720dfa6e2b33d084b8ce1860c41ad9c5915e626fd0b7d505e556",
+    "HitBack0-0.png": "3139045c385b4750b1187dba9fe28b367a037831fcdc2f404f4d32cd431da8dd",
+    "HitBack1-0.png": "1e453e0e13b434fd647afd0be6eec51780afc03bf4dac70a3b2c10ef5aab0d19",
+    "HitFront0-0.png": "2a9b11cdc7400b61e8c8577de25d72b6df03c342f92e3f5688dc6fb2a1c41098",
+    "HitFront1-0.png": "5b9c038821709cbeca5f85b162b0c6d513c36e21f3d7e5a024d448c4d5d64c8f",
+    "Score-0.png": "3065796dfc5e5814bad3f2640c5e9dc0ff719e2870f7b950e9f166562ea7c99e",
+    "Score-1.png": "eabb17755d0d5c92cc4e7026b701f7204a3739a47f862b8875d16064fea114bb"
+  }
+}

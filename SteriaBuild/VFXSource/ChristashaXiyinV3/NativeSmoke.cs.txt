@@ -1,0 +1,330 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Xml;
+using HarmonyLib;
+using LOR_DiceSystem;
+using UnityEngine;
+using UnityEngine.Rendering;
+using Object = UnityEngine.Object;
+
+public static class StarlanceSmokeBoot
+{
+    public static void Start()
+    {
+        var args = Environment.GetCommandLineArgs();
+        string output = args[Array.IndexOf(args, "-xiyinOutput") + 1];
+        try
+        {
+            string deps = Path.Combine(Application.dataPath, "Managed", "SmokeDependencies");
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, request) =>
+            {
+                string path = Path.Combine(deps, new AssemblyName(request.Name).Name + ".dll");
+                return File.Exists(path) ? Assembly.LoadFrom(path) : null;
+            };
+            Assembly.LoadFrom(Path.Combine(output, "StagedMod", "Assemblies", "Steria.dll"));
+            new GameObject("Isolated Xiyin verification").AddComponent<XiyinNativeSmoke>().Begin(output);
+        }
+        catch (Exception error)
+        {
+            File.WriteAllText(Path.Combine(output, "failure.txt"), error.ToString());
+            Application.Quit(1);
+        }
+    }
+}
+
+public sealed class XiyinNativeSmoke : MonoBehaviour
+{
+    private const float Dt = 1f / 60f;
+    private static readonly BindingFlags Hidden = BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic;
+    private static readonly List<BattleUnitModel> NativeDamage = new List<BattleUnitModel>();
+    private readonly List<string> checks = new List<string>();
+    private string output;
+    private Camera cameraView;
+    private BattleFarAreaPlayManager manager;
+    private string actionScript;
+    private MotionDetail motion;
+    private CardRange range;
+
+    public void Begin(string path)
+    {
+        output = path;
+        Application.runInBackground = true;
+        Application.logMessageReceived += (message, trace, type) =>
+        {
+            if (type != LogType.Exception) return;
+            File.WriteAllText(Path.Combine(output, "failure.txt"), message + "\n" + trace);
+            Application.Quit(1);
+        };
+        StartCoroutine(Run());
+    }
+
+    private IEnumerator Run()
+    {
+        Check(Application.unityVersion == "2019.3.15f1" && SystemInfo.graphicsDeviceType == GraphicsDeviceType.Direct3D11,
+            "game UnityPlayer 2019.3.15f1 on D3D11");
+        var xml = new XmlDocument();
+        xml.Load(Path.Combine(output, "StagedMod", "Data", "CardInfo.xml"));
+        var raw = (XmlElement)xml.SelectSingleNode("//Card[@ID='9009006']/BehaviourList/Behaviour");
+        actionScript = raw.GetAttribute("ActionScript");
+        motion = (MotionDetail)Enum.Parse(typeof(MotionDetail), raw.GetAttribute("Motion"));
+        range = (CardRange)Enum.Parse(typeof(CardRange), ((XmlElement)raw.ParentNode.ParentNode.SelectSingleNode("Spec")).GetAttribute("Range"));
+        Check(actionScript == "Steria_ChristashaXiyinV2" && motion == MotionDetail.S && range == CardRange.FarAreaEach,
+            "read unchanged deployed XML card 9009006");
+        var load = typeof(AssemblyManager).GetMethod("LoadTypesFromAssembly", Hidden);
+        load.Invoke(Singleton<AssemblyManager>.Instance, new object[] { typeof(FarAreaEffect_Steria_ChristashaXiyinV2).Assembly });
+        Check(Singleton<AssemblyManager>.Instance.CreateInstance_BehaviourAction(actionScript) is BehaviourAction_Steria_ChristashaXiyinV2,
+            "native AssemblyManager registers exact candidate action");
+
+        // Count real manager damage requests without persisting game HP or needing battle UI.
+        var harmony = new Harmony("Steria.XiyinNativeFixture");
+        harmony.Patch(AccessTools.Method(typeof(BattleDiceBehavior), "GiveDamage"),
+            prefix: new HarmonyMethod(typeof(XiyinNativeSmoke), nameof(RecordDamage)));
+        harmony.Patch(AccessTools.Method(typeof(BattleDiceBehavior), "OnEndFarAreaBehaviourAtk"),
+            prefix: new HarmonyMethod(typeof(XiyinNativeSmoke), nameof(Skip)));
+        harmony.Patch(AccessTools.Method(typeof(BattleUnitInfoManagerUI), "UpdateCharacterProfile"),
+            prefix: new HarmonyMethod(typeof(XiyinNativeSmoke), nameof(Skip)));
+        var ui = new GameObject("Fixture UI receiver").AddComponent<BattleManagerUI>();
+        ui.enabled = false;
+        ui.ui_unitListInfoSummary = new GameObject("Fixture profile receiver").AddComponent<BattleUnitInfoManagerUI>();
+        ui.ui_unitListInfoSummary.enabled = false;
+        Field(typeof(SingletonBehavior<BattleManagerUI>), null, "_instance", ui);
+
+        cameraView = new GameObject("Fixture camera").AddComponent<Camera>();
+        cameraView.tag = "MainCamera";
+        cameraView.enabled = false;
+        cameraView.orthographic = true;
+        cameraView.orthographicSize = 17f;
+        cameraView.transform.position = new Vector3(0f, 7f, -60f);
+        cameraView.clearFlags = CameraClearFlags.SolidColor;
+        cameraView.backgroundColor = new Color(.095f, .092f, .085f);
+        Time.captureFramerate = 60;
+
+        var caster = Actor("caster", -18.2f, 0f, true, 0);
+        var knight = Actor("knight", 5.1f, 1f, false, 1);
+        var shield = Actor("shield", 17f, -1.15f, false, 3);
+        var defends = Actor("knight", -5f, 7f, true, -3);
+        defends.gameObject.SetActive(false); // Visible context is the approved three silhouettes.
+        var renderFolder = Directory.CreateDirectory(Path.Combine(output, "frames")).FullName;
+        // Capture gameplay view separately from the atlas. No fixture sprites are in payload.
+        Save(Path.Combine(output, "baseline.png"));
+        var effect = BeginDie(caster, Victim(knight), Victim(shield), Victim(defends, 30));
+        Check(!effect.HasIndependentAction && effect.isRunning && CommonTides(effect) == 1, "shared field exists as the cast begins");
+        var tide = effect.transform.GetChild(0);
+        Check(tide.GetComponentsInChildren<SpriteRenderer>().Length == 3, "three shared field layers; no local water before callback");
+        Check(tide.Find("Bed, rear staff and rear breaker").GetComponent<SpriteRenderer>().sortingOrder < caster.charSortingGroup.sortingOrder &&
+            tide.Find("Front breaker").GetComponent<SpriteRenderer>().sortingOrder > shield.charSortingGroup.sortingOrder &&
+            tide.Find("Front staff and glints").GetComponent<SpriteRenderer>().sortingOrder > tide.Find("Front breaker").GetComponent<SpriteRenderer>().sortingOrder,
+            "rear staff and rolls behind characters, front wave and staff ahead in order");
+        float firstArrival = 0f, nextArrival = 0f, endEarlyHead = 0f;
+        for (int frame = 0; frame <= 105; frame++)
+        {
+            if (frame > 0) yield return new WaitForEndOfFrame();
+            if (effect != null && !effect.IsDoneEffect) StepManager();
+            if (frame == 34)
+            {
+                endEarlyHead = LaneX(tide);
+                Check(NativeDamage.Count == 0 && HitRenderers(tide) == 0 && effect.isRunning, "no native hit or local shell at .567 s");
+            }
+            if (frame == 44) Check(NativeDamage.Count == 0 && effect.isRunning, "native action still held on frame 44");
+            if (frame == 45)
+            {
+                firstArrival = LaneX(tide);
+                Check(NativeDamage.SequenceEqual(new[] { knight.model, shield.model }) && !effect.isRunning,
+                    "native result publishes exactly two successes at .750 s; defending die excluded");
+                Check(knight.charAppearance.GetCurrentMotionDetail() == ActionDetail.Damaged &&
+                    shield.charAppearance.GetCurrentMotionDetail() == ActionDetail.Damaged && HitRenderers(tide) == 4,
+                    "two hulls use distinct front/back renderers and actual Damaged motion");
+                var points = tide.GetComponentsInChildren<SpriteRenderer>().Where(r => r.name == "Target water front").ToArray();
+                Check(points.All(p => Vector3.Distance(p.transform.position, knight.atkEffectRoot.position) > 2f &&
+                    Vector3.Distance(p.transform.position, shield.atkEffectRoot.position) > 2f) &&
+                    Vector3.Distance(points[0].transform.position, points[1].transform.position) > 4f,
+                    "impact anchors follow the visible bodies independently of forward strike pivots");
+                effect.GiveDamageFromManager(new List<BattleUnitModel> { knight.model, shield.model, defends.model });
+                Check(HitRenderers(tide) == 4, "duplicate native completion cannot add any contact");
+            }
+            if (frame == 57)
+            {
+                nextArrival = LaneX(tide);
+                Check(endEarlyHead > firstArrival && firstArrival > nextArrival && CommonTides(effect) == 1,
+                    "shallow flow advances into the shield at release and continues toward the same eye");
+            }
+            Save(Path.Combine(renderFolder, frame.ToString("D3") + ".png"));
+        }
+        Check(effect == null || effect.IsDoneEffect, "successful die frees its field after the visual tail");
+        Check(NativeDamage.Count == 2, "manager resolves damage once across the entire tail");
+
+        caster.transform.position = new Vector3(14, 0, 0);
+        shield.transform.position = new Vector3(-13, -.8f, 0);
+        var empty = BeginDie(caster, Victim(shield, 99));
+        var emptyTide = empty.transform.GetChild(0);
+        NativeDamage.Clear();
+        while (empty != null && empty.isRunning) yield return new WaitForEndOfFrame();
+        StepManager();
+        Check(HitRenderers(emptyTide) == 0 && NativeDamage.Count == 0 && CommonTides(empty) == 1,
+            "native all-defended result leaves shared field and no target feedback on reverse side");
+        empty.GiveDamageFromManager(new List<BattleUnitModel> { shield.model });
+        Check(HitRenderers(emptyTide) == 0, "late callback after native empty result is ignored");
+        empty.gameObject.SetActive(false);
+        Check(empty.IsDoneEffect && !emptyTide.gameObject.activeSelf && !empty.isRunning, "cancel disables visual descendants synchronously");
+        yield return null;
+
+        var next = BeginDie(caster, Victim(shield));
+        var nextTide = next.transform.GetChild(0);
+        while (next != null && next.isRunning) yield return new WaitForEndOfFrame();
+        next.GiveDamageFromManager(new List<BattleUnitModel> { shield.model, shield.model, null });
+        var reverse = nextTide.Find("Target water front").GetComponent<SpriteRenderer>();
+        Check(CommonTides(next) == 1 && HitRenderers(nextTide) == 2 && !reverse.flipX,
+            "new cloned die has independent callback state; reverse-facing target shell mirrors by incoming flank");
+        caster.model.currentDiceAction.currentBehavior = new BattleDiceBehavior();
+        yield return new WaitForEndOfFrame();
+        Check(next == null || next.IsDoneEffect, "replaced die disposes old cast");
+
+        var missing = BeginDie(caster, Victim(shield));
+        float time = 0f;
+        while (missing != null && !missing.IsDoneEffect && time < 2f)
+        {
+            yield return new WaitForEndOfFrame();
+            time += Dt;
+        }
+        Check(time >= 1.79f && time <= 1.84f && (missing == null || missing.IsDoneEffect), "missing native callback cleans up at 1.80 s");
+        checks.Add("CHRISTASHA_XIYIN_NATIVE_PASS cases=" + checks.Count);
+        File.WriteAllLines(Path.Combine(output, "checks.txt"), checks);
+        Debug.Log(checks[checks.Count - 1]);
+        Application.Quit();
+    }
+
+    private FarAreaEffect BeginDie(BattleUnitView caster, params BattleFarAreaPlayManager.VictimInfo[] targets)
+    {
+        manager = Singleton<BattleFarAreaPlayManager>.Instance;
+        manager.attacker = caster.model;
+        manager.victims = new List<BattleFarAreaPlayManager.VictimInfo>(targets);
+        manager.defenseVictims = new List<BattleFarAreaPlayManager.VictimInfo>();
+        caster.model.currentDiceAction = Card(caster.model, 15, actionScript, motion);
+        Field(manager.GetType(), manager, "_elapsed", 0f);
+        Field(manager.GetType(), manager, "_elapsedActionDelay", 0f);
+        Field(manager.GetType(), manager, "_phase", BattleFarAreaPlayManager.Phase.Effect);
+        for (int i = 0; i < 32 && Phase() != BattleFarAreaPlayManager.Phase.Action; i++)
+            manager.GetType().GetMethod("EffectPhase", Hidden).Invoke(manager, new object[] { Dt });
+        if (Phase() != BattleFarAreaPlayManager.Phase.Action)
+            throw new InvalidOperationException("Native EffectPhase did not load the card's action");
+        var effect = (FarAreaEffect)manager.GetType().GetField("_attackerEffect", Hidden).GetValue(manager);
+        // Future scenarios re-enter EffectPhase rather than inheriting this one's phase.
+        return effect ?? throw new InvalidOperationException("Native visual entry missing");
+    }
+
+    private BattleFarAreaPlayManager.Phase Phase() { return (BattleFarAreaPlayManager.Phase)manager.GetType().GetField("_phase", Hidden).GetValue(manager); }
+    private void StepManager()
+    {
+        if (Phase() == BattleFarAreaPlayManager.Phase.Action)
+            manager.GetType().GetMethod("ActionPhase", Hidden).Invoke(manager, new object[] { Dt });
+    }
+
+    private BattleFarAreaPlayManager.VictimInfo Victim(BattleUnitView actor, int guard = 0)
+    {
+        return new BattleFarAreaPlayManager.VictimInfo { unitModel = actor.model,
+            playingCard = guard == 0 ? null : Card(actor.model, guard, "", MotionDetail.G) };
+    }
+
+    private BattlePlayingCardDataInUnitModel Card(BattleUnitModel model, int rolled, string key, MotionDetail detail)
+    {
+        var card = (BattleDiceCardModel)FormatterServices.GetUninitializedObject(typeof(BattleDiceCardModel));
+        Field(typeof(BattleDiceCardModel), card, "_xmlData", new DiceCardXmlInfo { Spec = new DiceCardSpec { Ranged = range } });
+        var die = new BattleDiceBehavior { behaviourInCard = new DiceBehaviour { ActionScript = key, MotionDetail = detail } };
+        Field(typeof(BattleDiceBehavior), die, "_diceFinalResultValue", rolled);
+        return new BattlePlayingCardDataInUnitModel { owner = model, card = card, currentBehavior = die };
+    }
+
+    private BattleUnitView Actor(string key, float x, float y, bool flip, int order)
+    {
+        var obj = new GameObject(key);
+        obj.transform.position = new Vector3(x, y, 0f);
+        var actor = obj.AddComponent<BattleUnitView>();
+        actor.enabled = false;
+        actor.charSortingGroup = obj.AddComponent<SortingGroup>();
+        actor.charSortingGroup.sortingLayerName = "Character";
+        actor.charSortingGroup.sortingOrder = order;
+        actor.model = new BattleUnitModel(order + 12) { view = actor };
+        var rotation = new GameObject("characterRotationCenter").transform;
+        rotation.SetParent(obj.transform, false);
+        rotation.localScale = Vector3.one * 3f;
+        actor.characterRotationCenter = rotation;
+        actor.charAppearance = new GameObject("Appearance").AddComponent<CharacterAppearance>();
+        actor.charAppearance.enabled = false;
+        actor.charAppearance.transform.SetParent(rotation, false);
+        actor.atkEffectRoot = new GameObject("forward attack pivot").transform;
+        actor.atkEffectRoot.SetParent(rotation, false);
+        actor.atkEffectRoot.localPosition = new Vector3(flip ? 1.92f : -1.92f, 2.52f, 0f);
+
+        var motions = new Dictionary<ActionDetail, CharacterMotion>();
+        foreach (var pair in new[] { (ActionDetail.Default, "Default"), (ActionDetail.Damaged, "Damaged") })
+        {
+            string path = Path.Combine(output, key + "-" + pair.Item2);
+            if (!File.Exists(path + ".png")) continue;
+            string[] pivot = File.ReadAllText(path + ".txt").Split(',');
+            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            ImageConversion.LoadImage(texture, File.ReadAllBytes(path + ".png"), false);
+            var rig = new GameObject(pair.Item2).AddComponent<CharacterMotion>();
+            rig.transform.SetParent(actor.charAppearance.transform, false);
+            rig.actionDetail = pair.Item1;
+            var visual = rig.gameObject.AddComponent<SpriteRenderer>();
+            visual.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+                new Vector2(float.Parse(pivot[0], CultureInfo.InvariantCulture), float.Parse(pivot[1], CultureInfo.InvariantCulture)),
+                50f, 0, SpriteMeshType.FullRect);
+            visual.flipX = flip;
+            visual.color = new Color(.91f, .91f, .94f);
+            rig.motionSpriteSet = new List<SpriteSet> { new SpriteSet(visual, CharacterAppearanceType.Skin) };
+            rig.gameObject.SetActive(false);
+            motions.Add(pair.Item1, rig);
+        }
+        Field(typeof(CharacterAppearance), actor.charAppearance, "_characterMotionDic", motions);
+        actor.charAppearance.ChangeMotion(ActionDetail.Default);
+        return actor;
+    }
+
+    private static int CommonTides(FarAreaEffect effect)
+    {
+        return effect.transform.Cast<Transform>().Count(t => t.name == "Xiyin V3 - common tide" && t.gameObject.activeSelf);
+    }
+    private static int HitRenderers(Transform tide)
+    {
+        return tide.GetComponentsInChildren<SpriteRenderer>().Count(r => r.name.StartsWith("Target water"));
+    }
+    private static float LaneX(Transform tide)
+    {
+        var mesh = tide.Find("Incoming shallows 1").GetComponent<MeshFilter>().sharedMesh;
+        return mesh.vertices[mesh.vertexCount - 4].x;
+    }
+    private static bool RecordDamage(BattleUnitModel target) { NativeDamage.Add(target); return false; }
+    private static bool Skip() { return false; }
+    private static void Field(Type type, object source, string key, object value) { type.GetField(key, Hidden).SetValue(source, value); }
+
+    private void Check(bool pass, string message)
+    {
+        if (!pass) throw new InvalidOperationException("CHECK FAILED " + message);
+        checks.Add("PASS " + message);
+        Debug.Log("PASS " + message);
+    }
+
+    private void Save(string path)
+    {
+        const int width = 1152, height = 648;
+        var target = RenderTexture.GetTemporary(width, height, 24, RenderTextureFormat.ARGB32);
+        var previous = RenderTexture.active;
+        cameraView.targetTexture = target;
+        cameraView.Render();
+        RenderTexture.active = target;
+        var image = new Texture2D(width, height, TextureFormat.RGB24, false);
+        image.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        File.WriteAllBytes(path, image.EncodeToPNG());
+        Object.Destroy(image);
+        cameraView.targetTexture = null;
+        RenderTexture.active = previous;
+        RenderTexture.ReleaseTemporary(target);
+    }
+}
