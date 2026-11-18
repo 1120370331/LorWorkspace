@@ -84,6 +84,7 @@ public class PassiveAbility_9004001 : PassiveAbilityBase
     private int _lightSpentAccumulator = 0;
     private int _tideToGainNextRound = 0;
     private bool _usedPotentialThisRound = false;
+    private BattleUnitModel _pendingObservationTarget;
 
     public override void Init(BattleUnitModel self)
     {
@@ -91,6 +92,7 @@ public class PassiveAbility_9004001 : PassiveAbilityBase
         _lightSpentAccumulator = 0;
         _tideToGainNextRound = 0;
         _usedPotentialThisRound = false;
+        _pendingObservationTarget = null;
         SteriaLogger.Log($"PassiveAbility_9004001 (神脉：梦之汐-司潮-潜力观测): Init for {self?.UnitData?.unitData?.name}");
     }
 
@@ -100,12 +102,16 @@ public class PassiveAbility_9004001 : PassiveAbilityBase
         _lightSpentAccumulator = 0;
         _tideToGainNextRound = 0;
         _usedPotentialThisRound = false;
+        _pendingObservationTarget = null;
+        VeliaPotentialObservationEffect.Cancel(owner);
     }
 
     public override void OnRoundStart()
     {
         base.OnRoundStart();
         _usedPotentialThisRound = false;
+        _pendingObservationTarget = null;
+        VeliaPotentialObservationEffect.Cancel(owner);
 
         // 获得累积的潮
         if (_tideToGainNextRound > 0 && owner != null)
@@ -173,6 +179,15 @@ public class PassiveAbility_9004001 : PassiveAbilityBase
         ApplyPotentialObservationEffect(target);
     }
 
+    public override void OnAfterRollSpeedDice()
+    {
+        base.OnAfterRollSpeedDice();
+        BattleUnitModel target = _pendingObservationTarget;
+        _pendingObservationTarget = null;
+        if (owner != null && owner.faction == Faction.Enemy && target != null)
+            VeliaPotentialObservationEffect.PlayAfterSpeedDice(owner, target);
+    }
+
     // 认可的正面效果列表
     private static readonly KeywordBuf[] _validPositiveBuffs = new KeywordBuf[]
     {
@@ -237,6 +252,8 @@ public class PassiveAbility_9004001 : PassiveAbilityBase
             selectedBuf.stack += totalBonus;
             SteriaLogger.Log($"潜力观测: Increased {selectedBuf.GetType().Name} by {totalBonus} for {target.UnitData?.unitData?.name}");
         }
+        // Preserve the already-applied recipient; animation never draws another target.
+        _pendingObservationTarget = target;
     }
 
     /// <summary>

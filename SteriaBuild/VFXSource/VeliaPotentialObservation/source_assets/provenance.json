@@ -1,0 +1,41 @@
+{
+  "generator": "built-in image_gen for brush and mist; deterministic four-ray light-mask for glint",
+  "processing": "per-tile alpha-bound crop, uniform downsample into centered 74% square with transparent padding; alpha preserved",
+  "files": {
+    "raw/flow-brush-raw.png": {
+      "sha256": "c3710bd063b8ccfa35b06edb1cbf1d2f14770573e3e99065d504226e741229f7",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "raw/mist-raw.png": {
+      "sha256": "df323230fddedd9f069ba422908673ea7378ac33be84ae8a435cf1269d94a84d",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "flow-brush-atlas.png": {
+      "sha256": "1e09af2d1e5a3fb6d5d0aad54c25493ceb85945b2efca4c61ce8f146b374762c",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "mist-breakup.png": {
+      "sha256": "c3d4ea51c5d3139154c199cda41d945475aadeb3f6845b40a49a24f4acfe7c06",
+      "size": [
+        512,
+        512
+      ]
+    },
+    "glint.png": {
+      "sha256": "721f31fcb19a7235cbaf1fe4a2a5ae90e8152446109737e93413a59619d440a2",
+      "size": [
+        256,
+        256
+      ]
+    }
+  }
+}

@@ -179,16 +179,9 @@ public class DiceCardSelfAbility_VeliaPotentialObservation : DiceCardSelfAbility
             return;
         }
 
-        // 切换到Special动作，然后延迟切回
-        if (unit.view?.charAppearance != null)
-        {
-            unit.view.charAppearance.ChangeMotion(ActionDetail.Special);
-            // 启动协程延迟切回Standing
-            unit.view.StartCoroutine(DelayedResetMotion(unit.view.charAppearance, 1.0f));
-        }
-
         // 应用效果
         ApplyEffect(unit, targetUnit);
+        VeliaPotentialObservationEffect.Play(unit, targetUnit);
 
         // 设置自定义冷却
         Steria.SteriaEgoCooldownManager.StartCooldown(unit, CARD_ID);
@@ -245,18 +238,6 @@ public class DiceCardSelfAbility_VeliaPotentialObservation : DiceCardSelfAbility
             var selectedBuf = maxStackBufs[UnityEngine.Random.Range(0, maxStackBufs.Count)];
             selectedBuf.stack += totalBonus;
             Debug.Log($"[Steria] VeliaPotentialObservation: Increased {selectedBuf.GetType().Name} by {totalBonus}");
-        }
-    }
-
-    /// <summary>
-    /// 延迟切回Standing动作的协程
-    /// </summary>
-    private IEnumerator DelayedResetMotion(CharacterAppearance appearance, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (appearance != null)
-        {
-            appearance.ChangeMotion(ActionDetail.Standing);
         }
     }
 

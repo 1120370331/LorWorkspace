@@ -1,0 +1,39 @@
+{
+  "license": "CC0-1.0",
+  "files": {
+    "surge-mask.png": {
+      "sha256": "7db724f257bd86553a52830ea580edc2b824ac0248a1dceb60cb1e07321a5b9a",
+      "source": "light-masks/Default/cone_d_blur.png",
+      "channel": "R",
+      "sRGB": false,
+      "transform": "none; original PNG bytes",
+      "size": [
+        512,
+        512
+      ]
+    },
+    "soft-source.png": {
+      "sha256": "3c017dd5e0d6f81b6a18ca5541de30216398aaaec1929cbfbf235497a5eb91aa",
+      "source": "particle-pack/PNG (Black background)/star_05.png",
+      "channel": "R",
+      "sRGB": false,
+      "transform": "none; original PNG bytes",
+      "size": [
+        512,
+        512
+      ]
+    },
+    "small-streak.png": {
+      "sha256": "fb5857094cacdfaed6886ab48f545a13a64d6fe646030b124b2e334705d7f408",
+      "source": "particle-pack/PNG (Black background)/trace_01.png",
+      "channel": "R",
+      "sRGB": false,
+      "transform": "none; original PNG bytes",
+      "size": [
+        512,
+        512
+      ]
+    }
+  },
+  "runtime": "Scalar red coverage in linear colour space; ignore PNG alpha; Blend One One; coverage multiplied once into RGB"
+}

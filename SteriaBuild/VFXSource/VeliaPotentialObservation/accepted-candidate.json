@@ -1,0 +1,77 @@
+{
+  "candidate": "candidate-r8b-movinglight",
+  "visual_review": "PASS_NATIVE_ONLY",
+  "user_visual_acceptance": "pending",
+  "previous_user_rejection": "R5 不像光源，更像飘散的海草；要求使用真正的 mask，可下载开源素材。R5 内部 PASS 已撤销。",
+  "review_path": "output/review/r8b-movinglight-review.md",
+  "review_scope": "Timestamped native frames on dark/mid-gray backgrounds, mirrored and light-only; not MP4 playback or live battle",
+  "source_receipt": "evidence/candidate-r8b-movinglight/source-hashes.json",
+  "dll_sha256": "47164d40e1945cfccc7d5bdad6afadd8b45e5ef97d96133756713b7ee834847e",
+  "bundle_sha256": "ef0037a2b23d291af8f48090e81bdb9bc95a49d3ac23ebae9b9456b53ad5235a",
+  "guest_s2_sha256": "9d4afe5f902513840fd5ddadaee0fc8603ba3c99d6c26fcfd6e91014ad0b54cd1",
+  "final_source_verifier": "PASS",
+  "assets": {
+    "source": "Kenney Light Masks 1.0 / Particle Pack 1.1",
+    "license": "CC0-1.0",
+    "manifest": "source_assets/light-masks/manifest.json",
+    "provenance": "source_assets/light-masks/source-provenance.json",
+    "sampling": "Linear R; One One additive with coverage applied once"
+  },
+  "release_build": {
+    "errors": 0,
+    "warnings": 1,
+    "log": "output/velia-potential-observation/main/mask-final-build.log"
+  },
+  "real_assembly_checks": {
+    "result": "PASS",
+    "checks": 13,
+    "log": "output/velia-potential-observation/main/mask-final-managed.log"
+  },
+  "native_checks": {
+    "result": "PASS",
+    "log": "evidence/candidate-r8b-movinglight/acceptance.log",
+    "bright_region_y_H_at_030_055_090": [
+      0.3287,
+      0.7022,
+      1.0993
+    ],
+    "coverage": [
+      "linear R mask, prefab and material readback",
+      "actual bright-region upward movement and widening",
+      "dark and mid-gray backgrounds",
+      "both facings",
+      "zero-delta particle and pixel equality",
+      "hand interruption",
+      "seeded replay",
+      "cancellation and completion cleanup",
+      "real MonoBehaviour Update"
+    ]
+  },
+  "package": {
+    "scope": "workspace mod only",
+    "files": 9,
+    "hash_verification": "PASS",
+    "report": "output/velia-potential-observation/delivery/20261026T094247Z/package.json",
+    "game_directory_written": false
+  },
+  "external_acceptance": [
+    "user art judgment",
+    "full live Library of Ruina battle",
+    "arbitrary librarian projection facial expression"
+  ],
+  "owners": {
+    "design": "velia_effect_design",
+    "art_runtime_and_integration": "velia_effect_impl",
+    "particle_prefab_and_native_preview": "velia_effect_preview",
+    "independent_visual_review": "velia_effect_review",
+    "final_inspection_and_packaging": "main"
+  },
+  "game_deployment": {
+    "candidate": "candidate-r8b-movinglight",
+    "files": 9,
+    "target": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\SteriaModFolder",
+    "hash_verification": "PASS",
+    "report": "output/velia-potential-observation/deployment/20261026T113430Z/deployment.json",
+    "live_game_test": "not run"
+  }
+}

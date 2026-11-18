@@ -47,6 +47,11 @@
       <Pivot pivot_x="0" pivot_y="-276" />
       <Head head_x="-11.0362" head_y="284.1289" rotation="9" head_enable="True" />
     </Special>
+    <S2>
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-274" />
+      <Head head_x="0.0000" head_y="393.7400" rotation="0" head_enable="True" />
+    </S2>
     <Fire>
       <Direction>Front</Direction>
       <Pivot pivot_x="0" pivot_y="-276" />

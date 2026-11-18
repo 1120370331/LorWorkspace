@@ -1,0 +1,77 @@
+{
+  "downloaded_utc": "2026-10-26T07:19:59.139047+00:00",
+  "outside_repo_download": "C:/Users/rog/AppData/Local/Temp/velia-mask-reference-download",
+  "sources": [
+    {
+      "name": "Kenney Particle Pack",
+      "page": "https://kenney.nl/assets/particle-pack",
+      "url": "https://kenney.nl/media/pages/assets/particle-pack/f8fe0f8cb8-1677578741/kenney_particle-pack.zip",
+      "license": "CC0-1.0",
+      "license_file": "particle-pack/License.txt",
+      "archive_sha256": "b631d4b07f7002549fdcf155f01141ad482f79f3440e4e301eed49ce5f1d8958"
+    },
+    {
+      "name": "Kenney Light Masks",
+      "page": "https://kenney.nl/assets/light-masks",
+      "url": "https://kenney.nl/media/pages/assets/light-masks/6530e254f9-1775631687/kenney_light-masks-1.0.zip",
+      "license": "CC0-1.0",
+      "license_file": "light-masks/License.txt",
+      "archive_sha256": "e1238694d7e49046e42d67f2975be0217861c7cc9bc358383a8e5e583645004f"
+    }
+  ],
+  "selected": [
+    {
+      "role": "surge-mask",
+      "source": "light-masks/Default/cone_d_blur.png",
+      "selected": "selected\\surge-mask.png",
+      "sha256": "7db724f257bd86553a52830ea580edc2b824ac0248a1dceb60cb1e07321a5b9a",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "channel": "R",
+      "purpose": "Primary coherent widening upward light; sample red channel"
+    },
+    {
+      "role": "soft-source",
+      "source": "particle-pack/PNG (Black background)/star_05.png",
+      "selected": "selected\\soft-source.png",
+      "sha256": "3c017dd5e0d6f81b6a18ca5541de30216398aaaec1929cbfbf235497a5eb91aa",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "channel": "R",
+      "purpose": "Smooth radial hotspot, no rings; sample red channel"
+    },
+    {
+      "role": "small-streak",
+      "source": "particle-pack/PNG (Black background)/trace_01.png",
+      "selected": "selected\\small-streak.png",
+      "sha256": "fb5857094cacdfaed6886ab48f545a13a64d6fe646030b124b2e334705d7f408",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "channel": "R",
+      "purpose": "Small secondary spark only; sample red channel"
+    },
+    {
+      "role": "breakup-reference",
+      "source": "particle-pack/PNG (Black background)/smoke_01.png",
+      "selected": "selected\\breakup-reference.png",
+      "sha256": "288b7a29b659030fe7da333159c641e2325e41e704c05b8c6db1531b59c09897",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "channel": "R",
+      "purpose": "Optional low-contrast breakup, never visible smoke art; sample red channel"
+    }
+  ],
+  "contact_note": "Diagnostic scalar and proposed additive energy swatches; not native Unity or final effect evidence."
+}

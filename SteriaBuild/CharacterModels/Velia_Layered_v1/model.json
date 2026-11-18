@@ -64,6 +64,11 @@
         "eyes": {
           "path": "sources/r2/head/eyes_cast.png"
         }
+      },
+      "observation_smile": {
+        "mouth": {
+          "path": "sources/observation/mouth_smile.png"
+        }
       }
     },
     "expression_status": "normal / attack / damaged / prayer (closed eyes, neutral brows and mouth)",
@@ -1082,6 +1087,90 @@
           382.71
         ]
       ]
+    },
+    "S2": {
+      "label": "潜力观测 · 举右手微笑",
+      "expression": "observation_smile",
+      "body_angle": 0,
+      "overrides": {
+        "body": {
+          "path": "sources/observation/body.png",
+          "size": [
+            513.616135770235,
+            513.616135770235
+          ],
+          "pivot": [
+            0.5159489633173844,
+            0.7998405103668261
+          ],
+          "at": [
+            256,
+            390
+          ]
+        },
+        "body_front": {
+          "path": "sources/observation/body_front.png",
+          "size": [
+            513.616135770235,
+            513.616135770235
+          ],
+          "pivot": [
+            0.5159489633173844,
+            0.7998405103668261
+          ],
+          "at": [
+            256,
+            390
+          ]
+        }
+      },
+      "head_angle": 0,
+      "neck_at": [
+        256.0,
+        233.13
+      ],
+      "joints": {
+        "shoulder_l": [
+          243.71253263707573,
+          222.89044386422975
+        ],
+        "elbow_l": [
+          204.39263707571803,
+          180.2938903394256
+        ],
+        "wrist_l": [
+          213.40344647519584,
+          151.62313315926892
+        ],
+        "shoulder_r": [
+          269.9257963446475,
+          233.94916449086162
+        ],
+        "elbow_r": [
+          277.2982767624021,
+          269.1732375979112
+        ],
+        "wrist_r": [
+          275.65994778067886,
+          298.6631592689295
+        ]
+      },
+      "feet": [
+        [
+          232.65381201044386,
+          384.6754308093995
+        ],
+        [
+          262.9628981723238,
+          387.95208877284597
+        ]
+      ],
+      "anatomical_anchors": {
+        "rightPalm": [
+          213.81302872062662,
+          143.02190600522192
+        ]
+      }
     }
   },
   "aliases": {

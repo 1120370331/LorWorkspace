@@ -1,0 +1,31 @@
+{
+  "action": "S2",
+  "canvas": [
+    512,
+    512
+  ],
+  "pixelsPerUnit": 50,
+  "anatomicalSide": "right",
+  "canonicalFacing": "left",
+  "rightPalm": [
+    213.81302872062662,
+    143.02190600522192
+  ],
+  "sourceNeck": [
+    647,
+    620
+  ],
+  "sourceGround": [
+    647,
+    1003
+  ],
+  "sourcePalm": [
+    544,
+    400
+  ],
+  "sourceScale": 0.4095822454308094,
+  "source": "sources/observation/body_overhead_raw.png",
+  "bodySha256": "56d7fcd682954230182326c1644d1a9b11ab14881db50d105430c2497ad22ea5",
+  "generator": "built-in image_gen",
+  "noVfxBaked": true
+}
