@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ModInfo Extended="true">
+  <ClothInfo>
+    <Name>AceTaffy_Workshop</Name>
+    <Default size_x="512" size_y="512" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-280" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Default>
+    <Move size_x="512" size_y="512" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-280" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Move>
+    <Slash size_x="512" size_y="512" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-280" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Slash>
+    <Penetrate size_x="512" size_y="512" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-280" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Penetrate>
+    <Hit size_x="512" size_y="512" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-280" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Hit>
+    <Guard size_x="512" size_y="512" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-280" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Guard>
+    <Evade size_x="512" size_y="512" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-280" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Evade>
+    <Damaged size_x="512" size_y="512" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-280" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Damaged>
+    <Special size_x="512" size_y="512" quality="50">
+      <Direction>Front</Direction>
+      <Pivot pivot_x="0" pivot_y="-280" />
+      <Head head_x="0" head_y="0" rotation="0" head_enable="False" />
+    </Special>
+  </ClothInfo>
+</ModInfo>

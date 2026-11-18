@@ -1,0 +1,72 @@
+{
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "assets": [
+    {
+      "name": "progress",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-05da1579-1182-4ad8-bae0-ce2be843a190.png",
+      "prompt": "Create ONE small readable steampunk game status icon on genuine RGBA TRANSPARENT background, square canvas. Bold charcoal outer outline, simple chunky silhouette designed to remain clear at 24-32 pixels, matte old brass and dark iron with restrained colored enamel accents. Very limited broad shading, minimal highlights, absolutely no glossy reflections, no bloom, no white glare, no particles. No lettering, numbers, logo, frame, ground or background. Icon centered occupying 72 percent of canvas, generous clean transparent margin. Subject: invention progress. A single simple ivory lightbulb seated in half of a matte brass cog, one small dark wrench angled beside the bulb. No emitted light rays. Pale ivory bulb and subdued warm brass; unmistakable idea-under-construction symbol.",
+      "sha256": "caab242be6137d3b8a3be7dea6a65d49c9a5353df83b414a5955004d231cde1e"
+    },
+    {
+      "name": "mechanism",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-dd704d3b-22da-40cf-893b-2a38b5a6bf82.png",
+      "prompt": "Create ONE small readable steampunk game status icon on genuine RGBA TRANSPARENT background, square canvas. Bold charcoal outer outline, simple chunky silhouette designed to remain clear at 24-32 pixels, matte old brass and dark iron with restrained colored enamel accents. Very limited broad shading, minimal highlights, absolutely no glossy reflections, no bloom, no white glare, no particles. No lettering, numbers, logo, frame, ground or background. Icon centered occupying 72 percent of canvas, generous clean transparent margin. Subject: mechanical counterattack device. A single eight-tooth matte brass cog with a short chunky black-iron piston hammer crossing its center diagonally. Warm muted amber, solid dark center, simple readable geometry.",
+      "sha256": "442bb452823aee3467e81293058db3767e4da8fab6c1d3d0e9720b186dfe3e97"
+    },
+    {
+      "name": "chain",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-1c293c97-a9a0-482b-a541-6f35287bc28a.png",
+      "prompt": "Create ONE small readable steampunk game status icon on genuine RGBA TRANSPARENT background, square canvas. Bold charcoal outer outline, simple chunky silhouette designed to remain clear at 24-32 pixels, matte old brass and dark iron with restrained colored enamel accents. Very limited broad shading, minimal highlights, absolutely no glossy reflections, no bloom, no white glare, no particles. No lettering, numbers, logo, frame, ground or background. Icon centered occupying 72 percent of canvas, generous clean transparent margin. Subject: chain-reaction device. Exactly two large interlocking dark-teal enamel and aged brass chain links, tilted diagonally as a compact single symbol. Thick bold links and very large clear holes, no fine chains or extra gears.",
+      "sha256": "5ecdcc6964257b49c540acb83e3b8c3a26a58bd7777da20144cb8743de79ed94"
+    },
+    {
+      "name": "defense",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-a07a5956-3583-4033-a463-84a6da1059d1.png",
+      "prompt": "Create ONE small readable steampunk game status icon on genuine RGBA TRANSPARENT background, square canvas. Bold charcoal outer outline, very simple chunky silhouette designed to remain clear at 24-32 pixels, matte old brass and dark iron with restrained colored enamel accents. Almost flat shading, minimal highlights, NO white edge shines, no glossy reflections, no bloom or glow, no sparks. No lettering, numbers, logo, frame, ground or background. Icon centered occupying 72 percent of canvas, generous clean transparent margin. Subject: defensive counterattack device. A wide squat shield with a big uninterrupted dusty blue enamel center, matte brass border and just two broad rivets. One thick black diagonal reinforcing bar across the shield. Emphasize the single shield silhouette, no crystals, no weapons, no filigree.",
+      "sha256": "f7198e181a93c3b8839b40cd6def68276671db2e3d7e3ae1ee16f505ea6576ae"
+    },
+    {
+      "name": "destruction",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-90d9507a-80ca-4485-8dbd-37475fcd84dc.png",
+      "prompt": "Create ONE small readable steampunk game status icon on genuine RGBA TRANSPARENT background, square canvas. Bold charcoal outer outline, very simple chunky silhouette designed to remain clear at 24-32 pixels, matte old brass and dark iron with restrained colored enamel accents. Almost flat shading, minimal highlights, NO white edge shines, no glossy reflections, no bloom or glow, no sparks. No lettering, numbers, logo, frame, ground or background. Icon centered occupying 72 percent of canvas, generous clean transparent margin. Subject: destruction damage amplifier. A compact black-iron spherical demolition core, split open with one broad jagged muted brick-red fracture, two squat brass reinforcement bands. The crack is colored enamel, NOT glowing. Compact hard explosive silhouette with three simple broad outward triangular tips. No fuse, no fire, no smoke, no particles.",
+      "sha256": "13313459f040e205881245bee343c796c60c62d3e22c008f6eb01648e096536a"
+    },
+    {
+      "name": "energy",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-54835586-b011-4622-9d49-0819d78f716c.png",
+      "prompt": "Create ONE small readable steampunk game status icon on genuine RGBA TRANSPARENT background, square canvas. Bold charcoal outer outline, very simple chunky silhouette designed to remain clear at 24-32 pixels, matte old brass and dark iron with restrained colored enamel accents. Almost flat shading, minimal highlights, NO white edge shines, no glossy reflections, no bloom or glow, no sparks. No lettering, numbers, logo, frame, ground or background. Icon centered occupying 72 percent of canvas, generous clean transparent margin. Subject: steam energy device. A short upright old-brass pressure accumulator canister with a large muted green enamel front panel and one bold ivory lightning bolt in its center; two simple chunky end caps, one small short side pipe. Very few parts, squat battery silhouette. NOT glossy, no emitted light.",
+      "sha256": "80559aee3e7770e1e6e67a1e2c93b8826e523f31220b9fd6e68589d2a2e40e05"
+    },
+    {
+      "name": "odd",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-4a1d31d7-df51-4a88-bf4a-4361a732c886.png",
+      "prompt": "Create ONE tiny modifier badge for a steampunk game status icon, on genuine RGBA transparent background, square canvas. A simple circular MATTE enamel disc with a very thick near-black outline. One oversized flat ivory pictogram fills the disc, extremely simplified to read when the entire badge is only 10 pixels across. No bevel, no specular highlights, no glow, no texture, no filigree, no extra decorations. Centered, occupies 70 percent of the square, generous transparent margin. Pink/magenta disc; pictogram is exactly TWO offset overlapping solid ivory circles, clearly separated by a dark dividing contour. Symbol for a chance to repeat an effect. No words, letters or numbers.",
+      "sha256": "a6b22d5e6fb32d4d68667a12aef0abd5bd25fc3b525ac19c07d0019a97e687f5"
+    },
+    {
+      "name": "weird",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-8afeef74-47ec-4616-8b8e-df7a25daa0f5.png",
+      "prompt": "Create ONE tiny modifier badge for a steampunk game status icon, on genuine RGBA transparent background, square canvas. A simple circular MATTE enamel disc with a very thick near-black outline. One oversized flat ivory pictogram fills the disc, extremely simplified to read when the entire badge is only 10 pixels across. No bevel, no specular highlights, no glow, no texture, no filigree, no extra decorations. Centered, occupies 70 percent of the square, generous transparent margin. Muted jade-green disc; pictogram is ONE broad horizontal ivory EYE shape with a large near-black round pupil. Thick very simple silhouette. No words, letters or numbers.",
+      "sha256": "4361fb6421b973f860a421d71db358dee80b511326d24a888a83c43be2873e9f"
+    },
+    {
+      "name": "fragile",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-d4131296-75c4-4591-baea-7779d4e6160b.png",
+      "prompt": "Create ONE tiny modifier badge for a steampunk game status icon, on genuine RGBA transparent background, square canvas. A simple circular MATTE enamel disc with a very thick near-black outline. One oversized flat ivory pictogram fills the disc, extremely simplified to read when the entire badge is only 10 pixels across. No bevel, no specular highlights, no glow, no texture, no filigree, no extra decorations. Centered, occupies 70 percent of the square, generous transparent margin. Burnt-orange disc; pictogram is ONE large ivory angular shard split by a wide black zigzag crack from top to bottom. Easy to identify as broken. No words, letters or numbers.",
+      "sha256": "a3b7cd57377deb33cb7c35a8228449deb7428f868df8f56a99a8058fa18b3b44"
+    },
+    {
+      "name": "mysterious",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-6fb64db3-99b9-4a10-af7e-f18cef836a9e.png",
+      "prompt": "Create ONE tiny modifier badge for a steampunk game status icon, on genuine RGBA transparent background, square canvas. A simple circular MATTE enamel disc with a very thick near-black outline. One oversized flat ivory pictogram fills the disc, extremely simplified to read when the entire badge is only 10 pixels across. No bevel, no specular highlights, no glow, no texture, no filigree, no extra decorations. Centered, occupies 70 percent of the square, generous transparent margin. Muted violet disc; pictogram is ONE oversized ivory QUESTION MARK with thick stroke and a big round dot below. The question mark is the only mark, no other text.",
+      "sha256": "1549c16b82bc0762c0ab554cf54993c04b31de8cc37002862a3487b8aac0ec17"
+    },
+    {
+      "name": "super",
+      "source": "C:\\Users\\rog\\.codex\\generated_images\\01a176b0-fed4-7d13-9567-4e1db1f41a6a\\exec-76202f6e-2a96-4461-b8ff-f20bf0062e6b.png",
+      "prompt": "Create ONE tiny modifier badge for a steampunk game status icon, on genuine RGBA transparent background, square canvas. A simple circular MATTE enamel disc with a very thick near-black outline. One oversized flat ivory pictogram fills the disc, extremely simplified to read when the entire badge is only 10 pixels across. No bevel, no specular highlights, no glow, no texture, no filigree, no extra decorations. Centered, occupies 70 percent of the square, generous transparent margin. Dark ochre-gold disc; pictogram is TWO thick stacked ivory upward chevrons, centered, large and bold. Symbol for doubled potency. No words, letters or numbers.",
+      "sha256": "5ebf20d9df8cde0c28501edfc59cb5ffe6434293ed1607bffdf7be35ff229e83"
+    }
+  ]
+}

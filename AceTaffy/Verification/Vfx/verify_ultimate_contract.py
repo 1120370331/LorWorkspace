@@ -50,8 +50,13 @@ for name in ("SteamBlunt", "SteamPierce", "SteamGuard", "SteamWisp"):
     check(sha(PKG / "Resource/Effects/AceTaffy" / (name + ".png")) == ordinary_baseline[key],
           name + " ordinary mother unchanged")
 baseline_card = ET.parse(BASE / "AceTaffyMod/Data/CardInfo.xml").getroot()
-check([tuple(d.attrib.items()) for d in baseline_card.findall(".//Behaviour")] ==
-      [tuple(d.attrib.items()) for d in cards.findall(".//Behaviour")], "dice attributes unchanged from approved baseline")
+current_pages = {page.get("ID"): page for page in pages}
+for baseline_page in baseline_card.findall(".//Card"):
+    card_id = baseline_page.get("ID")
+    check(card_id in current_pages, f"baseline card {card_id} still exists")
+    original_dice = [die.attrib for die in baseline_page.findall(".//Behaviour")]
+    current_dice = [die.attrib for die in current_pages[card_id].findall(".//Behaviour")]
+    check(original_dice == current_dice, f"baseline card {card_id} dice attributes unchanged")
 
 if "--after" in sys.argv:
     source = SOURCE.read_text(encoding="utf-8")

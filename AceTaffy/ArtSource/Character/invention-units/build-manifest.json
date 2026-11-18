@@ -1,0 +1,329 @@
+{
+  "skins": [
+    {
+      "skin": "AceTaffy_Invention_0_0",
+      "canvas_xy": [
+        136,
+        198
+      ],
+      "visible_size": [
+        208,
+        195
+      ],
+      "ground_y": 393,
+      "sha256": "0d6edca22cf24bccd18c59dce2236e7b741bf609875ad18379b13a52b34f9272"
+    },
+    {
+      "skin": "AceTaffy_Invention_0_1",
+      "canvas_xy": [
+        152,
+        218
+      ],
+      "visible_size": [
+        209,
+        175
+      ],
+      "ground_y": 393,
+      "sha256": "41afe40f88cd0aa40e7eb8e7aba7803cda6dd9076b6e1914facc8d2db943c0a9"
+    },
+    {
+      "skin": "AceTaffy_Invention_0_2",
+      "canvas_xy": [
+        136,
+        208
+      ],
+      "visible_size": [
+        241,
+        185
+      ],
+      "ground_y": 393,
+      "sha256": "71aa93d59e4f4ace3b47d5c3d9965ad20e09a1bf1eeaba3e1dc65402bc51b9e0"
+    },
+    {
+      "skin": "AceTaffy_Invention_0_3",
+      "canvas_xy": [
+        142,
+        208
+      ],
+      "visible_size": [
+        221,
+        185
+      ],
+      "ground_y": 393,
+      "sha256": "5968d00888387c79e104cbe44be1575454f0bee8eb1783f860a52219089b5bb5"
+    },
+    {
+      "skin": "AceTaffy_Invention_0_4",
+      "canvas_xy": [
+        171,
+        213
+      ],
+      "visible_size": [
+        170,
+        180
+      ],
+      "ground_y": 393,
+      "sha256": "b1983d6169f2253033e49d55f30e8b0e7c71ef1594dc1d4d13f45f1d2b65982e"
+    },
+    {
+      "skin": "AceTaffy_Invention_1_0",
+      "canvas_xy": [
+        118,
+        198
+      ],
+      "visible_size": [
+        214,
+        195
+      ],
+      "ground_y": 393,
+      "sha256": "622ffe80cc44462e7de9d876b8e7f4d9140b2221549495284b76240e3c12132c"
+    },
+    {
+      "skin": "AceTaffy_Invention_1_1",
+      "canvas_xy": [
+        152,
+        218
+      ],
+      "visible_size": [
+        209,
+        175
+      ],
+      "ground_y": 393,
+      "sha256": "922710b62921be26b4ef4aacdcdc8dc28b03f06ac66c1a2f443656eb1ec49f9a"
+    },
+    {
+      "skin": "AceTaffy_Invention_1_2",
+      "canvas_xy": [
+        154,
+        208
+      ],
+      "visible_size": [
+        204,
+        185
+      ],
+      "ground_y": 393,
+      "sha256": "392c008bb9215c9fb41b1723f2a6b7cb475215ddcca78811ae5f77b8c95430fe"
+    },
+    {
+      "skin": "AceTaffy_Invention_1_3",
+      "canvas_xy": [
+        159,
+        208
+      ],
+      "visible_size": [
+        194,
+        185
+      ],
+      "ground_y": 393,
+      "sha256": "afd8e728c13d83fba138a0a502aa7f16a4a8760ff5bf56addc514dc25094498b"
+    },
+    {
+      "skin": "AceTaffy_Invention_1_4",
+      "canvas_xy": [
+        164,
+        213
+      ],
+      "visible_size": [
+        184,
+        180
+      ],
+      "ground_y": 393,
+      "sha256": "4f3256f833e8fbbfd5e6dfea85c348a2f632ecdfab017cbabf81eee541f8a28c"
+    },
+    {
+      "skin": "AceTaffy_Invention_2_0",
+      "canvas_xy": [
+        124,
+        212
+      ],
+      "visible_size": [
+        210,
+        181
+      ],
+      "ground_y": 393,
+      "sha256": "66e09acd6d0f95c564f8c7f1497fd22d19803682429a3b68f5ee9846b3e97d88"
+    },
+    {
+      "skin": "AceTaffy_Invention_2_1",
+      "canvas_xy": [
+        142,
+        230
+      ],
+      "visible_size": [
+        228,
+        163
+      ],
+      "ground_y": 393,
+      "sha256": "5b821c7edf4854b86879cdbf9226ce556f4f88118f20340ad34a8fdc061eb623"
+    },
+    {
+      "skin": "AceTaffy_Invention_2_2",
+      "canvas_xy": [
+        155,
+        221
+      ],
+      "visible_size": [
+        202,
+        172
+      ],
+      "ground_y": 393,
+      "sha256": "1fc262ed0d0db9d22f5f80d66cb07792b319e746d5291ef4a092252752d3fd08"
+    },
+    {
+      "skin": "AceTaffy_Invention_2_3",
+      "canvas_xy": [
+        162,
+        221
+      ],
+      "visible_size": [
+        188,
+        172
+      ],
+      "ground_y": 393,
+      "sha256": "fbf9b91b56c1e52508e58ac25936ca29dc47f19617fc1cc5ab526869d82be682"
+    },
+    {
+      "skin": "AceTaffy_Invention_2_4",
+      "canvas_xy": [
+        177,
+        226
+      ],
+      "visible_size": [
+        158,
+        167
+      ],
+      "ground_y": 393,
+      "sha256": "568cbcb8c6d926ca11b6b0cad7a785d6485b82bc76c308c5d3a1e84653f03460"
+    },
+    {
+      "skin": "AceTaffy_Invention_3_0",
+      "canvas_xy": [
+        116,
+        198
+      ],
+      "visible_size": [
+        221,
+        195
+      ],
+      "ground_y": 393,
+      "sha256": "199fc69f7122f9ff7e58c49483bc6732423b25e02b88412d5d3642e2ec9f86b7"
+    },
+    {
+      "skin": "AceTaffy_Invention_3_1",
+      "canvas_xy": [
+        141,
+        218
+      ],
+      "visible_size": [
+        230,
+        175
+      ],
+      "ground_y": 393,
+      "sha256": "3adbe591a82ee6824432593eb10959fe71d67b456f167aecff6b3bd4b4273278"
+    },
+    {
+      "skin": "AceTaffy_Invention_3_2",
+      "canvas_xy": [
+        145,
+        208
+      ],
+      "visible_size": [
+        225,
+        185
+      ],
+      "ground_y": 393,
+      "sha256": "dc95aad956cd3832e32ed316fb92d8b66b6149fe4dc78d6c2adefecfe6795a78"
+    },
+    {
+      "skin": "AceTaffy_Invention_3_3",
+      "canvas_xy": [
+        160,
+        208
+      ],
+      "visible_size": [
+        193,
+        185
+      ],
+      "ground_y": 393,
+      "sha256": "452983f5d95fd7e285cfeb6297b0c6e9c54d86ed1c4ae8ce16482b659795163f"
+    },
+    {
+      "skin": "AceTaffy_Invention_3_4",
+      "canvas_xy": [
+        164,
+        213
+      ],
+      "visible_size": [
+        185,
+        180
+      ],
+      "ground_y": 393,
+      "sha256": "e3ed9ca0e39aa0493fd05b8ca38a493cc68d4fcebc21299c60891f8f63aa7e3e"
+    },
+    {
+      "skin": "AceTaffy_Invention_4_0",
+      "canvas_xy": [
+        104,
+        175
+      ],
+      "visible_size": [
+        243,
+        218
+      ],
+      "ground_y": 393,
+      "sha256": "804187874dfd1ca263248daaa68bf987dee18b6cdeebf18b8a7bc24bb461ae9a"
+    },
+    {
+      "skin": "AceTaffy_Invention_4_1",
+      "canvas_xy": [
+        113,
+        197
+      ],
+      "visible_size": [
+        286,
+        196
+      ],
+      "ground_y": 393,
+      "sha256": "cb9f59bbd6af73cfdc7ad32c4a6e2d544539e1cb9cff9a698097a0c3806f2ab8"
+    },
+    {
+      "skin": "AceTaffy_Invention_4_2",
+      "canvas_xy": [
+        110,
+        186
+      ],
+      "visible_size": [
+        293,
+        207
+      ],
+      "ground_y": 393,
+      "sha256": "439b9a5a89b5a1ce4215867df007991deb933fc6a3d35c318eaab7ddd5303ba1"
+    },
+    {
+      "skin": "AceTaffy_Invention_4_3",
+      "canvas_xy": [
+        134,
+        186
+      ],
+      "visible_size": [
+        243,
+        207
+      ],
+      "ground_y": 393,
+      "sha256": "d45ddf5e3b01d4f1a0b90176d247ebc4a6a5aa8e779bcc2da21227047980825c"
+    },
+    {
+      "skin": "AceTaffy_Invention_4_4",
+      "canvas_xy": [
+        152,
+        191
+      ],
+      "visible_size": [
+        209,
+        202
+      ],
+      "ground_y": 393,
+      "sha256": "e07ea48ef2072215baf3094602e95e97a7ef4c4d9fb99c86b523fa02afaf3896"
+    }
+  ]
+}

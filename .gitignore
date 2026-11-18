@@ -146,16 +146,23 @@ __pycache__/
 /SteriaBuild/CharacterModels/*/review/
 
 # AceTaffy local release packaging, abandoned candidates and capture output
-/AceTaffy/dist/
+/AceTaffy/dist/*
+!/AceTaffy/dist/AceTaffy-0.2.4.zip
 /AceTaffy/Workshop/v*/
 /AceTaffy/DeliveryHistory/*
 !/AceTaffy/DeliveryHistory/v*.md
 /AceTaffy/ArtSource/CardIterations/
 /AceTaffy/ArtSource/Audio/v2/candidate/
+/AceTaffy/ArtSource/Effects/ultimate-v1/SteamDetonation-draft.png
 /AceTaffy/ArtSource/Character/native-reference/*.png
 /AceTaffy/Verification/Reception/native-cn-effects.xml
 /AceTaffy/ArtSource/Character/slender-v2/attempt*.png
 /AceTaffy/ArtSource/Character/slender-v2/*rejected*.png
+/AceTaffy/ArtSource/Character/slender-v2/battle-default-ratio.png
+/AceTaffy/ArtSource/Character/slender-v2/default-*.png
+/AceTaffy/ArtSource/Character/slender-v2/design-default.png
+/AceTaffy/ArtSource/Character/slender-v2/head-before-neck-fix.png
+/AceTaffy/ArtSource/Story/portraits/default-before-alpha-clean.png
 /AceTaffy/Verification/*.png
 /AceTaffy/Verification/final-log-path.txt
 /AceTaffy/Verification/neck-closeups/

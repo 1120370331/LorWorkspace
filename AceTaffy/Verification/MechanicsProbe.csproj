@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>MechanicsProbe</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>AceTaffy</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\src\TaffyMechanics.cs" />
+    <Compile Include="..\src\TaffyPassives.cs" />
+    <Compile Include="..\src\TaffyCards.cs" />
+    <Compile Include="MechanicsProbe.cs" />
+    <Reference Include="Assembly-CSharp"><HintPath>..\..\SteriaBuild\Libs\Assembly-CSharp.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="BaseMod"><HintPath>..\..\SteriaBuild\Libs\BaseMod.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>..\..\SteriaBuild\Libs\0Harmony.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(AceTaffyManagedDir)\UnityEngine.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(AceTaffyManagedDir)\UnityEngine.CoreModule.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="UnityEngine.ImageConversionModule"><HintPath>$(AceTaffyManagedDir)\UnityEngine.ImageConversionModule.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="UnityEngine.AudioModule"><HintPath>$(AceTaffyManagedDir)\UnityEngine.AudioModule.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="UnityEngine.UI"><HintPath>$(AceTaffyManagedDir)\UnityEngine.UI.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Unity.TextMeshPro"><HintPath>$(AceTaffyManagedDir)\Unity.TextMeshPro.dll</HintPath><Private>true</Private></Reference>
+  </ItemGroup>
+</Project>

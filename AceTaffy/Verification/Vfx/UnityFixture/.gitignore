@@ -1,0 +1,9 @@
+/Library/
+/Temp/
+/Logs/
+/Obj/
+/Assets/Plugins/
+/Assets/Reference/
+/Assets/Runtime/TaffyVfx.cs
+/Assets/Runtime/TaffyVfx.cs.meta
+/Packages/packages-lock.json

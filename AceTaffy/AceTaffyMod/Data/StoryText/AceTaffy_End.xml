@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ScenarioRoot>
+  <Chapter ID="-1">
+    <Title>尚有余温</Title>
+  </Chapter>
+  <Group>
+    <GroupName>AceTaffy</GroupName>
+    <Episode>
+      <EpisodeName>接待之后</EpisodeName>
+      <Place>
+        <PlaceName>图书馆</PlaceName>
+        <Dialog ID="0" Model="">
+          <Teller>旁白</Teller>
+          <Title />
+          <Content>最后一缕蒸汽散去，金属的震颤也终于停了。桌上多了一本书，书脊像刚刚离开温热的手掌。</Content>
+        </Dialog>
+        <Dialog ID="1" Model="롤랑">
+          <Teller>罗兰</Teller>
+          <Title />
+          <Content>那个安全阀，最后倒是真的打开了。</Content>
+        </Dialog>
+        <Dialog ID="2" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>即使知道继续增压会伤到自己，她仍然选择了继续。</Content>
+        </Dialog>
+        <Dialog ID="3" Model="롤랑">
+          <Teller>罗兰</Teller>
+          <Title />
+          <Content>她一直说自己能修好。我还以为，她连这场接待都打算当成一次试验。</Content>
+        </Dialog>
+        <Dialog ID="4" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>人在面对陌生的事物时，往往会先用自己熟悉的方式理解它。</Content>
+        </Dialog>
+        <Dialog ID="5" Model="롤랑">
+          <Teller>罗兰</Teller>
+          <Title />
+          <Content>可她不是来找技术，也不是来找谁报仇的。她只是点了一下。</Content>
+        </Dialog>
+        <Dialog ID="6" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>邀请函让她来到了这里。对图书馆而言，她与其他来宾没有区别。</Content>
+        </Dialog>
+        <Dialog ID="7" Model="롤랑">
+          <Teller>罗兰</Teller>
+          <Title />
+          <Content>对等她回去的人，可就不一定了。</Content>
+        </Dialog>
+        <Dialog ID="8" Model="">
+          <Teller>旁白</Teller>
+          <Title />
+          <Content>书页自行翻过一角。一张没有画完的图纸夹在里面，锅炉旁边画着一只歪歪的小猫。</Content>
+        </Dialog>
+        <Dialog ID="9" Model="롤랑">
+          <Teller>罗兰</Teller>
+          <Title />
+          <Content>……这里写着“试验完成之后，记得关掉直播”。她连这个也记下来了。</Content>
+        </Dialog>
+        <Dialog ID="10" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>书会保留她的记忆。那些机械，还有那个我们不知道的地方，都在其中。</Content>
+        </Dialog>
+        <Dialog ID="11" Model="롤랑">
+          <Teller>罗兰</Teller>
+          <Title />
+          <Content>你觉得，她想找的那本书会是什么？一本写着出口的说明书？</Content>
+        </Dialog>
+        <Dialog ID="12" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>也许只是一本能告诉她，怎样回到原来生活中的书。</Content>
+        </Dialog>
+        <Dialog ID="13" Model="">
+          <Teller>旁白</Teller>
+          <Title />
+          <Content>下一页的字迹比图纸潦草许多，像是说话的人忽然笑了一下。</Content>
+        </Dialog>
+        <Dialog ID="14" Model="">
+          <Teller>永雏塔菲（书页中的留言）</Teller>
+          <Title />
+          <Content>下次点链接之前，塔菲一定先问清楚。要是还能回去，今天这次也算大发明成功喵～</Content>
+        </Dialog>
+        <Dialog ID="15" Model="롤랑">
+          <Teller>罗兰</Teller>
+          <Title />
+          <Content>至少……别把她放在最冷的那一排吧。</Content>
+        </Dialog>
+        <Dialog ID="16" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>把书收好。下一封邀请函，还在等待它的来宾。</Content>
+        </Dialog>
+      </Place>
+    </Episode>
+  </Group>
+</ScenarioRoot>

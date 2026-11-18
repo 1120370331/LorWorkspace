@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='utf-8'?>
+<BattleCardDescRoot>
+  <cardDescList>
+    <BattleCardDesc ID="1883001">
+      <LocalizedName>点火</LocalizedName>
+      <Ability>[使用时]获得1层[蒸汽压力]并恢复1点光芒；若此时自身拥有至少6层[烟气]，再恢复1点光芒。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883002">
+      <LocalizedName>黄铜铆钉</LocalizedName>
+      <Ability />
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883003">
+      <LocalizedName>废汽回收</LocalizedName>
+      <Ability>[使用时]消耗3层普通[烟气]，抽取2张书页并获得3层[蒸汽压力]。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883004">
+      <LocalizedName>活塞连动</LocalizedName>
+      <Ability />
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883005">
+      <LocalizedName>烟道逆流</LocalizedName>
+      <Ability>[使用时]获得2层[烟气]。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883006">
+      <LocalizedName>安全阀测试</LocalizedName>
+      <Ability>[使用时]失去4点体力，获得2层[蒸汽压力]。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883007">
+      <LocalizedName>锅炉装甲</LocalizedName>
+      <Ability>[使用时]每拥有3层[蒸汽压力]，本书页第一枚“防御型”骰子威力+1，最多+3。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883008">
+      <LocalizedName>超临界运转</LocalizedName>
+      <Ability>[使用时]失去5点体力，获得6层[烟气]与3层[蒸汽压力]。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883009">
+      <LocalizedName>1883式-蒸汽爆轰</LocalizedName>
+      <Ability>[使用时]自身每有3层[烟气]，本书页所有骰子威力+1；加成在使用时固定。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883010">
+      <LocalizedName>临场发明</LocalizedName>
+      <Ability>以蒸汽工坊为目标，可被敌方角色转移攻击目标。拼点结束后，未被击败或摧毁的骰子将继续攻击蒸汽工坊1次。工坊被击败后取消本书页。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883500">
+      <LocalizedName>棘轮连打</LocalizedName>
+      <Ability />
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883501">
+      <LocalizedName>回转重锤</LocalizedName>
+      <Ability />
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883502">
+      <LocalizedName>拖曳锁链</LocalizedName>
+      <Ability />
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883503">
+      <LocalizedName>连锁电弧</LocalizedName>
+      <Ability>使用后，对距离目标最近的另一名敌方角色再次使用本书页；超级机关改为额外选择2名目标。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883504">
+      <LocalizedName>展开壁垒</LocalizedName>
+      <Ability />
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883505">
+      <LocalizedName>盾面镇压</LocalizedName>
+      <Ability />
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883506">
+      <LocalizedName>破甲爆裂</LocalizedName>
+      <Ability />
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883507">
+      <LocalizedName>过载冲撞</LocalizedName>
+      <Ability>[使用时]失去5点体力。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883508">
+      <LocalizedName>废汽虹吸</LocalizedName>
+      <Ability />
+    </BattleCardDesc>
+    <BattleCardDesc ID="1883509">
+      <LocalizedName>增压喷流</LocalizedName>
+      <Ability />
+    </BattleCardDesc>
+  </cardDescList>
+</BattleCardDescRoot>

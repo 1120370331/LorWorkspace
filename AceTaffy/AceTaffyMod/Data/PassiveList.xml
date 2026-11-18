@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='utf-8'?>
+<PassiveXmlRoot>
+  <Passive ID="1883101">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>4</Cost>
+    <Name>蒸汽机算不算热水器</Name>
+    <Desc>舞台开始时获得3层[蒸汽压力]。每次获得[烟气]，或因自身战斗书页失去体力时，获得1层[蒸汽压力]。自身普通[烟气]不再增加受到的伤害，普通[烟气]上限提升至15层。</Desc>
+  </Passive>
+  <Passive ID="1883102">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>6</Cost>
+    <Name>复式汽缸</Name>
+    <Desc>每幕一次：自身至少拥有6层[蒸汽压力]时，战斗书页第三颗非反击“进攻型”骰子拼点胜利，或单方面攻击命中时，消耗3层[蒸汽压力]再次投掷该骰子。</Desc>
+  </Passive>
+  <Passive ID="1883103">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>5</Cost>
+    <Name>结晶防护</Name>
+    <Desc>这一幕首次因自身战斗书页失去体力时，获得一颗4-8的反击“防御型”骰子，且这一幕“防御型”骰子威力+2。“防御型”骰子拼点胜利时获得1层[蒸汽压力]，并对目标施加1层[烟气]。</Desc>
+  </Passive>
+  <Passive ID="1883201">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>速战速决Ⅵ</Name>
+    <Desc>速度骰子槽数量+5。情感等级达到3级后额外+1。</Desc>
+  </Passive>
+  <Passive ID="1883211">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>蒸汽机算不算热水器</Name>
+    <Desc>舞台开始时获得3层[蒸汽压力]。每次获得[烟气]，或因自身战斗书页失去体力时，获得1层[蒸汽压力]。自身普通[烟气]不再增加受到的伤害，普通[烟气]上限提升至15层。</Desc>
+  </Passive>
+  <Passive ID="1883212">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>复式汽缸</Name>
+    <Desc>每幕一次：自身至少拥有6层[蒸汽压力]时，战斗书页第三颗非反击“进攻型”骰子拼点胜利，或单方面攻击命中时，消耗3层[蒸汽压力]再次投掷该骰子。</Desc>
+  </Passive>
+  <Passive ID="1883213">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>结晶防护</Name>
+    <Desc>这一幕首次因自身战斗书页失去体力时，获得一颗4-8的反击“防御型”骰子，且这一幕“防御型”骰子威力+2。“防御型”骰子拼点胜利时获得1层[蒸汽压力]，并对目标施加1层[烟气]。</Desc>
+  </Passive>
+  <Passive ID="1883202">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>蒸汽工坊</Name>
+    <Desc>舞台开始时召唤蒸汽工坊。工坊存活时，每一幕开始时获得1层[发明进度]；工坊每被命中一次，自身恢复10点混乱抗性并获得1层[发明进度]。进度达到5层时清空，于下一幕开始时召唤1个随机机关（在场与待登场机关合计至多4个）。名额已满时，改为使所有友方角色下一幕各随机获得3层[强壮]、[迅捷]或[守护]。工坊先于自身被击败时，永久摧毁自身2颗速度骰子，取消待登场机关，且不再发明。自身被击败时，所有召唤物退场。</Desc>
+  </Passive>
+  <Passive ID="1883203">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>变幻莫测</Name>
+    <Desc>每一幕使用的书页将发生变化。优先将2张[临场发明]配备至速度最低的2颗速度骰子，其余书页从可支付光芒费用的书页中随机选择。蒸汽工坊被击败后不再使用[临场发明]。</Desc>
+  </Passive>
+  <Passive ID="1883204">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>蒸汽工坊</Name>
+    <Desc>无法行动，免疫混乱伤害。每被命中一次，使永雏塔菲恢复10点混乱抗性并获得1层[发明进度]。先于永雏塔菲被击败时，永久摧毁其2颗速度骰子，并使其停止发明。</Desc>
+  </Passive>
+  <Passive ID="1883205">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>自律发明</Name>
+    <Desc>拥有2颗速度骰子，不受情感等级影响。每一幕使用2张专属书页。登场时使塔菲获得1层对应增益，之后每一幕开始时再增加1层；每个机关的增益独立累积，自身被击败时移除自身提供的全部层数。类型与词条效果详见状态说明。</Desc>
+  </Passive>
+  <Passive ID="1883206">
+    <Negative>false</Negative>
+    <IsHide>false</IsHide>
+    <Rarity>Unique</Rarity>
+    <Lock>false</Lock>
+    <CanGivePassive>false</CanGivePassive>
+    <CanReceivePassive>false</CanReceivePassive>
+    <InnerType>-1</InnerType>
+    <Cost>0</Cost>
+    <Name>八重庇护</Name>
+    <Desc>舞台开始时获得8层持续[守护]。每有1个己方机关被击败，层数-1；层数归零后，每有1个己方机关被击败，便获得1层持续[易损]。蒸汽工坊被击败及塔菲被击败后的召唤物退场不会触发此效果。</Desc>
+  </Passive>
+</PassiveXmlRoot>

@@ -1,0 +1,463 @@
+{
+  "variant": "layered-native",
+  "body_scale": 0.5,
+  "head_state_by_action": {
+    "Default": "Normal",
+    "Move": "Normal",
+    "Slash": "Attack",
+    "Penetrate": "Attack",
+    "Hit": "Attack",
+    "Guard": "Attack",
+    "Evade": "Attack",
+    "Special": "Attack",
+    "Damaged": "Hurt"
+  },
+  "head_scale": 0.13,
+  "head_anchor_source_xy": [
+    625,
+    925
+  ],
+  "native_head_xml_marker_above_collar_px": 37,
+  "head_crown_y": 286,
+  "head_chin_y": 925,
+  "head_core_x": [
+    318,
+    975
+  ],
+  "head_core_width_to_height": 1.028,
+  "default_head_height_px": 83.07,
+  "default_chin_to_sole_px": 157.0,
+  "default_total_in_head_heights": 2.89,
+  "row_runs": [
+    [
+      54,
+      406
+    ],
+    [
+      482,
+      803
+    ],
+    [
+      890,
+      1200
+    ]
+  ],
+  "row_boundaries": [
+    0,
+    444,
+    846,
+    1254
+  ],
+  "body_x_offset": 152,
+  "body_y_offsets": [
+    186,
+    210,
+    212
+  ],
+  "motions": {
+    "Default": {
+      "source_row": 0,
+      "source_column": 0,
+      "head_state": "Normal",
+      "neck_source_xy": [
+        219,
+        91
+      ],
+      "neck_canvas_xy": [
+        262,
+        232
+      ],
+      "angle_degrees": 0,
+      "pivot_y": -272,
+      "head_xml_xy": [
+        12,
+        320
+      ],
+      "projection_head_canvas_xy": [
+        262,
+        195
+      ],
+      "projection_head_xml_xy": [
+        12,
+        394
+      ],
+      "guest_bbox_alpha128": [
+        214,
+        134,
+        316,
+        389
+      ],
+      "projection_bbox_alpha128": [
+        219,
+        213,
+        310,
+        389
+      ],
+      "sole_root_y_units": 0.06
+    },
+    "Move": {
+      "source_row": 0,
+      "source_column": 1,
+      "head_state": "Normal",
+      "neck_source_xy": [
+        170,
+        101
+      ],
+      "neck_canvas_xy": [
+        237,
+        236
+      ],
+      "angle_degrees": 16,
+      "pivot_y": -272,
+      "head_xml_xy": [
+        -38,
+        312
+      ],
+      "projection_head_canvas_xy": [
+        237,
+        199
+      ],
+      "projection_head_xml_xy": [
+        -38,
+        386
+      ],
+      "guest_bbox_alpha128": [
+        184,
+        144,
+        328,
+        389
+      ],
+      "projection_bbox_alpha128": [
+        187,
+        218,
+        328,
+        389
+      ],
+      "sole_root_y_units": 0.06
+    },
+    "Slash": {
+      "source_row": 0,
+      "source_column": 2,
+      "head_state": "Attack",
+      "neck_source_xy": [
+        238,
+        117
+      ],
+      "neck_canvas_xy": [
+        271,
+        244
+      ],
+      "angle_degrees": -8,
+      "pivot_y": -270,
+      "head_xml_xy": [
+        30,
+        294
+      ],
+      "projection_head_canvas_xy": [
+        271,
+        207
+      ],
+      "projection_head_xml_xy": [
+        30,
+        368
+      ],
+      "guest_bbox_alpha128": [
+        181,
+        145,
+        341,
+        388
+      ],
+      "projection_bbox_alpha128": [
+        181,
+        231,
+        341,
+        388
+      ],
+      "sole_root_y_units": 0.06
+    },
+    "Penetrate": {
+      "source_row": 1,
+      "source_column": 0,
+      "head_state": "Attack",
+      "neck_source_xy": [
+        238,
+        77
+      ],
+      "neck_canvas_xy": [
+        271,
+        248
+      ],
+      "angle_degrees": 4,
+      "pivot_y": -274,
+      "head_xml_xy": [
+        30,
+        290
+      ],
+      "projection_head_canvas_xy": [
+        271,
+        211
+      ],
+      "projection_head_xml_xy": [
+        30,
+        364
+      ],
+      "guest_bbox_alpha128": [
+        171,
+        151,
+        353,
+        390
+      ],
+      "projection_bbox_alpha128": [
+        171,
+        234,
+        353,
+        390
+      ],
+      "sole_root_y_units": 0.06
+    },
+    "Hit": {
+      "source_row": 1,
+      "source_column": 1,
+      "head_state": "Attack",
+      "neck_source_xy": [
+        214,
+        70
+      ],
+      "neck_canvas_xy": [
+        259,
+        245
+      ],
+      "angle_degrees": 4,
+      "pivot_y": -274,
+      "head_xml_xy": [
+        6,
+        296
+      ],
+      "projection_head_canvas_xy": [
+        259,
+        208
+      ],
+      "projection_head_xml_xy": [
+        6,
+        370
+      ],
+      "guest_bbox_alpha128": [
+        179,
+        148,
+        338,
+        390
+      ],
+      "projection_bbox_alpha128": [
+        179,
+        231,
+        338,
+        390
+      ],
+      "sole_root_y_units": 0.06
+    },
+    "Guard": {
+      "source_row": 1,
+      "source_column": 2,
+      "head_state": "Attack",
+      "neck_source_xy": [
+        221,
+        72
+      ],
+      "neck_canvas_xy": [
+        262,
+        246
+      ],
+      "angle_degrees": 8,
+      "pivot_y": -270,
+      "head_xml_xy": [
+        12,
+        290
+      ],
+      "projection_head_canvas_xy": [
+        262,
+        209
+      ],
+      "projection_head_xml_xy": [
+        12,
+        364
+      ],
+      "guest_bbox_alpha128": [
+        200,
+        150,
+        336,
+        388
+      ],
+      "projection_bbox_alpha128": [
+        200,
+        229,
+        336,
+        388
+      ],
+      "sole_root_y_units": 0.06
+    },
+    "Evade": {
+      "source_row": 2,
+      "source_column": 0,
+      "head_state": "Attack",
+      "neck_source_xy": [
+        259,
+        82
+      ],
+      "neck_canvas_xy": [
+        282,
+        253
+      ],
+      "angle_degrees": 12,
+      "pivot_y": -268,
+      "head_xml_xy": [
+        52,
+        274
+      ],
+      "projection_head_canvas_xy": [
+        282,
+        216
+      ],
+      "projection_head_xml_xy": [
+        52,
+        348
+      ],
+      "guest_bbox_alpha128": [
+        202,
+        159,
+        346,
+        387
+      ],
+      "projection_bbox_alpha128": [
+        202,
+        238,
+        346,
+        387
+      ],
+      "sole_root_y_units": 0.06
+    },
+    "Damaged": {
+      "source_row": 2,
+      "source_column": 1,
+      "head_state": "Hurt",
+      "neck_source_xy": [
+        286,
+        75
+      ],
+      "neck_canvas_xy": [
+        295,
+        250
+      ],
+      "angle_degrees": -17,
+      "pivot_y": -274,
+      "head_xml_xy": [
+        78,
+        286
+      ],
+      "projection_head_canvas_xy": [
+        295,
+        213
+      ],
+      "projection_head_xml_xy": [
+        78,
+        360
+      ],
+      "guest_bbox_alpha128": [
+        199,
+        153,
+        356,
+        390
+      ],
+      "projection_bbox_alpha128": [
+        199,
+        241,
+        328,
+        390
+      ],
+      "sole_root_y_units": 0.06
+    },
+    "Special": {
+      "source_row": 2,
+      "source_column": 2,
+      "head_state": "Attack",
+      "neck_source_xy": [
+        211,
+        75
+      ],
+      "neck_canvas_xy": [
+        258,
+        250
+      ],
+      "angle_degrees": 3,
+      "pivot_y": -270,
+      "head_xml_xy": [
+        4,
+        282
+      ],
+      "projection_head_canvas_xy": [
+        258,
+        213
+      ],
+      "projection_head_xml_xy": [
+        4,
+        356
+      ],
+      "guest_bbox_alpha128": [
+        163,
+        153,
+        344,
+        388
+      ],
+      "projection_bbox_alpha128": [
+        163,
+        234,
+        344,
+        388
+      ],
+      "sole_root_y_units": 0.06
+    }
+  },
+  "sources": {
+    "body_sheet": {
+      "path": "ArtSource/Character/slender-v2/body-sheet.png",
+      "sha256": "504f73423a5a0e37c2ea7c47ff9c3658e7fe0fa1718b6f7e327daf42003f5183"
+    },
+    "heads": {
+      "Normal": {
+        "path": "ArtSource/Character/slender-v2/head.png",
+        "sha256": "03d4837a6ad0c06a37c27babf6825d4520079f0395eeda491864b6c6b5bf194f"
+      },
+      "Attack": {
+        "path": "ArtSource/Character/slender-v2/head_attack.png",
+        "sha256": "4d03433a28e4c43e7badadda9841dcd91c290e9d76e83d149ddab5d137a7d56d"
+      },
+      "Hurt": {
+        "path": "ArtSource/Character/slender-v2/head_hurt.png",
+        "sha256": "6761f99594a06136bb434b064e1a9082a43b90089b92350de7196de195681e20"
+      }
+    }
+  },
+  "outputs": {
+    "AceTaffy": {
+      "Default": "e11dcfaabe7496d74370158cfbc05b8232d24d033788721e7316b507fb845081",
+      "Move": "0d3276123151bf491c25d2341871879dc4060e6203cef37abaab0d3aa5e13774",
+      "Slash": "e447676a4969a59a0f0c6f60cd4ad69df89ab6f2376e7f48344c1eba94fe6703",
+      "Penetrate": "54260a6fc7c55b5fbc3451e8e306e80cb7c3397869ef813502c9c39041152449",
+      "Hit": "03405746ef8d9d113cdfa5f4a86d094d3ac6bdf8ca387832836a7c64df51bfb8",
+      "Guard": "ad11264b88d09b69916fd261a675e6fce606d0ac9c75cd9713d3a12c0d334321",
+      "Evade": "70707a969ae42f86ccb4fe882c4e7058edc926621a9cf8045caecf6dd3d9c906",
+      "Damaged": "f251b439ee672a2cbf57e47f44d31f12cd1b4259180467790f8a1553bfef532e",
+      "Special": "4c8b5f6b17f53656d789f6a07ce3cd02990e18f5ffdc59676f36c0d8fdeeee34"
+    },
+    "AceTaffy_Projection": {
+      "Default": "8b2062e4c54824536e495f484d8ffbd8e8c08afc81c757153cb5cc59dd92d5af",
+      "Move": "b7a29c6641f8463e04664daf4d993ebaa4487ab5de6f69f94b3c07f54049423e",
+      "Slash": "2dd54b6635dc31819ecfb49d8cd63970df174ca83c8ce1e558fa7383b942d62a",
+      "Penetrate": "30f0497058446ee155c7d6e96565c31f1ce800746483cee657abaedde8bd6018",
+      "Hit": "b9f3745e8bae0f3e35b66850584dc7c5d30d9843840ff666bc0810a41b5f6a7d",
+      "Guard": "5464f39f9335461770c1c0a8b9b10a0c839f8a6410e799f4978d4e2e8b52a67d",
+      "Evade": "df0866f90014a97e13525d01881986f7246227b547af2ec4bf6cac8c3fb4ebb2",
+      "Damaged": "fb00fc6e32a5117eb69a1585729ada28b824f394d6b4498b91e9cad8bab0bc0f",
+      "Special": "fdd1fcf4c32ac57b62be0b83b6a47bd93efd68f87790d740435bf9278a478dd6"
+    }
+  }
+}

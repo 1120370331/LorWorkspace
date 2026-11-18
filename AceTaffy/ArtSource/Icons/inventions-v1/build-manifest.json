@@ -1,0 +1,57 @@
+{
+  "layout": {
+    "canvas": 128,
+    "device_size": 108,
+    "device_xy": [
+      4,
+      16
+    ],
+    "qualifier_size": 48,
+    "qualifier_xy": [
+      78,
+      2
+    ]
+  },
+  "kinds": [
+    "mechanism",
+    "chain",
+    "defense",
+    "destruction",
+    "energy"
+  ],
+  "qualifiers": [
+    "odd",
+    "weird",
+    "fragile",
+    "mysterious",
+    "super"
+  ],
+  "outputs": {
+    "AceTaffy_InventionProgress": "b0b5f04efbfb40a5bd7305aed0254337a317508d1e9a777bf160cec12105e251",
+    "AceTaffy_Invention_0_0": "a78a897c0a663dab24eb0f0a34caa153acd3c3184216aef5934f8242473a4d0c",
+    "AceTaffy_Invention_0_1": "169b7f76c187a2c9d369aefd4832e34e8916834cdef69c5ea0b6624cabeb4f5b",
+    "AceTaffy_Invention_0_2": "9cfa80076a0720725b16ec9e5392b15560ab7c36162f0c3058c578b91f3e1306",
+    "AceTaffy_Invention_0_3": "e617267e0c14bcd6d64f37b309c165685b6ed84c82719f9bb13cf52436f44428",
+    "AceTaffy_Invention_0_4": "983d35cedb32e71af4b1541dc7c59bdf6824fff4bf4f3e0a2dddb819ce58db53",
+    "AceTaffy_Invention_1_0": "ce78a9a779d93252f0e233b8f2bf94ba2a27f7d34ccf1d26a0b42992446123fe",
+    "AceTaffy_Invention_1_1": "f2f276e66519deb98f0e1f9747ef10aed34511108e9fe9274a2268eea7c438da",
+    "AceTaffy_Invention_1_2": "285c3aa472fa434ed9ff2eb9b2587af27a357c1771e7ddbbabce27dee6665e6d",
+    "AceTaffy_Invention_1_3": "b174fc727a68b88e9e1203255aecd0c576fecf85d35080f19f292ee82201434b",
+    "AceTaffy_Invention_1_4": "185cc5fc31e74ffca20b4c84a2e423b2e1e3069a2cc81dced3161e0131514f5d",
+    "AceTaffy_Invention_2_0": "aa6fdd022f42d75d60638cf071b73bbbec58f172cf070e8b23d0d2640f26274d",
+    "AceTaffy_Invention_2_1": "74c17c025b1626cfe0132846e12658b6494ed7c723bc6af5dbdef1d1a666d244",
+    "AceTaffy_Invention_2_2": "a4f1c7a62eaa50d5bc41d75841e03e60488a439421c7d9e6b6e3ce408e6f2cee",
+    "AceTaffy_Invention_2_3": "aad0f37c798ce8d93e1cec33ab626c107a66f89a21bc79a550216a9b2f52525e",
+    "AceTaffy_Invention_2_4": "e20b9c9cb63195f80498b070e86b1ab4188aac21cef62b35c99c31cf183d17d9",
+    "AceTaffy_Invention_3_0": "3e9a53b45e463bb1196e5a02470538b4f9b279c336ba5562ac5c2d56e7555688",
+    "AceTaffy_Invention_3_1": "0e971efbb3a1f93ee89fc7ad5cc956ccae9f89bc07585e63d6fb4033dc823b35",
+    "AceTaffy_Invention_3_2": "91d449f0aa8382f2458d7e41c634db1ada336e62fe89d4382a0d4201479d46b6",
+    "AceTaffy_Invention_3_3": "3f84be71a83a7d9e1ad49883add92317df3e16579b71b62c483eed8a6f2d7f78",
+    "AceTaffy_Invention_3_4": "890f6857b4ce2ba38ecfb8c09feccecb04e79a689ce11e18b69f977d58c3c0a7",
+    "AceTaffy_Invention_4_0": "8111aa422bf776a2b1cc8ce95edd08ccdf91cc88b377f358888860339fd50bf3",
+    "AceTaffy_Invention_4_1": "cdbe420958d858555cfa5d2097b66e3f9e6eb5762545e47c63e35f422cad422b",
+    "AceTaffy_Invention_4_2": "ff8ee231c8cb14d271a461c2e4f7c68fbb44cb89af287e3fef2fff51a0e90ede",
+    "AceTaffy_Invention_4_3": "21fb32f483b6f102e4c2ae80b20cb0143cca703f8dbb352da463132a8c285f4b",
+    "AceTaffy_Invention_4_4": "da7f59a66620d33ab26688e27811d3f4652573dbca3434cea6c6e4b471816166"
+  }
+}

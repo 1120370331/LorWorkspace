@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BattleDialogRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Version>1.1</Version><GroupName>AceTaffy</GroupName>
+  <Character ID="1883">
+    <Type ID="START_BATTLE"><BattleDialog ID="START_BATTLE_0">锅炉热好啦，准备接招喵～</BattleDialog><BattleDialog ID="START_BATTLE_1">嗯？压力表在晃……只是阀门松了一点，马上就修好喵～</BattleDialog></Type>
+    <Type ID="BATTLE_VICTORY"><BattleDialog ID="BATTLE_VICTORY_0">嘿嘿，塔菲赢啦！现在能说说回家的路了吗，喵～</BattleDialog></Type>
+    <Type ID="DEATH"><BattleDialog ID="DEATH_0">为什么要打taffy，喵……</BattleDialog></Type>
+    <Type ID="KILLS_OPPONENT"><BattleDialog ID="KILLS_OPPONENT_0">铆钉固定完成，小心烫喵～</BattleDialog><BattleDialog ID="KILLS_OPPONENT_1">嘿嘿，这回轮到塔菲了喵～</BattleDialog></Type>
+  </Character>
+</BattleDialogRoot>

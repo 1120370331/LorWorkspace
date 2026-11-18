@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BookXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Version>1.1</Version>
+  <Book ID="1883001">
+    <Name>永雏塔菲</Name><TextId>-1</TextId><DropTable>1883</DropTable>
+    <EquipEffect>
+      <HP>100</HP><Break>60</Break><SpeedMin>3</SpeedMin><Speed>6</Speed><StartPlayPoint>4</StartPlayPoint><MaxPlayPoint>4</MaxPlayPoint>
+      <SResist>Normal</SResist><PResist>Normal</PResist><HResist>Endure</HResist>
+      <SBResist>Normal</SBResist><PBResist>Normal</PBResist><HBResist>Endure</HBResist>
+      <Passive Pid="@origin">10008</Passive><Passive>1883101</Passive><Passive>1883102</Passive><Passive>1883103</Passive>
+    </EquipEffect>
+    <Chapter>6</Chapter><Episode>1</Episode><Rarity>Unique</Rarity><RangeType>Hybrid</RangeType>
+    <CharacterSkin>Custom_AceTaffy_Projection</CharacterSkin><CharacterSkinType>Custom</CharacterSkinType>
+  </Book>
+</BookXmlRoot>

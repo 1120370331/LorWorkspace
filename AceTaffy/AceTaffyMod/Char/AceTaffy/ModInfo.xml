@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModInfo Extended="true">
+  <ClothInfo>
+    <Name>AceTaffy</Name>
+    <Default size_x="512" size_y="512" quality="50"><Direction>Front</Direction><Pivot pivot_x="0" pivot_y="-272" /><Head head_x="12" head_y="320" rotation="0" head_enable="False" /></Default>
+    <Move size_x="512" size_y="512" quality="50"><Direction>Front</Direction><Pivot pivot_x="0" pivot_y="-272" /><Head head_x="-38" head_y="312" rotation="16" head_enable="False" /></Move>
+    <Slash size_x="512" size_y="512" quality="50"><Direction>Front</Direction><Pivot pivot_x="0" pivot_y="-270" /><Head head_x="30" head_y="294" rotation="-8" head_enable="False" /></Slash>
+    <Penetrate size_x="512" size_y="512" quality="50"><Direction>Front</Direction><Pivot pivot_x="0" pivot_y="-274" /><Head head_x="30" head_y="290" rotation="4" head_enable="False" /></Penetrate>
+    <Hit size_x="512" size_y="512" quality="50"><Direction>Front</Direction><Pivot pivot_x="0" pivot_y="-274" /><Head head_x="6" head_y="296" rotation="4" head_enable="False" /></Hit>
+    <Guard size_x="512" size_y="512" quality="50"><Direction>Front</Direction><Pivot pivot_x="0" pivot_y="-270" /><Head head_x="12" head_y="290" rotation="8" head_enable="False" /></Guard>
+    <Evade size_x="512" size_y="512" quality="50"><Direction>Front</Direction><Pivot pivot_x="0" pivot_y="-268" /><Head head_x="52" head_y="274" rotation="12" head_enable="False" /></Evade>
+    <Damaged size_x="512" size_y="512" quality="50"><Direction>Front</Direction><Pivot pivot_x="0" pivot_y="-274" /><Head head_x="78" head_y="286" rotation="-17" head_enable="False" /></Damaged>
+    <Special size_x="512" size_y="512" quality="50"><Direction>Front</Direction><Pivot pivot_x="0" pivot_y="-270" /><Head head_x="4" head_y="282" rotation="3" head_enable="False" /></Special>
+  </ClothInfo>
+</ModInfo>

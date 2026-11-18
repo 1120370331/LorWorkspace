@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BattleDialogRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Version>1.1</Version>
+  <Character ID="1883">
+    <Type ID="START_BATTLE"><Dialog>锅炉热好啦，准备接招喵～</Dialog><Dialog>嗯？压力表在晃……只是阀门松了一点，马上就修好喵～</Dialog></Type>
+    <Type ID="BATTLE_VICTORY"><Dialog>嘿嘿，塔菲赢啦！现在能说说回家的路了吗，喵～</Dialog></Type>
+    <Type ID="DEATH"><Dialog>还不能停机呀，喵……</Dialog></Type>
+    <Type ID="KILLS_OPPONENT"><Dialog>铆钉固定完成，小心烫喵～</Dialog><Dialog>嘿嘿，这回轮到塔菲了喵～</Dialog></Type>
+  </Character>
+</BattleDialogRoot>

@@ -1,0 +1,579 @@
+{
+  "units": [
+    {
+      "id": 1883400,
+      "qualifier": 0,
+      "kind": 0,
+      "name": "奇特的机关装置",
+      "hp": 120,
+      "break": 64,
+      "hp_resists": [
+        "Normal",
+        "Endure",
+        "Weak"
+      ],
+      "break_resists": [
+        "Normal",
+        "Endure",
+        "Weak"
+      ],
+      "skin": "AceTaffy_Invention_0_0",
+      "cards": [
+        1883500,
+        1883501
+      ]
+    },
+    {
+      "id": 1883401,
+      "qualifier": 0,
+      "kind": 1,
+      "name": "奇特的连锁装置",
+      "hp": 112,
+      "break": 60,
+      "hp_resists": [
+        "Weak",
+        "Normal",
+        "Endure"
+      ],
+      "break_resists": [
+        "Vulnerable",
+        "Normal",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_0_1",
+      "cards": [
+        1883502,
+        1883503
+      ]
+    },
+    {
+      "id": 1883402,
+      "qualifier": 0,
+      "kind": 2,
+      "name": "奇特的防御装置",
+      "hp": 144,
+      "break": 80,
+      "hp_resists": [
+        "Resist",
+        "Weak",
+        "Endure"
+      ],
+      "break_resists": [
+        "Endure",
+        "Weak",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_0_2",
+      "cards": [
+        1883504,
+        1883505
+      ]
+    },
+    {
+      "id": 1883403,
+      "qualifier": 0,
+      "kind": 3,
+      "name": "奇特的毁灭装置",
+      "hp": 116,
+      "break": 56,
+      "hp_resists": [
+        "Endure",
+        "Normal",
+        "Weak"
+      ],
+      "break_resists": [
+        "Weak",
+        "Endure",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_0_3",
+      "cards": [
+        1883506,
+        1883507
+      ]
+    },
+    {
+      "id": 1883404,
+      "qualifier": 0,
+      "kind": 4,
+      "name": "奇特的能源装置",
+      "hp": 104,
+      "break": 68,
+      "hp_resists": [
+        "Normal",
+        "Weak",
+        "Resist"
+      ],
+      "break_resists": [
+        "Normal",
+        "Weak",
+        "Endure"
+      ],
+      "skin": "AceTaffy_Invention_0_4",
+      "cards": [
+        1883508,
+        1883509
+      ]
+    },
+    {
+      "id": 1883405,
+      "qualifier": 1,
+      "kind": 0,
+      "name": "诡异的机关装置",
+      "hp": 132,
+      "break": 64,
+      "hp_resists": [
+        "Normal",
+        "Resist",
+        "Weak"
+      ],
+      "break_resists": [
+        "Vulnerable",
+        "Endure",
+        "Weak"
+      ],
+      "skin": "AceTaffy_Invention_1_0",
+      "cards": [
+        1883500,
+        1883501
+      ]
+    },
+    {
+      "id": 1883406,
+      "qualifier": 1,
+      "kind": 1,
+      "name": "诡异的连锁装置",
+      "hp": 123,
+      "break": 60,
+      "hp_resists": [
+        "Weak",
+        "Endure",
+        "Endure"
+      ],
+      "break_resists": [
+        "Weak",
+        "Normal",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_1_1",
+      "cards": [
+        1883502,
+        1883503
+      ]
+    },
+    {
+      "id": 1883407,
+      "qualifier": 1,
+      "kind": 2,
+      "name": "诡异的防御装置",
+      "hp": 158,
+      "break": 80,
+      "hp_resists": [
+        "Resist",
+        "Vulnerable",
+        "Endure"
+      ],
+      "break_resists": [
+        "Normal",
+        "Weak",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_1_2",
+      "cards": [
+        1883504,
+        1883505
+      ]
+    },
+    {
+      "id": 1883408,
+      "qualifier": 1,
+      "kind": 3,
+      "name": "诡异的毁灭装置",
+      "hp": 128,
+      "break": 56,
+      "hp_resists": [
+        "Endure",
+        "Endure",
+        "Weak"
+      ],
+      "break_resists": [
+        "Weak",
+        "Endure",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_1_3",
+      "cards": [
+        1883506,
+        1883507
+      ]
+    },
+    {
+      "id": 1883409,
+      "qualifier": 1,
+      "kind": 4,
+      "name": "诡异的能源装置",
+      "hp": 114,
+      "break": 68,
+      "hp_resists": [
+        "Normal",
+        "Vulnerable",
+        "Resist"
+      ],
+      "break_resists": [
+        "Vulnerable",
+        "Weak",
+        "Endure"
+      ],
+      "skin": "AceTaffy_Invention_1_4",
+      "cards": [
+        1883508,
+        1883509
+      ]
+    },
+    {
+      "id": 1883410,
+      "qualifier": 2,
+      "kind": 0,
+      "name": "脆弱的机关装置",
+      "hp": 84,
+      "break": 51,
+      "hp_resists": [
+        "Vulnerable",
+        "Normal",
+        "Weak"
+      ],
+      "break_resists": [
+        "Vulnerable",
+        "Normal",
+        "Weak"
+      ],
+      "skin": "AceTaffy_Invention_2_0",
+      "cards": [
+        1883500,
+        1883501
+      ]
+    },
+    {
+      "id": 1883411,
+      "qualifier": 2,
+      "kind": 1,
+      "name": "脆弱的连锁装置",
+      "hp": 78,
+      "break": 48,
+      "hp_resists": [
+        "Weak",
+        "Vulnerable",
+        "Normal"
+      ],
+      "break_resists": [
+        "Weak",
+        "Vulnerable",
+        "Vulnerable"
+      ],
+      "skin": "AceTaffy_Invention_2_1",
+      "cards": [
+        1883502,
+        1883503
+      ]
+    },
+    {
+      "id": 1883412,
+      "qualifier": 2,
+      "kind": 2,
+      "name": "脆弱的防御装置",
+      "hp": 101,
+      "break": 64,
+      "hp_resists": [
+        "Endure",
+        "Weak",
+        "Normal"
+      ],
+      "break_resists": [
+        "Normal",
+        "Weak",
+        "Vulnerable"
+      ],
+      "skin": "AceTaffy_Invention_2_2",
+      "cards": [
+        1883504,
+        1883505
+      ]
+    },
+    {
+      "id": 1883413,
+      "qualifier": 2,
+      "kind": 3,
+      "name": "脆弱的毁灭装置",
+      "hp": 82,
+      "break": 45,
+      "hp_resists": [
+        "Normal",
+        "Vulnerable",
+        "Weak"
+      ],
+      "break_resists": [
+        "Weak",
+        "Normal",
+        "Vulnerable"
+      ],
+      "skin": "AceTaffy_Invention_2_3",
+      "cards": [
+        1883506,
+        1883507
+      ]
+    },
+    {
+      "id": 1883414,
+      "qualifier": 2,
+      "kind": 4,
+      "name": "脆弱的能源装置",
+      "hp": 73,
+      "break": 54,
+      "hp_resists": [
+        "Vulnerable",
+        "Weak",
+        "Endure"
+      ],
+      "break_resists": [
+        "Vulnerable",
+        "Weak",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_2_4",
+      "cards": [
+        1883508,
+        1883509
+      ]
+    },
+    {
+      "id": 1883415,
+      "qualifier": 3,
+      "kind": 0,
+      "name": "神秘的机关装置",
+      "hp": 108,
+      "break": 70,
+      "hp_resists": [
+        "Endure",
+        "Weak",
+        "Normal"
+      ],
+      "break_resists": [
+        "Endure",
+        "Weak",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_3_0",
+      "cards": [
+        1883500,
+        1883501
+      ]
+    },
+    {
+      "id": 1883416,
+      "qualifier": 3,
+      "kind": 1,
+      "name": "神秘的连锁装置",
+      "hp": 101,
+      "break": 66,
+      "hp_resists": [
+        "Normal",
+        "Endure",
+        "Weak"
+      ],
+      "break_resists": [
+        "Normal",
+        "Normal",
+        "Vulnerable"
+      ],
+      "skin": "AceTaffy_Invention_3_1",
+      "cards": [
+        1883502,
+        1883503
+      ]
+    },
+    {
+      "id": 1883417,
+      "qualifier": 3,
+      "kind": 2,
+      "name": "神秘的防御装置",
+      "hp": 130,
+      "break": 88,
+      "hp_resists": [
+        "Weak",
+        "Endure",
+        "Resist"
+      ],
+      "break_resists": [
+        "Weak",
+        "Normal",
+        "Endure"
+      ],
+      "skin": "AceTaffy_Invention_3_2",
+      "cards": [
+        1883504,
+        1883505
+      ]
+    },
+    {
+      "id": 1883418,
+      "qualifier": 3,
+      "kind": 3,
+      "name": "神秘的毁灭装置",
+      "hp": 105,
+      "break": 62,
+      "hp_resists": [
+        "Normal",
+        "Weak",
+        "Endure"
+      ],
+      "break_resists": [
+        "Endure",
+        "Normal",
+        "Weak"
+      ],
+      "skin": "AceTaffy_Invention_3_3",
+      "cards": [
+        1883506,
+        1883507
+      ]
+    },
+    {
+      "id": 1883419,
+      "qualifier": 3,
+      "kind": 4,
+      "name": "神秘的能源装置",
+      "hp": 94,
+      "break": 75,
+      "hp_resists": [
+        "Weak",
+        "Resist",
+        "Normal"
+      ],
+      "break_resists": [
+        "Weak",
+        "Endure",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_3_4",
+      "cards": [
+        1883508,
+        1883509
+      ]
+    },
+    {
+      "id": 1883420,
+      "qualifier": 4,
+      "kind": 0,
+      "name": "超级的机关装置",
+      "hp": 156,
+      "break": 80,
+      "hp_resists": [
+        "Endure",
+        "Resist",
+        "Vulnerable"
+      ],
+      "break_resists": [
+        "Normal",
+        "Endure",
+        "Weak"
+      ],
+      "skin": "AceTaffy_Invention_4_0",
+      "cards": [
+        1883500,
+        1883501
+      ]
+    },
+    {
+      "id": 1883421,
+      "qualifier": 4,
+      "kind": 1,
+      "name": "超级的连锁装置",
+      "hp": 146,
+      "break": 75,
+      "hp_resists": [
+        "Vulnerable",
+        "Endure",
+        "Resist"
+      ],
+      "break_resists": [
+        "Vulnerable",
+        "Normal",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_4_1",
+      "cards": [
+        1883502,
+        1883503
+      ]
+    },
+    {
+      "id": 1883422,
+      "qualifier": 4,
+      "kind": 2,
+      "name": "超级的防御装置",
+      "hp": 187,
+      "break": 100,
+      "hp_resists": [
+        "Resist",
+        "Vulnerable",
+        "Resist"
+      ],
+      "break_resists": [
+        "Endure",
+        "Weak",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_4_2",
+      "cards": [
+        1883504,
+        1883505
+      ]
+    },
+    {
+      "id": 1883423,
+      "qualifier": 4,
+      "kind": 3,
+      "name": "超级的毁灭装置",
+      "hp": 151,
+      "break": 70,
+      "hp_resists": [
+        "Resist",
+        "Endure",
+        "Vulnerable"
+      ],
+      "break_resists": [
+        "Weak",
+        "Endure",
+        "Normal"
+      ],
+      "skin": "AceTaffy_Invention_4_3",
+      "cards": [
+        1883506,
+        1883507
+      ]
+    },
+    {
+      "id": 1883424,
+      "qualifier": 4,
+      "kind": 4,
+      "name": "超级的能源装置",
+      "hp": 135,
+      "break": 85,
+      "hp_resists": [
+        "Endure",
+        "Vulnerable",
+        "Resist"
+      ],
+      "break_resists": [
+        "Normal",
+        "Weak",
+        "Endure"
+      ],
+      "skin": "AceTaffy_Invention_4_4",
+      "cards": [
+        1883508,
+        1883509
+      ]
+    }
+  ]
+}

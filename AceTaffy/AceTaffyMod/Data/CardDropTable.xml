@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CardDropTableXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Version>1.1</Version>
+  <DropTable ID="1883">
+    <Card>1883001</Card><Card>1883002</Card><Card>1883003</Card>
+    <Card>1883004</Card><Card>1883005</Card><Card>1883006</Card>
+    <Card>1883007</Card><Card>1883008</Card><Card>1883009</Card>
+  </DropTable>
+</CardDropTableXmlRoot>

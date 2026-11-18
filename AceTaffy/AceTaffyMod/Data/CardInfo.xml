@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DiceCardXmlRoot>
+  <Version>1.1</Version>
+  <Card ID="1883001">
+    <Name>点火</Name>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Ignition.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Keyword>AceTaffy_Pressure</Keyword>
+    <Keyword>Smoke_Keyword</Keyword>
+    <Spec Range="Near" Cost="0" />
+    <Script>AceTaffy_Ignition</Script>
+    <ScriptDesc>[使用时]获得1层[蒸汽压力]并恢复1点光芒；若此时自身拥有至少6层[烟气]，再恢复1点光芒。</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_IgnitionHit" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883002">
+    <Name>黄铜铆钉</Name>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_BrassRivet.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Keyword>AceTaffy_Pressure</Keyword>
+    <Keyword>Smoke_Keyword</Keyword>
+    <Spec Range="Near" Cost="1" />
+    <BehaviourList>
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="AceTaffy_SteamPierce" Script="AceTaffy_RivetPressure" ActionScript="" Desc="" />
+      <Behaviour Min="1" Dice="5" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_RivetSmoke" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883003">
+    <Name>废汽回收</Name>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_ExhaustRecycle.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Keyword>AceTaffy_Pressure</Keyword>
+    <Keyword>Smoke_Keyword</Keyword>
+    <Spec Range="Near" Cost="1" />
+    <Script>AceTaffy_ExhaustRecycle</Script>
+    <ScriptDesc>[使用时]消耗3层普通[烟气]，抽取2张书页并获得3层[蒸汽压力]。</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="AceTaffy_RecycleGuard" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_RecycleHit" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883004">
+    <Name>活塞连动</Name>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_PistonChain.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Keyword>AceTaffy_Pressure</Keyword>
+    <Keyword>Smoke_Keyword</Keyword>
+    <Spec Range="Near" Cost="2" />
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_PistonPressure" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_PistonFinal" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883005">
+    <Name>烟道逆流</Name>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_FlueReversal.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Keyword>AceTaffy_Pressure</Keyword>
+    <Keyword>Smoke_Keyword</Keyword>
+    <Spec Range="Near" Cost="2" />
+    <Script>AceTaffy_FlueReversal</Script>
+    <ScriptDesc>[使用时]获得2层[烟气]。</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="AceTaffy_FlueTransfer" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_FlueHit" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Standby" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_FlueCounter" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883006">
+    <Name>安全阀测试</Name>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_SafetyValve.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Keyword>AceTaffy_Pressure</Keyword>
+    <Spec Range="Near" Cost="2" />
+    <Script>AceTaffy_SafetyValve</Script>
+    <ScriptDesc>[使用时]失去4点体力，获得2层[蒸汽压力]。</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="AceTaffy_ValveGuard" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="AceTaffy_ValveAttack" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883007">
+    <Name>锅炉装甲</Name>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_BoilerArmor.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Keyword>AceTaffy_Pressure</Keyword>
+    <Keyword>Smoke_Keyword</Keyword>
+    <Spec Range="Near" Cost="3" />
+    <Script>AceTaffy_BoilerArmor</Script>
+    <ScriptDesc>[使用时]每拥有3层[蒸汽压力]，本书页第一枚“防御型”骰子威力+1，最多+3。</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="10" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="AceTaffy_BoilerGuardSmoke" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="AceTaffy_BoilerGuardPressure" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_BoilerRecover" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883008">
+    <Name>超临界运转</Name>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Supercritical.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Keyword>AceTaffy_Pressure</Keyword>
+    <Keyword>Smoke_Keyword</Keyword>
+    <Spec Range="Near" Cost="3" />
+    <Script>AceTaffy_Supercritical</Script>
+    <ScriptDesc>[使用时]失去5点体力，获得6层[烟气]与3层[蒸汽压力]。</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_SupercriticalSmoke" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_SupercriticalPower" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_SupercriticalPressure" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_SupercriticalCounter" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883009">
+    <Name>1883式-蒸汽爆轰</Name>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_SteamDetonation.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Keyword>AceTaffy_Pressure</Keyword>
+    <Keyword>Smoke_Keyword</Keyword>
+    <Spec Range="Near" Cost="4" />
+    <Script>AceTaffy_SteamDetonation</Script>
+    <ScriptDesc>[使用时]自身每有3层[烟气]，本书页所有骰子威力+1；加成在使用时固定。</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="18" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamDetonation" Script="AceTaffy_DetonationDestroy" ActionScript="AceTaffy_SteamDetonation" Desc="" />
+      <Behaviour Min="6" Dice="10" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="AceTaffy_DetonationGuard" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_DetonationBreak" ActionScript="AceTaffy_SteamFollowThrough" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883010">
+    <Name>临场发明</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Improvise.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Keyword>AceTaffy_InventionProgress</Keyword>
+    <Spec Range="Near" Cost="0" />
+    <Script>AceTaffy_Improvise</Script>
+    <ScriptDesc>以蒸汽工坊为目标，可被敌方角色转移攻击目标。拼点结束后，未被击败或摧毁的骰子将继续攻击蒸汽工坊1次。工坊被击败后取消本书页。</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_InventionStrike" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="AceTaffy_SteamPierce" Script="AceTaffy_InventionStrike" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_InventionStrike" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883500">
+    <Name>棘轮连打</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Device_1883500.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_DeviceBleed" ActionScript="" Desc="[命中时]下一幕对目标施加1层[流血]。" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_DeviceBleed" ActionScript="" Desc="[命中时]下一幕对目标施加1层[流血]。" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883501">
+    <Name>回转重锤</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Device_1883501.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <BehaviourList>
+      <Behaviour Min="3" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_DeviceDisarm" ActionScript="" Desc="[命中时]下一幕对目标施加1层[破绽]。" />
+      <Behaviour Min="2" Dice="5" Type="Standby" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883502">
+    <Name>拖曳锁链</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Device_1883502.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="AceTaffy_SteamPierce" Script="AceTaffy_DeviceBind" ActionScript="" Desc="[命中时]下一幕对目标施加1层[束缚]。" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="AceTaffy_SteamPierce" Script="AceTaffy_DeviceBind" ActionScript="" Desc="[命中时]下一幕对目标施加1层[束缚]。" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883503">
+    <Name>连锁电弧</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Device_1883503.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>AceTaffy_DeviceChain</Script>
+    <ScriptDesc>使用后，对距离目标最近的另一名敌方角色再次使用本书页；超级机关改为额外选择2名目标。</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="AceTaffy_SteamPierce" Script="AceTaffy_DeviceParalyze" ActionScript="" Desc="[命中时]下一幕对目标施加1层[麻痹]。" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="AceTaffy_SteamPierce" Script="AceTaffy_DeviceWeak" ActionScript="" Desc="[命中时]下一幕对目标施加1层[虚弱]。" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883504">
+    <Name>展开壁垒</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Device_1883504.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_DeviceWeak" ActionScript="" Desc="[命中时]下一幕对目标施加1层[虚弱]。" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883505">
+    <Name>盾面镇压</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Device_1883505.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_DeviceDisarm" ActionScript="" Desc="[命中时]下一幕对目标施加1层[破绽]。" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="5" Type="Standby" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883506">
+    <Name>破甲爆裂</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Device_1883506.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_DeviceVulnerable" ActionScript="" Desc="[命中时]下一幕对目标施加1层[易损]。" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="AceTaffy_SteamPierce" Script="AceTaffy_DeviceBleed" ActionScript="" Desc="[命中时]下一幕对目标施加1层[流血]。" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883507">
+    <Name>过载冲撞</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Device_1883507.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>AceTaffy_DeviceOverload</Script>
+    <ScriptDesc>[使用时]失去5点体力。</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="7" Dice="11" Type="Atk" Detail="Hit" Motion="H" EffectRes="AceTaffy_SteamBlunt" Script="AceTaffy_DeviceWeak" ActionScript="" Desc="[命中时]下一幕对目标施加1层[虚弱]。" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883508">
+    <Name>废汽虹吸</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Device_1883508.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="AceTaffy_SteamPierce" Script="AceTaffy_DeviceSmoke" ActionScript="" Desc="[命中时]对目标施加2层[烟气]。" />
+      <Behaviour Min="3" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="AceTaffy_SteamGuard" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="1883509">
+    <Name>增压喷流</Name>
+    <Option>NoInventory</Option>
+    <TextId>-1</TextId>
+    <Artwork>AceTaffy_Device_1883509.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="AceTaffy_SteamPierce" Script="AceTaffy_DeviceSmoke" ActionScript="" Desc="[命中时]对目标施加2层[烟气]。" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="AceTaffy_SteamPierce" Script="AceTaffy_DeviceBind" ActionScript="" Desc="[命中时]下一幕对目标施加1层[束缚]。" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+</DiceCardXmlRoot>

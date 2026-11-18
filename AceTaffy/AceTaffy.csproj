@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>AceTaffy</AssemblyName>
+    <RootNamespace>AceTaffy</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AceTaffyManagedDir Condition="'$(AceTaffyManagedDir)' == ''">D:\Game Center\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed</AceTaffyManagedDir>
+    <AceTaffyManagedDir Condition="!Exists('$(AceTaffyManagedDir)\UnityEngine.CoreModule.dll')">C:\Program Files (x86)\Steam\steamapps\common\Library Of Ruina\LibraryOfRuina_Data\Managed</AceTaffyManagedDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="src\**\*.cs" />
+    <Reference Include="Assembly-CSharp"><HintPath>..\SteriaBuild\Libs\Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="BaseMod"><HintPath>..\SteriaBuild\Libs\BaseMod.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>..\SteriaBuild\Libs\0Harmony.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(AceTaffyManagedDir)\UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(AceTaffyManagedDir)\UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.ImageConversionModule"><HintPath>$(AceTaffyManagedDir)\UnityEngine.ImageConversionModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.AudioModule"><HintPath>$(AceTaffyManagedDir)\UnityEngine.AudioModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.AnimationModule"><HintPath>$(AceTaffyManagedDir)\UnityEngine.AnimationModule.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>

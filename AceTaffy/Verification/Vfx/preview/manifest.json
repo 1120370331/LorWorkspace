@@ -1,0 +1,54 @@
+{
+  "kind": "source-grounded simulation, not Unity/gameplay capture",
+  "times_ms": [
+    0,
+    50,
+    150,
+    250,
+    400,
+    650,
+    850
+  ],
+  "roll_bounds": [
+    1.0,
+    2.0
+  ],
+  "calibrated_ppu": {
+    "SteamBlunt": 1170,
+    "SteamPierce": 1050,
+    "SteamGuard": 1000,
+    "SteamDetonation": 790,
+    "SteamWisp": 900
+  },
+  "forward_offset_world": {
+    "SteamBlunt": 1.2,
+    "SteamPierce": 1.4,
+    "SteamGuard": 0.3,
+    "SteamDetonation": 2.0
+  },
+  "inputs_sha256": {
+    "AceTaffyMod\\Resource\\Effects\\AceTaffy\\SteamBlunt.png": "1d7d8cceb2027a241b2a2c1ef4d3147c1eee03de1a46ad0df0091a372cc18723",
+    "AceTaffyMod\\Resource\\Effects\\AceTaffy\\SteamPierce.png": "1a1f2e098e6f1e2d498f9bccf513ac3a0e6b11a8332eaceffd87a9106df7b754",
+    "AceTaffyMod\\Resource\\Effects\\AceTaffy\\SteamGuard.png": "292500907e8eeec105972017a8015435fc64608089423c6e0cc42a0ca9bb6980",
+    "AceTaffyMod\\Resource\\Effects\\AceTaffy\\SteamDetonation.png": "55063674c968f8a2a6ea289e9d0b60e713dea6837640d9b2e153211b92b7f80b",
+    "AceTaffyMod\\Resource\\Effects\\AceTaffy\\SteamWisp.png": "fa640d690f0ef8aecca1919d37098555cfc2ed02accf1eb0299cfebe6531aed1",
+    "AceTaffyMod\\Resource\\CharacterSkin\\AceTaffy\\ClothCustom\\Hit.png": "0d9e2f9dbe2e0583b75b587925ac98e40492e4055e8796e752130de8f3d837ca",
+    "AceTaffyMod\\Resource\\CharacterSkin\\AceTaffy\\ClothCustom\\Penetrate.png": "6606d08fa874c4990201f8c17b11c9b3e424935ad66c5dc0a6cd48202cd71183",
+    "AceTaffyMod\\Resource\\CharacterSkin\\AceTaffy\\ClothCustom\\Guard.png": "6d5fd1c8006d5fd4e5cae9814f77cf85f757fc16523ee9d9fa8d504a7e7a58a6",
+    "AceTaffyMod\\Resource\\CharacterSkin\\AceTaffy\\ModInfo.xml": "754ae772c9edb4daf8fb68de9a1b6d16ce77e68e6f8cf92e79a62a8ba91ac9bd",
+    "AceTaffyMod\\Data\\CardInfo.xml": "5cfe0f34be6085394b22d99e3bc4c3b20beccba6bcf68faf50cb16fcde6898fa",
+    "src\\TaffyVfx.cs": "f75b82858bea1b76722941ecce7bb8bf45647059b169018e37eb7ec3ec09419e",
+    "src\\TaffyActions.cs": "7ab94a1477c33db88e50a64628bca08f4a63924e090c3c2b8e26f1b330686ca6",
+    "Verification\\Vfx\\render_preview.py": "b702227ea09ab2332a62ae45afb15df7afda5e114bdf828b2b8131d3ab53e439"
+  },
+  "sheets": [
+    "SteamBlunt_timeline.png",
+    "SteamBlunt_roll_bounds.png",
+    "SteamPierce_timeline.png",
+    "SteamPierce_roll_bounds.png",
+    "SteamGuard_timeline.png",
+    "SteamGuard_roll_bounds.png",
+    "SteamDetonation_timeline.png",
+    "SteamDetonation_roll_bounds.png"
+  ]
+}

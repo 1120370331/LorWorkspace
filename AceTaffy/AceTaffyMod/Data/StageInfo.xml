@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<StageXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Version>1.1</Version>
+  <Stage id="1883">
+    <Name>永雏塔菲</Name>
+    <StageType>Invitation</StageType>
+    <Wave><Formation>41</Formation><AvailableUnit>5</AvailableUnit><Unit>1883</Unit></Wave>
+    <FloorNum>1</FloorNum><Chapter>6</Chapter>
+    <Invitation Combine="BookValue"><Value>6</Value><Num>1</Num></Invitation>
+    <Condition><Level>0</Level></Condition>
+    <Story Condition="Start">AceTaffy_Start.xml</Story>
+    <Story Condition="End">AceTaffy_End.xml</Story>
+    <StoryType>AceTaffy_Story</StoryType>
+  </Stage>
+</StageXmlRoot>

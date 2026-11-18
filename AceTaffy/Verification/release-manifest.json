@@ -1,0 +1,732 @@
+{
+  "version": "0.2.4",
+  "created_utc": "2026-09-28T07:47:10.2555897Z",
+  "runtime_acceptance": "Unity preview candidate Verification/Vfx/ultimate-v1/20260928-153713-189-candidate; independent preview review PASS. Game runtime not started for deployment.",
+  "release_build": "Reused prebuilt Release DLL; source and DLL SHA256 matched approved candidate",
+  "package_verification": "PASS: strict verify_package.py via build.ps1, no AllowIncompleteAssets",
+  "deployment": "D:\\Game Center\\Steam\\steamapps\\common\\Library Of Ruina\\LibraryOfRuina_Data\\Mods\\AceTaffyMod",
+  "backup": {
+    "path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\AceTaffy\\DeliveryHistory\\installed-before-0.2.4-20260928-154634.zip",
+    "sha256": "7102E7CFE5E5B9EEBBFA9326B2B035BCA741F1361E4B877FC9C6DA866258B47D"
+  },
+  "main_log": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\AceTaffy\\Verification\\output\\final-0.2.4-20260928-154634\\main.log",
+  "package_file_count": 95,
+  "installed_file_count": 97,
+  "installed_matched_count": 95,
+  "extra_installed_files": [
+    "Char/AceTaffy_Projection/Thumb.png",
+    "Char/AceTaffy/Thumb.png"
+  ],
+  "dll_sha256": "2E55299242D8DEA9CF0522E047C8587E86A7DDA8CD73A4146F53434669D607CE",
+  "zip_path": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\AceTaffy\\dist\\AceTaffy-0.2.4.zip",
+  "zip_sha256": "F4BB4D5B9E685892D0B4451F5FD68536EBD413A886C30E0A16CD214953A822E5",
+  "package_tree_sha256": "970D79584A7CD8CCF52D6A6076ABDF5CC9B186E35DEADDDEE18C2B3C5EAB502E",
+  "source_hashes": {
+    "AceTaffy.csproj": "012AC8B31746DD223E61890ADE3BB1F4C4B2EFDFD15EEBCBD82D8363D397793F",
+    "AceTaffyMod/Char/AceTaffy/ModInfo.xml": "F798D8267BA0BBD56325492F786DA917D6FFD20F8096939E5FF8DC6662BBAEA3",
+    "AceTaffyMod/Char/AceTaffy_Projection/ModInfo.xml": "52C91D320D89A0B681B5E206224C4E8981B58A3E44D309973CE2BC4D0B4244F9",
+    "AceTaffyMod/Data/BookStory.xml": "ECDA182A40112C4540935554C7B237F71C3603F380FF03286DB8D8269C30D223",
+    "AceTaffyMod/Data/CardDropTable.xml": "780BD269CEBA1D40CCABA48949A72D496A0DEA3E4615A1DA2339BAEEE80227EC",
+    "AceTaffyMod/Data/CardInfo.xml": "4F79DE96D9FC70EC73802627951F2356A94E57A459946B5CB18E016CFC20FC92",
+    "AceTaffyMod/Data/Combat_Dialog.xml": "99711533E66231361A0F0170E1A986C9A770B1D5CBF02A0A454A943D057DE47B",
+    "AceTaffyMod/Data/Deck_Enemy.xml": "2CB80BEAA1C862CA05FE8E014E853B926F346124505874004382197981DC1490",
+    "AceTaffyMod/Data/Dropbook.xml": "5A1F2304F39380E734674ACE7ED89A59680F6CB4FED9A81875158EE9BBB7DF5E",
+    "AceTaffyMod/Data/EnemyUnitInfo.xml": "4609F913EF8C1E616DF9E6A6398B8ECB2819B6F7C21A5C13E349F5238BF4C2EE",
+    "AceTaffyMod/Data/EquipPage_Enemy.xml": "8747820AE080FC69044CE2024E0E960571AB96331243BC604FF13A3C0E2B39B3",
+    "AceTaffyMod/Data/EquipPage_Librarian.xml": "E2E6D8D3E5A68A2D414B2F506E11C5A9B2E55C242C75993D896247BC0A6E9C50",
+    "AceTaffyMod/Data/PassiveList.xml": "D98DDEEA67AE1C91E24BE5759AD6961BD7D9DB0F7840DF15A63243090922A7D4",
+    "AceTaffyMod/Data/StageInfo.xml": "1361750A8382E7606D8C26A98B2E9D85BCCF7B4E61BF7CAEF8A425493D0DD212",
+    "AceTaffyMod/Data/StoryEffect/AceTaffy_End.xml": "818F06E799139E1F7B93DCE974CB87B889417A51BA232E33EADBC9BAF33A792E",
+    "AceTaffyMod/Data/StoryEffect/AceTaffy_Start.xml": "DCD66E423A404F38992F4B52601772504B1AACA4A60A4CFD986FC18BF6F14B3B",
+    "AceTaffyMod/Data/StoryText/AceTaffy_End.xml": "F83912BFE77138DCFF51AF538241BA6CB38655C9430EBFE5B5E0AF4943AB60B5",
+    "AceTaffyMod/Data/StoryText/AceTaffy_Start.xml": "E2A11BE9A97E00F8C05173E20479A57BAFA936B92F9462C3953AA0B367636B75",
+    "AceTaffyMod/Localize/cn/BattleCardAbilities/BattleCardAbilities_AceTaffy.xml": "41ED4F07965E59D9F4DDC69CBF6EF265B0D0F2FAE326219B73F3DD0A381DDBC3",
+    "AceTaffyMod/Localize/cn/BattleDialogues/AceTaffy_Dialog.xml": "50531724261613D72B952EEC46C782F4DF74036C9C2A608F2DA9267B56FC399C",
+    "AceTaffyMod/Localize/cn/BattlesCards/BattleCardDesc_AceTaffy.xml": "342D7960D8488697EF198628FADD603EEB78CBA0F3D72A7A74C9472C3AD8B710",
+    "AceTaffyMod/Localize/cn/EffectTexts/AceTaffy_Effects.xml": "FD22385C1686CB2880500758E0943EEAFDF2BB1C5F53D962FF80AB381E5F71D0",
+    "AceTaffyMod/Localize/cn/PassiveDesc/PassiveDesc.xml": "488C54873F25FF7EE619AF40E52D8A7FB498D63B17E1AF30E38C9814742A9886",
+    "AceTaffyMod/Resource/CharacterSkin/AceTaffy/ModInfo.xml": "F798D8267BA0BBD56325492F786DA917D6FFD20F8096939E5FF8DC6662BBAEA3",
+    "AceTaffyMod/Resource/CharacterSkin/AceTaffy_Projection/ModInfo.xml": "52C91D320D89A0B681B5E206224C4E8981B58A3E44D309973CE2BC4D0B4244F9",
+    "AceTaffyMod/StageModInfo.xml": "342C982B6A31D589461158B95B7B5B8096B9C9D3320925EF05A046BD9675256D",
+    "Verification/verify_package.py": "58E80E3460E4E5C694A9E0DD5AEB253E671BC8BD56B955AB8B40714DD6679426",
+    "build.ps1": "93BF256914F162B31E3E3AB614A68636EA16DC1F99849A17DBAEE1BC95E49FD0",
+    "import_character_sheets.py": "19C9E93DDAE7E4F511B8048D8D304AAEE268F4BDCEE36A796B3848DD56CBCDAD",
+    "normalize_ui_art.py": "78CD6D0FF6B93459A8F7DEA3CDA72200C95E13D11E723521E175B0E7FBD9FB9B",
+    "src/AceTaffyMod.cs": "1DF3BE6C95803CB15D096ED3DD2C45D56A5BB2E337B1BF534EE5C5787C0D6164",
+    "src/TaffyActions.cs": "7AB94A1477C33DB88E50A64628BCA08F4A63924E090C3C2B8E26F1B330686CA6",
+    "src/TaffyCards.cs": "72F0C384CA986151E76EC15C95E62ECA7679D6BED38E7FBBE0721C5FCA817D38",
+    "src/TaffyMechanics.cs": "7D1BD6B2DC707D6ADA08ADD0D27E086409BC8A6AC466496E836EBAC01A4AA486",
+    "src/TaffyPassives.cs": "FA5DC60CEE21236B4E011EA6D05ECE50B44B29450CAEE985E3538836EC681E15",
+    "src/TaffyPreparationAlignment.cs": "3EEFC41ABC6A865027761F89B607E214E950B8F59A5EF0FFE8F069E8D5AF9DF9",
+    "src/TaffyVfx.cs": "B32DBE9C8F786C746396A27902FCA88B64314578AB79AB610B0D884D6183A00A"
+  },
+  "files": [
+    {
+      "path": "ArtWork/AceTaffy_Guard.png",
+      "bytes": 17021,
+      "sha256": "349E290CB95C07704ED7D6AC253BBFD8D9AD6A2F4F11A9ED17E0CCB138CD7C09",
+      "installed_sha256": "349E290CB95C07704ED7D6AC253BBFD8D9AD6A2F4F11A9ED17E0CCB138CD7C09",
+      "deployed_matches": true
+    },
+    {
+      "path": "ArtWork/AceTaffy_Pressure.png",
+      "bytes": 15942,
+      "sha256": "A3895BDBD9F79CE4CBA674C18C3757BCAB5AFCEB68F49D48B2BACAA7E8835D45",
+      "installed_sha256": "A3895BDBD9F79CE4CBA674C18C3757BCAB5AFCEB68F49D48B2BACAA7E8835D45",
+      "deployed_matches": true
+    },
+    {
+      "path": "Assemblies/AceTaffy.dll",
+      "bytes": 36864,
+      "sha256": "2E55299242D8DEA9CF0522E047C8587E86A7DDA8CD73A4146F53434669D607CE",
+      "installed_sha256": "2E55299242D8DEA9CF0522E047C8587E86A7DDA8CD73A4146F53434669D607CE",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy_Projection/ClothCustom/Damaged.png",
+      "bytes": 33459,
+      "sha256": "FB00FC6E32A5117EB69A1585729ADA28B824F394D6B4498B91E9CAD8BAB0BC0F",
+      "installed_sha256": "FB00FC6E32A5117EB69A1585729ADA28B824F394D6B4498B91E9CAD8BAB0BC0F",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy_Projection/ClothCustom/Default.png",
+      "bytes": 34514,
+      "sha256": "8B2062E4C54824536E495F484D8FFBD8E8C08AFC81C757153CB5CC59DD92D5AF",
+      "installed_sha256": "8B2062E4C54824536E495F484D8FFBD8E8C08AFC81C757153CB5CC59DD92D5AF",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy_Projection/ClothCustom/Evade.png",
+      "bytes": 36082,
+      "sha256": "DF0866F90014A97E13525D01881986F7246227B547AF2EC4BF6CAC8C3FB4EBB2",
+      "installed_sha256": "DF0866F90014A97E13525D01881986F7246227B547AF2EC4BF6CAC8C3FB4EBB2",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy_Projection/ClothCustom/Guard.png",
+      "bytes": 33279,
+      "sha256": "5464F39F9335461770C1C0A8B9B10A0C839F8A6410E799F4978D4E2E8B52A67D",
+      "installed_sha256": "5464F39F9335461770C1C0A8B9B10A0C839F8A6410E799F4978D4E2E8B52A67D",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy_Projection/ClothCustom/Hit.png",
+      "bytes": 37898,
+      "sha256": "B9F3745E8BAE0F3E35B66850584DC7C5D30D9843840FF666BC0810A41B5F6A7D",
+      "installed_sha256": "B9F3745E8BAE0F3E35B66850584DC7C5D30D9843840FF666BC0810A41B5F6A7D",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy_Projection/ClothCustom/Move.png",
+      "bytes": 37366,
+      "sha256": "B7A29C6641F8463E04664DAF4D993EBAA4487AB5DE6F69F94B3C07F54049423E",
+      "installed_sha256": "B7A29C6641F8463E04664DAF4D993EBAA4487AB5DE6F69F94B3C07F54049423E",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy_Projection/ClothCustom/Penetrate.png",
+      "bytes": 38537,
+      "sha256": "30F0497058446EE155C7D6E96565C31F1CE800746483CEE657ABAEDDE8BD6018",
+      "installed_sha256": "30F0497058446EE155C7D6E96565C31F1CE800746483CEE657ABAEDDE8BD6018",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy_Projection/ClothCustom/Slash.png",
+      "bytes": 38862,
+      "sha256": "2DD54B6635DC31819ECFB49D8CD63970DF174CA83C8CE1E558FA7383B942D62A",
+      "installed_sha256": "2DD54B6635DC31819ECFB49D8CD63970DF174CA83C8CE1E558FA7383B942D62A",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy_Projection/ClothCustom/Special.png",
+      "bytes": 36462,
+      "sha256": "FDD1FCF4C32AC57B62BE0B83B6A47BD93EFD68F87790D740435BF9278A478DD6",
+      "installed_sha256": "FDD1FCF4C32AC57B62BE0B83B6A47BD93EFD68F87790D740435BF9278A478DD6",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy_Projection/ModInfo.xml",
+      "bytes": 1867,
+      "sha256": "52C91D320D89A0B681B5E206224C4E8981B58A3E44D309973CE2BC4D0B4244F9",
+      "installed_sha256": "52C91D320D89A0B681B5E206224C4E8981B58A3E44D309973CE2BC4D0B4244F9",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy/ClothCustom/Damaged.png",
+      "bytes": 55389,
+      "sha256": "F251B439EE672A2CBF57E47F44D31F12CD1B4259180467790F8A1553BFEF532E",
+      "installed_sha256": "F251B439EE672A2CBF57E47F44D31F12CD1B4259180467790F8A1553BFEF532E",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy/ClothCustom/Default.png",
+      "bytes": 53639,
+      "sha256": "E11DCFAABE7496D74370158CFBC05B8232D24D033788721E7316B507FB845081",
+      "installed_sha256": "E11DCFAABE7496D74370158CFBC05B8232D24D033788721E7316B507FB845081",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy/ClothCustom/Evade.png",
+      "bytes": 57012,
+      "sha256": "70707A969AE42F86CCB4FE882C4E7058EDC926621A9CF8045CAECF6DD3D9C906",
+      "installed_sha256": "70707A969AE42F86CCB4FE882C4E7058EDC926621A9CF8045CAECF6DD3D9C906",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy/ClothCustom/Guard.png",
+      "bytes": 54272,
+      "sha256": "AD11264B88D09B69916FD261A675E6FCE606D0AC9C75CD9713D3A12C0D334321",
+      "installed_sha256": "AD11264B88D09B69916FD261A675E6FCE606D0AC9C75CD9713D3A12C0D334321",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy/ClothCustom/Hit.png",
+      "bytes": 57813,
+      "sha256": "03405746EF8D9D113CDFA5F4A86D094D3AC6BDF8CA387832836A7C64DF51BFB8",
+      "installed_sha256": "03405746EF8D9D113CDFA5F4A86D094D3AC6BDF8CA387832836A7C64DF51BFB8",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy/ClothCustom/Move.png",
+      "bytes": 58787,
+      "sha256": "0D3276123151BF491C25D2341871879DC4060E6203CEF37ABAAB0D3AA5E13774",
+      "installed_sha256": "0D3276123151BF491C25D2341871879DC4060E6203CEF37ABAAB0D3AA5E13774",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy/ClothCustom/Penetrate.png",
+      "bytes": 58552,
+      "sha256": "54260A6FC7C55B5FBC3451E8E306E80CB7C3397869EF813502C9C39041152449",
+      "installed_sha256": "54260A6FC7C55B5FBC3451E8E306E80CB7C3397869EF813502C9C39041152449",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy/ClothCustom/Slash.png",
+      "bytes": 59877,
+      "sha256": "E447676A4969A59A0F0C6F60CD4AD69DF89AB6F2376E7F48344C1EBA94FE6703",
+      "installed_sha256": "E447676A4969A59A0F0C6F60CD4AD69DF89AB6F2376E7F48344C1EBA94FE6703",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy/ClothCustom/Special.png",
+      "bytes": 56921,
+      "sha256": "4C8B5F6B17F53656D789F6A07CE3CD02990E18F5FFDC59676F36C0D8FDEEEE34",
+      "installed_sha256": "4C8B5F6B17F53656D789F6A07CE3CD02990E18F5FFDC59676F36C0D8FDEEEE34",
+      "deployed_matches": true
+    },
+    {
+      "path": "Char/AceTaffy/ModInfo.xml",
+      "bytes": 1865,
+      "sha256": "F798D8267BA0BBD56325492F786DA917D6FFD20F8096939E5FF8DC6662BBAEA3",
+      "installed_sha256": "F798D8267BA0BBD56325492F786DA917D6FFD20F8096939E5FF8DC6662BBAEA3",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/BookStory.xml",
+      "bytes": 1991,
+      "sha256": "ECDA182A40112C4540935554C7B237F71C3603F380FF03286DB8D8269C30D223",
+      "installed_sha256": "ECDA182A40112C4540935554C7B237F71C3603F380FF03286DB8D8269C30D223",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/CardDropTable.xml",
+      "bytes": 444,
+      "sha256": "780BD269CEBA1D40CCABA48949A72D496A0DEA3E4615A1DA2339BAEEE80227EC",
+      "installed_sha256": "780BD269CEBA1D40CCABA48949A72D496A0DEA3E4615A1DA2339BAEEE80227EC",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/CardInfo.xml",
+      "bytes": 9462,
+      "sha256": "4F79DE96D9FC70EC73802627951F2356A94E57A459946B5CB18E016CFC20FC92",
+      "installed_sha256": "4F79DE96D9FC70EC73802627951F2356A94E57A459946B5CB18E016CFC20FC92",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/Combat_Dialog.xml",
+      "bytes": 763,
+      "sha256": "99711533E66231361A0F0170E1A986C9A770B1D5CBF02A0A454A943D057DE47B",
+      "installed_sha256": "99711533E66231361A0F0170E1A986C9A770B1D5CBF02A0A454A943D057DE47B",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/Deck_Enemy.xml",
+      "bytes": 419,
+      "sha256": "2CB80BEAA1C862CA05FE8E014E853B926F346124505874004382197981DC1490",
+      "installed_sha256": "2CB80BEAA1C862CA05FE8E014E853B926F346124505874004382197981DC1490",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/Dropbook.xml",
+      "bytes": 420,
+      "sha256": "5A1F2304F39380E734674ACE7ED89A59680F6CB4FED9A81875158EE9BBB7DF5E",
+      "installed_sha256": "5A1F2304F39380E734674ACE7ED89A59680F6CB4FED9A81875158EE9BBB7DF5E",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/EnemyUnitInfo.xml",
+      "bytes": 606,
+      "sha256": "4609F913EF8C1E616DF9E6A6398B8ECB2819B6F7C21A5C13E349F5238BF4C2EE",
+      "installed_sha256": "4609F913EF8C1E616DF9E6A6398B8ECB2819B6F7C21A5C13E349F5238BF4C2EE",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/EquipPage_Enemy.xml",
+      "bytes": 958,
+      "sha256": "8747820AE080FC69044CE2024E0E960571AB96331243BC604FF13A3C0E2B39B3",
+      "installed_sha256": "8747820AE080FC69044CE2024E0E960571AB96331243BC604FF13A3C0E2B39B3",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/EquipPage_Librarian.xml",
+      "bytes": 972,
+      "sha256": "E2E6D8D3E5A68A2D414B2F506E11C5A9B2E55C242C75993D896247BC0A6E9C50",
+      "installed_sha256": "E2E6D8D3E5A68A2D414B2F506E11C5A9B2E55C242C75993D896247BC0A6E9C50",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/PassiveList.xml",
+      "bytes": 1721,
+      "sha256": "D98DDEEA67AE1C91E24BE5759AD6961BD7D9DB0F7840DF15A63243090922A7D4",
+      "installed_sha256": "D98DDEEA67AE1C91E24BE5759AD6961BD7D9DB0F7840DF15A63243090922A7D4",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/StageInfo.xml",
+      "bytes": 704,
+      "sha256": "1361750A8382E7606D8C26A98B2E9D85BCCF7B4E61BF7CAEF8A425493D0DD212",
+      "installed_sha256": "1361750A8382E7606D8C26A98B2E9D85BCCF7B4E61BF7CAEF8A425493D0DD212",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/StoryEffect/AceTaffy_End.xml",
+      "bytes": 4529,
+      "sha256": "818F06E799139E1F7B93DCE974CB87B889417A51BA232E33EADBC9BAF33A792E",
+      "installed_sha256": "818F06E799139E1F7B93DCE974CB87B889417A51BA232E33EADBC9BAF33A792E",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/StoryEffect/AceTaffy_Start.xml",
+      "bytes": 7962,
+      "sha256": "DCD66E423A404F38992F4B52601772504B1AACA4A60A4CFD986FC18BF6F14B3B",
+      "installed_sha256": "DCD66E423A404F38992F4B52601772504B1AACA4A60A4CFD986FC18BF6F14B3B",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/StoryText/AceTaffy_End.xml",
+      "bytes": 4267,
+      "sha256": "F83912BFE77138DCFF51AF538241BA6CB38655C9430EBFE5B5E0AF4943AB60B5",
+      "installed_sha256": "F83912BFE77138DCFF51AF538241BA6CB38655C9430EBFE5B5E0AF4943AB60B5",
+      "deployed_matches": true
+    },
+    {
+      "path": "Data/StoryText/AceTaffy_Start.xml",
+      "bytes": 7077,
+      "sha256": "E2A11BE9A97E00F8C05173E20479A57BAFA936B92F9462C3953AA0B367636B75",
+      "installed_sha256": "E2A11BE9A97E00F8C05173E20479A57BAFA936B92F9462C3953AA0B367636B75",
+      "deployed_matches": true
+    },
+    {
+      "path": "DELIVERY.md",
+      "bytes": 1288,
+      "sha256": "F7407409358EB93FF3FE7CF53A368C10CDFDC472467C56A92EEAC03953B7CC65",
+      "installed_sha256": "F7407409358EB93FF3FE7CF53A368C10CDFDC472467C56A92EEAC03953B7CC65",
+      "deployed_matches": true
+    },
+    {
+      "path": "IMPLEMENTATION_CONTRACT.md",
+      "bytes": 7014,
+      "sha256": "0352F64D4BD774F7836F652928652D679611E9EAF3CC9814A08645BCBCF8988D",
+      "installed_sha256": "0352F64D4BD774F7836F652928652D679611E9EAF3CC9814A08645BCBCF8988D",
+      "deployed_matches": true
+    },
+    {
+      "path": "Localize/cn/BattleCardAbilities/BattleCardAbilities_AceTaffy.xml",
+      "bytes": 4500,
+      "sha256": "41ED4F07965E59D9F4DDC69CBF6EF265B0D0F2FAE326219B73F3DD0A381DDBC3",
+      "installed_sha256": "41ED4F07965E59D9F4DDC69CBF6EF265B0D0F2FAE326219B73F3DD0A381DDBC3",
+      "deployed_matches": true
+    },
+    {
+      "path": "Localize/cn/BattleDialogues/AceTaffy_Dialog.xml",
+      "bytes": 987,
+      "sha256": "50531724261613D72B952EEC46C782F4DF74036C9C2A608F2DA9267B56FC399C",
+      "installed_sha256": "50531724261613D72B952EEC46C782F4DF74036C9C2A608F2DA9267B56FC399C",
+      "deployed_matches": true
+    },
+    {
+      "path": "Localize/cn/BattlesCards/BattleCardDesc_AceTaffy.xml",
+      "bytes": 1860,
+      "sha256": "342D7960D8488697EF198628FADD603EEB78CBA0F3D72A7A74C9472C3AD8B710",
+      "installed_sha256": "342D7960D8488697EF198628FADD603EEB78CBA0F3D72A7A74C9472C3AD8B710",
+      "deployed_matches": true
+    },
+    {
+      "path": "Localize/cn/EffectTexts/AceTaffy_Effects.xml",
+      "bytes": 881,
+      "sha256": "FD22385C1686CB2880500758E0943EEAFDF2BB1C5F53D962FF80AB381E5F71D0",
+      "installed_sha256": "FD22385C1686CB2880500758E0943EEAFDF2BB1C5F53D962FF80AB381E5F71D0",
+      "deployed_matches": true
+    },
+    {
+      "path": "Localize/cn/PassiveDesc/PassiveDesc.xml",
+      "bytes": 973,
+      "sha256": "488C54873F25FF7EE619AF40E52D8A7FB498D63B17E1AF30E38C9814742A9886",
+      "installed_sha256": "488C54873F25FF7EE619AF40E52D8A7FB498D63B17E1AF30E38C9814742A9886",
+      "deployed_matches": true
+    },
+    {
+      "path": "README.md",
+      "bytes": 5460,
+      "sha256": "D0DA0EE9F4CCE7F5D06BE1072CD63CB91E5B039296E48DC8D920586EA01BE68C",
+      "installed_sha256": "D0DA0EE9F4CCE7F5D06BE1072CD63CB91E5B039296E48DC8D920586EA01BE68C",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/ArtWork/AceTaffy_Guard.png",
+      "bytes": 17021,
+      "sha256": "349E290CB95C07704ED7D6AC253BBFD8D9AD6A2F4F11A9ED17E0CCB138CD7C09",
+      "installed_sha256": "349E290CB95C07704ED7D6AC253BBFD8D9AD6A2F4F11A9ED17E0CCB138CD7C09",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/ArtWork/AceTaffy_Pressure.png",
+      "bytes": 15942,
+      "sha256": "A3895BDBD9F79CE4CBA674C18C3757BCAB5AFCEB68F49D48B2BACAA7E8835D45",
+      "installed_sha256": "A3895BDBD9F79CE4CBA674C18C3757BCAB5AFCEB68F49D48B2BACAA7E8835D45",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy_Projection/ClothCustom/Damaged.png",
+      "bytes": 33459,
+      "sha256": "FB00FC6E32A5117EB69A1585729ADA28B824F394D6B4498B91E9CAD8BAB0BC0F",
+      "installed_sha256": "FB00FC6E32A5117EB69A1585729ADA28B824F394D6B4498B91E9CAD8BAB0BC0F",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy_Projection/ClothCustom/Default.png",
+      "bytes": 34514,
+      "sha256": "8B2062E4C54824536E495F484D8FFBD8E8C08AFC81C757153CB5CC59DD92D5AF",
+      "installed_sha256": "8B2062E4C54824536E495F484D8FFBD8E8C08AFC81C757153CB5CC59DD92D5AF",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy_Projection/ClothCustom/Evade.png",
+      "bytes": 36082,
+      "sha256": "DF0866F90014A97E13525D01881986F7246227B547AF2EC4BF6CAC8C3FB4EBB2",
+      "installed_sha256": "DF0866F90014A97E13525D01881986F7246227B547AF2EC4BF6CAC8C3FB4EBB2",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy_Projection/ClothCustom/Guard.png",
+      "bytes": 33279,
+      "sha256": "5464F39F9335461770C1C0A8B9B10A0C839F8A6410E799F4978D4E2E8B52A67D",
+      "installed_sha256": "5464F39F9335461770C1C0A8B9B10A0C839F8A6410E799F4978D4E2E8B52A67D",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy_Projection/ClothCustom/Hit.png",
+      "bytes": 37898,
+      "sha256": "B9F3745E8BAE0F3E35B66850584DC7C5D30D9843840FF666BC0810A41B5F6A7D",
+      "installed_sha256": "B9F3745E8BAE0F3E35B66850584DC7C5D30D9843840FF666BC0810A41B5F6A7D",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy_Projection/ClothCustom/Move.png",
+      "bytes": 37366,
+      "sha256": "B7A29C6641F8463E04664DAF4D993EBAA4487AB5DE6F69F94B3C07F54049423E",
+      "installed_sha256": "B7A29C6641F8463E04664DAF4D993EBAA4487AB5DE6F69F94B3C07F54049423E",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy_Projection/ClothCustom/Penetrate.png",
+      "bytes": 38537,
+      "sha256": "30F0497058446EE155C7D6E96565C31F1CE800746483CEE657ABAEDDE8BD6018",
+      "installed_sha256": "30F0497058446EE155C7D6E96565C31F1CE800746483CEE657ABAEDDE8BD6018",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy_Projection/ClothCustom/Slash.png",
+      "bytes": 38862,
+      "sha256": "2DD54B6635DC31819ECFB49D8CD63970DF174CA83C8CE1E558FA7383B942D62A",
+      "installed_sha256": "2DD54B6635DC31819ECFB49D8CD63970DF174CA83C8CE1E558FA7383B942D62A",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy_Projection/ClothCustom/Special.png",
+      "bytes": 36462,
+      "sha256": "FDD1FCF4C32AC57B62BE0B83B6A47BD93EFD68F87790D740435BF9278A478DD6",
+      "installed_sha256": "FDD1FCF4C32AC57B62BE0B83B6A47BD93EFD68F87790D740435BF9278A478DD6",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy_Projection/ModInfo.xml",
+      "bytes": 1867,
+      "sha256": "52C91D320D89A0B681B5E206224C4E8981B58A3E44D309973CE2BC4D0B4244F9",
+      "installed_sha256": "52C91D320D89A0B681B5E206224C4E8981B58A3E44D309973CE2BC4D0B4244F9",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy/ClothCustom/Damaged.png",
+      "bytes": 55389,
+      "sha256": "F251B439EE672A2CBF57E47F44D31F12CD1B4259180467790F8A1553BFEF532E",
+      "installed_sha256": "F251B439EE672A2CBF57E47F44D31F12CD1B4259180467790F8A1553BFEF532E",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy/ClothCustom/Default.png",
+      "bytes": 53639,
+      "sha256": "E11DCFAABE7496D74370158CFBC05B8232D24D033788721E7316B507FB845081",
+      "installed_sha256": "E11DCFAABE7496D74370158CFBC05B8232D24D033788721E7316B507FB845081",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy/ClothCustom/Evade.png",
+      "bytes": 57012,
+      "sha256": "70707A969AE42F86CCB4FE882C4E7058EDC926621A9CF8045CAECF6DD3D9C906",
+      "installed_sha256": "70707A969AE42F86CCB4FE882C4E7058EDC926621A9CF8045CAECF6DD3D9C906",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy/ClothCustom/Guard.png",
+      "bytes": 54272,
+      "sha256": "AD11264B88D09B69916FD261A675E6FCE606D0AC9C75CD9713D3A12C0D334321",
+      "installed_sha256": "AD11264B88D09B69916FD261A675E6FCE606D0AC9C75CD9713D3A12C0D334321",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy/ClothCustom/Hit.png",
+      "bytes": 57813,
+      "sha256": "03405746EF8D9D113CDFA5F4A86D094D3AC6BDF8CA387832836A7C64DF51BFB8",
+      "installed_sha256": "03405746EF8D9D113CDFA5F4A86D094D3AC6BDF8CA387832836A7C64DF51BFB8",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy/ClothCustom/Move.png",
+      "bytes": 58787,
+      "sha256": "0D3276123151BF491C25D2341871879DC4060E6203CEF37ABAAB0D3AA5E13774",
+      "installed_sha256": "0D3276123151BF491C25D2341871879DC4060E6203CEF37ABAAB0D3AA5E13774",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy/ClothCustom/Penetrate.png",
+      "bytes": 58552,
+      "sha256": "54260A6FC7C55B5FBC3451E8E306E80CB7C3397869EF813502C9C39041152449",
+      "installed_sha256": "54260A6FC7C55B5FBC3451E8E306E80CB7C3397869EF813502C9C39041152449",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy/ClothCustom/Slash.png",
+      "bytes": 59877,
+      "sha256": "E447676A4969A59A0F0C6F60CD4AD69DF89AB6F2376E7F48344C1EBA94FE6703",
+      "installed_sha256": "E447676A4969A59A0F0C6F60CD4AD69DF89AB6F2376E7F48344C1EBA94FE6703",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy/ClothCustom/Special.png",
+      "bytes": 56921,
+      "sha256": "4C8B5F6B17F53656D789F6A07CE3CD02990E18F5FFDC59676F36C0D8FDEEEE34",
+      "installed_sha256": "4C8B5F6B17F53656D789F6A07CE3CD02990E18F5FFDC59676F36C0D8FDEEEE34",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CharacterSkin/AceTaffy/ModInfo.xml",
+      "bytes": 1865,
+      "sha256": "F798D8267BA0BBD56325492F786DA917D6FFD20F8096939E5FF8DC6662BBAEA3",
+      "installed_sha256": "F798D8267BA0BBD56325492F786DA917D6FFD20F8096939E5FF8DC6662BBAEA3",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CombatPageArtwork/AceTaffy_BoilerArmor.png",
+      "bytes": 428344,
+      "sha256": "DF970EF373242B787B8FFB1EA92AD2EED01173F7E54F3022291DB3B3B55B4F30",
+      "installed_sha256": "DF970EF373242B787B8FFB1EA92AD2EED01173F7E54F3022291DB3B3B55B4F30",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CombatPageArtwork/AceTaffy_BrassRivet.png",
+      "bytes": 386038,
+      "sha256": "0862C104753717967A065AEFF9BCA999B0B7D6803DE1E015B032879155A0F27B",
+      "installed_sha256": "0862C104753717967A065AEFF9BCA999B0B7D6803DE1E015B032879155A0F27B",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CombatPageArtwork/AceTaffy_ExhaustRecycle.png",
+      "bytes": 433765,
+      "sha256": "F8A00DF36F6C76560ACD3EFC8C4C93DE14CB93B0FC8A983B338244ABFA435CC1",
+      "installed_sha256": "F8A00DF36F6C76560ACD3EFC8C4C93DE14CB93B0FC8A983B338244ABFA435CC1",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CombatPageArtwork/AceTaffy_FlueReversal.png",
+      "bytes": 389576,
+      "sha256": "9397D9C9D21FA98F7D9AA77983246C0A7374C8C3CD70CBEB416D5C7A6A384663",
+      "installed_sha256": "9397D9C9D21FA98F7D9AA77983246C0A7374C8C3CD70CBEB416D5C7A6A384663",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CombatPageArtwork/AceTaffy_Ignition.png",
+      "bytes": 366585,
+      "sha256": "0AD4D21AA9DE6FF6AC7E873A1ADDA140153F9D563BC8D836B037E2D46A37C249",
+      "installed_sha256": "0AD4D21AA9DE6FF6AC7E873A1ADDA140153F9D563BC8D836B037E2D46A37C249",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CombatPageArtwork/AceTaffy_PistonChain.png",
+      "bytes": 416110,
+      "sha256": "45D4ED844BE1EBC5C42FABCBE419C34684619DB7834D3F8F59FD406978B96210",
+      "installed_sha256": "45D4ED844BE1EBC5C42FABCBE419C34684619DB7834D3F8F59FD406978B96210",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CombatPageArtwork/AceTaffy_SafetyValve.png",
+      "bytes": 400718,
+      "sha256": "0EAE0F6456E3A7D847C0CB02538786D480052E878D036BDFDA4C19591149EBA8",
+      "installed_sha256": "0EAE0F6456E3A7D847C0CB02538786D480052E878D036BDFDA4C19591149EBA8",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CombatPageArtwork/AceTaffy_SteamDetonation.png",
+      "bytes": 394166,
+      "sha256": "8834ED68A8139EC7C7BEA0C2618C124641DD3D9977ED99220210119843C9D01F",
+      "installed_sha256": "8834ED68A8139EC7C7BEA0C2618C124641DD3D9977ED99220210119843C9D01F",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/CombatPageArtwork/AceTaffy_Supercritical.png",
+      "bytes": 405841,
+      "sha256": "6949E6B544234DCE2709191CF8D5479AD317575C7AADA8589AECAD8ABB558F6D",
+      "installed_sha256": "6949E6B544234DCE2709191CF8D5479AD317575C7AADA8589AECAD8ABB558F6D",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/Effects/AceTaffy/SteamBlunt.png",
+      "bytes": 1805545,
+      "sha256": "1D7D8CCEB2027A241B2A2C1EF4D3147C1EEE03DE1A46AD0DF0091A372CC18723",
+      "installed_sha256": "1D7D8CCEB2027A241B2A2C1EF4D3147C1EEE03DE1A46AD0DF0091A372CC18723",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/Effects/AceTaffy/SteamDetonation.png",
+      "bytes": 1736943,
+      "sha256": "E4CD0BF033F3BA7877D79D48EC3BB774AFE8AD261A1D9834F30887A68255CBD0",
+      "installed_sha256": "E4CD0BF033F3BA7877D79D48EC3BB774AFE8AD261A1D9834F30887A68255CBD0",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/Effects/AceTaffy/SteamGuard.png",
+      "bytes": 1605198,
+      "sha256": "292500907E8EEEC105972017A8015435FC64608089423C6E0CC42A0CA9BB6980",
+      "installed_sha256": "292500907E8EEEC105972017A8015435FC64608089423C6E0CC42A0CA9BB6980",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/Effects/AceTaffy/SteamPierce.png",
+      "bytes": 727145,
+      "sha256": "1A1F2E098E6F1E2D498F9BCCF513AC3A0E6B11A8332EACEFFD87A9106DF7B754",
+      "installed_sha256": "1A1F2E098E6F1E2D498F9BCCF513AC3A0E6B11A8332EACEFFD87A9106DF7B754",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/Effects/AceTaffy/SteamPressureArc.png",
+      "bytes": 1198263,
+      "sha256": "3F6D0FF3FCE0AD9C183E80C3E7D2F63EE38C18793C2F30EEFCEC17A4793A067A",
+      "installed_sha256": "3F6D0FF3FCE0AD9C183E80C3E7D2F63EE38C18793C2F30EEFCEC17A4793A067A",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/Effects/AceTaffy/SteamWisp.png",
+      "bytes": 563370,
+      "sha256": "FA640D690F0EF8AECCA1919D37098555CFC2ED02ACCF1EB0299CFEBE6531AED1",
+      "installed_sha256": "FA640D690F0EF8AECCA1919D37098555CFC2ED02ACCF1EB0299CFEBE6531AED1",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/Story/Characters/Taffy_Confused.png",
+      "bytes": 263864,
+      "sha256": "1AA12DAAD116CAE44AB2E30F6DB54913A5129E2FAFB36F80C0D35064F6A0E86A",
+      "installed_sha256": "1AA12DAAD116CAE44AB2E30F6DB54913A5129E2FAFB36F80C0D35064F6A0E86A",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/Story/Characters/Taffy_Default.png",
+      "bytes": 260789,
+      "sha256": "9CA199D42DE061AB5DD789612A637E212DDDD489CED97235D9ABD3C6B96FA16D",
+      "installed_sha256": "9CA199D42DE061AB5DD789612A637E212DDDD489CED97235D9ABD3C6B96FA16D",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/Story/Characters/Taffy_Happy.png",
+      "bytes": 264667,
+      "sha256": "7F821BA75E2760AE3C91554864D0445E288A4E7679531F567D30C33D18417AF4",
+      "installed_sha256": "7F821BA75E2760AE3C91554864D0445E288A4E7679531F567D30C33D18417AF4",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/Story/WorkshopInvitation.png",
+      "bytes": 2094431,
+      "sha256": "2B36E1C2A8DA5B22B60261ACD5A2331162B540D03D782F2B35EC2E3DE9514E3B",
+      "installed_sha256": "2B36E1C2A8DA5B22B60261ACD5A2331162B540D03D782F2B35EC2E3DE9514E3B",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/StoryBgSprite/AceTaffy_WorkshopInvitation.png",
+      "bytes": 2094431,
+      "sha256": "2B36E1C2A8DA5B22B60261ACD5A2331162B540D03D782F2B35EC2E3DE9514E3B",
+      "installed_sha256": "2B36E1C2A8DA5B22B60261ACD5A2331162B540D03D782F2B35EC2E3DE9514E3B",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/StoryStanding/Taffy_Confused.png",
+      "bytes": 263864,
+      "sha256": "1AA12DAAD116CAE44AB2E30F6DB54913A5129E2FAFB36F80C0D35064F6A0E86A",
+      "installed_sha256": "1AA12DAAD116CAE44AB2E30F6DB54913A5129E2FAFB36F80C0D35064F6A0E86A",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/StoryStanding/Taffy_Default.png",
+      "bytes": 260789,
+      "sha256": "9CA199D42DE061AB5DD789612A637E212DDDD489CED97235D9ABD3C6B96FA16D",
+      "installed_sha256": "9CA199D42DE061AB5DD789612A637E212DDDD489CED97235D9ABD3C6B96FA16D",
+      "deployed_matches": true
+    },
+    {
+      "path": "Resource/StoryStanding/Taffy_Happy.png",
+      "bytes": 264667,
+      "sha256": "7F821BA75E2760AE3C91554864D0445E288A4E7679531F567D30C33D18417AF4",
+      "installed_sha256": "7F821BA75E2760AE3C91554864D0445E288A4E7679531F567D30C33D18417AF4",
+      "deployed_matches": true
+    },
+    {
+      "path": "REVISION_02.md",
+      "bytes": 3076,
+      "sha256": "94F988C706A259135C95863D912BEEA08ED1B10F54154EF262CB6AC206ADC971",
+      "installed_sha256": "94F988C706A259135C95863D912BEEA08ED1B10F54154EF262CB6AC206ADC971",
+      "deployed_matches": true
+    },
+    {
+      "path": "REVISION_021.md",
+      "bytes": 795,
+      "sha256": "49736F25B7A339DF80D2DA095D65B6DCD462B2A3875DD2155C9D200B9EF60CED",
+      "installed_sha256": "49736F25B7A339DF80D2DA095D65B6DCD462B2A3875DD2155C9D200B9EF60CED",
+      "deployed_matches": true
+    },
+    {
+      "path": "REVISION_022.md",
+      "bytes": 803,
+      "sha256": "25AE87F5CB034AC94318BA66ECF1140AC194BBB2D7F2F98949001FD1D6DA92AB",
+      "installed_sha256": "25AE87F5CB034AC94318BA66ECF1140AC194BBB2D7F2F98949001FD1D6DA92AB",
+      "deployed_matches": true
+    },
+    {
+      "path": "StageModInfo.xml",
+      "bytes": 1317,
+      "sha256": "342C982B6A31D589461158B95B7B5B8096B9C9D3320925EF05A046BD9675256D",
+      "installed_sha256": "342C982B6A31D589461158B95B7B5B8096B9C9D3320925EF05A046BD9675256D",
+      "deployed_matches": true
+    }
+  ],
+  "vfx_commit": "3096acd",
+  "main_acceptance": "PASS: 95 installed payload hashes personally checked; visual review PASS; user game not launched"
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "SteamBlunt",
+    "frames": 12348,
+    "seconds": 0.28,
+    "peak": 0.564208984375,
+    "rms": 0.06251089152197255,
+    "sha256": "1eb87d734d6d192416b4c5489c5a8ee310f5db2e75509819b143ae09702310e9"
+  },
+  {
+    "name": "SteamPierce",
+    "frames": 9702,
+    "seconds": 0.22,
+    "peak": 0.44439697265625,
+    "rms": 0.049551907972712306,
+    "sha256": "32eedec97170f14074a9df8dcebced4f2c716924bdeb2eec405cc44f1d537729"
+  },
+  {
+    "name": "SteamGuard",
+    "frames": 11907,
+    "seconds": 0.27,
+    "peak": 0.41314697265625,
+    "rms": 0.03908206496563502,
+    "sha256": "e09e4d8ee4925bf4256581572a2d723f2e6a6f6f013a2ee9a50f05cda06a2ebf"
+  },
+  {
+    "name": "SteamDetonation",
+    "frames": 25578,
+    "seconds": 0.58,
+    "peak": 0.586578369140625,
+    "rms": 0.0655352196697171,
+    "sha256": "76d350cde7abb5effb9d3dc407be71211d216c5c5cb36de64ab8ca484ed5ec42"
+  }
+]

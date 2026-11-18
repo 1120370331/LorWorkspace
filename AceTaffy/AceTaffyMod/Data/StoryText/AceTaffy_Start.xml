@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ScenarioRoot>
+  <Chapter ID="-1">
+    <Title>一封不能撤回的邀请</Title>
+  </Chapter>
+  <Group>
+    <GroupName>AceTaffy</GroupName>
+    <Episode>
+      <EpisodeName>邀请</EpisodeName>
+      <Place>
+        <PlaceName>图书馆</PlaceName>
+        <Dialog ID="0" Model="">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>今天就给大家看看，蒸汽机到底能不能当热水器用。先说好，杯子要是飞了，不许笑塔菲喵～</Content>
+        </Dialog>
+        <Dialog ID="1" Model="">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>这个阀门……嗯，再拧一点点就好。发明家的“一点点”，当然是很精确的一点点喵～</Content>
+        </Dialog>
+        <Dialog ID="2" Model="">
+          <Teller>旁白</Teller>
+          <Title />
+          <Content>屏幕一角忽然亮起。没有发送者，也没有弹窗的关闭按钮，只有一封压着金色纹章的邀请函。</Content>
+        </Dialog>
+        <Dialog ID="3" Model="">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>“愿您找到想要的书”……谁把邀请函做得这么认真呀？还知道塔菲喜欢新图纸，喵～</Content>
+        </Dialog>
+        <Dialog ID="4" Model="">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>点一下看看。要是什么奇怪的问卷，塔菲就……</Content>
+        </Dialog>
+        <Dialog ID="5" Model="">
+          <Teller>旁白</Teller>
+          <Title />
+          <Content>鼠标轻轻一响。耳机里的电流声、桌上的热气和屏幕的光，一齐向书页深处落去。</Content>
+        </Dialog>
+        <Dialog ID="6" Model="Taffy_Confused">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>……把它关掉。咦？塔菲的桌子呢？</Content>
+        </Dialog>
+        <Dialog ID="7" Model="Taffy_Confused">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>弹幕？还有人在吗？这次的场景切换也太逼真了喵～</Content>
+        </Dialog>
+        <Dialog ID="8" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>欢迎来到图书馆。我是这座图书馆的馆长兼司书，安吉拉。</Content>
+        </Dialog>
+        <Dialog ID="9" Model="Taffy_Default">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>你好呀。塔菲正在直播，可能不小心点错了什么……借个门回去，可以吗，喵～</Content>
+        </Dialog>
+        <Dialog ID="10" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>你接受了邀请。因此，图书馆会将你视作来宾，并按照邀请函上的约定进行接待。</Content>
+        </Dialog>
+        <Dialog ID="11" Model="Taffy_Confused">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>等等，约定藏在哪里？塔菲只看到了“想要的书”，没看到“走过来就回不去”呀！</Content>
+        </Dialog>
+        <Dialog ID="12" Model="롤랑">
+          <Teller>罗兰</Teller>
+          <Title />
+          <Content>我刚来的时候，也问过差不多的问题。这里的门，恐怕没你想得那么好借。</Content>
+        </Dialog>
+        <Dialog ID="13" Model="Taffy_Happy">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>那修门呢？齿轮卡住、阀门漏气，塔菲都能修。包修好的那种喵～</Content>
+        </Dialog>
+        <Dialog ID="14" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>门没有损坏。你需要面对司书，赢得接待，取得属于胜者的书籍。</Content>
+        </Dialog>
+        <Dialog ID="15" Model="Taffy_Confused">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>要是输了呢？</Content>
+        </Dialog>
+        <Dialog ID="16" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>来宾会成为图书馆的书。你的经历、知识，以及你尚未说出的故事，都会留在这里。</Content>
+        </Dialog>
+        <Dialog ID="17" Model="">
+          <Teller>旁白</Teller>
+          <Title />
+          <Content>塔菲低头摸了摸腰间的工具。熟悉的金属边缘贴着指尖，竟然有着真实的凉意。</Content>
+        </Dialog>
+        <Dialog ID="18" Model="Taffy_Default">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>……那可不行。还有人在等塔菲下播呢。总不能让大家一直对着空椅子喵。</Content>
+        </Dialog>
+        <Dialog ID="19" Model="롤랑">
+          <Teller>罗兰</Teller>
+          <Title />
+          <Content>你手上那套东西，是武器？</Content>
+        </Dialog>
+        <Dialog ID="20" Model="Taffy_Happy">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>是发明！原来只在画面里能动，现在连压力表都在转……哇，真的能用喵～</Content>
+        </Dialog>
+        <Dialog ID="21" Model="">
+          <Teller>旁白</Teller>
+          <Title />
+          <Content>她拨开保险。黄铜汽缸响起一声低鸣，白色蒸汽沿护臂细细散开，又被回流管吸了进去。</Content>
+        </Dialog>
+        <Dialog ID="22" Model="Taffy_Happy">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>废汽回收正常，活塞连动正常，安全阀……嗯，等会儿再测。现在先算正常喵～</Content>
+        </Dialog>
+        <Dialog ID="23" Model="롤랑">
+          <Teller>罗兰</Teller>
+          <Title />
+          <Content>最后那个，听起来可一点都不让人放心。</Content>
+        </Dialog>
+        <Dialog ID="24" Model="Taffy_Happy">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>放心啦，塔菲很会控制压力的。要是声音大了一点，就当是开播提醒喵～</Content>
+        </Dialog>
+        <Dialog ID="25" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>你已经做好准备了吗？</Content>
+        </Dialog>
+        <Dialog ID="26" Model="Taffy_Happy">
+          <Teller>永雏塔菲</Teller>
+          <Title />
+          <Content>好啦。先把回家的路找出来，再研究这里的门。让你们见识一下，一八八三年的发明家喵～</Content>
+        </Dialog>
+        <Dialog ID="27" Model="앤젤라">
+          <Teller>安吉拉</Teller>
+          <Title />
+          <Content>那么，愿你找到想要的书。</Content>
+        </Dialog>
+      </Place>
+    </Episode>
+  </Group>
+</ScenarioRoot>

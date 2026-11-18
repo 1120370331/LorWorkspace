@@ -1,0 +1,1 @@
+{"name": "TaffyVfx.Editor", "references": ["TaffyVfx.Runtime"], "includePlatforms": ["Editor"]}

@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='utf-8'?>
+<BattleCardAbilityDescRoot>
+  <BattleCardAbility ID="AceTaffy_Ignition">
+    <Desc>[使用时]获得1层[蒸汽压力]并恢复1点光芒；若此时自身拥有至少6层[烟气]，再恢复1点光芒。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_ExhaustRecycle">
+    <Desc>[使用时]消耗3层普通[烟气]，抽取2张书页并获得3层[蒸汽压力]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_FlueReversal">
+    <Desc>[使用时]自身获得2层[烟气]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_SafetyValve">
+    <Desc>[使用时]自身失去4点体力，获得2层[蒸汽压力]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_BoilerArmor">
+    <Desc>[使用时]每拥有3层[蒸汽压力]，本书页第一枚“防御型”骰子威力+1，最多+3。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_Supercritical">
+    <Desc>[使用时]自身失去5点体力，获得6层[烟气]与3层[蒸汽压力]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_SteamDetonation">
+    <Desc>[使用时]自身每有3层[烟气]，本书页所有骰子威力+1；加成在使用时固定。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_IgnitionHit">
+    <Desc>[命中时]自身与目标各获得1层[烟气]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_RivetPressure">
+    <Desc>[命中时]若目标拥有[烟气]，获得1层[蒸汽压力]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_RivetSmoke">
+    <Desc>[命中时]自身与目标各获得2层[烟气]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_RecycleGuard">
+    <Desc>[拼点胜利时]获得1层[蒸汽压力]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_RecycleHit">
+    <Desc>[命中时]抽取1张书页，自身获得2层[烟气]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_PistonPressure">
+    <Desc>[命中时]若目标拥有至少3层[烟气]，获得1层[蒸汽压力]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_PistonFinal">
+    <Desc>[投掷时]若自身拥有至少6层[蒸汽压力]，威力+2。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_FlueTransfer">
+    <Desc>[拼点胜利时]将自身1层[烟气]转移给目标。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_FlueHit">
+    <Desc>[命中时]目标获得2层[烟气]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_FlueCounter">
+    <Desc>[命中时]若目标拥有至少5层[烟气]，恢复1点光芒。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_ValveGuard">
+    <Desc>[拼点胜利时]本书页下一枚“防御型”骰子威力+1。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_ValveAttack">
+    <Desc>[拼点胜利时]本书页下一枚“进攻型”骰子威力+2。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_BoilerGuardSmoke">
+    <Desc>[拼点胜利时]目标获得3层[烟气]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_BoilerGuardPressure">
+    <Desc>[拼点胜利时]获得1层[蒸汽压力]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_BoilerRecover">
+    <Desc>[命中时]若这一幕自身曾失去体力，恢复3点混乱抗性。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_SupercriticalSmoke">
+    <Desc>[命中时]目标获得2层[烟气]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_SupercriticalPower">
+    <Desc>[投掷时]若自身拥有至少6层[蒸汽压力]，威力+1。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_SupercriticalPressure">
+    <Desc>[命中时]获得1层[蒸汽压力]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_SupercriticalCounter">
+    <Desc>[命中时]自身获得2层[烟气]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DetonationDestroy">
+    <Desc>[拼点胜利时]摧毁目标当前书页剩余的所有骰子。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DetonationGuard">
+    <Desc>[拼点胜利时]获得3层[蒸汽压力]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DetonationBreak">
+    <Desc>[命中时]追加自身当前[烟气]层数除以3后向下取整的混乱伤害。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_Improvise">
+    <Desc>以蒸汽工坊为目标，可被敌方角色转移攻击目标。拼点结束后，未被击败或摧毁的骰子将继续攻击蒸汽工坊1次。工坊被击败后取消本书页。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DeviceChain">
+    <Desc>使用后，对距离目标最近的另一名敌方角色再次使用本书页；超级机关改为额外选择2名目标。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DeviceOverload">
+    <Desc>[使用时]失去5点体力。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DeviceBleed">
+    <Desc>[命中时]下一幕对目标施加1层[流血]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DeviceDisarm">
+    <Desc>[命中时]下一幕对目标施加1层[破绽]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DeviceBind">
+    <Desc>[命中时]下一幕对目标施加1层[束缚]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DeviceParalyze">
+    <Desc>[命中时]下一幕对目标施加1层[麻痹]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DeviceWeak">
+    <Desc>[命中时]下一幕对目标施加1层[虚弱]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DeviceVulnerable">
+    <Desc>[命中时]下一幕对目标施加1层[易损]。</Desc>
+  </BattleCardAbility>
+  <BattleCardAbility ID="AceTaffy_DeviceSmoke">
+    <Desc>[命中时]对目标施加2层[烟气]。</Desc>
+  </BattleCardAbility>
+</BattleCardAbilityDescRoot>

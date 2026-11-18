@@ -1,0 +1,66 @@
+{
+  "scale_from_default": 0.543046357615894,
+  "default_source_visible_height": 1510,
+  "target_visible_height": 820,
+  "canvas": [
+    512,
+    896
+  ],
+  "foot_margin": 5,
+  "portraits": {
+    "Taffy_Default": {
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\AceTaffy\\ArtSource\\Story\\portraits\\Taffy_Default.png",
+      "source_sha256": "688e7d805f1b4c04942c54cf23a38917414a8c7ce3432a8b8a5f56c083e92968",
+      "source_alpha_box": [
+        295,
+        11,
+        761,
+        1521
+      ],
+      "derived": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\AceTaffy\\AceTaffyMod\\Resource\\Story\\Characters\\Taffy_Default.png",
+      "derived_sha256": "9ca199d42de061ab5dd789612a637e212dddd489ced97235d9abd3c6b96fa16d",
+      "derived_alpha_box": [
+        129,
+        71,
+        382,
+        891
+      ]
+    },
+    "Taffy_Happy": {
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\AceTaffy\\ArtSource\\Story\\portraits\\Taffy_Happy.png",
+      "source_sha256": "3e1d0fdffc1e8afe6bcfaf154b5f6b63ebca5738acecbcb50b486c7829b04b51",
+      "source_alpha_box": [
+        295,
+        11,
+        762,
+        1522
+      ],
+      "derived": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\AceTaffy\\AceTaffyMod\\Resource\\Story\\Characters\\Taffy_Happy.png",
+      "derived_sha256": "7f821ba75e2760ae3c91554864d0445e288a4e7679531f567d30c33d18417af4",
+      "derived_alpha_box": [
+        129,
+        70,
+        383,
+        891
+      ]
+    },
+    "Taffy_Confused": {
+      "source": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\AceTaffy\\ArtSource\\Story\\portraits\\Taffy_Confused.png",
+      "source_sha256": "72271184ad5054a6fd7a9e2b39247897aeba0dcb0c0255417a0ae836346f5402",
+      "source_alpha_box": [
+        296,
+        12,
+        762,
+        1522
+      ],
+      "derived": "C:\\Users\\rog\\WorkSpace\\projects\\games\\lor\\AceTaffy\\AceTaffyMod\\Resource\\Story\\Characters\\Taffy_Confused.png",
+      "derived_sha256": "1aa12daad116cae44ab2e30f6db54913a5129e2fafb36f80c0d35064f6a0e86a",
+      "derived_alpha_box": [
+        129,
+        71,
+        383,
+        891
+      ]
+    }
+  }
+}

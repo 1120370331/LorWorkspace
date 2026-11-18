@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='utf-8'?>
+<BattleEffectTextRoot>
+  <effectTextList>
+    <BattleEffectText ID="AceTaffy_Pressure">
+      <Name>蒸汽压力</Name>
+      <Desc>上限10层，每一幕结束时失去1层。达到6-9层时，书页第三颗非反击“进攻型”骰子威力+1，受到的攻击体力伤害增加10%；达到10层时，改为所有“进攻型”骰子威力+1，受到的攻击体力伤害增加20%。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Guard">
+      <Name>结晶防护</Name>
+      <Desc>这一幕首次因自身战斗书页失去体力时激活。获得一颗4-8的反击“防御型”骰子，这一幕“防御型”骰子威力+2。“防御型”骰子拼点胜利时获得1层蒸汽压力，并对目标施加1层烟气。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_InventionProgress">
+      <Name>发明进度</Name>
+      <Desc>蒸汽工坊存活时，每一幕开始时获得1层；工坊每被命中一次再获得1层。达到5层时清空，于下一幕开始时召唤1个随机机关（在场与待登场机关合计至多4个）。名额已满时，改为使所有友方角色下一幕各随机获得3层[强壮]、[迅捷]或[守护]。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_0_0">
+      <Name>奇特的机关装置</Name>
+      <Desc>每命中3次，下一幕获得1层[强壮]。在场时，其他机关造成的伤害+15%。每张书页的首颗“进攻型”骰子拼点胜利或单方面攻击命中时，有50%的概率重复投掷1次（重复投掷不会再次触发）。登场时及每一幕开始时，使塔菲获得1层[偏心调速]，每层效果：速度+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_0_1">
+      <Name>奇特的连锁装置</Name>
+      <Desc>使用[连锁电弧]后，对距离目标最近的另一名敌方角色再次使用该书页。在场时，其他机关造成的混乱伤害+15%。每张书页的首颗“进攻型”骰子拼点胜利或单方面攻击命中时，有50%的概率重复投掷1次（重复投掷不会再次触发）。登场时及每一幕开始时，使塔菲获得1层[偏心调速]，每层效果：速度+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_0_2">
+      <Name>奇特的防御装置</Name>
+      <Desc>在场时，为其他友方角色提供2层持续[守护]（受到攻击的伤害-2）。自身被击败后失效。每张书页的首颗“进攻型”骰子拼点胜利或单方面攻击命中时，有50%的概率重复投掷1次（重复投掷不会再次触发）。登场时及每一幕开始时，使塔菲获得1层[偏心调速]，每层效果：速度+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_0_3">
+      <Name>奇特的毁灭装置</Name>
+      <Desc>造成的伤害和混乱伤害+20%。在场时，其他机关的“进攻型”骰子最大值+1。每张书页的首颗“进攻型”骰子拼点胜利或单方面攻击命中时，有50%的概率重复投掷1次（重复投掷不会再次触发）。登场时及每一幕开始时，使塔菲获得1层[偏心调速]，每层效果：速度+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_0_4">
+      <Name>奇特的能源装置</Name>
+      <Desc>使用战斗书页时获得2层[烟气]，每一幕结束时恢复5点体力。在场时，其他机关的所有骰子威力+1。每张书页的首颗“进攻型”骰子拼点胜利或单方面攻击命中时，有50%的概率重复投掷1次（重复投掷不会再次触发）。登场时及每一幕开始时，使塔菲获得1层[偏心调速]，每层效果：速度+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_1_0">
+      <Name>诡异的机关装置</Name>
+      <Desc>每命中3次，下一幕获得1层[强壮]。在场时，其他机关造成的伤害+15%。每张书页首次命中时，下一幕对目标施加1层[虚弱]。登场时及每一幕开始时，使塔菲获得1层[诡异干扰]，每层效果：每张书页首次命中时，下一幕对目标施加1层[虚弱]。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_1_1">
+      <Name>诡异的连锁装置</Name>
+      <Desc>使用[连锁电弧]后，对距离目标最近的另一名敌方角色再次使用该书页。在场时，其他机关造成的混乱伤害+15%。每张书页首次命中时，下一幕对目标施加1层[虚弱]。登场时及每一幕开始时，使塔菲获得1层[诡异干扰]，每层效果：每张书页首次命中时，下一幕对目标施加1层[虚弱]。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_1_2">
+      <Name>诡异的防御装置</Name>
+      <Desc>在场时，为其他友方角色提供2层持续[守护]（受到攻击的伤害-2）。自身被击败后失效。每张书页首次命中时，下一幕对目标施加1层[虚弱]。登场时及每一幕开始时，使塔菲获得1层[诡异干扰]，每层效果：每张书页首次命中时，下一幕对目标施加1层[虚弱]。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_1_3">
+      <Name>诡异的毁灭装置</Name>
+      <Desc>造成的伤害和混乱伤害+20%。在场时，其他机关的“进攻型”骰子最大值+1。每张书页首次命中时，下一幕对目标施加1层[虚弱]。登场时及每一幕开始时，使塔菲获得1层[诡异干扰]，每层效果：每张书页首次命中时，下一幕对目标施加1层[虚弱]。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_1_4">
+      <Name>诡异的能源装置</Name>
+      <Desc>使用战斗书页时获得2层[烟气]，每一幕结束时恢复5点体力。在场时，其他机关的所有骰子威力+1。每张书页首次命中时，下一幕对目标施加1层[虚弱]。登场时及每一幕开始时，使塔菲获得1层[诡异干扰]，每层效果：每张书页首次命中时，下一幕对目标施加1层[虚弱]。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_2_0">
+      <Name>脆弱的机关装置</Name>
+      <Desc>每命中3次，下一幕获得1层[强壮]。在场时，其他机关造成的伤害+15%。每张书页首次命中时，下一幕自身与目标各获得1层[易损]。登场时及每一幕开始时，使塔菲获得1层[脆弱增幅]，每层效果：造成的伤害和混乱伤害+15%。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_2_1">
+      <Name>脆弱的连锁装置</Name>
+      <Desc>使用[连锁电弧]后，对距离目标最近的另一名敌方角色再次使用该书页。在场时，其他机关造成的混乱伤害+15%。每张书页首次命中时，下一幕自身与目标各获得1层[易损]。登场时及每一幕开始时，使塔菲获得1层[脆弱增幅]，每层效果：造成的伤害和混乱伤害+15%。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_2_2">
+      <Name>脆弱的防御装置</Name>
+      <Desc>在场时，为其他友方角色提供2层持续[守护]（受到攻击的伤害-2）。自身被击败后失效。每张书页首次命中时，下一幕自身与目标各获得1层[易损]。登场时及每一幕开始时，使塔菲获得1层[脆弱增幅]，每层效果：造成的伤害和混乱伤害+15%。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_2_3">
+      <Name>脆弱的毁灭装置</Name>
+      <Desc>造成的伤害和混乱伤害+20%。在场时，其他机关的“进攻型”骰子最大值+1。每张书页首次命中时，下一幕自身与目标各获得1层[易损]。登场时及每一幕开始时，使塔菲获得1层[脆弱增幅]，每层效果：造成的伤害和混乱伤害+15%。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_2_4">
+      <Name>脆弱的能源装置</Name>
+      <Desc>使用战斗书页时获得2层[烟气]，每一幕结束时恢复5点体力。在场时，其他机关的所有骰子威力+1。每张书页首次命中时，下一幕自身与目标各获得1层[易损]。登场时及每一幕开始时，使塔菲获得1层[脆弱增幅]，每层效果：造成的伤害和混乱伤害+15%。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_3_0">
+      <Name>神秘的机关装置</Name>
+      <Desc>每命中3次，下一幕获得1层[强壮]。在场时，其他机关造成的伤害+15%。每张书页首次命中时，下一幕自身与目标各随机获得1层[强壮]、[忍耐]、[迅捷]、[守护]、[虚弱]、[破绽]、[束缚]或[易损]。登场时及每一幕开始时，使塔菲获得1层[神秘校准]，每层效果：“防御型”骰子威力+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_3_1">
+      <Name>神秘的连锁装置</Name>
+      <Desc>使用[连锁电弧]后，对距离目标最近的另一名敌方角色再次使用该书页。在场时，其他机关造成的混乱伤害+15%。每张书页首次命中时，下一幕自身与目标各随机获得1层[强壮]、[忍耐]、[迅捷]、[守护]、[虚弱]、[破绽]、[束缚]或[易损]。登场时及每一幕开始时，使塔菲获得1层[神秘校准]，每层效果：“防御型”骰子威力+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_3_2">
+      <Name>神秘的防御装置</Name>
+      <Desc>在场时，为其他友方角色提供2层持续[守护]（受到攻击的伤害-2）。自身被击败后失效。每张书页首次命中时，下一幕自身与目标各随机获得1层[强壮]、[忍耐]、[迅捷]、[守护]、[虚弱]、[破绽]、[束缚]或[易损]。登场时及每一幕开始时，使塔菲获得1层[神秘校准]，每层效果：“防御型”骰子威力+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_3_3">
+      <Name>神秘的毁灭装置</Name>
+      <Desc>造成的伤害和混乱伤害+20%。在场时，其他机关的“进攻型”骰子最大值+1。每张书页首次命中时，下一幕自身与目标各随机获得1层[强壮]、[忍耐]、[迅捷]、[守护]、[虚弱]、[破绽]、[束缚]或[易损]。登场时及每一幕开始时，使塔菲获得1层[神秘校准]，每层效果：“防御型”骰子威力+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_3_4">
+      <Name>神秘的能源装置</Name>
+      <Desc>使用战斗书页时获得2层[烟气]，每一幕结束时恢复5点体力。在场时，其他机关的所有骰子威力+1。每张书页首次命中时，下一幕自身与目标各随机获得1层[强壮]、[忍耐]、[迅捷]、[守护]、[虚弱]、[破绽]、[束缚]或[易损]。登场时及每一幕开始时，使塔菲获得1层[神秘校准]，每层效果：“防御型”骰子威力+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_4_0">
+      <Name>超级的机关装置</Name>
+      <Desc>每命中3次，下一幕获得1层[强壮]。在场时，其他机关造成的伤害+15%。本机关的类型效果、对友方的支援效果及书页施加的状态层数翻倍；不影响骰子基础点数、书页扣血及塔菲的增益层数。登场时及每一幕开始时，使塔菲获得1层[超级驱动]，每层效果：“进攻型”骰子威力+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_4_1">
+      <Name>超级的连锁装置</Name>
+      <Desc>使用[连锁电弧]后，对距离目标最近的另一名敌方角色再次使用该书页。在场时，其他机关造成的混乱伤害+15%。本机关的类型效果、对友方的支援效果及书页施加的状态层数翻倍；不影响骰子基础点数、书页扣血及塔菲的增益层数。登场时及每一幕开始时，使塔菲获得1层[超级驱动]，每层效果：“进攻型”骰子威力+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_4_2">
+      <Name>超级的防御装置</Name>
+      <Desc>在场时，为其他友方角色提供2层持续[守护]（受到攻击的伤害-2）。自身被击败后失效。本机关的类型效果、对友方的支援效果及书页施加的状态层数翻倍；不影响骰子基础点数、书页扣血及塔菲的增益层数。登场时及每一幕开始时，使塔菲获得1层[超级驱动]，每层效果：“进攻型”骰子威力+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_4_3">
+      <Name>超级的毁灭装置</Name>
+      <Desc>造成的伤害和混乱伤害+20%。在场时，其他机关的“进攻型”骰子最大值+1。本机关的类型效果、对友方的支援效果及书页施加的状态层数翻倍；不影响骰子基础点数、书页扣血及塔菲的增益层数。登场时及每一幕开始时，使塔菲获得1层[超级驱动]，每层效果：“进攻型”骰子威力+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Invention_4_4">
+      <Name>超级的能源装置</Name>
+      <Desc>使用战斗书页时获得2层[烟气]，每一幕结束时恢复5点体力。在场时，其他机关的所有骰子威力+1。本机关的类型效果、对友方的支援效果及书页施加的状态层数翻倍；不影响骰子基础点数、书页扣血及塔菲的增益层数。登场时及每一幕开始时，使塔菲获得1层[超级驱动]，每层效果：“进攻型”骰子威力+1。自身被击败时，移除自身提供的全部增益层数。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_ManufactureGuard">
+      <Name>八重守护</Name>
+      <Desc>被击中时所受伤害-{0}。这一效果不会在幕结束时消失。每有1个己方机关被击败，层数-1。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_ManufactureVulnerable">
+      <Name>发明易损</Name>
+      <Desc>被击中时所受伤害+{0}。这一效果不会在幕结束时消失。已有8个己方机关被击败后，每有1个己方机关被击败，层数+1。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_InventionAura_0">
+      <Name>偏心调速</Name>
+      <Desc>每层效果：速度+1。每个奇特的机关登场时及每一幕开始时，层数+1；该机关被击败时，其提供的全部层数一并移除。不同机关的层数独立计算。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_InventionAura_1">
+      <Name>诡异干扰</Name>
+      <Desc>每层效果：每张书页首次命中时，下一幕对目标施加1层[虚弱]。每个诡异的机关登场时及每一幕开始时，层数+1；该机关被击败时，其提供的全部层数一并移除。不同机关的层数独立计算。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_InventionAura_2">
+      <Name>脆弱增幅</Name>
+      <Desc>每层效果：造成的伤害和混乱伤害+15%。每个脆弱的机关登场时及每一幕开始时，层数+1；该机关被击败时，其提供的全部层数一并移除。不同机关的层数独立计算。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_InventionAura_3">
+      <Name>神秘校准</Name>
+      <Desc>每层效果：“防御型”骰子威力+1。每个神秘的机关登场时及每一幕开始时，层数+1；该机关被击败时，其提供的全部层数一并移除。不同机关的层数独立计算。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_InventionAura_4">
+      <Name>超级驱动</Name>
+      <Desc>每层效果：“进攻型”骰子威力+1。每个超级的机关登场时及每一幕开始时，层数+1；该机关被击败时，其提供的全部层数一并移除。不同机关的层数独立计算。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_DeviceSupport">
+      <Name>机关支援</Name>
+      <Desc>每个在场的其他防御装置提供2层持续[守护]。若自身是机关，还会获得其他机关的支援：机关装置使伤害+15%，连锁装置使混乱伤害+15%，毁灭装置使“进攻型”骰子最大值+1，能源装置使所有骰子威力+1。超级装置的支援效果翻倍。同类支援可叠加，来源被击败后失效。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Overdrive_Strength">
+      <Name>准备·强壮</Name>
+      <Desc>下一幕获得{0}层[强壮]。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Overdrive_Quickness">
+      <Name>准备·迅捷</Name>
+      <Desc>下一幕获得{0}层[迅捷]。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_Overdrive_Protection">
+      <Name>准备·守护</Name>
+      <Desc>下一幕获得{0}层[守护]。</Desc>
+    </BattleEffectText>
+    <BattleEffectText ID="AceTaffy_ScheduledInventions">
+      <Name>待登场机关</Name>
+      <Desc>下一幕开始时召唤{0}个已完成的机关。占用机关名额，尚未提供增益。蒸汽工坊或塔菲被击败时取消。</Desc>
+    </BattleEffectText>
+  </effectTextList>
+</BattleEffectTextRoot>

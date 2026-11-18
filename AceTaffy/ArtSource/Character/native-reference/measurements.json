@@ -1,0 +1,573 @@
+{
+  "units": "pixels at 100 display pixels per Unity world unit; native Sprite PPU 100",
+  "method": "UnityPy reconstructs the original Appearance_* Default prefab's enabled SpriteRenderers with parent local transforms and sorting orders. Anatomical landmarks are manually placed on the fixed-scale composite and are approximate (about +/-5 px), not body PNG bounds.",
+  "definitions": {
+    "crown_y": "top of cranial hair cap, excluding loose tufts, headband and long back hair",
+    "chin_y": "bottom of face/jaw, excluding collar and long hair",
+    "head_core_x": "left/right cranial cap silhouette excluding detached tufts or long back hair",
+    "face_x": "visible cheek-to-cheek skin width at widest facial level",
+    "sole_y": "lowest planted boot pixel in Default motion",
+    "shoulder_chest_waist": "clothed torso cross sections; exclude arms, cape, long hair, hat and weapon",
+    "alpha_envelope": "all visible prefabricated body and head pixels at alpha>=32; includes hair, cape and weapon baked into selected body sprites"
+  },
+  "references": {
+    "Bada": {
+      "bundle": "StreamingAssets/AssetBundles/char/char_418.pres",
+      "bundle_sha256": "8488d0e31551bca4dbf40b7452e08f852feb657bf901b2be165de572f415895f",
+      "prefab": "[Prefab]Appearance_Bada",
+      "motion": "Bada_Default",
+      "parent_offsets": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          -3.0299999713897705,
+          -3.059999942779541
+        ]
+      ],
+      "parent_transforms": [
+        {
+          "name": "[Prefab]Appearance_Bada",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Bada_Default",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Bada_Default",
+          "position": [
+            -3.0299999713897705,
+            -3.059999942779541,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "sprite_ppu": 100,
+      "root_pixel": [
+        400,
+        560
+      ],
+      "body_root_y_units": 0.06,
+      "alpha_envelope": [
+        277,
+        64,
+        461,
+        554
+      ],
+      "body_layer_envelope": [
+        282,
+        230,
+        461,
+        554
+      ],
+      "head_layer_envelope": [
+        277,
+        64,
+        445,
+        252
+      ],
+      "landmarks": {
+        "sex_reference": "male",
+        "crown_y": 77,
+        "chin_y": 250,
+        "sole_y": 554,
+        "head_core_x": [
+          289,
+          436
+        ],
+        "face_x": [
+          292,
+          422
+        ],
+        "shoulder": {
+          "y": 270,
+          "x": [
+            320,
+            424
+          ]
+        },
+        "chest": {
+          "y": 320,
+          "x": [
+            326,
+            420
+          ]
+        },
+        "waist": {
+          "y": 365,
+          "x": [
+            333,
+            414
+          ]
+        }
+      },
+      "derived": {
+        "head_height": 173,
+        "head_core_width": 147,
+        "face_width": 130,
+        "chin_to_sole_height": 304,
+        "anatomical_total_height": 477,
+        "total_in_head_heights": 2.757,
+        "body_to_head_height": 1.757,
+        "head_core_width_to_height": 0.85,
+        "shoulder_width": 104,
+        "chest_width": 94,
+        "waist_width": 81,
+        "shoulder_to_head_height": 0.601,
+        "chest_to_head_height": 0.543,
+        "waist_to_head_height": 0.468
+      },
+      "images": {
+        "body": {
+          "file": "Bada_Default_body.png",
+          "sha256": "32efb1c54d91bfc696cc7ebf90cc8f09553c2c39dcd8af2187f279b8b552d414",
+          "bbox_alpha32": [
+            282,
+            230,
+            461,
+            554
+          ]
+        },
+        "head": {
+          "file": "Bada_Default_head.png",
+          "sha256": "bfa8ed57414ded44e376349f8d25f937480233f45851d19461bcef92fe7400f4",
+          "bbox_alpha32": [
+            277,
+            64,
+            445,
+            252
+          ]
+        },
+        "full": {
+          "file": "Bada_Default_full.png",
+          "sha256": "e1708b1f6982b6bcd049e5ad35d5433d245a16aa51878e1d8ebd1f262b68354d",
+          "bbox_alpha32": [
+            277,
+            64,
+            461,
+            554
+          ]
+        }
+      }
+    },
+    "Malkuth": {
+      "bundle": "StreamingAssets/AssetBundles/char/char_512.pres",
+      "bundle_sha256": "d9751ba92fba8f3a0f5abd0b4791bf442c5738b01d4aa1fe8505e2560938f0e6",
+      "prefab": "[Prefab]Appearance_Malkuth",
+      "motion": "Malkuth_Default",
+      "parent_offsets": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          -3.0299999713897705,
+          -3.059999942779541
+        ]
+      ],
+      "parent_transforms": [
+        {
+          "name": "[Prefab]Appearance_Malkuth",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Malkuth_Default",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Malkuth_Default",
+          "position": [
+            -3.0299999713897705,
+            -3.059999942779541,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotation_xyzw": [
+            -0.0,
+            -0.0,
+            -0.0,
+            1.0
+          ]
+        }
+      ],
+      "sprite_ppu": 100,
+      "root_pixel": [
+        400,
+        560
+      ],
+      "body_root_y_units": -0.08,
+      "alpha_envelope": [
+        121,
+        87,
+        533,
+        568
+      ],
+      "body_layer_envelope": [
+        121,
+        244,
+        533,
+        568
+      ],
+      "head_layer_envelope": [
+        275,
+        87,
+        512,
+        411
+      ],
+      "landmarks": {
+        "sex_reference": "female",
+        "crown_y": 115,
+        "chin_y": 269,
+        "sole_y": 568,
+        "head_core_x": [
+          294,
+          449
+        ],
+        "face_x": [
+          314,
+          417
+        ],
+        "shoulder": {
+          "y": 286,
+          "x": [
+            345,
+            435
+          ]
+        },
+        "chest": {
+          "y": 325,
+          "x": [
+            350,
+            429
+          ]
+        },
+        "waist": {
+          "y": 365,
+          "x": [
+            351,
+            422
+          ]
+        }
+      },
+      "derived": {
+        "head_height": 154,
+        "head_core_width": 155,
+        "face_width": 103,
+        "chin_to_sole_height": 299,
+        "anatomical_total_height": 453,
+        "total_in_head_heights": 2.942,
+        "body_to_head_height": 1.942,
+        "head_core_width_to_height": 1.006,
+        "shoulder_width": 90,
+        "chest_width": 79,
+        "waist_width": 71,
+        "shoulder_to_head_height": 0.584,
+        "chest_to_head_height": 0.513,
+        "waist_to_head_height": 0.461
+      },
+      "images": {
+        "body": {
+          "file": "Malkuth_Default_body.png",
+          "sha256": "eea02d296853d275b9bfee8da84db7b850ea27f0fa8caf06cddef54768ba147a",
+          "bbox_alpha32": [
+            121,
+            244,
+            533,
+            568
+          ]
+        },
+        "head": {
+          "file": "Malkuth_Default_head.png",
+          "sha256": "6c9ecb1914e31624f148efeac0e279ff6c5fecf2ec03d22212d85ac0516de9a4",
+          "bbox_alpha32": [
+            275,
+            87,
+            512,
+            411
+          ]
+        },
+        "full": {
+          "file": "Malkuth_Default_full.png",
+          "sha256": "a69567c756013b33948ea80ffdd08b0ee31a30b43a36d12bfd562cb70d52d2f1",
+          "bbox_alpha32": [
+            121,
+            87,
+            533,
+            568
+          ]
+        }
+      }
+    },
+    "Roland": {
+      "bundle": "StreamingAssets/AssetBundles/char/char_571.pres",
+      "bundle_sha256": "fd25e56fbfa20c5390e3cc85fc863ffda12ef436070aa15419218d3bf7955790",
+      "prefab": "[Prefab]Appearance_Roland",
+      "motion": "Roland_Default",
+      "parent_offsets": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          -3.0299999713897705,
+          -3.059999942779541
+        ]
+      ],
+      "parent_transforms": [
+        {
+          "name": "[Prefab]Appearance_Roland",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Roland_Default",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotation_xyzw": [
+            -0.0,
+            -0.0,
+            -0.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Roland_Default",
+          "position": [
+            -3.0299999713897705,
+            -3.059999942779541,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotation_xyzw": [
+            -0.0,
+            -0.0,
+            -0.0,
+            1.0
+          ]
+        }
+      ],
+      "sprite_ppu": 100,
+      "root_pixel": [
+        400,
+        560
+      ],
+      "body_root_y_units": 0.0,
+      "alpha_envelope": [
+        287,
+        39,
+        716,
+        560
+      ],
+      "body_layer_envelope": [
+        298,
+        217,
+        716,
+        560
+      ],
+      "head_layer_envelope": [
+        287,
+        39,
+        470,
+        235
+      ],
+      "landmarks": {
+        "sex_reference": "male",
+        "crown_y": 55,
+        "chin_y": 229,
+        "sole_y": 560,
+        "head_core_x": [
+          299,
+          462
+        ],
+        "face_x": [
+          316,
+          441
+        ],
+        "shoulder": {
+          "y": 270,
+          "x": [
+            339,
+            449
+          ]
+        },
+        "chest": {
+          "y": 320,
+          "x": [
+            346,
+            449
+          ]
+        },
+        "waist": {
+          "y": 365,
+          "x": [
+            352,
+            441
+          ]
+        }
+      },
+      "derived": {
+        "head_height": 174,
+        "head_core_width": 163,
+        "face_width": 125,
+        "chin_to_sole_height": 331,
+        "anatomical_total_height": 505,
+        "total_in_head_heights": 2.902,
+        "body_to_head_height": 1.902,
+        "head_core_width_to_height": 0.937,
+        "shoulder_width": 110,
+        "chest_width": 103,
+        "waist_width": 89,
+        "shoulder_to_head_height": 0.632,
+        "chest_to_head_height": 0.592,
+        "waist_to_head_height": 0.511
+      },
+      "images": {
+        "body": {
+          "file": "Roland_Default_body.png",
+          "sha256": "027c5016f61e4bc7669c85170fdef08e4aa04013401d8f3002edc44c5e1bd35c",
+          "bbox_alpha32": [
+            298,
+            217,
+            716,
+            560
+          ]
+        },
+        "head": {
+          "file": "Roland_Default_head.png",
+          "sha256": "03734e8bc6ac6ff4c9539bba7ec3b86376d800be43a60bd7ae6370dcb02bba68",
+          "bbox_alpha32": [
+            287,
+            39,
+            470,
+            235
+          ]
+        },
+        "full": {
+          "file": "Roland_Default_full.png",
+          "sha256": "bc8681242d33df47032e37d9919dae83a0408cfec076fb097f695bccb5f74604",
+          "bbox_alpha32": [
+            287,
+            39,
+            716,
+            560
+          ]
+        }
+      }
+    }
+  }
+}
