@@ -282,13 +282,14 @@ namespace Steria
         public readonly Dictionary<Transform, Vector3> RowPositions = new Dictionary<Transform, Vector3>();
         public BattleDiceCardModel BoundCard;
         public readonly List<Image> FlashImages = new List<Image>();
+        public FlowCardCurrentBorder CurrentBorder;
         public float FlashStart = -1;
         public void StopFlash()
         {
             FlashStart = -1;
             foreach (var image in FlashImages) if (image != null) image.gameObject.SetActive(false);
         }
-        private void Update() { UpdateFlash(Time.unscaledTime); }
+        private void Update() { UpdateFlash(Time.unscaledTime); if (CurrentBorder != null) CurrentBorder.Tick(Time.unscaledTime); }
         private void UpdateFlash(float now)
         {
             if (FlashStart < 0) return;
@@ -297,13 +298,13 @@ namespace Steria
             float alpha = age < .05f ? Mathf.Lerp(.12f, .95f, age / .05f) : .95f * (1 - (age - .05f) / .25f);
             foreach (var image in FlashImages) if (image != null) image.color = new Color(.70f, .98f, 1, alpha);
         }
-        private void OnEnable() { Canvas.willRenderCanvases += KeepRangeSpacing; }
+        private void OnEnable() { Canvas.willRenderCanvases += KeepRangeSpacing; if (CurrentBorder != null) CurrentBorder.Tick(Time.unscaledTime); }
         private void KeepRangeSpacing()
         {
             if (Texts.Count > 0) FlowCardPreview.SpaceVisibleRanges(GetComponent<BattleDiceCardUI>(), false);
         }
-        private void OnDisable() { Canvas.willRenderCanvases -= KeepRangeSpacing; StopFlash(); }
-        private void OnDestroy() { Canvas.willRenderCanvases -= KeepRangeSpacing; }
+        private void OnDisable() { Canvas.willRenderCanvases -= KeepRangeSpacing; StopFlash(); if (CurrentBorder != null) CurrentBorder.Hide(); }
+        private void OnDestroy() { Canvas.willRenderCanvases -= KeepRangeSpacing; if (CurrentBorder != null) CurrentBorder.Hide(); }
     }
 
     public static class FlowCardPreview
@@ -332,6 +333,8 @@ namespace Steria
             }
             stamp.Texts.Clear();
             if (stopFlash || stamp.BoundCard != ui.CardModel) stamp.StopFlash();
+            if (stamp.CurrentBorder != null && (stopFlash || stamp.BoundCard != ui.CardModel ||
+                (FlowPlanning.Get(ui.CardModel)?.Levels ?? 0) <= 0)) stamp.CurrentBorder.Hide();
         }
 
         public static void Apply(BattleDiceCardUI ui)
@@ -344,6 +347,7 @@ namespace Steria
             if (plan == null) return;
             var stamp = ui.GetComponent<FlowCardPreviewStamp>() ?? ui.gameObject.AddComponent<FlowCardPreviewStamp>();
             stamp.BoundCard = ui.CardModel;
+            FlowCardCurrentBorder.Apply(ui, stamp);
             var cardRect = ui.transform as RectTransform;
             if (cardRect != null) LayoutRebuilder.ForceRebuildLayoutImmediate(cardRect);
             var dice = ui.CardModel.GetBehaviourList();

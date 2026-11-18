@@ -2495,7 +2495,11 @@ namespace Steria
         }
 
         [HarmonyPrefix]
-        public static void Prefix(BehaviourDetail detail, BattleUnitModel unit, out MusicDamageTextState __state)
+        public static void Prefix(
+            BehaviourDetail detail,
+            BattleUnitModel unit,
+            BattleUnitModel attacker,
+            out MusicDamageTextState __state)
         {
             __state = null;
             try
@@ -2503,8 +2507,77 @@ namespace Steria
                 bool isAttackDetail = detail == BehaviourDetail.Slash
                     || detail == BehaviourDetail.Penetrate
                     || detail == BehaviourDetail.Hit;
-                if (!MusicDamageContext.IsActive || !isAttackDetail)
+                bool isDirectMusicDamage = MusicDamageContext.IsActive;
+                bool isMusicPlayback = MusicDamagePlaybackContext.Matches(attacker, unit);
+                if ((!isDirectMusicDamage && !isMusicPlayback) || !isAttackDetail)
                 {
+    /// <summary>
+    /// 普通近战的伤害数字在伤害计算完成后才由 PrintDamage 回放。根据当前两侧
+    /// BattleCardBehaviourResult 建立只读的展示上下文，使回放不依赖已经前移的 currentBehavior。
+    /// </summary>
+    [HarmonyPatch(typeof(RencounterManager), "PrintDamage")]
+    public static class RencounterManager_PrintDamage_MusicDicePatch
+    {
+        private static readonly FieldInfo LibrarianResultField =
+            AccessTools.Field(typeof(RencounterManager), "_currentLibrarianBehaviourResult");
+        private static readonly FieldInfo EnemyResultField =
+            AccessTools.Field(typeof(RencounterManager), "_currentEnemyBehaviourResult");
+        private static readonly FieldInfo LibrarianViewField =
+            AccessTools.Field(typeof(RencounterManager), "_librarian");
+        private static readonly FieldInfo EnemyViewField =
+            AccessTools.Field(typeof(RencounterManager), "_enemy");
+
+        [HarmonyPrefix]
+        public static void Prefix(RencounterManager __instance, out MusicDamagePlaybackContext.Scope __state)
+        {
+            __state = null;
+            try
+            {
+                BattleCardBehaviourResult librarianResult =
+                    LibrarianResultField?.GetValue(__instance) as BattleCardBehaviourResult;
+                BattleCardBehaviourResult enemyResult =
+                    EnemyResultField?.GetValue(__instance) as BattleCardBehaviourResult;
+                BattleUnitView librarian = LibrarianViewField?.GetValue(__instance) as BattleUnitView;
+                BattleUnitView enemy = EnemyViewField?.GetValue(__instance) as BattleUnitView;
+
+                bool librarianMusic = IsMusicAttackResult(librarianResult);
+                bool enemyMusic = IsMusicAttackResult(enemyResult);
+                __state = MusicDamagePlaybackContext.Enter(
+                    librarianMusic ? librarian?.model : null,
+                    librarianMusic ? enemy?.model : null,
+                    enemyMusic ? enemy?.model : null,
+                    enemyMusic ? librarian?.model : null);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Steria] Music PrintDamage Prefix error: {ex}");
+                __state?.Dispose();
+                __state = null;
+            }
+        }
+
+        [HarmonyPostfix]
+        public static void Postfix(MusicDamagePlaybackContext.Scope __state)
+        {
+            __state?.Dispose();
+        }
+
+        [HarmonyFinalizer]
+        public static Exception Finalizer(Exception __exception, MusicDamagePlaybackContext.Scope __state)
+        {
+            // Postfix 与 Finalizer 都可能执行；Scope.Dispose 是幂等的。
+            __state?.Dispose();
+            return __exception;
+        }
+
+        private static bool IsMusicAttackResult(BattleCardBehaviourResult result)
+        {
+            DiceBehaviour behaviour = result?.behaviourRawData;
+            return MusicDiceSystem.IsMusicCard(result?.cardModel)
+                && MusicDiceVisuals.IsMusicUiBehaviour(behaviour);
+        }
+    }
+
                     return;
                 }
 

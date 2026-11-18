@@ -216,6 +216,94 @@ namespace Steria
     }
 
     /// <summary>
+    /// 近战结算先记录伤害、后由 RencounterManager.PrintDamage 回放跳字；届时
+    /// MusicDamageContext 已经退出。这个上下文只携带“哪一方向哪一方播放乐章伤害”
+    /// 的展示信息，不参与 BookModel.GetResistRate，也不会重新影响伤害数值。
+    /// </summary>
+    public static class MusicDamagePlaybackContext
+    {
+        internal sealed class PlaybackFrame
+        {
+            public PlaybackFrame Previous;
+            public object FirstAttacker;
+            public object FirstTarget;
+            public object SecondAttacker;
+            public object SecondTarget;
+        }
+
+        public sealed class Scope : IDisposable
+        {
+            private PlaybackFrame _frame;
+
+            internal Scope(PlaybackFrame frame)
+            {
+                _frame = frame;
+            }
+
+            public void Dispose()
+            {
+                PlaybackFrame frame = _frame;
+                if (frame == null)
+                {
+                    return;
+                }
+
+                _frame = null;
+                if (ReferenceEquals(_current, frame))
+                {
+                    _current = frame.Previous;
+                }
+            }
+
+        }
+
+        [ThreadStatic] private static PlaybackFrame _current;
+
+        public static bool IsActive => _current != null;
+
+        public static Scope Enter(
+            object firstAttacker,
+            object firstTarget,
+            object secondAttacker,
+            object secondTarget)
+        {
+            PlaybackFrame frame = new PlaybackFrame
+            {
+                Previous = _current,
+                FirstAttacker = firstAttacker,
+                FirstTarget = firstTarget,
+                SecondAttacker = secondAttacker,
+                SecondTarget = secondTarget
+            };
+            _current = frame;
+            return new Scope(frame);
+        }
+
+        /// <summary>
+        /// 必须同时命中攻击者与受击者引用，避免双方同一 PrintDamage 回放时串色。
+        /// </summary>
+        public static bool Matches(object attacker, object target)
+        {
+            if (attacker == null || target == null)
+            {
+                return false;
+            }
+
+            for (PlaybackFrame frame = _current; frame != null; frame = frame.Previous)
+            {
+                if ((ReferenceEquals(frame.FirstAttacker, attacker)
+                        && ReferenceEquals(frame.FirstTarget, target))
+                    || (ReferenceEquals(frame.SecondAttacker, attacker)
+                        && ReferenceEquals(frame.SecondTarget, target)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    /// <summary>
     /// 允许向乐章型骰子下发威力 / 伤害类加成的临时白名单。
     /// 默认情况下我们会拦截原版"强壮 / 忍耐 / 进攻型骰子威力提升"等效果，
     /// 但乐章专属来源（强音 buff、海愿斩等卡牌能力）必须能通过这条通道生效。

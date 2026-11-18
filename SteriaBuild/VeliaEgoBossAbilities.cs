@@ -193,7 +193,7 @@ public class PassiveAbility_9005001 : PassiveAbilityBase
             BattleDiceCardModel card = owner.allyCardDetail.AddTempCard(lorId);
             if (card != null)
             {
-                card.SetCostToZero(true);
+                EnemyPatternCardCost.MakeFree(card);
                 card.SetPriorityAdder(priorityAdder);
                 card.temporary = true;
                 SteriaLogger.Log($"侵蚀: Added temp card {cardId} with cost 0, priority {priorityAdder}");
@@ -1075,7 +1075,7 @@ public class PassiveAbility_9005006 : PassiveAbilityBase
         // 将手牌中的所有牌设为0费
         foreach (var card in owner.allyCardDetail.GetHand())
         {
-            card?.SetCostToZero(true);
+            EnemyPatternCardCost.MakeFree(card);
         }
 
         SteriaLogger.Log($"变幻莫测: Drew {speedDiceCount} cards with 0 cost");

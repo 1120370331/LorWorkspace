@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems><NoWarn>CS0649;CS0067</NoWarn></PropertyGroup>
+ <ItemGroup><Compile Include="UnityUiContract.cs"/><Compile Include="Run.cs"/><Compile Include="Generated/*.cs"/><Compile Include="../../../FlowCardCurrentBorder.cs"/></ItemGroup>
+</Project>

@@ -596,7 +596,7 @@ public class PassiveAbility_9009007 : PassiveAbilityBase
             BattleDiceCardModel card = owner.allyCardDetail.AddTempCard(lorId);
             if (card != null)
             {
-                card.SetCostToZero(true);
+                EnemyPatternCardCost.MakeFree(card);
                 card.SetPriorityAdder(priorityAdder);
                 card.temporary = true;
             }

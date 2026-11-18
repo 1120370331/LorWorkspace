@@ -31,6 +31,35 @@ patch=h[h.index('class AttackEffectManager_CreateDamagedTextEffect_MusicDicePatc
 assert 'LastOrDefault' not in patch
 print('PASS: original action glyph; HP/stagger resistance shields; native layer/fade ownership; new-hit-only binding')
 
+playback=h[h.index('class RencounterManager_PrintDamage_MusicDicePatch'):h.index('class AttackEffectManager_CreateDamagedTextEffect_MusicDicePatch')]
+for field in ['_currentLibrarianBehaviourResult','_currentEnemyBehaviourResult','_librarian','_enemy']:
+ assert field in playback,field
+assert 'result?.behaviourRawData' in playback
+assert 'MusicDiceSystem.IsMusicCard(result?.cardModel)' in playback
+assert 'MusicDiceVisuals.IsMusicUiBehaviour(behaviour)' in playback
+assert 'currentDiceAction.currentBehavior' not in playback
+assert '[HarmonyPostfix]' in playback and '[HarmonyFinalizer]' in playback
+assert playback.count('__state?.Dispose();') >= 3
+assert 'MusicDamagePlaybackContext.Matches(attacker, unit)' in patch
+assert 'BattleUnitModel attacker' in patch
+assert 'MusicDamageContext.Enter' not in playback
+assert 'MusicDamageContext.IsActive' in patch
+assert 'effect != null && (__state.Existing == null || !__state.Existing.Contains(effect))' in patch
+print('PASS: delayed PrintDamage uses result-owned die/card data; exact attacker-target playback scope; no value-context reuse; cleanup on normal/exception exits')
+
+import xml.etree.ElementTree as ET
+cards=ET.parse(root/'SteriaBuild/SteriaModFolder/Data/CardInfo.xml').getroot()
+by_id={card.attrib.get('ID'):card for card in cards.findall('Card')}
+for card_id,expected in [('9007006',['Atk','Atk','Atk']),('9008006',['Atk','Atk','Atk','Def','Def'])]:
+ card=by_id[card_id]
+ assert card.findtext('Keyword')=='SteriaMusicDice',card_id
+ assert card.find('Spec').attrib.get('Range')=='Near',card_id
+ actual=[b.attrib.get('Type') for b in card.find('BehaviourList').findall('Behaviour')]
+ assert actual==expected,(card_id,actual)
+ for behaviour in card.find('BehaviourList').findall('Behaviour')[:3]:
+  assert behaviour.attrib.get('Detail') in {'Slash','Penetrate','Hit'},(card_id,behaviour.attrib)
+print('PASS: 9007006 has three music attacks; 9008006 has three music attacks followed by two non-music guards')
+
 assert 'GetManifestResourceStream' in factory and 'ImageConversion.LoadImage' in factory
 for costly in ['Rasterize(', 'GlyphDistance(', 'CurveDistance(', 'SmoothUnion(']:
  assert costly not in factory,costly

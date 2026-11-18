@@ -465,7 +465,7 @@ public class PassiveAbility_9002006 : PassiveAbilityBase
             BattleDiceCardModel card = owner.allyCardDetail.AddTempCard(lorId);
             if (card != null)
             {
-                card.SetCostToZero(true);
+                EnemyPatternCardCost.MakeFree(card);
                 card.SetPriorityAdder(priorityAdder);
                 card.temporary = true;
                 SteriaLogger.Log($"变幻莫测: Added temp card {cardId} with cost 0, priority {priorityAdder}");
