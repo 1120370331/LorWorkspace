@@ -359,92 +359,109 @@ internal static class RunContracts
 
     private static FarAreaEffect StartMass(BattleFarAreaPlayManager manager)
     {
+        // Native EffectPhase requests the die's S pose immediately before calling the action.
+        manager.attacker.view.charAppearance.ChangeMotion(ActionDetail.Special);
         var effect = new BehaviourAction_Steria_ChristashaXiyinV2().SetFarAreaAtkEffect(manager.attacker);
         manager._attackerEffect = effect;
         return effect;
     }
 
+    private static void Dress(BattleUnitView owner, string skin)
+    {
+        var setter = owner.charAppearance.gameObject.AddComponent<Workshop.WorkshopSkinDataSetter>();
+        setter.dic[ActionDetail.Default] = new Workshop.ClothCustomizeData {
+            spritePath = "Resource/CharacterSkin/" + skin + "/ClothCustom/Default.png"
+        };
+    }
+
     private static void NativeMass()
     {
-        foreach (bool right in new[] { false, true })
+        foreach (string skin in new[] { "Christasha_Normal", "Christasha_Texture_v2_Projection", "Christasha" })
         {
-            int first = ChristashaNativeParticlePlayback.Started.Count;
-            var owner = Actor(right ? -22 : 22, 3, right);
-            var success = Actor(right ? 4 : -4, 2.25f, !right);
-            var defense = Actor(right ? 20 : -20, 3, !right);
+            var owner = Actor(-22);
+            Dress(owner, skin);
+            var success = Actor(4);
+            var defense = Actor(20);
             success.model.currentDiceAction.currentBehavior.DiceResultValue = 3;
             defense.model.currentDiceAction.currentBehavior.DiceResultValue = 20;
             var manager = Manager(owner, success, defense);
             var effect = StartMass(manager);
-            Check(effect.isRunning && !effect.HasIndependentAction, "mass starts native gate, native manager owns combat");
-            Tick(effect, .31f); manager.Tick(.31f);
-            var area = ChristashaNativeParticlePlayback.Started.Last();
-            Check(area.Root.name == "ChristashaNative_Area" && effect.isRunning, "one Area begins at .3 before .5 release");
-            Check(Close(area.Root.transform.position, new Vector3(right ? -1f : 1f, 0f, 0f)) && Math.Abs(area.Root.transform.localScale.x - 44f / ChristashaNativeMassRecipes.AreaDesignWidth) < .0001f, "area world extent covers caster and every native victim including defenses");
-            Check(area.Root.transform.TransformPoint(new Vector3(0, 1, 0)).y > area.Root.transform.position.y, "area facing mirror preserves upward axis");
-            success.transform.position += new Vector3(1f, 0f, 0f);
-            Tick(effect, .20f); manager.Tick(.20f);
-            Check(effect.isRunning && success.model.damageCalls == 0, "crest remains on screen before the .75 release gate");
-            Tick(effect, .25f); manager.Tick(.25f);
-            Check(!effect.isRunning && success.model.damageCalls == 1 && manager._actionPreDelay == 0f, "own .75 release gate controls native callback without default one-second delay");
-            var points = ChristashaNativeParticlePlayback.Started.Skip(first).Where(x => x.Root.name == "ChristashaNative_Point").ToArray();
-            Check(success.model.damageCalls == 1 && defense.model.damageCalls == 0 && points.Length == 1, "real native ActionPhase settles success once and suppresses defended Point");
-            Check(Close(points[0].Root.transform.position, success.atkEffectRoot.position) && Close(points[0].Root.transform.localScale, Vector3.one * 2.2f), "Point uses successful target's callback-time world point with constant visible art scale, independent of negative/map scale");
-            effect.GiveDamageFromManager(new List<BattleUnitModel> { success.model, success.model });
-            Check(ChristashaNativeParticlePlayback.Started.Count == first + 3, "duplicate callback does not spawn or replay points");
-            Tick(effect, .7f); manager.Tick(.7f);
-            Check(effect.IsDoneEffect && manager._phase == BattleFarAreaPlayManager.Phase.RollDice && owner.model.currentDiceAction.currentBehavior.endCalls == 1, "native manager reaches RollDice after visual tail without timeout");
-            Check(ChristashaNativeParticlePlayback.Started.Skip(first).All(x => x.Stopped && x.Root == null), "mass releases all cast/area/point instance ownership");
+            var tide = ChristashaXiyinTide.Latest;
+            bool bows = skin != "Christasha";
+            Check(effect.isRunning && !effect.HasIndependentAction && tide.Subjects.SequenceEqual(new[] {success, defense}),
+                "manager owns settlement and supplies visible subjects");
+            Tick(effect, .21f); manager.Tick(.21f);
+            Check(owner.charAppearance.GetCurrentMotionDetail() == ActionDetail.Special && success.model.damageCalls == 0,
+                "violin remains on the shoulder before bow travel");
+            Tick(effect, .02f); manager.Tick(.02f);
+            Check(owner.charAppearance.GetCurrentMotionDetail() == (bows ? ActionDetail.S2 : ActionDetail.Special) && effect.isRunning,
+                "only dedicated skin draws the bow at .22 seconds");
+            Tick(effect, .51f); manager.Tick(.51f);
+            Check(effect.isRunning && success.model.damageCalls == 0, "no early resolution at .74 seconds");
+            Tick(effect, .01f); manager.Tick(.01f);
+            Check(owner.charAppearance.GetCurrentMotionDetail() == (bows ? ActionDetail.S3 : ActionDetail.Special) &&
+                !effect.isRunning && manager._actionPreDelay == 0 && success.model.damageCalls == 1 && defense.model.damageCalls == 0,
+                "native manager resolves on violin release; borrowed page keeps original pose");
+            Check(tide.Targets.SequenceEqual(new[] {success}), "native callback limits feedback to successful target");
+            effect.GiveDamageFromManager(new List<BattleUnitModel> {success.model});
+            Check(tide.Targets.Count == 1, "duplicate callback cannot add another hit");
+            Tick(effect, .93f); manager.Tick(.93f);
+            Check(effect.IsDoneEffect && tide.Disposed && manager._phase == BattleFarAreaPlayManager.Phase.RollDice &&
+                owner.model.currentDiceAction.currentBehavior.endCalls == 1, "manager leaves Action after tail");
             manager.NextCardNativeResetFixture();
-            Check(manager._actionPreDelay == 1f && manager._actionPostDelay == .5f, "native Start/End reset assignments restore next-card default timing");
+            Check(manager._actionPreDelay == 1f && manager._actionPostDelay == .5f, "native timing restored");
         }
     }
 
     private static void EmptyAndRepeatedMass()
     {
         var owner = Actor(12);
+        Dress(owner, "Christasha_Normal");
         var defense = Actor(-16);
         defense.model.currentDiceAction.currentBehavior.DiceResultValue = 20;
-        for (int dice = 0; dice < 3; dice++)
+        for (int i = 0; i < 3; i++)
         {
             owner.model.currentDiceAction.currentBehavior = new BattleDiceBehavior();
-            int first = ChristashaNativeParticlePlayback.Started.Count;
             var manager = Manager(owner, defense);
             var effect = StartMass(manager);
+            Check(owner.charAppearance.GetCurrentMotionDetail() == ActionDetail.Special, "each copied die sets its own bow");
             for (int frame = 0; frame < 105; frame++) { Tick(effect, 1f / 60f); manager.Tick(1f / 60f); }
-            Check(effect.IsDoneEffect && manager._phase == BattleFarAreaPlayManager.Phase.RollDice, "copied mass dice " + dice + " has independent releasable lifetime");
-            Check(ChristashaNativeParticlePlayback.Started.Skip(first).Count() == 2 && defense.model.damageCalls == 0, "all defended: cast and one area remain; zero success points; finishes");
+            Check(effect.IsDoneEffect && manager._phase == BattleFarAreaPlayManager.Phase.RollDice &&
+                owner.charAppearance.GetCurrentMotionDetail() == ActionDetail.S3, "all-defended die completes its own stroke");
+            Check(ChristashaXiyinTide.Latest.Targets.Count == 0 && defense.model.damageCalls == 0, "zero successful hits");
         }
-        var units = Enumerable.Range(0, 20).Select(i => Actor(-i - 1).model).ToList();
-        var many = StartMass(Manager(owner));
-        int start = ChristashaNativeParticlePlayback.Started.Count;
-        units.Insert(0, units[0]);
-        many.GiveDamageFromManager(units);
-        Check(ChristashaNativeParticlePlayback.Started.Skip(start).Count(x => x.Root.name.EndsWith("Point")) == 16, "unique successful targets capped at sixteen despite duplicated entries");
-        Tick(many, 1.5f);
-        var empty = StartMass(Manager(owner));
-        empty.GiveDamageFromManager(null);
-        Tick(empty, 1.5f);
-        Check(empty.IsDoneEffect, "null callback list also terminates");
+        var interrupted = StartMass(Manager(owner));
+        Tick(interrupted, .3f);
+        owner.charAppearance.ChangeMotion(ActionDetail.Damaged);
+        Tick(interrupted, .5f);
+        Check(owner.charAppearance.GetCurrentMotionDetail() == ActionDetail.Damaged, "interrupted bow cannot reclaim the pose");
+        interrupted.GiveDamageFromManager(null);
+        Tick(interrupted, 1f);
+        Check(interrupted.IsDoneEffect, "null target list also releases the cast");
+        var previous = StartMass(Manager(owner));
+        Tick(previous, .3f);
+        owner.model.currentDiceAction.currentBehavior = new BattleDiceBehavior();
+        var next = StartMass(Manager(owner));
+        Tick(previous, .5f);
+        Check(previous.IsDoneEffect && owner.charAppearance.GetCurrentMotionDetail() == ActionDetail.Special,
+            "last die cannot steal the next die's preparation");
+        Tick(next, .76f);
+        Check(owner.charAppearance.GetCurrentMotionDetail() == ActionDetail.S3, "long frame jumps to correct release");
+        UnityEngine.Object.Destroy(next.gameObject);
     }
 
     private static void MultipleSuccessfulMass()
     {
-        var owner=Actor(19f);
-        var targets=new[]{Actor(-17f),Actor(-7f),Actor(3f)};
-        foreach(var target in targets)target.model.currentDiceAction.currentBehavior.DiceResultValue=3;
-        var manager=Manager(owner,targets);
-        int first=ChristashaNativeParticlePlayback.Started.Count;
-        var effect=StartMass(manager);
-        Tick(effect,.75f);manager.Tick(.75f);
-        var points=ChristashaNativeParticlePlayback.Started.Skip(first).Where(x=>x.Root.name=="ChristashaNative_Point").ToArray();
-        Check(points.Length==3 && targets.All(x=>x.model.damageCalls==1),"three successful native victims each receive one Point after release");
-        foreach(var target in targets)
-            Check(points.Count(x=>Close(x.Root.transform.position,target.atkEffectRoot.position) &&
-                Close(x.Root.transform.localScale,Vector3.one*2.2f))==1,"each Point retains a distinct target position with fixed readable art scale");
-        Check(points.Select(x=>x.Root.transform.position.x).Distinct().Count()==3,"three scaled Points do not collapse onto one world point");
-        Tick(effect,1f);manager.Tick(1f);
-        Check(effect.IsDoneEffect && manager._phase==BattleFarAreaPlayManager.Phase.RollDice,"three-target visual tail releases the manager");
+        var owner = Actor(19f);
+        var targets = new[] {Actor(-17f), Actor(-7f), Actor(3f)};
+        foreach (var target in targets) target.model.currentDiceAction.currentBehavior.DiceResultValue = 3;
+        var manager = Manager(owner, targets);
+        var effect = StartMass(manager);
+        Tick(effect, .75f); manager.Tick(.75f);
+        Check(ChristashaXiyinTide.Latest.Targets.SequenceEqual(targets) && targets.All(x => x.model.damageCalls == 1),
+            "each successful target receives one native hit and one visual");
+        Tick(effect, 1f); manager.Tick(1f);
+        Check(effect.IsDoneEffect && manager._phase == BattleFarAreaPlayManager.Phase.RollDice, "multiple-target tail completes");
     }
 
     private static void CancellationAndMissingAssets()
@@ -452,8 +469,8 @@ internal static class RunContracts
         foreach (string mode in new[] { "owner-dead", "owner-hidden", "card-changed", "dice-changed", "effect-disabled", "effect-destroyed", "no-callback" })
         {
             var owner = Actor(5);
-            int first = ChristashaNativeParticlePlayback.Started.Count;
             var effect = StartMass(Manager(owner));
+            var tide = ChristashaXiyinTide.Latest;
             if (mode == "owner-dead") owner.model.dead = true;
             if (mode == "owner-hidden") owner.gameObject.SetActive(false);
             if (mode == "card-changed") owner.model.currentDiceAction = new BattlePlayingCardDataInUnitModel();
@@ -461,7 +478,7 @@ internal static class RunContracts
             if (mode == "effect-disabled") effect.gameObject.SetActive(false);
             if (mode == "effect-destroyed") UnityEngine.Object.Destroy(effect.gameObject);
             Tick(effect, mode == "no-callback" ? 1.81f : .01f);
-            Check(effect.IsDoneEffect && !effect.isRunning && ChristashaNativeParticlePlayback.Started.Skip(first).All(x => x.Stopped), mode + " cannot block native manager and clears all owned instances");
+            Check(effect.IsDoneEffect && !effect.isRunning && tide.Disposed, mode + " cannot block native manager and clears all owned instances");
         }
         Prefabs(true);
         var missingOwner = Actor(5);

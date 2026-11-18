@@ -29,9 +29,21 @@ def card_by_id(root, card_id):
     assert len(matches) == 1, 'missing or duplicate card ' + card_id
     return matches[0]
 
+def normal_actions(root, verify_and_restore):
+    for card, scripts in contract['normal_melee_actions'].items():
+        dice = card_by_id(root, card).findall('BehaviourList/Behaviour')
+        assert len(dice) == len(scripts), card
+        for die, suffix in zip(dice, scripts):
+            if suffix is None:
+                continue
+            key = 'Steria_Christasha' + suffix
+            assert die.get('ActionScript') == (key if verify_and_restore else ''), (card, key)
+            die.set('ActionScript', '' if verify_and_restore else key)
+
 # Check exact bindings before removing only these visual fields. Other original
 # card data, including Guard, Xiao actions and dice abilities, stays protected.
 protected = ET.fromstring(ET.tostring(after))
+normal_actions(protected, verify_and_restore=True)
 for entry in contract['bindings']:
     die = card_by_id(protected, entry['card']).findall('./BehaviourList/Behaviour')[entry['behavior']]
     assert die.get('EffectRes') == entry['new'], entry
@@ -48,6 +60,7 @@ assert sorted(counts.values()) == [2, 8, 8, 9, 19] and len(contract['protected_c
 registry = (build / 'HarmonyPatches.cs').read_text(encoding='utf-8-sig')
 if args.baseline:
     before = ET.parse(args.baseline / relative).getroot()
+    normal_actions(before, verify_and_restore=False)
     for entry in contract['bindings']:
         die = card_by_id(before, entry['card']).findall('./BehaviourList/Behaviour')[entry['behavior']]
         assert die.get('EffectRes') == entry['old'], entry

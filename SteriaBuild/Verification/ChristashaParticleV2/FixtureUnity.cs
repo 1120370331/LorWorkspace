@@ -100,6 +100,7 @@ namespace UnityEngine
  }
  public class Camera:Component
  {
+  public static Camera main { get { return null; } }
   public static int Renders;public bool enabled,orthographic;public float orthographicSize,nearClipPlane,farClipPlane;
   public int cullingMask;public Color backgroundColor;public CameraClearFlags clearFlags;public RenderTexture targetTexture;
   public void Render(){Renders++;}

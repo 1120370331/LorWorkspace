@@ -19,6 +19,7 @@ generated.mkdir(parents=True, exist_ok=True)
 inputs = [build / name for name in ('DiceAttackEffect_Steria_ChristashaParticleV2.cs', 'ChristashaStrikeImpact.cs', 'BehaviourAction_Steria_ChristashaXiyinV2.cs', 'FarAreaEffect_Steria_ChristashaXiyinV2.cs')]
 inputs.append(build / 'ChristashaProjectileArc.cs')
 inputs.append(build / 'ChristashaThrustEnvelope.cs')
+inputs.append(build / 'ChristashaNormalSkin.cs')
 inputs.append(build / 'SteriaEffectHelper.cs')
 for relative in ('Battle/DiceAttackEffect/DiceAttackEffect.cs', 'FarAreaEffect.cs'):
     source = build / 'Assembly-CSharp' / relative

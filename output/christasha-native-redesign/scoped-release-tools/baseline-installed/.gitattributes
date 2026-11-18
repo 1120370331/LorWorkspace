@@ -1,0 +1,2 @@
+# The scoped release tool checks these snapshots against installed DLL/PDB hashes.
+* -text whitespace=-blank-at-eol,-blank-at-eof

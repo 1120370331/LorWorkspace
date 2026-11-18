@@ -1,0 +1,22 @@
+using System;
+using System.IO;
+using System.Linq;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+
+// Called only on a copied player. Stop at the initial branch scene so the game
+// cannot load mod preferences, sync the Steam Cloud or touch a playthrough.
+using var resolver = new DefaultAssemblyResolver();
+resolver.AddSearchDirectory(Path.GetDirectoryName(args[0]));
+using var player = AssemblyDefinition.ReadAssembly(args[0], new ReaderParameters
+{ ReadingMode = ReadingMode.Deferred, InMemory = true, AssemblyResolver = resolver });
+using var fixture = AssemblyDefinition.ReadAssembly(args[1]);
+var entry = fixture.MainModule.GetType("StarlanceSmokeBoot").Methods.Single(m => m.Name == "Start");
+var start = player.MainModule.GetType("BranchScene").Methods.Single(m => m.Name == "Start");
+if (start.Body.Instructions.Count != 3 || start.Body.Instructions[1].Operand is not MethodReference move || move.Name != "MoveScene")
+    throw new InvalidOperationException("Initial game scene bytecode changed");
+start.Body.Instructions.Clear();
+var il = start.Body.GetILProcessor();
+il.Emit(OpCodes.Call, player.MainModule.ImportReference(entry));
+il.Emit(OpCodes.Ret);
+player.Write(args[2]);

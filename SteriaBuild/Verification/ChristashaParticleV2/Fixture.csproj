@@ -11,6 +11,7 @@
     <Compile Include="../../DiceAttackEffect_Steria_ChristashaParticleV2.cs"/>
     <Compile Include="../../BehaviourAction_Steria_ChristashaXiyinV2.cs"/>
     <Compile Include="../../FarAreaEffect_Steria_ChristashaXiyinV2.cs"/>
+    <Compile Include="../../ChristashaNormalSkin.cs"/>
     <Compile Include="../../ChristashaStrikeImpact.cs"/>
     <Compile Include="../../ChristashaProjectileArc.cs"/>
     <Compile Include="../../ChristashaThrustEnvelope.cs"/>

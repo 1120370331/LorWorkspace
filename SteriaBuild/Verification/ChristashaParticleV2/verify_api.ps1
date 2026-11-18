@@ -16,6 +16,7 @@ $argsList += Join-Path $repo 'SteriaBuild/ChristashaStrikeImpact.cs'
 $argsList += Join-Path $repo 'SteriaBuild/ChristashaProjectileArc.cs'
 $argsList += Join-Path $repo 'SteriaBuild/ChristashaThrustEnvelope.cs'
 $argsList += Join-Path $repo 'SteriaBuild/SteriaEffectHelper.cs'
+$argsList += @('ChristashaNormalSkin.cs', 'ChristashaXiyinTide.cs', 'ChristashaStarlance.cs', 'BehaviourAction_Steria_ChristashaNormal.cs', 'BehaviourAction_Steria_MemoryConcerto.cs') | ForEach-Object { Join-Path $repo ('SteriaBuild/' + $_) }
 $argsList += @('DiceAttackEffect_Steria_ChristashaParticleV2.cs', 'BehaviourAction_Steria_ChristashaXiyinV2.cs', 'FarAreaEffect_Steria_ChristashaXiyinV2.cs', 'ChristashaNativeParticleLibrary.cs', 'ChristashaNativeMassRecipes.cs', 'ChristashaNativePierceRecipes.cs', 'SteriaLogger.cs') | ForEach-Object { Join-Path $repo ('SteriaBuild/' + $_) }
 & $csc @argsList *> (Join-Path $output 'api-compile.log')
 if ($LASTEXITCODE -ne 0) { Get-Content (Join-Path $output 'api-compile.log'); throw 'Real game API compile failed' }

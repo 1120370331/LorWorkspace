@@ -5,7 +5,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActionDetail { Default, Guard, Evade, Damaged, Slash, Penetrate, Hit, Move, Standing, NONE, Fire, Aim, Special }
+public enum ActionDetail { Default, Guard, Evade, Damaged, Slash, Penetrate, Hit, Move, Standing, NONE, Fire, Aim, Special, S1, S2, S3 }
+namespace Workshop
+{
+    public class ClothCustomizeData { public string spritePath; }
+    public class WorkshopSkinDataSetter : MonoBehaviour
+    {
+        public Dictionary<ActionDetail, ClothCustomizeData> dic = new Dictionary<ActionDetail, ClothCustomizeData>();
+    }
+}
 public enum CardRange { FarArea, FarAreaEach }
 public enum DialogType { DEATH }
 public class BattleUnitModel
@@ -46,7 +54,10 @@ public class CharacterAppearance : MonoBehaviour
             action == ActionDetail.Penetrate ? atkEffectPivot_Z : action == ActionDetail.Fire ? atkEffectPivot_F : action == ActionDetail.Guard ? atkEffectPivot_G : atkEffectRoot;
         return pivot ?? atkEffectRoot;
     }
-    public void ChangeMotion(ActionDetail action) { }
+    private ActionDetail current;
+    public ActionDetail GetCurrentMotionDetail() { return current; }
+    public object GetCharacterMotion(ActionDetail action) { return this; }
+    public void ChangeMotion(ActionDetail action) { current = action; }
 }
 public class BattlePlayingCardDataInUnitModel
 {
@@ -71,7 +82,7 @@ public static class Util { public static void DebugEditorLog(string text) { thro
 public class Singleton<T> where T : new() { public static T Instance = new T(); }
 public class SingletonBehavior<T> where T : new() { public static T Instance = new T(); }
 public class AutoDestruct : MonoBehaviour { public float time; public void DestroyWhenDisable() { } }
-public class BehaviourActionBase { protected BattleUnitModel _self; public virtual FarAreaEffect SetFarAreaAtkEffect(BattleUnitModel self) { return null; } }
+public class BehaviourActionBase { protected BattleUnitModel _self; public virtual float GetAreaAtkWaitActionDelay() { return .5f; } public virtual FarAreaEffect SetFarAreaAtkEffect(BattleUnitModel self) { return null; } }
 public partial class BattleFarAreaPlayManager
 {
     public enum Phase { Action, RollDice }
@@ -108,6 +119,36 @@ namespace Steria
 }
 namespace Steria.Vfx
 {
+    // Record the V3 presentation boundary. The isolated game player tests actual atlases.
+    internal sealed class ChristashaXiyinTide : IDisposable
+    {
+        internal const float ReleaseTime = .75f;
+        internal static ChristashaXiyinTide Latest;
+        internal readonly List<BattleUnitView> Targets = new List<BattleUnitView>();
+        internal List<BattleUnitView> Subjects;
+        internal bool Disposed;
+        private float end = 1.67f;
+        internal static void Prewarm() { }
+        internal static ChristashaXiyinTide Create(Transform root, BattleUnitView caster, List<BattleUnitView> subjects)
+        { return Latest = Resources.Missing ? null : new ChristashaXiyinTide { Subjects = subjects }; }
+        internal void Present(float time) { }
+        internal void Confirm(BattleUnitView view, float time) { Targets.Add(view); end = Math.Max(end, time + .635f); }
+        internal bool Complete(float time) { return time >= end; }
+        public void Dispose() { Disposed = true; }
+    }
+    internal sealed class ChristashaStarlance : IDisposable
+    {
+        // This managed fixture exercises the legacy-particle fallback. The installed
+        // Unity player fixture verifies the real shader/atlas path independently.
+        internal static ChristashaStarlance Create(float actorScale) { return null; }
+        internal static bool Prepare() { return false; }
+        internal bool Complete { get { return true; } }
+        internal float Lifetime { get { return 0f; } }
+        internal void Confirm() { }
+        internal void SetLayer(string name) { }
+        internal void Advance(float dt, Vector3 source, Vector3 contact, Vector3 exit, Camera camera) { }
+        public void Dispose() { }
+    }
     public static class ChristashaNativeMassRecipes { public const float AreaDesignWidth = 32f; }
     // A recording visual boundary is intentional: the tests exercise production
     // game adapters. Real particles are independently compiled and GPU-previewed.

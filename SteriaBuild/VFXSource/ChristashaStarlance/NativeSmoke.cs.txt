@@ -1,0 +1,317 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Runtime.Serialization;
+using Battle.DiceAttackEffect;
+using HarmonyLib;
+using LOR_DiceSystem;
+using Steria.Vfx;
+using UnityEngine;
+using Object = UnityEngine.Object;
+
+public static class StarlanceSmokeBoot
+{
+    public static void Start()
+    {
+        string[] args = Environment.GetCommandLineArgs();
+        string output = args[Array.IndexOf(args, "-starlanceOutput") + 1];
+        try
+        {
+            var staged = Path.Combine(output, "StagedMod", "Assemblies");
+            var deps = Path.Combine(Application.dataPath, "Managed", "SmokeDependencies");
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, request) =>
+            {
+                string file = new AssemblyName(request.Name).Name + ".dll";
+                string path = Path.Combine(deps, file);
+                return File.Exists(path) ? Assembly.LoadFrom(path) : null;
+            };
+            Assembly.LoadFrom(Path.Combine(staged, "Steria.dll"));
+            new GameObject("Read-only native Starlance test").AddComponent<StarlanceNativeSmoke>().Begin(output);
+        }
+        catch (Exception error)
+        {
+            File.WriteAllText(Path.Combine(output, "failure.txt"), error.ToString());
+            Application.Quit(1);
+        }
+    }
+}
+
+public sealed class StarlanceNativeSmoke : MonoBehaviour
+{
+    const string Near = "Steria_ChristashaV2PierceNear";
+    const string Far = "Steria_ChristashaV2PierceFar";
+    static readonly BindingFlags Hidden = BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic;
+    string output;
+    int checks;
+    DiceEffectManager manager;
+    Camera viewCamera;
+    GameObject nativeSpark;
+
+    public void Begin(string path)
+    {
+        output = path;
+        Application.runInBackground = true;
+        Application.logMessageReceived += (message, trace, type) =>
+        {
+            if (type != LogType.Exception) return;
+            File.WriteAllText(Path.Combine(output, "failure.txt"), message + "\n" + trace);
+            Application.Quit(1);
+        };
+        StartCoroutine(Run());
+    }
+
+    IEnumerator Run()
+    {
+        Check(Application.unityVersion.StartsWith("2019.") && SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Direct3D11,
+            "production Unity player and Direct3D 11");
+        var harmony = new Harmony("Steria.ChristashaStarlance.PlayerVerification");
+        var assembly = typeof(DiceAttackEffect_Steria_ChristashaV2PierceNear).Assembly;
+        var factory = typeof(Steria.HarmonyPatches);
+        factory.GetMethod("InitCustomEffects").Invoke(null, null);
+        harmony.Patch(AccessTools.Method(typeof(DiceEffectManager), "CreateBehaviourEffect"),
+            prefix: new HarmonyMethod(factory, "DiceEffectManager_CreateBehaviourEffect_Prefix"));
+        harmony.Patch(AccessTools.Method(typeof(DiceEffectManager), "CreateAttackEffect"),
+            prefix: new HarmonyMethod(assembly.GetType("Steria.DiceEffectManager_CreateAttackEffect_Patch", true), "Prefix"));
+        foreach (var patch in new[] { typeof(ChristashaStarlancePresentationPatch), typeof(ChristashaStarlanceDirectPatch),
+            typeof(ChristashaStrikePresentationPatch), typeof(ChristashaStrikeConfirmedImpactPatch),
+            typeof(AntieCoreAttackPresentationPatch), typeof(SlazeyaCoreMeleePresentationPatch) })
+            harmony.CreateClassProcessor(patch).Patch();
+
+        manager = new GameObject("Actual DiceEffectManager").AddComponent<DiceEffectManager>();
+        var battle = new GameObject("Synthetic BattleSceneRoot").AddComponent<BattleSceneRoot>();
+        battle.enabled = false;
+        typeof(SingletonBehavior<BattleSceneRoot>).GetField("_instance", Hidden).SetValue(null, battle);
+        nativeSpark = new GameObject("Native feedback probe");
+        nativeSpark.SetActive(false);
+        var feedback = nativeSpark.AddComponent<DiceDamagedEffect>();
+        Field(feedback, "sprites", new Sprite[] { null });
+        Field(manager, "_effectDamagedByPenetrate", feedback);
+        viewCamera = new GameObject("Combat camera").AddComponent<Camera>();
+        viewCamera.tag = "MainCamera";
+        viewCamera.enabled = false;
+        viewCamera.orthographic = true;
+        viewCamera.orthographicSize = 17f;
+        viewCamera.transform.position = new Vector3(0, 9, -60);
+        viewCamera.clearFlags = CameraClearFlags.SolidColor;
+        viewCamera.backgroundColor = new Color(.056f, .071f, .092f);
+        Time.captureFramerate = 60;
+
+        int[] cores = { 99000009, 10, 99000010, 11 };
+        foreach (int id in cores)
+        {
+            int sign = id == 10 || id == 11 ? -1 : 1;
+            string label = id == 99000009 ? "right" : id == 10 ? "left" : id == 99000010 ? "rise" : "fall";
+            var self = Actor(-13.4f * sign, 0, sign, true);
+            var target = Actor(10.7f * sign, id == 99000010 ? 1.85f : id == 11 ? -1.85f : 0, -sign, false);
+            Book(self, id, "SteriaBuilding");
+            var shot = Snapshot("Borrowed_Z", id == 99000010 ? CardRange.Far : CardRange.Near, Result.Win,
+                id == 11 ? BehaviourType.Standby : BehaviourType.Atk);
+            Print(self, target, shot, sign < 0);
+            var fx = self.GetComponentInChildren<DiceAttackEffect_Steria_ChristashaV2PierceNear>();
+            Check(fx != null && fx.transform.parent == self.charAppearance.GetSpecialMotionPivot(ActionDetail.Penetrate),
+                "native PrintEffect routes core " + id + " using its Penetrate special pivot");
+            Check(shot.behaviourRawData.EffectRes == "Borrowed_Z", "borrowed book page keeps its XML key");
+            Check(target.atkEffectRoot.Find("Native feedback probe(Clone)") != null,
+                "near hit keeps native damage feedback and adds V3 impact");
+            var starlance = Starlance(fx);
+            var root = (GameObject)starlance.GetType().GetField("root", Hidden).GetValue(starlance);
+            var renderers = root.GetComponentsInChildren<MeshRenderer>(true);
+            Check(renderers.Length == 5 && Array.TrueForAll(renderers, renderer =>
+                renderer.gameObject.layer == LayerMask.NameToLayer("Effect") && renderer.sortingLayerName == "Particle" &&
+                renderer.sharedMaterial.shader.name == "Legacy Shaders/Particles/Additive (Soft)"),
+                "five actual atlases, native soft-additive shader and battle layers");
+            var exit = root.transform.Find("Exit").GetComponent<MeshRenderer>();
+            var impact = root.transform.Find("Impact").GetComponent<MeshRenderer>();
+            var travel = root.transform.Find("Travel").GetComponent<MeshRenderer>();
+
+            var shots = Directory.CreateDirectory(Path.Combine(output, label));
+            string referenceImage = Path.Combine(shots.FullName, "000.png");
+            Save(referenceImage);
+            for (int frame = 1; frame < 48; frame++)
+            {
+                yield return new WaitForEndOfFrame();
+                if (frame == 8) Check(travel.enabled && !impact.enabled && !exit.enabled, "flight visible before impact " + label);
+                if (frame == 16)
+                {
+                    Vector3 start = self.charAppearance.GetSpecialMotionPivot(ActionDetail.Penetrate).position;
+                    Vector3 hit = target.atkEffectRoot.position;
+                    Vector3 axis = (hit - start).normalized;
+                    Check(exit.enabled && impact.enabled, "confirmed hit opens exit and collision " + label);
+                    Check(Vector3.Dot(travel.transform.right, axis) > .999f &&
+                        Vector3.Dot(exit.transform.right, axis) > .999f, "live three-point stretch and facing " + label);
+                    Vector3 end = ChristashaThrustEnvelope.Exit(start, hit, target.WorldPosition, 3);
+                    Check(Vector3.Distance(exit.transform.TransformPoint(new Vector3(1, .5f, 0)), end) < .4f,
+                        "exit reaches behind target body " + label);
+                    target.transform.position += new Vector3(.25f, .4f, 0);
+                }
+                if (frame == 17)
+                    Check(Vector3.Distance((Vector3)starlance.GetType().GetField("struck", Hidden).GetValue(starlance),
+                        target.atkEffectRoot.position) > .4f, "world collision remains at confirmed contact while victim moves " + label);
+                if (frame == 33) Check(!travel.enabled && !exit.enabled && impact.enabled, "beam recedes before stars and glints " + label);
+                Save(Path.Combine(shots.FullName, frame.ToString("000") + ".png"));
+            }
+            Check(root == null, "normal completion releases all five layers " + label);
+            Object.Destroy(self.gameObject);
+            Object.Destroy(target.gameObject);
+            yield return null;
+        }
+
+        var actor = Actor(-13.4f, 0, 1, true);
+        var victim = Actor(10.7f, 0, -1, false);
+        var wrong = Actor(10.7f, 2, -1, false);
+        Book(actor, 99000009, "SteriaBuilding");
+        var miss = (DiceAttackEffect_Steria_ChristashaV2PierceNear)manager.CreateBehaviourEffect(Near, .5f, actor, victim, 1);
+        manager.CreateDamagedEffectByBehaviour(BehaviourDetail.Penetrate, 1, wrong);
+        yield return null;
+        for (int i = 0; i < 14; i++) yield return null;
+        var missRoot = Root(miss);
+        Check(missRoot.transform.Find("Travel").GetComponent<MeshRenderer>().enabled &&
+            !missRoot.transform.Find("Exit").GetComponent<MeshRenderer>().enabled &&
+            !missRoot.transform.Find("Impact").GetComponent<MeshRenderer>().enabled, "miss and wrong victim produce no collision");
+        Save(Path.Combine(output, "miss.png"));
+        miss.gameObject.SetActive(false);
+        Check(!missRoot.activeSelf, "disable/cancel hides all V3 layers immediately");
+        yield return null;
+        Check(missRoot == null, "cancel releases renderer ownership");
+
+        var snapshot = Snapshot("Borrowed_Z", CardRange.Near, Result.Win, BehaviourType.Atk);
+        var playing = new BattlePlayingCardDataInUnitModel { owner = actor.model, target = victim.model, card = snapshot.cardModel };
+        playing.currentBehavior = new BattleDiceBehavior { card = playing, behaviourInCard = snapshot.behaviourRawData };
+        actor.model.currentDiceAction = playing;
+        var direct = manager.CreateAttackEffect(actor.model, 1);
+        Check(direct is DiceAttackEffect_Steria_ChristashaV2PierceNear && Root(direct) != null, "true direct attack factory resolves native core Z");
+        Object.Destroy(direct.gameObject);
+        var ranged = manager.CreateBehaviourEffect(Far, .5f, actor, victim, 1);
+        Check(ranged is DiceAttackEffect_Steria_ChristashaV2PierceFar && Root(ranged, false) == null && ranged.transform.parent == null,
+            "dedicated flying sword key retains its existing world route");
+        Object.Destroy(ranged.gameObject);
+        var resolve = typeof(ChristashaStarlanceDefaults).GetMethod("Resolve", Hidden);
+        foreach (string variant in new[] { "Fire", "FarArea", "Slash", "Guard", "Disabled", "OtherCore", "DedicatedRangedKey" })
+        {
+            var raw = Snapshot(variant == "Disabled" ? "None" : variant == "DedicatedRangedKey" ? Far : "Original",
+                variant == "FarArea" ? CardRange.FarArea : CardRange.Far, Result.Win,
+                variant == "Guard" ? BehaviourType.Def : BehaviourType.Atk);
+            if (variant == "Fire") raw.behaviourRawData.MotionDetail = MotionDetail.F;
+            if (variant == "Slash") raw.behaviourRawData.Detail = BehaviourDetail.Slash;
+            Book(actor, variant == "OtherCore" ? 13 : 99000009, "SteriaBuilding");
+            string expected = variant == "DedicatedRangedKey" ? Far : "Original";
+            Check((string)resolve.Invoke(null, new object[] { actor, raw, ActionDetail.Default, expected }) == expected, "other path preserved " + variant);
+        }
+        string report = "CHRISTASHA_STARLANCE_NATIVE_PASS " + checks + " checks; Unity " + Application.unityVersion +
+            " actual game player and D3D11, exact candidate DLL/file atlas loading, actual native factory, PrintEffect and result feedback; synthetic battle states and character sprites";
+        File.WriteAllText(Path.Combine(output, "checks.txt"), report + "\n");
+        Debug.Log(report);
+        Application.Quit(0);
+    }
+
+    void Check(bool condition, string description)
+    {
+        if (!condition) throw new InvalidOperationException(description);
+        checks++;
+        Debug.Log("STARLANCE_CHECK " + description);
+    }
+
+    object Starlance(DiceAttackEffect fx, bool required = true)
+    {
+        var value = typeof(DiceAttackEffect_Steria_ChristashaParticleV2).GetField("_starlance", Hidden).GetValue(fx);
+        if (required) Check(value != null, "production V3 selected, exact resources loaded");
+        return value;
+    }
+
+    GameObject Root(DiceAttackEffect fx, bool required = true)
+    {
+        var value = Starlance(fx, required);
+        return value == null ? null : (GameObject)value.GetType().GetField("root", Hidden).GetValue(value);
+    }
+
+    static void Field(object value, string key, object data) { value.GetType().GetField(key, Hidden).SetValue(value, data); }
+
+    static void Book(BattleUnitView actor, int id, string package)
+    {
+        var book = (BookModel)FormatterServices.GetUninitializedObject(typeof(BookModel));
+        Field(book, "_classInfo", new BookXmlInfo { _id = id, workshopID = package });
+        actor.model.equipment = new BattleUnitModelEquip(actor.model) { book = book };
+    }
+
+    BattleUnitView Actor(float x, float y, int sign, bool attacking)
+    {
+        var root = new GameObject(attacking ? "Fixture Christasha" : "Fixture target");
+        root.transform.position = new Vector3(x, y, 0);
+        var actor = root.AddComponent<BattleUnitView>();
+        actor.enabled = false;
+        var rotation = new GameObject("characterRotationCenter").transform;
+        rotation.SetParent(root.transform, false);
+        rotation.localScale = Vector3.one * 3;
+        rotation.localRotation = Quaternion.Euler(0, sign > 0 ? 180 : 0, 0);
+        actor.characterRotationCenter = rotation;
+        var appearance = new GameObject("Native CharacterAppearance");
+        appearance.transform.SetParent(rotation, false);
+        actor.charAppearance = appearance.AddComponent<CharacterAppearance>();
+        actor.charAppearance.enabled = false;
+        var fallback = new GameObject("atkEffectRoot").transform;
+        fallback.SetParent(appearance.transform, false);
+        fallback.localPosition = new Vector3(-1.92f, 2.52f, 0);
+        actor.atkEffectRoot = actor.charAppearance.atkEffectRoot = fallback;
+        var special = new GameObject("Penetrate special motion pivot").transform;
+        special.SetParent(appearance.transform, false);
+        special.localPosition = fallback.localPosition + new Vector3(-.05f, .06f, 0);
+        Field(actor.charAppearance, "_specialMotionPivotList", new List<CharacterAppearance.MotionPivot>
+        { new CharacterAppearance.MotionPivot { motion = ActionDetail.Penetrate, pivot = special } });
+        actor.model = (BattleUnitModel)FormatterServices.GetUninitializedObject(typeof(BattleUnitModel));
+        actor.model.view = actor;
+        var art = new GameObject("Character sprite");
+        art.transform.SetParent(root.transform, false);
+        art.transform.localPosition = new Vector3(0, 0, .2f);
+        art.transform.localScale = Vector3.one * 3;
+        var image = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+        ImageConversion.LoadImage(image, File.ReadAllBytes(Path.Combine(output, attacking ? "actor.png" : "target.png")), true);
+        var renderer = art.AddComponent<SpriteRenderer>();
+        renderer.sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height),
+            attacking ? new Vector2(683f / 1024, 278.3f / 1024) : new Vector2(.5f, .25f), 50, 0, SpriteMeshType.FullRect);
+        renderer.flipX = sign > 0;
+        renderer.color = new Color(.83f, .83f, .87f);
+        return actor;
+    }
+
+    static BattleCardBehaviourResult Snapshot(string resource, CardRange range, Result result, BehaviourType type)
+    {
+        var card = (BattleDiceCardModel)FormatterServices.GetUninitializedObject(typeof(BattleDiceCardModel));
+        Field(card, "_xmlData", new DiceCardXmlInfo { Spec = new DiceCardSpec { Ranged = range } });
+        return new BattleCardBehaviourResult { hasBehaviour = true, cardModel = card, resultDiceValue = 4, vanillaDiceFace = 8,
+            behaviourRawData = new DiceBehaviour { Type = type, Detail = BehaviourDetail.Penetrate, MotionDetail = MotionDetail.Z, Dice = 8, EffectRes = resource },
+            diceBehaviourResult = new DiceBehaviourResultData { result = result, actionType = ActionType.Atk, range = range } };
+    }
+
+    static void Print(BattleUnitView actor, BattleUnitView target, BattleCardBehaviourResult result, bool enemy)
+    {
+        var encounter = (RencounterManager)FormatterServices.GetUninitializedObject(typeof(RencounterManager));
+        var unused = new BattleCardBehaviourResult { behaviourRawData = new DiceBehaviour { Type = BehaviourType.Def },
+            diceBehaviourResult = new DiceBehaviourResultData { result = Result.Lose, actionType = ActionType.Def } };
+        Field(encounter, "_librarian", enemy ? target : actor);
+        Field(encounter, "_enemy", enemy ? actor : target);
+        Field(encounter, "_currentLibrarianBehaviourResult", enemy ? unused : result);
+        Field(encounter, "_currentEnemyBehaviourResult", enemy ? result : unused);
+        typeof(RencounterManager).GetMethod("PrintEffect", Hidden).Invoke(encounter, new object[] { !enemy, enemy,
+            enemy ? ActionDetail.Default : ActionDetail.Penetrate, enemy ? ActionDetail.Penetrate : ActionDetail.Default,
+            "", "", false, false, false, false });
+    }
+
+    void Save(string path)
+    {
+        const int width = 1280, height = 720;
+        var target = RenderTexture.GetTemporary(width, height, 24, RenderTextureFormat.ARGB32);
+        var old = RenderTexture.active;
+        viewCamera.targetTexture = target;
+        viewCamera.Render();
+        RenderTexture.active = target;
+        var texture = new Texture2D(width, height, TextureFormat.RGB24, false);
+        texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        File.WriteAllBytes(path, texture.EncodeToPNG());
+        Object.Destroy(texture);
+        viewCamera.targetTexture = null;
+        RenderTexture.active = old;
+        RenderTexture.ReleaseTemporary(target);
+    }
+}

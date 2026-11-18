@@ -16,6 +16,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
     internal bool SuppressesNativeImpactFeedback { get { return IsProjectile; } }
     private ChristashaParticleInstance _visual;
     private ChristashaParticleInstance _portal;
+    private ChristashaStarlance _starlance;
     private bool _arrived;
     private bool _launched;
     private bool _impactShakePlayed;
@@ -81,8 +82,19 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
             }
             // Greatsword's approved preview uses this outer native tilt. Keep it
             // on the visual instance so the adapter's contact pivot stays fixed.
-            _visual = ChristashaParticleInstance.CreateLocal(Recipe, transform,
-                Recipe == "Hit" ? Quaternion.Euler(-10f, 0f, 0f) : Quaternion.identity);
+            if (Recipe == "Pierce" && _targetTransform != null)
+            {
+                var facing = self.characterRotationCenter ?? self.transform;
+                _starlance = ChristashaStarlance.Create(Mathf.Abs(facing.lossyScale.x));
+            }
+            if (_starlance == null)
+                _visual = ChristashaParticleInstance.CreateLocal(Recipe, transform,
+                    Recipe == "Hit" ? Quaternion.Euler(-10f, 0f, 0f) : Quaternion.identity);
+            else
+            {
+                _visualLifetime = _starlance.Lifetime + .02f;
+                _destroyTime = Mathf.Max(_destroyTime, _visualLifetime);
+            }
             if (_visual != null)
             {
                 if (!IsProjectile && Recipe == "Pierce" && _targetTransform != null)
@@ -119,6 +131,7 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
         base.SetLayer(layerName);
         if (_visual != null) _visual.SetLayer(layerName);
         if (_portal != null) _portal.SetLayer(layerName);
+        if (_starlance != null) _starlance.SetLayer(layerName);
     }
 
     protected override void Update()
@@ -127,6 +140,20 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
         try
         {
             _visualTime += Time.deltaTime;
+            if (_starlance != null)
+            {
+                if (_targetView != null && _targetTransform != null)
+                {
+                    Vector3 source = transform.position;
+                    Vector3 contact = _targetTransform.position;
+                    _starlance.Advance(Time.deltaTime, source, contact, PierceExit(source, contact), Camera.main);
+                }
+                if (_targetTransform == null || _starlance.Complete)
+                {
+                    _starlance.Dispose();
+                    _starlance = null;
+                }
+            }
             if (IsProjectile && !_arrived) PositionProjectile(_visualTime);
             if (!IsProjectile && Recipe == "Pierce" && _visual != null && _targetTransform != null)
                 AimPierce();
@@ -158,9 +185,14 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
     private void AimPierce()
     {
         if (_visual == null || _targetView == null || _targetTransform == null) return;
+        Vector3 contact = _targetTransform.position;
+        _visual.AimAt(contact, PierceExit(_visual.Root.transform.position, contact));
+    }
+
+    private Vector3 PierceExit(Vector3 source, Vector3 contact)
+    {
         float targetScale = _targetView.characterRotationCenter == null ? 1f : Mathf.Abs(_targetView.characterRotationCenter.lossyScale.x);
-        Vector3 exit = ChristashaThrustEnvelope.Exit(_visual.Root.transform.position, _targetTransform.position, _targetView.WorldPosition, targetScale);
-        _visual.AimAt(_targetTransform.position, exit);
+        return ChristashaThrustEnvelope.Exit(source, contact, _targetView.WorldPosition, targetScale);
     }
 
     private void PositionProjectile(float time)
@@ -208,14 +240,24 @@ public abstract class DiceAttackEffect_Steria_ChristashaParticleV2 : DiceAttackE
 
     internal bool TryConfirmImpact(BattleUnitView target)
     {
-        if (_visual == null || target == null || target.atkEffectRoot != _targetTransform ||
+        if (target == null || target.atkEffectRoot != _targetTransform ||
             (!IsProjectile && Recipe != "Pierce")) return false;
+        if (_starlance != null)
+        {
+            _starlance.Confirm();
+            _visualLifetime = _starlance.Lifetime + .02f;
+            _destroyTime = Mathf.Max(_destroyTime, _visualLifetime);
+            return true;
+        }
+        if (_visual == null) return false;
         _visual.ConfirmImpact();
         return true;
     }
 
     private void Cleanup()
     {
+        if (_starlance != null) _starlance.Dispose();
+        _starlance = null;
         if (_visual != null) _visual.Dispose();
         _visual = null;
         if (_portal != null) _portal.Dispose();
@@ -388,6 +430,7 @@ internal sealed class ChristashaParticleInstance : IDisposable
     // visual library: no battle adapter, production seed, audio or camera shake.
     internal static void PrepareCombatVisuals()
     {
+        ChristashaStarlance.Prepare();
         if (PreparedCombatRecipes.Count == CombatRecipes.Length) return;
         var library = GetLibrary();
         if (library == null) return;

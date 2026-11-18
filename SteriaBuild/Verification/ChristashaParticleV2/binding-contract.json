@@ -1,5 +1,13 @@
 {
   "description": "Exact Christasha V2 migration and digest of the remaining original card fields. Unrelated cards are deliberately outside the default gate.",
+  "normal_melee_actions": {
+    "9009001": [null, "Sweep"],
+    "9009002": ["Sweep", "ReturnCut"],
+    "9009003": ["Sweep", "ReturnCut"],
+    "9009004": ["Thrust", "DownCut", "Blow"],
+    "9009005": ["DownCut", "Thrust"],
+    "9009007": ["Sweep", "Blow", "ReturnCut"]
+  },
   "bindings": [
     {
       "card": "9009001",

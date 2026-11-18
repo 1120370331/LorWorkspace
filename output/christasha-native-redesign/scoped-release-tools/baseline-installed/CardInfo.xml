@@ -1,0 +1,1912 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiceCardXmlRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Version>1.1</Version>
+  <!-- 拙劣控流 -->
+  <Card ID="9001001">
+    <Name>拙劣控流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>AnhierRecoverLight1</Script>
+    <ScriptDesc>[流转] 使用时：恢复1点光芒</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Hit" Motion="F" EffectRes="Steria_AnhierTextureSeaFarHit" Script="AnhierFlow1" ActionScript="" Desc="" />
+    </BehaviourList>
+    <AbilityList />
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 回忆侧斩 -->
+  <Card ID="9001002">
+    <Name>回忆侧斩</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001002.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>AnhierDiscardRandom1</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierDiscardRandom1" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="AnhierDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 奥塔尔的荣耀 -->
+  <Card ID="9001003">
+    <Name>奥塔尔的荣耀</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001003.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AnhierDiscardAllDraw</Script>
+    <ScriptDesc>使用时：丢弃2张手牌来使本书页骰子威力+1；[被弃置时] 抽1张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AnhierDiscardAllDraw" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_AnhierTextureMemoryGuard" Script="AnhierClashWinDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="AnhierGainLight1" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 回忆协奏之刃 -->
+  <Card ID="9001004">
+    <Name>回忆协奏之刃</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001004.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="4" />
+    <Script>AnhierDiscardAllPowerUp</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierDiscardAllPowerUp" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="" ActionScript="Steria_MemoryConcerto_Long" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_AnhierTextureMemoryHit" Script="" ActionScript="Steria_MemoryConcerto_Medium" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_AnhierTextureMemoryPierce" Script="" ActionScript="Steria_MemoryConcerto_Final" Desc="" />
+      <Behaviour Min="1" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 攫取回忆 -->
+  <Card ID="9001005">
+    <Name>攫取回忆</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001005.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>AnhierCard005</Script>
+    <ScriptDesc />
+    <AbilityList />
+    <BehaviourList>
+      <Behaviour Min="3" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="AnhierGrabDraw1" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 珍贵的回忆 -->
+  <Card ID="9001006">
+    <Name>珍贵的回忆</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001006.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Keyword>Discard</Keyword>
+    <Keyword>ExhaustOnUse</Keyword>
+    <Script>AnhierPreciousDiscard</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierPreciousDiscard" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_AnhierTextureMemoryGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_AnhierTextureMemoryGuard" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 内调之流 -->
+  <Card ID="9001007">
+    <Name>内调之流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001007.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AnhierGainFlow5Draw2NextTurn</Script>
+    <ScriptDesc>[流转] 使用时：抽取2张书页，下回合获得5层[流]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AnhierGainFlow5Draw2NextTurn" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="10" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_AnhierTextureSeaPierce" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="6" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 清司风流 -->
+  <Card ID="9001008">
+    <Name>清司风流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001008.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>AnhierQingSiFengLiu</Script>
+    <ScriptDesc>[流转]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AnhierQingSiFengLiu" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="8" Dice="13" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_AnhierTextureSeaFarHit" Script="AnhierQingSiFengLiuDice1" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 以执为攻 -->
+  <Card ID="9001009">
+    <Name>以执为攻</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001009.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AnhierDiscardPowerUp</Script>
+    <ScriptDesc />
+    <AbilityList>
+      <Ability Script="AnhierDiscardPowerUp" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_AnhierTextureMemoryHit" Script="AnhierBindingNextTurn" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_AnhierTextureMemoryGuard" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 寒地后勤 -->
+  <Card ID="9001010">
+    <Name>寒地后勤</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001010.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>AnhierColdLogistics</Script>
+    <ScriptDesc>[使用时] 恢复2点光芒；[被弃置时] 恢复2点光芒</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AnhierColdLogistics" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 自我之流 (EGO装备) -->
+  <Card ID="9001011">
+    <Name>自我之流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001011.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="0" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>999</MaxCooltimeForEgo>
+    <Script>AnhierSelfFlow</Script>
+    <ScriptDesc>[使用时] 扣除12点生命值，立即获得5层[流]；冷却时间：4幕</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AnhierSelfFlow" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Slazeya Cards Start -->
+  <!-- 逐梦随流 -->
+  <Card ID="9002001">
+    <Name>逐梦随流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>SlazeyaRecoverLight1OnUse</Script>
+    <ScriptDesc>[流转] 使用时：恢复1点光芒</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaRecoverLight1OnUse"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaHitGainFlow2NextTurn" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="SlazeyaClashWinGainFlow3NextTurn" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 川流不息 -->
+  <Card ID="9002002">
+    <Name>川流不息</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002002.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="1" />
+    <Script>SlazeyaDraw2OnUse</Script>
+    <ScriptDesc>[流转] 使用时：抽取2张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaDraw2OnUse"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaClashLosePowerUpNextDice" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaHitGainFlow3NextTurn" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 万物之流 -->
+  <Card ID="9002003">
+    <Name>万物之流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002003.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Far" Cost="2" />
+    <Script>SlazeyaGainFlow5OnRoundStart</Script>
+    <ScriptDesc>[流转] 战斗开始时：下回合开始时获得3层[流]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaGainFlow5OnRoundStart"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaGainFlow1OnHit" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 风暴分流 -->
+  <Card ID="9002004">
+    <Name>风暴分流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002004.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>SlazeyaFlowBonusX3</Script>
+    <ScriptDesc>本书页可额外受3次[流]强化</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaFlowBonusX3"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="7" Dice="13" Type="Atk" Detail="Slash" Motion="F" EffectRes="Steria_WaterSlash" Script="SlazeyaBleedByFlowBonusX2" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 倾覆万千之流 -->
+  <Card ID="9002009">
+    <Name>倾覆万千之流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002009.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Option>OnlyPage</Option>
+    <Spec Range="FarArea" Cost="7" />
+    <Script>SlazeyaMassAttackTeamLightGain</Script>
+    <ScriptDesc>布置阶段通过流强化按钮投入全部[流]（不提供常规[流]威力加成）。本书页每消耗8层[流]，骰子威力+1，命中时施加1层[麻痹]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaMassAttackTeamLightGain"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="16" Dice="26" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_WaterSlash" Script="SlazeyaMassAttackBonusDamage" ActionScript="Steria_OceanWave" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- 洋流，听我的号令 -->
+  <Card ID="9002006">
+    <Name>洋流，听我的号令</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002006.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>SlazeyaOceanCommandV2</Script>
+    <ScriptDesc>本书页可额外受3次[流]强化。本书页的骰子拼点失败时，会将最小值/最大值等同本骰子消耗[流]层数的一颗防御型骰子追加到末位</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaOceanCommandV2"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="SlazeyaClashLoseGainFlow3" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 随我流向无尽的尽头 -->
+  <Card ID="9002007">
+    <Name>随我流向无尽的尽头</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002007.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="4" />
+    <Script>SlazeyaEndlessFlow</Script>
+    <ScriptDesc>布置本书页后，本幕友方手牌流强化不消耗[流]；撤下时重新核算；本书页骰子获得等同自身[流]数量/3威力加成（向上取整）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaEndlessFlow"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Standby" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="1" Dice="6" Type="Standby" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="SlazeyaClashWinGainFlow2NextTurn" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 百川逐风 -->
+  <Card ID="9002008">
+    <Name>百川逐风</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002008.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>SlazeyaHundredRiversRepeat</Script>
+    <ScriptDesc>本书页能额外受1次[流]强化；若自身[流]层数大于8，则消耗8层[流]随机对一个敌人重复使用本书页（每幕最多触发一次）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SlazeyaHundredRiversRepeat"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="SlazeyaApplyWeakByFlowBonus" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="5" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SlazeyaApplyBleedAndDamageByFlowBonus" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- Slazeya Cards End -->
+
+  <!-- Cultist Cards Start -->
+  <!-- 虔诚司流 -->
+  <Card ID="9003001">
+    <Name>虔诚司流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9003001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>CultistGainFlow3NextTurn</Script>
+    <AbilityList>
+      <Ability Script="CultistGainFlow3NextTurn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_WaterPierce" Script="CultistDraw1" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 遵循流转 -->
+  <Card ID="9003002">
+    <Name>遵循流转</Name>
+    <TextId>-1</TextId>
+    <Artwork>9003002.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>CultistFlow2CheckGainLightDraw</Script>
+    <AbilityList>
+      <Ability Script="CultistFlow2CheckGainLightDraw"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="5" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 洋流汇聚 -->
+  <Card ID="9003003">
+    <Name>洋流汇聚</Name>
+    <TextId>-1</TextId>
+    <Artwork>9003003.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>CultistGainFlowAllyCountNextTurn</Script>
+    <AbilityList>
+      <Ability Script="CultistGainFlowAllyCountNextTurn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="4" Dice="9" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="CultistGainFlow3" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 逆转洋流 -->
+  <Card ID="9003004">
+    <Name>逆转洋流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9003004.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Script>CultistFlowBonusX2</Script>
+    <AbilityList>
+      <Ability Script="CultistFlowBonusX2"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="9" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="CultistBleed2" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="7" Type="Standby" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="CultistBleed1" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 顺流而为 -->
+  <Card ID="9003005">
+    <Name>顺流而为</Name>
+    <TextId>-1</TextId>
+    <Artwork>9003005.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>CultistFlowPowerBonus</Script>
+    <ScriptDesc>[流转] 若自身[流]数量不低于5，则本书页骰子威力+1</ScriptDesc>
+    <AbilityList>
+      <Ability Script="CultistFlowPowerBonus"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="CultistBleed2" ActionScript="" Desc=""/>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="J" EffectRes="Steria_WaterPierce" Script="CultistDraw1" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- Cultist Cards End -->
+
+  <!-- Velia Cards Start -->
+  <!-- 和谐共生 -->
+  <Card ID="9004001">
+    <Name>和谐共生</Name>
+    <TextId>-1</TextId>
+    <Artwork>9004001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>VeliaHarmony</Script>
+    <ScriptDesc>使用时：恢复1点光芒</ScriptDesc>
+    <AbilityList>
+      <Ability Script="VeliaHarmony"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="10" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="VeliaHarmonyDice" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 传播希望 -->
+  <Card ID="9004002">
+    <Name>传播希望</Name>
+    <TextId>-1</TextId>
+    <Artwork>9004002.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>VeliaSpreadHope</Script>
+    <ScriptDesc>使用时：抽2张牌</ScriptDesc>
+    <AbilityList>
+      <Ability Script="VeliaSpreadHope"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 振作起来 -->
+  <Card ID="9004003">
+    <Name>振作起来</Name>
+    <TextId>-1</TextId>
+    <Artwork>9004003.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>VeliaCheerUp</Script>
+    <ScriptDesc>使用时：为血量最低的友方单位恢复5点血量和混乱抗性（每有一层[潮]使此效果+1）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="VeliaCheerUp"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc=""/>
+      <Behaviour Min="2" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 潮雾晨光 (群体交锋) -->
+  <Card ID="9004004">
+    <Name>潮雾晨光</Name>
+    <TextId>-1</TextId>
+    <Artwork>9004004.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarAreaEach" Cost="4" Affection="Team"/>
+    <Keyword>SteriaMusicDice</Keyword>
+    <Script>VeliaTideMist</Script>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="3" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealHP" ActionScript="Steria_VeliaTideMist" Desc=""/>
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_WaterSlash" Script="VeliaTideMistHealBP" ActionScript="Steria_VeliaTideMist" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>200</Priority>
+  </Card>
+
+  <!-- 潜力观测 (EGO装备书页) -->
+  <Card ID="9004005">
+    <Name>潜力观测</Name>
+    <TextId>-1</TextId>
+    <Artwork>9004005.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="0" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>999</MaxCooltimeForEgo>
+    <Script>VeliaPotentialObservation</Script>
+    <ScriptDesc>装备时：提高友方目标目前最高的正面效果等级1级（受[潮]加成）。如果当前没有正面效果，则使其获得1层[强壮]。每回合限使用1次。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="VeliaPotentialObservation"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc=""/>
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- Velia Cards End -->
+
+  <!-- Tibu Cards Start -->
+  <!-- 潮汐低语 -->
+  <Card ID="9006001">
+    <Name>潮汐低语</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>TibuTideWhisper</Script>
+    <ScriptDesc>使用时：恢复1点光芒</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuTideWhisper"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Hit" Motion="F" EffectRes="Steria_WaterFarHit" Script="TibuTideWhisperWeak" ActionScript="" Desc="命中时:施加1层[虚弱]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 命运将至 -->
+  <Card ID="9006002">
+    <Name>命运将至</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006002.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="4" />
+    <Script></Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList />
+    <BehaviourList>
+      <Behaviour Min="9" Dice="17" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="TibuFateArrivesBonusDamage" ActionScript="" Desc="命中时:对目标造成负面状态总层数×2点追加伤害" />
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="TibuFateArrivesParryPower" ActionScript="" Desc="拼点开始:消耗1层潮使本骰子威力+2" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 梦中预兆 -->
+  <Card ID="9006003">
+    <Name>梦中预兆</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006003.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>TibuDreamOmen</Script>
+    <ScriptDesc>使用时：抽取1张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuDreamOmen"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="TibuDreamOmenVulnerable" ActionScript="" Desc="命中时:施加1层[易伤]" />
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="TibuDreamOmenBleed" ActionScript="" Desc="命中时:施加1层[流血]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 极乐之境 -->
+  <Card ID="9006004">
+    <Name>极乐之境</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006004.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>TibuElysium</Script>
+    <ScriptDesc>使用时：下回合获得1层[迅捷]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuElysium"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="TibuElysiumBinding" ActionScript="" Desc="命中时:施加1层[束缚]" />
+      <Behaviour Min="2" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="TibuElysiumParalysis" ActionScript="" Desc="拼点胜利:施加1层[麻痹]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 时溯潮生 -->
+  <Card ID="9006005">
+    <Name>时溯潮生</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006005.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Keyword>SteriaRapidAssault</Keyword>
+    <Script>TibuTimeReturn</Script>
+    <ScriptDesc>[迅攻] 使用时：抽取2张书页，消耗2层[潮]使自身所有正面效果提升1级</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuTimeReturn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="TibuTimeReturnRecoverBreak" ActionScript="" Desc="命中时:恢复5点混乱抗性" />
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="TibuTimeReturnGainStrengthProtection" ActionScript="" Desc="命中时:获得1层[强壮]和[守护]" />
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 时陨汐夺 -->
+  <Card ID="9006006">
+    <Name>时陨汐夺</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006006.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Keyword>SteriaRapidAssault</Keyword>
+    <Script>TibuTimeRuin</Script>
+    <ScriptDesc>[迅攻] 使用时：消耗2层[潮]使目标所有负面效果提升1级</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuTimeRuin"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="TibuTimeRuinExtendDebuff" ActionScript="" Desc="命中时:使目标当前负面效果延续一幕" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="TibuElysiumBinding" ActionScript="" Desc="命中时:施加1层[束缚]" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 潮启 (EGO装备书页) -->
+  <Card ID="9006007">
+    <Name>潮启</Name>
+    <TextId>-1</TextId>
+    <Artwork>9006007.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="2" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
+    <Script>TibuTideAwakening</Script>
+    <ScriptDesc>装备时：限拥有[潮]时使用，使用时消耗1层[潮]。选择一个目标，本回合中，将其卡组中下一张牌置入手牌，消耗为0。使用后/回合结束时归还（不打乱其牌库顺序）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="TibuTideAwakening"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- Tibu Cards End -->
+
+  <!-- 艾莉蕾尔 Cards Start -->
+  <!-- 暮雾伏击 -->
+  <Card ID="9007001">
+    <Name>暮雾伏击</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>AilierelDuskAmbush</Script>
+    <ScriptDesc>[流转] 使用时：恢复1点光芒</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelDuskAmbush" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="3" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="1" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AilierelGainFlow1" ActionScript="" Desc="命中时:获得1层[流]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 侧闪 -->
+  <Card ID="9007002">
+    <Name>侧闪</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007002.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>AilierelSideStep</Script>
+    <ScriptDesc>[流转] 使用时：抽取1张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelSideStep" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="8" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="AilierelSideStepLoseDestroySecond" ActionScript="" Desc="拼点失败:摧毁本书页第二颗骰子" />
+      <Behaviour Min="1" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AilierelDraw1" ActionScript="" Desc="命中时:抽取1张书页" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 叉中大鱼了 -->
+  <Card ID="9007003">
+    <Name>叉中大鱼了</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007003.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>AilierelBigCatch</Script>
+    <ScriptDesc>若此书页造成了不低于8点伤害则下回合开始时获得3层[流]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelBigCatch" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelBleed2" ActionScript="" Desc="命中时:施加2层[流血]" />
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelBleed2" ActionScript="" Desc="命中时:施加2层[流血]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 我要游走咯 -->
+  <Card ID="9007004">
+    <Name>我要游走咯</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007004.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AilierelWander</Script>
+    <ScriptDesc>使用时：消耗3层[流]来抽取2张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelWander" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="9" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelGainQuickness" ActionScript="" Desc="命中时:获得1层[迅捷]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 想往哪游呢 -->
+  <Card ID="9007005">
+    <Name>想往哪游呢</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007005.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Script>AilierelWhereSwim</Script>
+    <ScriptDesc>使用时：下回合开始时获得6层[流]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelWhereSwim" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="10" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelBleed2" ActionScript="" Desc="命中时:施加2层[流血]" />
+      <Behaviour Min="6" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelRerollIfBleed" ActionScript="" Desc="命中时:若敌人[流血]层数>5,重新投掷本骰子(最多触发1次)" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 汐音·夜痕 -->
+  <Card ID="9007006">
+    <Name>汐音·夜痕</Name>
+    <TextId>-1</TextId>
+    <Artwork>9007006.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Keyword>SteriaMusicDice</Keyword>
+    <Script>AilierelNightTrace</Script>
+    <ScriptDesc>渐强。每次使用后，本书页光芒消耗永久+1，所有骰子基础值最小值+1，最大值+2（至多触发3次）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AilierelNightTrace" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelNightTraceBleedAndFlow" ActionScript="" Desc="命中时:施加2层[流血],获得“本书页光芒消耗”层[流]" />
+      <Behaviour Min="3" Dice="5" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AilierelNightTraceBleedAndFlow" ActionScript="" Desc="命中时:施加2层[流血],获得“本书页光芒消耗”层[流]" />
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AilierelNightTraceBleedAndFlow" ActionScript="" Desc="命中时:施加2层[流血],获得“本书页光芒消耗”层[流]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- 艾莉蕾尔 Cards End -->
+
+  <!-- 忘却之梦 (安希尔EGO) -->
+  <Card ID="9001012">
+    <Name>忘却之梦</Name>
+    <TextId>-1</TextId>
+    <Artwork>9001012.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Option>EgoPersonal</Option>
+    <Option>OnlyPage</Option>
+    <Script>AnhierForgottenDream</Script>
+    <BehaviourList>
+      <Behaviour Min="10" Dice="19" Type="Atk" Detail="Slash" Motion="Z" EffectRes="Steria_DarkPurpleSlash" Script="AnhierForgottenDreamDice1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>1</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Velia EGO Boss Cards Start -->
+  <!-- 止渡 -->
+  <Card ID="9005001">
+    <Name>止渡</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005001.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script></Script>
+    <ScriptDesc>拼点失败:如果对方是进攻型骰子则施加5层流血和2层虚弱</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="5" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="VeliaEgo_ZhiDu" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="5" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="VeliaEgo_ZhiDu" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="5" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="VeliaEgo_ZhiDu" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 凝视 -->
+  <Card ID="9005002">
+    <Name>凝视</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005002.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>VeliaEgo_NingShi</Script>
+    <ScriptDesc>使用时:使敌人的所有混乱抗性在本回合中变为"致命"</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Apostle" Script="VeliaEgo_NingShiDice" ActionScript="" Desc="对方每有1层荆棘便造成1点额外伤害" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 穿刺 -->
+  <Card ID="9005003">
+    <Name>穿刺</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005003.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>VeliaEgo_ChuanCi</Script>
+    <ScriptDesc>与速度高于自身的对象拼点时使本书页骰子威力-10</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="10" Dice="18" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="VeliaThorn_F" Script="VeliaEgo_ChuanCiDice1" ActionScript="" Desc="命中时:下回合封印对方一颗速度骰子" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Apostle" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 请注视我 -->
+  <Card ID="9005004">
+    <Name>请注视我</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005004.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>VeliaEgo_QingZhuShiWo</Script>
+    <ScriptDesc>战斗开始时:若对方在本回合中攻击非本单位目标,则对其造成15点突刺伤害+突刺混乱伤害</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="4" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="4" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Apostle" Script="VeliaEgo_QingZhuShiWoDice3" ActionScript="" Desc="命中时:使目标获得3层[荆棘]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 荆棘之潮 -->
+  <Card ID="9005005">
+    <Name>荆棘之潮</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005005.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarAreaEach" Cost="5" />
+    <Script>VeliaEgo_JingJiZhiChao</Script>
+    <ScriptDesc>战斗开始时:对所有没有荆棘的敌人施加1层荆棘</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="10" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="VeliaThorn_F" Script="VeliaEgo_JingJiZhiChaoDice1" ActionScript="VeliaThorn_Area" Desc="命中时:施加3层荆棘" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- 蔓延增生 -->
+  <Card ID="9005006">
+    <Name>蔓延增生</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005006.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>VeliaEgo_ManYanZengSheng</Script>
+    <ScriptDesc>使用时:下一幕召唤一个"荆棘幻影"</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="VeliaThorn_F" Script="VeliaEgo_ManYanDice1" Desc="命中时:施加1层荆棘" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="S" EffectRes="" Script="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- 弱化穿刺 -->
+  <Card ID="9005007">
+    <Name>弱化穿刺</Name>
+    <TextId>-1</TextId>
+    <Artwork>9005007.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>VeliaEgo_WeakChuanCi</Script>
+    <ScriptDesc>与速度高于自身的对象拼点时使本书页骰子威力-5</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="VeliaThorn_F" Script="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="S" EffectRes="VeliaThorn_F" Script="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+  <!-- Velia EGO Boss Cards End -->
+
+  <!-- Sivier Cards Start -->
+  <!-- 聚愿而行 -->
+  <Card ID="9008001">
+    <Name>聚愿而行</Name>
+    <TextId>-1</TextId>
+    <Artwork>聚愿而行.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Script></Script>
+    <ScriptDesc></ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="12" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SivierWishGuard" Script="SivierGatherWish1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierGatherWish2" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="5" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="SivierGatherWish3" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="7" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 守望潮汐 -->
+  <Card ID="9008002">
+    <Name>守望潮汐</Name>
+    <TextId>-1</TextId>
+    <Artwork>守望潮汐.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>SivierWatchTide</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierWatchTide"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="14" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SivierWishGuard" Script="SivierWatchTide1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 愿望之刺 -->
+  <Card ID="9008003">
+    <Name>愿望之刺</Name>
+    <TextId>-1</TextId>
+    <Artwork>愿望之刺.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>SivierWishThorn</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierWishThorn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="SivierWishThorn1" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SivierWishGuard" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 集愿之盾 -->
+  <Card ID="9008004">
+    <Name>集愿之盾</Name>
+    <TextId>-1</TextId>
+    <Artwork>集愿之盾.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Keyword>SteriaPhantomDream</Keyword>
+    <Script>SivierWishProtect</Script>
+    <ScriptDesc>[幻梦] 使用时:消耗所有[梦],为全体友方施加等量x2层[愿望之盾]。下回合将2张[梦之庇护]置入手牌</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierWishProtect"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SivierWishGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Guard" Motion="G" EffectRes="Steria_SivierWishGuard" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 愿露 -->
+  <Card ID="9008008">
+    <Name>愿露</Name>
+    <TextId>-1</TextId>
+    <Artwork>愿露_无手.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Instance" Cost="0" />
+    <Keyword>SteriaPhantomDream</Keyword>
+    <Option>ExhaustOnUse</Option>
+    <Script>SivierWishDew</Script>
+    <ScriptDesc>[幻梦] [佚亡] 装备时:抽取1张书页,获得1层[梦]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierWishDew"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 梦之庇护 -->
+  <Card ID="9008009">
+    <Name>梦之庇护</Name>
+    <TextId>-1</TextId>
+    <Artwork>梦之庇护.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Keyword>SteriaPhantomDream</Keyword>
+    <Option>ExhaustOnUse</Option>
+    <Script>SivierDreamShelter</Script>
+    <ScriptDesc>[幻梦] [佚亡] 使用时:恢复1点光芒,抽取2张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierDreamShelter"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SivierWishGuard" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SivierWishGuard" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 海愿斩 -->
+  <Card ID="9008005">
+    <Name>海愿斩</Name>
+    <TextId>-1</TextId>
+    <Artwork>海愿斩.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Keyword>SteriaMusicDice</Keyword>
+    <Script>SivierSeaWishSlash</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierSeaWishSlash"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaWishSlash1" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaWishSlash2" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 汐音：海之还愿 -->
+  <Card ID="9008006">
+    <Name>汐音：海之还愿</Name>
+    <TextId>-1</TextId>
+    <Artwork>汐音：海之还愿.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="5" />
+    <Keyword>SteriaMusicDice</Keyword>
+    <Script>SivierSeaReturn</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierSeaReturn"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="14" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaReturn1" ActionScript="" Desc="" />
+      <Behaviour Min="9" Dice="16" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="SivierSeaReturn2" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="13" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="SivierSeaReturn3" ActionScript="" Desc="" />
+      <Behaviour Min="8" Dice="13" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SivierWishGuard" Script="SivierSeaReturn4" ActionScript="" Desc="拼点胜利:施加1层[麻痹]" />
+      <Behaviour Min="8" Dice="13" Type="Def" Detail="Guard" Motion="G" EffectRes="Steria_SivierWishGuard" Script="SivierSeaReturn4" ActionScript="" Desc="拼点胜利:施加1层[麻痹]" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 愿望终将埋葬于深海 -->
+  <Card ID="9008007">
+    <Name>愿望终将埋葬于深海</Name>
+    <TextId>-1</TextId>
+    <Artwork>愿望终将埋葬于深海.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarArea" Cost="5" />
+    <Keyword>ExhaustOnUse</Keyword>
+    <Script>SivierWishBuried</Script>
+    <ScriptDesc></ScriptDesc>
+    <AbilityList>
+      <Ability Script="SivierWishBuried"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="10" Dice="23" Type="Atk" Detail="Hit" Motion="S1" EffectRes="Steria_WaterHit" Script="SivierWishBuried1" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+  <!-- Sivier Cards End -->
+
+  <!-- Christasha Cards Start -->
+  <!-- 金火璀璨之潮 -->
+  <Card ID="9009001">
+    <Name>金火璀璨之潮</Name>
+    <TextId>-1</TextId>
+    <Artwork>金火璀璨之潮.jpg</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>ChristashaGoldenTide</Script>
+    <ScriptDesc>[使用时] 恢复1点光芒，将自身1层[潮]转换为[黄金之潮]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaGoldenTide"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 何以归乡 -->
+  <Card ID="9009002">
+    <Name>何以归乡</Name>
+    <TextId>-1</TextId>
+    <Artwork>何以归乡.jpg</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Script>ChristashaHomecoming</Script>
+    <ScriptDesc>[使用时] 抽取1张书页。若抽取的书页光芒消耗为偶数，则额外抽取1张；若为奇数，则获得1层[潮]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaHomecoming"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 海银工坊：埃利耶 -->
+  <Card ID="9009003">
+    <Name>海银工坊：埃利耶</Name>
+    <TextId>-1</TextId>
+    <Artwork>海银工坊：埃利耶.jpg</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>ChristashaEliye</Script>
+    <ScriptDesc>[使用时] 获得1层[潮]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEliye"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaStrengthNextTurn2" ActionScript="" Desc="命中时:接下来两回合每回合开始时获得1层[强壮]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 涤光驱暗 -->
+  <Card ID="9009004">
+    <Name>涤光驱暗</Name>
+    <TextId>-1</TextId>
+    <Artwork>涤光驱暗.jpg</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>ChristashaLightPurge</Script>
+    <ScriptDesc>[使用后] 获得3层[潮]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaLightPurge"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaBurn1Moon1" ActionScript="" Desc="命中时:施加1层[烧伤]与1层[月之引力]" />
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_ChristashaV2Hit" Script="ChristashaMoon2" ActionScript="" Desc="命中时:施加2层[月之引力]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 迸射流光 -->
+  <Card ID="9009005">
+    <Name>迸射流光</Name>
+    <TextId>-1</TextId>
+    <Artwork>迸射流光.jpg</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <BehaviourList>
+      <Behaviour Min="9" Dice="12" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-3并重复投掷本骰子;命中时:施加2层[烧伤],之后获得2层[潮]" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子造成的伤害-5" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 汐音：光耀万海 -->
+  <Card ID="9009006">
+    <Name>汐音：光耀万海</Name>
+    <TextId>-1</TextId>
+    <Artwork>汐音：光耀万海.jpg</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarAreaEach" Cost="5" />
+    <Keyword>SteriaMusicDice</Keyword>
+    <Script>ChristashaGlory</Script>
+    <ScriptDesc>[乐章] [渐快] 使用本书页后，永久将本书页最后一颗的骰子的复制置入书页末尾。所有骰子威力×([X-1]/X) (X为复制后的骰子数量，向上取整)（至多触发2次）</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaGlory"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="7" Dice="18" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaGloryOnHit" ActionScript="Steria_ChristashaXiyinV2" Desc="命中时:获得1层[潮]并施加1层[烧伤]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>200</Priority>
+  </Card>
+
+  <!-- 汐火联星 -->
+  <Card ID="9009007">
+    <Name>汐火联星</Name>
+    <TextId>-1</TextId>
+    <Artwork>汐火联星.jpg</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="4" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>10</MaxCooltimeForEgo>
+    <Keyword>SteriaMusicDice</Keyword>
+    <Script>ChristashaTwinStar</Script>
+    <ScriptDesc>[延长] 本书页仅限消耗5层[潮]后使用;[使用时] 获得2层[潮];10点情感硬币冷却</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaTwinStar"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaTwinStarBurn" ActionScript="" Desc="命中时:将目标所有[月之引力]转化为[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_ChristashaV2Hit" Script="ChristashaTwinStarMoon" ActionScript="" Desc="命中时:施加3层[月之引力]" />
+      <Behaviour Min="2" Dice="7" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <!-- Christasha Cards End -->
+
+  <!-- Christasha EGO Boss Cards Start (神备EGO：日沐曦渊) -->
+
+  <!-- 不要害怕，我在梦中 -->
+  <Card ID="9010001">
+    <Name>不要害怕，我在梦中</Name>
+    <TextId>-1</TextId>
+    <Artwork>不要害怕，我在梦中.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Script>ChristashaEgoDontFear</Script>
+    <ScriptDesc>[回合开始时] 获得4层[梦]，本幕自身所有防御型骰子威力+4</ScriptDesc>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoDontFearDice1" ActionScript="" Desc="拼点失败:对自身施加5层[烧伤]" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaEgoCounterGainTide1" ActionScript="" Desc="拼点胜利:获得1层[潮]" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaEgoCounterGainTide1" ActionScript="" Desc="拼点胜利:获得1层[潮]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 飞星连刺 -->
+  <Card ID="9010002">
+    <Name>飞星连刺</Name>
+    <TextId>-1</TextId>
+    <Artwork>飞星连刺.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="5" Dice="6" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 埃利耶，水中的圣职 -->
+  <Card ID="9010003">
+    <Name>埃利耶，水中的圣职</Name>
+    <TextId>-1</TextId>
+    <Artwork>埃利耶，水中的圣职.jpg</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>ChristashaEgoEliyeHoly</Script>
+    <ScriptDesc>[使用时] 接下来两回合每回合开始时获得1层[强壮]以及3层[流]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoEliyeHoly"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaGainTide1" ActionScript="" Desc="命中时:获得1层[潮]" />
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoConvertTide1OnHit" ActionScript="" Desc="命中时:将1层[潮]转化为[黄金之潮]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 渐明 -->
+  <Card ID="9010004">
+    <Name>渐明</Name>
+    <TextId>-1</TextId>
+    <Artwork>渐明.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>ChristashaEgoDawnApproach</Script>
+    <ScriptDesc>[使用时] 对敌方施加1层[日光]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoDawnApproach"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 金乌 -->
+  <Card ID="9010005">
+    <Name>金乌</Name>
+    <TextId>-1</TextId>
+    <Artwork>金乌.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="2" />
+    <Script>ChristashaEgoGoldenCrow</Script>
+    <ScriptDesc>[使用时] 使敌方于下回合获得1层[致盲]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoGoldenCrow"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="10" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="ChristashaEgoBurn4" ActionScript="" Desc="命中时:施加4层[烧伤]" />
+      <Behaviour Min="2" Dice="2" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaEgoRemoveTargetBurn" ActionScript="" Desc="拼点失败:消除对方燃烧层数" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoSelfBurn5OnLose" ActionScript="" Desc="拼点失败:获得5层[烧伤]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 迸射流光 (Boss版 - 复用已有能力) -->
+  <Card ID="9010006">
+    <Name>迸射流光</Name>
+    <TextId>-1</TextId>
+    <Artwork>迸射流光.jpg</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <BehaviourList>
+      <Behaviour Min="9" Dice="12" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaBurstReroll" ActionScript="" Desc="拼点胜利:使本骰子威力-3并重复投掷本骰子;命中时:施加2层[烧伤],之后获得2层[潮]" />
+      <Behaviour Min="3" Dice="8" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaCounterPowerDown" ActionScript="" Desc="拼点失败:使敌人当前骰子造成的伤害-5" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 迸发 (群体攻击-清算) -->
+  <Card ID="9010007">
+    <Name>迸发</Name>
+    <TextId>-1</TextId>
+    <Artwork>迸发.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarArea" Cost="3" />
+    <Script>ChristashaEgoBurst</Script>
+    <ScriptDesc>[群体攻击-清算] 本单位每有5层[烧伤],使本书页骰子威力+1</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoBurst"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="20" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_ChristashaV2SlashV" Script="" ActionScript="Xiao_610005" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- 黎明之光 (群体攻击-交锋) -->
+  <Card ID="9010008">
+    <Name>黎明之光</Name>
+    <TextId>-1</TextId>
+    <Artwork>黎明之光.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarAreaEach" Cost="5" />
+    <Script>ChristashaEgoDawnLight</Script>
+    <ScriptDesc>[群体攻击-交锋] [渐强]每次使用后本书页骰子威力+2(最多+6).本书页不造成伤害</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoDawnLight"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="3" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaEgoDawnLightBurn3" ActionScript="Xiao_610001" Desc="命中时:施加3层[烧伤]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>200</Priority>
+  </Card>
+
+  <!-- Phase 2 专属书页 -->
+  <!-- 随流而来，伴流而去 -->
+  <Card ID="9010009">
+    <Name>随流而来，伴流而去</Name>
+    <TextId>-1</TextId>
+    <Artwork>随流而来，伴流而去.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Keyword>SteriaFlowTransfer</Keyword>
+    <Script>ChristashaEgoFlowComeGo</Script>
+    <ScriptDesc>[流转] 回合开始时:获得4层[流],本幕进攻型骰子造成的伤害+4</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoFlowComeGo"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
+      <Behaviour Min="6" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+      <Behaviour Min="6" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 深渊之中，太阳升起 -->
+  <Card ID="9010010">
+    <Name>深渊之中，太阳升起</Name>
+    <TextId>-1</TextId>
+    <Artwork>深渊之中，太阳升起.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="1" />
+    <Keyword>SteriaFlowTransfer</Keyword>
+    <Script>ChristashaEgoAbyssSunrise</Script>
+    <ScriptDesc>[流转] 回合开始时:获得4层[潮],本幕所有单位受[流]威力加成+1</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoAbyssSunrise"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="6" Dice="9" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaEgoApplyBlinding1" ActionScript="" Desc="命中时:使目标于下回合获得1层[致盲]" />
+      <Behaviour Min="8" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+      <Behaviour Min="8" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaEgoDestroyDice" ActionScript="" Desc="命中时:摧毁本骰子" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 我将和黎明一起到来 (群体攻击-清算) -->
+  <Card ID="9010011">
+    <Name>我将和黎明一起到来</Name>
+    <TextId>-1</TextId>
+    <Artwork>我将和黎明一起到来.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarArea" Cost="7" />
+    <Script>ChristashaEgoDawnArrival</Script>
+    <ScriptDesc>[群体攻击-清算] 所有单位每有10层[烧伤]使本书页威力+1.使用时为所有敌人施加1层[日光],并使其于下回合获得1层[致盲],为自己施加6层[烧伤](日光/致盲受[潮]增幅)</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaEgoDawnArrival"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="10" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_ChristashaV2SlashV" Script="" ActionScript="Xiao_610005" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- Christasha Xiyuan Cards Start (接待奖励：日沐曦渊) -->
+
+  <!-- 飞星连刺 -->
+  <Card ID="9010101">
+    <Name>飞星连刺</Name>
+    <TextId>-1</TextId>
+    <Artwork>飞星连刺.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="3" />
+    <Script>ChristashaXiyuanFeixing</Script>
+    <ScriptDesc>[使用后] 若本书页3颗进攻型骰子全部命中,则使目标于下回合获得1层[易损]</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaXiyuanFeixing"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
+      <Behaviour Min="3" Dice="8" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
+      <Behaviour Min="5" Dice="6" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="ChristashaXiyuanFeixingHit" ActionScript="" Desc="命中时:施加1层[烧伤]" />
+      <Behaviour Min="3" Dice="7" Type="Standby" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 渐明日光 -->
+  <Card ID="9010102">
+    <Name>渐明日光</Name>
+    <TextId>-1</TextId>
+    <Artwork>渐明.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>ChristashaXiyuanDawnSun</Script>
+    <ScriptDesc>[使用时] 若目标[烧伤]层数低于5则施加3层[烧伤],否则抽2张书页</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaXiyuanDawnSun"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_ChristashaV2PierceNear" Script="ChristashaXiyuanBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaXiyuanApplySunlight1" ActionScript="" Desc="命中时:施加1层[日光]" />
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_ChristashaV2SlashH" Script="ChristashaXiyuanBurn2" ActionScript="" Desc="命中时:施加2层[烧伤]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 金乌庇佑 -->
+  <Card ID="9010103">
+    <Name>金乌庇佑</Name>
+    <TextId>-1</TextId>
+    <Artwork>金乌.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Far" Cost="2" />
+    <Script>ChristashaXiyuanGoldenCrow</Script>
+    <ScriptDesc>[命中混乱状态敌人] 恢复20%造成伤害(向上取整)</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaXiyuanGoldenCrow"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="7" Dice="13" Type="Atk" Detail="Penetrate" Motion="F" EffectRes="Steria_ChristashaV2PierceFar" Script="ChristashaXiyuanGoldenCrowHit" ActionScript="" Desc="命中时:施加4层[烧伤]与1层[日光]" />
+      <Behaviour Min="4" Dice="8" Type="Standby" Detail="Guard" Motion="G" EffectRes="" Script="ChristashaXiyuanRecoverBreak5OnLose" ActionScript="" Desc="拼点失败:恢复5点混乱抗性" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- 擢升新阳 -->
+  <Card ID="9010104">
+    <Name>擢升新阳</Name>
+    <TextId>-1</TextId>
+    <Artwork>我将和黎明一起到来.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarArea" Cost="5" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>8</MaxCooltimeForEgo>
+    <Script>ChristashaXiyuanRisingSun</Script>
+    <ScriptDesc>[群体攻击-清算] 所有敌人每有7层[烧伤],使本书页骰子威力+1</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaXiyuanRisingSun"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="18" Dice="27" Type="Atk" Detail="Slash" Motion="S1" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaXiyuanApplySunlight1" ActionScript="Xiao_610005" Desc="命中时:施加1层[日光]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>9000</Priority>
+  </Card>
+
+  <!-- 黎明之光 -->
+  <Card ID="9010105">
+    <Name>黎明之光</Name>
+    <TextId>-1</TextId>
+    <Artwork>黎明之光.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="FarAreaEach" Cost="2" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>5</MaxCooltimeForEgo>
+    <Script>ChristashaXiyuanDawnLight</Script>
+    <ScriptDesc>[群体攻击-交锋] [渐强] 每次使用后,本书页骰子威力+2,光芒消耗+1,至多触发3次.本书页不造成伤害</ScriptDesc>
+    <AbilityList>
+      <Ability Script="ChristashaXiyuanDawnLight"/>
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="S" EffectRes="Steria_ChristashaV2SlashV" Script="ChristashaXiyuanDawnLightBurnByCost" ActionScript="Xiao_610001" Desc="命中时:施加等同本书页消耗光芒层数的[烧伤]与1层[日光]" />
+    </BehaviourList>
+    <Chapter>7</Chapter>
+    <Priority>200</Priority>
+  </Card>
+
+  <!-- Christasha Xiyuan Cards End -->
+  <!-- Christasha EGO Boss Cards End -->
+
+
+
+  <!-- Antie Form Change Cards -->
+  <Card ID="9011101">
+    <Name>司潮形态</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="1" />
+    <Option>Personal</Option>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
+    <Script>AntieChangeTideForm</Script>
+    <ScriptDesc>装备时:切换为司潮形态,并用司潮卡组等量替换手牌。使用后2幕内无法再次切换形态。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieChangeTideForm" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011102">
+    <Name>司梦形态</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="1" />
+    <Option>Personal</Option>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
+    <Script>AntieChangeDreamForm</Script>
+    <ScriptDesc>装备时:切换为司梦形态,并用司梦卡组等量替换手牌。使用后2幕内无法再次切换形态。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieChangeDreamForm" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011103">
+    <Name>司流形态</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="1" />
+    <Option>Personal</Option>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
+    <Script>AntieChangeFlowForm</Script>
+    <ScriptDesc>装备时:切换为司流形态,并用司流卡组等量替换手牌。使用后2幕内无法再次切换形态。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieChangeFlowForm" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="1" Dice="1" Type="Standby" Detail="Hit" Motion="H" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Antie Shared Cards -->
+  <Card ID="9011501">
+    <Name>司神之职</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AntieForceDrawOnBaseMax</Script>
+    <ScriptDesc>拼点时若本书页骰子基础最大值大于对方最大值,则在拼点失败时强制打平.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieForceDrawOnBaseMax" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AntieGainFlowByVanillaOnHit" ActionScript="" Desc="命中时:获得等同本骰子基础值层[流]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AntieBonusDamageByVanillaOnHit" ActionScript="" Desc="命中时:追加本骰子基础值点伤害" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Antie Tide Form Cards -->
+  <Card ID="9011201">
+    <Name>潮语</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="0" />
+    <Script>AntieTideSpeech</Script>
+    <ScriptDesc>使用时:抽取1张书页,获得1层[潮].</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieTideSpeech" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="5" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="4" Type="Atk" Detail="Hit" Motion="F" EffectRes="Steria_WaterFarHit" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011202">
+    <Name>汐压</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AntieTidePressure</Script>
+    <ScriptDesc>使用时:消耗至多4层[潮].每消耗1层,依次对目标施加1层[束缚]/[虚弱]/[易伤]/[麻痹].若消耗4层,使目标当前负面效果延续1幕.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieTidePressure" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011203">
+    <Name>潮启之刻</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Script>AntieTideAwaken</Script>
+    <ScriptDesc>使用时:消耗至多3层[潮].下一幕获得等同消耗层数的[强壮]与[忍耐].若使用时自身非资源类正面效果总层数不低于6,则本书页骰子威力+3.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieTideAwaken" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Antie Dream Form Cards -->
+  <Card ID="9011301">
+    <Name>梦呓</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Far" Cost="1" />
+    <Script>AntieDreamMurmur</Script>
+    <ScriptDesc>使用时:若自身[梦]数量不低于4则获得3层[梦].若高于4,则改为消耗2层[梦],抽取2张书页并恢复2点光芒.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieDreamMurmur" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011302">
+    <Name>深梦</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AntieDeepDream</Script>
+    <ScriptDesc>使用时:恢复等同自身[梦]层数×2的体力与混乱抗性.下回合获得5层[梦].</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieDeepDream" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011303">
+    <Name>觉醒</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Near" Cost="3" />
+    <Script>AntieDreamAwaken</Script>
+    <ScriptDesc>使用时:消耗至多6层[梦].每消耗1层[梦],本书页骰子伤害与混乱伤害+25%.若消耗6层[梦],下回合获得1层[所有骰子威力提升].</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieDreamAwaken" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="5" Dice="9" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <!-- Antie Flow Form Cards -->
+  <Card ID="9011401">
+    <Name>塑海</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Common</Rarity>
+    <Spec Range="Near" Cost="0" />
+    <Keyword>SteriaFlowTransfer</Keyword>
+    <Script>AntieShapeSea</Script>
+    <ScriptDesc>[流转] 使用时:消耗本幕剩余全部光芒.下一幕获得消耗光芒数×3层[流].若至少消耗2点光芒,抽取1张书页.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieShapeSea" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="3" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="6" Type="Standby" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011402">
+    <Name>逆流</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Uncommon</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Keyword>SteriaFlowTransfer</Keyword>
+    <Script>AntieReverseFlow</Script>
+    <ScriptDesc>[流转] 使用后:若自身[流]不少于4层,消耗4层[流]并恢复4点光芒;否则若不少于2层,消耗2层[流]并抽取1张书页.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieReverseFlow" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_WaterHit" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="4" Dice="7" Type="Def" Detail="Guard" Motion="G" EffectRes="" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="3" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="" ActionScript="" Desc="" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+
+  <Card ID="9011403">
+    <Name>流向裁断</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Rare</Rarity>
+    <Spec Range="Near" Cost="2" />
+    <Script>AntieForceDrawOnBaseMax</Script>
+    <ScriptDesc>拼点时若本书页骰子基础最大值大于对方最大值,则在拼点失败时强制打平.</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieForceDrawOnBaseMax" />
+    </AbilityList>
+    <BehaviourList>
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_WaterSlash" Script="AntieGainFlowByVanillaOnHit" ActionScript="" Desc="命中时:获得等同本骰子基础值层[流]" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_WaterPierce" Script="AntieBonusDamageByVanillaOnHit" ActionScript="" Desc="命中时:追加本骰子基础值点伤害" />
+    </BehaviourList>
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+</DiceCardXmlRoot>
+
