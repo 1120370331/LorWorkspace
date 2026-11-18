@@ -64,3 +64,107 @@ SteriaBuild/_analysis/
 
 # 私人对话记录
 SteriaBuild/设定/对话记录_*.md
+
+# Local agent indexes and experiment outputs; keep these workspace-local
+/.search-index/
+/.serena/
+/output/*
+!/output/christasha-native-redesign/
+/output/christasha-native-redesign/*
+!/output/christasha-native-redesign/scoped-release-tools/
+/output/christasha-native-redesign/scoped-release-tools/*
+!/output/christasha-native-redesign/scoped-release-tools/README.md
+!/output/christasha-native-redesign/scoped-release-tools/release-config.json
+!/output/christasha-native-redesign/scoped-release-tools/scoped_release.py
+!/output/christasha-native-redesign/scoped-release-tools/baseline-installed/
+!/output/slazeya-wind-combat/
+/output/slazeya-wind-combat/*
+!/output/slazeya-wind-combat/release-tools/
+/output/slazeya-wind-combat/release-tools/*
+!/output/slazeya-wind-combat/release-tools/MetadataProbe/
+
+# Local sessions, caches, logs and deploy backups
+/.vscode/sessions.json
+__pycache__/
+*.py[cod]
+/SteriaBuild/SteriaModFolder/steria_log.txt
+/SteriaBuild/SteriaModFolder/Assemblies/*.bak
+/SteriaBuild/SteriaModFolder/Assemblies/Steria.pdb
+
+# Render output. The Christasha bakes read authoring inputs from these exports.
+/preview_exports/*
+!/preview_exports/christasha_starlance/
+/preview_exports/christasha_starlance/*
+!/preview_exports/christasha_starlance/render_preview.py
+!/preview_exports/christasha_starlance/v2/
+/preview_exports/christasha_starlance/v2/*
+!/preview_exports/christasha_starlance/v2/render_v2.py
+!/preview_exports/christasha_starlance/v2/art/
+!/preview_exports/christasha_starlance/v3/
+/preview_exports/christasha_starlance/v3/*
+!/preview_exports/christasha_starlance/v3/render_v3.py
+!/preview_exports/xiyin_golden_tide/
+/preview_exports/xiyin_golden_tide/*
+!/preview_exports/xiyin_golden_tide/render_tide.py
+!/preview_exports/xiyin_golden_tide/art/
+!/preview_exports/xiyin_golden_tide/v2/
+/preview_exports/xiyin_golden_tide/v2/*
+!/preview_exports/xiyin_golden_tide/v2/*.py
+!/preview_exports/xiyin_golden_tide/v2/art/
+!/preview_exports/xiyin_golden_tide/v3/
+/preview_exports/xiyin_golden_tide/v3/*
+!/preview_exports/xiyin_golden_tide/v3/*.py
+# The V3 package validates this approved video by its SHA-256.
+!/preview_exports/xiyin_golden_tide/v3/xiyin-golden-tide-v3.mp4
+
+# Local VFX captures and disposable builds; keep checked-in release baselines.
+/SteriaBuild/VFXSource/AntieIceIndigoSlash/evidence/
+/SteriaBuild/VFXSource/ChristashaNative/evidence/
+/SteriaBuild/VFXSource/ChristashaNative/Mass/evidence/
+/SteriaBuild/VFXSource/ChristashaNative/Pierce/evidence/
+/SteriaBuild/VFXSource/SlazeyaStormMass/output/
+/SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/
+/SteriaBuild/VFXSource/SlazeyaWindCombat/evidence/
+/SteriaBuild/VFXSource/VeliaPotentialObservation/evidence/
+/SteriaBuild/VFXSource/OceanCurrentTextureCombat/previews/
+/SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Scenes/Preview_*.unity*
+/SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Scenes/Backups/
+/SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/UnityProject/Assets/WaterThunder/Scenes/Backups.meta
+/SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/history/before-*.zip
+/SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/history/rejected-*.unitypackage
+/SteriaBuild/VFXSource/SlazeyaWindCombat/UnityProject/Assets/test.unity*
+/SteriaBuild/VFXSource/SlazeyaWindCombat/UnityProject/Assets/tst/
+/SteriaBuild/VFXSource/SlazeyaWindCombat/UnityProject/Assets/tst.meta
+
+# Character model render output and rollback snapshots
+/SteriaBuild/CharacterModels/*/build/
+/SteriaBuild/CharacterModels/*/deployments/
+/SteriaBuild/CharacterModels/deployments/*/backup/
+/SteriaBuild/CharacterModels/deployments/*/plan.json
+/SteriaBuild/CharacterModels/Christasha_Texture_v2/normal-deployments/
+/SteriaBuild/CharacterModels/review/
+/SteriaBuild/CharacterModels/*/review/
+
+# AceTaffy local release packaging, abandoned candidates and capture output
+/AceTaffy/dist/
+/AceTaffy/Workshop/v*/
+/AceTaffy/DeliveryHistory/*
+!/AceTaffy/DeliveryHistory/v*.md
+/AceTaffy/ArtSource/CardIterations/
+/AceTaffy/ArtSource/Audio/v2/candidate/
+/AceTaffy/ArtSource/Character/native-reference/*.png
+/AceTaffy/Verification/Reception/native-cn-effects.xml
+/AceTaffy/ArtSource/Character/slender-v2/attempt*.png
+/AceTaffy/ArtSource/Character/slender-v2/*rejected*.png
+/AceTaffy/Verification/*.png
+/AceTaffy/Verification/final-log-path.txt
+/AceTaffy/Verification/neck-closeups/
+/AceTaffy/Verification/Runtime/
+/AceTaffy/Verification/PreparationAlignment/output/
+/AceTaffy/Verification/Reception/output/
+/AceTaffy/Verification/Reception/*.png
+/AceTaffy/Verification/Story/*.png
+/AceTaffy/Verification/Vfx/preview/*
+!/AceTaffy/Verification/Vfx/preview/manifest.json
+/AceTaffy/Verification/Vfx/unity-preview/
+/AceTaffy/Verification/Vfx/ultimate-v1/[0-9]*/
