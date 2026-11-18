@@ -2485,32 +2485,6 @@ namespace Steria
         }
     }
 
-    [HarmonyPatch(typeof(AttackEffectManager), nameof(AttackEffectManager.CreateDamagedTextEffect))]
-    public static class AttackEffectManager_CreateDamagedTextEffect_MusicDicePatch
-    {
-        public sealed class MusicDamageTextState
-        {
-            public bool ShouldApply;
-            public HashSet<DamageTextEffect> Existing;
-        }
-
-        [HarmonyPrefix]
-        public static void Prefix(
-            BehaviourDetail detail,
-            BattleUnitModel unit,
-            BattleUnitModel attacker,
-            out MusicDamageTextState __state)
-        {
-            __state = null;
-            try
-            {
-                bool isAttackDetail = detail == BehaviourDetail.Slash
-                    || detail == BehaviourDetail.Penetrate
-                    || detail == BehaviourDetail.Hit;
-                bool isDirectMusicDamage = MusicDamageContext.IsActive;
-                bool isMusicPlayback = MusicDamagePlaybackContext.Matches(attacker, unit);
-                if ((!isDirectMusicDamage && !isMusicPlayback) || !isAttackDetail)
-                {
     /// <summary>
     /// 普通近战的伤害数字在伤害计算完成后才由 PrintDamage 回放。根据当前两侧
     /// BattleCardBehaviourResult 建立只读的展示上下文，使回放不依赖已经前移的 currentBehavior。
@@ -2578,6 +2552,32 @@ namespace Steria
         }
     }
 
+    [HarmonyPatch(typeof(AttackEffectManager), nameof(AttackEffectManager.CreateDamagedTextEffect))]
+    public static class AttackEffectManager_CreateDamagedTextEffect_MusicDicePatch
+    {
+        public sealed class MusicDamageTextState
+        {
+            public bool ShouldApply;
+            public HashSet<DamageTextEffect> Existing;
+        }
+
+        [HarmonyPrefix]
+        public static void Prefix(
+            BehaviourDetail detail,
+            BattleUnitModel unit,
+            BattleUnitModel attacker,
+            out MusicDamageTextState __state)
+        {
+            __state = null;
+            try
+            {
+                bool isAttackDetail = detail == BehaviourDetail.Slash
+                    || detail == BehaviourDetail.Penetrate
+                    || detail == BehaviourDetail.Hit;
+                bool isDirectMusicDamage = MusicDamageContext.IsActive;
+                bool isMusicPlayback = MusicDamagePlaybackContext.Matches(attacker, unit);
+                if ((!isDirectMusicDamage && !isMusicPlayback) || !isAttackDetail)
+                {
                     return;
                 }
 
