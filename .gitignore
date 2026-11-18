@@ -123,6 +123,7 @@ __pycache__/
 /SteriaBuild/VFXSource/ChristashaNative/Mass/evidence/
 /SteriaBuild/VFXSource/ChristashaNative/Pierce/evidence/
 /SteriaBuild/VFXSource/SlazeyaStormMass/output/
+/SteriaBuild/VFXSource/SlazeyaStormMass/source_assets/round2/inspection/
 /SteriaBuild/VFXSource/SlazeyaWaterThunderSlash/evidence/
 /SteriaBuild/VFXSource/SlazeyaWindCombat/evidence/
 /SteriaBuild/VFXSource/VeliaPotentialObservation/evidence/
@@ -135,6 +136,9 @@ __pycache__/
 /SteriaBuild/VFXSource/SlazeyaWindCombat/UnityProject/Assets/test.unity*
 /SteriaBuild/VFXSource/SlazeyaWindCombat/UnityProject/Assets/tst/
 /SteriaBuild/VFXSource/SlazeyaWindCombat/UnityProject/Assets/tst.meta
+/SteriaBuild/VFXSource/SlazeyaWindCombat/UnityProject/Assets/WindAuthoring.unity*
+/SteriaBuild/VFXSource/VeliaPotentialObservation/source_assets/texture-contact-sheet.png
+/SteriaBuild/VFXSource/MusicDiceUI/History/pre-aftericon-v1/
 
 # Character model render output and rollback snapshots
 /SteriaBuild/CharacterModels/*/build/
@@ -144,6 +148,9 @@ __pycache__/
 /SteriaBuild/CharacterModels/Christasha_Texture_v2/normal-deployments/
 /SteriaBuild/CharacterModels/review/
 /SteriaBuild/CharacterModels/*/review/
+/SteriaBuild/CharacterModels/Velia_Layered_v1/sources/observation/*rejected*.png
+/SteriaBuild/CharacterModels/Velia_Layered_v1/sources/observation/S2-proportion-r2.png
+/SteriaBuild/CharacterModels/Velia_Layered_v1/sources/observation/pose_context_r2_raw.png
 
 # AceTaffy local release packaging, abandoned candidates and capture output
 /AceTaffy/dist/*
@@ -155,6 +162,7 @@ __pycache__/
 /AceTaffy/ArtSource/Audio/v2/candidate/
 /AceTaffy/ArtSource/Effects/ultimate-v1/SteamDetonation-draft.png
 /AceTaffy/ArtSource/Character/native-reference/*.png
+/AceTaffy/ArtSource/Character/native-reference/extraction.json
 /AceTaffy/Verification/Reception/native-cn-effects.xml
 /AceTaffy/ArtSource/Character/slender-v2/attempt*.png
 /AceTaffy/ArtSource/Character/slender-v2/*rejected*.png
@@ -163,6 +171,9 @@ __pycache__/
 /AceTaffy/ArtSource/Character/slender-v2/design-default.png
 /AceTaffy/ArtSource/Character/slender-v2/head-before-neck-fix.png
 /AceTaffy/ArtSource/Story/portraits/default-before-alpha-clean.png
+/AceTaffy/Promo/taffy-default-action-transparent.png
+/AceTaffy/Promo/taffy-default-display.png
+/AceTaffy/Promo/taffy-actions-2x4-transparent.png
 /AceTaffy/Verification/*.png
 /AceTaffy/Verification/final-log-path.txt
 /AceTaffy/Verification/neck-closeups/
@@ -170,8 +181,12 @@ __pycache__/
 /AceTaffy/Verification/PreparationAlignment/output/
 /AceTaffy/Verification/Reception/output/
 /AceTaffy/Verification/Reception/*.png
+/AceTaffy/Verification/Reception/*-delivery.json
+/AceTaffy/Verification/Reception/candidate.json
+/AceTaffy/Verification/PreparationAlignment/candidate.json
 /AceTaffy/Verification/Story/*.png
 /AceTaffy/Verification/Vfx/preview/*
 !/AceTaffy/Verification/Vfx/preview/manifest.json
 /AceTaffy/Verification/Vfx/unity-preview/
+/AceTaffy/Verification/Vfx/unity-fixture-candidate.json
 /AceTaffy/Verification/Vfx/ultimate-v1/[0-9]*/
