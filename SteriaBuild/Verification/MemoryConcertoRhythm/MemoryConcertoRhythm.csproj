@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../BehaviourAction_Steria_MemoryConcerto.cs" Link="ProductionAction.cs" />
+    <Compile Include="../../BehaviourAction_Steria_ChristashaNormal.cs" Condition="Exists('../../BehaviourAction_Steria_ChristashaNormal.cs')" />
+    <Compile Include="../../ChristashaNormalSkin.cs" Condition="Exists('../../ChristashaNormalSkin.cs')" />
+    <Compile Include="Program.cs" />
+    <Compile Include="UnityContract.cs" />
+    <Compile Include="../../Assembly-CSharp/BehaviourActionBase.cs" Link="Native/BehaviourActionBase.cs" />
+    <Compile Include="../../Assembly-CSharp/ActionDetail.cs" Link="Native/ActionDetail.cs" />
+    <Compile Include="../../Assembly-CSharp/ActionType.cs" Link="Native/ActionType.cs" />
+    <Compile Include="../../Assembly-CSharp/ActionDirection.cs" Link="Native/ActionDirection.cs" />
+    <Compile Include="../../Assembly-CSharp/CharMoveState.cs" Link="Native/CharMoveState.cs" />
+    <Compile Include="../../Assembly-CSharp/Result.cs" Link="Native/Result.cs" />
+    <Compile Include="../../Assembly-CSharp/EffectTiming.cs" Link="Native/EffectTiming.cs" />
+    <Compile Include="../../Assembly-CSharp/DiceBehaviourResultData.cs" Link="Native/DiceBehaviourResultData.cs" />
+    <Compile Include="../../Assembly-CSharp/LOR_DiceSystem/CardRange.cs" Link="Native/CardRange.cs" />
+    <Compile Include="../../Assembly-CSharp/LOR_DiceSystem/BehaviourDetail.cs" Link="Native/BehaviourDetail.cs" />
+    <Compile Include="../../../output/memory-concerto-rhythm/generated/NativeRencounter.cs" Link="Native/Rencounter.cs" />
+  </ItemGroup>
+</Project>

@@ -70,9 +70,9 @@
       <Ability Script="AnhierDiscardAllPowerUp" />
     </AbilityList>
     <BehaviourList>
-      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_AnhierTextureMemoryHit" Script="" ActionScript="" Desc="" />
-      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_AnhierTextureMemoryPierce" Script="" ActionScript="" Desc="" />
+      <Behaviour Min="2" Dice="7" Type="Atk" Detail="Slash" Motion="J" EffectRes="Steria_AnhierTextureMemorySlash" Script="" ActionScript="Steria_MemoryConcerto_Long" Desc="" />
+      <Behaviour Min="3" Dice="6" Type="Atk" Detail="Hit" Motion="H" EffectRes="Steria_AnhierTextureMemoryHit" Script="" ActionScript="Steria_MemoryConcerto_Medium" Desc="" />
+      <Behaviour Min="4" Dice="8" Type="Atk" Detail="Penetrate" Motion="Z" EffectRes="Steria_AnhierTextureMemoryPierce" Script="" ActionScript="Steria_MemoryConcerto_Final" Desc="" />
       <Behaviour Min="1" Dice="6" Type="Def" Detail="Evasion" Motion="E" EffectRes="" Script="" ActionScript="" Desc="" />
     </BehaviourList>
     <Chapter>1</Chapter>
