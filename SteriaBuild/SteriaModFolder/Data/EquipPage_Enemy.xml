@@ -381,6 +381,7 @@
       <Passive Pid="@origin">10008</Passive>
       <Passive>9011001</Passive>
       <Passive>9011002</Passive>
+      <Passive>9011003</Passive>
     </EquipEffect>
     <Chapter>6</Chapter>
     <Episode>1</Episode>

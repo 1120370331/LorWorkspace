@@ -1908,5 +1908,64 @@
     <Chapter>6</Chapter>
     <Priority>0</Priority>
   </Card>
+  <!-- 安蒂的源流之杯 -->
+  <Card ID="9011601">
+    <Name>流源之杯</Name>
+    <TextId>-1</TextId>
+    <Artwork>9002001.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="0" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
+    <Keyword>SteriaOverflowFlow</Keyword>
+    <Keyword>SteriaStrongFlow</Keyword>
+    <Script>AntieFlowCup</Script>
+    <ScriptDesc>至少有30层[溢流之流]时可装备。清空[溢流之流]，将等量的混乱抗性恢复分配给全体友方。混乱抗性比例越低，分配越多。每消耗10层，每位友方获得1层[强流]。书页在幕末复原。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieFlowCup" />
+    </AbilityList>
+    <BehaviourList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="9011602">
+    <Name>梦源之杯</Name>
+    <TextId>-1</TextId>
+    <Artwork>集愿之盾.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="0" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
+    <Keyword>SteriaOverflowDream</Keyword>
+    <Keyword>SteriaWishShield</Keyword>
+    <Keyword>SteriaDeepDream</Keyword>
+    <Script>AntieDreamCup</Script>
+    <ScriptDesc>至少有20层[溢流之梦]时可装备。清空[溢流之梦]，将等量的[愿望之盾]分配给全体友方。当前最大生命值越低，分配越多。每消耗10层，每位友方获得1层[深梦]。书页在幕末复原。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieDreamCup" />
+    </AbilityList>
+    <BehaviourList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
+  <Card ID="9011603">
+    <Name>潮源之杯</Name>
+    <TextId>-1</TextId>
+    <Artwork>守望潮汐.png</Artwork>
+    <Rarity>Unique</Rarity>
+    <Spec Range="Instance" Cost="0" />
+    <Option>EgoPersonal</Option>
+    <MaxCooltimeForEgo>0</MaxCooltimeForEgo>
+    <Keyword>SteriaOverflowTide</Keyword>
+    <Keyword>SteriaHolyTide</Keyword>
+    <Script>AntieTideCup</Script>
+    <ScriptDesc>至少有10层[溢流之潮]时可装备。清空[溢流之潮]，将等量的生命恢复分配给全体友方。生命比例越低，分配越多。每消耗10层，每位友方获得1层[圣潮]。书页在幕末复原。</ScriptDesc>
+    <AbilityList>
+      <Ability Script="AntieTideCup" />
+    </AbilityList>
+    <BehaviourList />
+    <Chapter>6</Chapter>
+    <Priority>0</Priority>
+  </Card>
 </DiceCardXmlRoot>
 

@@ -107,6 +107,7 @@ public class PassiveAbility_9002001 : PassiveAbilityBase
             if (!hasProxy)
             {
                 flowBuf.stack -= 1;
+                AntieOverflow.Record(owner, AntieResource.Flow, 1);
                 SteriaLogger.Log($"神脉：梦之汐: {owner.UnitData?.unitData?.name} lost 1 flow on clash lose, remaining: {flowBuf.stack}");
                 if (flowBuf.stack <= 0)
                 {

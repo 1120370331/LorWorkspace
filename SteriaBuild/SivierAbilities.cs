@@ -70,6 +70,7 @@ public class PassiveAbility_9008001 : PassiveAbilityBase
         {
             // 消耗1层梦
             dreamBuf.stack--;
+            AntieOverflow.Record(owner, AntieResource.Dream, 1);
             _dreamConsumedTotal++;
             SteriaLogger.Log($"PassiveAbility_9008001: Consumed 1 Dream for OneSide damage reduction, total consumed: {_dreamConsumedTotal}");
 

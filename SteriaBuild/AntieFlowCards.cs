@@ -43,7 +43,7 @@ public class DiceCardSelfAbility_AntieReverseFlow : DiceCardSelfAbilityBase
             return;
         }
 
-        int flow = AntieFlowCardHelper.GetFlowStacks(owner);
+        int flow = AntieFlowCardHelper.GetSpendableFlowStacks(owner);
         if (flow >= 4)
         {
             if (AntieFlowCardHelper.TryConsumeFlow(owner, 4))
@@ -172,7 +172,7 @@ public static class BattleParryingManager_GetDecisionResult_AntieForceDrawPatch
 
 internal static class AntieFlowCardHelper
 {
-    public static int GetFlowStacks(BattleUnitModel unit)
+    public static int GetSpendableFlowStacks(BattleUnitModel unit)
     {
         BattleUnitBuf_Flow flow = GetFlowBuf(unit);
         return Math.Max(0, flow?.stack ?? 0);
@@ -201,7 +201,7 @@ internal static class AntieFlowCardHelper
             }
         }
 
-        HarmonyHelpers.NotifyPassivesOnFlowConsumed(unit, amount);
+        HarmonyHelpers.NotifyPassivesOnFlowConsumed(unit, amount, hasProxy ? 0 : amount);
         return true;
     }
 

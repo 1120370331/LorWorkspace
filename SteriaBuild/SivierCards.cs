@@ -122,8 +122,8 @@ public class DiceCardSelfAbility_SivierWishProtect : DiceCardSelfAbilityBase
     public override void OnUseCard()
     {
         base.OnUseCard();
-        // 消耗所有梦，为全队施加等量x2层愿望之盾
-        int dreamCount = SivierCardHelper.GetDreamCount(owner);
+        // 消耗所有普通梦，为全队施加等量x2层愿望之盾
+        int dreamCount = SivierCardHelper.GetSpendableDreamCount(owner);
         if (dreamCount > 0)
         {
             SivierCardHelper.ConsumeDream(owner, dreamCount);
@@ -250,7 +250,7 @@ public class DiceCardAbility_SivierSeaWishSlash1 : DiceCardAbilityBase
     {
         base.OnSucceedAttack();
         // 命中时：消耗1层梦来追加5点混乱伤害
-        if (SivierCardHelper.GetDreamCount(owner) >= 1)
+        if (SivierCardHelper.GetSpendableDreamCount(owner) >= 1)
         {
             SivierCardHelper.ConsumeDream(owner, 1);
             DiceCardSelfAbility_SivierSeaWishSlash.RecordDreamConsumed(behavior?.card, 1);
@@ -265,7 +265,7 @@ public class DiceCardAbility_SivierSeaWishSlash2 : DiceCardAbilityBase
     {
         base.OnSucceedAttack();
         // 命中时：消耗1层梦来恢复5点混乱抗性
-        if (SivierCardHelper.GetDreamCount(owner) >= 1)
+        if (SivierCardHelper.GetSpendableDreamCount(owner) >= 1)
         {
             SivierCardHelper.ConsumeDream(owner, 1);
             DiceCardSelfAbility_SivierSeaWishSlash.RecordDreamConsumed(behavior?.card, 1);
@@ -485,11 +485,10 @@ public static class SivierCardHelper
             x.GetType().Name == nameof(BattleUnitBuf_Dream));
     }
 
-    public static int GetDreamCount(BattleUnitModel unit)
-    {
-        BattleUnitBuf buf = GetDreamBuf(unit);
-        return buf?.stack ?? 0;
-    }
+    public static int GetDreamCount(BattleUnitModel unit) => GetSpendableDreamCount(unit) +
+        (AntieOverflow.Find<BattleUnitBuf_DeepDream>(unit)?.stack ?? 0);
+
+    public static int GetSpendableDreamCount(BattleUnitModel unit) => Math.Max(0, GetDreamBuf(unit)?.stack ?? 0);
 
     public static void AddDreamToUnit(BattleUnitModel unit, int amount)
     {
@@ -515,6 +514,7 @@ public static class SivierCardHelper
             if (!hasProxy)
             {
                 buf.stack -= amount;
+                AntieOverflow.Record(unit, AntieResource.Dream, amount);
             }
             // 通知被动和追踪系统
             DiceCardSelfAbility_SivierWishBuried.OnDreamConsumed(unit, amount);
@@ -528,7 +528,7 @@ public static class SivierCardHelper
     public static void AddWishShieldToUnit(BattleUnitModel unit, int amount)
     {
         if (unit == null || amount <= 0) return;
-        var buf = unit.bufListDetail.GetActivatedBufList().Find(x => x is BattleUnitBuf_WishShield) as BattleUnitBuf_WishShield;
+        var buf = unit.bufListDetail.GetActivatedBufList().OfType<BattleUnitBuf_WishShield>().FirstOrDefault(x => !x.IsDestroyed());
         if (buf != null)
         {
             buf.stack += amount;
@@ -622,7 +622,7 @@ public static class SivierCardHelper
             return;
         }
 
-        int dream = GetDreamCount(unit);
+        int dream = GetSpendableDreamCount(unit);
         List<BattleDiceCardModel> phantomCards = hand
             .Where(c => c != null
                 && Steria.HarmonyHelpers.IsPhantomDreamCard(c)

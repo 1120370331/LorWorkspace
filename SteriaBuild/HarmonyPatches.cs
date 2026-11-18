@@ -448,7 +448,7 @@ namespace Steria
                 return false;
             }
 
-            if (actor.faction != target.faction || SivierCardHelper.GetDreamCount(actor) < GetPhantomDreamCost(card))
+            if (actor.faction != target.faction || SivierCardHelper.GetSpendableDreamCount(actor) < GetPhantomDreamCost(card))
             {
                 return false;
             }
@@ -492,7 +492,7 @@ namespace Steria
                 return false;
             }
 
-            int dream = SivierCardHelper.GetDreamCount(owner);
+            int dream = SivierCardHelper.GetSpendableDreamCount(owner);
             int dreamToConsume = GetPhantomDreamCost(sourceCard);
             if (dream < dreamToConsume)
             {
@@ -561,9 +561,13 @@ namespace Steria
         /// <summary>
         /// 通知所有相关被动流被消耗
         /// </summary>
-        public static void NotifyPassivesOnFlowConsumed(BattleUnitModel owner, int amount)
+        public static void NotifyPassivesOnFlowConsumed(BattleUnitModel owner, int amount) =>
+            NotifyPassivesOnFlowConsumed(owner, amount, amount);
+
+        internal static void NotifyPassivesOnFlowConsumed(BattleUnitModel owner, int amount, int actualSpend)
         {
             if (owner == null || amount <= 0) return;
+            AntieOverflow.Record(owner, AntieResource.Flow, actualSpend);
 
             // 通知 PassiveAbility_9002001 (神脉：梦之汐-司流-倾覆之大流)
             var passive9002001 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9002001) as PassiveAbility_9002001;
@@ -595,9 +599,13 @@ namespace Steria
         /// <summary>
         /// 通知所有相关被动潮被消耗
         /// </summary>
-        public static void NotifyPassivesOnTideConsumed(BattleUnitModel owner, int amount, bool isGolden = false, BattleUnitModel enhancedTarget = null, KeywordBuf enhancedBufType = KeywordBuf.None, bool enhancedByTide = false)
+        public static void NotifyPassivesOnTideConsumed(BattleUnitModel owner, int amount, bool isGolden = false, BattleUnitModel enhancedTarget = null, KeywordBuf enhancedBufType = KeywordBuf.None, bool enhancedByTide = false) =>
+            NotifyPassivesOnTideConsumed(owner, amount, amount, isGolden, enhancedTarget, enhancedBufType, enhancedByTide);
+
+        internal static void NotifyPassivesOnTideConsumed(BattleUnitModel owner, int amount, int actualSpend, bool isGolden = false, BattleUnitModel enhancedTarget = null, KeywordBuf enhancedBufType = KeywordBuf.None, bool enhancedByTide = false)
         {
             if (owner == null || amount <= 0) return;
+            AntieOverflow.Record(owner, AntieResource.Tide, actualSpend);
 
             var passive9006001 = owner.passiveDetail.PassiveList?.FirstOrDefault(p => p is PassiveAbility_9006001) as PassiveAbility_9006001;
             passive9006001?.OnTideConsumed(amount);
@@ -1626,7 +1634,8 @@ namespace Steria
                 1,
                 enhancedTarget: target,
                 enhancedBufType: bufType,
-                enhancedByTide: true);
+                enhancedByTide: true,
+                actualSpend: hasStephanieProxy ? 0 : 1);
 
             if (!hasStephanieProxy && tideBuf.stack <= 0)
             {
@@ -1694,7 +1703,7 @@ namespace Steria
                 golden.stack -= consume;
                 SteriaLogger.Log($"GoldenTide: {giver.UnitData?.unitData?.name} consumed {consume} for {bufType}, bonus={bonus}, remaining={golden.stack}");
             }
-            HarmonyHelpers.NotifyPassivesOnTideConsumed(giver, consume, true);
+            HarmonyHelpers.NotifyPassivesOnTideConsumed(giver, consume, hasStephanieProxy ? 0 : consume, isGolden: true);
 
             if (!hasStephanieProxy && golden.stack <= 0)
             {

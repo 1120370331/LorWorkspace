@@ -68,6 +68,7 @@ public class BattleUnitBuf_Dream : BattleUnitBuf
         {
             // 消耗1层梦
             stack--;
+            AntieOverflow.Record(_owner, AntieResource.Dream, 1);
             SteriaLogger.Log($"BattleUnitBuf_Dream: Consumed 1 stack (parry), remaining: {stack}");
 
             // 通知被动系统梦被消耗

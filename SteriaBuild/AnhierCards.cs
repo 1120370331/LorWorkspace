@@ -311,7 +311,7 @@ public class DiceCardAbility_AnhierQingSiFengLiuDice1 : DiceCardAbilityBase
             }
 
             // 通知被动流被消耗
-            HarmonyHelpers.NotifyPassivesOnFlowConsumed(this.owner, 10);
+            HarmonyHelpers.NotifyPassivesOnFlowConsumed(this.owner, 10, hasProxy ? 0 : 10);
 
             // 使用游戏内置方法触发骰子重复攻击
             SteriaLogger.Log("清司风流 Dice1: Activating bonus attack dice (re-roll)");

@@ -19,22 +19,24 @@ public static class DirectiveDreamHelper
 
     public static BattleUnitBuf_Flow GetFlowBuf(BattleUnitModel unit)
     {
-        return unit?.bufListDetail?.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
+        return unit?.bufListDetail?.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Flow && !b.IsDestroyed()) as BattleUnitBuf_Flow;
     }
 
     public static BattleUnitBuf_Dream GetDreamBuf(BattleUnitModel unit)
     {
-        return unit?.bufListDetail?.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Dream) as BattleUnitBuf_Dream;
+        return unit?.bufListDetail?.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Dream && !b.IsDestroyed()) as BattleUnitBuf_Dream;
     }
 
     public static BattleUnitBuf_Tide GetTideBuf(BattleUnitModel unit)
     {
-        return unit?.bufListDetail?.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Tide) as BattleUnitBuf_Tide;
+        return unit?.bufListDetail?.GetActivatedBufList().FirstOrDefault(b => b is BattleUnitBuf_Tide && !b.IsDestroyed()) as BattleUnitBuf_Tide;
     }
 
-    public static int GetFlowStacks(BattleUnitModel unit) => GetFlowBuf(unit)?.stack ?? 0;
-    public static int GetDreamStacks(BattleUnitModel unit) => GetDreamBuf(unit)?.stack ?? 0;
-    public static int GetTideStacks(BattleUnitModel unit) => GetTideBuf(unit)?.stack ?? 0;
+    public static int GetFlowStacks(BattleUnitModel unit) => FlowPlanning.Available(unit) +
+        (AntieOverflow.Find<BattleUnitBuf_StrongFlow>(unit)?.stack ?? 0);
+    public static int GetDreamStacks(BattleUnitModel unit) => SivierCardHelper.GetDreamCount(unit);
+    public static int GetTideStacks(BattleUnitModel unit) => Math.Max(0, GetTideBuf(unit)?.stack ?? 0) +
+        (AntieOverflow.Find<BattleUnitBuf_HolyTide>(unit)?.stack ?? 0);
 
     public static void AddOrStackCommandProtection(BattleUnitModel unit, int amount)
     {
@@ -530,9 +532,9 @@ public class BattleUnitBuf_StephanieProxy : BattleUnitBuf
     private void CaptureSnapshots()
     {
         if (_owner == null) return;
-        _flowSnapshot = DirectiveDreamHelper.GetFlowStacks(_owner);
-        _dreamSnapshot = DirectiveDreamHelper.GetDreamStacks(_owner);
-        _tideSnapshot = DirectiveDreamHelper.GetTideStacks(_owner);
+        _flowSnapshot = FlowPlanning.Available(_owner);
+        _dreamSnapshot = SivierCardHelper.GetSpendableDreamCount(_owner);
+        _tideSnapshot = Math.Max(0, DirectiveDreamHelper.GetTideBuf(_owner)?.stack ?? 0);
     }
 
     private void RestoreSnapshots()

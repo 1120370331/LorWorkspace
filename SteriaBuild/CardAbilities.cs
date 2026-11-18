@@ -574,9 +574,7 @@ public class DiceCardSelfAbility_CultistFlowPowerBonus : DiceCardSelfAbilityBase
     public override void OnUseCard()
     {
         // 检查流层数是否>=5
-        BattleUnitBuf_Flow flowBuf = owner.bufListDetail.GetActivatedBufList()
-            .FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-        int flowStacks = flowBuf?.stack ?? 0;
+        int flowStacks = DirectiveDreamHelper.GetFlowStacks(owner);
 
         if (flowStacks >= 5)
         {
@@ -650,7 +648,7 @@ public class DiceCardSelfAbility_SlazeyaHundredRiversRepeat : DiceCardSelfAbilit
             Debug.Log($"[Steria] SlazeyaHundredRiversRepeat: Consumed 8 Flow, remaining: {flowBuf?.stack ?? 0}");
 
             // 通知被动流被消耗（调整：10→8）
-            HarmonyHelpers.NotifyPassivesOnFlowConsumed(owner, 8);
+            HarmonyHelpers.NotifyPassivesOnFlowConsumed(owner, 8, hasProxy ? 0 : 8);
 
             // 获取所有敌人（调整：改为随机一个敌人，可以是同一目标）
             List<BattleUnitModel> enemies = BattleObjectManager.instance.GetAliveList(

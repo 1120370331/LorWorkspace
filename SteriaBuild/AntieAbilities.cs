@@ -222,6 +222,10 @@ public class PassiveAbility_9011001 : PassiveAbilityBase
         int dreamStack = TakeBuffStack<BattleUnitBuf_Dream>();
         int flowStack = TakeBuffStack<BattleUnitBuf_Flow>();
         int converted = tideStack + dreamStack + flowStack;
+        // Other resources are spent to convert them. Recreating the destination resource is not spending it.
+        if (form != AntieForm.Tide) AntieOverflow.Record(owner, AntieResource.Tide, tideStack);
+        if (form != AntieForm.Dream) AntieOverflow.Record(owner, AntieResource.Dream, dreamStack);
+        if (form != AntieForm.Flow) AntieOverflow.Record(owner, AntieResource.Flow, flowStack);
         _currentForm = form;
         RefreshFormMarker(form);
 
@@ -348,13 +352,14 @@ public class PassiveAbility_9011001 : PassiveAbilityBase
     private int TakeBuffStack<T>() where T : BattleUnitBuf
     {
         BattleUnitBuf buf = owner?.bufListDetail?.GetActivatedBufList()
-            .FirstOrDefault(x => x is T);
+            .FirstOrDefault(x => x is T && !x.IsDestroyed());
         if (buf == null)
         {
             return 0;
         }
 
         int stack = Math.Max(0, buf.stack);
+        buf.stack = 0;
         buf.Destroy();
         return stack;
     }

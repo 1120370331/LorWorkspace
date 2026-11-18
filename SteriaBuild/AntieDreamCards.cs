@@ -14,7 +14,7 @@ public class DiceCardSelfAbility_AntieDreamMurmur : DiceCardSelfAbilityBase
         }
 
         int dream = SivierCardHelper.GetDreamCount(owner);
-        if (dream > 4)
+        if (dream > 4 && SivierCardHelper.GetSpendableDreamCount(owner) >= 2)
         {
             SivierCardHelper.ConsumeDream(owner, 2);
             owner.allyCardDetail?.DrawCards(2);
@@ -22,7 +22,7 @@ public class DiceCardSelfAbility_AntieDreamMurmur : DiceCardSelfAbilityBase
             return;
         }
 
-        if (dream >= 4)
+        if (dream == 4)
         {
             SivierCardHelper.AddDreamToUnit(owner, 3);
         }
@@ -63,8 +63,7 @@ public class DiceCardSelfAbility_AntieDreamAwaken : DiceCardSelfAbilityBase
             return;
         }
 
-        int dream = SivierCardHelper.GetDreamCount(owner);
-        int consumed = Math.Min(6, dream);
+        int consumed = Math.Min(6, SivierCardHelper.GetSpendableDreamCount(owner));
         if (consumed <= 0)
         {
             return;

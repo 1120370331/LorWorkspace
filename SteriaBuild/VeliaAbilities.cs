@@ -43,7 +43,7 @@ public class BattleUnitBuf_Tide : BattleUnitBuf
 
         if (_owner != null)
         {
-            Steria.HarmonyHelpers.NotifyPassivesOnTideConsumed(_owner, 1);
+            Steria.HarmonyHelpers.NotifyPassivesOnTideConsumed(_owner, 1, actualSpend: hasProxy ? 0 : 1);
 
             // 代行-斯蒂芬妮：消耗潮的书页骰子威力+1
             if (hasProxy)

@@ -165,7 +165,7 @@ namespace Steria
                 plan.Committed = true;
                 plan.CommittedLevels = plan.Levels;
                 plan.CommittedPaid = plan.Paid;
-                if (newAmount > 0) HarmonyHelpers.NotifyPassivesOnFlowConsumed(plan.Owner, newAmount);
+                if (newAmount > 0) HarmonyHelpers.NotifyPassivesOnFlowConsumed(plan.Owner, newAmount, plan.Proxy ? 0 : newPaid);
                 if (!plan.Proxy && newPaid > 0 && HarmonyHelpers.IsManualFlowTransfer(pair.Key))
                     HarmonyHelpers.ScheduleManualFlowRefund(plan.Owner, newPaid, pair.Key.GetID().id);
             }

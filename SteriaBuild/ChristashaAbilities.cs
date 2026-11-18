@@ -112,7 +112,7 @@ public static class ChristashaAbilityHelper
 
     public static int GetTotalTideStacks(BattleUnitModel unit)
     {
-        return GetTideStacks(unit) + GetGoldenTideStacks(unit);
+        return GetTideStacks(unit) + GetGoldenTideStacks(unit) + (AntieOverflow.Find<BattleUnitBuf_HolyTide>(unit)?.stack ?? 0);
     }
 
     public static void AddTwinStarTideConsumed(BattleUnitModel unit, int amount)
@@ -158,7 +158,7 @@ public static class ChristashaAbilityHelper
             }
         }
 
-        HarmonyHelpers.NotifyPassivesOnTideConsumed(unit, toConsume);
+        HarmonyHelpers.NotifyPassivesOnTideConsumed(unit, toConsume, actualSpend: hasProxy ? 0 : toConsume);
 
         // 代行-斯蒂芬妮：消耗潮/梦/流的书页骰子威力+1
         if (hasProxy)

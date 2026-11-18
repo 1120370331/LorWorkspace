@@ -40,7 +40,7 @@ public class DiceCardSelfAbility_AntieTidePressure : DiceCardSelfAbilityBase
             return;
         }
 
-        int tide = AntieTideCardHelper.GetTideStacks(owner);
+        int tide = AntieTideCardHelper.GetSpendableTideStacks(owner);
         int toConsume = Math.Min(4, tide);
         int consumed = 0;
         for (int i = 0; i < toConsume; i++)
@@ -80,7 +80,7 @@ public class DiceCardSelfAbility_AntieTideAwaken : DiceCardSelfAbilityBase
             card.ApplyDiceStatBonus(DiceMatch.AllDice, new DiceStatBonus { power = 3 });
         }
 
-        int tide = AntieTideCardHelper.GetTideStacks(owner);
+        int tide = AntieTideCardHelper.GetSpendableTideStacks(owner);
         int toConsume = Math.Min(3, tide);
         int consumed = 0;
         for (int i = 0; i < toConsume; i++)
@@ -130,7 +130,7 @@ public class BattleUnitBuf_AntieTideAwakenNextRound : BattleUnitBuf
 
 internal static class AntieTideCardHelper
 {
-    public static int GetTideStacks(BattleUnitModel unit)
+    public static int GetSpendableTideStacks(BattleUnitModel unit)
     {
         BattleUnitBuf_Tide tide = unit?.bufListDetail?.GetActivatedBufList()
             ?.FirstOrDefault(buf => buf is BattleUnitBuf_Tide) as BattleUnitBuf_Tide;
@@ -162,7 +162,8 @@ internal static class AntieTideCardHelper
             1,
             enhancedTarget: enhancedTarget,
             enhancedBufType: enhancedBufType,
-            enhancedByTide: enhancedByTide);
+            enhancedByTide: enhancedByTide,
+            actualSpend: hasProxy ? 0 : 1);
 
         if (hasProxy)
         {
@@ -227,6 +228,7 @@ internal static class AntieTideCardHelper
         return buf is BattleUnitBuf_Tide ||
                buf is BattleUnitBuf_Dream ||
                buf is BattleUnitBuf_GoldenTide ||
+               buf is BattleUnitBuf_AntieOverflowResource ||
                buf is BattleUnitBuf_AntieFormBase ||
                buf is BattleUnitBuf_AntieFormCooldown ||
                buf is BattleUnitBuf_AntieTideAwakenNextRound ||

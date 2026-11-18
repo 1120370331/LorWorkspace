@@ -83,7 +83,7 @@ namespace Steria
                     int diff = Math.Max(0, last - current);
                     if (diff > 0)
                     {
-                        HarmonyHelpers.NotifyPassivesOnTideConsumed(unit, diff);
+                        HarmonyHelpers.NotifyPassivesOnTideConsumed(unit, diff, actualSpend: 0);
                     }
                 }
 

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <LangVersion>latest</LangVersion>
+    <GameManaged>C:/Program Files (x86)/Steam/steamapps/common/Library Of Ruina/LibraryOfRuina_Data/Managed</GameManaged>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Steria" HintPath="../../bin/Release/net472/Steria.dll" />
+    <Reference Include="Assembly-CSharp" HintPath="../../bin/Release/net472/Assembly-CSharp.dll" />
+    <Reference Include="0Harmony" HintPath="../../bin/Release/net472/0Harmony.dll" />
+    <Reference Include="UnityEngine" HintPath="$(GameManaged)/UnityEngine.dll" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(GameManaged)/UnityEngine.CoreModule.dll" />
+    <Reference Include="UnityEngine.UI" HintPath="$(GameManaged)/UnityEngine.UI.dll" />
+  </ItemGroup>
+</Project>

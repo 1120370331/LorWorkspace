@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BattleCardDescRoot Pid="SteriaBuilding">
+  <cardDescList>
+    <BattleCardDesc ID="9011601">
+      <LocalizedName>流源之杯</LocalizedName>
+      <Ability>至少有30层[溢流之流]时可装备。清空[溢流之流]，将等量的混乱抗性恢复分配给全体友方。混乱抗性比例越低，分配越多。每消耗10层，每位友方获得1层[强流]。书页在幕末复原。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011602">
+      <LocalizedName>梦源之杯</LocalizedName>
+      <Ability>至少有20层[溢流之梦]时可装备。清空[溢流之梦]，将等量的[愿望之盾]分配给全体友方。当前最大生命值越低，分配越多。每消耗10层，每位友方获得1层[深梦]。书页在幕末复原。</Ability>
+    </BattleCardDesc>
+    <BattleCardDesc ID="9011603">
+      <LocalizedName>潮源之杯</LocalizedName>
+      <Ability>至少有10层[溢流之潮]时可装备。清空[溢流之潮]，将等量的生命恢复分配给全体友方。生命比例越低，分配越多。每消耗10层，每位友方获得1层[圣潮]。书页在幕末复原。</Ability>
+    </BattleCardDesc>
+  </cardDescList>
+</BattleCardDescRoot>

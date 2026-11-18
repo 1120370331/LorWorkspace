@@ -581,17 +581,7 @@ public class DiceCardAbility_AilierelNightTraceBleedAndFlow : DiceCardAbilityBas
 
 internal static class AilierelAbilityHelper
 {
-    public static int GetFlowStacks(BattleUnitModel owner)
-    {
-        if (owner == null)
-        {
-            return 0;
-        }
-
-        BattleUnitBuf_Flow flow = owner.bufListDetail.GetActivatedBufList()
-            .FirstOrDefault(b => b is BattleUnitBuf_Flow) as BattleUnitBuf_Flow;
-        return flow?.stack ?? 0;
-    }
+    public static int GetFlowStacks(BattleUnitModel owner) => DirectiveDreamHelper.GetFlowStacks(owner);
 
     public static bool TryConsumeFlow(BattleUnitModel owner, int amount)
     {
